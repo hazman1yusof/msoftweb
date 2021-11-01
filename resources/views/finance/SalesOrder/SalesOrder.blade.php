@@ -344,20 +344,20 @@ i.fa {
 
 						<div class="form-group data_info">
 							<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="upduser">Last Entered By</label>  
-						  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="db_adduser">Last Entered By</label>  
+						  			<input id="db_adduser" name="db_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="upddate">Last Entered Date</label>
-						  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="db_adddate">Last Entered Date</label>
+						  			<input id="db_adddate" name="db_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					    		<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="adduser">Check By</label>  
-						  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="postedby">Authorized By</label>  
+						  			<input id="postedby" name="postedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>
 					  			<div class="col-md-6 minuspad-13">
-									<label class="control-label" for="adddate">Check Date</label>
-						  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+									<label class="control-label" for="posteddate">Authorized Date</label>
+						  			<input id="posteddate" name="posteddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
 					  			</div>						    	
 							</div>
 					<hr/>

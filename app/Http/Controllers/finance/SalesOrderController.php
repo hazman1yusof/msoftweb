@@ -101,11 +101,13 @@ class SalesOrderController extends defaultController
 
 
             //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
-            $table->insert($array_insert);
+            // $table = $table->where('idno','=',$request->idno);
+            $idno = $table->insertGetId($array_insert);
 
             $responce = new stdClass();
-            // $responce->totalAmount = $request->purreqhd_totamount;
+            $responce->totalAmount = 0.00;
+            $responce->idno = $idno;
+            $responce->auditno = $auditno;
             echo json_encode($responce);
 
             DB::commit();

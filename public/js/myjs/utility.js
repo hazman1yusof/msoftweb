@@ -1429,8 +1429,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 		},'json').done(function(data) {
 			if(index == -1){
-				param.filterCol.pop();
-				param.filterVal.pop();
+				// param.filterCol.pop();
+				// param.filterVal.pop();
 			}
 			let fail=true,code,desc2;
 			if(self.checkstat=='default'){

@@ -252,7 +252,9 @@ class SalesOrderDetailController extends defaultController
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
-                    'taxcode' => $request->taxcode
+                    'taxcode' => $request->taxcode,
+                    'billtypeperct' => $request->billtypeperct,
+                    'billtypeamt' => $request->billtypeamt,
                 ]);
 
             ///3. calculate total amount from detail
@@ -446,37 +448,36 @@ class SalesOrderDetailController extends defaultController
         try {
 
             ///1. update detail
-            DB::table('hisdb.billdet')
+            DB::table('debtor.billsum')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
-            $totalAmount = DB::table('hisdb.billdet')
+            $amount = DB::table('debtor.billsum')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
+                ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
-                ->sum('totamount');
+                ->sum('amount');
 
-            //calculate tot gst from detail
-            $tot_gst = DB::table('hisdb.billdet')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
+            // //calculate tot gst from detail
+            // $tot_gst = DB::table('debtor.billsum')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$request->auditno)
+            //     ->where('recstatus','!=','DELETE')
+            //     ->sum('amtslstax');
 
             ///3. update total amount to header
-            DB::table('hisdb.billdet')
+            DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
+                ->where('auditno','=',$request->auditno)
+                ->where('source','=','PB')
+                ->where('trantype','=','IN')
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
+                    'amount' => $amount, 
                 ]);
 
-            echo $totalAmount;
+            echo $amount;
 
             DB::commit();
 

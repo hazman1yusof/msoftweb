@@ -14,6 +14,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate: function ($form) {
 			if (errorField.length > 0) {
+				console.log(errorField)
 				return {
 					element: $(errorField[0]),
 					message: ' '
@@ -65,13 +66,13 @@ $(document).ready(function () {
 					dialog_billtypeSO.check(errorField);
 					dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
-					dialog_approvedbySO.check(errorField);
+					// dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
 					dialog_mrn.on();
 					dialog_CustomerSO.on();
-					dialog_approvedbySO.on();
+					// dialog_approvedbySO.on();
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -98,7 +99,7 @@ $(document).ready(function () {
 				dialog_billtypeSO.off();
 				dialog_mrn.off();
 				dialog_CustomerSO.off();
-				dialog_approvedbySO.off();
+				// dialog_approvedbySO.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
@@ -388,10 +389,9 @@ $(document).ready(function () {
 
 			if (selfoper == 'add') {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
-				$('#purreqhd_recno').val(data.recno);
-				$('#purreqhd_purreqno').val(data.purreqno);
-				$('#idno').val(data.idno);//just save idno for edit later
-				$('#purreqhd_totamount').val(data.totalAmount);
+				$('#db_auditno').val(data.auditno);
+				$('#db_idno').val(data.idno);//just save idno for edit later
+				$('#db_amount').val(data.totalAmount);
 
 				urlParam2.filterVal[0] = data.recno;
 			} else if (selfoper == 'edit') {
@@ -678,13 +678,13 @@ $(document).ready(function () {
 				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
 			{
-				label: '% Bill Type', name: 'percbilltype', width: 100, align: 'right', classes: 'wrap',
-				editable: false,
+				label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
-				label: 'Amount Bill Type', name: 'amtbilltype', width: 100, align: 'right', classes: 'wrap', editable: false,
+				label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
@@ -693,6 +693,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
+			{ label: 'idno', name: 'idno', width: 10, hidden: true, key:true },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -736,9 +737,9 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 			// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
-			if(oper == 'edit'){
-				get_billtype();
-			}
+			// if(oper == 'edit'){
+			// 	get_billtype();
+			// }
 			//calculate_quantity_outstanding('#jqGrid2');
 		},
 		afterShowForm: function (rowid) {
@@ -749,7 +750,7 @@ $(document).ready(function () {
 			dialog_billtypeSO.check(errorField);
 			dialog_mrn.check(errorField);
 			dialog_CustomerSO.check(errorField);
-			dialog_approvedbySO.check(errorField);
+			// dialog_approvedbySO.check(errorField);
 		}
     });
 
@@ -881,17 +882,17 @@ $(document).ready(function () {
 			unsaved = false;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amtbilltype']","#jqGrid2 input[name='amount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='amount']"]);
 			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyonhand']","#jqGrid2 input[name='quantity']"]);
 			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
-			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtbilltype']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='billtypeamt']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
-			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='amtbilltype'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
+			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
 			$("#jqGrid2 input[name='quantity']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
@@ -980,9 +981,8 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
-								action: 'purReq_detail_save',
-								recno: $('#purreqhd_recno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
+								auditno: $('#db_auditno').val(),
+								idno:selrowData('#jqGrid2').idno
 							}
 							$.post( "/SalesOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
@@ -1223,9 +1223,9 @@ $(document).ready(function () {
 		dialog_billtypeSO.off();
 		dialog_mrn.off();
 		dialog_CustomerSO.off();
-		dialog_approvedbySO.off();
+		// dialog_approvedbySO.off();
 
-		errorField.length = 0;
+		// errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			mycurrency.formatOn();
@@ -1235,7 +1235,7 @@ $(document).ready(function () {
 			dialog_deptcode.on();
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
-			dialog_approvedbySO.on();
+			// dialog_approvedbySO.on();
 			dialog_mrn.on();
 		}
 	});
@@ -1247,7 +1247,7 @@ $(document).ready(function () {
 		dialog_deptcode.on();
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
-		dialog_approvedbySO.on();
+		// dialog_approvedbySO.on();
 		dialog_mrn.on();
 
 		enableForm('#formdata');
@@ -1313,8 +1313,8 @@ $(document).ready(function () {
        
 		let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let percbilltype = parseFloat(selrowData('#jqGrid2').percbilltype);
-		let amtbilltype = parseFloat(selrowData('#jqGrid2').amtbilltype);
+		let billtypeperct = parseFloat($("#"+id_optid+"_billtypeperct").val());
+		let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
 		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
 		if(isNaN(rate)){
 			rate = 0;
@@ -1322,7 +1322,7 @@ $(document).ready(function () {
 
 		let taxamt = ((unitprice*quantity) * rate / 100);
 
-		var amount = ((unitprice*quantity) * percbilltype / 100) + amtbilltype;
+		var amount = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
 		var discamt = (unitprice*quantity) - amount;
 
 		var amount = amount + taxamt;
@@ -1488,8 +1488,8 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus','opprice'],
+				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
 				$('#db_mrn').focus();
@@ -1507,8 +1507,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Billtype",
 			open: function(){
-				dialog_billtypeSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_billtypeSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_billtypeSO.urlParam.filterCol=['recstatus', 'compcode','opprice'];
+				dialog_billtypeSO.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1548,39 +1548,39 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog();
 
-	var dialog_approvedbySO = new ordialog(
-		'approvedby',['material.authorise'],"#db_approvedby",errorField,
-		{	colModel:
-			[
-				{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
-			],
-			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-			},
-			ondblClickRow: function () {
-				$('#remarks').focus();
-			},
-			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#remarks').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
-		},{
-			title:"Authorize Person",
-			open: function(){
-				dialog_approvedbySO.urlParam.filterCol=['compcode','recstatus'];
-				dialog_approvedbySO.urlParam.filterVal=['session.compcode','ACTIVE'];
-			}
-		},'none','radio','tab'
-	);
-	dialog_approvedbySO.makedialog(false);
+	// var dialog_approvedbySO = new ordialog(
+	// 	'approvedby',['material.authorise'],"#db_approvedby",errorField,
+	// 	{	colModel:
+	// 		[
+	// 			{label:'Authorize Person',name:'authorid',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true}
+	// 		],
+	// 		urlParam: {
+	// 					filterCol:['compcode','recstatus'],
+	// 					filterVal:['session.compcode','ACTIVE']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			$('#remarks').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 					var gridname = '#'+obj.gridname;
+	// 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 						$(gridname+' tr#1').click();
+	// 						$(gridname+' tr#1').dblclick();
+	// 						$('#remarks').focus();
+	// 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 						$('#'+obj.dialogname).dialog('close');
+	// 					}
+	// 				}
+	// 	},{
+	// 		title:"Authorize Person",
+	// 		open: function(){
+	// 			dialog_approvedbySO.urlParam.filterCol=['compcode','recstatus'];
+	// 			dialog_approvedbySO.urlParam.filterVal=['session.compcode','ACTIVE'];
+	// 		}
+	// 	},'none','radio','tab'
+	// );
+	// dialog_approvedbySO.makedialog(false);
 
 	///dialog for itemcode for Sales Order Detail//
 	var dialog_chggroup = new ordialog(
@@ -1841,14 +1841,14 @@ function get_billtype(){
 			if(!$.isEmptyObject(data.rows)){
 				let data_ = data.rows[0];
 				var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-				rowids.forEach(function(e,i){
-					$('#jqGrid2').jqGrid('setRowData', e, {amtbilltype:data_.amount,percbilltype:data_.percent_});
+				// rowids.forEach(function(e,i){
+				// 	$('#jqGrid2').jqGrid('setRowData', e, {billtypeamt:data_.amount,billtypeperct:data_.percent_});
 
-				});
+				// });
 
 				$('#pricebilltype').val(data_.price);
-				$("#jqGrid2 input[name='percbilltype']").val(data_.percent_);
-				$("#jqGrid2 input[name='amtbilltype']").val(data_.amount);
+				$("#jqGrid2 input[name='billtypeperct']").val(data_.percent_);
+				$("#jqGrid2 input[name='billtypeamt']").val(data_.amount);
 			}
 		});
 }

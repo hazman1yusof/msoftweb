@@ -1466,7 +1466,7 @@ $(document).ready(function () {
 		dialog_credcode.off();
 		dialog_deldept.off();
 		radbuts.check();
-		errorField.length = 0;
+		// errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
