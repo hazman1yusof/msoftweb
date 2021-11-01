@@ -25,6 +25,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#amount']);
 	var fdl = new faster_detail_load();
+	var sequence = new Sequences('SO','#db_entrydate');
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -1417,8 +1418,12 @@ $(document).ready(function () {
 				filterCol:['compcode','recstatus','chgdept','storedept'],
 				filterVal:['session.compcode','ACTIVE','1','1']
 			},
-			ondblClickRow: function () {
+			ondblClickRow: function (event) {
 				$('#db_debtorcode').focus();
+
+				let data=selrowData('#'+dialog_deptcode.gridname);
+				
+				sequence.set(data['deptcode']).get();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

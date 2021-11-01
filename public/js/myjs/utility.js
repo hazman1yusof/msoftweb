@@ -472,6 +472,39 @@ function setDateToNow(){
 	$('input[type=date]').val(moment().format('YYYY/M/D'));
 }
 
+function Sequences(trxtype,textfield){
+		this.backday;
+		this.deptcode;
+		this.trxtype=trxtype;
+		this.textfield=textfield;
+
+		this.set = function(deptcode){
+			this.deptcode = deptcode;
+			return this;
+		}
+
+		this.get = function(){
+			let self =  this;
+			var param={
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['backday'],
+				table_name:'material.sequence',
+				filterCol:['compcode','dept','trantype'],
+				filterVal:['session.compcode',this.deptcode,this.trxtype]
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data)){
+					self.backday = data.rows[0].backday;
+					$(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
+				}
+			});
+		}
+
+	}
+
 function currencymode(arraycurrency,nopoint=false){
 	this.array = arraycurrency;
 	this.nopoint = nopoint;
@@ -1855,7 +1888,6 @@ function SmoothScrollToTop(){
 
   });
 }
-
 
 $(document).ready(function () {
 
