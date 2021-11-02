@@ -266,6 +266,11 @@ $(document).ready(function () {
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') < 1){
+				$('#reqnodepan').text('');//tukar kat depan tu
+				$('#reqdeptdepan').text('');
+			}
 		},
 
 	});

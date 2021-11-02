@@ -487,7 +487,7 @@
 		};
 
 		var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
-		
+		var addmore_jqgrid3={more:false,state:true,edit:false}
 		////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 		$("#jqGrid2").jqGrid({
 			datatype: "local",
@@ -506,6 +506,9 @@
 	                            showOn: 'focus',
 	                            changeMonth: true,
 			  					changeYear: true,
+			  					onSelect : function(){
+			  						$(this).focus();
+			  					}
 	                        });
 	                    }
 	                }
@@ -928,6 +931,9 @@
 	                            showOn: 'focus',
 	                            changeMonth: true,
 			  					changeYear: true,
+			  					onSelect : function(){
+			  						$(this).focus();
+			  					}
 	                        });
 	                    }
 	                }
@@ -1276,6 +1282,9 @@
 	                            showOn: 'focus',
 	                            changeMonth: true,
 			  					changeYear: true,
+			  					onSelect : function(){
+			  						$(this).focus();
+			  					}
 	                        });
 	                    }
 	                }
@@ -1345,12 +1354,12 @@
 			sortorder: "desc",
 			pager: "#jqGridPager3",
 			loadComplete: function(){
-				if(addmore_jqgrid2.more == true){$('#jqGrid3_iladd').click();}
+				if(addmore_jqgrid3.more == true){$('#jqGrid3_iladd').click();}
 				else{
 					$('#jqGrid3').jqGrid ('setSelection', "1");
 				}
 
-				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+				addmore_jqgrid3.edit = addmore_jqgrid3.more = false; //reset
 				
 			},
 			gridComplete: function(){
@@ -1384,13 +1393,13 @@
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
-				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid2_ilsave').click();
-				// })
+	        	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGrid3_ilsave').click();
+				});
 	        },
 	        aftersavefunc: function (rowid, response, options) {
-	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	if(addmore_jqgrid3.state==true)addmore_jqgrid3.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGrid3',urlParam2,'add');
 		    	$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").show();
 	        }, 
@@ -1564,6 +1573,9 @@
 	                            showOn: 'focus',
 	                            changeMonth: true,
 			  					changeYear: true,
+			  					onSelect : function(){
+			  						$(this).focus();
+			  					}
 	                        });
 	                    }
 	                }
@@ -1998,9 +2010,9 @@
 
 				$("#jqGrid4 input[name='quantity'],#jqGrid4 input[name='pkgprice1'],#jqGrid4 input[name='pkgprice2'],#jqGrid4 input[name='pkgprice3']").on('blur',jqgrid4_calc_totprice);
 
-	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+	   //      	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
 				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid2_ilsave').click();
+				// 	if (code == '9')$('#jqGrid3_ilsave').click();
 				// })
 	        },
 	        aftersavefunc: function (rowid, response, options) {
@@ -2563,7 +2575,6 @@
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								$('#optax').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2573,9 +2584,13 @@
 				open: function(){
 					dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid2 input[name='optax']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
+				
 		dialog_iptax.makedialog();
 
 		var dialog_optax = new ordialog(
@@ -2643,6 +2658,9 @@
 				open: function(){
 					dialog_dtliptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_dtliptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid3 input[name='optax']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2678,6 +2696,8 @@
 				open: function(){
 					dialog_dtloptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_dtloptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2713,6 +2733,9 @@
 				open: function(){
 					dialog_pkg2iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_pkg2iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid2 input[name='quantity']").focus();
 				}
 			},'urlParam','radio','tab'
 		);

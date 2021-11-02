@@ -83,7 +83,7 @@ class SalesOrderDetailController extends defaultController
                 $cp_fld = 'amt2';
                 break;
             case 'PRICE3':
-                $cp_fld = 'amt2';
+                $cp_fld = 'amt3';
                 break;
             default:
                 $cp_fld = 'costprice';
