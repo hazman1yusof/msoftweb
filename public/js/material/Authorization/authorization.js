@@ -135,7 +135,7 @@ $(document).ready(function () {
 			{label: 'adduser', name: 'adduser', width: 90 , hidden:true,},
 			{label: 'upduser', name: 'upduser', width: 90,hidden:true},
 			{label: 'upddate', name: 'upddate', width: 90,hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
@@ -341,7 +341,7 @@ $("#jqGrid2").jqGrid({
                  }
 		},
 	
-		{ label: 'Recstatus', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
+		{ label: 'Status', name: 'dtl_cando', width: 150, classes: 'wrap', canSearch: true, editable: true,
 			 editable: true,
                  edittype: "select",
                  editoptions: {

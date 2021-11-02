@@ -833,6 +833,9 @@ $(document).ready(function () {
                             showOn: 'focus',
                             changeMonth: true,
 		  					changeYear: true,
+							onSelect : function(){
+								$(this).focus();
+							}
                         });
                     }
                 }

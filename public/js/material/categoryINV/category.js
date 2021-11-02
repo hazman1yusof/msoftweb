@@ -163,7 +163,7 @@
 					{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 					{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 					{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden:true},
