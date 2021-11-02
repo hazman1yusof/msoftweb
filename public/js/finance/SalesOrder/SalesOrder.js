@@ -260,7 +260,7 @@ $(document).ready(function () {
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 
@@ -398,7 +398,10 @@ $(document).ready(function () {
 				$('#db_idno').val(data.idno);//just save idno for edit later
 				$('#db_amount').val(data.totalAmount);
 
-				urlParam2.filterVal[0] = data.recno;
+
+				urlParam2.source = 'PB';
+				urlParam2.trantype = 'IN';
+				urlParam2.auditno = data.auditno;
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
@@ -654,19 +657,19 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap', align: 'right',
+				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap txnum', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
 			{
-				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap',
+				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
 			{
-				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap',
+				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
@@ -677,23 +680,27 @@ $(document).ready(function () {
 			// 	editrules: { required: false },editoptions:{readonly: "readonly"},
 			// },
 			{
-				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap',
+				label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum',
+				editable: true,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
+				editrules: { required: true },editoptions:{readonly: "readonly"}
+			},
+			{
+				label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', editable: true,
+				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: true },editoptions:{readonly: "readonly"}
+			},
+			{ label: 'Total Amount <br>B4 Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
+			{
+				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
-			{
-				label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap',
-				editable: true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{
-				label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap', editable: true,
-				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
-			},
-			{ label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -878,7 +885,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
-        	get_billtype();
+        	get_billtype(mycurrency2);
 
 			dialog_chggroup.on();
 			dialog_uomcode.on();
@@ -887,13 +894,13 @@ $(document).ready(function () {
 			unsaved = false;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='amount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeperct']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='amtb4tax']"]);
 			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyonhand']","#jqGrid2 input[name='quantity']"]);
 			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='quantity']").on('keyup',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
 			// $("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='billtypeamt']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
@@ -937,8 +944,8 @@ $(document).ready(function () {
 			let editurl = "/SalesOrderDetail/form?"+
 				$.param({
 					action: 'saleord_detail_save',
-					source: $('#db_source').val(),
-					trantype: $('#db_trantype').val(),
+					source: 'PB',
+					trantype:'IN',
 					auditno: $('#db_auditno').val(),
 					discamt: $("#jqGrid2 input[name='discamt']").val(),
 				});
@@ -993,8 +1000,7 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								$('#purreqhd_totamount').val(data);
-								$('#purreqhd_subamount').val(data);
+								$('#db_amount').val(data);
 								refreshGrid("#jqGrid2", urlParam2);
 							});
 						}else{
@@ -1325,16 +1331,17 @@ $(document).ready(function () {
 			rate = 0;
 		}
 
-		let taxamt = ((unitprice*quantity) * rate / 100);
 
-		var amount = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
-		var discamt = (unitprice*quantity) - amount;
+		var amtb4tax = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
+		// var discamt = (unitprice*quantity) - amount;
 
-		var amount = amount + taxamt;
+		let taxamt = amtb4tax * rate / 100;
+
+		var totamount = amtb4tax + taxamt;
 
 		$("#"+id_optid+"_taxamt").val(taxamt);
-		$("#"+id_optid+"_amount").val(amount);
-		$("#"+id_optid+"_uom_discamt").val(discamt);
+		$("#"+id_optid+"_amount").val(totamount);
+		$("#"+id_optid+"_amtb4tax").val(amtb4tax);
 		
 		var id="#jqGrid2 #"+id_optid+"_quantity";
 		var fail_msg = "Quantity Request must be greater than 0";
@@ -1627,6 +1634,7 @@ $(document).ready(function () {
 
 				dialog_uomcode.check(errorField);
 				dialog_tax.check(errorField);
+				mycurrency2.formatOn();
 
 			},
 			gridComplete: function(obj){
@@ -1634,8 +1642,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='quantity']").focus();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$("#jqGrid2 input[name='quantity']").focus().select();
 				}
 			},
 			loadComplete:function(data){
@@ -1651,7 +1658,7 @@ $(document).ready(function () {
 
 			},
 			close: function(){
-				$("#jqGrid2 input[name='quantity']").focus();
+				$("#jqGrid2 input[name='quantity']").focus().select();
 			}
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
@@ -1829,7 +1836,7 @@ function reset_all_error(){
 
 }
 
-function get_billtype(){
+function get_billtype(mycurrency2){
 	this.param={
 		action:'get_value_default',
 		url:"util/get_value_default",
@@ -1854,6 +1861,7 @@ function get_billtype(){
 				$('#pricebilltype').val(data_.price);
 				$("#jqGrid2 input[name='billtypeperct']").val(data_.percent_);
 				$("#jqGrid2 input[name='billtypeamt']").val(data_.amount);
+				mycurrency2.formatOn();
 			}
 		});
 }

@@ -73,8 +73,6 @@ class SalesOrderDetailController extends defaultController
     }
    
     public function get_itemcode_price(Request $request){
-        $table = DB::table('hisdb.chgmast');
-
         switch ($request->filterVal[2]) {
             case 'PRICE1':
                 $cp_fld = 'amt1';
@@ -90,11 +88,17 @@ class SalesOrderDetailController extends defaultController
                 break;
         }
 
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'cm.uom as uom', 'cp.idno');
+        $table = $table->rightJoin('hisdb.chgprice as cp', function($join) use ($request,$cp_fld){
+                            $join = $join->on('cm.chgcode', '=', 'cp.chgcode');
+                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                        });
+
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
 
             $count = array_count_values($searchCol_array);
-            // dump($count);
 
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
@@ -103,7 +107,7 @@ class SalesOrderDetailController extends defaultController
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
                         if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
@@ -115,7 +119,7 @@ class SalesOrderDetailController extends defaultController
             $table = $table->where(function($table) use ($searchCol_array, $request){
                 foreach ($searchCol_array as $key => $value) {
                     if($key>1) break;
-                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
                 }
             });
 
@@ -123,32 +127,37 @@ class SalesOrderDetailController extends defaultController
                 $table = $table->where(function($table) use ($searchCol_array, $request){
                     foreach ($searchCol_array as $key => $value) {
                         if($key<=1) continue;
-                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
                     }
                 });
             }
         }
 
 
-        $table = $table->where('compcode','=',session('compcode'))
-                        ->where('recstatus','<>','DELETE')
-                        ->orderBy('idno','desc');
+        $table = $table->where('cm.compcode','=',session('compcode'))
+                        ->where('cm.recstatus','<>','DELETE')
+                        ->orderBy('cm.idno','desc');
 
         $paginate = $table->paginate($request->rows);
         $rows = $paginate->items();
 
         foreach ($rows as $key => $value) {
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
-                ->select($cp_fld,'cp.optax','tm.rate')
+                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
                 ->whereDate('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
                 ->orderBy('cp.effdate','desc');
 
-
             if($chgprice_obj->exists()){
                 $chgprice_obj = $chgprice_obj->first();
+
+                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                    unset($rows[$key]);
+                    continue;
+                }
+
                 switch ($request->filterVal[2]) {
                     case 'PRICE1':
                         $rows[$key]->price = $chgprice_obj->amt1;
@@ -180,6 +189,8 @@ class SalesOrderDetailController extends defaultController
             }
         }
 
+        $rows = array_values($rows);
+
         //////////paginate/////////
         // $paginate = $table->paginate($request->rows);
 
@@ -187,7 +198,8 @@ class SalesOrderDetailController extends defaultController
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
+        // $responce->rows = $paginate->items();
+        $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
 
