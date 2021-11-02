@@ -121,7 +121,7 @@ $(document).ready(function () {
 			{ label: 'Stock TrxType', name: 's_stocktxntype', width: 20, classes: 'wrap'},
 		 	{ label: 'Min Stock Qty', name: 's_minqty', width: 15, classes: 'wrap',align: 'right'},
 			{ label: 'Max Stock Qty', name: 's_maxqty', width: 15, classes: 'wrap',align: 'right'},
-			{ label: 'Reorder Level', name: 's_reordlevel', width: 15, classes: 'wrap'},
+			{ label: 'Reorder Level', name: 's_reordlevel', width: 15, classes: 'wrap', align: 'right'},
 			{ label: 'Reorder Qty', name: 's_reordqty', width: 15, classes: 'wrap',align: 'right'},
 			{ label: 'DisType', name: 's_disptype', width: 10, classes: 'wrap'},
 			{label: 'openbalqty', name: 's_openbalqty', width: 90 , hidden: true},
@@ -174,6 +174,7 @@ $(document).ready(function () {
 		$("#jqGrid").jqGrid('setLabel', 'minqty', 'Min Stock Qty', {'text-align':'right'});
 		$("#jqGrid").jqGrid('setLabel', 'maxqty', 'Max Stock Qty', {'text-align':'right'});
 		$("#jqGrid").jqGrid('setLabel', 'reordqty', 'Reorder Qty', {'text-align':'right'});
+		$("#jqGrid").jqGrid('setLabel', 'reordlevel', 'Reorder Level', {'text-align':'right'});
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){

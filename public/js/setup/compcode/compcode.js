@@ -54,7 +54,7 @@ $(document).ready(function () {
 			{ label: 'Logo', name: 'logo1', width: 90, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			//{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
 						value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 			cellattr: function(rowid, cellvalue)

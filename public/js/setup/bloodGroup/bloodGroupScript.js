@@ -47,7 +47,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Code', name: 'bloodcode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 			cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
