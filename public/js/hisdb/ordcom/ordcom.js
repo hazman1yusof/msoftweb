@@ -41,24 +41,29 @@ $(document).ready(function () {
 				filterVal:['ACTIVE', 'session.compcode','1'],
 			},
 			ondblClickRow:function(event){
-				//$('#occup').focus();
+				$("#jqGrid_ordcom input[name='ct_taxcode']").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#occup').focus();
+					$("#jqGrid_ordcom input[name='ct_taxcode']").focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			},
+			loadComplete:function(data){
+			}
 		},{
-			title:"Select ChargeCode",
+			title:"Select Issue Dept",
 			open: function(){
 				dialog_isudept.urlParam.filterCol = ['recstatus','compcode','chgdept'];
 				dialog_isudept.urlParam.filterVal = ['ACTIVE', 'session.compcode','1'];
 			},
+			close: function(){
+				$("#jqGrid_ordcom input[name='ct_taxcode']").focus();
+			}
 		},'urlParam','radio','tab','table'
 	);
 	dialog_isudept.makedialog();
@@ -90,19 +95,17 @@ $(document).ready(function () {
 					$(event.currentTarget).parent().next().html('');
 				}
 
-
 				let data=selrowData('#'+dialog_taxcode.gridname);
 
-
 				$("table#jqGrid_ordcom input#"+id_optid+"_ct_taxcode_gstpercent").val(data['rate']);
-				$('#remarks').focus();
+				$('#ct_remarks').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#remarks').focus();
+					$('#ct_remarks').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -113,6 +116,9 @@ $(document).ready(function () {
 				dialog_taxcode.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 				dialog_taxcode.urlParam.filterVal = ['ACTIVE', 'session.compcode','INPUT'];
 			},
+			close: function(){
+				$("#jqGrid_ordcom input[name='ct_remarks']").focus();
+			}
 		},'urlParam','radio','tab','table'
 	);
 	dialog_taxcode.makedialog();
@@ -232,6 +238,9 @@ $(document).ready(function () {
                             showOn: 'focus',
                             changeMonth: true,
 		  					changeYear: true,
+							onSelect : function(){
+								$(this).focus();
+							}
                         });
                     }
                 }
@@ -250,13 +259,13 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Price', name: 'ct_price', width: 100, formatter: 'currency', editable:true,
+			{ label: 'Price', name: 'ct_price', width: 100, formatter: 'currency', align: 'right', editable:true,
 				editoptions: {
                 	dataInit: function (element) {
                     $(element).attr('disabled','disabled');
                 }
             }},	
-			{ label: 'Quantity', name: 'ct_quantity', width: 100, formatter: 'currency', editable:true},	
+			{ label: 'Quantity', name: 'ct_quantity', width: 100, formatter: 'currency', align: 'right', editable:true},	
 			{ label: 'Issue Department', name: 'ct_isudept', width: 150,editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
@@ -271,7 +280,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Amount', name: 'ct_amt', width: 100, formatter: 'currency', editable:true,
+			{ label: 'Amount', name: 'ct_amt', width: 100, formatter: 'currency', align: 'right', editable:true,
 				editoptions: {
                     dataInit: function (element) {
                         $(element).attr('disabled','disabled');

@@ -151,7 +151,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, align: 'right', editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Ward', name: 'ward', width: 25 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
@@ -160,16 +160,16 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, align: 'right', editable: true, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Statistic', name: 'statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
-			{ label: 'Statistic', name: 'statistic', width: 15, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', align: 'right', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:statCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'episno', width: 5},
+			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: ' ', name: 'episno', align: 'right', width: 5},
 			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			//{ label: 'Remarks', name: 'reservebedNote', width: 40, hidden:true},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
@@ -885,7 +885,7 @@ $(document).ready(function () {
 			{ label: 'Start Date', name: 'ba_asdate', width: 5, classes: 'wrap'},
 			{ label: 'Start Time', name: 'ba_astime', width: 5, classes: 'wrap'},
             { label: 'Bed No', name: 'ba_bednum', width: 7},
-			{ label: 'Room', name: 'ba_room', width: 10},
+			{ label: 'Room', name: 'ba_room', align: 'right', width: 10},
 			{ label: 'Bed Type', name: 'b_bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
