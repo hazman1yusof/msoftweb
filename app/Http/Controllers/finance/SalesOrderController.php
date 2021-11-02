@@ -294,7 +294,7 @@ class SalesOrderController extends defaultController
                     if($stockloc->exists()){
                         $stockloc = $stockloc->first();
                     }else{
-                        throw new \Exception("Stockloc not exists",500);
+                        throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
                     }
 
                     if($product->exists()){
