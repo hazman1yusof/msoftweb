@@ -764,10 +764,10 @@ $(document).ready(function () {
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'No.', name:'auditno', width:30, classes:'wrap'},
+			{ label: 'No.', name:'auditno', width:30, classes:'wrap', align: 'right'},
 			{ label: 'Tran Date', name:'trandate', width:50, classes:'wrap'},
 			{ label: 'Tran Type', name:'trantype', width:50, classes:'wrap'},
-			{ label: 'Amount', name:'origcost', width:80, classes:'wrap'},
+			{ label: 'Amount', name:'origcost', width:80, classes:'wrap', align: 'right'},
 			{ label: 'Old Department', name: 'olddeptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Old Location', name: 'oldloccode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'New Department', name: 'deptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},

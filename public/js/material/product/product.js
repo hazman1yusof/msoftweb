@@ -665,7 +665,7 @@ $(document).ready(function () {
 			{ label: 'maxqty', name: 'maxqty', width: 50, hidden:true },
 			{ label: 'reordlevel', name: 'reordlevel', width: 50, hidden:true },
 			{ label: 'reordqty', name: 'reordqty', width: 50, hidden:true },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },

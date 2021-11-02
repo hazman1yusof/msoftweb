@@ -60,7 +60,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 				cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},

@@ -254,7 +254,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 50, hidden:true, classes: 'wrap'},
-			{ label: 'Record Status', name: 'recstatus', width: 25, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap', cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'idno', name: 'idno', hidden: true},

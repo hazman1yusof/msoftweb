@@ -41,7 +41,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
 			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'Type', name: 'type', width: 20, hidden: false },
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"
 			}},

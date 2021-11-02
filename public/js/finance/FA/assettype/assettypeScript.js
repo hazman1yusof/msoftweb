@@ -52,7 +52,7 @@ $(document).ready(function () {
 					editrules: { required: true }, 
 					editoptions: {style: "text-transform: uppercase", maxlength:100 }
 				},
-			{ label: 'Record Status', name: 'recstatus', width: 5, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 5, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
