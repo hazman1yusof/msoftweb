@@ -1360,7 +1360,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function itemcodeCustomEdit(val, opt) {
-		val = val;
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="itemcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function pricecodeCustomEdit(val,opt){
