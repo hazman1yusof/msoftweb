@@ -860,6 +860,7 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
+			fdl.set_array().reset();
 			// $( "#jqGrid2_ilcancel" ).off();
 			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
 			// 	event.preventDefault();
@@ -1009,13 +1010,13 @@ $(document).ready(function () {
 			case 'sndrcv':field=['deptcode','description'];table="sysdb.department";case_='sndrcv';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-		$.get( param.url+"?"+$.param(param), function( data ) {
+		// $.get( param.url+"?"+$.param(param), function( data ) {
 			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
-			}
-		});
+		// },'json').done(function(data) {
+		// 	if(!$.isEmptyObject(data.rows)){
+		// 		$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0].description+"</span>");
+		// 	}
+		// });
 		fdl.get_array('inventoryTransaction',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
@@ -1329,6 +1330,10 @@ $(document).ready(function () {
 
 		onSelectRow:function(rowid, selected){
 			inputTrantypeValue();
+		},
+
+		gridComplete:function(){
+			fdl.set_array().reset();
 		},
 		
 	});
