@@ -102,6 +102,7 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+					$("#description").focus().select();
 					$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
@@ -144,7 +145,7 @@
 				},
 				errorTextFormat: function (data) {
 					alert(data);
-				}
+				},
 			};
 
 			var myEditOptions_edit = {
@@ -154,8 +155,9 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+					$("#description").focus().select();
 					$("input[name='uomcode']").attr('disabled','disabled');
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;

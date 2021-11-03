@@ -945,12 +945,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
+				$("#jqGrid2 input[name='category']").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='category']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -977,12 +979,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
+				$("#jqGrid2 input[name='document']").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='document']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1010,6 +1014,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -1034,6 +1039,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}

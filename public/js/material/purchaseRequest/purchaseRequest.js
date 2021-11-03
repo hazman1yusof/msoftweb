@@ -1803,7 +1803,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -1876,7 +1876,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					console.log(obj.id_optid);
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			},
 			loadComplete:function(data){
@@ -1948,7 +1948,7 @@ $(document).ready(function () {
 				// 	.closest('td')						//utk dialog dalam jqgrid jer
 				// 	.next()
 				// 	.find("input[type=text]").focus();
-				$("#jqGrid2 #"+obj_.id_optid+"_qtyrequest").focus();
+				$("#jqGrid2 #"+obj_.id_optid+"_qtyrequest").focus().select();
 			}
 		},'urlParam','radio','tab',true//urlParam means check() using urlParam not check_input
 	);
@@ -2046,7 +2046,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 			
@@ -2155,7 +2155,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 			
@@ -2209,14 +2209,14 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_taxcode.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
-				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
+				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 			

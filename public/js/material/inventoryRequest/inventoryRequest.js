@@ -1057,8 +1057,8 @@ $(document).ready(function () {
 				    }
 			    );
 
-		        dialog_uomcode.id_optid = ids[i];
-		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        dialog_uomcodereqdept.id_optid = ids[i];
+		        dialog_uomcodereqdept.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1066,8 +1066,8 @@ $(document).ready(function () {
 			        }
 			    );
 
-				dialog_pouom.id_optid = ids[i];
-		        dialog_pouom.check(errorField,ids[i]+"_pouom","jqGrid2",null,
+				dialog_uomcodereqto.id_optid = ids[i];
+		        dialog_uomcodereqto.check(errorField,ids[i]+"_pouom","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1497,7 +1497,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
-				$("#jqGrid2 input[name='pouom']").focus();
+				$("#jqGrid2 input[name='pouom']").focus().select();
 				
 				
 			},
@@ -1506,10 +1506,13 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='pouom']").focus();
+					$("#jqGrid2 input[name='pouom']").focus().select();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
-			}
+			},
+			close: function(){
+				$("#jqGrid2 input[name='pouom']").focus().select();
+			},
 		},{
 			title:"Select Item For Stock Request",
 			open:function(){
@@ -1599,10 +1602,10 @@ $(document).ready(function () {
 					},
 			ondblClickRow: function (event) {
 			
-				$("#jqGrid2 input[name='qtyrequest']").focus();
+				$("#jqGrid2 input[name='qtyrequest']").focus().select();
 				let data=selrowData('#'+dialog_uomcodereqto.gridname);
 
-				$("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val(data['convfactor']);
+				//$("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val(data['convfactor']);
 				
 			},
 			gridComplete: function(obj){
@@ -1610,10 +1613,13 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='qtyrequest']").focus();
+					$("#jqGrid2 input[name='qtyrequest']").focus().select();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}	
-			}
+			},
+			close: function(){
+				$("#jqGrid2 input[name='qtyrequest']").focus().select();
+			},
 
 		}, {
 			title: "Select PO UOM Code For Item",
