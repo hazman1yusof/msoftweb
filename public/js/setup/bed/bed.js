@@ -59,41 +59,41 @@ $(document).ready(function () {
 	
 	function occupCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function bedTypeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedtype" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedtype" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function wardCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ward" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="ward" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function occupCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="occup" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function statCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val;
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="statistic" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="statistic" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function chgcodeCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedchgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="bedchgcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function recstatusCustomEdit(val, opt) {
 		if(val == '<span class="fa fa-times"></span>'){
 			val = 'DEACTIVE';
 		}else{
-			val = 'AACTIVE';
+			val = 'ACTIVE';
 		}
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="recstatus" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="recstatus" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -148,7 +148,7 @@ $(document).ready(function () {
 						},
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Statistic', name: 'statistic', width: 15, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:statCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -165,7 +165,7 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: ' ', name: 'recstatus', width: 10, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 				{ 	custom_element:recstatusCustomEdit,
 					custom_value:galGridCustomValue 	
@@ -235,8 +235,11 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
-
 		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid2.state==true)addmore_jqgrid.more=true; //only addmore after save inline
+			//refreshGrid('#jqGrid',urlParam,'add');
+		}, 
 	});
 
 	/////////////////////////////Start populate data for search By dropdown and btn////////////////////////////
@@ -575,14 +578,14 @@ $(document).ready(function () {
 				filterVal:['ACTIVE', 'session.compcode']
 					},
 			ondblClickRow:function(){
-				$('#occup').focus();
+				$('#occup').focus().select();
 			},
 			gridComplete: function(obj){
 						var gridname = '#'+obj.gridname;
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							$('#occup').focus();
+							$('#occup').focus().select();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
@@ -592,6 +595,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_bedtype.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_bedtype.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+			},
+			close: function(){
+				$("#jqGrid input[name='occup']").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -608,14 +614,14 @@ $(document).ready(function () {
 				filterVal:['ACTIVE', 'session.compcode','1']
 					},
 			ondblClickRow:function(){
-				$('#tel_ext').focus();
+				$('#tel_ext').focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#tel_ext').focus();
+					$('#tel_ext').focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -625,6 +631,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_ward.urlParam.filterCol = ['recstatus','compcode','warddept'];
 				dialog_ward.urlParam.filterVal = ['ACTIVE', 'session.compcode','1'];
+			},
+			close: function(){
+				$("#jqGrid input[name='tel_ext']").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -652,7 +661,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#room').focus();
+					$('#room').focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -663,7 +672,10 @@ $(document).ready(function () {
 				dialog_occup.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_occup.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
-			width:4/10 * $(window).width()
+			width:4/10 * $(window).width(),
+			close: function(){
+				$("#jqGrid input[name='room']").focus().select();
+			}
 		},'urlParam','radio','tab'
 	);
 	dialog_occup.makedialog(false);
@@ -690,7 +702,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#mrn').focus();
+					$('#bedchgcode').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -701,7 +713,10 @@ $(document).ready(function () {
 				dialog_stat.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_stat.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
-			width:5/10 * $(window).width()
+			width:5/10 * $(window).width(),
+			close: function(){
+				$("#jqGrid input[name='bedchgcode']").focus();
+			}
 		},'urlParam','radio','tab'
 	);
 	dialog_stat.makedialog(false);	
@@ -724,7 +739,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					// $('#tel_ext').focus();
+					 $('#recstatus').focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -734,6 +749,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_chargecode.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_chargecode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+			},
+			close: function(){
+				$("#jqGrid input[name='recstatus']").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);

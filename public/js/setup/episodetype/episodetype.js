@@ -60,11 +60,14 @@ $(document).ready(function () {
 							showOn: 'focus',
 							changeMonth: true,
 							changeYear: true,
+							onSelect : function(){
+								$(this).focus();
+							}
 						});
 					}
 				}
 			},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)

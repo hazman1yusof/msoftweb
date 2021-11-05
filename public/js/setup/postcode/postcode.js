@@ -68,7 +68,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', hidden:true, editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
@@ -131,7 +131,7 @@ $(document).ready(function () {
 			dialog_state.on();
 			dialog_country.on();
 
-			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
+			$("input[name='pc_recstatus']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -188,7 +188,7 @@ $(document).ready(function () {
 			dialog_country.on();
 
 			$("input[name='pc_postcode']").attr('disabled','disabled');
-			$("input[name='cn_Code']").keydown(function(e) {//when click tab at totamount, auto save
+			$("input[name='pc_recstatus']").keydown(function(e) {//when click tab at totamount, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -336,12 +336,12 @@ $(document).ready(function () {
 
 	function StateCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="state" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="state" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function CountryCustomEdit(val, opt) {
 		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="country" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="country" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -381,7 +381,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_state.urlParam.filterCol=['compcode','recstatus'];
 				dialog_state.urlParam.filterVal=['session.compcode','ACTIVE'];
-				
+			},
+			close: function(){
+				$("#jqGrid input[name='country']").focus();
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -405,7 +407,7 @@ $(document).ready(function () {
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							//$('#povalidate').focus();
+							$('#pc_recstatus').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
@@ -415,7 +417,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_country.urlParam.filterCol=['compcode','recstatus'];
 				dialog_country.urlParam.filterVal=['session.compcode','ACTIVE'];
-				
+			},
+			close: function(){
+				$("#jqGrid input[name='pc_recstatus']").focus();
 			}
 		},'urlParam', 'radio', 'tab'
 	);

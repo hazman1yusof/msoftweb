@@ -77,7 +77,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="currdeptcode">Current Department</label>
 						<div class="col-md-3">
-								<input type="text" name="currdeptcode" id="currdeptcode" class="form-control input-sm" frozeOnEdit>
+								<input type="text" name="currdeptcode" id="currdeptcode" class="form-control input-sm"  frozeOnEdit>
 						</div>
 					<label class="col-md-2 control-label" for="currloccode">Current Location</label>
 						<div class="col-md-3">
@@ -99,7 +99,7 @@
 					<label class="col-md-2 control-label" for="deptcode">New Department</label>
 					<div class="col-md-3">
 						<div class='input-group'>
-							<input type="text" name="deptcode" id="deptcode" class="form-control input-sm" data-validation="required">
+							<input type="text" name="deptcode" id="deptcode" class="form-control input-sm" style="text-transform:uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>
@@ -108,7 +108,7 @@
 					<label class="col-md-2 control-label" for="loccode">New Location</label>
 					<div class="col-md-3">
 						<div class='input-group'>
-							<input type="text" name="loccode" id="loccode" class="form-control input-sm" data-validation="required">
+							<input type="text" name="loccode" id="loccode" class="form-control input-sm" style="text-transform:uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 						</div>
 						<span class="help-block"></span>

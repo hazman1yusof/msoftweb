@@ -99,7 +99,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='logo1']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;

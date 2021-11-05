@@ -55,7 +55,7 @@ $(document).ready(function () {
 			{ label: 'Address 4', name: 'addr4', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Tel No', name: 'telno', width: 50, classes: 'wrap', editable: true, editrules: { required: true }},
 			{ label: 'Email', name: 'email', width: 50, classes: 'wrap', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},	
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)

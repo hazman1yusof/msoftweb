@@ -50,7 +50,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Unit', name: 'sector', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Region', name: 'region', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)

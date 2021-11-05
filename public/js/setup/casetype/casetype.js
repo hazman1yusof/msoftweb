@@ -48,7 +48,7 @@ $(document).ready(function () {
                 editoptions:{
                     value:"DELIVERY:DELIVERY;REGISTER:REGISTER"
                 }},
-            { label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
