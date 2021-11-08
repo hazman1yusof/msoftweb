@@ -108,7 +108,7 @@ class icdController extends defaultController
         try {
 
             $diagtab = DB::table('hisdb.diagtab')
-                            ->where('icdcode','=',$request->icdcode);
+                            ->where('icdcode','=',strtoupper($request->icdcode));
 
             $type = DB::table('sysdb.sysparam')
                             ->where('source','=',"MR")
@@ -123,9 +123,9 @@ class icdController extends defaultController
 
             DB::table('hisdb.diagtab')
                 ->insert([  
-                    'icdcode' => $request->icdcode,
-                    'description' => $request->description_show,
-                    "type" => $type->pvalue1,
+                    'icdcode' => strtoupper($request->icdcode),
+                    'description' => strtoupper($request->description_show),
+                    "type" => strtoupper($type->pvalue1),
                     'recstatus' => strtoupper($request->recstatus),
                     // 'lastcomputerid' => strtoupper($request->lastcomputerid),
                     // 'lastipaddress' => strtoupper($request->lastipaddress),
@@ -149,7 +149,7 @@ class icdController extends defaultController
             DB::table('hisdb.diagtab')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'description' => $request->description_show,
+                    'description' => strtoupper($request->description_show),
                     'recstatus' => strtoupper($request->recstatus),
                     // 'lastcomputerid' => strtoupper($request->lastcomputerid),
                     // 'lastipaddress' => strtoupper($request->lastipaddress),
