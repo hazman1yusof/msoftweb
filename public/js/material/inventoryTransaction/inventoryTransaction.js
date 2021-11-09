@@ -423,6 +423,9 @@ $(document).ready(function () {
 		                            showOn: 'focus',
 		                            changeMonth: true,
 				  					changeYear: true,
+									onSelect : function(){
+										$(this).focus();
+									}
 		                        });
 		                    }
 		                } 
@@ -911,6 +914,18 @@ $(document).ready(function () {
         	/*linenotoedit = rowid;
         	$("#jqGrid2").find(".rem_but[data-lineno_!='"+linenotoedit+"']").prop("disabled", true);
         	$("#jqGrid2").find(".rem_but[data-lineno_='undefined']").prop("disabled", false);*/
+
+			$("#jqGrid2 input[name='batchno']").keydown(function(e) {//when click tab at totamount, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9'){
+					delay(function(){
+						$('#jqGrid2_ilsave').click();
+						addmore_jqgrid2.state = true;
+					}, 500 );
+				}
+				
+			});
+
         },
         aftersavefunc: function (rowid, response, options) {
            $('#amount').val(response.responseText);
@@ -1502,7 +1517,7 @@ $(document).ready(function () {
 				
 				getQOHtxndept();
 				checkQOH();
-				/*$('#uomcode').focus();*/
+				$("#jqGrid2 input[name='uomcoderecv']").focus().select();
 				
 			},
 			gridComplete: function(obj){
@@ -1511,6 +1526,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$("#jqGrid2 input[name='uomcoderecv']").focus().select();
 				}
 			}
 		},{
@@ -1620,7 +1636,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_uomcoderecv.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_convfactoruomcoderecv").val(data['convfactor']);
-				$("#jqGrid2  #"+id_optid+"_txnqty").focus();
+				$("#jqGrid2  #"+id_optid+"_txnqty").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1629,7 +1645,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').dblclick();
 					// $(obj.textfield).closest('td').next().find("input[type=text]").focus();
 					console.log($("#jqGrid2 input[name='txnqty']"))
-					$("#jqGrid2 input[name='txnqty']").focus();
+					$("#jqGrid2 input[name='txnqty']").focus().select();
 				}
 			}
 

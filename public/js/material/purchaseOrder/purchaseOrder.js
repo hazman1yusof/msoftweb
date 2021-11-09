@@ -1093,7 +1093,7 @@ $(document).ready(function () {
 			
 			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc'], #jqGrid2 input[name='pouom'], #jqGrid2 input[name='uomcode']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-			$("#jqGrid2 input[name='qtyorder']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtyorder']").on('keyup',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
@@ -2029,6 +2029,7 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(event){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+				$("#jqGrid2 input[name='itemcode']").focus().select();
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
@@ -2133,7 +2134,8 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
+					//$("#jqGrid2 input[name='itemcode']").focus().select();
 				}
 			}
 		},{
@@ -2172,6 +2174,7 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 				},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='pouom']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2214,6 +2217,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$("#jqGrid2 input[name='pouom']").focus().select();
 				}
 			},
 			loadComplete:function(data){
@@ -2352,6 +2356,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='pouom']").focus().select();
 
 				if(event.type == 'keydown'){
 
@@ -2383,6 +2388,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$("#jqGrid2 input[name='pouom']").focus().select();
 				}
 			}
 			
@@ -2480,6 +2486,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_pouom.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val(data['convfactor']);
+				$("#jqGrid2 input[name='qtyorder']").focus().select();
 				
 			},
 
@@ -2489,6 +2496,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$("#jqGrid2 input[name='qtyorder']").focus().select();
 				}
 			}
 			

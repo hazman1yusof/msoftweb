@@ -2024,7 +2024,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
-
+				$("#jqGrid2 input[name='itemcode']").focus().select();
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
@@ -2130,7 +2130,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -2177,6 +2177,7 @@ $(document).ready(function () {
 			},
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='pouom']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2219,7 +2220,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -2367,6 +2368,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='pouom']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2396,7 +2398,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					console.log($(obj.textfield).closest('td').next().find("input[type=text]"));
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 			
@@ -2476,6 +2478,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function (event) {
+				$("#jqGrid2 input[name='qtydelivered']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2500,7 +2503,7 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					console.log($(obj.textfield).closest('td').next().find("input[type=text]"));
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 
@@ -2534,6 +2537,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='expdate']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2558,7 +2562,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
