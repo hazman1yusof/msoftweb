@@ -27,6 +27,7 @@ $(document).ready(function () {
 	var mycurrency = new currencymode(['#amount']);
 	var fdl = new faster_detail_load();
 	var sequence = new Sequences('SO','#db_entrydate');
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
@@ -128,8 +129,6 @@ $(document).ready(function () {
 		filterCol_urlParam = ['purreqhd.compcode','queuepr.AuthorisedID'];
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
-
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus");
 
 	
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////

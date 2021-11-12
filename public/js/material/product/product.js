@@ -884,7 +884,19 @@ $(document).ready(function () {
 		var field,table, case_;
 		switch(options.colModel.name){
 			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
-			case 'productcat':field=['assetcode','description'];table="finance.facode";case_='productcat';break;
+			case 'productcat':
+				if($('#groupcode2') == "Asset"){
+					field=['assetcode','description'];
+					table="finance.facode";
+					case_='productcat';
+				}else{
+					field=['catcode','description'];
+					table="material.category";
+					case_='productcat';
+				}
+
+				break;
+				
 			case 'suppcode':field=['SuppCode','Name'];table="material.supplier";case_='suppcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

@@ -425,6 +425,9 @@
 				},{
 					title:"Select Category",
 					open: function(){
+						dialog_category.urlParam.table_name="material.category";
+						dialog_category.urlParam.field=['catcode', 'description'];
+						
 						if($('#postGroupcode').val().trim() == 'Stock') {
 							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
 							dialog_category.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
