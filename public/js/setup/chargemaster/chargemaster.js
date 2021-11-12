@@ -192,8 +192,9 @@
 				refreshGrid("#jqGrid4",null,"kosongkan");
 			});
 		}
-			
-		/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
+		
+		/////////////////////////////////// Charge Master Header //////////////////////////////////////////////////////////
+		///////////////////////////////////////// jqgrid //////////////////////////////////////////////////////////////////
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			  colModel: [
@@ -203,7 +204,7 @@
 				{ label: 'Description', name: 'cm_description', classes: 'wrap', width: 60, canSearch: true, checked:true},
 				{ label: 'Class', name: 'cm_chgclass', classes: 'wrap', width: 20},
 				{ label: 'Class Name', name: 'cc_description', classes: 'wrap', width: 30},
-				{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, align: 'right', canSearch: true},
+				{ label: 'Group', name: 'cm_chggroup', classes: 'wrap', width: 20, canSearch: true},
 				{ label: 'Description', name: 'cg_description', classes: 'wrap', width: 40},
 				{ label: 'Charge Type', name: 'cm_chgtype', classes: 'wrap', width: 30, canSearch: true},
 				{ label: 'Description', name: 'ct_description', classes: 'wrap', width: 30},
@@ -472,6 +473,7 @@
 			unsaved = true; //kalu dia change apa2 bagi prompt
 		});
 
+		/////////////////////////////////Charge Price Detail/////////////////////////////////////////////////
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 		var urlParam2={
 			action:'get_table_default',
@@ -513,6 +515,20 @@
 	                    }
 	                }
 				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
 				{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
@@ -537,27 +553,13 @@
 						maxlength: 100,
 					},
 				},
-				{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:iptaxCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:optaxCustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
 				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
 	                        $(element).val($('#cm_uom').val());
 	                    }
 				}},
-				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
@@ -675,8 +677,7 @@
 			}
 		}
 
-		/////////////////////////start grid pager/////////////////////////////////////////////////////////
-
+		//////////////////////////////////start grid pager for Charge Master Header//////////////////////////////////
 		$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 			view:false,edit:false,add:false,del:false,search:false,
 			beforeRefresh: function(){
@@ -730,6 +731,8 @@
 		});
 
 		//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////Charge Price Detail//////////////////////////////////////////
 		//////////////////////////////////////myEditOptions for jqGrid2/////////////////////////////////////////
 
 		var myEditOptions = {
@@ -750,10 +753,10 @@
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
-				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid2_ilsave').click();
-				// })
+	        	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGrid2_ilsave').click();
+				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
 	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
@@ -938,6 +941,20 @@
 	                    }
 	                }
 				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 60, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptaxPkg2CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 60, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optaxPkg2CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
 				{ label: 'Price 1', name: 'amt1', width: 50, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
@@ -962,20 +979,6 @@
 						maxlength: 100,
 					},
 				},
-				{ label: 'Inpatient Tax', name: 'iptax', width: 60,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:iptaxPkg2CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				{ label: 'Outpatient Tax', name: 'optax', width: 60,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:optaxPkg2CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
 				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
@@ -992,7 +995,7 @@
 						value:"1:YES;0:NO"
 					}
 				},
-				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
@@ -1049,10 +1052,10 @@
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
-				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid2_ilsave').click();
-				// })
+	        	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGridPkg2_ilsave').click();
+				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
 	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
@@ -1085,7 +1088,7 @@
 		};
 		
 		//////////////////////////////////////////pager jqGridPkg2/////////////////////////////////////////////
-
+		
 		$("#jqGridPkg2").inlineNav('#jqGridPagerPkg2',{	
 			add:true,
 			edit:true,
@@ -1289,6 +1292,20 @@
 	                    }
 	                }
 				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptax3CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optax3CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
 				{ label: 'Price 1', name: 'amt1', width: 100, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
@@ -1312,29 +1329,14 @@
 					editoptions:{
 						maxlength: 100,
 					},
-				},
-				{ label: 'Inpatient Tax', name: 'iptax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:iptax3CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				{ label: 'Outpatient Tax', name: 'optax', width: 150,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:optax3CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				
+				},				
 				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
 	                        $(element).val(selrowData('#jqGrid').cm_uom);
 	                    }
 				}},
-				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
@@ -1373,8 +1375,7 @@
 		});
 		var hide_init=0;
 
-		//////////////////////////////////////////myEditOptions2/////////////////////////////////////////////
-
+		//////////////////////////////////////////myEditOptions2 for Charge Price/////////////////////////////////////////////
 		var myEditOptions2 = {
 	        keys: true,
 	        extraparam:{
@@ -1580,6 +1581,20 @@
 	                    }
 	                }
 				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 60, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptaxPkg3CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 60, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optaxPkg3CustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
 				{ label: 'Price 1', name: 'amt1', width: 50, align: 'right', classes: 'wrap', editable:true,
 					edittype:"text",
 					editoptions:{
@@ -1603,22 +1618,7 @@
 					editoptions:{
 						maxlength: 100,
 					},
-				},
-				{ label: 'Inpatient Tax', name: 'iptax', width: 60,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:iptaxPkg3CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				{ label: 'Outpatient Tax', name: 'optax', width: 60,align: 'right' , classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
-						edittype:'custom',	editoptions:
-						    {  custom_element:optaxPkg3CustomEdit,
-						       custom_value:galGridCustomValue 	
-						    },
-				},
-				
+				},				
 				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
@@ -1635,7 +1635,7 @@
 						value:"1:YES;0:NO"
 					}
 				},
-				{ label: 'recstatus', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
 	                        $(element).attr('disabled','true');
@@ -1705,13 +1705,13 @@
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	   //      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
-				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid2_ilsave').click();
-				// })
+	        	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGridPkg3_ilsave').click();
+				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
-	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	if(addmore_jqgrid3.state==true)addmore_jqgrid3.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGridPkg3',urlParam2,'add');
 		    	$("#jqGridPagerPkg3EditAll,#jqGridPagerPkg3Delete,#jqGridPagerPkg3Refresh").show();
 	        }, 
@@ -1892,7 +1892,7 @@
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
-				{ label: 'Charge Code', name: 'chgcode', width: 150,align: 'right' , classes: 'wrap', editable:true,
+				{ label: 'Charge Code', name: 'chgcode', width: 150, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:chgcodeCustomEdit,
@@ -1949,7 +1949,7 @@
 				},
 				{ label: 'pkgcode', name: 'pkgcode', hidden:true},
 				{ label: 'Effective date', name: 'effectdate', hidden:true},
-				{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
+				{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},
 				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 			],
 			autowidth: true,
@@ -2010,13 +2010,13 @@
 
 				$("#jqGrid4 input[name='quantity'],#jqGrid4 input[name='pkgprice1'],#jqGrid4 input[name='pkgprice2'],#jqGrid4 input[name='pkgprice3']").on('blur',jqgrid4_calc_totprice);
 
-	   //      	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
-				// 	var code = e.keyCode || e.which;
-				// 	if (code == '9')$('#jqGrid3_ilsave').click();
-				// })
+	        	$("input[name='pkgprice3']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGrid4_ilsave').click();
+				})
 	        },
 	        aftersavefunc: function (rowid, response, options) {
-	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	if(addmore_jqgrid3.state==true)addmore_jqgrid3.more=true; //only addmore after save inline
 	        	refreshGrid('#jqGrid4',urlParam4,'add');
 		    	$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh").show();
 	        }, 
@@ -2606,14 +2606,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
-					$('#delordhd_credcode').focus();
+					$('#amt1').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								$('#delordhd_credcode').focus();
+								$('#amt1').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2623,6 +2623,9 @@
 				open: function(){
 					dialog_optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid2 input[name='amt1']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2679,14 +2682,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
-					$('#lastuser').focus();
+					$('#amt1').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								$('#lastuser').focus();
+								$('#amt1').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2698,6 +2701,7 @@
 					dialog_dtloptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				},
 				close: function(){
+					$("#jqGrid3 input[name='amt1']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2716,14 +2720,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
-					// $('#dtl_optax').focus();
+					$('#pkg2_optax').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								// $('#dtl_optax').focus();
+								$('#pkg2_optax').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2735,7 +2739,7 @@
 					dialog_pkg2iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
 				},
 				close: function(){
-					$("#jqGrid2 input[name='quantity']").focus();
+					$("#jqGridPkg2 input[name='optax']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2754,14 +2758,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
-					// $('#lastuser').focus();
+					$('#amt1').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								// $('#lastuser').focus();
+								$('#amt1').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2771,6 +2775,9 @@
 				open: function(){
 					dialog_pkg2optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_pkg2optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGridPkg2 input[name='amt1']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2789,14 +2796,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 						},
 				ondblClickRow:function(){
-					// $('#dtl_optax').focus();
+					$('#pkg3_optax').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								// $('#dtl_optax').focus();
+								$('#pkg3_optax').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2806,6 +2813,9 @@
 				open: function(){
 					dialog_pkg3iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_pkg3iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGridPkg3 input[name='optax']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2824,14 +2834,14 @@
 					filterVal:['ACTIVE', 'session.compcode','Output']
 				},
 				ondblClickRow:function(){
-					// $('#lastuser').focus();
+					$('#amt1').focus();
 				},
 				gridComplete: function(obj){
 							var gridname = '#'+obj.gridname;
 							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 								$(gridname+' tr#1').click();
 								$(gridname+' tr#1').dblclick();
-								// $('#lastuser').focus();
+								$('#amt1').focus();
 							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 								$('#'+obj.dialogname).dialog('close');
 							}
@@ -2841,6 +2851,9 @@
 				open: function(){
 					dialog_pkg3optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
 					dialog_pkg3optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGridPkg3 input[name='amt1']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2903,6 +2916,9 @@
 				open: function(){
 					dialog_dtlchgcode.urlParam.filterCol = ['recstatus','compcode'];
 					dialog_dtlchgcode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+				},
+				close: function(){
+					$("#jqGrid4 input[name='quantity']").focus();
 				}
 			},'urlParam','radio','tab'
 		);
