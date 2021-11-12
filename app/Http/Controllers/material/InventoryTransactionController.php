@@ -128,6 +128,7 @@ class InventoryTransactionController extends defaultController
         $table = DB::table("material.ivtmphd");
 
         $array_update = [
+            'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")
         ];
