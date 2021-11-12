@@ -283,7 +283,7 @@
 					{ label: 'Del Date', name: 'deldate', width: 90,hidden:true},
 					{ label: 'Advance Cost Code', name: 'advccode', width: 80, sorttype: 'number', editable: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Advance Account No', name: 'advglaccno', width: 80, sorttype: 'number', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-					{ label: 'Record Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },

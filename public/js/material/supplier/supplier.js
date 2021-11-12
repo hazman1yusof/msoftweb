@@ -273,7 +273,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'idno', name: 'idno', hidden: true},
@@ -661,7 +661,7 @@ $(document).ready(function () {
 			{ label: 'Percentage of Sales Tax', name: 'si_perslstax', width: 30,  hidden: true},
 			{ label: 'Expiry Date', name: 'si_expirydate', width: 30,  hidden: true},
 			{ label: "Item Code at Supplier's Site", name: 'si_sitemcode', width: 30,  hidden: true},
-			{ label: 'Record Status', name: 'si_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'si_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'si_idno', width: 50, hidden: true},
@@ -1017,7 +1017,7 @@ $(document).ready(function () {
 			{ label: 'Bonus UOM Code', name: 'sb_bonuomcode', width: 200, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bonus Quantity', name: 'sb_bonqty', width: 200, align: 'right', classes: 'wrap', formatter:'currency'}, 
 			{ label: "Supplier's Item Code", name: 'sb_bonsitemcode', width: 200, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Record Status', name: 'sb_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'sb_recstatus', width: 200, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{label: 'No', name: 'sb_idno', width: 50, hidden: true},

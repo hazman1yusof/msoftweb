@@ -132,6 +132,9 @@
 			white-space: pre-line !important;
 			vertical-align: top !important;
 		}
+		.txnum > input[type=text]{
+			text-align: right;
+		}
 		.center_td{
 			text-align: center !important;
 		}

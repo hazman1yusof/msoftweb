@@ -121,8 +121,8 @@ class mmaController extends defaultController
             DB::table('hisdb.mmamaster')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'mmacode' => $request->mmacode,
-                    'description' => $request->description_show,
+                    'mmacode' => strtoupper($request->mmacode),
+                    'description' => strtoupper($request->description_show),
                     "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
@@ -165,8 +165,8 @@ class mmaController extends defaultController
             DB::table('hisdb.mmamaster')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'Code' => $request->Code,
-                    'description' => $request->description_show,
+                    'Code' => strtoupper($request->Code),
+                    'description' => strtoupper($request->description_show),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),

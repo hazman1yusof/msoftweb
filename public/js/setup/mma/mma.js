@@ -38,9 +38,12 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }},
+			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
-			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, 	edittype: "textarea", editrules: { required: true }, 
+				editoptions: 
+					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
+			},
 			{ label: 'Version', name: 'version', width: 20, canSearch: true, align: 'right'},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
@@ -286,56 +289,51 @@ $(document).ready(function () {
 							showOn: 'focus',
 							changeMonth: true,
 								changeYear: true,
+							onSelect : function(){
+								$(this).focus();
+							}
 						});
 					}
 				}
 			},
-			{ label: 'MMA Code', name: 'mmacode', width: 100, align: 'right', classes: 'wrap', editable:true,
-				edittype:"text",
-				editoptions:{
-					maxlength: 100,
-				},
+			{ label: 'MMA Code', name: 'mmacode', width: 100, classes: 'wrap', canSearch: true, editable: true, edittype:"text", 
+				editrules: { required: true }, 
+				editoptions: {maxlength : 30, style: "text-transform: uppercase" }
 			},
-			// { label: 'Version', name: 'version', width: 100, align: 'right', classes: 'wrap', editable:true,
-			// 	edittype:"text",
-			// 	editoptions:{
-			// 		maxlength: 100,
-			// 	},
-			// },
 			{ label: 'MMA Consult', name: 'mmaconsult', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'MMA Surgeon', name: 'mmasurgeon', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'MMA Anaes', name: 'mmaanaes', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'Fees Consult', name: 'feesconsult', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'Fees Surgeon', name: 'feessurgeon', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'Fees Anaes', name: 'feesanaes', width: 100, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
-					maxlength: 100,
+					maxlength: 100, style: "text-transform: uppercase"
 				},
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 20, classes: 'wrap', hidden:true},

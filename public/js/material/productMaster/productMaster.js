@@ -143,12 +143,12 @@
 					{ label: 'Group Code', name: 'groupcode', width: 30, classes: 'wrap'},
 					{ label: 'Product Category', name: 'productcat', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Class ', name: 'Class', width: 30, classes: 'wrap'},
-					{ label: 'Avg Cost ', name: 'avgcost', width: 30, classes: 'wrap'},
+					{ label: 'Avg Cost ', name: 'avgcost', width: 30, classes: 'wrap',  align:'right' },
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'idno', name: 'idno', hidden: true},

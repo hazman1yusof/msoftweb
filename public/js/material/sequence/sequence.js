@@ -131,13 +131,13 @@
 					{ label: 'Dept Code', name: 'dept', classes: 'wrap', width: 40, canSearch: true, formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Trx Type', name: 'trantype', classes: 'wrap', width: 25, formatter: showdetail,unformat:un_showdetail},
 					{ label: 'Description', name: 'description', classes: 'wrap', width: 80,checked:true,  canSearch: true},
-					{ label: 'Sequence No', name: 'seqno', classes: 'wrap', width: 25},
-					{ label: 'Days For Backdated', name: 'backday', classes: 'wrap', width: 25},
+					{ label: 'Sequence No', name: 'seqno', classes: 'wrap', width: 25, align: 'right'},
+					{ label: 'Days For Backdated', name: 'backday', classes: 'wrap', width: 25, align: 'right'},
 					{ label: 'Add User', name: 'adduser', width: 30,hidden:true },
 					{ label: 'Add Date', name: 'adddate', width: 90,hidden:true},
 					{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
 					{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },

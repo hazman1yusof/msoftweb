@@ -99,7 +99,7 @@ use Carbon\Carbon;
         try {
 
             $idno = $table->insertGetId($array_insert);
-            foreach ($request->data_detail as $key => $value) {
+            //foreach ($request->data_detail as $key => $value) {
                 $idno = $value['idno'];
 
                 $apacthdr_IV = DB::table('finance.apacthdr')
@@ -131,7 +131,7 @@ use Carbon\Carbon;
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'OPEN'
                         ]);
-            }
+            //}
 
 
             $responce = new stdClass();

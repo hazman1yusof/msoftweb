@@ -62,7 +62,7 @@
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 						cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 					},
@@ -234,7 +234,7 @@
 			function disciplinecodeCustomEdit(val, opt) {
 				val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 				//val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
-				return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="disciplinecode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+				return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="disciplinecode" type="text" class="form-control input-sm" data-validation="required" style="text-transform:uppercase" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 			}
 
 			function galGridCustomValue (elem, operation, value){
@@ -343,8 +343,10 @@
 				title:"Select Account Code",
 				open: function(){
 					dialog_disciplinecode.urlParam.filterCol=['compcode','recstatus'];
-					dialog_disciplinecode.urlParam.filterVal=['session.compcode','ACTIVE'];
-					
+					dialog_disciplinecode.urlParam.filterVal=['session.compcode','ACTIVE'];	
+				},
+				close: function(){
+					$("#jqGrid input[name='type']").focus();
 				}
 			},'urlParam', 'radio', 'tab'
 		);

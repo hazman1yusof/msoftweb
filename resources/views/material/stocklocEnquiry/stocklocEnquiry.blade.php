@@ -53,70 +53,70 @@
 						    <tr id="details_tr1">
 						    	<th scope="row">Opening</th>
 					      		<td>
-					      			<input id="openbalqty" name="openbalqty" type="text"class="form-control input-sm" readonly="readonly">
+					      			<input id="openbalqty" name="openbalqty" type="text"class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="openbalval" name="openbalval" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="openbalval" name="openbalval" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						   	<tr id="details_tr2">
 						      	<th scope="row">Jan</th>
 						  		<td>
-					      			<input id="netmvqty1" name="netmvqty1" type="text"class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty1" name="netmvqty1" type="text"class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval1" name="netmvval1" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval1" name="netmvval1" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						  	<tr id="details_tr3">
 						      	<th scope="row">Feb</th>
 					      		<td>
-					      			<input id="netmvqty2" name="netmvqty2" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty2" name="netmvqty2" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval2" name="netmvval2" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval2" name="netmvval2" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						    <tr id="details_tr4">
 						      	<th scope="row">Mar</th>
 					      		<td>
-					      			<input id="netmvqty3" name="netmvqty3" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty3" name="netmvqty3" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval3" name="netmvval3" type="text"class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval3" name="netmvval3" type="text"class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						    <tr id="details_tr5">
 						      	<th scope="row">Apr</th>
 					      		<td>
-					      			<input id="netmvqty4" name="netmvqty4" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty4" name="netmvqty4" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval4" name="netmvval4" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval4" name="netmvval4" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						    <tr id="details_tr6">
 						      	<th scope="row">May</th>
 					     		<td>
-					      			<input id="netmvqty5" name="netmvqty5" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty5" name="netmvqty5" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval5" name="netmvval5" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval5" name="netmvval5" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 						    </tr>
 
 						    <tr id="details_tr7">
 						      	<th scope="row">June</th>
 					      		<td>
-					      			<input id="netmvqty6" name="netmvqty6" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvqty6" name="netmvqty6" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 					      		</td>
 					      		<td>
-					      			<input id="netmvval6" name="netmvval6" type="text" class="form-control input-sm" readonly="readonly">
+					      			<input id="netmvval6" name="netmvval6" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right"> 
 					      		</td>
 						    </tr>
 						</tbody>
@@ -141,10 +141,10 @@
 						    <tr id="details_tr8">
 						      	<th scope="row">Jul</th>
 						      		<td>
-						      			<input id="netmvqty7" name="netmvqty7" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty7" name="netmvqty7" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval7" name="netmvval7" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval7" name="netmvval7" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -152,10 +152,10 @@
 						    <tr id="details_tr9">
 						      	<th scope="row">Aug</th>
 						      		<td>
-						      			<input id="netmvqty8" name="netmvqty8" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty8" name="netmvqty8" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval8" name="netmvval8" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval8" name="netmvval8" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -163,10 +163,10 @@
 						    <tr id="details_tr10">
 						      	<th scope="row">Sept</th>
 						      		<td>
-						      			<input id="netmvqty9" name="netmvqty9" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty9" name="netmvqty9" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval9" name="netmvval9" type="text"class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval9" name="netmvval9" type="text"class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -174,10 +174,10 @@
 						    <tr id="details_tr11">
 						      	<th scope="row">Oct</th>
 						      		<td>
-						      			<input id="netmvqty10" name="netmvqty10" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty10" name="netmvqty10" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval10" name="netmvval10" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval10" name="netmvval10" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -185,10 +185,10 @@
 						    <tr id="details_tr12">
 						      	<th scope="row">Nov</th>
 						      		<td>
-						      			<input id="netmvqty11" name="netmvqty11" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty11" name="netmvqty11" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval11" name="netmvval11" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval11" name="netmvval11" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -196,10 +196,10 @@
 						     <tr id="details_tr13">
 						      	<th scope="row">Dec</th>
 						      		<td>
-						      			<input id="netmvqty12" name="netmvqty12" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvqty12" name="netmvqty12" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="netmvval12" name="netmvval12" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="netmvval12" name="netmvval12" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>
@@ -207,10 +207,10 @@
 						    <tr id="details_tr14">
 						      	<th scope="row">Accum</th>
 						      		<td>
-						      			<input id="accumqty" name="accumqty" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="accumqty" name="accumqty" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		<td>
-						      			<input id="accumval" name="accumval" type="text" class="form-control input-sm" readonly="readonly">
+						      			<input id="accumval" name="accumval" type="text" class="form-control input-sm" readonly="readonly" style="text-align: right">
 						      		</td>
 						      		
 						    </tr>

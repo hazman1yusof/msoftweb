@@ -198,7 +198,7 @@ $(document).ready(function () {
 					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				}
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-
+				fdl.set_array().reset();
 				populate_form(selrowData("#jqGrid"));
 				//empty_form()
 		},
@@ -695,16 +695,17 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'category':field=['catcode','description'];table="material.category";break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='category';break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
-			case 'payto':field=['suppcode','name'];table="material.supplier";break;
+			case 'payto':field=['suppcode','name'];table="material.supplier";case_='payto';break;
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('directPayment',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 
@@ -1044,7 +1045,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				//$('#cheqdate').focus();
+				$("#jqGrid2 input[name='category']").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1066,6 +1067,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$("#jqGrid2 input[name='category']").focus().select();
 				}
 			}
 		},{
@@ -1090,14 +1092,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
-				//$('#cheqdate').focus();
+				$("#jqGrid2 input[name='document']").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
+					$("#jqGrid2 input[name='document']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1125,6 +1127,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -1149,11 +1152,15 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
+					$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
-			}
+			},
+			close: function(){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
+			},
+			
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){

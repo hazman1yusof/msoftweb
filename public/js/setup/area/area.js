@@ -45,12 +45,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Area Code', name: 'areacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Area Group', name: 'areagroup', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-
-
-			//{ label: 'Area Group', name: 'areagroup', width: 20, classes: 'wrap',},
-			//{ label: 'createdby', name: 'createdby', width: 80,hidden:true},
-			//{ label: 'createddate', name: 'createddate', width: 90,hidden:true},
+			{ label: 'Area Group', name: 'areagroup', width: 15, canSearch: true, classes: 'wrap txnum', checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }, align:'right'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
@@ -59,7 +54,7 @@ $(document).ready(function () {
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 			cellattr: function(rowid, cellvalue)

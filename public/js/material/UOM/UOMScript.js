@@ -46,7 +46,7 @@
 				 	{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
 					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-					{ label: 'Conversion Factor', name: 'convfactor', classes: 'wrap', width: 80, editable: true,
+				{ label: 'Conversion Factor', name: 'convfactor', classes: 'wrap', width: 80, editable: true, align: 'right',
 							editrules:{required: true}, 
 							editoptions: { maxlength: 100, style: "text-transform:uppercase"},
 					},
@@ -56,7 +56,7 @@
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 						cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 					},
@@ -102,6 +102,7 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+					$("#description").focus().select();
 					$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
@@ -144,7 +145,7 @@
 				},
 				errorTextFormat: function (data) {
 					alert(data);
-				}
+				},
 			};
 
 			var myEditOptions_edit = {
@@ -154,8 +155,9 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+					$("#description").focus().select();
 					$("input[name='uomcode']").attr('disabled','disabled');
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+					$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;

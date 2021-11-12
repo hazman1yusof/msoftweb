@@ -86,7 +86,7 @@ class LocationController extends defaultController
                     'loccode' => strtoupper($request->loccode),
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
+                    'idno' => $request->idno,
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'upduser' => strtoupper(session('username')),
