@@ -1,4 +1,3 @@
-
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
 		var editedRow=0;
@@ -24,6 +23,9 @@
 					}
 				},
 			};
+			//////////////////////////////////////////////////////////////
+
+			var fdl = new faster_detail_load();
 						
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
@@ -143,18 +145,18 @@
 				datatype: "local",
 				 colModel: [
 					//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Category Code', name: 'catcode', width: 70, classes: 'wrap', checked:true, canSearch: true},
+					{label: 'Category Code', name: 'catcode', width: 50, classes: 'wrap', checked:true, canSearch: true},
 					{label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true},					
 					{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 					{label: 'Source', name: 'source', width: 90 , hidden: true},								
 					{label: 'Class', name: 'class', width: 90 , hidden: true},				
-					{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					
-					{label: 'COS Account', name: 'cosacct', width: 90, hidden: true,},					
-					{label: 'Adjustment Account', name: 'adjacct', width: 90, hidden: true},					
-					{label: 'Write Off Account', name: 'woffacct', width: 90, hidden: true},					
-					{label: 'Expenses Account', name: 'expacct', width: 90, hidden: true},					
-					{label: 'Loan Account', name: 'loanacct', width: 90, hidden: true},					
-					{label: 'PO Validate', name: 'povalidate', width: 90, hidden: true},					
+					{label: 'Stock Account', name: 'stockacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'COS Account', name: 'cosacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'Adjustment Account', name: 'adjacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'Write Off Account', name: 'woffacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'Expenses Account', name: 'expacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'Loan Account', name: 'loanacct', width: 70, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},					
+					{label: 'PO Validate', name: 'povalidate', width: 30, classes: 'wrap', formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },					
 					{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 					{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
 					{label: 'adduser', name: 'adduser', width: 90 , hidden: true},					
@@ -163,7 +165,7 @@
 					{label: 'upddate', name: 'upddate', width: 90 , hidden: true},
 					{label: 'deluser', name: 'deluser', width: 90 , hidden: true},					
 					{label: 'deldate', name: 'deldate', width: 90 , hidden: true},					
-					{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
+					{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
 					{label: 'idno', name: 'idno', hidden:true},
@@ -189,9 +191,66 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					fdl.set_array().reset();
 				},
 				
 			});
+
+			////////////////////////formatter tick///////////////////////////////////////////////////////////
+			function formatterstatus_tick2(cellvalue, option, rowObject) {
+				if (cellvalue == '1') {
+					return `<span class="fa fa-check"></span>`;
+				}else{
+					return '';
+				}
+			}
+		
+		
+			function unformatstatus_tick2(cellvalue, option, rowObject) {
+				if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+					return '1';
+				}else{
+					return '0';
+				}
+			}
+
+			function formatter(cellvalue, options, rowObject){
+				return parseInt(cellvalue) ? "Yes" : "No";
+			}
+
+			function unformat(cellvalue, options){
+				//return parseInt(cellvalue) ? "Yes" : "No";
+
+				if (cellvalue == 'Yes') {
+					return "1";
+				}
+				else {
+					return "0";
+				}
+			}
+
+			//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+			function showdetail(cellvalue, options, rowObject){
+				var field,table,case_;
+				switch(options.colModel.name){
+					case 'stockacct':field=['glaccno','description'];table="finance.glmasref";case_='stockacct';break;
+					case 'cosacct':field=['glaccno','description'];table="finance.glmasref";case_='cosacct';break;
+					case 'adjacct':field=['glaccno','description'];table="finance.glmasref";case_='adjacct';break;
+					case 'woffacct':field=['glaccno','description'];table="finance.glmasref";case_='woffacct';break;
+					case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
+					case 'loanacct':field=['glaccno','description'];table="finance.glmasref";case_='loanacct';break;
+				}
+				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+				fdl.get_array('category',options,param,case_,cellvalue);
+				// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+				
+				return cellvalue;
+			}
+
+			function unformat_showdetail(cellvalue, options, rowObject){
+				return $(rowObject).attr('title');
+			}
 
 			/////////////////////////start grid pager/////////////////////////////////////////////////////////
 			$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

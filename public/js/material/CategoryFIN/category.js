@@ -63,7 +63,7 @@ $(document).ready(function () {
 						    },
 			},					
 			{label: 'Loan Account', name: 'loanacct', width: 90, hidden: true},					
-			{label: 'PO Validate', name: 'povalidate', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"}},					
+			{label: 'PO Validate', name: 'povalidate', width: 25, hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"},formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },					
 			{label: 'accrualacc', name: 'accrualacc', width: 90, hidden: true},					
 			{label: 'stktakeadjacct', name: 'stktakeadjacct', width: 90, hidden: true},					
 			{label: 'adduser', name: 'adduser', width: 90 , hidden: true},					
@@ -221,6 +221,39 @@ $(document).ready(function () {
 					alert(data);
 				}
 			};
+
+				////////////////////////formatter tick///////////////////////////////////////////////////////////
+				function formatterstatus_tick2(cellvalue, option, rowObject) {
+					if (cellvalue == '1') {
+						return `<span class="fa fa-check"></span>`;
+					}else{
+						return '';
+					}
+				}
+			
+			
+				function unformatstatus_tick2(cellvalue, option, rowObject) {
+					if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+						return '1';
+					}else{
+						return '0';
+					}
+				}
+	
+				function formatter(cellvalue, options, rowObject){
+					return parseInt(cellvalue) ? "YES" : "NO";
+				}
+	
+				function unformat(cellvalue, options){
+					//return parseInt(cellvalue) ? "Yes" : "No";
+	
+					if (cellvalue == 'YES') {
+						return "1";
+					}
+					else {
+						return "0";
+					}
+				}
 
 			///////////////////////////////////////cust_rules//////////////////////////////////////////////
 			function cust_rules(value,name){
