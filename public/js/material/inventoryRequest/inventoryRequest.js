@@ -442,7 +442,7 @@ $(document).ready(function () {
 			url: '/util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
-			filterCol:['purdept'],
+			filterCol:['storedept'],
 			filterVal:['1']
 		}
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -1317,7 +1317,7 @@ $(document).ready(function () {
 				{ label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus', 'purdept'],
+				filterCol:['compcode','recstatus', 'storedept'],
 				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
@@ -1336,7 +1336,7 @@ $(document).ready(function () {
 		}, {
 			title: "Select Request Department",
 			open: function(){
-				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'purdept'];
+				dialog_reqdept.urlParam.filterCol=['recstatus', 'compcode', 'storedept'];
 				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', '1'];
 			},close: function(){
 			},
@@ -1355,7 +1355,7 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
-				filterCol:['purdept', 'recstatus', 'compcode'],
+				filterCol:['storedept', 'recstatus', 'compcode'],
 				filterVal:['1', 'ACTIVE','session.compcode']
 			},
 			ondblClickRow: function () {
@@ -1374,7 +1374,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Request Made To Department",
 			open: function(){
-				dialog_reqtodept.urlParam.filterCol=['purdept','recstatus', 'compcode'];
+				dialog_reqtodept.urlParam.filterCol=['storedept','recstatus', 'compcode'];
 				dialog_reqtodept.urlParam.filterVal=['1','ACTIVE','session.compcode'];
 			}
 		},'urlParam','radio','tab'

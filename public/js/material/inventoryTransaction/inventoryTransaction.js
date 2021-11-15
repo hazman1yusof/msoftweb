@@ -349,6 +349,7 @@ $(document).ready(function () {
 		switch(isstype.toUpperCase()){
 			case 'TRANSFER':
 				caseTransfer();
+				showReqRecNo();
 				break;
 			case 'ADJUSTMENT':
 				caseAdjustment(crdbfl);
@@ -393,6 +394,10 @@ $(document).ready(function () {
 
 			$("#sndrcv_parent, label[for=sndrcv]").show();
 			$("#sndrcvtype_parent, label[for=sndrcvtype]").show();
+
+			$("label[for=srcdocno]").show();
+			$("#srcdocno_parent").show();
+			$("#srcdocno").attr('required',true);
 
 			$("#sndrcvtype option[value='Department']").show();
 			$("#sndrcvtype option[value='Supplier'], #sndrcvtype option[value='Other']").hide();
@@ -1758,12 +1763,12 @@ $(document).ready(function () {
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
 				{label:'Record Status',name:'recstatus',width:400,classes:'pointer', hidden:true},
-				{label:'reqtodept',name:'reqtodept', hidden:true},
+				{label:'reqdept',name:'reqdept', hidden:true},
 			],
 			sortname: 'recno',
 			sortorder: "desc",
 			urlParam: {
-				filterCol:['compcode','recstatus', 'reqtodept'],
+				filterCol:['compcode','recstatus', 'reqdept'],
 				filterVal:['session.compcode', 'POSTED', $("#sndrcv").val()], 
 			},	
 			ondblClickRow:function(){
@@ -1772,7 +1777,7 @@ $(document).ready(function () {
 				$("#recstatus").val(data['recstatus']);
 				$("#remarks").val(data['remarks']);
 				$('#referral').val(data['recno']);
-				$('#sndrcv').val(data['reqtodept']);
+				$('#sndrcv').val(data['reqdept']);
 				$('#sndrcvtype').focus();
 
 				var urlParam2 = {
@@ -1787,7 +1792,7 @@ $(document).ready(function () {
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
 					join_filterCol : [['s.deptcode =']],
-					join_filterVal : [[data['reqtodept']]],
+					join_filterVal : [[data['reqdept']]],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']
@@ -1836,7 +1841,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Request RecNo",
 			open: function(){
-				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqtodept'];
+				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqdept'];
 				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED', $("#sndrcv").val()];
 			}
 		}, 'none','radio','tab'

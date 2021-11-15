@@ -108,16 +108,16 @@ $("body").show();
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-            {label:'Username',name:'username',width:70,canSearch:true, checked:true},
-            {label:'Name',name:'name',width:200,canSearch:true},
+            {label:'Username',name:'username',width:90,canSearch:true, checked:true},
+            {label:'Name',name:'name',width:300,canSearch:true},
             {label:'Group',name:'groupid',width:90,canSearch:true}, 
             {label:'Department',name:'deptcode',width:100}, 
-            {label:'Cashier',name:'cashier',formatter:yes_no,unformat:de_yes_no,width:60},   
-            {label:'Billing',name:'billing',formatter:yes_no,unformat:de_yes_no,width:60},   
-            {label:'Nurse',name:'nurse',formatter:yes_no,unformat:de_yes_no,width:60},   
-            {label:'Doctor',name:'doctor',formatter:yes_no,unformat:de_yes_no,width:60},   
-            {label:'Register',name:'register',formatter:yes_no,unformat:de_yes_no,width:60},   
-            {label:'Price View',name:'priceview',formatter:yes_no,unformat:de_yes_no,width:70},   
+            {label:'Cashier',name:'cashier', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
+            {label:'Billing',name:'billing', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
+            {label:'Nurse',name:'nurse', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
+            {label:'Doctor',name:'doctor', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
+            {label:'Register',name:'register', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
+            {label:'Price View',name:'priceview', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
             {label:'programmenu',name:'programmenu',width:50,hidden:true},
             {label:'password',name:'password',width:50,hidden:true},
             {label:'id',name:'id',width:50,hidden:true},
@@ -146,18 +146,43 @@ $("body").show();
 		},
 		
 	});
+	////////////////////////formatter tick///////////////////////////////////////////////////////////
+			function formatterstatus_tick2(cellvalue, option, rowObject) {
+				if (cellvalue == '1') {
+					return `<span class="fa fa-check"></span>`;
+				}else{
+					return '';
+				}
+			}
+		
+		
+			function unformatstatus_tick2(cellvalue, option, rowObject) {
+				if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+					return '1';
+				}else{
+					return '0';
+				}
+			}
 
-	function yes_no(cellvalue, options, rowObject){
-		if(cellvalue == 1){return 'Yes';}else{return 'No';}
-	}
-	function de_yes_no(cellvalue, options, rowObject){
-		if(cellvalue == 'Yes'){return '1';}else{return '0';}
-	}
+			function formatter(cellvalue, options, rowObject){
+				return parseInt(cellvalue) ? "Yes" : "No";
+			}
 
-	var cntrlIsPressed = false;
-	$(document).keydown(function(event){
-	    if(event.which=="17") cntrlIsPressed = true;
-	});
+			function unformat(cellvalue, options){
+				//return parseInt(cellvalue) ? "Yes" : "No";
+
+				if (cellvalue == 'Yes') {
+					return "1";
+				}
+				else {
+					return "0";
+				}
+			}
+
+			var cntrlIsPressed = false;
+			$(document).keydown(function(event){
+			    if(event.which=="17") cntrlIsPressed = true;
+			});
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

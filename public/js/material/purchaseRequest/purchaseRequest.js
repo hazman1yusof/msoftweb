@@ -473,8 +473,7 @@ $(document).ready(function () {
 			url: '/util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
-			filterCol:['purdept'],
-			filterVal:['1']
+			
 		}
 		$.get( param.url+"?"+$.param(param), function( data ) {
 			
