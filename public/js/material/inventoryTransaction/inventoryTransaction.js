@@ -793,6 +793,12 @@ $(document).ready(function () {
 						}
 					},
 			},
+
+			{ label: 'Qty Request', name: 'qtyrequest', width: 80, align: 'right', classes: 'wrap',  
+				editable:true,
+				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
 			{ label: 'Net Price', name: 'netprice', width: 90, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
@@ -1784,7 +1790,7 @@ $(document).ready(function () {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
 					field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
-					's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm',
+					's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm', 'ivdt.reqdept', 'ivdt.ivreqno',
 					'ivdt.recstatus'],
 					table_name: ['material.ivreqdt AS ivdt ', 'material.stockloc AS s', 'material.productmaster AS p'],
 					table_id: 'lineno_',
@@ -1806,7 +1812,9 @@ $(document).ready(function () {
 									{
 										compcode:elem['compcode'],
 										recno:elem['recno'],
-										lineno_:elem['lineno_'],
+										reqdept:elem['reqdept'],
+										ivreqno:elem['ivreqno'],
+										reqlineno:elem['lineno_'],
 										itemcode:elem['itemcode'],
 										description:elem['description'],
 										uomcode:elem['uomcode'],
@@ -1815,6 +1823,7 @@ $(document).ready(function () {
 										qtyonhandrecv:elem['qtyonhand'],
 										txnqty:elem['qtytxn'],
 										maxqty:elem['maxqty'],
+										qtyrequest:elem['qtyrequest'],
 									
 									}
 								);
