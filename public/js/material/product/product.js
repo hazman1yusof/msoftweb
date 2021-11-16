@@ -17,7 +17,7 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			if(errorField.length>0){console.log(errorField[0]);
+			if(errorField.length>0){console.log(errorField);
 				return {
 
 					element : $(errorField[0]),
@@ -580,6 +580,7 @@ $(document).ready(function () {
 				dialog_subcategory.on();
 				dialog_taxCode.on();
 			}if(oper!='add'){
+				showing_charges_fieldset();
 				dialog_pouom.check(errorField);
 				dialog_suppcode.check(errorField);
 				dialog_mstore.check(errorField);
@@ -681,6 +682,12 @@ $(document).ready(function () {
 			{ label: 'tagging', name: 'tagging', width: 50, hidden:true },
 			{ label: 'itemtype', name: 'itemtype', width: 50, hidden:true },
 			{ label: 'generic', name: 'generic', width: 50, hidden:true },
+			{ label: 'cm_uom', name: 'cm_uom', width: 50, hidden:true },
+			{ label: 'cm_invflag', name: 'cm_invflag', width: 50, hidden:true },
+			{ label: 'cm_packqty', name: 'cm_packqty', width: 50, hidden:true },
+			{ label: 'cm_druggrcode', name: 'cm_druggrcode', width: 50, hidden:true },
+			{ label: 'cm_subgroup', name: 'cm_subgroup', width: 50, hidden:true },
+			{ label: 'cm_stockcode', name: 'cm_stockcode', width: 50, hidden:true },
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -862,6 +869,20 @@ $(document).ready(function () {
 		emptyFormdata(errorField,'#formdata');
 		forCancelAndExit();
 		$("#itemcodesearch").focus();
+	});
+
+	function showing_charges_fieldset(){
+		if($("input[type='radio'][name='chgflag'][value='1']").is(":checked")){
+			$('#charges_fieldset').show();
+			$('#charges_fieldset input').attr('data-validation','required');
+		}else{
+			$('#charges_fieldset').hide();
+			$('#charges_fieldset input').removeAttr('data-validation');
+		}
+	}
+
+	$("input[type='radio'][name='chgflag']").on('change', function(){
+		showing_charges_fieldset();
 	});
 
 	function getgcforAdd() {

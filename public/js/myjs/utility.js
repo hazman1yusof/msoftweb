@@ -700,6 +700,9 @@ function unformatstatus_tick(cellvalue, option, rowObject) {
 function un_showdetail(cellvalue, option, rowObject){
 	let val = $(rowObject).html();
 	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	if(val == " "){
+		val = "";
+	}
 	
 	return val;
 }

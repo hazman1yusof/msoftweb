@@ -2,6 +2,25 @@
 
 @section('title', 'Product Setup')
 
+@section('style')
+	fieldset.scheduler-border {
+	    border: 1px groove #ddd !important;
+	    padding: 0 1.4em 1.4em 1.4em !important;
+	    margin: 0 0 1.5em 0 !important;
+	    -webkit-box-shadow:  0px 0px 0px 0px #000;
+	            box-shadow:  0px 0px 0px 0px #000;
+	}
+
+	legend.scheduler-border {
+		font-size: 1.2em !important;
+		font-weight: bold !important;
+		text-align: left !important;
+		width:auto;
+		padding:0 10px;
+		border-bottom:none;
+	}
+@endsection
+
 @section('body')
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
@@ -315,6 +334,88 @@
 						  		</div>
 						</div>
 						@endif
+
+
+						<!-----charges---->
+
+						<fieldset class="scheduler-border" id="charges_fieldset" style="display:none;">
+							<legend class="scheduler-border">Charges Menu</legend>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  
+								<div class="col-md-3">
+									<input id="cm_packqty" name="cm_packqty" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_druggrcode">Drug Group Code</label>  
+								<div class="col-md-3">
+									<input id="cm_druggrcode" name="cm_druggrcode" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_subgroup">Sub Group</label>  
+								<div class="col-md-3">
+									<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_stockcode">Stock Code</label>  
+								<div class="col-md-3">
+									<input id="cm_stockcode" name="cm_stockcode" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
+								<div class="col-md-3 has-error">
+									<div class="input-group">
+										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase error" data-validation="required" data-validation-error-msg=" " data-validation-has-keyup-event="true" style="border-color: rgb(185, 74, 72);">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block">Invalid Code</span>
+								<span class="help-block form-error">Invalid Code</span></div>
+
+								<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
+								<div class="col-md-3">
+									<select class="form-control col-md-4" id="cm_constype" name="cm_constype" data-validation="" disabled="disabled">
+										<option value="A">Anaestetics</option>
+										<option value="C">Consultation</option>
+										<option value="S">Surgeon</option>
+										<option value="" selected="">None</option>
+									</select> 
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
+								<div class="col-md-3">
+									<label class="radio-inline"><input type="radio" name="cm_recstatus" value="ACTIVE" checked="">Active</label>
+									<label class="radio-inline"><input type="radio" name="cm_recstatus" value="DEACTIVE">Deactive</label>
+								</div>
+							</div>
+						</fieldset>
+
+						<!----charges----> 
 
 						<div class="form-group" hideOne>
 							<label class="col-md-2 control-label" for="computerid">Computer Id</label>  

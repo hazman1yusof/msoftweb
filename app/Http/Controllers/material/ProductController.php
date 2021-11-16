@@ -35,7 +35,7 @@ class ProductController extends defaultController
                     return $this->defaultAdd($request);
                 }
             case 'edit':
-                return $this->defaultEdit($request);
+                return $this->edit($request);
             case 'del':
                 return $this->defaultDel($request);
             default:
@@ -64,6 +64,12 @@ class ProductController extends defaultController
                 'recstatus' => 'ACTIVE',
                 'computerid' => $request->computerid,
                 'ipaddress' => $request->ipaddress,
+                'cm_uom' => $request->cm_uom,
+                'cm_invflag' => $request->cm_invflag,
+                'cm_packqty' => $request->cm_packqty,
+                'cm_druggrcode' => $request->cm_druggrcode,
+                'cm_subgroup' => $request->cm_subgroup,
+                'cm_stockcode' => $request->cm_stockcode,
             ];
 
             $er = $this->defaultAdd($request);
@@ -76,6 +82,65 @@ class ProductController extends defaultController
 
 
                 $table->insert($array_insert);
+
+                $responce = new stdClass();
+                $responce->sql = $table->toSql();
+                $responce->sql_bind = $table->getBindings();
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response('Error'.$e->errorInfo[2], 500);
+            }
+        // }
+    }
+
+    public function edit(Request $request)
+    {   
+        // if(strtoupper($request->Class) == 'ASSET'){
+            DB::beginTransaction();
+
+            $table = DB::table('material.product')->where('idno','=',$request->idno);
+
+            $array_insert = [
+                'description' => strtoupper($request->description),
+                'generic' => strtoupper($request->generic),
+                'groupcode' => strtoupper($request->groupcode),
+                'Class' => $request->Class,
+                'unit' => session('unit'),
+                'compcode' => session('compcode'),
+                'subcatcode' => strtoupper($request->subcatcode),
+                'pouom' => strtoupper($request->pouom),
+                'suppcode' => strtoupper($request->suppcode),
+                'mstore' => strtoupper($request->mstore),
+                'TaxCode' => strtoupper($request->TaxCode),
+                'minqty' => $request->minqty,
+                'maxqty' => $request->maxqty,
+                'reordlevel' => $request->reordlevel,
+                'reordqty' => $request->reordqty,
+                'reuse' => $request->reuse,
+                'rpkitem' => $request->rpkitem,
+                'tagging' => $request->tagging,
+                'expdtflg' => $request->expdtflg,
+                'chgflag' => $request->chgflag,
+                'itemtype' => $request->itemtype,
+                'cm_uom' => $request->cm_uom,
+                'cm_invflag' => $request->cm_invflag,
+                'cm_packqty' => $request->cm_packqty,
+                'cm_druggrcode' => $request->cm_druggrcode,
+                'cm_subgroup' => $request->cm_subgroup,
+                'cm_stockcode' => $request->cm_stockcode,
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE',
+                'computerid' => $request->computerid,
+                'ipaddress' => $request->ipaddress,
+            ];
+
+            try {
+
+
+                $table->update($array_insert);
 
                 $responce = new stdClass();
                 $responce->sql = $table->toSql();

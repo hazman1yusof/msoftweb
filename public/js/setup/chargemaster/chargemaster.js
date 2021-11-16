@@ -2941,4 +2941,38 @@
 			$("#jqGrid4").jqGrid ('setGridWidth', Math.floor($("#jqGrid4_c")[0].offsetWidth-$("#jqGrid4_c")[0].offsetLeft-28));
 		});
 
+		$('#cm_chgcode').on('blur',function(){
+			get_chg_productmaster($(this).val());
+		});
+
+		function get_chg_productmaster(itemcode){
+			var param={
+				action:'get_value_default',
+				url: '/util/get_value_default',
+				field:['cm_uom','cm_invflag','cm_packqty','cm_druggrcode','cm_subgroup','cm_stockcode'],
+				table_name:'material.product',
+				filterCol:['compcode','itemcode'],
+				filterVal:['session.compcode',itemcode]
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data) && data.rows.length > 0){
+					$('#cm_uom').val(data.rows[0].cm_uom);
+					$('#cm_druggrcode').val(data.rows[0].cm_druggrcode);
+					$('input[type=radio][name=cm_invflag][value='+data.rows[0].cm_invflag+']').attr('checked','checked');
+					$('#cm_packqty').val(data.rows[0].cm_packqty);
+					$('#cm_stockcode').val(data.rows[0].cm_stockcode);
+					$('#cm_subgroup').val(data.rows[0].cm_subgroup);
+				}else{
+					$('#cm_uom').val('');
+					$('#cm_druggrcode').val('');
+					$('#cm_invflag').val('');
+					$('#cm_packqty').val('');
+					$('#cm_stockcode').val('');
+					$('#cm_subgroup').val('');
+				}
+			});	
+		}
+
 	});

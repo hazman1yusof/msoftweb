@@ -77,9 +77,33 @@
 				  </div>
 
 				  	<label class="col-md-2 control-label" for="productcat">Product Category</label>  
-				  		<div class="col-md-3">
+				  		<div class="col-md-3" id="productcat_asset_div" style="display:none">
 					  		<div class='input-group'>
-								<input id="productcat" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="productcat_asset" name="productcat_asset" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_other_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_other" name="productcat_other" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_ph_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_ph" name="productcat_ph" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_nonph_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_nonph" name="productcat_nonph" type="text" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					  		<span class="help-block"></span>

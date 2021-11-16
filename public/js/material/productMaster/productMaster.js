@@ -8,10 +8,6 @@
 			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 
 			hidePostClass();
-			
-			// console.log($( "#postGroupcode option:selected" ).text());
-			// console.log($( "#postGroupcode option:selected" ).val());
-			
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				modules : 'sanitize',
@@ -24,6 +20,7 @@
 			conf = {
 				onValidate : function($form) {
 					if(errorField.length>0){
+						console.log(errorField);
 						return {
 							element : $(errorField[0]),
 							message : ' '
@@ -40,6 +37,7 @@
 				text: "Save",click: function() {
 					mycurrency.formatOff();
 					mycurrency.check0value(errorField);
+					console.log(errorField);
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 					}else{
@@ -65,6 +63,7 @@
 				modal: true,
 				autoOpen: false,
 				open: function( event, ui ) {
+					errorField.length=0;
 					parent_close_disabled(true);
 					switch(oper) {
 						case state = 'add':
@@ -93,18 +92,16 @@
 					}
 					if(oper!='view'){
 						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-						dialog_category.on();
+						showing_which_ordialog('nocheck');
 					}
 					if(oper!='add'){
-						dialog_category.check(errorField);
+						showing_which_ordialog('check');
 					}
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
 					emptyFormdata(errorField,'#formdata');
-					//$('.alert').detach();
 					$('.my-alert').detach();
-					dialog_category.off();
 					if(oper=='view'){
 						$(this).dialog("option", "buttons",butt1);
 					}
@@ -170,7 +167,8 @@
 				ondblClickRow: function(rowid, iRow, iCol, e){
 					$("#jqGridPager td[title='Edit Selected Row']").click();
 				},
-				gridComplete: function(){
+				loadComplete: function(){
+
 					if(oper == 'add'){
 						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
@@ -178,26 +176,25 @@
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 					fdl.set_array().reset();
 
-					//$("#jqGridplus").hide();
-					pg = $("#postGroupcode option:selected" ).val();
-					pc = $("input[name=postClass]:checked").val();
+					var pg = $("#postGroupcode option:selected" ).val();
+					var pc = $("input[name=postClass]:checked").val();
 					
 					if (pg == 'Please Select First') {
-						$("#jqGridplus").hide();
+						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").hide();	
 					}else if (pg == "Stock") {
-						$("#jqGridplus").hide();
+						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").hide();
 					}else {
-						$("#jqGridplus").show();
+						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").show();
 					}
 
 					if(pc == "Pharmacy") {
-						$("#jqGridplus").show();
+						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").show();
 					}else if (pc == "Non-Pharmacy"){
-						$("#jqGridplus").show();
+						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").show();
 					}
 				},
 				
-			});
+			});	
 
 			////////////////////////function hide radio button ////////////////////////////////////////////////
 			function hidePostClass() {
@@ -248,16 +245,15 @@
 
 			$('#postGroupcode').on('change', function() {
 				//$("#pg_jqGridPager table").hide();
-				$("#jqGridplus").hide();
-				postGroupcode  = $("#postGroupcode option:selected" ).val();
+				$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row']").hide();
+				var postGroupcode  = $("#postGroupcode option:selected" ).val();
 				if(postGroupcode == "Asset"){
 					showPostClass();
 					hideOtherClass();
 					hideStockClass();
 					showAssetClass();
 					$("#postClassAsset").prop("checked", true);
-					//$("#pg_jqGridPager table").show();
-					$("#jqGridplus").show();
+
 					urlParam.filterCol = ['groupcode','Class'];
 					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val()];
 					refreshGrid('#jqGrid',urlParam);
@@ -267,8 +263,7 @@
 					hideStockClass();
 					showOtherClass();
 					$("#postClassOther").prop("checked", true);
-					//$("#pg_jqGridPager table").show();
-					$("#jqGridplus").show();
+
 					urlParam.filterCol = ['groupcode','Class'];
 					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val()];
 					refreshGrid('#jqGrid',urlParam);
@@ -285,19 +280,29 @@
 			})
 
 		    $("input[name=postClass]:radio").on('change click', function(){
-		    	postClass = $("input[name=postClass]:checked").val();
-		    	//$("#pg_jqGridPager table").show();
-		    	$("#jqGridplus").show();
+
 		    	urlParam.filterCol = ['groupcode','Class'];
-				urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val()];
+				urlParam.filterVal = [$("#postGroupcode option:selected" ).val(), $("input[name=postClass]:checked").val()];
 				refreshGrid('#jqGrid',urlParam);
-		    	//alert($("input[name=postClass]:checked").val());
+
 			});
 
 			function showdetail(cellvalue, options, rowObject){
 				var field,table, case_;
+				var pg = $("#postGroupcode option:selected" ).val();
+				var pc = $("input[name=postClass]:checked").val();
 				switch(options.colModel.name){
-					case 'productcat':field=['assetcode','description'];table="finance.facode";case_='productcat';break;
+					case 'productcat':
+							if (pg == "Asset") {
+								field=['assetcode','description'];
+								table="finance.facode";
+								case_='productcat';
+							}else{
+								field=['catcode','description'];
+								table="material.category";
+								case_='productcat';
+							}
+							break;
 				}
 				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 			
@@ -353,14 +358,8 @@
 				onClickButton: function(){
 					oper='add';
 					$( "#dialogForm" ).dialog( "open" );
-					//alert(postGroupcode);
-					//alert($('input[name=postClass]:checked').val());
-					postClass = $('input[name=postClass]:checked').val();
-					//$("#formdata [name=groupcode][value='"+postGroupcode+"']").prop('checked', true);
-					$("#formdata :input[name='groupcode']").val(postGroupcode);
-					
-					//$("#formdata [name=Class][value='"+postClass+"']").prop('checked', true);
-					$("#formdata :input[name='Class']").val(postClass);
+					$("#formdata :input[name='groupcode']").val($('#postGroupcode').val());
+					$("#formdata :input[name='Class']").val($('input[name=postClass]:checked').val());
 				},
 			});
 
@@ -378,36 +377,15 @@
 
 			/////////////////////////////////////////////////////////ordialog//////////////////////////////
 
-			var dialog_category = new ordialog(
-				'productcat','material.category','#productcat',errorField,
+			var dialog_category_asset = new ordialog(
+				'productcat_asset','finance.facode','#productcat_asset',errorField,
 				{	colModel:[
-						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Asset Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 					],
 					urlParam: {
 						filterCol:['recstatus'],
 						filterVal:['ACTIVE'],
-						// open: function(){
-						// 	if($('#postGroupcode').val().trim() == 'Stock') {
-						// 		filterCol=['cattype', 'source', 'recstatus'];
-						// 		filterVal=['Stock', 'PO', 'ACTIVE'];
-						// 	}else if($('#postGroupcode').val().trim() == 'Others') {
-						// 		filterCol=['cattype', 'source', 'recstatus'];
-						// 		filterVal=['Other', 'PO', 'ACTIVE'];
-						// 	}else if($('#groupcode').val().trim() == 'Stock') {
-						// 		filterCol=['cattype', 'source', 'recstatus'];
-						// 		filterVal=['Stock', 'PO', 'ACTIVE'];
-						// 	}else if($('#groupcode').val().trim() == 'Others') {
-						// 		filterCol=['cattype', 'source', 'recstatus'];
-						// 		filterVal=['Other', 'PO', 'ACTIVE'];
-						// 	}else if($('#postGroupcode').val().trim() == 'Asset'){
-						// 		table_name="finance.facode";
-						// 		field=['assetcode as catcode', 'description'];
-						// 	}else {
-						// 		filterCol=['recstatus'];
-						// 		filterVal=['ACTIVE'];
-						// 	}
-						// }
 					},
 					ondblClickRow: function () {
 						$('#recstatus').focus();
@@ -425,38 +403,157 @@
 				},{
 					title:"Select Category",
 					open: function(){
-						dialog_category.urlParam.table_name="material.category";
-						dialog_category.urlParam.field=['catcode', 'description'];
-						
-						if($('#postGroupcode').val().trim() == 'Stock') {
-							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
-						}else if($('#postGroupcode').val().trim() == 'Others') {
-							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
-						}else if($('#groupcode').val().trim() == 'Stock') {
-							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Stock', 'PO', 'ACTIVE'];
-						}else if($('#groupcode').val().trim() == 'Others') {
-							dialog_category.urlParam.filterCol=['cattype', 'source', 'recstatus'];
-							dialog_category.urlParam.filterVal=['Other', 'PO', 'ACTIVE'];
-						}else if($('#postGroupcode').val().trim() == 'Asset'){
-
-							let newcolmodel = [
-								{label:'Asset Code',name:'assetcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-								{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-							]
-							$('#'+dialog_category.gridname).jqGrid('setGridParam',{colModel:newcolmodel});
-
-							dialog_category.urlParam.table_name="finance.facode";
-							dialog_category.urlParam.field=['assetcode', 'description'];
-						}else {
-							dialog_category.urlParam.filterCol=['recstatus'];
-							dialog_category.urlParam.filterVal=['ACTIVE'];
-						}
+						// dialog_category_asset.urlParam.table_name="material.category";
+						// dialog_category_asset.urlParam.field=['assetcode', 'description'];
 					}
 				},'urlParam', 'radio', 'tab'
 			);
-			dialog_category.makedialog();
+			dialog_category_asset.makedialog();
+
+			var dialog_category_other = new ordialog(
+				'productcat_other','material.category','#productcat_other',errorField,
+				{	colModel:[
+						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+					],
+					urlParam: {
+						filterCol:['recstatus','cattype', 'source', 'Class'],
+						filterVal:['ACTIVE','OTHER', 'PO', 'others'],
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+				},{
+					title:"Select Category",
+					open: function(){
+						// dialog_category_other.urlParam.table_name="material.category";
+						// dialog_category_other.urlParam.field=['catcode', 'description'];
+					}
+				},'urlParam', 'radio', 'tab'
+			);
+			dialog_category_other.makedialog();
+
+			var dialog_category_ph = new ordialog(
+				'productcat_ph','material.category','#productcat_ph',errorField,
+				{	colModel:[
+						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+					],
+					urlParam: {
+						filterCol:['recstatus','cattype', 'source', 'Class'],
+						filterVal:['ACTIVE','Stock', 'PO', 'Pharmacy'],
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+				},{
+					title:"Select Category",
+					open: function(){
+						// dialog_category_other.urlParam.table_name="material.category";
+						// dialog_category_other.urlParam.field=['catcode', 'description'];
+					}
+				},'urlParam', 'radio', 'tab'
+			);
+			dialog_category_ph.makedialog();
+
+			var dialog_category_nonph = new ordialog(
+				'productcat_nonph','material.category','#productcat_nonph',errorField,
+				{	colModel:[
+						{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+						{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+					],
+					urlParam: {
+						filterCol:['recstatus','cattype', 'source', 'Class'],
+						filterVal:['ACTIVE','Stock', 'PO', 'NON-PHARMACY'],
+					},
+					ondblClickRow: function () {
+						$('#recstatus').focus();
+					},
+					gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#recstatus').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+				},{
+					title:"Select Category",
+					open: function(){
+						// dialog_category_other.urlParam.table_name="material.category";
+						// dialog_category_other.urlParam.field=['catcode', 'description'];
+					}
+				},'urlParam', 'radio', 'tab'
+			);
+			dialog_category_nonph.makedialog();
+
+			function showing_which_ordialog(check){
+				var pg = $("#postGroupcode option:selected" ).val();
+				var pc = $("input[name=postClass]:checked").val();
+				dialog_category_ph.off();
+				dialog_category_nonph.off();
+				dialog_category_other.off();
+				dialog_category_asset.off();
+
+				$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div").hide();	
+
+				if (pg == 'Please Select First') {
+					$("#productcat_asset_div,#productcat_other_div,#productcat_ph_div,#productcat_nonph_div").hide();	
+				}else if (pg == "Stock") {
+					if(pc == "Pharmacy") {
+						$("#productcat_ph_div").show();	
+						dialog_category_ph.on();
+						if(check == 'check'){
+							$(dialog_category_ph.textfield).val(selrowData('#jqGrid').productcat);
+							dialog_category_ph.check(errorField)
+						}
+					}else if (pc == "Non-Pharmacy"){
+						$("#productcat_nonph_div").show();
+						dialog_category_nonph.on();
+						if(check == 'check'){
+							$(dialog_category_nonph.textfield).val(selrowData('#jqGrid').productcat);
+							dialog_category_nonph.check(errorField)
+						}
+					}
+				}else if (pg == "Others") {
+					$("#productcat_other_div").show();
+						dialog_category_other.on();
+						if(check == 'check'){
+							$(dialog_category_other.textfield).val(selrowData('#jqGrid').productcat);
+							dialog_category_other.check(errorField)
+						}
+				}else if (pg == "Asset") {
+					$("#productcat_asset_div").show();
+						dialog_category_asset.on();
+						if(check == 'check'){
+							$(dialog_category_asset.textfield).val(selrowData('#jqGrid').productcat);
+							dialog_category_asset.check(errorField)
+						}
+				}
+
+				
+			}
 });
 		
