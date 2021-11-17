@@ -401,7 +401,7 @@ class InventoryTransactionController extends defaultController
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
-                foreach ($pr_dt as $key => $value) {
+                foreach ($ivreq_dt as $key => $value) {
                     ///insert detail from existing inventory request
                     $table = DB::table("material.ivtmpdt");
                     $table->insert([
@@ -410,12 +410,12 @@ class InventoryTransactionController extends defaultController
                         'lineno_' => $value->lineno_, 
                         'reqdept' => $value->reqdept, 
                         'ivreqno' => $value->ivreqno,
-                        'reqlineno' => $value->reqlineno,
+                       // 'reqlineno' => $value->reqlineno,
                         'itemcode' => $value->itemcode, 
                         'uomcode' => $value->uomcode, 
                         'uomcoderecv' => $value->pouom, 
                         'txnqty' => $value->qtytxn, 
-                        'maxqty' => $value->maxqty, 
+                       // 'maxqty' => $value->maxqty, 
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now(), 
                         'recstatus' => 'ACTIVE', 
