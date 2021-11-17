@@ -231,45 +231,51 @@ class InventoryTransactionDetailController extends defaultController
         try {
             $request->expdate = $this->null_date($request->expdate);
 
-            ///1. update detail
-            DB::table('material.ivtmpdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$value['lineno_'])
-                ->update([
-                    'itemcode' => strtoupper($value['itemcode']),
-                    'uomcode' => strtoupper($value['uomcode']),
-                    'txnqty' => $value['txnqty'],
-                    //'reqdept'=>$request->reqdept,
-                    // 'ivreqno'=>$request->ivreqno,
-                    // 'reqlineno'=>$request->lineno_,
-                    'netprice' => $value['netprice'],
-                    'productcat' => $value['productcat'],
-                    'qtyonhand' => $value['qtyonhand'],
-                    'uomcoderecv'=> strtoupper($value['uomcoderecv']),
-                    'qtyonhandrecv'=> $value['qtyonhandrecv'],
-                    'amount' => $value['amount'],
-                    'adduser' => session('username'), 
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $this->chgDate($request->expdate),  
-                    'batchno' => strtoupper($value['batchno']), 
-                    'recstatus' => 'OPEN'
-                ]);
 
-            ///2. recalculate total amount
-            $totalAmount = DB::table('material.ivtmpdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
 
-            ///3. update total amount to header
-            DB::table('material.ivtmphd')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->update([
-                    'amount' => $totalAmount, 
-                ]);
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'itemcode' => strtoupper($value['itemcode']),
+                        'uomcode' => strtoupper($value['uomcode']),
+                        'txnqty' => $value['txnqty'],
+                        //'reqdept'=>$request->reqdept,
+                        // 'ivreqno'=>$request->ivreqno,
+                        // 'reqlineno'=>$request->lineno_,
+                        'netprice' => $value['netprice'],
+                        // 'productcat' => $value['productcat'],
+                        'qtyonhand' => $value['qtyonhand'],
+                        'uomcoderecv'=> strtoupper($value['uomcoderecv']),
+                        'qtyonhandrecv'=> $value['qtyonhandrecv'],
+                        'amount' => $value['amount'],
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'expdate'=> $this->chgDate($request->expdate),  
+                        'batchno' => strtoupper($value['batchno']), 
+                        'recstatus' => 'OPEN'
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+
+                ///3. update total amount to header
+                DB::table('material.ivtmphd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->update([
+                        'amount' => $totalAmount, 
+                    ]);
+            }
+
+            
 
             DB::commit();
             return response($totalAmount,200);

@@ -394,7 +394,7 @@ class InventoryTransactionController extends defaultController
     public function save_dt_from_othr_ivreq($refer_recno,$recno){
         $ivreq_dt = DB::table('material.ivreqdt')
                 ->select('compcode', 'recno', 'lineno_', 'itemcode', 'uomcode', 'pouom',
-                'maxqty', 'qtyonhand', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
+                'maxqty', 'qtyonhand', 'qtyrequest', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
                 'recstatus')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
@@ -415,6 +415,7 @@ class InventoryTransactionController extends defaultController
                         'uomcode' => $value->uomcode, 
                         'uomcoderecv' => $value->pouom, 
                         'txnqty' => $value->qtytxn, 
+                        'qtyrequest' => $value->qtyrequest, 
                        // 'maxqty' => $value->maxqty, 
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now(), 

@@ -15,8 +15,8 @@ $(document).ready(function () {
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			console.log(errorField)
 			if(errorField.length>0){
+				console.log(errorField)
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -72,7 +72,7 @@ $(document).ready(function () {
 			}if(oper!='add'){
 				dialog_trantype.check(errorField);
 				dialog_txndept.check(errorField);
-				dialog_requestRecNo.check(errorField);
+				// dialog_requestRecNo.check(errorField);
 			}if(oper!='view'){
 				dialog_trantype.on();
 				dialog_txndept.on();
@@ -300,7 +300,7 @@ $(document).ready(function () {
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
-			reqRecNo();
+			// reqRecNo();
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -311,7 +311,7 @@ $(document).ready(function () {
 			oper='edit';
 			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
-			reqRecNo();
+			// reqRecNo();
 			refreshGrid("#jqGrid2",urlParam2);
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -356,14 +356,18 @@ $(document).ready(function () {
 				break;
 			case 'ADJUSTMENT':
 				caseAdjustment(crdbfl);
+				hideReqRecNo();
 				break;
 			case 'LOAN':
 				caseAdjustment(crdbfl);
+				hideReqRecNo();
 				break;
 			case 'ISSUE':
 				caseAdjustment(crdbfl);
+				showReqRecNo();
 				break;
 			case 'OTHERS':
+				hideReqRecNo();
 				break;
 		}
 
@@ -373,7 +377,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setColProp', 'netprice', 
 				{formatter:'currency', 
 				formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
-				 editrules:{required:true}, editable:true, editoptions: {readonly: 'readonly'}});
+				 editrules:{required:true}, editable:true, editoptions: {readonly: null}});
 
 			$("#jqGrid2").jqGrid('setColProp', 'expdate', 
 				{ width: 130, classes: 'wrap', editable:true,
@@ -509,19 +513,18 @@ $(document).ready(function () {
 				hideReqRecNo();
 				break;
 		}
+	}
 
-		function hideReqRecNo(){
-			$("label[for=srcdocno]").hide();
-			$("#srcdocno_parent").hide();
-			$("#srcdocno").removeAttr('required');
-		}
+	function hideReqRecNo(){
+		$("label[for=srcdocno]").hide();
+		$("#srcdocno_parent").hide();
+		$("#srcdocno").removeAttr('required');
+	}
 
-		function showReqRecNo(){
-			$("label[for=srcdocno]").show();
-			$("#srcdocno_parent").show();
-			$("#srcdocno").attr('required',true);
-		}
-
+	function showReqRecNo(){
+		$("label[for=srcdocno]").show();
+		$("#srcdocno_parent").show();
+		$("#srcdocno").attr('required',true);
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -720,7 +723,7 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'/util/get_table_default',
 		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
-		'ivt.txnqty','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
+		'ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN', 'LEFT JOIN'],
@@ -831,21 +834,6 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			/*{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'expdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-                        });
-                    }
-                }
-			},*/
 			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
@@ -1127,35 +1115,27 @@ $(document).ready(function () {
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
 		        	function(self){
 		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				    }
+			        }
 			    );
 
 				dialog_expdate.id_optid = ids[i];
-		        dialog_expdate.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        dialog_expdate.check('errorField',ids[i]+"_expdate","jqGrid2",null,
 		        	function(self){
 		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				    }
+			        }
 			    );
 
 		        dialog_uomcoderecv.id_optid = ids[i];
-		        dialog_uomcoderecv.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        dialog_uomcoderecv.check(errorField,ids[i]+"_uomcoderecv","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
 			    );
 
 				dialog_uomcodetrdept.id_optid = ids[i];
-		        dialog_uomcodetrdept.check(errorField,ids[i]+"_pouom","jqGrid2",null,
+		        dialog_uomcodetrdept.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self){
-						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
 			    );
 
@@ -1177,7 +1157,6 @@ $(document).ready(function () {
 			mycurrency_np.formatOff();
 
 			if(errorField.length>0){
-				console.log(errorField)
 				return false;
 			}
 
@@ -1185,7 +1164,6 @@ $(document).ready(function () {
 			//	if(parseInt($('#'+ids[i]+"_qtyrequest").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 				let retval = check_cust_rules("#jqGrid2",data);
-				console.log(retval);
 				if(retval[0]!= true){
 					alert(retval[1]);
 					return false;
@@ -1199,8 +1177,15 @@ $(document).ready(function () {
 		    		'itemcode' : $("#jqGrid2 input#"+ids[i]+"_itemcode").val(),
 		    		'uomcode' : $("#jqGrid2 input#"+ids[i]+"_uomcode").val(),
 		    		'uomcoderecv' : $("#jqGrid2 input#"+ids[i]+"_uomcoderecv").val(),
+		    		'netprice' : $('#'+ids[i]+"_netprice").val(),
+		    		'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
+		    		'qtyonhandrecv' : $('#'+ids[i]+"_qtyonhandrecv").val(),
 		    		'txnqty' : $('#'+ids[i]+"_txnqty").val(),
-                    'unit' : $("#"+ids[i]+"_unit").val()
+                    'unit' : $("#"+ids[i]+"_unit").val(),
+		    		'amount' : $('#'+ids[i]+"_amount").val(),
+		    		'batchno' : $('#'+ids[i]+"_batchno").val(),
+		    		'expdate' : $('#'+ids[i]+"_expdate").val(),
+
 		    	}
 
 		    	jqgrid2_data.push(obj);
@@ -1288,13 +1273,14 @@ $(document).ready(function () {
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value,name){
-		var temp;
+		var temp=null;
 		switch(name){
 			case 'Item Code':temp=$('#itemcode');break;
 			case 'UOM Code Tran Dept':temp=$('#uomcode');break;
 			case 'UOM Code Recv Dept':temp=$('#uomcoderecv');break;
 			case 'Expiry Date':temp=$('#expdate');break;
 		}
+		if(temp == null) return [true,''];
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
 
@@ -1520,10 +1506,16 @@ $(document).ready(function () {
 
 	////////////////////////////////////////calculate amount////////////////////////////
 	function calculate_amount_and_other(event){
+
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
 		var fail=false,fail_msg="";
-		let qtyonhand=parseInt($("#jqGrid2 input[name='qtyonhand']").val());
-		let txnqty=parseInt($("input[name='txnqty']").val());
-		let netprice=parseFloat($("input[name='netprice']").val());
+		let qtyonhand=parseInt($("#jqGrid2 #"+id_optid+"_qtyonhand").val());
+		let txnqty=parseInt($("#jqGrid2 #"+id_optid+"_txnqty").val());
+		let netprice=parseFloat($("#jqGrid2 #"+id_optid+"_netprice").val());
+		console.log(txnqty);
+
 		let crdbfl=$('#crdbfl').val();
 		let isstype=$('#isstype').val();
 		if(event.target.name=='txnqty'){
@@ -1531,19 +1523,19 @@ $(document).ready(function () {
 				case "Out":
 					if(event.target.value >= qtyonhand && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
-						event.target.value=$("input[name='txnqty']").val();fail=true;
+						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
 					}else if(qtyonhand<event.target.value){
 						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("input[name='txnqty']").val();fail=true;
+						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
 					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
 						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("input[name='txnqty']").val();fail=true;
+						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
 					}
 					break;
 				case "In":
 					if(event.target.name == 0 && isstype=='Others'){
 						fail_msg = "Transaction Quantity Cannot Be Zero";
-						event.target.value=$("input[name='txnqty']").val();fail=true;
+						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
 					}
 					break;
 				default:
@@ -1557,7 +1549,7 @@ $(document).ready(function () {
 		}
 		errorIt(event.target.name,errorField,fail,fail_msg);
 		let amount=txnqty*netprice;
-		$("#jqGrid2 input[name='amount']").val(amount.toFixed(4));
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount.toFixed(4));
 	}
 
 	
@@ -1589,8 +1581,11 @@ $(document).ready(function () {
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+
+
+		$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
 	
-		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
+		// $("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
@@ -1611,7 +1606,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 
 		onSelectRow:function(rowid, selected){
-			inputTrantypeValue();
+			// inputTrantypeValue();
 		},
 
 		gridComplete:function(){
@@ -1675,7 +1670,7 @@ $(document).ready(function () {
 
 				$('#crdbfl').val(data['crdbfl']);
 				$('#isstype').val(data['isstype']);
-				reqRecNo(data['isstype']);
+				// reqRecNo(data['isstype']);
 				
 				$("#sndrcvtype").val("");
 				$('#trandate').focus();
@@ -1857,11 +1852,11 @@ $(document).ready(function () {
 			
 		},{
 			title:"Select UOM Code For Item",
-			open:function(){
+			open:function(obj){
 				dialog_uomcodetrdept.urlParam.fixPost="true";
 				dialog_uomcodetrdept.urlParam.table_id="none_";
 				dialog_uomcodetrdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcodetrdept.urlParam.filterVal=['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
+				dialog_uomcodetrdept.urlParam.filterVal=['session.compcode',$('#txndept').val(),$("#jqGrid2 input#"+obj.id_optid+"_itemcode").val(),moment($('#trandate').val()).year()];
 				dialog_uomcodetrdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
 				dialog_uomcodetrdept.urlParam.join_onCol=['s.itemcode','s.uomcode'];
 				dialog_uomcodetrdept.urlParam.join_onVal=['p.itemcode','u.uomcode'];
@@ -1982,7 +1977,7 @@ $(document).ready(function () {
 	dialog_uomcoderecv.makedialog(true);
 */
 	var dialog_expdate = new ordialog(
-		'expdate',['material.stockexp'],"#jqGrid2 input[name='expdate']",errorField,
+		'expdate',['material.stockexp'],"#jqGrid2 input[name='expdate']",'errorField',
 		{	colModel:
 			[
 				{label:'Expiry Date',name:'expdate',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true,},
@@ -2020,7 +2015,7 @@ $(document).ready(function () {
 	dialog_expdate.makedialog(false);
 
 	var dialog_requestRecNo = new ordialog(
-		'srcdocno','material.ivreqhd','#srcdocno',errorField,
+		'srcdocno','material.ivreqhd','#srcdocno','errorField',
 		{	colModel:[
 				{label:'Request RecNo',name:'recno',width:100,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Remarks',name:'remarks',width:100,classes:'pointer', hidden:true},
@@ -2139,6 +2134,17 @@ $(document).ready(function () {
 	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
 	genpdf.printEvent();
 
+	function check_cust_rules(grid,data){
+		var cust_val =  true;
+		Object.keys(data).every(function(v,i){
+			cust_val = cust_rules('', $(grid).jqGrid('getGridParam','colNames')[i]);
+			if(cust_val[0] == false){
+				return false;
+			}return true
+		});
+		return cust_val;
+	}
+
 });
 
 function populate_form(obj){
@@ -2157,3 +2163,4 @@ function empty_form(){
 	$('#docno_show').text('');
 
 }
+

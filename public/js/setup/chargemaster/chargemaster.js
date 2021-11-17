@@ -115,6 +115,7 @@
 					dialog_chgtype.on();
 					dialog_doctorcode.on();
 					dialog_deptcode.on();
+					dialog_uom.on();
 				}
 				if(oper!='add'){
 					///toggleFormData('#jqGrid','#formdata');
@@ -123,6 +124,7 @@
 					dialog_chgtype.check(errorField);
 					dialog_doctorcode.check(errorField);
 					dialog_deptcode.check(errorField);
+					dialog_uom.check(errorField);
 				}
 			},
 			close: function( event, ui ) {
@@ -137,6 +139,7 @@
 				dialog_chgtype.off();
 				dialog_doctorcode.off();
 				dialog_deptcode.off();
+				dialog_uom.off();
 				if(oper=='view'){
 					$(this).dialog("option", "buttons",butt1);
 				}
@@ -2924,6 +2927,43 @@
 		);
 		dialog_dtlchgcode.makedialog();
 
+		var dialog_uom = new ordialog(
+			'uom','material.uom','#uom',errorField,
+			{	colModel:[
+					{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode'],
+					filterVal:['ACTIVE','session.compcode']
+				},
+				ondblClickRow:function(){
+					console.log(oper);
+					if(oper == 'add'){
+						get_chg_productmaster($('#cm_chgcode').val(),$(dialog_uom.textfield).val());
+					}
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#suppcode').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}		
+			},
+			{
+				title:"Select UOM",
+				open: function(){
+					dialog_uom.urlParam.filterCol = ['recstatus','compcode'];
+					dialog_uom.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
+				}
+			},'urlParam','radio','notab',false
+		);
+		dialog_uom.makedialog(true);
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -2941,36 +2981,41 @@
 			$("#jqGrid4").jqGrid ('setGridWidth', Math.floor($("#jqGrid4_c")[0].offsetWidth-$("#jqGrid4_c")[0].offsetLeft-28));
 		});
 
-		$('#cm_chgcode').on('blur',function(){
-			get_chg_productmaster($(this).val());
-		});
-
-		function get_chg_productmaster(itemcode){
+		function get_chg_productmaster(itemcode,uom){
 			var param={
 				action:'get_value_default',
 				url: '/util/get_value_default',
-				field:['cm_uom','cm_invflag','cm_packqty','cm_druggrcode','cm_subgroup','cm_stockcode'],
+				field:['cm_uom','cm_invflag','cm_packqty','cm_druggrcode','cm_subgroup','cm_stockcode','cm_chgclass','cm_chggroup','cm_chgtype','cm_invgroup'],
 				table_name:'material.product',
-				filterCol:['compcode','itemcode'],
-				filterVal:['session.compcode',itemcode]
+				filterCol:['compcode','itemcode','uomcode'],
+				filterVal:['session.compcode',itemcode,uom]
 			}
 			$.get( param.url+"?"+$.param(param), function( data ) {
 				
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data) && data.rows.length > 0){
-					$('#cm_uom').val(data.rows[0].cm_uom);
 					$('#cm_druggrcode').val(data.rows[0].cm_druggrcode);
-					$('input[type=radio][name=cm_invflag][value='+data.rows[0].cm_invflag+']').attr('checked','checked');
 					$('#cm_packqty').val(data.rows[0].cm_packqty);
 					$('#cm_stockcode').val(data.rows[0].cm_stockcode);
 					$('#cm_subgroup').val(data.rows[0].cm_subgroup);
+					$('#cm_chgclass').val(data.rows[0].cm_chgclass);
+					$('#cm_chggroup').val(data.rows[0].cm_chggroup);
+					$('#cm_chgtype').val(data.rows[0].cm_chgtype);
+					$('#cm_invgroup').val(data.rows[0].cm_invgroup);
+
+					
+					dialog_chggroup.check(errorField);
+					dialog_chgclass.check(errorField);
+					dialog_chgtype.check(errorField);
 				}else{
-					$('#cm_uom').val('');
 					$('#cm_druggrcode').val('');
-					$('#cm_invflag').val('');
 					$('#cm_packqty').val('');
 					$('#cm_stockcode').val('');
 					$('#cm_subgroup').val('');
+					$('#cm_chgclass').val('');
+					$('#cm_chggroup').val('');
+					$('#cm_chgtype').val('');
+					$('#cm_invgroup').val('');
 				}
 			});	
 		}
