@@ -152,6 +152,7 @@ i.fa {
 							<input id="idno" name="idno" type="hidden">
 							<input id="crdbfl" name="crdbfl" type="hidden">
 							<input id="isstype" name="isstype" type="hidden">
+							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="txndept">Transaction Department</label>

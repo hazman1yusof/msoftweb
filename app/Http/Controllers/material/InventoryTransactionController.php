@@ -393,20 +393,36 @@ class InventoryTransactionController extends defaultController
 
     public function save_dt_from_othr_ivreq($refer_recno,$recno){
         $ivreq_dt = DB::table('material.ivreqdt')
-        
-            ->where('recno', '=', $refer_recno)
-            ->where('compcode', '=', session('compcode'))
-            ->where('recstatus', '<>', 'DELETE')
-            ->get();
+                ->select('compcode', 'recno', 'lineno_', 'itemcode', 'uomcode', 'pouom',
+                'maxqty', 'qtyonhand', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
+                'recstatus')
+                ->where('recno', '=', $refer_recno)
+                ->where('compcode', '=', session('compcode'))
+                ->where('recstatus', '<>', 'DELETE')
+                ->get();
 
-        foreach ($do_dt as $key => $value){
-            ///1. insert detail we get from existing ivreq
-            $table = DB::table("material.ivreqdt");
-            $table->insert([
-                'ivtxnhddept' => $value->txndept,
-                'ivtxnhddocno' => $value->docno,
-            ]);
-        }
+                foreach ($pr_dt as $key => $value) {
+                    ///insert detail from existing inventory request
+                    $table = DB::table("material.ivtmpdt");
+                    $table->insert([
+                        'compcode' => session('compcode'), 
+                        'recno' => $recno, 
+                        'lineno_' => $value->lineno_, 
+                        'reqdept' => $value->reqdept, 
+                        'ivreqno' => $value->ivreqno,
+                        'reqlineno' => $value->reqlineno,
+                        'itemcode' => $value->itemcode, 
+                        'uomcode' => $value->uomcode, 
+                        'uomcoderecv' => $value->pouom, 
+                        'txnqty' => $value->qtytxn, 
+                        'maxqty' => $value->maxqty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now(), 
+                        'recstatus' => 'ACTIVE', 
+                    ]);
+        
+                    
+                }
     }
 
     public function check_sequence_backdated($ivtmphd){
