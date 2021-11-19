@@ -2026,7 +2026,7 @@ $(document).ready(function () {
 			sortorder: "desc",
 			urlParam: {
 				filterCol:['compcode','recstatus', 'reqdept'],
-				filterVal:['session.compcode', 'POSTED', $("#sndrcv").val()], 
+				filterVal:['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()], 
 			},	
 			ondblClickRow:function(){
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
