@@ -2024,7 +2024,7 @@ $(document).ready(function () {
 			sortorder: "desc",
 			urlParam: {
 				filterCol:['compcode','recstatus', 'reqdept'],
-				filterVal:['session.compcode', 'POSTED', $("#sndrcv").val()], 
+				filterVal:['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()], 
 			},	
 			ondblClickRow:function(){
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
@@ -2100,7 +2100,7 @@ $(document).ready(function () {
 			title:"Select Request RecNo",
 			open: function(){
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqdept'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED', $("#sndrcv").val()];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()];
 			}
 		}, 'none','radio','tab'
 	);
