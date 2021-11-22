@@ -2102,7 +2102,7 @@ $(document).ready(function () {
 			title:"Select Request RecNo",
 			open: function(){
 				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqdept'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED', $("#sndrcv").val()];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()];
 			}
 		}, 'none','radio','tab'
 	);
