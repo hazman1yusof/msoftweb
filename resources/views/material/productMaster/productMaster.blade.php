@@ -8,36 +8,39 @@
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%'>
 			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
+
+				<div class='col-md-5' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+					  <div class="col-md-6">
+					  	<label class="control-label" for="postGroupcode">Group Code</label>  
+					  	<select id="postGroupcode" name="postGroupcode" class="form-control input-sm">
+					      <option value="Asset">Asset</option>
+					      <option value="Stock" selected>Stock</option>
+					      <option value="Others">Others</option>
+					    </select>
+		        </div>
+					  <div class="col-md-6">
+					  	<label class="control-label" for="postClass">Class</label>  
+					  	<br>
+					  	<label class="radio-inline"><input type="radio" id="postClassPharmacy" name="postClass" value='Pharmacy' data-validation="required" checked>Pharmacy</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassNon-Pharmacy" name="postClass" value='Non-Pharmacy' data-validation="required">Non-Pharmacy</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassOther" name="postClass" value='Others' data-validation="required">Others</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassAsset" name="postClass" value='Asset' data-validation="required">Asset</label>
+		        </div>
+		      </div>
 				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+				<div class='col-md-7' style="padding:0 0 15px 0;">
+					<div class="ScolClass control-label">
+							<label name='Scol'>Search By : </label>
+					</div>
+					<div class="StextClass">
+						<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+					</div>
 				</div>
+
 			 </fieldset> 
 		</form>
-
-		<div class='col-md-12' style="padding:0 0 15px 0;">
-			<div class="form-group"> 
-			  <div class="col-md-4">
-			  	<label class="control-label" for="postGroupcode">Group Code</label>  
-			  	<select id="postGroupcode" name="postGroupcode" class="form-control input-sm">
-			      <option disabled selected>Please Select First</option>
-			      <option value="Asset">Asset</option>
-			      <option value="Stock">Stock</option>
-			      <option value="Others">Others</option>
-			    </select>
-              </div>
-			  <div class="col-md-4">
-			  	<label class="control-label" for="postClass">Class</label>  
-			  	<br>
-			  	<label class="radio-inline"><input type="radio" id="postClassPharmacy" name="postClass" value='Pharmacy' data-validation="required">Pharmacy</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassNon-Pharmacy" name="postClass" value='Non-Pharmacy' data-validation="required">Non-Pharmacy</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassOther" name="postClass" value='Others' data-validation="required">Others</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassAsset" name="postClass" value='Asset' data-validation="required">Asset</label>
-              </div>
-             </div>
-		</div>
 
 	  <div class="panel panel-default">
 		<div class="panel-body">

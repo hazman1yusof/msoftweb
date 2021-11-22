@@ -135,7 +135,7 @@ $(document).ready(function () {
 	var urlParam={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
+		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.trantime','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
 		table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
 		join_type:['LEFT JOIN'],
 		join_onCol:['ivt.trantype'],
@@ -1009,15 +1009,13 @@ $(document).ready(function () {
 	    	$("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
         	if(errorField.length>0)return false;
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0)return false;
+			// if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0)return false;
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			// console.log(data);
 
 			let editurl = "/inventoryTransactionDetail/form?"+
 				$.param({

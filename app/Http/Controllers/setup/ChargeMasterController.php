@@ -93,7 +93,7 @@ class ChargeMasterController extends defaultController
                     'chggroup' => $request->cm_chggroup,
                     'chgtype' => $request->cm_chgtype,
                     'recstatus' => $recstatus_use,
-                    'uom' => 'EA',
+                    'uom' => $request->cm_uom,
                     'invflag' => $request->cm_invflag,
                     'packqty' => $request->cm_packqty,
                     'druggrcode' => strtoupper($request->cm_druggrcode),

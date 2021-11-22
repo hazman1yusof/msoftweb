@@ -613,9 +613,8 @@ function showdetail(cellvalue, options, rowObject){
 function cust_rules(value,name){
 	var temp;
 	switch(name){
-		case 'Deptcode':temp=$('#dtl_deptcode');break;
-		case 'Deptcode':temp=$('#d_deptcode');break;
-	
+		case 'Department':temp=$('table#jqgrid2 input[name=dtl_deptcode]');break;
+		// case 'Department':temp=$('#d_deptcode');break;
 	}
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 }

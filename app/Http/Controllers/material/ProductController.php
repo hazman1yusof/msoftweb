@@ -32,6 +32,16 @@ class ProductController extends defaultController
                 if($request->action == 'save_productmaster'){
                     return $this->save_productmaster($request);
                 }else{
+                    $exists = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode)
+                            ->where('uomcode','=',$request->uomcode)
+                            ->where('unit','=',session('unit'))
+                            ->exists();
+
+                    if($exists){
+                        return response('Error itemcode and uom already exists', 500);
+                    }
                     return $this->defaultAdd($request);
                 }
             case 'edit':

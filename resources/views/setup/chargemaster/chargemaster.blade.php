@@ -202,10 +202,10 @@ input.uppercase {
 							<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 
-						<label class="col-md-2 control-label" for="uomcode">UOM Code</label>
+						<label class="col-md-2 control-label" for="cm_uom">UOM Code</label>
 						<div class="col-md-3">
 			  				<div class="input-group">
-								<input id="uom" name="uom" type="text" class="form-control input-sm text-uppercase" rdonly="">
+								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm text-uppercase" rdonly="">
 								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 			  				</div>
 			  					<span class="help-block"></span>

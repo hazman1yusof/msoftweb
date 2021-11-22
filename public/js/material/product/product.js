@@ -718,13 +718,11 @@ $(document).ready(function () {
 	var saveParam={
 		action:'save_table_default',
 		url:'product/form',
-		noduplicate:true,
 		field:'',
 		oper:oper,
 		table_name:'material.product',
-		table_id:'idno',
-		saveip:'true',
-		checkduplicate:'true'
+		table_id:'itemcode',
+		saveip:'true'
 	};
 	
 	$("#jqGrid").jqGrid({
@@ -802,6 +800,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
 			if(searched){
@@ -963,10 +962,8 @@ $(document).ready(function () {
 	function showing_charges_fieldset(){
 		if($("input[type='radio'][name='chgflag'][value='1']").is(":checked")){
 			$('#charges_fieldset').show();
-			$('#charges_fieldset input').attr('data-validation','required');
 		}else{
 			$('#charges_fieldset').hide();
-			$('#charges_fieldset input').removeAttr('data-validation');
 		}
 	}
 

@@ -271,7 +271,8 @@
 					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				}
 
-				// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				$("#searchForm input[name=Stext]").focus();
 			},
 			beforeRequest: function(){
 				refreshGrid("#jqGrid3",null,"kosongkan");

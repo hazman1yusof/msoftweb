@@ -709,7 +709,7 @@ $(document).ready(function () {
 
 			},
 			{
-				label: 'Qty Supplied', name: 'qtytxn', width: 100, align: 'right', classes: 'wrap',
+				label: 'Qty Balanced', name: 'qtybalance', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },

@@ -73,32 +73,32 @@ class PurchaseOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $purordno = $this->purordno('PO',$request->purordhd_prdept);
-        $recno = $this->recno('PUR','PO');
         // $purreqno = $this->purreqno($request->purordhd_purreqno);
 
 
         DB::beginTransaction();
 
-        $table = DB::table("material.purordhd");
-
-        $array_insert = [
-            'trantype' => 'PO', 
-            'recno' => $recno,
-            'purordno' => $purordno,
-            // 'purreqno' => $purreqno,
-            'compcode' => session('compcode'),
-            'unit' => session('unit'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now(),
-            'recstatus' => 'OPEN'
-        ];
-
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+            $purordno = $this->request_no('PO',$request->purordhd_prdept);
+            $recno = $this->recno('PUR','PO');
+
+            $table = DB::table("material.purordhd");
+
+            $array_insert = [
+                'trantype' => 'PO', 
+                'recno' => $recno,
+                'purordno' => $purordno,
+                // 'purreqno' => $purreqno,
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now(),
+                'recstatus' => 'OPEN'
+            ];
+
+            foreach ($field as $key => $value) {
+                $array_insert[$value] = $request[$request->field[$key]];
+            }
 
             $idno = $table->insertGetId($array_insert);
 
@@ -132,7 +132,7 @@ class PurchaseOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
