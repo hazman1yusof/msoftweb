@@ -709,6 +709,11 @@ $(document).ready(function () {
 
 			},
 			{
+				label: 'Qty Balance', name: 'qtybalance', width: 100, align: 'right', classes: 'wrap', editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
+			},
+			{
 				label: 'Qty Supplied', name: 'qtytxn', width: 100, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
@@ -1048,6 +1053,8 @@ $(document).ready(function () {
 		    		'uomcode' : $("#jqGrid2 input#"+ids[i]+"_uomcode").val(),
 		    		'pouom' : $("#jqGrid2 input#"+ids[i]+"_pouom").val(),
 		    		'qtyrequest' : $('#'+ids[i]+"_qtyrequest").val(),
+					'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
+					'qohconfirm' : $('#'+ids[i]+"_qohconfirm").val(),
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
 
@@ -1061,6 +1068,7 @@ $(document).ready(function () {
 				ivreqno:$('#ivreqno').val(),
 				reqdt:$('#reqdt').val(),
 				reqdept:$('#reqdept').val(),
+				qtyonhand:$('#qtyonhand').val(),
     		}
 
     		$.post( "/inventoryRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){

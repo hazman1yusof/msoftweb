@@ -79,33 +79,8 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
-        $recno = $this->recno('PUR','PR');
 
         DB::beginTransaction();
-
-        $table = DB::table("material.purreqhd");
-
-        $array_insert = [
-            'trantype' => 'PR', 
-            'purreqno' => $request_no,
-            'recno' => $recno,
-            'compcode' => session('compcode'),
-            'unit' => session('unit'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN',
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
-
-        ];
 
         // foreach ($field as $key => $value) {
         //     if($value =='remarks' || $value =='prdept' || $value =='suppcode' || $value =='reqdept'){
@@ -116,6 +91,33 @@ class PurchaseRequestController extends defaultController
         // }
         
         try {
+
+            $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
+            $recno = $this->recno('PUR','PR');
+
+            $table = DB::table("material.purreqhd");
+
+            $array_insert = [
+                'trantype' => 'PR', 
+                'purreqno' => $request_no,
+                'recno' => $recno,
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN',
+                'reqdept' => strtoupper($request->purreqhd_reqdept),
+                'prdept' => strtoupper($request->purreqhd_prdept),
+                'purreqdt' => strtoupper($request->purreqhd_purreqdt),
+                'suppcode' => strtoupper($request->purreqhd_suppcode),
+                'totamount' => $request->purreqhd_totamount,
+                'remarks' => strtoupper($request->purreqhd_remarks),
+                'perdisc' => $request->purreqhd_perdisc,
+                'amtdisc' => $request->purreqhd_amtdisc,
+                'subamount' => $request->purreqhd_subamount
+
+            ];
+
             $idno = $table->insertGetId($array_insert);
             
             $totalAmount = 0;

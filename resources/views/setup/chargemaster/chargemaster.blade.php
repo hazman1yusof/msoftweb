@@ -202,21 +202,33 @@ input.uppercase {
 							<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 
-						<label class="col-md-2 control-label" for="cm_description">Description</label>  
+						<label class="col-md-2 control-label" for="cm_uom">UOM Code</label>
 						<div class="col-md-3">
-							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm uppercase" data-validation="required">
+			  				<div class="input-group">
+								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm text-uppercase" rdonly="">
+								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+			  				</div>
+			  					<span class="help-block"></span>
 						</div>
 					</div>   
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
+						<label class="col-md-2 control-label" for="cm_description">Description</label>  
 						<div class="col-md-3">
-							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm uppercase">
+							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_brandname">Generic</label>  
 						<div class="col-md-3">
 							<input id="cm_brandname" name="cm_brandname" type="text" class="form-control input-sm uppercase">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
+						<div class="col-md-3">
+							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm uppercase">
 						</div>
 					</div>
 
@@ -274,19 +286,7 @@ input.uppercase {
 					<hr>
 
 					<fieldset class="scheduler-border">
-						<legend class="scheduler-border">Inventory</legend> 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
-							<div class="col-md-3">
-								<input id="cm_uom" name="cm_uom" type="text" value="EA" class="form-control input-sm uppercase" rdonly>
-							</div>
-
-							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
-							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' dsabled>Yes</label>
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='0' dsabled>No</label>
-							</div>
-						</div>
+						<legend class="scheduler-border">Inventory</legend>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  

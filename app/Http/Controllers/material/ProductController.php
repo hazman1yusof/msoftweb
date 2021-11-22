@@ -32,6 +32,16 @@ class ProductController extends defaultController
                 if($request->action == 'save_productmaster'){
                     return $this->save_productmaster($request);
                 }else{
+                    $exists = DB::table('material.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('itemcode','=',$request->itemcode)
+                            ->where('uomcode','=',$request->uomcode)
+                            ->where('unit','=',session('unit'))
+                            ->exists();
+
+                    if($exists){
+                        return response('Error itemcode and uom already exists', 500);
+                    }
                     return $this->defaultAdd($request);
                 }
             case 'edit':
@@ -64,12 +74,14 @@ class ProductController extends defaultController
                 'recstatus' => 'ACTIVE',
                 'computerid' => $request->computerid,
                 'ipaddress' => $request->ipaddress,
-                'cm_uom' => $request->cm_uom,
-                'cm_invflag' => $request->cm_invflag,
                 'cm_packqty' => $request->cm_packqty,
                 'cm_druggrcode' => $request->cm_druggrcode,
                 'cm_subgroup' => $request->cm_subgroup,
                 'cm_stockcode' => $request->cm_stockcode,
+                'cm_chgclass' => $request->cm_chgclass,
+                'cm_chggroup' => $request->cm_chggroup,
+                'cm_chgtype' => $request->cm_chgtype,
+                'cm_invgroup' => $request->cm_invgroup,
             ];
 
             $er = $this->defaultAdd($request);
@@ -124,12 +136,14 @@ class ProductController extends defaultController
                 'expdtflg' => $request->expdtflg,
                 'chgflag' => $request->chgflag,
                 'itemtype' => $request->itemtype,
-                'cm_uom' => $request->cm_uom,
-                'cm_invflag' => $request->cm_invflag,
                 'cm_packqty' => $request->cm_packqty,
                 'cm_druggrcode' => $request->cm_druggrcode,
                 'cm_subgroup' => $request->cm_subgroup,
                 'cm_stockcode' => $request->cm_stockcode,
+                'cm_chgclass' => $request->cm_chgclass,
+                'cm_chggroup' => $request->cm_chggroup,
+                'cm_chgtype' => $request->cm_chgtype,
+                'cm_invgroup' => $request->cm_invgroup,
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'ACTIVE',

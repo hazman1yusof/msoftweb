@@ -34,6 +34,7 @@
 					<label class="radio-inline"><input type="radio" name="isstype" value='ADJUSTMENT'>Adjustment</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='LOAN'>Loan</label>
 					<label class="radio-inline"><input type="radio" name="isstype" value='WRITE-OFF'>Write Off</label>
+					<label class="radio-inline"><input type="radio" name="isstype" value='NONE'>None</label>
 				  </div>
 				
 				  <label class="col-md-2 control-label" for="trbyiv">Transaction By Inventory</label>  
@@ -83,7 +84,14 @@
                             <tr>
 				 			
                                 <td><label class="radio-inline"><input type="radio" name="accttype" value='WRITE OFF'>Write Off</label></td>
-                               <td> <label class="radio-inline"><input type="radio" name="accttype" value='OTHERS'>Others</label></td>
+                               <td> <label class="radio-inline">
+                               	<input type="radio" name="accttype" value='OTHERS'>Others</label>
+                               </td>
+                               <td> 
+	                               	<label class="radio-inline">
+		                               	<input type="radio" name="accttype" value='NONE'>None
+		                               </label>
+                               </td>
                                
                                </tr>
                                </table>				

@@ -26,6 +26,8 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency = new currencymode(['#purreqhd_amtdisc', '#purreqhd_subamount','#purreqhd_totamount']);
+	var sequence = new Sequences('PR','#purreqhd_purreqdt');
+	sequence.set($("#deptcode").val()).get();
 	var fdl = new faster_detail_load();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -49,7 +51,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						$("#purreqhd_reqdept").val($("#x").val());
+						$("#purreqhd_reqdept").val($("#deptcode").val());
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -1576,6 +1578,8 @@ $(document).ready(function () {
 			},
 			ondblClickRow: function () {
 				$('#purreqhd_prdept').focus();
+				let data=selrowData('#'+dialog_reqdept.gridname);
+				sequence.set(data['deptcode']).get();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

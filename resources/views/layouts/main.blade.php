@@ -113,7 +113,7 @@
 			position: relative;
 			padding-left: 65px;
 			margin-top: 25px;
-			padding-right: 60%;
+			padding-right: 40%;
 		}
 		.Stext2{
 		    position: absolute;

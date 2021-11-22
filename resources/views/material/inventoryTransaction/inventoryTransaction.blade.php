@@ -152,6 +152,7 @@ i.fa {
 							<input id="idno" name="idno" type="hidden">
 							<input id="crdbfl" name="crdbfl" type="hidden">
 							<input id="isstype" name="isstype" type="hidden">
+							<input id="referral" name="referral" type="hidden">
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="txndept">Transaction Department</label>
@@ -196,7 +197,7 @@ i.fa {
 						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
 						  			<div class="col-md-2" id="srcdocno_parent">
 									  	<div class='input-group'>
-											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm text-uppercase">
+											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm text-uppercase" rdonly>
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										</div>
 						  			</div>

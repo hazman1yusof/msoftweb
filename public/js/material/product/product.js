@@ -377,6 +377,76 @@ $(document).ready(function () {
 	);
 	dialog_product_infront_others.makedialog(true);
 
+	var dialog_chggroup = new ordialog(
+		'chggroup', 'hisdb.chggroup', '#cm_chggroup', 'errorField',
+		{
+			colModel: [
+				{ label: 'Group Code', name: 'grpcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			}
+		},{
+			title: "Select Group Code",
+			open: function () {
+				dialog_chggroup.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_chggroup.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_chggroup.makedialog(true);
+
+	var dialog_chgtype = new ordialog(
+		'chgtype', 'hisdb.chgtype', '#cm_chgtype', 'errorField',
+		{
+			colModel: [
+				{ label: 'Charge Type', name: 'chgtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', checked: true, canSearch: true,  or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			}
+		},{
+			title: "Select Charge Type",
+			open: function () {
+				dialog_chgtype.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_chgtype.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_chgtype.makedialog(true);
+
+	var dialog_chgclass= new ordialog(
+		'cm_chgclass','hisdb.chgclass','#cm_chgclass',errorField,
+		{	colModel:[
+				{label:'Class Code',name:'classcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+		},
+		{
+			title:"Select Class Code",
+			open: function(){
+				dialog_chgclass.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_chgclass.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+				
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_chgclass.makedialog(true);
+
 
 
 	function dialog_cat_selection_event(){
@@ -579,13 +649,19 @@ $(document).ready(function () {
 				dialog_mstore.on();
 				dialog_subcategory.on();
 				dialog_taxCode.on();
+				dialog_chgclass.on();
+				dialog_chgtype.on();
+				dialog_chggroup.on();
 			}if(oper!='add'){
 				showing_charges_fieldset();
 				dialog_pouom.check(errorField);
 				dialog_suppcode.check(errorField);
 				dialog_mstore.check(errorField);
 				dialog_subcategory.check(errorField);
-				dialog_taxCode.check(errorField);		 
+				dialog_taxCode.check(errorField);	
+				dialog_chgclass.check(errorField);
+				dialog_chgtype.check(errorField);
+				dialog_chggroup.check(errorField);
 			}if(oper == 'add') {
 				dialog_itemcode.on();
 				dialog_pouom.off();
@@ -593,6 +669,9 @@ $(document).ready(function () {
 				dialog_mstore.off();
 				dialog_subcategory.off();
 				dialog_taxCode.off();
+				dialog_chgclass.off();
+				dialog_chgtype.off();
+				dialog_chggroup.off();
 			}
 		},
 		close: function( event, ui ) {
@@ -610,6 +689,9 @@ $(document).ready(function () {
 			dialog_mstore.off();
 			dialog_subcategory.off();
 			dialog_taxCode.off();
+			dialog_chgclass.off();
+			dialog_chgtype.off();
+			dialog_chggroup.off();
 
 			$('.my-alert').detach();
 			if(oper=='view'){
@@ -636,13 +718,11 @@ $(document).ready(function () {
 	var saveParam={
 		action:'save_table_default',
 		url:'product/form',
-		noduplicate:true,
 		field:'',
 		oper:oper,
 		table_name:'material.product',
-		table_id:'idno',
-		saveip:'true',
-		checkduplicate:'true'
+		table_id:'itemcode',
+		saveip:'true'
 	};
 	
 	$("#jqGrid").jqGrid({
@@ -688,6 +768,10 @@ $(document).ready(function () {
 			{ label: 'cm_druggrcode', name: 'cm_druggrcode', width: 50, hidden:true },
 			{ label: 'cm_subgroup', name: 'cm_subgroup', width: 50, hidden:true },
 			{ label: 'cm_stockcode', name: 'cm_stockcode', width: 50, hidden:true },
+			{ label: 'cm_chgclass', name: 'cm_chgclass', width: 50, hidden:true },
+			{ label: 'cm_chggroup', name: 'cm_chggroup', width: 50, hidden:true },
+			{ label: 'cm_chgtype', name: 'cm_chgtype', width: 50, hidden:true },
+			{ label: 'cm_invgroup', name: 'cm_invgroup', width: 50, hidden:true },
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -716,6 +800,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
 			if(searched){
@@ -845,6 +930,9 @@ $(document).ready(function () {
 			dialog_mstore.on();
 			dialog_subcategory.on();
 			dialog_taxCode.on();
+			dialog_chgclass.on();
+			dialog_chgtype.on();
+			dialog_chggroup.on();
 
 			urlParam.filterCol = ['itemcode','uomcode'];
 			urlParam.filterVal = [$('#itemcodesearch').val(),$('#uomcodesearch').val()];
@@ -874,10 +962,8 @@ $(document).ready(function () {
 	function showing_charges_fieldset(){
 		if($("input[type='radio'][name='chgflag'][value='1']").is(":checked")){
 			$('#charges_fieldset').show();
-			$('#charges_fieldset input').attr('data-validation','required');
 		}else{
 			$('#charges_fieldset').hide();
-			$('#charges_fieldset input').removeAttr('data-validation');
 		}
 	}
 

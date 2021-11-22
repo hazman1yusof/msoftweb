@@ -329,7 +329,7 @@
 
 						   	<label class="col-md-2 control-label" for="itemtype">Item Type</label>  
 						  		<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="itemtype" value='NON-POISON' data-validation="required">Non-poison</label>
+									<label class="radio-inline"><input type="radio" name="itemtype" value='NON-POISON' data-validation="required" checked>Non-poison</label>
 									<label class="radio-inline"><input type="radio" name="itemtype" value='POISON'>Poison</label>
 						  		</div>
 						</div>
@@ -367,22 +367,12 @@
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
-								<div class="col-md-3 has-error">
+								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase error" data-validation="required" data-validation-error-msg=" " data-validation-has-keyup-event="true" style="border-color: rgb(185, 74, 72);">
+										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
-									<span class="help-block">Invalid Code</span>
-								<span class="help-block form-error">Invalid Code</span></div>
-
-								<label class="control-label col-md-2" for="cm_constype">Consultation Type</label>  
-								<div class="col-md-3">
-									<select class="form-control col-md-4" id="cm_constype" name="cm_constype" data-validation="" disabled="disabled">
-										<option value="A">Anaestetics</option>
-										<option value="C">Consultation</option>
-										<option value="S">Surgeon</option>
-										<option value="" selected="">None</option>
-									</select> 
+									<span class="help-block"></span>
 								</div>
 							</div>
 
@@ -407,12 +397,20 @@
 									<span class="help-block"></span>
 								</div>
 
-								<label class="col-md-2 control-label" for="cm_recstatus">Record Status</label>  
+								<label class="col-md-2 control-label" for="cm_invgroup">Inv. Group</label>
 								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="cm_recstatus" value="ACTIVE" checked="">Active</label>
-									<label class="radio-inline"><input type="radio" name="cm_recstatus" value="DEACTIVE">Deactive</label>
+									<select class="form-control col-md-4" id="cm_invgroup" name="cm_invgroup" data-validation="required">
+										<option value="" selected="selected">Select one</option>
+										<option value="CC">Charge Code</option>
+										<option value="CG">Charge Group</option>
+										<option value="CT">Charge Type</option>
+										<option value="DC">Doctor</option>
+									</select> 
 								</div>
+
 							</div>
+
+
 						</fieldset>
 
 						<!----charges----> 

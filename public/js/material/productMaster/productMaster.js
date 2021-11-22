@@ -165,7 +165,9 @@
 				rowNum: 30,
 				pager: "#jqGridPager",
 				ondblClickRow: function(rowid, iRow, iCol, e){
-					$("#jqGridPager td[title='Edit Selected Row']").click();
+					if($("#postGroupcode option:selected" ).val() != 'Please Select First'){
+						$("#jqGridPager td[title='Edit Selected Row']").click();
+					}
 				},
 				loadComplete: function(){
 
@@ -174,6 +176,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 					fdl.set_array().reset();
 
 					var pg = $("#postGroupcode option:selected" ).val();
@@ -193,13 +196,16 @@
 						$("#jqGridplus, td[title='Edit Selected Row'], td[title='Delete Selected Row'], td[title='View Selected Row']").show();
 					}
 				},
-				
 			});	
 
 			////////////////////////function hide radio button ////////////////////////////////////////////////
 			function hidePostClass() {
 				$("label[for=postClass]").hide();
 				$(":radio[name='postClass']").parent('label').hide();
+
+
+				$("#postClassPharmacy,#postClassNon-Pharmacy").parent('label').show();
+
 			}
 			function hideAssetClass(){
 				$(" :input[id='postClassAsset']").hide();

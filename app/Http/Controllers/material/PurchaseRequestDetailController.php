@@ -22,7 +22,6 @@ class PurchaseRequestDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                // dd('asd');
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
@@ -112,6 +111,7 @@ class PurchaseRequestDetailController extends defaultController
       //  $suppcode = $request->suppcode;
         $purreqdt = $request->purreqdt;
         $reqdept = $request->reqdept;
+        $duplicate = false;
 
         DB::beginTransaction();
 
@@ -163,6 +163,8 @@ class PurchaseRequestDetailController extends defaultController
                    // 'suppcode' => $request->suppcode,
                     'reqdept' => strtoupper($request->reqdept),
                     'qtyrequest' => $request->qtyrequest,
+                    'qtyapproved' => 0,
+                    'qtybalance' => $request->qtyrequest,
                     'unitprice' => $request->unitprice,
                     'taxcode' => strtoupper($request->taxcode),
                     'perdisc' => $request->perdisc,

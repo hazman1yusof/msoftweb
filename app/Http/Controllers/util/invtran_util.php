@@ -197,7 +197,7 @@ class invtran_util extends defaultController{
                 ->where('ItemCode','=',$value->itemcode)
                 ->where('UomCode','=',$value->uomcode);
 
-            if($value->expdate == NULL){
+            if($value->expdate == null){
                 $expdate_obj
                     ->orderBy('expdate', 'asc');
             }else{
