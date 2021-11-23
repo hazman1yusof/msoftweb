@@ -170,6 +170,11 @@ Route::get('/taxmast','setup\TaxMastController@show');
 Route::get('/taxmast/table','setup\TaxMastController@table');
 Route::post('/taxmast/form','setup\TaxMastController@form');
 
+//// Dosage setup ///
+Route::get('/dosage','setup\DosageController@show');
+Route::get('/dosage/table','setup\DosageController@table');
+Route::post('/dosage/form','setup\DosageController@form');
+
 //// Compcode setup page ///
 Route::get('/compcode','setup\CompcodeController@show');
 Route::get('/compcode/table','setup\CompcodeController@table');
