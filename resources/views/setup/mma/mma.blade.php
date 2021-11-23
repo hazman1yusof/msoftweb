@@ -47,7 +47,7 @@ i.fa {
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control">
+							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase"">
 						</div>
 		            </div>
 				</div>
