@@ -103,7 +103,7 @@
 				},
 				oneditfunc: function (rowid) {
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-					$("#description").focus().select();
+					$("#dosedesc").focus().select();
 					$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
 						var code = e.keyCode || e.which;
 						if (code == '9')$('#jqGrid_ilsave').click();

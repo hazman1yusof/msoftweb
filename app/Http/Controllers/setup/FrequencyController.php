@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class DosageController extends defaultController
+class FrequencyController extends defaultController
 {   
 
     var $table;
@@ -18,12 +18,12 @@ class DosageController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "dosecode";
+        $this->duplicateCode = "freqcode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.dosage.dosage');
+        return view('setup.frequency.frequency');
     }
 
     public function form(Request $request)
@@ -45,18 +45,18 @@ class DosageController extends defaultController
         DB::beginTransaction();
         try {
 
-            $dosage = DB::table('hisdb.dose')
-                            ->where('dosecode','=',$request->dosecode);
+            $frequency = DB::table('hisdb.freq')
+                            ->where('freqcode','=',$request->freqcode);
 
-            if($dosage->exists()){
+            if($frequency->exists()){
                 throw new \Exception("Record Duplicate");
             }
 
-            DB::table('hisdb.dose')
+            DB::table('hisdb.freq')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'dosecode' => strtoupper($request->dosecode),
-                    'dosedesc' => strtoupper($request->dosedesc),
+                    'freqcode' => strtoupper($request->freqcode),
+                    'freqdesc' => strtoupper($request->freqdesc),
                     'convfactor' => strtoupper($request->convfactor),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
@@ -83,11 +83,11 @@ class DosageController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.dose')
+            DB::table('hisdb.freq')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'dosecode' => strtoupper($request->dosecode),
-                    'dosedesc' => strtoupper($request->dosedesc),
+                    'freqcode' => strtoupper($request->freqcode),
+                    'freqdesc' => strtoupper($request->freqdesc),
                     'convfactor' => strtoupper($request->convfactor),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
@@ -106,7 +106,7 @@ class DosageController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.dose')
+        DB::table('hisdb.freq')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
