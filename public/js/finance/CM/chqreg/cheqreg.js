@@ -68,6 +68,9 @@ $(document).ready(function () {
 		gridComplete: function () {
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+
+				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				$("#searchForm input[name=Stext]").focus();
 			}
 			fdl.set_array().reset();
 			empty_form();

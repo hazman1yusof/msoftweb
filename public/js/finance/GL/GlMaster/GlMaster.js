@@ -85,6 +85,7 @@
 						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 					}
 					$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 
 					addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 					if(err_reroll.error == true){
