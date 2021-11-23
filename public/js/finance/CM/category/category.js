@@ -129,8 +129,8 @@
 				 colModel: [
 
 				 {label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Category Code', name: 'catcode', width: 45, checked:true, canSearch: true},
-					{label: 'Description', name: 'description', width: 200, classes: 'wrap', canSearch: true},					
+					{label: 'Category Code', name: 'catcode', width: 45, canSearch: true},
+					{label: 'Description', name: 'description', width: 200, classes: 'wrap', checked:true, canSearch: true},					
 					{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 					{label: 'Source', name: 'source', width: 90 , hidden: true},					
 					{label: 'Stock Account', name: 'stockacct', width: 90 ,  hidden: true},					

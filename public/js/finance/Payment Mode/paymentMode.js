@@ -339,6 +339,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 		},
 		
 		

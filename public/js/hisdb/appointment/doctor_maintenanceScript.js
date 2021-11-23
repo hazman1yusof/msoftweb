@@ -403,6 +403,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 
 					if(Type =='DOC'){
 						$("#pg_jqGridPager td[title='Add New Row']").hide();
