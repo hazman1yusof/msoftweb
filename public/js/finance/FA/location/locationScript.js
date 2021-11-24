@@ -47,7 +47,7 @@ $(document).ready(function () {
 			// 			editrules: { required: true }, 
 			// 			editoptions: {style: "text-transform: uppercase", maxlength:6 }
 			// 		},
-			{ label: 'Location Code', name: 'loccode', width: 15, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Location Code', name: 'loccode', width: 15, classes: 'wrap', canSearch: true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{

@@ -199,6 +199,7 @@ $(document).ready(function () {
 			}
 
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 		},
 		onSelectRow: function (rowid, selected) {
 			if (rowid != null) {

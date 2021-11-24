@@ -132,8 +132,8 @@
 				 colModel: [
 				 	{label: 'idno', name: 'idno', width: 90 , hidden: true},
 				 	{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Financial Class', name: 'debtortycode', width: 25, canSearch:true, checked:true},
-					{label: 'Description', name: 'description', width: 90, canSearch:true },
+					{label: 'Financial Class', name: 'debtortycode', width: 25, canSearch:true},
+					{label: 'Description', name: 'description', width: 90, canSearch:true, checked: true},
 					{label: 'Actual Cost', name: 'actdebccode', width: 40, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{label: 'Actual Account', name: 'actdebglacc', width: 60, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 					{label: 'Deposit Cost', name: 'depccode', width: 40, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
@@ -169,6 +169,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 					fdl.set_array().reset();
 				},
 				

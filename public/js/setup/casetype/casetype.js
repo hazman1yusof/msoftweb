@@ -41,14 +41,14 @@ $(document).ready(function () {
         editurl: "/casetype/form",
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
-            { label: 'Case Code', name: 'case_code', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
+            { label: 'Case Code', name: 'case_code', width: 30, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Description', name: 'description', width: 60, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
                 editoptions: {style: "text-transform: uppercase" }},
             { label: 'Source Type', name: 'grpcasetype', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"DELIVERY:DELIVERY;REGISTER:REGISTER"
                 }},
-            { label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)

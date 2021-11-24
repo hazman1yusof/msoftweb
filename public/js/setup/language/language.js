@@ -44,8 +44,8 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/language/form",
 		colModel: [
-			{ label: 'Language Code', name: 'Code', width: 25, classes: 'wrap', editable: true, checked: true, canSearch: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
-			{ label: 'Description', name: 'Description', width: 90, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
+			{ label: 'Language Code', name: 'Code', width: 25, classes: 'wrap', editable: true, canSearch: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
+			{ label: 'Description', name: 'Description', width: 90, classes: 'wrap', canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 

@@ -336,7 +336,7 @@ function populateSelect2(grid,form){
 
 	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
 		if(value['canSearch']){
-			if(value['selected']){
+			if(value['checked']){
 				$( form+" [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
 			}else{
 				$( form+" [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");

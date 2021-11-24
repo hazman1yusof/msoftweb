@@ -51,24 +51,24 @@ $(document).ready(function () {
 		editurl: "/postcode/form",
 		colModel: [
             { label: 'compcode', name: 'pc_compcode', hidden: true },
-            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'Place Name', name: 'pc_place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'District', name: 'pc_district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, 
+            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Place Name', name: 'pc_place_name', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'District', name: 'pc_district', width: 60, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, editable: true, 
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:StateCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true,
+			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, editable: true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:CountryCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'pc_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)

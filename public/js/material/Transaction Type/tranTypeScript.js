@@ -164,6 +164,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 				},
 				
 			});

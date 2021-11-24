@@ -286,9 +286,9 @@ $(document).ready(function () {
 		 	{label: 'idno', name: 'idno', width: 10 , hidden: true,  classes: 'wrap'},
 		 	{label: 'source', name: 'source', width: 10, hidden: true, classes: 'wrap'},
 		 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
-			{label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap'},
+			{label: 'Audit No', name: 'auditno', width: 27, checked: true, classes: 'wrap', canSearch:true},
 			{label: 'Payment No', name: 'pvno', width: 40, hidden: true, classes: 'wrap'},
-			{label: 'Transfer Date', name: 'actdate', width: 25, canSearch:true, checked:true, classes: 'wrap'},
+			{label: 'Transfer Date', name: 'actdate', width: 25, canSearch:true, classes: 'wrap'},
 			{label: 'Bank Code From', name: 'bankcode', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Bank Code To', name: 'payto', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
@@ -322,6 +322,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
 		onSelectRow: function(rowid, selected) {

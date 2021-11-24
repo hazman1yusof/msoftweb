@@ -145,8 +145,8 @@
 				datatype: "local",
 				 colModel: [
 					//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
-					{label: 'Category Code', name: 'catcode', width: 38, classes: 'wrap', checked:true, canSearch: true},
-					{label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true},					
+					{label: 'Category Code', name: 'catcode', width: 38, classes: 'wrap', canSearch: true},
+					{label: 'Description', name: 'description', width: 80, classes: 'wrap', checked:true, canSearch: true},					
 					{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					
 					{label: 'Source', name: 'source', width: 90 , hidden: true},								
 					{label: 'Class', name: 'class', width: 90 , hidden: true},				
@@ -193,6 +193,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 					fdl.set_array().reset();
 				},
 				

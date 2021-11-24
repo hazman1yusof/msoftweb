@@ -230,6 +230,9 @@ $(document).ready(function () {
         		getStockvalue(rowid,element);
         		rowid++;
         	});
+
+			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 		},
 
 		onSelectRow:function(rowid,selected){

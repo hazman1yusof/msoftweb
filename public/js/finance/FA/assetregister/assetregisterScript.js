@@ -580,6 +580,7 @@ $(document).ready(function () {
 			}
 
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
 			cbselect.show_hide_table();
@@ -801,7 +802,7 @@ $(document).ready(function () {
 	function searchBy(){
 		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
 			if(value['canSearch']){
-				if(value['selected']){
+				if(value['checked']){
 					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
 				}else{
 					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");

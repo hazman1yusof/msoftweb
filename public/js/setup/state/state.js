@@ -42,9 +42,9 @@ $(document).ready(function () {
 		editurl: "/state/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},		
-			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, checked: true, editable: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, editable: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Country Code', name: 'countryCode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
