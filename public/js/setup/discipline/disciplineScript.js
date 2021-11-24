@@ -48,11 +48,11 @@
 							editrules: { required: true }, 
 							editoptions: {style: "text-transform: uppercase", maxlength:4 }
 						},
-					{ label: 'Description', name: 'description', width: 15, canSearch: true, checked: true, editable: true, 
+					{ label: 'Description', name: 'description', width: 60, canSearch: true, checked: true, editable: true, 
 							editrules: { required: true }, 
 							editoptions: {style: "text-transform: uppercase", maxlength:100 }
 						},
-					{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+					{ label: 'Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
 							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 							cellattr: function(rowid, cellvalue)

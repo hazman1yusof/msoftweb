@@ -43,9 +43,9 @@ $(document).ready(function () {
 		 colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Area Code', name: 'areacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'Description', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Area Group', name: 'areagroup', width: 15, canSearch: true, classes: 'wrap txnum', checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }, align:'right'},
+			{ label: 'Area Code', name: 'areacode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'Description', width: 60, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Area Group', name: 'areagroup', width: 30, canSearch: true, classes: 'wrap txnum', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }, align:'right'},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },

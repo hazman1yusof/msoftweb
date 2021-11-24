@@ -173,7 +173,7 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
-			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
+			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, checked: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
 			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
@@ -401,7 +401,7 @@ $(document).ready(function () {
 	function searchBy() {
 		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
 			if (value['canSearch']) {
-				if (value['selected']) {
+				if (value['checked']) {
 					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
 				} else {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");

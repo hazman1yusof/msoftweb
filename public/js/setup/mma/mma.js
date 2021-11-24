@@ -38,8 +38,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'description', width: 80, canSearch: true, hidden:true},
+			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'description', width: 80, checked: true, canSearch: true, hidden:true},
 			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, 	edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}

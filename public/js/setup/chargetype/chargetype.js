@@ -186,7 +186,7 @@
 		function searchBy(){
 			$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
 				if(value['canSearch']){
-					if(value['selected']){
+					if(value['checked']){
 						$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
 					}else{
 						$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
