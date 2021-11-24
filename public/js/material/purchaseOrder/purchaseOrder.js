@@ -321,19 +321,19 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").purordhd_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			$('#but_post_single_jq,#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
+			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
 			if (stat == scope || stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
 			} else {
 				if(scope == 'ALL'){
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0 && stat=='OPEN'){
-						$('#but_cancel_jq,#but_post_single_jq').show();
+						$('#but_cancel_jq').show();
 					}else if(stat=='OPEN'){
 						$('#but_post_jq').show();
 					}
 				}else{
 					if($('#jqGrid_selection').jqGrid('getGridParam', 'reccount') <= 0){
-						$('#but_cancel_jq,#but_post_single_jq').show();
+						$('#but_cancel_jq').show();
 					}else{
 						$('#but_post_jq').show();
 					}
@@ -442,7 +442,7 @@ $(document).ready(function () {
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 
-	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
+	$("#but_reopen_jq,#but_cancel_jq").click(function(){
 
 		var idno = selrowData('#jqGrid').purordhd_idno;
 		var obj={};
@@ -1782,8 +1782,10 @@ $(document).ready(function () {
 				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
 			urlParam: {
-					filterCol:['h.reqdept','h.recstatus', 'h.purordno'],
-					filterVal:[$("#purordhd_reqdept").val(),'APPROVED', '0']
+					filterCol:['h.reqdept', 'h.purordno'],
+					filterVal:[$("#purordhd_reqdept").val(), '0'],
+					WhereInCol:['h.recstatus'],
+					WhereInVal:[['PARTIAL','APPROVED']]				
 				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
@@ -1872,8 +1874,10 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_purreqno.urlParam.fixPost = "true";
-				dialog_purreqno.urlParam.filterCol = ['h.reqdept','h.recstatus', 'h.purordno'];
-				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(),'APPROVED', '0'];
+				dialog_purreqno.urlParam.filterCol = ['h.reqdept', 'h.purordno'];
+				dialog_purreqno.urlParam.filterVal = [$("#purordhd_reqdept").val(), '0'];
+				dialog_purreqno.urlParam.WhereInCol = ['h.recstatus'];
+				dialog_purreqno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
 			}
 		},'none'
 	);

@@ -397,7 +397,7 @@ class InventoryTransactionController extends defaultController
     public function save_dt_from_othr_ivreq($refer_recno,$recno){
         $ivreq_dt = DB::table('material.ivreqdt')
                 ->select('compcode', 'recno', 'lineno_', 'itemcode', 'uomcode', 'pouom',
-                'maxqty', 'qtyonhand', 'qtyrequest', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
+                'maxqty', 'qtyonhand', 'qtyrequest', 'qtybalance', 'qtytxn', 'qohconfirm', 'reqdept', 'ivreqno',
                 'recstatus')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
@@ -469,7 +469,7 @@ class InventoryTransactionController extends defaultController
             if($ivreqhd->exists()){
                 $ivreqhd = $ivreqhd->first();
                 $ivreqdt = DB::table('material.ivreqdt')
-                            ->where('ivreqno','=',$ivreqhd->ivreqno)
+                            ->where('recno','=',$ivreqhd->ivreqno)
                             ->where('compcode', '=', session('compcode'))
                             ->where('recstatus', '<>', 'DELETE');
 
@@ -495,6 +495,7 @@ class InventoryTransactionController extends defaultController
                         DB::table('material.ivreqdt')
                             ->where('idno','=',$value->idno)
                             ->update([
+                                'recstatus' => $status,
                                 'qtybalance' => $newbalance
                             ]);
                     }

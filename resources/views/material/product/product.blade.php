@@ -374,6 +374,16 @@
 									</div>
 									<span class="help-block"></span>
 								</div>
+
+								<label class="col-md-2 control-label" for="cm_dosage">Dosage</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_dosage" name="cm_dosage" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
 							</div>
 
 							<div class="form-group">
@@ -385,6 +395,16 @@
 									</div>
 									<span class="help-block"></span>
 								</div>
+
+								<label class="col-md-2 control-label" for="cm_frequency">Frequency</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_frequency" name="cm_frequency" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
 							</div>
 
 							<div class="form-group">
@@ -397,6 +417,19 @@
 									<span class="help-block"></span>
 								</div>
 
+								<label class="col-md-2 control-label" for="cm_instruction">Instruction</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+							</div>
+
+
+							<div class="form-group">
 								<label class="col-md-2 control-label" for="cm_invgroup">Inv. Group</label>
 								<div class="col-md-3">
 									<select class="form-control col-md-4" id="cm_invgroup" name="cm_invgroup" data-validation="required">
@@ -409,6 +442,7 @@
 								</div>
 
 							</div>
+
 
 
 						</fieldset>

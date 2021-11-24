@@ -509,7 +509,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 
 		},'json').fail(function (data) {
-			alert(data.responseText);
+			$('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
 			unsaved = false;
 			hideatdialogForm(false);
@@ -741,7 +741,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
-				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
+				formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap', 
@@ -1781,10 +1781,12 @@ $(document).ready(function () {
 			sortname: 'h_recno',
 			sortorder: "desc",
 			urlParam: {
-						filterCol:['h.prdept','h.recstatus','h.compcode'],
-						filterVal:[$("#delordhd_prdept").val(),'APPROVED','session.compcode']
+						filterCol:['h.prdept','h.compcode'],
+						filterVal:[$("#delordhd_prdept").val(),'session.compcode'],
+						WhereInCol:['h.recstatus'],
+						WhereInVal:[['PARTIAL','APPROVED']]		
 					},
-		ondblClickRow: function () {
+			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
 				
 				$("#delordhd_srcdocno").val(data['h_purordno']);
@@ -1807,7 +1809,7 @@ $(document).ready(function () {
 				var urlParam2 = {
 					action: 'get_value_default',
 					url: '/util/get_value_default',
-					field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder',
+					field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtyoutstand',
 							 'podt.qtydelivered','podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount',
 							 'podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
 					table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
@@ -1838,7 +1840,7 @@ $(document).ready(function () {
 										pouom:elem['pouom'],
 										qtyorder:elem['qtyorder'],
 										qtydelivered:0,
-			    						qtyoutstand :elem['qtyorder'] - elem['qtydelivered'],
+			    						qtyoutstand :elem['qtyoutstand'],
 										unitprice:elem['unitprice'],
 										taxcode:elem['taxcode'],
 										perdisc:elem['perdisc'],
@@ -1867,8 +1869,10 @@ $(document).ready(function () {
 			open: function(){
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_srcdocno.urlParam.fixPost = "true";
-				dialog_srcdocno.urlParam.filterCol = ['h.prdept','h.recstatus','h.compcode'];
-				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'APPROVED','session.compcode'];
+				dialog_srcdocno.urlParam.filterCol = ['h.prdept','h.compcode'];
+				dialog_srcdocno.urlParam.filterVal = [$("#delordhd_prdept").val(),'session.compcode'];
+				dialog_srcdocno.urlParam.WhereInCol = ['h.recstatus'];
+				dialog_srcdocno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
 			}
 		},'none'
 	);

@@ -2023,8 +2023,10 @@ $(document).ready(function () {
 			sortname: 'recno',
 			sortorder: "desc",
 			urlParam: {
-				filterCol:['compcode','recstatus', 'reqdept'],
-				filterVal:['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()], 
+				filterCol:['compcode', 'reqdept'],
+				filterVal:['session.compcode',  $("#sndrcv").val()],
+				WhereInCol:['recstatus'],
+				WhereInVal:[['PARTIAL','POSTED']]
 			},	
 			ondblClickRow:function(){
 				let data = selrowData('#' + dialog_requestRecNo.gridname);
@@ -2046,8 +2048,8 @@ $(document).ready(function () {
 					join_type: ['LEFT JOIN', 'LEFT JOIN'],
 					join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 					join_onVal: ['s.itemcode', 'p.itemcode'],
-					join_filterCol : [['s.deptcode =']],
-					join_filterVal : [[data['reqdept']]],
+					join_filterCol : [['ivdt.reqdept on =','ivdt.uomcode on =']],
+					join_filterVal : [['s.deptcode','s.uomcode']],
 					filterCol: ['ivdt.recno', 'ivdt.compcode', 'ivdt.recstatus'],
 					filterVal: [data['recno'], 'session.compcode', '<>.DELETE'],
 					sortby:['lineno_ desc']
@@ -2099,8 +2101,10 @@ $(document).ready(function () {
 		},{
 			title:"Select Request RecNo",
 			open: function(){
-				dialog_requestRecNo.urlParam.filterCol=['compcode','recstatus', 'reqdept'];
-				dialog_requestRecNo.urlParam.filterVal=['session.compcode', 'POSTED' && 'PARTIAL', $("#sndrcv").val()];
+				dialog_requestRecNo.urlParam.filterCol=['compcode', 'reqdept'];
+				dialog_requestRecNo.urlParam.filterVal=['session.compcode', $("#sndrcv").val()];
+				dialog_requestRecNo.urlParam.WhereInCol = ['recstatus'];
+				dialog_requestRecNo.urlParam.WhereInVal = [['PARTIAL','POSTED']];
 			}
 		}, 'none','radio','tab'
 	);

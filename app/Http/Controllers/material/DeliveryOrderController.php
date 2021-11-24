@@ -252,8 +252,9 @@ class DeliveryOrderController extends defaultController
                 $delordhd = DB::table('material.delordhd')
                     ->where('idno', '=', $idno);
 
-
                 $delordhd_obj = $delordhd->first();
+
+                $this->checkIfPOposted($delordhd_obj);
 
                 $delorddt_obj = DB::table('material.delorddt')
                     ->where('delorddt.compcode','=',session('compcode'))
@@ -325,6 +326,7 @@ class DeliveryOrderController extends defaultController
 
 
                     //2. start looping untuk delorddt
+
                 foreach ($delorddt_obj as $value) {
                     
                     $productcat = $value->productcat;
@@ -389,7 +391,7 @@ class DeliveryOrderController extends defaultController
                 //---- 8. update po kalu ada srcdocno ---//
                     if($delordhd_obj->srcdocno != 0){
 
-
+                        $status = 'COMPLETED';
 
                         $podt_obj = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
@@ -398,11 +400,19 @@ class DeliveryOrderController extends defaultController
                             ->where('purordno','=',$value->srcdocno)
                             ->where('lineno_','=',$value->polineno);
 
-                        $podt_obj_lama = $podt_obj->first();
-                        $this->checkIfPOposted($value); //dd('test');
 
-                        $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
-                        $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
+                        $pohd_obj = DB::table('material.purordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('purordno','=',$value->srcdocno);
+
+                        $podt_obj_lama = $podt_obj->first();
+
+                        $jumlah_qtydelivered = intval($podt_obj_lama->qtydelivered) + intval($value->qtydelivered);
+                        $qtyoutstand = intval($podt_obj_lama->qtyorder) - intval($jumlah_qtydelivered);
+
+                        if($qtyoutstand > 0){
+                            $status = 'PARTIAL';
+                        }
 
                         if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                             throw new \Exception("Quantity delivered exceed quantity order");
@@ -410,11 +420,16 @@ class DeliveryOrderController extends defaultController
 
                         $podt_obj->update([
                             'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand
+                            'qtyoutstand' => $qtyoutstand,
+                            'recstatus' => $status
+                        ]);
+
+                        $pohd_obj->update([
+                            'recstatus' => $status
                         ]);
 
                         //update qtyoutstand utk suma DO pulak 
-                        $delordhd = DB::table('material.delorddt')
+                        DB::table('material.delorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('itemcode','=',$value->itemcode)
                             ->where('prdept','=',$delordhd_obj->prdept)
@@ -431,211 +446,6 @@ class DeliveryOrderController extends defaultController
                 $this->chg_recstatus_do_then_po($delordhd_obj);
 
             }
-
-            $queries = DB::getQueryLog();
-            dump($queries);
-
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function posted_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-            //--- 1. copy delordhd masuk dalam ivtxnhd ---//
-
-                //1. amik dari delordhd
-
-            $delordhd = DB::table('material.delordhd')
-                ->where('idno', '=', $request->idno);
-
-
-            $delordhd_obj = $delordhd->first();
-
-            $delorddt_obj = DB::table('material.delorddt')
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.unit','=',session('unit'))
-                ->where('delorddt.recno','=',$delordhd_obj->recno)
-                ->where('delorddt.recstatus','!=','DELETE')
-                ->get();
-
-            //check kalu dia stock
-            $Stock_flag = false;
-            foreach ($delorddt_obj as $value) {
-
-                //product from delorddt.itemcode
-                //if product.groupcode = "stock" then stockflag = iv
-                //if product.groupcode = "asset" then stockflag = asset
-                //if product.groupcode = "other" then stockflag = other
-                $Stock_flag = DB::table('material.product')
-                    ->where('compcode','=', $value->compcode)
-                    ->where('unit','=', $value->unit)
-                    ->where('groupcode','=', "Stock")
-                    ->where('itemcode','=', $value->itemcode)
-                    ->exists();
-
-                if($Stock_flag) break;
-
-            }
-
-                //2. pastu letak dkt ivtxnhd
-
-            if($Stock_flag){
-                DB::table('material.ivtxnhd')
-                    ->insert([
-                        'compcode'=>$delordhd_obj->compcode, 
-                        'recno'=>$delordhd_obj->recno, 
-                        'reference'=>$delordhd_obj->delordno, 
-                        'source'=>'IV', 
-                        'txndept'=>$delordhd_obj->deldept, 
-                        'trantype'=>$delordhd_obj->trantype, 
-                        'docno'=>$delordhd_obj->docno, 
-                        'srcdocno'=>$delordhd_obj->srcdocno, 
-                        'sndrcv'=>$delordhd_obj->suppcode, 
-                        'sndrcvtype'=>'Supplier', 
-                        'trandate'=>$delordhd_obj->trandate, 
-                        'trantime'=>$delordhd_obj->trantime, 
-                        'datesupret'=>$delordhd_obj->deliverydate, 
-                        'respersonid'=>$delordhd_obj->checkpersonid, 
-                        'recstatus'=>$delordhd_obj->recstatus, 
-                        'adduser'=>$delordhd_obj->adduser, 
-                        'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                        'remarks'=>$delordhd_obj->remarks,
-                        'unit' =>$delordhd_obj->unit
-                    ]);
-            }
-            
-
-            //--- 2. loop delorddt untuk masuk dalam ivtxndt ---//
-
-                //1.amik productcat dari table product
-            // $productcat_obj = DB::table('material.delorddt')
-            //     ->select('product.productcat')
-            //     ->join('material.product', function($join) use ($request){
-            //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-            //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-            //     })
-            //     ->where('delorddt.compcode','=',session('compcode'))
-            //     ->where('delorddt.unit','=',session('unit'))
-            //     ->where('delorddt.recno','=',$request->recno)
-            //     ->first();
-
-
-                //2. start looping untuk delorddt
-            foreach ($delorddt_obj as $value) {
-                
-                $productcat = $value->productcat;
-
-                $value->expdate = $this->null_date($value->expdate);
-
-                //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-                $convfactorPOUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.pouom','=','uom.uomcode')
-                    ->where('delorddt.unit','=',session('unit'))
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$delordhd_obj->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
-
-                $convfactorUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
-                    ->where('delorddt.unit','=',session('unit'))
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$delordhd_obj->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorUOM = $convfactorUOM_obj->convfactor;
-
-                $txnqty = $value->qtydelivered * ($convfactorPOUOM / $convfactorUOM);
-                $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
-
-                //4. start insert dalam ivtxndt
-
-                $product_obj = DB::table('material.product')
-                    ->where('compcode','=', $value->compcode)
-                    ->where('unit','=', $value->unit)
-                    ->where('itemcode','=', $value->itemcode)
-                    ->first();
-
-                if($product_obj->groupcode == "Stock" ){
-                //--- 2.5. masuk dalam intxndt ---//
-                    do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
-
-                //--- 3. posting stockloc ---///
-                    do_util::stockloc_ins($value,$txnqty,$netprice);
-
-                //--- 4. posting stock Exp ---//
-                    do_util::stockExp_ins($value,$txnqty,$netprice);
-
-                //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                    do_util::product_ins($value,$txnqty,$netprice);
-
-                //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                    do_util::update_po($value,$txnqty,$netprice);
-                }
-
-            //--- 6. posting GL ---//
-                do_util::postingGL($value,$delordhd_obj,$productcat);
-
-            //--- 7. posting GL gst punya---//
-                do_util::postingGL_GST($value,$delordhd_obj); 
-
-            //---- 8. update po kalu ada srcdocno ---//
-                if($delordhd_obj->srcdocno != 0){
-
-
-
-                    $podt_obj = DB::table('material.purorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$value->prdept)
-                        ->where('purordno','=',$value->srcdocno)
-                        ->where('lineno_','=',$value->polineno);
-
-                    $podt_obj_lama = $podt_obj->first();
-                    $this->checkIfPOposted($value); //dd('test');
-
-                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
-                    $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
-
-                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                        throw new \Exception("Quantity delivered exceed quantity order");
-                    }
-
-                    $podt_obj->update([
-                        'qtydelivered' => $jumlah_qtydelivered,
-                        'qtyoutstand' => $qtyoutstand
-                    ]);
-
-                    //update qtyoutstand utk suma DO pulak 
-                    $delordhd = DB::table('material.delorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$delordhd_obj->prdept)
-                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                        ->update([
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
-
-                }
-
-            } // habis looping untuk delorddt
-
-            //--- 8. change recstatus to posted -dd--//
-            $this->chg_recstatus_do_then_po($delordhd_obj);
-
-           
 
             $queries = DB::getQueryLog();
             dump($queries);
@@ -1206,19 +1016,33 @@ class DeliveryOrderController extends defaultController
         return $amount;
     }
 
-    public function checkIfPOposted($value){
+    public function checkIfPOposted($delordhd){
         $po_hd = DB::table('material.purordhd')
-                ->where('purordno', '=', $value->srcdocno)
+                ->where('purordno', '=', $delordhd->srcdocno)
                 ->where('compcode', '=', session('compcode'))
                 ->first();
-         //dd($po_hd);
 
-        if($po_hd->recstatus == 'CANCELLED'){
-            throw new \Exception("Cannot posted, PO is CANCELLED");
-        }else if($po_hd->recstatus != 'APPROVED'){
-        // dd('test');
-            throw new \Exception("Cannot posted, PO not APPROVED yet");
+        switch ($po_hd->recstatus) {
+            case 'CANCELLED':
+                throw new \Exception("Cannot posted, PO is CANCELLED");
+                break;
+
+            case 'OPEN':
+            case 'REQUEST':
+            case 'SUPPORT':
+            case 'VERIFIED':
+                throw new \Exception("Cannot posted, PO is CANCELLED");
+                break;
+
+            case 'COMPLETED':
+                throw new \Exception("Cannot posted, PO already COMPLETED");
+                break;
+
+            case 'APPROVED':
+            case 'PARTIAL':
+                break;
         }
+
     }
 
     public function refresh_do(Request $request){

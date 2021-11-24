@@ -623,8 +623,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN', 'LEFT JOIN'],
 		join_onCol: ['ivdt.itemcode', 'ivdt.itemcode'],
 		join_onVal: ['s.itemcode', 'p.itemcode'],
-		join_filterCol : [['ivdt.reqdept on =']],
-        join_filterVal : [['s.deptcode']],
+		join_filterCol : [['ivdt.reqdept on =', 'ivdt.uomcode on =']],
+        join_filterVal : [['s.deptcode','s.uomcode']],
 		filterCol: ['ivdt.recno', 'ivdt.compcode','ivdt.recstatus'],
 		filterVal: ['', 'session.compcode','<>.DELETE']
 	};

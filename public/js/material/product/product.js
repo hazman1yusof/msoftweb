@@ -447,6 +447,80 @@ $(document).ready(function () {
 	);
 	dialog_chgclass.makedialog(true);
 
+	var dialog_dosage= new ordialog(
+		'cm_dosage','hisdb.dose','#cm_dosage',errorField,
+		{	colModel:[
+				{label:'Code',name:'dosecode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'dosedesc',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+		},
+		{
+			title:"Select Dosage",
+			open: function(){
+				dialog_dosage.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_dosage.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+				
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_dosage.makedialog(true);
+
+
+	var dialog_frequency= new ordialog(
+		'cm_frequency','hisdb.freq','#cm_frequency',errorField,
+		{	colModel:[
+				{label:'Code',name:'freqcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'freqdesc',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+		},
+		{
+			title:"Select Frequency",
+			open: function(){
+				dialog_frequency.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_frequency.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+				
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_frequency.makedialog(true);
+
+
+	var dialog_instruction= new ordialog(
+		'cm_instruction','hisdb.instruction','#cm_instruction',errorField,
+		{	colModel:[
+				{label:'Code',name:'inscode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+		},
+		{
+			title:"Select Instruction",
+			open: function(){
+				dialog_instruction.urlParam.filterCol=['compcode', 'recstatus'];
+				dialog_instruction.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+				
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_instruction.makedialog(true);
+
 
 
 	function dialog_cat_selection_event(){
@@ -652,6 +726,9 @@ $(document).ready(function () {
 				dialog_chgclass.on();
 				dialog_chgtype.on();
 				dialog_chggroup.on();
+				dialog_dosage.on();
+				dialog_frequency.on();
+				dialog_instruction.on();
 			}if(oper!='add'){
 				showing_charges_fieldset();
 				dialog_pouom.check(errorField);
@@ -662,6 +739,9 @@ $(document).ready(function () {
 				dialog_chgclass.check(errorField);
 				dialog_chgtype.check(errorField);
 				dialog_chggroup.check(errorField);
+				dialog_dosage.check(errorField);
+				dialog_frequency.check(errorField);
+				dialog_instruction.check(errorField);
 			}if(oper == 'add') {
 				dialog_itemcode.on();
 				dialog_pouom.off();
@@ -672,6 +752,9 @@ $(document).ready(function () {
 				dialog_chgclass.off();
 				dialog_chgtype.off();
 				dialog_chggroup.off();
+				dialog_dosage.off();
+				dialog_frequency.off();
+				dialog_instruction.off();
 			}
 		},
 		close: function( event, ui ) {
@@ -692,6 +775,9 @@ $(document).ready(function () {
 			dialog_chgclass.off();
 			dialog_chgtype.off();
 			dialog_chggroup.off();
+			dialog_dosage.off();
+			dialog_frequency.off();
+			dialog_instruction.off();
 
 			$('.my-alert').detach();
 			if(oper=='view'){
@@ -933,6 +1019,9 @@ $(document).ready(function () {
 			dialog_chgclass.on();
 			dialog_chgtype.on();
 			dialog_chggroup.on();
+			dialog_dosage.on();
+			dialog_frequency.on();
+			dialog_instruction.on();
 
 			urlParam.filterCol = ['itemcode','uomcode'];
 			urlParam.filterVal = [$('#itemcodesearch').val(),$('#uomcodesearch').val()];

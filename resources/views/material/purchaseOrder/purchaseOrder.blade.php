@@ -146,13 +146,6 @@ i.fa {
 							{{Request::get('scope').' ALL'}}
 						@endif
 					</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope')}}
-						@endif
-					</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>

@@ -106,9 +106,9 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
-	var recstatus_filter = [['OPEN','REQUEST']];
+	var recstatus_filter = [['OPEN','REQUEST','PARTIAL']];
 	if($("#recstatus_use").val() == 'ALL'){
-		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED']];
+		recstatus_filter = [['OPEN','REQUEST','SUPPORT','INCOMPLETED','VERIFIED','APPROVED','CANCELLED','PARTIAL']];
 		filterCol_urlParam = ['purreqhd.compcode'];
 		filterVal_urlParam = ['session.compcode'];
 	}else if($("#recstatus_use").val() == 'SUPPORT'){
@@ -418,7 +418,6 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
-			alert(data.responseJSON.message);
 			$('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
@@ -648,7 +647,7 @@ $(document).ready(function () {
 	var urlParam2 = {
 		action: 'get_table_dtl',
 		url:'/purchaseRequestDetail/table',
-		field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate'],
+		field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.qtybalance', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate'],
 		table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 		table_id: 'lineno_',
 		join_type: ['LEFT JOIN', 'LEFT JOIN'],
@@ -713,6 +712,18 @@ $(document).ready(function () {
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
+			},
+			{
+				label: 'Quantity Purchase', name: 'qtyapproved', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
+			},
+			{
+				label: 'Quantity Balance', name: 'qtybalance', width: 100, align: 'right', classes: 'wrap',
+				editable: true,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
 				label: 'Unit Price', name: 'unitprice', width: 150, classes: 'wrap', align: 'right',
@@ -898,9 +909,12 @@ $(document).ready(function () {
 
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
+		let recstatus = rowObject['purreqhd_recstatus'];
 
 		if(options.gid == "jqGrid"){
+			if(recstatus == "PARTIAL" || recstatus == "APPROVED"){
+				return " ";
+			}
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
 		}else if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
