@@ -44,7 +44,7 @@ class ItemEnquiryController extends defaultController
 
     public function detailMovement(Request $request){
         $det_mov_deptcode = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', 'd.recno', '=', 'h.recno')
                 ->leftJoin('material.ivtxntype as t', 'd.trantype', '=', 't.trantype')
                 ->where('d.compcode','=',session('compcode'))
@@ -63,13 +63,13 @@ class ItemEnquiryController extends defaultController
 
 
         $det_mov_sndrcv = DB::table('material.ivtxndt as d')
-                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
+                ->select('d.adddate','d.trandate','d.trantype','d.deptcode','d.txnqty', 'd.upduser', 'd.updtime', 'h.docno', 'd.uomcoderecv', 'd.uomcode','d.adduser', 'd.netprice', 'd.amount', 'h.trantime','t.crdbfl', 't.description','d.deptcode','d.sndrcv')
                 ->leftJoin('material.ivtxnhd as h', 'd.recno', '=', 'h.recno')
                 ->leftJoin('material.ivtxntype as t', 'd.trantype', '=', 't.trantype')
                 ->where('d.compcode','=',session('compcode'))
                 ->where('d.itemcode','=',$request->itemcode)
                 ->where('d.sndrcv','=',$request->deptcode)
-                ->where('d.uomcode','=',$request->uomcode)
+                ->where('d.uomcoderecv','=',$request->uomcode)
                 ->where('d.trandate','>=',$request->trandate_from)
                 ->where('d.trandate','<=',$request->trandate_to)
                 ->orderBy('d.adddate', 'asc')
@@ -77,6 +77,27 @@ class ItemEnquiryController extends defaultController
 
         $det_mov_sndrcv = $det_mov_sndrcv->each(function ($item, $key) {
             $item->det_mov = 'sndrcv';
+            if($item->uomcode != $item->uomcoderecv){
+
+                //1. amik convfactor
+                $convfactor_obj = DB::table('material.uom')
+                    ->select('convfactor')
+                    ->where('uomcode','=',$item->uomcoderecv)
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+                $convfactor_uomcoderecv = $convfactor_obj->convfactor;
+
+                $convfactor_obj = DB::table('material.uom')
+                    ->select('convfactor')
+                    ->where('uomcode','=',$item->uomcode)
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+                $convfactor_uomcodetrdept = $convfactor_obj->convfactor;
+
+                //2. tukar txnqty dgn netprice berdasarkan convfactor
+                $txnqty = $item->txnqty * ($convfactor_uomcodetrdept / $convfactor_uomcoderecv);
+                $item->txnqty = $txnqty;
+            }
         });
 
         $merged = $det_mov_deptcode->merge($det_mov_sndrcv);

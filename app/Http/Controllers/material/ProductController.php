@@ -42,7 +42,7 @@ class ProductController extends defaultController
                     if($exists){
                         return response('Error itemcode and uom already exists', 500);
                     }
-                    return $this->defaultAdd($request);
+                    return $this->add($request);
                 }
             case 'edit':
                 return $this->edit($request);
@@ -94,7 +94,7 @@ class ProductController extends defaultController
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                return response('Error'.$e->errorInfo[2], 500);
+                return response($e->getMessage(), 500);
             }
         // }
     }
@@ -104,10 +104,11 @@ class ProductController extends defaultController
             DB::beginTransaction();
 
             try {
+
                 $array_insert = [
-                    'itemcode' => $request->itemcode;
-                    'uomcode' => $request->uomcode;
-                    'productcat' => $request->productcat;
+                    'itemcode' => $request->itemcode,
+                    'uomcode' => $request->uomcode,
+                    'productcat' => $request->productcat,
                     'description' => strtoupper($request->description),
                     'generic' => strtoupper($request->generic),
                     'groupcode' => strtoupper($request->groupcode),
@@ -141,8 +142,8 @@ class ProductController extends defaultController
 
                 $array_insert = [
                     'compcode' => session('compcode'),
-                    'chgcode' => $request->itemcode;
-                    'uom' => $request->uomcode;
+                    'chgcode' => $request->itemcode,
+                    'uom' => $request->uomcode,
                     'description' => strtoupper($request->description),
                     'brandname' => strtoupper($request->generic),
                     'chgclass' => $request->cm_chgclass,
@@ -178,13 +179,14 @@ class ProductController extends defaultController
                 DB::table('hisdb.chgmast')->insert($array_insert);
 
                 $responce = new stdClass();
-                $responce->sql = $table->toSql();
-                $responce->sql_bind = $table->getBindings();
+                $queries = DB::getQueryLog();
+                $responce->queries = $queries;
+                echo json_encode($responce);
 
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                return response('Error'.$e->errorInfo[2], 500);
+                return response($e->getMessage(), 500);
             }
     }
 
@@ -244,7 +246,7 @@ class ProductController extends defaultController
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
-                return response('Error'.$e->errorInfo[2], 500);
+                return response($e->getMessage(), 500);
             }
         // }
     }

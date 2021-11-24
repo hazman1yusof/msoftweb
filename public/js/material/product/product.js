@@ -783,6 +783,10 @@ $(document).ready(function () {
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
+
+			if(oper == "add"){
+				$("#addNewChgprice").dialog('open');
+			}
 		},
 		buttons :butt1,
 	  });
@@ -1094,6 +1098,9 @@ $(document).ready(function () {
 				break;
 				
 			case 'suppcode':field=['SuppCode','Name'];table="material.supplier";case_='suppcode';break;
+			case 'iptax':field=['taxcode','description'];table="hisdb.taxmast";case_='iptax';break;
+			case 'optax': field = ['taxcode', 'description']; table = "hisdb.taxmast";case_='optax';break;
+			case 'uom': field = ['uomcode', 'description']; table = "material.uom";case_='uom';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1358,5 +1365,327 @@ $(document).ready(function () {
 		},
 		buttons :addNew2,
 	});
+
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Inpatient Tax':temp=$("input[name='iptax']");break;
+			case 'Outpatient Tax':temp=$("input[name='optax']");break;
+			case 'Charge Code':temp=$("input[name='chgcode']");break;
+				break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	var addmore_jqgrid2={more:false,state:false,edit:false}
+
+	$("#addNewChgprice").dialog({
+		width: 8/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+							
+		},
+		close: function(event, ui){
+
+		}
+	});
+
+	$("#jqGrid2").jqGrid({
+			datatype: "local",
+			editurl: "/chargemasterDetail/form",
+			colModel: [
+				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+				{ label: 'Effective date', name: 'effdate', width: 130, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).datepicker({
+	                            id: 'expdate_datePicker',
+	                            dateFormat: 'dd/mm/yy',
+	                            minDate: "dateToday",
+	                            showOn: 'focus',
+	                            changeMonth: true,
+			  					changeYear: true,
+			  					onSelect : function(){
+			  						$(this).focus();
+			  					}
+	                        });
+	                    }
+	                }
+				},
+				{ label: 'Inpatient Tax', name: 'iptax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:iptaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Outpatient Tax', name: 'optax', width: 150, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+						edittype:'custom',	editoptions:
+						    {  custom_element:optaxCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    },
+				},
+				{ label: 'Price 1', name: 'amt1', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Price 2', name: 'amt2', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Price 3', name: 'amt3', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'Cost Price', name: 'costprice', width: 150, align: 'right', classes: 'wrap', editable:true,
+					edittype:"text",
+					editoptions:{
+						maxlength: 100,
+					},
+				},
+				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                        $(element).attr('disabled','true');
+	                        $(element).val($('#cm_uom').val());
+	                    }
+				}},
+				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
+	                    dataInit: function (element) {
+	                    	if($(element).attr('id').search("jqg") != -1)$(element).val('ACTIVE');
+	                        $(element).attr('disabled','true');
+	                    }
+				}},
+				{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}
+			],
+			autowidth: true,
+			shrinkToFit: true,
+			multiSort: true,
+			viewrecords: true,
+			loadonce:false,
+			width: 1150,
+			height: 200,
+			rowNum: 30,
+			sortname: 'idno',
+			sortorder: "desc",
+			pager: "#jqGridPager2",
+			loadComplete: function(){
+				if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
+				else{
+					$('#jqGrid2').jqGrid ('setSelection', "1");
+				}
+
+				addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			},
+			gridComplete: function(){
+				fdl.set_array().reset();
+				
+			},
+			beforeSubmit: function(postdata, rowid){ 
+				// dialog_deptcodedtl.check(errorField);
+		 	}
+		});
+
+		function iptaxCustomEdit(val, opt) {
+			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="iptax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
+		function optaxCustomEdit(val, opt) {
+			val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+			return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="optax" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		}
+
+		//////////////////////////////////////myEditOptions for jqGrid2/////////////////////////////////////////
+
+		var myEditOptions = {
+	        keys: true,
+	        extraparam:{
+			    "_token": $("#_token").val()
+	        },
+	        oneditfunc: function (rowid) {
+
+	        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+
+	        	dialog_optax.on();
+				dialog_iptax.on();
+
+	        	unsaved = false;
+				mycurrency2.array.length = 0;
+				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amt1']","#jqGrid2 input[name='amt2']","#jqGrid2 input[name='amt3']","#jqGrid2 input[name='costprice']"]);
+
+				mycurrency2.formatOnBlur();//make field to currency on leave cursor
+
+	        	$("input[name='costprice']").keydown(function(e) {//when click tab at document, auto save
+					var code = e.keyCode || e.which;
+					if (code == '9')$('#jqGrid2_ilsave').click();
+				})
+	        },
+	        aftersavefunc: function (rowid, response, options) {
+	        	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+	        }, 
+	        errorfunc: function(rowid,response){
+				$(".noti").text(response.responseText);
+	        	// alert();
+	        	refreshGrid('#jqGrid2',urlParam2,'add');
+		    	$("#jqGridPager2Delete").show();
+	        },
+	        beforeSaveRow: function(options, rowid) {
+
+	        	//if(errorField.length>0)return false;  
+
+				let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+				let editurl = "/chargemasterDetail/form?"+
+					$.param({
+						action: 'chargemasterDetail_save',
+						oper: 'add',
+						chgcode: $('#cm_chgcode').val(),
+						uom: $('#cm_uom').val(),
+						// authorid:$('#authorid').val()
+					});
+				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+	        },
+	        afterrestorefunc : function( response ) {
+				hideatdialogForm(false);
+		    }
+	    };
+
+		//////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
+
+		$("#jqGrid2").inlineNav('#jqGridPager2',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions
+			},
+			editParams: myEditOptions
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2Delete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'chargemasterDetail_save',
+									idno: selrowData('#jqGrid2').idno,
+
+					    		}
+					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									refreshGrid("#jqGrid2",urlParam2);
+								});
+					    	}else{
+	        					$("#jqGridPager2EditAll").show();
+					    	}
+					    }
+					});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2EditAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-th-list",
+			title:"Edit All Row",
+			onClickButton: function(){
+				mycurrency2.array.length = 0;
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			    for (var i = 0; i < ids.length; i++) {
+
+			        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
+			    }
+			    mycurrency2.formatOnBlur();
+		    	onall_editfunc();
+				hideatdialogForm(true,'saveallrow');
+			},
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2SaveAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-download-alt",
+			title:"Save All Row",
+			onClickButton: function(){
+				var ids = $("#jqGrid2").jqGrid('getDataIDs');
+
+				var jqgrid2_data = [];
+				mycurrency2.formatOff();
+			    for (var i = 0; i < ids.length; i++) {
+
+					var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+			    	var obj = 
+			    	{
+			    		'idno' : data.idno,
+			    		'effdate' : $("#jqGrid2 input#"+ids[i]+"_effdate").val(),
+						'amt1' : $("#jqGrid2 input#"+ids[i]+"_amt1").val(),
+						'amt2' : $("#jqGrid2 input#"+ids[i]+"_amt2").val(),
+						'amt3' : $("#jqGrid2 input#"+ids[i]+"_amt3").val(),
+						'costprice' : $("#jqGrid2 input#"+ids[i]+"_costprice").val(),
+						'iptax' : $("#jqGrid2 input#"+ids[i]+"_iptax").val(),
+						'optax' : $("#jqGrid2 input#"+ids[i]+"_optax").val()
+			    	}
+
+			    	jqgrid2_data.push(obj);
+			    }
+
+				var param={
+	    			action: 'chargemasterDetail_save',
+					_token: $("#_token").val()
+	    		}
+
+	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+				}).fail(function(data) {
+					//////////////////errorText(dialog,data.responseText);
+				}).done(function(data){
+					hideatdialogForm(false);
+					refreshGrid("#jqGrid2",urlParam2);
+				});
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "jqGridPager2CancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm(false);
+				refreshGrid("#jqGrid2",urlParam2);
+			},	
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "saveHeaderLabel",
+			caption:"Header",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Header"
+		}).jqGrid('navButtonAdd',"#jqGridPager2",{
+			id: "saveDetailLabel",
+			caption:"Detail",cursor: "pointer",position: "last", 
+			buttonicon:"",
+			title:"Detail"
+		});
 
 });

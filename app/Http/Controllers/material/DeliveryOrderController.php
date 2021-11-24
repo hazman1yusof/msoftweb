@@ -39,8 +39,6 @@ class DeliveryOrderController extends defaultController
                 return $this->posted($request);
             case 'reopen':
                 return $this->reopen($request);
-            case 'posted_single':
-                return $this->posted_single($request);
             case 'soft_cancel':
                 return $this->soft_cancel($request);
             case 'cancel':

@@ -553,6 +553,22 @@
 			</form>
 		</div>
 
+	<!---*********************************** ADD NEW PRODUCT ************************************************** -->
+		<div id="addNewChgprice" title="Add New Charge Prize" >
+			<form id='formdata2' class='form-vertical' style='width:99%'>
+				<div id="jqGrid2_c" class='col-md-12'>
+					<table id="jqGrid2" class="table table-striped"></table>
+					<div id="jqGridPager2"></div>
+				</div>
+
+				<div id="jqGridPkg2_c" class='col-md-12'>
+					<table id="jqGridPkg2" class="table table-striped"></table>
+					<div id="jqGridPagerPkg2"></div>
+				</div>
+			</form>
+			<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+		</div>
+
 	@endsection
 
 @section('scripts')

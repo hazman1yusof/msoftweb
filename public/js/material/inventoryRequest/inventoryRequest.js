@@ -1478,13 +1478,29 @@ $(document).ready(function () {
 				join_filterCol:[['s.compcode on =', 's.uomcode on =']],
 				join_filterVal:[['p.compcode','p.uomcode']],
 			},
-			ondblClickRow:function(){
+			ondblClickRow:function(event){
+
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+
 				let data=selrowData('#'+dialog_uomcodereqdept.gridname);
-				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
-				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
-				$("#convfactoruomcodereqdept").val(data['u_convfactor']);
-				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
-				$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
+
+				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['s_qtyonhand']);
+				$("#"+id_optid+"_convfactoruomcodereqdept").val(data['u_convfactor']);
+				$("#jqGrid2 #"+id_optid+"_netprice").val(data['p_avgcost']);
+				$("#jqGrid2 #"+id_optid+"_uomcoderecv").val(data['s_uomcode']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1497,11 +1513,11 @@ $(document).ready(function () {
 			
 		},{
 			title:"Select UOM Code For Request Department",
-			open:function(){
+			open:function(obj){
 				dialog_uomcodereqdept.urlParam.fixPost="true";
 				dialog_uomcodereqdept.urlParam.table_id="none_";
 				dialog_uomcodereqdept.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
-				dialog_uomcodereqdept.urlParam.filterVal=['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcodereqdept.urlParam.filterVal=['session.compcode',$('#reqtodept').val(),$("#jqGrid2 input#"+obj.id_optid+"_itemcode").val(),moment($('#reqdt').val()).year()];
 				dialog_uomcodereqdept.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
 				dialog_uomcodereqdept.urlParam.join_onCol=['s.itemcode','s.uomcode'];
 				dialog_uomcodereqdept.urlParam.join_onVal=['p.itemcode','u.uomcode'];
@@ -1513,24 +1529,47 @@ $(document).ready(function () {
 	dialog_uomcodereqdept.makedialog(false);
 
 	var dialog_uomcodereqto = new ordialog(
-		'pouom', ['material.uom'], "#jqGrid2 input[name='pouom']", errorField,
+		'pouom',['material.stockloc AS s','material.product AS p','material.uom AS u'], "#jqGrid2 input[name='pouom']", errorField,
 		{
 			colModel:
 			[
-				{ label: 'UOM code', name: 'uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true,or_search: true },
-				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer', hidden:true }
+				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Department code',name:'s_deptcode',width:80,classes:'pointer'},
+				{label:'Item code',name:'s_itemcode',width:100,classes:'pointer'},
+				{label:'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer'},
+				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer'},
+				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+					fixPost:"true",
+					filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
+					filterVal:['session.compcode',$('#reqdept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#reqdt').val()).year()],
+					join_type:['LEFT JOIN','LEFT JOIN'],
+					join_onCol:['s.itemcode','s.uomcode'],
+					join_onVal:['p.itemcode','u.uomcode'],
+					join_filterCol:[['s.compcode on =', 's.uomcode on =']],
+					join_filterVal:[['p.compcode','p.uomcode']],
+				},
 			ondblClickRow: function (event) {
-			
-				$("#jqGrid2 input[name='qtyrequest']").focus().select();
-				let data=selrowData('#'+dialog_uomcodereqto.gridname);
 
-				//$("#jqGrid2 #"+id_optid+"_convfactoruomcodereqto").val(data['convfactor']);
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+
+				let data=selrowData('#'+dialog_uomcodereqto.gridname);
+				
+				$("#jqGrid2  #"+id_optid+"_txnqty").focus().select();
 				
 			},
 			gridComplete: function(obj){
@@ -1548,9 +1587,16 @@ $(document).ready(function () {
 
 		}, {
 			title: "Select PO UOM Code For Item",
-			open: function () {
-				dialog_uomcodereqto.urlParam.filterCol = ['compcode', 'recstatus'];
-				dialog_uomcodereqto.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
+			open: function (obj) {
+				dialog_uomcodereqto.urlParam.fixPost="true";
+				dialog_uomcodereqto.urlParam.table_id="none_";
+				dialog_uomcodereqto.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+				dialog_uomcodereqto.urlParam.filterVal=['session.compcode',$('#reqdept').val(),$("#jqGrid2 input#"+obj.id_optid+"_itemcode").val(),moment($('#reqdt').val()).year()];
+				dialog_uomcodereqto.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
+				dialog_uomcodereqto.urlParam.join_onCol=['s.itemcode','s.uomcode'];
+				dialog_uomcodereqto.urlParam.join_onVal=['p.itemcode','u.uomcode'];
+				dialog_uomcodereqto.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =']];
+				dialog_uomcodereqto.urlParam.join_filterVal=[['p.compcode','p.uomcode']];
 
 			},
 			close: function () {

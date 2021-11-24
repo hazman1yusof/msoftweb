@@ -1831,13 +1831,29 @@ $(document).ready(function () {
 				filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
 				filterVal:['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()]
 			},
-			ondblClickRow:function(){
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}else{
+
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+
+					$(event.currentTarget).parent().next().html('');
+				}
+
 				let data=selrowData('#'+dialog_uomcodetrdept.gridname);
-				$("#jqGrid2 input[name='uomcode']").val(data['s_uomcode']);
-				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
-				$("#convfactoruomcodetrdept").val(data['u_convfactor']);
-				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
-				$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
+
+				$("#jqGrid2 #"+id_optid+"_convfactoruomcodetrdept").val(data['u_convfactor']);
+
+				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['s_uomcode']);
+				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['s_qtyonhand']);
+				$("#jqGrid2 #"+id_optid+"_netprice").val(data['p_avgcost']);
+				$("#jqGrid2 #"+id_optid+"_uomcoderecv").val(data['s_uomcode']);
 				checkQOH(event);
 			},
 			gridComplete: function(obj){
@@ -1867,17 +1883,28 @@ $(document).ready(function () {
 	dialog_uomcodetrdept.makedialog(false);
 
 	var dialog_uomcoderecv = new ordialog(
-		'uomcoderecv', ['material.uom'], "#jqGrid2 input[name='uomcoderecv']", errorField,
+		'uomcoderecv', ['material.stockloc AS s','material.product AS p','material.uom AS u'], "#jqGrid2 input[name='uomcoderecv']", errorField,
 		{
 			colModel:
 			[
-				{ label: 'UOM code', name: 'uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true,or_search: true },
-				{ label: 'Conversion', name: 'convfactor', width: 100, classes: 'pointer', hidden:true }
+				{label:'UOM code',name:'s_uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'u_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Department code',name:'s_deptcode',width:80,classes:'pointer'},
+				{label:'Item code',name:'s_itemcode',width:100,classes:'pointer'},
+				{label:'Conversion', name: 'u_convfactor', width: 100, classes: 'pointer'},
+				{label:'Average Cost', name: 'p_avgcost', width: 100, classes: 'pointer'},
+				{label:'Quantity On Hand',name:'s_qtyonhand',width:80,classes:'pointer'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
+						fixPost:"true",
+						table_id:"none_",
+						join_type:['LEFT JOIN','LEFT JOIN'],
+						join_onCol:['s.itemcode','s.uomcode'],
+						join_onVal:['p.itemcode','u.uomcode'],
+						join_filterCol:[['s.compcode on =', 's.uomcode on =']],
+						join_filterVal:[['p.compcode','p.uomcode']],
+						filterCol:['s.compcode','s.deptcode','s.itemcode','s.year'],
+						filterVal:['session.compcode',$('#sndrcv').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()]
 					},
 			ondblClickRow: function (event) {
 				if(event.type == 'keydown'){
@@ -1905,16 +1932,22 @@ $(document).ready(function () {
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					// $(obj.textfield).closest('td').next().find("input[type=text]").focus();
-					console.log($("#jqGrid2 input[name='txnqty']"))
-					$("#jqGrid2 input[name='txnqty']").focus().select();
+					$("#jqGrid2 input#"+obj.id_optid+"_txnqty").focus().select();
 				}
 			}
 
 		}, {
 			title: "Select PO UOM Code For Item",
-			open: function () {
-				dialog_uomcoderecv.urlParam.filterCol = ['compcode', 'recstatus'];
-				dialog_uomcoderecv.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
+			open: function (obj) {
+				dialog_uomcoderecv.urlParam.fixPost="true";
+				dialog_uomcoderecv.urlParam.table_id="none_";
+				dialog_uomcoderecv.urlParam.filterCol=['s.compcode','s.deptcode','s.itemcode','s.year'];
+				dialog_uomcoderecv.urlParam.filterVal=['session.compcode',$('#sndrcv').val(),$("#jqGrid2 input#"+obj.id_optid+"_itemcode").val(),moment($('#trandate').val()).year()];
+				dialog_uomcoderecv.urlParam.join_type=['LEFT JOIN','LEFT JOIN'];
+				dialog_uomcoderecv.urlParam.join_onCol=['s.itemcode','s.uomcode'];
+				dialog_uomcoderecv.urlParam.join_onVal=['p.itemcode','u.uomcode'];
+				dialog_uomcoderecv.urlParam.join_filterCol=[['s.compcode on =', 's.uomcode on =']];
+				dialog_uomcoderecv.urlParam.join_filterVal=[['p.compcode','p.uomcode']];
 
 			},
 			close: function () {

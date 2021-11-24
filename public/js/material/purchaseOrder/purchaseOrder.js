@@ -1575,8 +1575,9 @@ $(document).ready(function () {
 	function onall_editfunc(){
 		errorField.length = 0;
 		if($('#purordhd_purreqno').val()!=''){
-    		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='tot_gst']").attr('readonly','readonly');
+    		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='itemcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='tot_gst']").attr('readonly','readonly');
 
+			dialog_uomcode.on();
 			dialog_pouom.on();
 			dialog_taxcode.on();
 
