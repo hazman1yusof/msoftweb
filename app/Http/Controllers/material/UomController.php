@@ -62,8 +62,8 @@ class UomController extends defaultController
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'adddate' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -93,8 +93,8 @@ class UomController extends defaultController
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'upduser' => session('username'),
+                    'updddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -110,8 +110,8 @@ class UomController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }
