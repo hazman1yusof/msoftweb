@@ -191,6 +191,11 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
+	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+			
+	populateSelect2('#jqGrid','#searchForm');
+	searchClick2('#jqGrid','#searchForm',urlParam);
+
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy(){
