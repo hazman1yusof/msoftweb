@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Charge Master Setup')
+@section('title', 'Bank Enquiry Setup')
 
 @section('style')
 	.num{

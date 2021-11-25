@@ -23,7 +23,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(event){
 				
@@ -41,7 +41,7 @@ $(document).ready(function () {
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_bankcode.urlParam.filterCol=['compcode','recstatus'];
-				dialog_bankcode.urlParam.filterVal=['session.compcode','A'];
+				dialog_bankcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
 				
@@ -132,9 +132,8 @@ $(document).ready(function () {
 			getBalance();
 		},
 		gridComplete: function(){
-			/*if(editedRow!=0){
-				$("#jqGrid").jqGrid('setSelection',editedRow,false);
-			}*/
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
 		
