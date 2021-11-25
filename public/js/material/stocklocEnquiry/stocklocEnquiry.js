@@ -191,8 +191,7 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-			
+	//////////handle searching, ///////////////////////////////////////////////////
 	populateSelect2('#jqGrid','#searchForm');
 	searchClick2('#jqGrid','#searchForm',urlParam);
 
