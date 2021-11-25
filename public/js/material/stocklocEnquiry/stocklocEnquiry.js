@@ -192,7 +192,6 @@ $(document).ready(function () {
 	}
 
 	//////////handle searching, ///////////////////////////////////////////////////
-	populateSelect2('#jqGrid','#searchForm');
 	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
