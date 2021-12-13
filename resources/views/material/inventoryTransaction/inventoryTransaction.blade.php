@@ -49,9 +49,9 @@ i.fa {
 							<select id='Scol' name='Scol' class="form-control input-sm"></select>
 						</div>
 
-					  	<div class="col-md-5">
-					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+				  	<div class="col-md-5">
+				  		<label class="control-label"></label>  
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -60,10 +60,10 @@ i.fa {
 								</div>
 								<span class="help-block"></span>
 							</div>
-							
+						
 						</div>
 
-		             </div>
+		      </div>
 				</div>
 
 				<div class="col-md-2">
@@ -85,21 +85,46 @@ i.fa {
 				</div>
 
 				<div id="div_for_but_post" class="col-md-3 col-md-offset-5" style="padding-top: 20px; text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
+
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+
+					<span id="error_infront" style="color: red"></span>
+
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
+					<button 
+						type="button" 
+						class="btn btn-primary btn-sm" 
+						id="but_post_jq" 
+						data-oper="posted" 
+						style="display: none;">
+						POST
+					</button>
+
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
 		</form>
 
-        <div class="panel panel-default">
-		    	<div class="panel-heading">Inventory Data Entry Header</div>
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
+    		<div class="panel-body">
+    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid_selection" class="table table-striped"></table>
+    				<div id="jqGrid_selectionPager"></div>
+				</div>
+    		</div>
+		</div>
+
+    <div class="panel panel-default">
+    	<div class="panel-heading">Inventory Data Entry Header</div>
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+        				<table id="jqGrid" class="table table-striped"></table>
+        					<div id="jqGridPager"></div>
+    				</div>
+    		</div>
 		</div>
 <!-- 
         	<div class='click_row'>
@@ -183,9 +208,35 @@ i.fa {
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
+								  </div>
+
+								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>
+								  	<div class="col-md-2">
+										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
 								  	</div>
 
-								<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
+								
+						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
+						  			<div class="col-md-2" id="srcdocno_parent">
+									  	<div class='input-group'>
+											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm text-uppercase" rdonly>
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+						  			</div>
+						  </div>
+
+						  <div class="form-group">
+						  		<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
+						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
+						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required">
+							  				<option value="">PLEASE SELECT</option>
+											<option value="Department">DEPARTMENT</option>
+											<option value="Supplier">SUPPLIER</option>
+											<option value="Other">OTHER</option>
+									    </select>
+						  			</div>
+
+						  		<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
 											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required">
@@ -194,38 +245,13 @@ i.fa {
 										  <span class="help-block"></span>
 									  </div>
 
-						  		<label class="col-md-2 control-label" for="srcdocno">Request No</label>  
-						  			<div class="col-md-2" id="srcdocno_parent">
-									  	<div class='input-group'>
-											<input id="srcdocno" name="srcdocno" type="text" class="form-control input-sm text-uppercase" rdonly>
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-						  			</div>
-						  	</div>
-
-						  	<div class="form-group">
-						  		<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
-						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
-						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required">
-							  				<option value="">Please Select</option>
-											<option value="Department">Department</option>
-											<option value="Supplier">Supplier</option>
-											<option value="Other">Other</option>
-									    </select>
-						  			</div>
-
-								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>
-								  	<div class="col-md-2">
-										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
-								  	</div>
-
-								<label class="col-md-2 control-label" for="trantime">Transaction Time</label>
+									<label class="col-md-2 control-label" for="trantime">Transaction Time</label>
 						  			<div class="col-md-2">
 										<input id="trantime" name="trantime" type="time" class="form-control input-sm">
 						  			</div>
-						  	</div>
+						  </div>
 
-						  	<div class="form-group">
+						  <div class="form-group">
 								<label class="col-md-2 control-label" for="amount">Amount</label>  
 						  			<div class="col-md-2">
 										<input id="amount" name="amount" type="text" class="form-control input-sm" value='0.00' rdonly>
@@ -243,25 +269,25 @@ i.fa {
 						    			<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
 						    		</div>
 						    	
-					   		</div>
+					   	</div>
 
 							<div class="form-group data_info">
 								<div class="col-md-6 minuspad-13">
 										<label class="control-label" for="upduser">Last Entered By</label>  
 							  			<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		</div>
-						  		<div class="col-md-6 minuspad-13">
+						  	</div>
+						  	<div class="col-md-6 minuspad-13">
 										<label class="control-label" for="upddate">Last Entered Date</label>
 							  			<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		</div>
-						    	<div class="col-md-6 minuspad-13">
+						  	</div>
+						    <div class="col-md-6 minuspad-13">
 										<label class="control-label" for="adduser">Check By</label>  
 							  			<input id="adduser" name="adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		</div>
-						  		<div class="col-md-6 minuspad-13">
+						  	</div>
+						  	<div class="col-md-6 minuspad-13">
 										<label class="control-label" for="adddate">Check Date</label>
 							  			<input id="adddate" name="adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-						  		</div>
+						  	</div>
 						    	
 							</div>
 					</form>

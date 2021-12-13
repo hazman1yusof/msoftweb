@@ -80,7 +80,7 @@ $(document).ready(function () {
 				});
 
 			}
-		},'urlParam'
+		},'urlParam','radio','tab',false
 	);
 	dialog_itemcode.makedialog();
 
@@ -112,7 +112,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_uomcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
-		},'urlParam'
+		},'urlParam','radio','tab',false
 	);
 	dialog_uomcode.makedialog();
 
@@ -653,11 +653,20 @@ $(document).ready(function () {
 		id: "Save",
 		text: "Save",click: function() {
 			radbuts.check();
+			var openchgprice = false;
+			if($("input[type='radio'][name='chgflag'][value='1']").is(":checked")){
+				openchgprice = true;
+			}
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,function(){
+					if(openchgprice){
+						$("#addNewChgprice").dialog('open');
+					}
+				});
 				urlParam.filterCol=['groupcode', 'Class'];
 				urlParam.filterVal=[$('#groupcode2').val(), $('#Class2').val()];
 				refreshGrid('#jqGrid',urlParam,oper);
+				
 			}
 		}
 	},{
@@ -785,7 +794,7 @@ $(document).ready(function () {
 			}
 
 			if(oper == "add"){
-				$("#addNewChgprice").dialog('open');
+				$("#cancelBut").click();
 			}
 		},
 		buttons :butt1,
@@ -822,6 +831,7 @@ $(document).ready(function () {
 			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },
 			{ label: 'Uom Code', name: 'uomcode', width: 30, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:false},
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
@@ -829,7 +839,6 @@ $(document).ready(function () {
 			{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
 			{ label: 'currprice', name: 'currprice', width: 40, hidden:true },
-			{ label: 'Qty On Hand', name: 'qtyonhand', width: 40, classes: 'wrap',hidden:true},
 			{ label: 'bonqty', name: 'bonqty', width: 50, hidden:true },
 			{ label: 'rpkitem', name: 'rpkitem', width: 50, hidden:true },
 			{ label: 'minqty', name: 'minqty', width: 50, hidden:true },
@@ -1011,6 +1020,11 @@ $(document).ready(function () {
 			emptyFormdata(errorField,'#formdata');
 			$('#formdataSearch input[rdonly]').prop("readonly",true);
 			$("#searchBut").prop("disabled",true);
+			$("#itemcode_hidden").val($('#itemcodesearch').val());
+			$("#uomcode_hidden").val($('#uomcodesearch').val());
+			urlParam2.filterVal[2]=$('#itemcodesearch').val();
+			urlParam2.filterVal[3]=$('#uomcodesearch').val();
+
 
 			dialog_itemcode.off();
 			dialog_uomcode.off();
@@ -1127,7 +1141,11 @@ $(document).ready(function () {
 				alert('Please select row');
 				return emptyFormdata(errorField,'#formdata');
 			}else{
-				saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, {'idno':selrowData('#jqGrid').idno});
+				if(parseInt(selrowData('#jqGrid').qtyonhand) > 0){
+					alert('Cannot deactive product with quantity on hand')
+				}else{
+					saveFormdata("#jqGrid","#dialogForm","#formdata",'del',saveParam,urlParam, {'idno':selrowData('#jqGrid').idno});
+				}
 			}
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -1377,7 +1395,23 @@ $(document).ready(function () {
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
 
+	var mycurrency2 =new currencymode([]);
 	var addmore_jqgrid2={more:false,state:false,edit:false}
+	var urlParam2={
+			action:'get_table_default',
+			url:'/util/get_table_default',
+			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus','cp.recstatus','cp.uom'],
+			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
+			table_id:'lineno_',
+			join_type:['LEFT JOIN'],
+			join_onCol:['cp.chgcode'],
+			join_onVal:['cm.chgcode'],
+	        join_filterCol : [['cm.uom on =']],
+	        join_filterVal : [['cp.uom']],
+			filterCol:['cp.compcode','cp.units','cp.chgcode','cp.uom'],
+			filterVal:['session.compcode','session.unit','','']
+		};
+
 
 	$("#addNewChgprice").dialog({
 		width: 8/10 * $(window).width(),
@@ -1385,6 +1419,8 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+
+			hideatdialogForm(false);
 							
 		},
 		close: function(event, ui){
@@ -1457,7 +1493,7 @@ $(document).ready(function () {
 				{ label: 'UOM', name: 'uom', width: 80, formatter: showdetail, editable:true,editoptions: {
 	                    dataInit: function (element) {
 	                        $(element).attr('disabled','true');
-	                        $(element).val($('#cm_uom').val());
+	                        $(element).val($('#uomcode_hidden').val());
 	                    }
 				}},
 				{ label: 'Status', name: 'recstatus', width: 100, classes: 'wrap', editable:true,editoptions: {
@@ -1551,8 +1587,10 @@ $(document).ready(function () {
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
-						chgcode: $('#cm_chgcode').val(),
-						uom: $('#cm_uom').val(),
+						chgcode: $('#itemcode_hidden').val(),
+						uom: $('#uomcode_hidden').val(),
+						_token: $("#_token").val()
+
 						// authorid:$('#authorid').val()
 					});
 				$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
@@ -1676,16 +1714,97 @@ $(document).ready(function () {
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			},	
-		}).jqGrid('navButtonAdd',"#jqGridPager2",{
-			id: "saveHeaderLabel",
-			caption:"Header",cursor: "pointer",position: "last", 
-			buttonicon:"",
-			title:"Header"
-		}).jqGrid('navButtonAdd',"#jqGridPager2",{
-			id: "saveDetailLabel",
-			caption:"Detail",cursor: "pointer",position: "last", 
-			buttonicon:"",
-			title:"Detail"
 		});
+
+		var dialog_iptax = new ordialog(
+			'iptax','hisdb.taxmast',"#jqGrid2 input[name='iptax']",errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['ACTIVE', 'session.compcode','Output']
+						},
+				ondblClickRow:function(){
+					$('#optax').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
+			},{
+				title:"Select Tax Master",
+				open: function(){
+					dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid2 input[name='optax']").focus();
+				}
+			},'urlParam','radio','tab'
+		);
+				
+		dialog_iptax.makedialog();
+
+		var dialog_optax = new ordialog(
+			'optax','hisdb.taxmast',"#jqGrid2 input[name='optax']",errorField,
+			{	colModel:[
+					{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
+					{label:'Rate',name:'rate',width:200,classes:'pointer'},
+				],
+				urlParam: {
+					filterCol:['recstatus','compcode','taxtype'],
+					filterVal:['ACTIVE', 'session.compcode','Output']
+						},
+				ondblClickRow:function(){
+					$('#amt1').focus();
+				},
+				gridComplete: function(obj){
+							var gridname = '#'+obj.gridname;
+							if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+								$(gridname+' tr#1').click();
+								$(gridname+' tr#1').dblclick();
+								$('#amt1').focus();
+							}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+								$('#'+obj.dialogname).dialog('close');
+							}
+						}
+			},{
+				title:"Select Tax Master",
+				open: function(){
+					dialog_optax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
+					dialog_optax.urlParam.filterVal = ['ACTIVE', 'session.compcode','Output'];
+				},
+				close: function(){
+					$("#jqGrid2 input[name='amt1']").focus();
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_optax.makedialog();
+
+		function hideatdialogForm(hide,saveallrow){
+			if(saveallrow == 'saveallrow'){
+				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+				$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+
+			}else if(hide){
+				$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+				$("#saveDetailLabel").show();
+			}else{
+				$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+				$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			}
+			
+		}
 
 });

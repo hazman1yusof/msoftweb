@@ -77,8 +77,16 @@ class PurchaseOrderController extends defaultController
         DB::beginTransaction();
 
         try {
-            $purordno = $this->request_no('PO',$request->purordhd_prdept);
-            $recno = $this->recno('PUR','PO');
+
+            if(!empty($request->referral)){
+                $purordno = $this->request_no('PO',$request->purordhd_prdept);
+                $recno = $this->recno('PUR','PO');
+                $compcode = session('compcode');
+            }else{
+                $purordno = 0;
+                $recno = 0;
+                $compcode = 'DD';
+            }
 
             $table = DB::table("material.purordhd");
 
@@ -87,7 +95,7 @@ class PurchaseOrderController extends defaultController
                 'recno' => $recno,
                 'purordno' => $purordno,
                 // 'purreqno' => $purreqno,
-                'compcode' => session('compcode'),
+                'compcode' => $compcode,
                 'unit' => session('unit'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now(),
@@ -124,9 +132,9 @@ class PurchaseOrderController extends defaultController
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
 
-            echo json_encode($responce);
-
             DB::commit();
+
+            return json_encode($responce);
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -956,7 +964,6 @@ class PurchaseOrderController extends defaultController
 
     public function save_dt_from_othr_pr($refer_recno,$recno,$purordno){
         $pr_dt = DB::table('material.purreqdt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','netunitprice','totamount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -973,7 +980,10 @@ class PurchaseOrderController extends defaultController
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
                 'pouom' => $value->pouom, 
-                'qtyorder' => $value->qtyrequest, 
+                'qtyorder' => 0, 
+                'qtydelivered' => 0,
+                'qtyoutstand' => $value->qtybalance,
+                'qtyrequest' => $value->qtyrequest,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
@@ -1170,7 +1180,7 @@ class PurchaseOrderController extends defaultController
 
         if(!empty($purordhd->purreqno)){
 
-            $status = 'COMPLETED';
+            $status_header = 'COMPLETED';
 
             $purreqhd = DB::table('material.purreqhd')
                         ->where('compcode','=',session('compcode'))
@@ -1187,6 +1197,7 @@ class PurchaseOrderController extends defaultController
                     $purreqdt = $purreqdt->get();
 
                     foreach ($purreqdt as $key => $value) {
+                        $status = 'COMPLETED';
 
                         $purorddt = DB::table('material.purorddt')
                             ->where('compcode', '=', session('compcode'))
@@ -1200,16 +1211,47 @@ class PurchaseOrderController extends defaultController
 
                         $newbalance = intval($qtybalance) - intval($qtytxn);
                         $newqtyapproved = intval($qtytxn) + intval($qtyapproved);
-                        if($newbalance > 0){
+                        // if($newbalance > 0){
+                        //     $status = 'PARTIAL';
+                        //     $status_header = 'PARTIAL';
+                        // }else{
+                        //     $status = 'COMPLETED';
+                        // }
+
+
+                        //nak buat qtyrequest1S and qtybalance1S
+                        $convfactorUOM_obj = DB::table('material.uom')
+                            ->select('convfactor')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$purorddt->uomcode)
+                            ->first();
+                        $convfactorUOM = $convfactorUOM_obj->convfactor;
+
+                        $qtyrequest1S_purorddt = $purorddt->qtyorder * $convfactorUOM;
+                        $newqtybalance1S = intval($value->qtybalance1S) - intval($qtyrequest1S_purorddt);
+                        if($newqtybalance1S > 0){
                             $status = 'PARTIAL';
+                            $status_header = 'PARTIAL';
+                        }else{
+                            $status = 'COMPLETED';
                         }
+                        //
 
                         DB::table('material.purreqdt')
                             ->where('idno','=',$value->idno)
                             ->update([
+                                'qtybalance1S' => $newqtybalance1S,
                                 'qtyapproved' => $newqtyapproved,
                                 'qtybalance' => $newbalance,
                                 'recstatus' => $status
+                            ]);
+
+                        DB::table('material.purorddt')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('recno','=',$purordhd->recno)
+                            ->where('lineno_','=',$value->lineno_)
+                            ->update([
+                                'qtyoutstand' => $newbalance
                             ]);
                     }
                     
@@ -1217,7 +1259,7 @@ class PurchaseOrderController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('purreqno','=',$purordhd->purreqno)
                         ->update([
-                            'recstatus' => $status
+                            'recstatus' => $status_header
                         ]);
 
                 }else{

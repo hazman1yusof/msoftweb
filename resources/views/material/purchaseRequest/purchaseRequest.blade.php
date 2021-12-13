@@ -226,7 +226,7 @@ i.fa {
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
 							<input id="referral" name="referral" type="hidden">
-							<input id="idno" name="purreqhd_idno" type="hidden">
+							<input id="purreqhd_idno" name="purreqhd_idno" type="hidden">
 							<input id="purreqhd_purordno" name="purreqhd_purordno" type="hidden">
 
 							<div class="form-group">

@@ -26,6 +26,7 @@ class StocklocController extends defaultController
 
     public function form(Request $request)
     {  
+        $request->unit = session('unit');
         try {
             switch($request->oper){
                 case 'add':
@@ -35,7 +36,7 @@ class StocklocController extends defaultController
                                     ->where('itemcode','=',$request->itemcode)
                                     ->where('uomcode','=',$request->uomcode)
                                     ->where('year','=',$request->year)
-                                    ->where('unit','=',$request->unit);
+                                    ->where('unit','=',session('unit'));
 
                     if($duplicate->exists()){
                         throw new \Exception("Itemcode ".$request->itemcode." with department ".$request->deptcode." duplicate");

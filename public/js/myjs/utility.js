@@ -157,13 +157,33 @@ function populateFormdata(grid,dialog,form,selRowId,state,except){
 		if(input.is("[type=radio]")){
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
 		}else if( except != undefined && except.indexOf(index) === -1){
-			input.val(value);
+			input.val(decodeEntities(value));
 		}
 	});
 	if(dialog!=''){
 		$(dialog).dialog( "open" );	
 	}
 }
+
+var decodeEntities = (function() {
+  // this prevents any overhead from creating the object each time
+  var element = document.createElement('div');
+
+  function decodeHTMLEntities (str) {
+    if(str && typeof str === 'string') {
+      // strip script/html tags
+      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      element.innerHTML = str;
+      str = element.textContent;
+      element.textContent = '';
+    }
+
+    return str;
+  }
+
+  return decodeHTMLEntities;
+})();
 
 function inputCtrl(dialog,form,oper,butt2){
 	switch(oper) {
@@ -216,8 +236,9 @@ function selrowData(grid){
 	return $(grid).jqGrid ('getRowData', selrow);
 }
 
-function emptyFormdata(errorField,form,except){
+function emptyFormdata(errorField,form,except=[]){
 	var temp=[];
+	except.push(form+' input[name="_token"]');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -225,6 +246,7 @@ function emptyFormdata(errorField,form,except){
 	}
 	errorField.length=0;
 	$(form).trigger('reset');
+	$(form+' input[type=hidden]').val('');
 	$(form+' .help-block').html('');
 	if(except!=null){
 		$.each(except, function( index, value ) {
@@ -233,8 +255,9 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
-function emptyFormdata_div(div,except){
+function emptyFormdata_div(div,except=[]){
 	var temp=[];
+	except.push(form+' input[name="_token"]');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -286,12 +309,12 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppe
 		$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 	}).success(function(data){
 		if(grid!=null){
-			if (callback !== undefined) {
-				callback();
-			}
 			refreshGrid(grid,urlParam,oper);
 			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 			$(dialog).dialog('close');
+			if (callback !== undefined) {
+				callback();
+			}
 
 			// addmore($(searchForm+' .StextClass input[type=checkbox]').is(':checked'),grid,oper);
 		}
@@ -700,7 +723,13 @@ function unformatstatus_tick(cellvalue, option, rowObject) {
 
 function un_showdetail(cellvalue, option, rowObject){
 	let val = $(rowObject).html();
-	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	
+	if(val.search("[<]") == -1){
+		val = val;
+	}else{
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	}
+
 	if(val == " "){
 		val = "";
 	}
@@ -1133,6 +1162,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			event.data.data.urlParam.searchCol2=searchCol2;
 			event.data.data.urlParam.searchVal2=searchVal2;
 		}
+		if(obj.dialog_.hasOwnProperty('justb4refresh'))obj.dialog_.justb4refresh(obj);
 		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 		$("#Dtext_"+unique).val(text);
 
@@ -1215,6 +1245,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onChange(event){
+		renull_search(event.data.data);
 		let obj = event.data.data;
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
 		if(obj.dcolrType == 'radio'){

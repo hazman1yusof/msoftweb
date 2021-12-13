@@ -32,6 +32,8 @@ class InventoryTransactionDetailController extends defaultController
                 return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -92,6 +94,27 @@ class InventoryTransactionDetailController extends defaultController
 
         try {
             $recno = $request->recno;
+            $docno = $request->docno;
+
+            $ivtmphd = DB::table("material.ivtmphd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($ivtmphd->exists()){
+
+                $docno = $this->request_no($request->trantype, $request->txndept);
+                $recno = $this->recno('IV','IT');
+
+                DB::table("material.ivtmphd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $docno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -159,7 +182,13 @@ class InventoryTransactionDetailController extends defaultController
                   
                 ]);
             DB::commit();
-            return response($totalAmount,200);
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $recno;
+            $responce->docno = $docno;
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -391,6 +420,14 @@ class InventoryTransactionDetailController extends defaultController
             return response('Error'.$e, 500);
         }
 
+    }
+
+    
+    public function delete_dd(Request $request){
+        DB::table('material.ivtmphd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
 
 

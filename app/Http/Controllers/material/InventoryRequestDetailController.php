@@ -39,6 +39,8 @@ class InventoryRequestDetailController extends defaultController
 
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -55,13 +57,33 @@ class InventoryRequestDetailController extends defaultController
 
     public function add(Request $request){
 
-        $recno = $request->recno;
-        $ivreqno = $request->ivreqno;
-        $reqdept = $request->reqdept;
         
         DB::beginTransaction();
 
         try {
+
+            $recno = $request->recno;
+            $ivreqno = $request->ivreqno;
+            $reqdept = $request->reqdept;
+
+            $ivreqhd = DB::table("material.ivreqhd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($ivreqhd->exists()){
+                $ivreqno = $this->request_no('SR', $request->reqdept);
+                $recno = $this->recno('PUR','SR');
+
+                DB::table("material.ivreqhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'ivreqno' => $ivreqno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+
             //$request->expdate = $this->null_date($request->expdate);
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivreqdt')->select('lineno_')
@@ -85,6 +107,7 @@ class InventoryRequestDetailController extends defaultController
                     'maxqty' => $request->maxqty,
                     'qohconfirm' => $request->qohconfirm,
                     'qtyonhand' => $request->qtyonhand,
+                    'netprice' => $request->netprice,
                     // 'qtytxn'=> $request->qtytxn,
                     'qtybalance'=> $request->qtyrequest,
                     'qtyrequest'=> $request->qtyrequest,
@@ -95,6 +118,11 @@ class InventoryRequestDetailController extends defaultController
                 ]);
 
             DB::commit();
+
+            $responce = new stdClass();
+            $responce->recno = $recno;
+            $responce->ivreqno = $ivreqno;
+            return json_encode($responce);
         
         } catch (\Exception $e) {
             DB::rollback();
@@ -192,6 +220,13 @@ class InventoryRequestDetailController extends defaultController
             return response($e->getMessage(), 500);
         }
 
+    }
+
+    public function delete_dd(Request $request){
+        DB::table('material.ivreqhd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
 
 }

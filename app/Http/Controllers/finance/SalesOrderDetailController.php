@@ -92,6 +92,7 @@ class SalesOrderDetailController extends defaultController
                         ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'cm.uom as uom', 'cp.idno');
         $table = $table->rightJoin('hisdb.chgprice as cp', function($join) use ($request,$cp_fld){
                             $join = $join->on('cm.chgcode', '=', 'cp.chgcode');
+                            $join = $join->on('cm.uom', '=', 'cp.uom');
                             $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
                         });
 
@@ -147,6 +148,7 @@ class SalesOrderDetailController extends defaultController
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
+                ->where('cp.uom', '=', $value->uom)
                 ->whereDate('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
                 ->orderBy('cp.effdate','desc');
 

@@ -24,6 +24,10 @@ i.fa {
   padding: 0;
 }
 
+div.noti > li{
+	color:red;
+}
+
 .clearfix {
 	overflow: auto;
 }
@@ -141,7 +145,7 @@ i.fa {
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
-							{{'POST ALL'}}
+							{{'POST'}}
 						@else
 							{{Request::get('scope').' ALL'}}
 						@endif
@@ -356,7 +360,7 @@ i.fa {
 						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable'>No</label>
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable' selected>No</label>
 								  </div> 
 
 							   <div class="form-group">

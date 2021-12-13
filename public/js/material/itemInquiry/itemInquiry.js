@@ -153,7 +153,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 		},
 
 	});
@@ -162,7 +162,7 @@ $(document).ready(function () {
 		{	
 			edit:false,view:false,add:false,del:false,search:false,
 			beforeRefresh: function(){
-				refreshGrid("#jqGrid",urlParam);
+				refreshGrid("#jqGrid",urlParam,'edit');
 			},
 			
 		}	
@@ -232,7 +232,6 @@ $(document).ready(function () {
         	});
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();
 		},
 
 		onSelectRow:function(rowid,selected){

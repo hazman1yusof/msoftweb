@@ -32,6 +32,14 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+div.noti > li{
+	color:red;
+}
+
+#jqGrid2 input[type='text'].form-control{
+	text-transform: uppercase;
+}
+
 #more {display: none;}
 
 @endsection
@@ -102,21 +110,26 @@ i.fa {
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
+					<?php 
+
+						$data_oper = 'posted';
+						if(strtoupper(Request::get('scope')) == 'ALL'){
+							$data_oper='posted';
+						}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
+							$data_oper='soft_cancel';
+						}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
+							$data_oper='reopen';
+						}
+
+					?>
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
-						id="but_post_jq" 
-						data-oper="posted" 
+						id="but_post_jq"
+						data-oper="{{$data_oper}}"
 						style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
-					</button>
-
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
@@ -124,8 +137,6 @@ i.fa {
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -327,8 +338,8 @@ i.fa {
 
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='CLAIMABLE'>Yes</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='NON-CLAIMABLE' selected>No</label>
 								  </div>
 
 								<label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  

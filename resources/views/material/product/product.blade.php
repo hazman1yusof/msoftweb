@@ -23,6 +23,9 @@
 
 @section('body')
 	<div class='row'>
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="itemcode_hidden" id="itemcode_hidden">
+		<input type="hidden" name="uomcode_hidden" id="uomcode_hidden">
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
 				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">

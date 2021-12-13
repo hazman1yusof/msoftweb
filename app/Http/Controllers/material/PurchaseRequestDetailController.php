@@ -37,6 +37,8 @@ class PurchaseRequestDetailController extends defaultController
                // }    
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -107,31 +109,53 @@ class PurchaseRequestDetailController extends defaultController
 
     public function add(Request $request){
 
-        $recno = $request->recno;
-      //  $suppcode = $request->suppcode;
-        $purreqdt = $request->purreqdt;
-        $reqdept = $request->reqdept;
-        $duplicate = false;
-
         DB::beginTransaction();
+        try {
 
-        //check unique
-        if($request->pricecode == 'MS'){
-            $duplicate = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
-                ->where('itemcode','=',strtoupper($request->itemcode))
-                ->where('uomcode','=',strtoupper($request->uomcode))
-                ->where('pouom','=',strtoupper($request->pouom))
-                ->exists();
-        }
+            $recno = null;
+            $purreqhd = DB::table("material.purreqhd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
 
-        $has_prodmaster =  DB::table('material.productmaster')
+            if($purreqhd->exists()){
+                $purreqno = $this->request_no('PR', $purreqhd->first()->reqdept);
+                $recno = $this->recno('PUR','PR');
+
+                $purreqhd = DB::table("material.purreqhd")
+                                ->where('idno','=',$request->idno)
+                                ->update([
+                                    'purreqno' => $purreqno,
+                                    'recno' => $recno,
+                                    'compcode' => session('compcode'),
+                                ]);
+            }
+
+            if($recno == null){
+                $purreqno = $request->purreqno;
+                $recno = $request->recno;
+            }
+
+            //$suppcode = $request->suppcode;
+            $purreqdt = $request->purreqdt;
+            $reqdept = $request->reqdept;
+            $duplicate = false;
+
+            //check unique
+            if($request->pricecode == 'MS'){
+                $duplicate = DB::table('material.purreqdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->where('itemcode','=',strtoupper($request->itemcode))
+                    ->where('uomcode','=',strtoupper($request->uomcode))
+                    ->where('pouom','=',strtoupper($request->pouom))
+                    ->exists();
+            }
+
+            $has_prodmaster =  DB::table('material.productmaster')
                 ->where('compcode','=',session('compcode'))
                 ->where('itemcode','=',strtoupper($request->itemcode))
                 ->exists();
         
-        try {
             if($duplicate && $request->pricecode == 'MS'){
                 throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
             }
@@ -153,7 +177,7 @@ class PurchaseRequestDetailController extends defaultController
             DB::table('material.purreqdt')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'purreqno' => $request->purreqno,
+                    'purreqno' => $purreqno,
                     'recno' => $recno,
                     'lineno_' => $li,
                     'pricecode' => strtoupper($request->pricecode),
@@ -204,9 +228,17 @@ class PurchaseRequestDetailController extends defaultController
                     'TaxAmt' => $tot_gst
                 ]);
 
-            echo $totalAmount;
+
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $recno;
+            $responce->purreqno = $purreqno;
 
             DB::commit();
+
+            return json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -232,6 +264,8 @@ class PurchaseRequestDetailController extends defaultController
                     'uomcode'=> strtoupper($request->uomcode), 
                     'pouom'=> strtoupper($request->pouom), 
                     'qtyrequest'=> $request->qtyrequest, 
+                    'qtyapproved' => 0,
+                    'qtybalance' => $request->qtyrequest,
                     'unitprice'=> $request->unitprice,
                     'taxcode'=> $request->taxcode, 
                     'perdisc'=> $request->perdisc, 
@@ -323,6 +357,8 @@ class PurchaseRequestDetailController extends defaultController
                         'uomcode'=> strtoupper($value['uomcode']), 
                         'pouom'=> strtoupper($value['pouom']), 
                         'qtyrequest'=> strtoupper($value['qtyrequest']),  
+                        'qtyapproved' => 0,
+                        'qtybalance' => $request->qtyrequest,
                         'unitprice'=> $value['unitprice'],
                         'taxcode'=> strtoupper($value['taxcode']), 
                         'perdisc'=> $value['perdisc'], 
@@ -421,6 +457,13 @@ class PurchaseRequestDetailController extends defaultController
             return response($e->getMessage(), 500);
         }
         
+    }
+
+    public function delete_dd(Request $request){
+        DB::table('material.purreqhd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
 
 }
