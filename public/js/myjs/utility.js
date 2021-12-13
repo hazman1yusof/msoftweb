@@ -371,27 +371,33 @@ function populateSelect2(grid,form){
 function searchClick(grid,form,urlParam){
 	$(form+' [name=Stext]').on( "keyup", onchgscol_500);
 
-	$(form+' [name=Scol]').on( "change",onchgscol);
+	$(form+' [name=Scol]').on( "change", onchgscol);
 
 	function onchgscol(){
 		search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
 	}
 
-	function onchgscol_500(){
-		delay(function(){
-			search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
-		}, 500 );
+	function onchgscol_500(e){
+		var code = e.keyCode || e.which;
+		if(code != '9'){
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+			}, 500 );
+		}
 	}
 }
 
 function searchClick2(grid,form,urlParam){
-	$(form+' [name=Stext]').on( "keyup", function() {
-		delay(function(){
-			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#recnodepan').text("");//tukar kat depan tu
-			$('#reqdeptdepan').text("");
-			refreshGrid("#jqGrid3",null,"kosongkan");
-		}, 500 );
+	$(form+' [name=Stext]').on( "keyup", function(e) {
+		var code = e.keyCode || e.which;
+		if(code != '9'){
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#recnodepan').text("");//tukar kat depan tu
+				$('#reqdeptdepan').text("");
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		}
 	});
 
 	$(form+' [name=Scol]').on( "change", function() {

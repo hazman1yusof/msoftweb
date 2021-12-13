@@ -16,6 +16,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField)
 				return {
 					element: $(errorField[0]),
 					message : ' '
@@ -92,6 +93,19 @@ $(document).ready(function () {
 			$('#p_error').text('');   //hilangkan duplicate error msj after save				
 		},				
 	});
+
+	function cust_rules(value,name){
+		console.log(name);
+		console.log(value);
+		var temp=null;
+		switch(name){
+			case 'Area Code':temp=$("#jqGrid input[name='areacode']");break;
+			case 'Description':temp=$("#jqGrid input[name='Description']");break;
+			case 'Area Group': temp = $("#jqGrid input[name='areagroup']"); break;
+		}return [false,''];
+		if(temp == null) return [false,''];
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
 
 	var myEditOptions = {
 		keys: true,
@@ -174,7 +188,6 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			console.log(errorField)
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
