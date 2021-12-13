@@ -91,6 +91,7 @@ $(document).ready(function () {
 					dialog_deptcode.on();
 					delay(function(){
 						dialog_itemcode_2.check(errorField);
+						dialog_uomcode_2.check(errorField);
 					}, 500 );
 				}
 				if (oper != 'add') {
@@ -143,10 +144,10 @@ $(document).ready(function () {
 			{ label: 'Department Code', name: 'deptcode', width: 50, classes: 'wrap',formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Year', name: 'year', width: 50, classes: 'wrap' },
 			{ label: 'Item Code', name: 'itemcode', width: 60, classes: 'wrap', hidden: true, },
-			{ label: 'UOM Code', name: 'uomcode', width: 60, classes: 'wrap' },
+			{ label: 'UOM Code', name: 'uomcode', width: 60, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Bin Code', name: 'bincode', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Rack No', name: 'rackno', width: 50, classes: 'wrap', hidden: true },
-			{ label: 'Tran Type', name: 'stocktxntype', width: 50, classes: 'wrap', },
+			{ label: 'Tran Type', name: 'stocktxntype', width: 50, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Disp Type', name: 'disptype', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Qty On Hand', name: 'qtyonhand', width: 50, classes: 'wrap', align: 'right' },
 			{ label: 'Min Stock Qty', name: 'minqty', width: 40, classes: 'wrap', align:'right' },
@@ -252,6 +253,8 @@ $(document).ready(function () {
 		var field,table, case_;
 		switch(options.colModel.name){
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='chggroup';break;
+			case 'uomcode':field=['uomcode','description'];table="material.uom";case_='uomcode';break;
+			case 'stocktxntype':field=['trantype','description'];table="material.ivtxntype";case_='stocktxntype';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -394,15 +397,15 @@ $(document).ready(function () {
 				$('#select_year').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#select_year').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+						$('#select_year').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 
 		}, {
 			title: "Select Uom",
@@ -478,5 +481,53 @@ $(document).ready(function () {
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_itemcode_2.makedialog();
+
+	var dialog_uomcode_2 = new ordialog(
+		'uomcode', ['material.product as p', 'material.uom as u'], "#uomcode", errorField,
+		{
+			colModel:
+			[
+				{ label: 'UOM code', name: 'p_uomcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'u_description', width: 400, classes: 'pointer', checked:true, canSearch: true, or_search: true },
+				{ label: 'Unit',name:'p_unit',classes:'pointer'},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + dialog_uomcode_2.gridname);
+				$("#uomcodeS").val(data['p_uomcode']);
+				$('#select_year').focus();
+			},
+			gridComplete: function(obj){
+						var gridname = '#'+obj.gridname;
+						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+							$(gridname+' tr#1').click();
+							$(gridname+' tr#1').dblclick();
+							$('#select_year').focus();
+						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+							$('#'+obj.dialogname).dialog('close');
+						}
+					}
+
+		}, {
+			title: "Select Uom",
+			open: function () {
+				dialog_uomcode_2.urlParam.fixPost = false;
+				dialog_uomcode_2.urlParam.table_id = "uomcode";
+				dialog_uomcode_2.urlParam.filterCol = ['p.itemcode','p.compcode','p.unit'];
+				dialog_uomcode_2.urlParam.filterVal = [$("#itemcodeS").val(),'session.compcode','session.unit'];
+				dialog_uomcode_2.urlParam.join_type = ['LEFT JOIN'];
+				dialog_uomcode_2.urlParam.join_onCol = ['p.uomcode'];
+				dialog_uomcode_2.urlParam.join_onVal = ['u.uomcode'];
+				dialog_uomcode_2.urlParam.join_filterCol = [['p.compcode on =']];
+				dialog_uomcode_2.urlParam.join_filterVal = [['u.compcode']];
+			},
+		}, 'urlParam', 'radio', 'tab'
+	);
+	dialog_uomcode_2.makedialog();
+	dialog_uomcode_2.on();
+
 
 });
