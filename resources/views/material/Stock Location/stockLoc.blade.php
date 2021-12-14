@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Stock Location Enquiry')
+@section('title', 'Stock Location')
 
 @section('body')
 
@@ -73,7 +73,7 @@
 				<div class="form-group">
 
 				  	<label class="col-md-2 control-label" for="deptcode">Dept. Code</label>  
-				  	<div class="col-md-4">
+				  	<div class="col-md-3">
 						  <div class='input-group'>
 							<input id="deptcode" name="deptcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -92,10 +92,18 @@
                   
                 <div class="form-group">
 				 	<label class="col-md-2 control-label" for="stocktxntype">Transaction Type</label>  
-				  	<div class="col-md-10">
+				  	<div class="col-md-3">
 				    	<label class="radio-inline"><input type="radio" name="stocktxntype" value='TR'>Stock</label>
                     	<label class="radio-inline"><input type="radio" name="stocktxntype" value='IS'>Expenses</label>				
                 	</div>
+
+					<label class="col-md-2 control-label" for="uomcode">UOM Code</label>  
+					<div class="col-md-3">
+						  <div>
+						  	<input id="uomcode" name="uomcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+						  </div>
+						  <span class="help-block"></span>
+					</div>
 				</div>
                   
                   <div class="form-group" hidden = 'true'>

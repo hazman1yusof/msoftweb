@@ -27,13 +27,13 @@
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<div class="ScolClass" style="padding:0 0 0 15px">
 						<div name='Scol' style='font-weight:bold'>	Search By : </div> 			
 				</div>
 				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">					
+					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">					
 				</div>
 				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
 					<button type="button" id='transferButn' class='btn btn-info' >Transfer</button> 
@@ -134,9 +134,41 @@
 	<!--///////////////////End Form /////////////////////////-->
 	@endsection
 
-
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',2);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+		});
+	</script>
+		
 	<script src="js/finance/FA/assettransfer/assettransferScript.js"></script>
 	
 @endsection
