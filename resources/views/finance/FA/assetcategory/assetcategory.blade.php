@@ -8,7 +8,7 @@
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<div class="ScolClass">
-					<div name='Scol'>Search By : </div>
+					<div name='Scol'> Search By : </div>
 				</div>
 
 				<div class="StextClass">

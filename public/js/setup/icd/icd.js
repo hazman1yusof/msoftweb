@@ -88,12 +88,15 @@ $(document).ready(function () {
 		},
 	});
 
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
+
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -102,9 +105,10 @@ $(document).ready(function () {
 				$('#jqGrid_ilsave').click();*/
 			});
 
-			// let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
-
-			// $('textarea[name=description_show]').val(selrow.description)
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
