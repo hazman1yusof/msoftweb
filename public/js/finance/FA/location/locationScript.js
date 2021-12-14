@@ -42,7 +42,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		editurl: '/location/form',
-		 colModel: [
+		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
 			// { label: 'Location Code', name: 'loccode', width: 15, canSearch: true, checked: true, editable: true, 
@@ -118,11 +118,9 @@ $(document).ready(function () {
 				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
 			}
 		})
-
 	}
 
 	//////////////////////////My edit options /////////////////////////////////////////////////////////
-
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
@@ -182,6 +180,7 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
@@ -211,7 +210,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'edit');
+			refreshGrid('#jqGrid',urlParam2,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
