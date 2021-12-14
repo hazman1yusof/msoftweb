@@ -82,9 +82,7 @@ input.uppercase {
 						$("table#jqGrid").data('enter',true);
 					}
 				});
-
 			}
-
 			
 		});
 	</script>

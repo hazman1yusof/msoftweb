@@ -1934,6 +1934,32 @@ function SmoothScrollToTop(){
   });
 }
 
+function myerrorIt(id,errorField,fail){
+	if(!fail){
+		if($.inArray(id,errorField)!==-1){
+			errorField.splice($.inArray(id,errorField), 1);
+		}
+		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		$( id ).removeClass( "error" ).addClass( "valid" );
+	}else{
+		if($.inArray(id,errorField)===-1){
+			errorField.push( id );
+			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id ).removeClass( "valid" ).addClass( "error" );
+		}
+	}
+}
+
+function myerrorIt_only(id,fail){
+	if(!fail){
+		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		$( id ).removeClass( "error" ).addClass( "valid" );
+	}else{
+		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+		$( id ).removeClass( "valid" ).addClass( "error" );
+	}
+}
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){
