@@ -4,9 +4,9 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
@@ -206,6 +206,7 @@ $(document).ready(function () {
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -213,6 +214,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/chargegroup/form?"+
 				$.param({

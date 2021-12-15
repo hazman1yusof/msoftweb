@@ -4,9 +4,9 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
@@ -34,7 +34,7 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.chgclass',
 		table_id: 'idno',
-		//sort_idno: true,
+		sort_idno: true
 	}
 
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
@@ -101,6 +101,12 @@ $(document).ready(function () {
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   //hilangkan duplicate error msj after save				
 		},
+		gridComplete: function () {
+			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}	
+		},
 	});
 
 	function check_cust_rules(rowid){
@@ -113,7 +119,6 @@ $(document).ready(function () {
 				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
 			}
 		})
-
 	}
 
 	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
@@ -131,7 +136,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -152,6 +160,9 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
+
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			console.log(data);
 
 			check_cust_rules();
 
@@ -201,6 +212,7 @@ $(document).ready(function () {
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -208,6 +220,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/chargeclass/form?"+
 				$.param({

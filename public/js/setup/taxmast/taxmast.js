@@ -35,7 +35,7 @@ $(document).ready(function () {
 		field:'',
 		table_name:'hisdb.taxmast',
 		table_id:'taxcode',
-		sort_idno: true,
+		sort_idno: true
 	}
 
 	//////////////////////////////// jQgrid /////////////////////////////////////////////////////
@@ -99,6 +99,9 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
 		},
 	});
 
@@ -155,7 +158,11 @@ $(document).ready(function () {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			console.log(data);
+
 			check_cust_rules();
+
 
 			let editurl = "/taxmast/form?"+
 				$.param({
@@ -203,6 +210,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam2,'add');
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
@@ -211,6 +219,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/taxmast/form?"+
 				$.param({

@@ -1,13 +1,12 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
@@ -25,6 +24,7 @@ $(document).ready(function () {
 		},
 	};
 
+	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['bedtype', 'description']);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -34,7 +34,7 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.bedtype',
 		table_id: 'idno',
-		//sort_idno: true,
+		sort_idno: true,
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -48,21 +48,21 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'description', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Bed Charge Code', name: 'bedchgcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			//{ label: 'Lodger Charge Code', name: 'lodchgcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
 				value:"A:ACTIVE;D:DEACTIVE"},
 				cellattr: function(rowid, cellvalue)
 						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 			},
-			{ label: 'Add User', name: 'adduser', width: 90, hidden: false },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'Last User', name: 'upduser', width: 90, hidden: false },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
-			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
-			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
+			{ label: 'Add User', name: 'adduser', width: 30, hidden: false },
+			{ label: 'adddate', name: 'adddate', width: 30, hidden: true },
+			{ label: 'Last User', name: 'upduser', width: 30, hidden: false },
+			{ label: 'upddate', name: 'upddate', width: 30, hidden: true },
+			{ label: 'lastuser', name: 'lastuser', width: 30, hidden:true},
+			{ label: 'lastupdate', name: 'lastupdate', width: 30, hidden:true},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 30, hidden:true},
+			{ label: 'lastipaddress', name: 'lastipaddress', width: 30, hidden:true},
 
 		],
 		autowidth: true,
@@ -81,10 +81,11 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){
 				$('#jqGrid_iladd').click();
-			}
-			else{
-				$('#jqGrid').jqGrid ('setSelection', "1");
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -92,18 +93,38 @@ $(document).ready(function () {
 				err_reroll.reroll();
 			}
 		},
-		ondblClickRow: function (rowid, iRow, iCol, e) {
+		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
-			$('#p_error').text('');   //hilangkan duplicate error msj after save
+			$('#p_error').text('');   //hilangkan duplicate error msj after save				
+		},
+		gridComplete: function () {
+			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}	
 		},
 	});
 
+	function check_cust_rules(rowid){
+		var chk = ['bedtype','description'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+	}
+
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -111,7 +132,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -136,6 +160,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/bedtype/form?"+
 				$.param({
 					action: 'bedtype_save',
@@ -143,6 +169,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -150,6 +177,7 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
@@ -164,18 +192,21 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -184,6 +215,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/bedtype/form?"+
 				$.param({
 					action: 'bedtype_save',
@@ -191,6 +224,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -198,7 +232,7 @@ $(document).ready(function () {
 		}
 	};
 
-
+	/////////////////////////start jqgrid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
