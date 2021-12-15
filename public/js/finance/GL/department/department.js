@@ -358,9 +358,9 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	toogleSearch('#sbut1','#searchForm','on');
-	populateSelect('#jqGrid','#searchForm');
-	searchClick('#jqGrid','#searchForm',urlParam);
+	//toogleSearch('#sbut1','#searchForm','on');
+	populateSelect2('#jqGrid','#searchForm');
+	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);

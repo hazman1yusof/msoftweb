@@ -85,7 +85,6 @@
 						$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 					}
 		
-
 					addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 					if(err_reroll.error == true){
 						err_reroll.reroll();

@@ -50,7 +50,6 @@ input.uppercase {
 @endsection
 
 @section('scripts')
-@section('scripts')
 	<script type="text/javascript">
 		$(document).ready(function () {
 			if(!$("table#jqGrid").is("[tabindex]")){
