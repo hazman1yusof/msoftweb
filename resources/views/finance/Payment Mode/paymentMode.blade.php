@@ -30,8 +30,6 @@
 
 	<!-------------------------------- End Search + table ------------------>
 	
-	
-		
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 			
