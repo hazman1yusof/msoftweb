@@ -224,6 +224,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
+					check_cust_rules();
 					let editurl = "/unit/form?"+
 						$.param({
 							action: 'unit_save',

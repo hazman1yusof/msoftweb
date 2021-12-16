@@ -211,6 +211,7 @@
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
+					check_cust_rules();
 					let editurl = "/uom/form?"+
 						$.param({
 							action: 'uom_save',

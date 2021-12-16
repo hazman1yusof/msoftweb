@@ -261,6 +261,18 @@
 					$('#formdata select').prop("disabled",false);
 					sdate.check();
 				}, 
+			// }).jqGrid('navButtonAdd',"#jqGridPager",{
+			// 	id: "savcancelyeareyear",
+			// 	caption:"",cursor: "pointer",position: "last",  
+			// 	buttonicon:"glyphicon glyphicon-remove-circle", 
+			// 	title:"Cancel", 
+				
+			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				id: "saveyear",
+				caption:"",cursor: "pointer",position: "first",  
+				buttonicon:"glyphicon glyphicon-save", 
+				title:"Save", 
+				
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
 				buttonicon:"glyphicon glyphicon-plus", 
@@ -269,12 +281,13 @@
 					oper='add';
 					$("#year").focus();
 					$('#formdata select').prop("disabled",false);
-					$("#saveyear").hide();
+					$("#saveyear").show();
 					$("#cancelyear").show();
 					addYear();
 					hdate.check();
 					$("#jqGridPager_left").hide();
 				},
+				
 			});
 
 			function selectYear(){

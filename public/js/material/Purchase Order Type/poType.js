@@ -205,6 +205,7 @@
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
+					check_cust_rules();
 					let editurl = "/potype/form?"+
 						$.param({
 							action: 'potype_save',

@@ -216,6 +216,7 @@
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
+					check_cust_rules();
 					let editurl = "/costcenter/form?"+
 						$.param({
 							action: 'costcenter_save',
