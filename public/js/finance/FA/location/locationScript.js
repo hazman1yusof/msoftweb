@@ -219,6 +219,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/location/form?"+
 				$.param({
 					action: 'location_save',
