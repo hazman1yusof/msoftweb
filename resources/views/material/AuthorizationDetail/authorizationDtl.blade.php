@@ -8,17 +8,17 @@
 	<div class='row'>
 		<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
 
-		<form id="searchForm" class="formclass" style='width:99%'>
+		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
 						<div class="col-md-2">
 						  	<label class="control-label" for="Scol">Search By : </label>  
-						  		<select id='Scol' class="form-control input-sm"></select>
+						  		<select id='Scol' class="form-control input-sm" tabindex="1"></select>
 			            </div>
 	                    <div class="col-md-5">
 	                        <label class="control-label"></label>  
-							<input id="searchText" name="searchText" type="text" class="form-control input-sm" autocomplete="off"/>
+							<input id="Stext" name="Stext" type="text" class="form-control input-sm" autocomplete="off" tabindex="2"/>
 				  		</div>
 			        </div>
 				</div>
@@ -111,7 +111,40 @@
 	@endsection
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/material/AuthorizationDetail/authorizationDtl.js"></script>
 
 @endsection

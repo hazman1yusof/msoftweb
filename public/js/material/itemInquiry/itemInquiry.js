@@ -154,6 +154,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 		},
 
 	});

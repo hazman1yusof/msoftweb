@@ -107,9 +107,9 @@ $(document).ready(function () {
 				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
 			}
 		})
-
 	}
 
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
@@ -166,6 +166,7 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////My edit options add /////////////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
@@ -185,7 +186,6 @@ $(document).ready(function () {
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
 				$("#jqGrid input[type='text']").removeClass( "error" );
 			});
-
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -220,6 +220,7 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////////////////////jqGridPager////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
@@ -303,7 +304,5 @@ $(document).ready(function () {
 			});
 			this.error = false;
 		}
-		
-
 	}
 });

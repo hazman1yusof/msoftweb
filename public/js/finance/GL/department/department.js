@@ -234,14 +234,11 @@ $(document).ready(function () {
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		 colModel: [
-			//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
+		 colModel: [					
 			{ label: 'Dept', name: 'deptcode', width: 30, classes: 'wrap', canSearch: true},
 			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true},
-			//{ label: 'Dept', name: 'deptcode', width: 30, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail, canSearch: true},
 			{ label: 'Cost Code', name: 'costcode', width: 40, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{ label: 'Sector', name: 'sector', width: 30, hidden:false, classes: 'wrap'},
-
 			{ label: 'Purchase', name: 'purdept', width: 25, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Register', name: 'regdept', width: 20, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Charge', name: 'chgdept', width: 20, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
@@ -250,16 +247,14 @@ $(document).ready(function () {
 			{ label: 'Dispense', name: 'dispdept', width: 25, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Store', name: 'storedept', width: 20, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'},
 			{ label: 'Category', name: 'category', width: 30, classes: 'wrap'},
-
 			{ label: 'Region', name: 'region', hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'adduser', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'adddate', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 50, hidden:true, classes: 'wrap'},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap', cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
-			},
-			{label: 'idno', name: 'idno', hidden: true},
+					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
+			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', hidden:true},
 			{ label: 'computerid', name: 'computerid', hidden:true},
@@ -267,6 +262,8 @@ $(document).ready(function () {
 		],
 		autowidth:true,
         multiSort: true,
+		sortname: 'idno',
+		sortorder: 'desc',
 		viewrecords: true,
 		loadonce:false,
 		width: 900,
@@ -361,9 +358,9 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	toogleSearch('#sbut1','#searchForm','on');
-	populateSelect('#jqGrid','#searchForm');
-	searchClick('#jqGrid','#searchForm',urlParam);
+	//toogleSearch('#sbut1','#searchForm','on');
+	populateSelect2('#jqGrid','#searchForm');
+	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);

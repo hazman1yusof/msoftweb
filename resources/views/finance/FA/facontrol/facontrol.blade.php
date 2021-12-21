@@ -4,15 +4,17 @@
 
 @section('body')
 
-	@include('layouts.default_search_and_table')
+	<div class="panel panel-default">
+		<div class="panel-heading">Asset Control Header</div>
+	</div>
 
 	<div id="dialogForm" title="Add Form" >
-		<form class='form-horizontal' style='width:99%' id='formdata'>
+		<form class='form-horizontal' style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			{{ csrf_field() }}
             <input type="hidden" name="fa_idno">
 
 			<div class="form-group">
-	        	<label class="col-md-3 control-label" for="year">Year</label>  
+	        	<label class="col-md-5 control-label" for="year">Year</label>  
 	              <div class="col-md-3">
 	              <select class="form-control"  id="year" name="fa_year">
 	              	@foreach ($yearperiod as $year)
@@ -23,7 +25,7 @@
 			</div>
 	        
 	        <div class="form-group">
-	        	<label class="col-md-3 control-label" for="period">Period</label>  
+	        	<label class="col-md-5 control-label" for="period">Period</label>  
 	              <div class="col-md-3">
 	              <select class="form-control" id="period" name="fa_period">
 		              <option value="1">1</option>

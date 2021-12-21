@@ -24,6 +24,7 @@ $(document).ready(function () {
 		},
 	};
 	
+	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['loccode', 'description']);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -32,7 +33,8 @@ $(document).ready(function () {
 		url: '/util/get_table_default',
 		field:'',
 		table_name:'sysdb.location',
-		table_id:'idno'
+		table_id:'idno',
+		sort_idno:true
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -40,7 +42,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		editurl: '/location/form',
-		 colModel: [
+		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
 			// { label: 'Location Code', name: 'loccode', width: 15, canSearch: true, checked: true, editable: true, 
@@ -49,7 +51,7 @@ $(document).ready(function () {
 			// 		},
 			{ label: 'Location Code', name: 'loccode', width: 15, classes: 'wrap', canSearch: true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
 							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 							cellattr: function(rowid, cellvalue)
@@ -81,27 +83,51 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){
-				$('#jqGrid2_iladd').click();}
-			else{
+				$('#jqGrid_iladd').click();
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
+
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			if(err_reroll.error == true){
 				err_reroll.reroll();
 			}
 		},
-		ondblClickRow: function (rowid, iRow, iCol, e) {
+		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
+		gridComplete: function () {
+			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}			
+		},
 	});
 
+	function check_cust_rules(rowid){
+		var chk = ['loccode','description'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+	}
+
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -109,7 +135,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -134,6 +163,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/location/form?"+
 				$.param({
 					action: 'location_save',
@@ -141,6 +172,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -148,12 +180,14 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("input[name='loccode']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
@@ -162,12 +196,15 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -189,6 +226,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -196,7 +234,7 @@ $(document).ready(function () {
 		}
 	};
 
-
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
@@ -252,6 +290,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid", urlParam);
 		},
 	});
+
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////

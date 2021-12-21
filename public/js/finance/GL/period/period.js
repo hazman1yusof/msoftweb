@@ -224,6 +224,7 @@
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-trash",
+				id: "deleteyear",
 				title:"Delete Selected Row",
 				onClickButton: function(){
 					oper='del';
@@ -238,6 +239,7 @@
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-info-sign",
+				id: "viewyear",
 				title:"View Selected Year",  
 				onClickButton: function(){
 					oper='view';
@@ -250,31 +252,54 @@
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
+				id: "edityear",
 				buttonicon:"glyphicon glyphicon-edit",
 				title:"Edit Selected Year",  
 				onClickButton: function(){
 					oper='edit';
+					$("#addnewyear").hide();
+					$("#edityear").hide();
+					$("#deleteyear").hide();
+					$("#viewyear").hide();
 					$("#saveyear").show();
-					$("#cancelyear").hide();
+					$("#cancelyear").show();
 					$('#formdata :input[rdonly]').prop("readonly",false);
 					$('#formdata :input[frozeOnEdit]').prop("readonly",true);
 					$('#formdata select').prop("disabled",false);
 					sdate.check();
 				}, 
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				id: "cancelyear",
+				caption:"",cursor: "pointer",position: "last",  
+				buttonicon:"glyphicon glyphicon-remove-circle", 
+				title:"Cancel", 
+				
+			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				id: "saveyear",
 				caption:"",cursor: "pointer",position: "first",  
+				buttonicon:"glyphicon glyphicon-save", 
+				title:"Save", 
+				
+			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				caption:"",cursor: "pointer",position: "first",  
+				id: "addnewyear",
 				buttonicon:"glyphicon glyphicon-plus", 
 				title:"Add New Row", 
 				onClickButton: function(){
 					oper='add';
 					$("#year").focus();
-					$('#formdata select').prop("disabled",false);
-					$("#saveyear").hide();
+					$("#addnewyear").hide();
+					$("#edityear").hide();
+					$("#deleteyear").hide();
+					$("#viewyear").hide();
+					$("#saveyear").show();
 					$("#cancelyear").show();
+					$('#formdata select').prop("disabled",false);
 					addYear();
 					hdate.check();
-					$("#jqGridPager_left").hide();
+					$("#jqGridPager_left").show();
 				},
+				
 			});
 
 			function selectYear(){
