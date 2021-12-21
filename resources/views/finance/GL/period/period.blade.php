@@ -36,7 +36,8 @@
 	                    <div class="col-md-4">
 	                      	<input id="year" name="year" type="text" maxlength="9" class="form-control input-sm" data-validation="required,number" frozeOnEdit rdonly>
 	                    </div>
-	                    <button type="button" id='cancelyear' class='btn btn-info'>Cancel</button>
+						<!-- <button type="button" id='saveyear' class='btn btn-info'>Save</button>
+	                    <button type="button" id='cancelyear' class='btn btn-info'>Cancel</button> -->
 				</div>
 	                <table id="addPd" class ="table table-bordered">
 	                	<thead>

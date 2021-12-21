@@ -255,17 +255,17 @@
 				onClickButton: function(){
 					oper='edit';
 					$("#saveyear").show();
-					$("#cancelyear").hide();
+					$("#cancelyear").show();
 					$('#formdata :input[rdonly]').prop("readonly",false);
 					$('#formdata :input[frozeOnEdit]').prop("readonly",true);
 					$('#formdata select').prop("disabled",false);
 					sdate.check();
 				}, 
-			// }).jqGrid('navButtonAdd',"#jqGridPager",{
-			// 	id: "savcancelyeareyear",
-			// 	caption:"",cursor: "pointer",position: "last",  
-			// 	buttonicon:"glyphicon glyphicon-remove-circle", 
-			// 	title:"Cancel", 
+			}).jqGrid('navButtonAdd',"#jqGridPager",{
+				id: "cancelyear",
+				caption:"",cursor: "pointer",position: "last",  
+				buttonicon:"glyphicon glyphicon-remove-circle", 
+				title:"Cancel", 
 				
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				id: "saveyear",
@@ -280,12 +280,12 @@
 				onClickButton: function(){
 					oper='add';
 					$("#year").focus();
-					$('#formdata select').prop("disabled",false);
 					$("#saveyear").show();
 					$("#cancelyear").show();
+					$('#formdata select').prop("disabled",false);
 					addYear();
 					hdate.check();
-					$("#jqGridPager_left").hide();
+					$("#jqGridPager_left").show();
 				},
 				
 			});
