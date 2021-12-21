@@ -224,6 +224,7 @@
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-trash",
+				id: "deleteyear",
 				title:"Delete Selected Row",
 				onClickButton: function(){
 					oper='del';
@@ -238,6 +239,7 @@
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first", 
 				buttonicon:"glyphicon glyphicon-info-sign",
+				id: "viewyear",
 				title:"View Selected Year",  
 				onClickButton: function(){
 					oper='view';
@@ -250,10 +252,15 @@
 				},
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
+				id: "edityear",
 				buttonicon:"glyphicon glyphicon-edit",
 				title:"Edit Selected Year",  
 				onClickButton: function(){
 					oper='edit';
+					$("#addnewyear").hide();
+					$("#edityear").hide();
+					$("#deleteyear").hide();
+					$("#viewyear").hide();
 					$("#saveyear").show();
 					$("#cancelyear").show();
 					$('#formdata :input[rdonly]').prop("readonly",false);
@@ -275,11 +282,16 @@
 				
 			}).jqGrid('navButtonAdd',"#jqGridPager",{
 				caption:"",cursor: "pointer",position: "first",  
+				id: "addnewyear",
 				buttonicon:"glyphicon glyphicon-plus", 
 				title:"Add New Row", 
 				onClickButton: function(){
 					oper='add';
 					$("#year").focus();
+					$("#addnewyear").hide();
+					$("#edityear").hide();
+					$("#deleteyear").hide();
+					$("#viewyear").hide();
 					$("#saveyear").show();
 					$("#cancelyear").show();
 					$('#formdata select').prop("disabled",false);
