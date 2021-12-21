@@ -964,6 +964,7 @@ function setactdate(target){
 
 				self.target.forEach(function(element,i){
 					$(element).attr('min',self.actdateopen[0].from);
+					$(element).attr('max',self.highestdate);
 				});
 			}
 		});

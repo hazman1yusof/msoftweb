@@ -799,5 +799,13 @@ abstract class defaultController extends Controller{
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
 
+    public static function givenullifempty($obj){
+        if(empty($obj)){
+            return null;
+        }else{
+            return $obj;
+        }
+    }
+
 
 }

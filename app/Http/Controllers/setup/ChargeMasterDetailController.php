@@ -102,7 +102,7 @@ class ChargeMasterDetailController extends defaultController
                     'uom' => $request->uom,
                     'pkgstatus' => $pkgstatus,
                     'recstatus' => 'ACTIVE',
-                    'units' => session('unit'),
+                    'unit' => session('unit'),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser' => session('username'), 

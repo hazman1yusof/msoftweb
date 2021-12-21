@@ -378,10 +378,10 @@
 									<span class="help-block"></span>
 								</div>
 
-								<label class="col-md-2 control-label" for="cm_dosage">Dosage</label>
+								<label class="col-md-2 control-label" for="cm_dosecode">Dosage</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_dosage" name="cm_dosage" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -399,10 +399,10 @@
 									<span class="help-block"></span>
 								</div>
 
-								<label class="col-md-2 control-label" for="cm_frequency">Frequency</label>
+								<label class="col-md-2 control-label" for="cm_freqcode">Frequency</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_frequency" name="cm_frequency" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>

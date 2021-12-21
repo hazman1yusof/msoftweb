@@ -191,7 +191,7 @@ i.fa {
 					{{ csrf_field() }}
 					
 					<input id="auditno" name="auditno" type="hidden">
-					<input id="idno" name="idno" type="hidden">
+					<input id="apacthdr_idno" name="apacthdr_idno" type="hidden">
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="{{$_GET['source']}}">
 					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden" value="{{$_GET['trantype']}}">
 
@@ -280,7 +280,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  

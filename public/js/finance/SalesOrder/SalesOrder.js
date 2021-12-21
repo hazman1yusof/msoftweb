@@ -1611,8 +1611,8 @@ $(document).ready(function () {
 			urlParam: {
 					url:"/SalesOrderDetail/table",
 					action: 'get_itemcode_price',
-					filterCol:['compcode','recstatus','price'],
-					filterVal:['session.compcode','ACTIVE',$('#pricebilltype').val()]
+					filterCol:['deptcode','price'],
+					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
 				},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1653,8 +1653,8 @@ $(document).ready(function () {
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "/SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
-				dialog_chggroup.urlParam.filterCol = ['compcode','recstatus','price'];
-				dialog_chggroup.urlParam.filterVal = ['session.compcode','ACTIVE',$('#pricebilltype').val()];
+				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
+				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 
 			},
 			close: function(){

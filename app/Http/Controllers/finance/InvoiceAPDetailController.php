@@ -89,7 +89,22 @@ class InvoiceAPDetailController extends defaultController
 
         try {
            
-            $auditno = $request->query('auditno');
+            $auditno = $request->auditno;
+            
+            $apacthdr = DB::table("finance.apacthdr")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($apacthdr->exists()){
+                $auditno = $this->recno($apacthdr->first()->source, $apacthdr->first()->trantype);
+
+                DB::table("finance.apacthdr")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'auditno' => $auditno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
@@ -122,7 +137,7 @@ class InvoiceAPDetailController extends defaultController
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
                     'dorecno' => $request->dorecno,
-                    'grnno'=> $request->grnno,
+                    'grnno' => $request->grnno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -142,12 +157,29 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount
-                  
+                    'outamount' => $totalAmount,
+                    'amount' => $totalAmount
                 ]);
-            DB::commit();
-            return response($totalAmount,200);
 
+            
+            $apacthdr = DB::table("finance.apacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
+
+            DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','=','POSTED')
+                ->where('delordno','=',strtoupper($request->document))
+                ->update(['invoiceno'=>$apacthdr->document]);
+
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->auditno = $auditno;
+            return json_encode($responce);
+            
         } catch (\Exception $e) {
             DB::rollback();
 

@@ -940,28 +940,28 @@ $(document).ready(function () {
 		updwnkey_fld = fieldname;
 	}
 
-	$("#jqGrid2").keydown(function(e) {
-      switch (e.which) {
-        case 40: // down
-          var $grid = $(this);
-          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-		  $("#"+selectedRowId+updwnkey_fld).focus();
+	// $("#jqGrid2").keydown(function(e) {
+ //      switch (e.which) {
+ //        case 40: // down
+ //          var $grid = $(this);
+ //          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+	// 	  $("#"+selectedRowId+updwnkey_fld).focus();
 
-          e.preventDefault();
-          break;
+ //          e.preventDefault();
+ //          break;
 
-        case 38: // up
-          var $grid = $(this);
-          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-		  $("#"+selectedRowId+updwnkey_fld).focus();
+ //        case 38: // up
+ //          var $grid = $(this);
+ //          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+	// 	  $("#"+selectedRowId+updwnkey_fld).focus();
 
-          e.preventDefault();
-          break;
+ //          e.preventDefault();
+ //          break;
 
-        default:
-          return;
-      }
-    });
+ //        default:
+ //          return;
+ //      }
+ //    });
 
 
 	$("#jqGrid2").jqGrid('setGroupHeaders', {
@@ -1156,6 +1156,7 @@ $(document).ready(function () {
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
 			hideatdialogForm(false);
+			$('#jqGrid2').jqGrid ('setSelection', "1");
 	    }
     };
 
@@ -1621,7 +1622,7 @@ $(document).ready(function () {
 
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
-		$("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
+		// $("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
 	}
 
 	/////////////bind shift + f to btm detail///////////
@@ -1757,6 +1758,7 @@ $(document).ready(function () {
 			});
 
 			setjqgridHeight(data,'jqGrid3');
+			$('#jqGrid3').jqGrid ('setSelection', "1");
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){

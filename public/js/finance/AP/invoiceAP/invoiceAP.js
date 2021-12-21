@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 
-	$("body").show();
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -35,7 +34,7 @@ $(document).ready(function () {
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
-	var oper;
+	var oper=null;
 	var unsaved = false,counter_save=0;
 
 	$("#dialogForm")
@@ -44,6 +43,8 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				unsaved = false;
+				actdateObj.getdata().set();
 				counter_save=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
@@ -96,20 +97,6 @@ $(document).ready(function () {
 				init_jq2();
 			},
 			beforeClose: function(event, ui){
-				if(unsaved){
-					event.preventDefault();
-					bootbox.confirm("Are you sure want to leave without save?", function(result){
-						if (result == true) {
-							unsaved = false
-							$("#dialogForm").dialog('close');
-						}
-					});
-				}
-
-				console.log($('#apacthdr_outamount').val());
-				console.log($('#apacthdr_amount').val());
-				console.log($('#apacthdr_outamount').val() != $('#apacthdr_amount').val());
-
 				mycurrency.formatOff();
 				if($('#apacthdr_outamount').val() != $('#apacthdr_amount').val()  && $('#apacthdr_doctype').val() == "Supplier" && counter_save==0){
 					event.preventDefault();
@@ -129,6 +116,15 @@ $(document).ready(function () {
 					    	}
 					    }
 					});
+				}else if(unsaved){
+					event.preventDefault();
+					bootbox.confirm("Are you sure want to leave without save?", function(result){
+						if (result == true) {
+							unsaved = false;
+							delete_dd($('#apacthdr_idno').val());
+							$("#dialogForm").dialog('close');
+						}
+					});
 				}
 				
 			},
@@ -137,7 +133,7 @@ $(document).ready(function () {
 				addmore_jqgrid2.more = false;
 				//reset balik
 				parent_close_disabled(false);
-				emptyFormdata(errorField,'#formdata');
+				emptyFormdata(errorField,'#formdata',['#apacthdr_source','#apacthdr_trantype']);
 				emptyFormdata(errorField,'#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
@@ -297,7 +293,7 @@ $(document).ready(function () {
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
-			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
+			$('#apacthdr_idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			refreshGrid("#jqGrid3",urlParam2);
@@ -391,7 +387,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit','Checkbox']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'apacthdr_idno','Checkbox']);
 
 	$("#save").click(function(){
 		unsaved = false;
@@ -402,7 +398,7 @@ $(document).ready(function () {
 			unsaved = false;
 			$("#dialogForm").dialog('close');
 		}else{
-				mycurrency.formatOn();
+			mycurrency.formatOn();
 		}
 	});
 
@@ -528,7 +524,6 @@ $(document).ready(function () {
 			alert(data.responseText);
 		}).done(function (data) {
 
-			unsaved = false;
 			hideatdialogForm(false);
 			
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -540,7 +535,7 @@ $(document).ready(function () {
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
 				$('#apacthdr_auditno,#auditno').val(data.auditno);
-				$('#idno').val(data.idno);
+				$('#apacthdr_idno').val(data.idno);
 				//$('#apacthdr_outamount').val(data.amount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
@@ -598,10 +593,10 @@ $(document).ready(function () {
 		editurl: "/invoiceAPDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -681,9 +676,14 @@ $(document).ready(function () {
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
 		gridComplete: function(){
-			
-		
 			fdl.set_array().reset();
+
+			unsaved = false;
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			var result = ids.filter(function(text){
+								if(text.search("jqg") != -1)return false;return true;
+							});
+			if(result.length == 0 && oper=='edit')unsaved = true;
 			
 		},
 		beforeSubmit: function(postdata, rowid){ 
@@ -708,6 +708,12 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+			dialog_document.on();//start binding event on jqgrid2
+
+			$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid2_ilsave').click();
+			});
 
         	mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
@@ -718,8 +724,13 @@ $(document).ready(function () {
 			})
         },
         aftersavefunc: function (rowid, response, options) {
-        	$('#apacthdr_outamount').val(response.responseText);
+			var resobj = JSON.parse(response.responseText);
+			$('#apacthdr_auditno').val(resobj.auditno);
+			$('#apacthdr_amount').val(resobj.totalAmount);
+        	$('#apacthdr_outamount').val(resobj.totalAmount);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+
+			urlParam2.filterVal[1]=resobj.auditno;
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
         }, 
@@ -730,12 +741,14 @@ $(document).ready(function () {
         },
         beforeSaveRow: function(options, rowid) {
 
-        	//if(errorField.length>0)return false;
+        	if(errorField.length>0)return false;
+
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/invoiceAPDetail/form?"+
 				$.param({
 					action: 'invoiceAPDetail_save',
+					idno: $('#apacthdr_idno').val(),
 					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 				});
@@ -743,6 +756,7 @@ $(document).ready(function () {
         },
         afterrestorefunc : function( response ) {
 			hideatdialogForm(false);
+			$('#jqGrid2').jqGrid ('setSelection', "1");
 	    }
     };
 
@@ -1020,38 +1034,19 @@ $(document).ready(function () {
 		mycurrency.check0value(errorField);
 		unsaved = false;
 		
+		errorField.length=0;
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 		
 			dialog_supplier.off();
 			dialog_payto.off();
 			dialog_category.off();
 			dialog_department.off();
-			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
-			errorField.length=0;
+			saveHeader("#formdata",oper,saveParam,{idno:$('#apacthdr_idno').val()});
+			unsaved = false;
 		}else{
 			mycurrency.formatOn();
 		}
 	});
-
-	// function saveDetailLabel(callback=null){
-	// 	mycurrency.formatOff();
-	// 	mycurrency.check0value(errorField);
-		
-	// 	unsaved = false;
-	// 	if( checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-
-	// 		dialog_supplier.off();
-	// 		dialog_payto.off();
-	// 		dialog_category.off();
-	// 		dialog_department.off();
-	// 		saveHeader("#formdata",oper,saveParam);
-
-	// 		errorField.length=0;
-	// 	}else{
-	// 		mycurrency.formatOn();
-	// 	}
-	// 	if(callback!=null)callback();
-	// }
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function(){
@@ -1069,21 +1064,7 @@ $(document).ready(function () {
 	});
 
 
-	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
-	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
-
-		unsaved = false;
-		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
-		dialog_document.on();//start binding event on jqgrid2
-
-		$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
-			var code = e.keyCode || e.which;
-			if (code == '9')$('#jqGrid2_ilsave').click();
-			
-		});
-
-	});	
-
+	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////	
 	function onall_editfunc(){
 		
 		dialog_document.on();//start binding event on jqgrid2
@@ -1122,6 +1103,7 @@ $(document).ready(function () {
 		gridComplete: function(){
 			
 			fdl.set_array().reset();
+			$('#jqGrid3').jqGrid ('setSelection', "1");
 		},
 	});
 
@@ -1599,6 +1581,19 @@ $(document).ready(function () {
 				$('#ap_detail').show();
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			}
+		}
+	}
+
+	function delete_dd(idno){
+		var obj = {
+			'oper':'delete_dd',
+			'idno':idno,
+			'_token':$('#_token').val()
+		}
+		if(idno != null || idno !=undefined || idno != ''){
+			$.post( 'invoiceAP/form',obj,function( data ) {
+					
+			});
 		}
 	}
 

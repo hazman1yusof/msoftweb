@@ -222,7 +222,7 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['mainstore','recstatus','compcode','sector'],
+				filterCol:['storedept','recstatus','compcode','sector'],
 				filterVal:['1','ACTIVE','session.compcode','session.unit']
 			},
 			ondblClickRow:function(){
@@ -241,7 +241,7 @@ $(document).ready(function () {
 		{
 			title:"Select Main Store",
 			open: function(){
-				dialog_mstore.urlParam.filterCol = ['mainstore','recstatus','compcode','sector'];
+				dialog_mstore.urlParam.filterCol = ['storedept','recstatus','compcode','sector'];
 				dialog_mstore.urlParam.filterVal = ['1','ACTIVE','session.compcode','session.unit'];	
 			}
 		},'urlParam','radio','notab',false
@@ -448,7 +448,7 @@ $(document).ready(function () {
 	dialog_chgclass.makedialog(true);
 
 	var dialog_dosage= new ordialog(
-		'cm_dosage','hisdb.dose','#cm_dosage',errorField,
+		'cm_dosecode','hisdb.dose','#cm_dosecode',errorField,
 		{	colModel:[
 				{label:'Code',name:'dosecode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'dosedesc',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -473,7 +473,7 @@ $(document).ready(function () {
 
 
 	var dialog_frequency= new ordialog(
-		'cm_frequency','hisdb.freq','#cm_frequency',errorField,
+		'cm_freqcode','hisdb.freq','#cm_freqcode',errorField,
 		{	colModel:[
 				{label:'Code',name:'freqcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'freqdesc',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -803,14 +803,10 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		table_name:'material.product',
-		field:'',
-		table_id:'idno',
-		sort_idno:true,
-		filterCol:['groupcode', 'Class','unit','compcode'],
-		filterVal:[$('#groupcode2').val(), $('#Class2').val(),'session.unit','session.compcode']
+		action:'get_table_product',
+		url:'/product/table',
+		filterCol:['groupcode', 'Class'],
+		filterVal:[$('#groupcode2').val(), $('#Class2').val()]
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -861,8 +857,6 @@ $(document).ready(function () {
 			{ label: 'tagging', name: 'tagging', width: 50, hidden:true },
 			{ label: 'itemtype', name: 'itemtype', width: 50, hidden:true },
 			{ label: 'generic', name: 'generic', width: 50, hidden:true },
-			{ label: 'cm_uom', name: 'cm_uom', width: 50, hidden:true },
-			{ label: 'cm_invflag', name: 'cm_invflag', width: 50, hidden:true },
 			{ label: 'cm_packqty', name: 'cm_packqty', width: 50, hidden:true },
 			{ label: 'cm_druggrcode', name: 'cm_druggrcode', width: 50, hidden:true },
 			{ label: 'cm_subgroup', name: 'cm_subgroup', width: 50, hidden:true },
@@ -871,6 +865,9 @@ $(document).ready(function () {
 			{ label: 'cm_chggroup', name: 'cm_chggroup', width: 50, hidden:true },
 			{ label: 'cm_chgtype', name: 'cm_chgtype', width: 50, hidden:true },
 			{ label: 'cm_invgroup', name: 'cm_invgroup', width: 50, hidden:true },
+			{ label: 'cm_instruction', name: 'cm_instruction', width: 50, hidden:true },
+			{ label: 'cm_freqcode', name: 'cm_freqcode', width: 50, hidden:true },
+			{ label: 'cm_dosecode', name: 'cm_dosecode', width: 50, hidden:true },
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
@@ -1167,6 +1164,10 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			recstatusDisable();
+			$("#uomcode_hidden").val(selrowData("#jqGrid").uomcode);
+			$('#itemcode_hidden').val(selrowData("#jqGrid").itemcode);
+			urlParam2.filterVal[2]=selrowData("#jqGrid").itemcode;
+			urlParam2.filterVal[3]=selrowData("#jqGrid").uomcode;
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -1408,7 +1409,7 @@ $(document).ready(function () {
 			join_onVal:['cm.chgcode'],
 	        join_filterCol : [['cm.uom on =']],
 	        join_filterVal : [['cp.uom']],
-			filterCol:['cp.compcode','cp.units','cp.chgcode','cp.uom'],
+			filterCol:['cp.compcode','cp.unit','cp.chgcode','cp.uom'],
 			filterVal:['session.compcode','session.unit','','']
 		};
 
@@ -1419,7 +1420,7 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-
+			refreshGrid('#jqGrid2',urlParam2,'add');
 			hideatdialogForm(false);
 							
 		},
