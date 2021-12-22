@@ -583,7 +583,7 @@ abstract class defaultController extends Controller{
                 ->where('recstatus','=', 'ACTIVE');
                 
         if(!$seqno->exists()){
-            throw new \Exception("Sequence Number for dept $dept is not available");
+            throw new \Exception("Sequence Number for dept $dept is not available", 500);
         }
 
         $seqno = $seqno->first();
@@ -797,6 +797,14 @@ abstract class defaultController extends Controller{
     public static function getQueries($builder){
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
+    public static function givenullifempty($obj){
+        if(empty($obj)){
+            return null;
+        }else{
+            return $obj;
+        }
     }
 
 

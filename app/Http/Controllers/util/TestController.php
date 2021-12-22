@@ -10,6 +10,8 @@ use Auth;
 use Carbon\Carbon;
 use PDF;
 use Mail;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 use App\Jobs\SendEmailPR;
 
@@ -29,6 +31,17 @@ class TestController extends defaultController
     {   
         return view('test.testpdf');
 
+    }
+
+
+    public function excel(Request $request)
+    {   
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('hello world.xlsx');
     }
 
     public function show2(Request $request)

@@ -52,7 +52,7 @@ input.uppercase {
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
@@ -60,12 +60,12 @@ input.uppercase {
 					<div class="form-group"> 
 						<div class="col-md-2">
 							<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              	</div>
 
 					  	<div class="col-md-5" style="padding-right: 0px;">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
 							<div  id="show_chggroup" style="display:none">
 								<div class='input-group'>
@@ -202,21 +202,33 @@ input.uppercase {
 							<input id="cm_chgcode" name="cm_chgcode" type="text" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 						</div>
 
-						<label class="col-md-2 control-label" for="cm_description">Description</label>  
+						<label class="col-md-2 control-label" for="cm_uom">UOM Code</label>
 						<div class="col-md-3">
-							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm uppercase" data-validation="required">
+			  				<div class="input-group">
+								<input id="cm_uom" name="cm_uom" type="text" class="form-control input-sm text-uppercase" rdonly="">
+								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+			  				</div>
+			  					<span class="help-block"></span>
 						</div>
 					</div>   
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
+						<label class="col-md-2 control-label" for="cm_description">Description</label>  
 						<div class="col-md-3">
-							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm uppercase">
+							<input id="cm_description" name="cm_description" type="text" class="form-control input-sm uppercase" data-validation="required">
 						</div>
 
 						<label class="col-md-2 control-label" for="cm_brandname">Generic</label>  
 						<div class="col-md-3">
 							<input id="cm_brandname" name="cm_brandname" type="text" class="form-control input-sm uppercase">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="cm_barcode">Bar Code</label>  
+						<div class="col-md-3">
+							<input id="cm_barcode" name="cm_barcode" type="text" class="form-control input-sm uppercase">
 						</div>
 					</div>
 
@@ -274,19 +286,7 @@ input.uppercase {
 					<hr>
 
 					<fieldset class="scheduler-border">
-						<legend class="scheduler-border">Inventory</legend> 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="cm_uom">UOM</label>  
-							<div class="col-md-3">
-								<input id="cm_uom" name="cm_uom" type="text" value="EA" class="form-control input-sm uppercase" rdonly>
-							</div>
-
-							<label class="col-md-2 control-label" for="cm_invflag">Inventory Item</label>
-							<div class="col-md-3">
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='1' dsabled>Yes</label>
-								<label class="radio-inline"><input type="radio" name="cm_invflag" value='0' dsabled>No</label>
-							</div>
-						</div>
+						<legend class="scheduler-border">Inventory</legend>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  
@@ -441,7 +441,40 @@ input.uppercase {
 
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/setup/chargemaster/chargemaster.js"></script>
 	
 @endsection

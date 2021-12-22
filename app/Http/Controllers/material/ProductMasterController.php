@@ -33,7 +33,7 @@ class ProductMasterController extends defaultController
             case 'add':
                 return $this->add($request);
             case 'edit':
-                return $this->defaultEdit($request);
+                return $this->edit($request);
             case 'del':
                 return $this->defaultDel($request);
             default:
@@ -49,6 +49,16 @@ class ProductMasterController extends defaultController
                 throw new \Exception($request->table_id.' '.$request[$request->table_id].' already exist', 500);
             }
 
+            if(strtoupper($request->Class) == 'ASSET'){
+                $productcat = $request->productcat_asset;
+            }else if(strtoupper($request->Class) == 'OTHERS'){
+                $productcat = $request->productcat_other;
+            }else if(strtoupper($request->Class) == 'NON-PHARMACY'){
+                $productcat = $request->productcat_nonph;
+            }else if(strtoupper($request->Class) == 'PHARMACY'){
+                $productcat = $request->productcat_ph;
+            }
+
             DB::beginTransaction();
 
             $table = DB::table('material.productmaster')
@@ -56,7 +66,7 @@ class ProductMasterController extends defaultController
                             'itemcode' => $request->itemcode,
                             'description' =>  $request->description,
                             'groupcode' =>  $request->groupcode,
-                            'productcat' =>  $request->productcat,
+                            'productcat' =>  $productcat,
                             'recstatus' =>  $request->recstatus,
                             'Class' =>  $request->Class,
                             // 'unit' => session('unit'),
@@ -72,11 +82,11 @@ class ProductMasterController extends defaultController
 
             //if Class not STOCK terus buat product
             if(strtoupper($request->Class) == 'ASSET'){
-                $this->save_prod_asset($request);
+                $this->save_prod_asset($request,$productcat);
             }else if(strtoupper($request->Class) == 'OTHERS'){
-                $this->save_prod_others($request);
+                $this->save_prod_others($request,$productcat);
             }else{
-                $this->save_prod_stock($request);
+                $this->save_prod_stock($request,$productcat);
             }
 
             $queries = DB::getQueryLog();
@@ -93,7 +103,48 @@ class ProductMasterController extends defaultController
         }
     }
 
-    public function save_prod_asset(Request $request){
+    public function edit(Request $request){
+
+        try {
+
+            if(strtoupper($request->Class) == 'ASSET'){
+                $productcat = $request->productcat_asset;
+            }else if(strtoupper($request->Class) == 'OTHERS'){
+                $productcat = $request->productcat_other;
+            }else if(strtoupper($request->Class) == 'NON-PHARMACY'){
+                $productcat = $request->productcat_nonph;
+            }else if(strtoupper($request->Class) == 'PHARMACY'){
+                $productcat = $request->productcat_ph;
+            }
+
+            DB::beginTransaction();
+
+            $table = DB::table('material.productmaster')
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'description' =>  $request->description,
+                            'productcat' =>  $productcat,
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'ACTIVE'
+                        ]);
+
+            
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function save_prod_asset(Request $request,$productcat){
         $table = 
             DB::table('material.product')
                 ->insert([
@@ -103,7 +154,7 @@ class ProductMasterController extends defaultController
                     'uomcode' => 'EA',
                     'Class' => strtoupper($request->Class),
                     'groupcode' => $request->groupcode,
-                    'productcat' => $request->productcat,
+                    'productcat' => $productcat,
                     'unit' => session('unit'),
                     'computerid' =>  $request->computerid,
                     'lastcomputerid' =>  $request->lastcomputerid,
@@ -116,7 +167,7 @@ class ProductMasterController extends defaultController
                 ]);
     }
 
-    public function save_prod_others(Request $request){
+    public function save_prod_others(Request $request,$productcat){
         $table = 
             DB::table('material.product')
                 ->insert([
@@ -126,7 +177,7 @@ class ProductMasterController extends defaultController
                     'uomcode' => 'EA',
                     'Class' => strtoupper($request->Class),
                     'groupcode' => strtoupper($request->groupcode),
-                    'productcat' => $request->productcat,
+                    'productcat' => $productcat,
                     'reuse' => 0,
                     'rpkitem' => 0,
                     'tagging' => 0,
@@ -148,7 +199,7 @@ class ProductMasterController extends defaultController
                 ]);
     }
 
-    public function save_prod_stock(Request $request){
+    public function save_prod_stock(Request $request,$productcat){
         $table = 
             DB::table('material.product')
                 ->insert([
@@ -156,7 +207,7 @@ class ProductMasterController extends defaultController
                     'description' => strtoupper($request->description),
                     'groupcode' => strtoupper($request->groupcode),
                     'uomcode' => 'EA',
-                    'productcat' => $request->productcat,
+                    'productcat' => $productcat,
                     'Class' => $request->Class,
                     'unit' => session('unit'),
                     'compcode' => session('compcode'),

@@ -238,7 +238,7 @@ $(document).ready(function () {
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
 			
-			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
+			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
@@ -260,6 +260,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			$("#searchForm input[name=Stext]").focus();
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 
@@ -1610,8 +1611,8 @@ $(document).ready(function () {
 			urlParam: {
 					url:"/SalesOrderDetail/table",
 					action: 'get_itemcode_price',
-					filterCol:['compcode','recstatus','price'],
-					filterVal:['session.compcode','ACTIVE',$('#pricebilltype').val()]
+					filterCol:['deptcode','price'],
+					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
 				},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1652,8 +1653,8 @@ $(document).ready(function () {
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "/SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
-				dialog_chggroup.urlParam.filterCol = ['compcode','recstatus','price'];
-				dialog_chggroup.urlParam.filterVal = ['session.compcode','ACTIVE',$('#pricebilltype').val()];
+				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
+				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 
 			},
 			close: function(){

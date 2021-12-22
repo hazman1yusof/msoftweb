@@ -46,8 +46,8 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "/cheqreg/form",
 		 colModel: [
-			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true,checked:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, hidden: true},
+			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, checked: true, hidden: true},
 			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
 			{ label: 'address2', name: 'address2', width: 17, classes: 'wrap', hidden:true},
 			{ label: 'address3', name: 'address3', width: 17, classes: 'wrap',  hidden:true},
@@ -68,6 +68,9 @@ $(document).ready(function () {
 		gridComplete: function () {
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+
+				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+				$("#searchForm input[name=Stext]").focus();
 			}
 			fdl.set_array().reset();
 			empty_form();

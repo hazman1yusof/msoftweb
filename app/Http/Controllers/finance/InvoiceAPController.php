@@ -112,39 +112,42 @@ use Carbon\Carbon;
             $field = $request->field;
             $idno = $request->table_id;
         }
-
-        $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
-        $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
-
-        DB::beginTransaction();
-
-        $table = DB::table("finance.apacthdr");
-        
-        $array_insert = [
-            'source' => $request->apacthdr_source,
-            'auditno' => $auditno,
-            'trantype' => $request->apacthdr_trantype,
-            'doctype' => $request->apacthdr_doctype,
-            'recdate' => $request->apacthdr_recdate,
-            'suppgroup' => $suppgroup,
-            'document' => strtoupper($request->apacthdr_document),
-            'category' => strtoupper($request->apacthdr_category),
-            'remarks' => strtoupper($request->apacthdr_remarks),
-            'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN',
-            'outamount' => $request->apacthdr_amount,
-        ];
-
-        foreach ($field as $key => $value){
-            if($key == 'remarks' || $key == 'document' || $value == 'outamount'){
-                continue;
-            }
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+
+            DB::beginTransaction();
+
+            // $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
+            // $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+            $auditno = 0;
+            $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+            $compcode = 'DD';
+
+            $table = DB::table("finance.apacthdr");
+            
+            $array_insert = [
+                'source' => $request->apacthdr_source,
+                'auditno' => $auditno,
+                'trantype' => $request->apacthdr_trantype,
+                'doctype' => $request->apacthdr_doctype,
+                'recdate' => $request->apacthdr_recdate,
+                'suppgroup' => $suppgroup,
+                'document' => strtoupper($request->apacthdr_document),
+                'category' => strtoupper($request->apacthdr_category),
+                'remarks' => strtoupper($request->apacthdr_remarks),
+                'compcode' => $compcode,
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN',
+                'outamount' => $request->apacthdr_amount,
+            ];
+
+            foreach ($field as $key => $value){
+                if($key == 'remarks' || $key == 'document' || $value == 'outamount'){
+                    continue;
+                }
+                $array_insert[$value] = $request[$request->field[$key]];
+            }
+
             $idno = $table->insertGetId($array_insert);
 
             $responce = new stdClass();

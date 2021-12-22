@@ -21,42 +21,21 @@ class DeliveryOrderDetailController extends defaultController
     public function form(Request $request)
     {   
         // return $this->request_no('GRN','2FL');
-        $delordhd = DB::table('material.delordhd')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$request->recno)
-            ->first();
-        $this->srcdocno = $delordhd->srcdocno;
+        // $delordhd = DB::table('material.delordhd')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('recno','=',$request->recno)
+        //     ->first();
+        // $this->srcdocno = $delordhd->srcdocno;
 
         switch($request->oper){
             case 'add':
-
-                if($delordhd->srcdocno != 0){
-                    // return 'error happen, do srcdocno!=0, x boleh add';
-                    return $this->add($request);
-                }else{
-                    return $this->add($request);
-                }
-
-            case 'edit': /// ni x guna dah
-
-                if($delordhd->srcdocno != 0){
-                    return $this->edit_from_PO($request);
-                }else{
-                    return $this->edit($request);
-                }
-
+                return $this->add($request);
             case 'edit_all':
-
-                // if($delordhd->srcdocno != 0){
-                //     // return 'edit all srcdocno !=0';
-                //     return $this->edit_all_from_PO($request);
-                // }else{
-                    // return 'edit all biasa';
-                    return $this->edit_all($request);
-                // }
-
+                return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
 
             default:
                 return 'error happen..';
@@ -202,32 +181,56 @@ class DeliveryOrderDetailController extends defaultController
 
     public function add(Request $request){
 
-        $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
-        $drccode = $this->get_drccode($request->deldept);
-        $craccno = $this->get_craccno();
-        $crccode = $this->get_crccode();
-        $productcat = $this->get_productcat($request->itemcode);
-
-        $recno = $request->recno;
-        $suppcode = $request->suppcode;
-        $trandate = $request->trandate;
-        $deldept = $request->deldept;
-        $deliverydate = $request->deliverydate;
-
         DB::beginTransaction();
 
-         //check unique
-        $duplicate = DB::table('material.purreqdt')
-            ->where('compcode','=',session('compcode'))
-            ->where('itemcode','=',strtoupper($request->itemcode))
-            ->where('uomcode','=',strtoupper($request->uomcode))
-            ->where('pouom','=',strtoupper($request->pouom))
-            ->exists();
+        try{
 
-        try {
-              if($duplicate){
-                throw new \Exception("Duplicate itemcode and uom");
+
+            if($request->pricecode == 'MS'){
+                //check unique
+                $duplicate = DB::table('material.purreqdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('itemcode','=',strtoupper($request->itemcode))
+                    ->where('uomcode','=',strtoupper($request->uomcode))
+                    ->where('pouom','=',strtoupper($request->pouom))
+                    ->exists();
+
+                if($duplicate){
+                    throw new \Exception("Duplicate itemcode and uom");
+                }
             }
+
+
+            $recno = $request->recno;
+            
+            $delordhd = DB::table("material.delordhd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($delordhd->exists()){
+                $delordno = $this->request_no('DO',$delordhd->first()->prdept);
+                $recno = $this->recno('PUR','DO');
+
+                DB::table("material.delordhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $delordno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+            $draccno = $this->get_draccno($request->itemcode,$request->pricecode);
+            $drccode = $this->get_drccode($request->deldept);
+            $craccno = $this->get_craccno();
+            $crccode = $this->get_crccode();
+            $productcat = $this->get_productcat($request->itemcode);
+
+            $suppcode = $request->suppcode;
+            $trandate = $request->trandate;
+            $deldept = $request->deldept;
+            $deliverydate = $request->deliverydate;
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.delorddt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -299,9 +302,14 @@ class DeliveryOrderDetailController extends defaultController
                     'TaxAmt' => $tot_gst
                 ]);
 
-            echo $totalAmount;
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $recno;
+            $responce->delordno = $delordno;
 
             DB::commit();
+            
+            return json_encode($responce);
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -632,6 +640,15 @@ class DeliveryOrderDetailController extends defaultController
             return response('Error'.$e, 500);
         }
 
+    }
+
+
+
+    public function delete_dd(Request $request){
+        DB::table('material.delordhd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
 
 }

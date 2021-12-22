@@ -6,38 +6,41 @@
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'>
+		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div>
+
+				<div class='col-md-5' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+					  <div class="col-md-6">
+					  	<label class="control-label" for="postGroupcode">Group Code</label>  
+					  	<select id="postGroupcode" name="postGroupcode" class="form-control input-sm">
+					      <option value="Asset">Asset</option>
+					      <option value="Stock" selected>Stock</option>
+					      <option value="Others">Others</option>
+					    </select>
+		        </div>
+					  <div class="col-md-6">
+					  	<label class="control-label" for="postClass">Class</label>  
+					  	<br>
+					  	<label class="radio-inline"><input type="radio" id="postClassPharmacy" name="postClass" value='Pharmacy' data-validation="required" checked>Pharmacy</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassNon-Pharmacy" name="postClass" value='Non-Pharmacy' data-validation="required">Non-Pharmacy</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassOther" name="postClass" value='Others' data-validation="required">Others</label>
+					  	<label class="radio-inline"><input type="radio" id="postClassAsset" name="postClass" value='Asset' data-validation="required">Asset</label>
+		        </div>
+		      </div>
 				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+
+				<div class='col-md-7' style="padding:0 0 15px 0;">
+					<div class="ScolClass control-label">
+							<label name='Scol'>Search By : </label>
+					</div>
+					<div class="StextClass">
+						<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">
+					</div>
 				</div>
+
 			 </fieldset> 
 		</form>
-
-		<div class='col-md-12' style="padding:0 0 15px 0;">
-			<div class="form-group"> 
-			  <div class="col-md-4">
-			  	<label class="control-label" for="postGroupcode">Group Code</label>  
-			  	<select id="postGroupcode" name="postGroupcode" class="form-control input-sm">
-			      <option disabled selected>Please Select First</option>
-			      <option value="Asset">Asset</option>
-			      <option value="Stock">Stock</option>
-			      <option value="Others">Others</option>
-			    </select>
-              </div>
-			  <div class="col-md-4">
-			  	<label class="control-label" for="postClass">Class</label>  
-			  	<br>
-			  	<label class="radio-inline"><input type="radio" id="postClassPharmacy" name="postClass" value='Pharmacy' data-validation="required">Pharmacy</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassNon-Pharmacy" name="postClass" value='Non-Pharmacy' data-validation="required">Non-Pharmacy</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassOther" name="postClass" value='Others' data-validation="required">Others</label>
-			  	<label class="radio-inline"><input type="radio" id="postClassAsset" name="postClass" value='Asset' data-validation="required">Asset</label>
-              </div>
-             </div>
-		</div>
 
 	  <div class="panel panel-default">
 		<div class="panel-body">
@@ -77,9 +80,33 @@
 				  </div>
 
 				  	<label class="col-md-2 control-label" for="productcat">Product Category</label>  
-				  		<div class="col-md-3">
+				  		<div class="col-md-3" id="productcat_asset_div" style="display:none">
 					  		<div class='input-group'>
-								<input id="productcat" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="productcat_asset" name="productcat_asset" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_other_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_other" name="productcat_other" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_ph_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_ph" name="productcat_ph" type="text" class="form-control input-sm text-uppercase">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  		</div>
+					  		<span class="help-block"></span>
+				  		</div>
+
+				  		<div class="col-md-3" id="productcat_nonph_div" style="display:none">
+					  		<div class='input-group'>
+								<input id="productcat_nonph" name="productcat_nonph" type="text" class="form-control input-sm text-uppercase">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  		</div>
 					  		<span class="help-block"></span>
@@ -161,7 +188,40 @@
 	@endsection
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex', 2);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex', 3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/material/productMaster/productMaster.js"></script>
 
 @endsection

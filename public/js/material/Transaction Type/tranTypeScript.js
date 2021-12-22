@@ -6,7 +6,8 @@
 		$(document).ready(function () {
 			$("body").show();
 			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-			/////////////////////////validation//////////////////////////
+
+			/////////////////////////////////////validation///////////////////////////////////
 			$.validate({
 				language : {
 					requiredFields: ''
@@ -24,12 +25,8 @@
 					}
 				},
 			};
-			//////////////////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////////////////////////////
 
-
-			////////////////////object for dialog handler//////////////////
-	
-		
 			////////////////////////////////////start dialog///////////////////////////////////////
 			var butt1=[{
 				text: "Save",click: function() {
@@ -132,17 +129,16 @@
 					{label: 'Credit/Debit', name: 'crdbfl', width: 90,  hidden: true, },
 					{label: 'Update GL', name: 'updamt', width: 90, hidden: true, },
 					{label: 'Account Type', name: 'accttype', width: 90, },
-					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{ label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
-					},
-					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+					{label: 'adduser', name: 'adduser', width: 90, hidden:true},
+					{label: 'adddate', name: 'adddate', width: 90, hidden:true},
+					{label: 'upduser', name: 'upduser', width: 90, hidden:true},
+					{label: 'upddate', name: 'upddate', width: 90, hidden:true},
+					{label: 'computerid', name: 'computerid', width: 90, hidden:true},
+					{label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
+					{label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
+					{label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+					{label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 					
 				],
 				autowidth:true,
@@ -164,6 +160,7 @@
 					}
 
 					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+					$("#searchForm input[name=Stext]").focus();
 				},
 				
 			});

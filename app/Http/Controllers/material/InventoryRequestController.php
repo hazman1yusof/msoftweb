@@ -55,8 +55,12 @@ class InventoryRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('SR', $request->reqdept);
-        $recno = $this->recno('PUR','SR');
+        // $request_no = $this->request_no('SR', $request->reqdept);
+        // $recno = $this->recno('PUR','SR');
+
+        $request_no = 0;
+        $recno = 0;
+        $compcode = 'DD';
 
         DB::beginTransaction();
 
@@ -74,7 +78,7 @@ class InventoryRequestController extends defaultController
             'amount' => $request->amount,
             'remarks' => strtoupper($request->remarks),
             'reqpersonid' => session('username'),           
-            'compcode' => session('compcode'),
+            'compcode' => $compcode,
             'unit'    => session('unit'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

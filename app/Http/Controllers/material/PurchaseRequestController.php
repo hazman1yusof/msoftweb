@@ -79,33 +79,8 @@ class PurchaseRequestController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
-        $recno = $this->recno('PUR','PR');
 
         DB::beginTransaction();
-
-        $table = DB::table("material.purreqhd");
-
-        $array_insert = [
-            'trantype' => 'PR', 
-            'purreqno' => $request_no,
-            'recno' => $recno,
-            'compcode' => session('compcode'),
-            'unit' => session('unit'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN',
-            'reqdept' => strtoupper($request->purreqhd_reqdept),
-            'prdept' => strtoupper($request->purreqhd_prdept),
-            'purreqdt' => strtoupper($request->purreqhd_purreqdt),
-            'suppcode' => strtoupper($request->purreqhd_suppcode),
-            'totamount' => $request->purreqhd_totamount,
-            'remarks' => strtoupper($request->purreqhd_remarks),
-            'perdisc' => $request->purreqhd_perdisc,
-            'amtdisc' => $request->purreqhd_amtdisc,
-            'subamount' => $request->purreqhd_subamount
-
-        ];
 
         // foreach ($field as $key => $value) {
         //     if($value =='remarks' || $value =='prdept' || $value =='suppcode' || $value =='reqdept'){
@@ -116,13 +91,40 @@ class PurchaseRequestController extends defaultController
         // }
         
         try {
+
+            // $request_no = $this->request_no('PR', $request->purreqhd_reqdept);
+            // $recno = $this->recno('PUR','PR');
+
+            $table = DB::table("material.purreqhd");
+
+            $array_insert = [
+                'trantype' => 'PR',
+                'purreqno' => 0,
+                'recno' => 0,
+                'compcode' => 'DD',
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN',
+                'reqdept' => strtoupper($request->purreqhd_reqdept),
+                'prdept' => strtoupper($request->purreqhd_prdept),
+                'purreqdt' => strtoupper($request->purreqhd_purreqdt),
+                'suppcode' => strtoupper($request->purreqhd_suppcode),
+                'totamount' => $request->purreqhd_totamount,
+                'remarks' => strtoupper($request->purreqhd_remarks),
+                'perdisc' => $request->purreqhd_perdisc,
+                'amtdisc' => $request->purreqhd_amtdisc,
+                'subamount' => $request->purreqhd_subamount
+
+            ];
+
             $idno = $table->insertGetId($array_insert);
             
             $totalAmount = 0;
 
             $responce = new stdClass();
-            $responce->docno = $request_no;
-            $responce->recno = $recno;
+            $responce->purreqno = 0;
+            $responce->recno = 0;
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
             echo json_encode($responce);
@@ -203,9 +205,36 @@ class PurchaseRequestController extends defaultController
                     ->where('idno','=',$value);
 
                 $purreqhd_get = $purreqhd->first();
-                if($purreqhd_get->recstatus != 'OPEN' || empty(floatval($purreqhd_get->subamount))){
+
+                if($purreqhd_get->recstatus != 'OPEN'){
                     continue;
                 }
+
+                //nak buat qtyrequest1S and qtybalance1S
+                $purreqdt = DB::table("material.purreqdt")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->get();
+
+                foreach ($purreqdt as $key_reqdt => $value_reqdt){
+
+                    $convfactorUOM_obj = DB::table('material.uom')
+                        ->select('convfactor')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('uomcode','=',$value_reqdt->uomcode)
+                        ->first();
+                    $convfactorUOM = $convfactorUOM_obj->convfactor;
+
+                    $qtyrequest1S = $value_reqdt->qtyrequest * $convfactorUOM;
+                    DB::table("material.purreqdt")
+                        ->where('idno','=',$value_reqdt->idno)
+                        ->update([
+                            'qtyrequest1S'=>$qtyrequest1S,
+                            'qtybalance1S'=>$qtyrequest1S
+                        ]);
+
+                }
+                //
 
                 if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 

@@ -4,9 +4,9 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
@@ -24,9 +24,8 @@ $(document).ready(function () {
 		},
 	};
 
-	var err_reroll = new err_reroll('#jqGrid',['pc_postcode', 'pc_place_name','pc_district']);
-
 	var fdl = new faster_detail_load();
+	var err_reroll = new err_reroll('#jqGrid',['pc_postcode', 'pc_place_name','pc_district']);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
@@ -51,24 +50,24 @@ $(document).ready(function () {
 		editurl: "/postcode/form",
 		colModel: [
             { label: 'compcode', name: 'pc_compcode', hidden: true },
-            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'Place Name', name: 'pc_place_name', width: 15, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'District', name: 'pc_district', width: 80, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, checked: true, editable: true, 
+            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Place Name', name: 'pc_place_name', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'District', name: 'pc_district', width: 60, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, editable: true, 
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:StateCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, checked: true, editable: true,
+			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, editable: true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:CountryCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Status', name: 'pc_recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'pc_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
@@ -89,7 +88,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		sortname: 'pc_idno',
-		//sortorder: 'desc',
+		sortorder: 'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -100,10 +99,11 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if(addmore_jqgrid.more == true){
 				$('#jqGrid_iladd').click();
-			}
-			else{
-				$('#jqGrid').jqGrid ('setSelection', "1");
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -113,19 +113,36 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
-			$('#p_error').text('');   //hilangkan duplicate error msj after save
+			$('#p_error').text('');   //hilangkan duplicate error msj after save				
 		},
-		gridComplete: function(){
+		gridComplete: function () {
 			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}	
 		},
 	});
 
+	function check_cust_rules(rowid){
+		var chk = ['pc_postcode','pc_place_name','pc_district','st_StateCode','cn_Code'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+	}
+
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 
 			dialog_state.on();
@@ -137,7 +154,10 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -162,6 +182,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/postcode/form?"+
 				$.param({
 					action: 'postcode_save',
@@ -169,6 +191,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -176,6 +199,7 @@ $(document).ready(function () {
 		}
 	};
 
+	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
@@ -194,18 +218,22 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -214,6 +242,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/postcode/form?"+
 				$.param({
 					action: 'postcode_save',
@@ -221,6 +251,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -228,7 +259,7 @@ $(document).ready(function () {
 		}
 	};
 
-
+	/////////////////////////start jqgrid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,

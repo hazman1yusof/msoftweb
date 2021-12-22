@@ -39,8 +39,6 @@ class DeliveryOrderController extends defaultController
                 return $this->posted($request);
             case 'reopen':
                 return $this->reopen($request);
-            case 'posted_single':
-                return $this->posted_single($request);
             case 'soft_cancel':
                 return $this->soft_cancel($request);
             case 'cancel':
@@ -64,6 +62,8 @@ class DeliveryOrderController extends defaultController
 
     public function add(Request $request){
 
+        DB::beginTransaction();
+
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
@@ -72,29 +72,46 @@ class DeliveryOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('DO', $request->delordhd_prdept);
-        $recno = $this->recno('PUR','DO');
-
-        DB::beginTransaction();
-
-        $table = DB::table("material.delordhd");
-
-        $array_insert = [
-            'trantype' => 'GRN', 
-            'docno' => $request_no,
-            'recno' => $recno,
-            'compcode' => session('compcode'),
-            'unit' => session('unit'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN'
-        ];
-
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+
+            if(!empty($request->referral)){
+                $request_no = $this->request_no('DO', $request->delordhd_prdept);
+                $recno = $this->recno('PUR','DO');
+                $compcode = session('compcode');
+            }else{
+                $request_no = 0;
+                $recno = 0;
+                $compcode = 'DD';
+            }
+
+            $table = DB::table("material.delordhd");
+
+            $array_insert = [
+                'trantype' => 'GRN', 
+                'docno' => $request_no,
+                'recno' => $recno,
+                'compcode' => $compcode,
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN'
+            ];
+
+            foreach ($field as $key => $value) {
+                if(is_string($request[$request->field[$key]])){
+                    $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+                }else{
+                    $array_insert[$value] = $request[$request->field[$key]];
+                }
+            }
+
+            $delordno_chk = DB::table('material.delordhd')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('delordno','=',$request->delordhd_delordno);
+
+            if($delordno_chk->exists()){
+                throw new \Exception("Delordno : '".$request->delordhd_delordno."' already exists, insert other no");
+            }
 
             $idno = $table->insertGetId($array_insert);
 
@@ -108,9 +125,9 @@ class DeliveryOrderController extends defaultController
                 $delordno = $request->delordhd_delordno;
 
                 ////dekat po header sana, save balik delordno dkt situ
-                DB::table('material.purordhd')
-                    ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
-                    ->update(['delordno' => $delordno]);
+                // DB::table('material.purordhd')
+                //     ->where('purordno','=',$srcdocno)->where('compcode','=',session('compcode'))
+                //     ->update(['delordno' => $delordno]);
             }
 
             $responce = new stdClass();
@@ -124,7 +141,7 @@ class DeliveryOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e, 500);
         }
 
     }
@@ -157,7 +174,11 @@ class DeliveryOrderController extends defaultController
             ];
 
             foreach ($field as $key => $value) {
-                $array_update[$value] = $request[$request->field[$key]];
+                if(is_string($request[$request->field[$key]])){
+                    $array_update[$value] = strtoupper($request[$request->field[$key]]);
+                }else{
+                    $array_update[$value] = $request[$request->field[$key]];
+                }
             }
 
             try {
@@ -173,7 +194,7 @@ class DeliveryOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response('Error'.$e, 500);
+                return response($e, 500);
             }
         }else{
             DB::beginTransaction();
@@ -252,7 +273,6 @@ class DeliveryOrderController extends defaultController
                 $delordhd = DB::table('material.delordhd')
                     ->where('idno', '=', $idno);
 
-
                 $delordhd_obj = $delordhd->first();
 
                 $delorddt_obj = DB::table('material.delorddt')
@@ -325,6 +345,7 @@ class DeliveryOrderController extends defaultController
 
 
                     //2. start looping untuk delorddt
+
                 foreach ($delorddt_obj as $value) {
                     
                     $productcat = $value->productcat;
@@ -363,33 +384,35 @@ class DeliveryOrderController extends defaultController
                         ->where('itemcode','=', $value->itemcode)
                         ->first();
 
-                    if($product_obj->groupcode == "Stock" ){
-                    //--- 2.5. masuk dalam intxndt ---//
+                    if(strtoupper($product_obj->groupcode) == "STOCK" ){
+                        //--- 2.5. masuk dalam intxndt ---//
                         do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
 
-                    //--- 3. posting stockloc ---///
+                        //--- 3. posting stockloc ---///
                         do_util::stockloc_ins($value,$txnqty,$netprice);
 
-                    //--- 4. posting stock Exp ---//
+                        //--- 4. posting stock Exp ---//
                         do_util::stockExp_ins($value,$txnqty,$netprice);
 
-                    //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
+                        //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                         do_util::product_ins($value,$txnqty,$netprice);
 
-                    //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
+                        //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
                         do_util::update_po($value,$txnqty,$netprice);
                     }
 
-                //--- 6. posting GL ---//
+                    //--- 6. posting GL ---//
                     do_util::postingGL($value,$delordhd_obj,$productcat);
 
-                //--- 7. posting GL gst punya---//
+                    //--- 7. posting GL gst punya---//
                     do_util::postingGL_GST($value,$delordhd_obj); 
 
-                //---- 8. update po kalu ada srcdocno ---//
-                    if($delordhd_obj->srcdocno != 0){
+                    //---- 8. update po kalu ada srcdocno ---//
+                    if(!empty($delordhd_obj->srcdocno)){
 
+                        $this->checkIfPOposted($delordhd_obj);
 
+                        $status = 'COMPLETED';
 
                         $podt_obj = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
@@ -399,10 +422,13 @@ class DeliveryOrderController extends defaultController
                             ->where('lineno_','=',$value->polineno);
 
                         $podt_obj_lama = $podt_obj->first();
-                        $this->checkIfPOposted($value); //dd('test');
 
-                        $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
-                        $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
+                        $jumlah_qtydelivered = intval($podt_obj_lama->qtydelivered) + intval($value->qtydelivered);
+                        $qtyoutstand = intval($podt_obj_lama->qtyorder) - intval($jumlah_qtydelivered);
+
+                        if($qtyoutstand > 0){
+                            $status = 'PARTIAL';
+                        }
 
                         if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
                             throw new \Exception("Quantity delivered exceed quantity order");
@@ -410,11 +436,21 @@ class DeliveryOrderController extends defaultController
 
                         $podt_obj->update([
                             'qtydelivered' => $jumlah_qtydelivered,
-                            'qtyoutstand' => $qtyoutstand
+                            // 'qtyoutstand' => $qtyoutstand,
+                            'recstatus' => $status
+                        ]);
+
+
+                        $pohd_obj = DB::table('material.purordhd')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('purordno','=',$value->srcdocno);
+
+                        $pohd_obj->update([
+                            'recstatus' => $status
                         ]);
 
                         //update qtyoutstand utk suma DO pulak 
-                        $delordhd = DB::table('material.delorddt')
+                        DB::table('material.delorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('itemcode','=',$value->itemcode)
                             ->where('prdept','=',$delordhd_obj->prdept)
@@ -431,211 +467,6 @@ class DeliveryOrderController extends defaultController
                 $this->chg_recstatus_do_then_po($delordhd_obj);
 
             }
-
-            $queries = DB::getQueryLog();
-            dump($queries);
-
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function posted_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-            //--- 1. copy delordhd masuk dalam ivtxnhd ---//
-
-                //1. amik dari delordhd
-
-            $delordhd = DB::table('material.delordhd')
-                ->where('idno', '=', $request->idno);
-
-
-            $delordhd_obj = $delordhd->first();
-
-            $delorddt_obj = DB::table('material.delorddt')
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.unit','=',session('unit'))
-                ->where('delorddt.recno','=',$delordhd_obj->recno)
-                ->where('delorddt.recstatus','!=','DELETE')
-                ->get();
-
-            //check kalu dia stock
-            $Stock_flag = false;
-            foreach ($delorddt_obj as $value) {
-
-                //product from delorddt.itemcode
-                //if product.groupcode = "stock" then stockflag = iv
-                //if product.groupcode = "asset" then stockflag = asset
-                //if product.groupcode = "other" then stockflag = other
-                $Stock_flag = DB::table('material.product')
-                    ->where('compcode','=', $value->compcode)
-                    ->where('unit','=', $value->unit)
-                    ->where('groupcode','=', "Stock")
-                    ->where('itemcode','=', $value->itemcode)
-                    ->exists();
-
-                if($Stock_flag) break;
-
-            }
-
-                //2. pastu letak dkt ivtxnhd
-
-            if($Stock_flag){
-                DB::table('material.ivtxnhd')
-                    ->insert([
-                        'compcode'=>$delordhd_obj->compcode, 
-                        'recno'=>$delordhd_obj->recno, 
-                        'reference'=>$delordhd_obj->delordno, 
-                        'source'=>'IV', 
-                        'txndept'=>$delordhd_obj->deldept, 
-                        'trantype'=>$delordhd_obj->trantype, 
-                        'docno'=>$delordhd_obj->docno, 
-                        'srcdocno'=>$delordhd_obj->srcdocno, 
-                        'sndrcv'=>$delordhd_obj->suppcode, 
-                        'sndrcvtype'=>'Supplier', 
-                        'trandate'=>$delordhd_obj->trandate, 
-                        'trantime'=>$delordhd_obj->trantime, 
-                        'datesupret'=>$delordhd_obj->deliverydate, 
-                        'respersonid'=>$delordhd_obj->checkpersonid, 
-                        'recstatus'=>$delordhd_obj->recstatus, 
-                        'adduser'=>$delordhd_obj->adduser, 
-                        'adddate'=>Carbon::now("Asia/Kuala_Lumpur"),
-                        'remarks'=>$delordhd_obj->remarks,
-                        'unit' =>$delordhd_obj->unit
-                    ]);
-            }
-            
-
-            //--- 2. loop delorddt untuk masuk dalam ivtxndt ---//
-
-                //1.amik productcat dari table product
-            // $productcat_obj = DB::table('material.delorddt')
-            //     ->select('product.productcat')
-            //     ->join('material.product', function($join) use ($request){
-            //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-            //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-            //     })
-            //     ->where('delorddt.compcode','=',session('compcode'))
-            //     ->where('delorddt.unit','=',session('unit'))
-            //     ->where('delorddt.recno','=',$request->recno)
-            //     ->first();
-
-
-                //2. start looping untuk delorddt
-            foreach ($delorddt_obj as $value) {
-                
-                $productcat = $value->productcat;
-
-                $value->expdate = $this->null_date($value->expdate);
-
-                //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-                $convfactorPOUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.pouom','=','uom.uomcode')
-                    ->where('delorddt.unit','=',session('unit'))
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$delordhd_obj->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
-
-                $convfactorUOM_obj = DB::table('material.delorddt')
-                    ->select('uom.convfactor')
-                    ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
-                    ->where('delorddt.unit','=',session('unit'))
-                    ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$delordhd_obj->recno)
-                    ->where('delorddt.lineno_','=',$value->lineno_)
-                    ->first();
-                $convfactorUOM = $convfactorUOM_obj->convfactor;
-
-                $txnqty = $value->qtydelivered * ($convfactorPOUOM / $convfactorUOM);
-                $netprice = $value->netunitprice * ($convfactorUOM / $convfactorPOUOM);
-
-                //4. start insert dalam ivtxndt
-
-                $product_obj = DB::table('material.product')
-                    ->where('compcode','=', $value->compcode)
-                    ->where('unit','=', $value->unit)
-                    ->where('itemcode','=', $value->itemcode)
-                    ->first();
-
-                if($product_obj->groupcode == "Stock" ){
-                //--- 2.5. masuk dalam intxndt ---//
-                    do_util::ivtxndt_ins($value,$txnqty,$netprice,$delordhd_obj,$productcat);
-
-                //--- 3. posting stockloc ---///
-                    do_util::stockloc_ins($value,$txnqty,$netprice);
-
-                //--- 4. posting stock Exp ---//
-                    do_util::stockExp_ins($value,$txnqty,$netprice);
-
-                //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                    do_util::product_ins($value,$txnqty,$netprice);
-
-                //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
-                    do_util::update_po($value,$txnqty,$netprice);
-                }
-
-            //--- 6. posting GL ---//
-                do_util::postingGL($value,$delordhd_obj,$productcat);
-
-            //--- 7. posting GL gst punya---//
-                do_util::postingGL_GST($value,$delordhd_obj); 
-
-            //---- 8. update po kalu ada srcdocno ---//
-                if($delordhd_obj->srcdocno != 0){
-
-
-
-                    $podt_obj = DB::table('material.purorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$value->prdept)
-                        ->where('purordno','=',$value->srcdocno)
-                        ->where('lineno_','=',$value->polineno);
-
-                    $podt_obj_lama = $podt_obj->first();
-                    $this->checkIfPOposted($value); //dd('test');
-
-                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $value->qtydelivered;
-                    $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
-
-                    if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                        throw new \Exception("Quantity delivered exceed quantity order");
-                    }
-
-                    $podt_obj->update([
-                        'qtydelivered' => $jumlah_qtydelivered,
-                        'qtyoutstand' => $qtyoutstand
-                    ]);
-
-                    //update qtyoutstand utk suma DO pulak 
-                    $delordhd = DB::table('material.delorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$delordhd_obj->prdept)
-                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                        ->update([
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
-
-                }
-
-            } // habis looping untuk delorddt
-
-            //--- 8. change recstatus to posted -dd--//
-            $this->chg_recstatus_do_then_po($delordhd_obj);
-
-           
 
             $queries = DB::getQueryLog();
             dump($queries);
@@ -691,26 +522,33 @@ class DeliveryOrderController extends defaultController
 
         try{
 
-            //--- 8. change recstatus to cancelled -dd--//
-            DB::table('material.delordhd')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'postedby' => session('username'),
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'recstatus' => 'CANCELLED' 
-                ]);
+            foreach ($request->idno_array as $idno){
 
-            DB::table('material.delorddt')
-                ->where('recno','=',$request->recno)
-                ->where('unit','=',session('unit'))
-                ->where('compcode','=',session('compcode'))
-                ->where('recstatus','!=','DELETE')
-                ->update([
-                    'recstatus' => 'CANCELLED' 
-                ]);
 
+                $delordhd = DB::table('material.delordhd')
+                    ->where('idno', '=', $idno);
+
+                $delordhd_obj = $delordhd->first();
+
+                //--- 8. change recstatus to cancelled -dd--//
+                DB::table('material.delordhd')
+                    ->where('recno','=',$delordhd_obj->recno)
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+
+                DB::table('material.delorddt')
+                    ->where('recno','=',$delordhd_obj->recno)
+                    ->where('unit','=',session('unit'))
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','!=','DELETE')
+                    ->update([
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+
+            }
             DB::commit();
         
         } catch (\Exception $e) {
@@ -1164,7 +1002,7 @@ class DeliveryOrderController extends defaultController
                     'deldept' => $po_hd->deldept,
                     'deliverydate' => $po_hd->expecteddate,
                     'qtyorder' => $value->qtyorder, 
-                    'qtydelivered' => $value->qtydelivered, 
+                    'qtydelivered' => 0, 
                     'qtyoutstand' => $value->qtyorder - $value->qtydelivered,
                     'unitprice' => $value->unitprice, 
                     'taxcode' => $value->taxcode, 
@@ -1206,19 +1044,33 @@ class DeliveryOrderController extends defaultController
         return $amount;
     }
 
-    public function checkIfPOposted($value){
+    public function checkIfPOposted($delordhd){
         $po_hd = DB::table('material.purordhd')
-                ->where('purordno', '=', $value->srcdocno)
+                ->where('purordno', '=', $delordhd->srcdocno)
                 ->where('compcode', '=', session('compcode'))
                 ->first();
-         //dd($po_hd);
 
-        if($po_hd->recstatus == 'CANCELLED'){
-            throw new \Exception("Cannot posted, PO is CANCELLED");
-        }else if($po_hd->recstatus != 'APPROVED'){
-        // dd('test');
-            throw new \Exception("Cannot posted, PO not APPROVED yet");
+        switch ($po_hd->recstatus) {
+            case 'CANCELLED':
+                throw new \Exception("Cannot posted, PO is CANCELLED");
+                break;
+
+            case 'OPEN':
+            case 'REQUEST':
+            case 'SUPPORT':
+            case 'VERIFIED':
+                throw new \Exception("Cannot posted, PO is CANCELLED");
+                break;
+
+            case 'COMPLETED':
+                throw new \Exception("Cannot posted, PO already COMPLETED");
+                break;
+
+            case 'APPROVED':
+            case 'PARTIAL':
+                break;
         }
+
     }
 
     public function refresh_do(Request $request){
@@ -1308,31 +1160,31 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=', session('compcode'))
                 ->update(['recstatus'  => 'POSTED']);
 
-        if(!empty($do_hd->srcdocno)){
-            $do_dt = DB::table('material.delorddt')
-                    ->where('recno', '=', $delordhd_obj->recno)
-                    ->where('compcode', '=', session('compcode'))
-                    ->where('recstatus', '<>', 'DELETE')
-                    ->get();
+        // if(!empty($do_hd->srcdocno)){
+        //     $do_dt = DB::table('material.delorddt')
+        //             ->where('recno', '=', $delordhd_obj->recno)
+        //             ->where('compcode', '=', session('compcode'))
+        //             ->where('recstatus', '<>', 'DELETE')
+        //             ->get();
 
-            $partial = false;
+        //     $partial = false;
             
-            foreach ($do_dt as $key => $dodt) {
-                if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
-                    $partial = true;
-                }
-            }
+        //     foreach ($do_dt as $key => $dodt) {
+        //         if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
+        //             $partial = true;
+        //         }
+        //     }
 
-            if($partial == true){
-                $recstatus = 'PARTIAL';
-            }else{
-                $recstatus = 'COMPLETED';
-            }
+        //     if($partial == true){
+        //         $recstatus = 'PARTIAL';
+        //     }else{
+        //         $recstatus = 'COMPLETED';
+        //     }
 
-            $po_hd = DB::table('material.purordhd')
-                    ->where('purordno', '=', $do_hd->srcdocno)
-                    ->update(['recstatus'  => $recstatus]);
-        }
+        //     $po_hd = DB::table('material.purordhd')
+        //             ->where('purordno', '=', $do_hd->srcdocno)
+        //             ->update(['recstatus'  => $recstatus]);
+        // }
     }
 }
 

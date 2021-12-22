@@ -127,7 +127,7 @@ $(document).ready(function () {
 		 colModel: [
 			{label: 'idno', name: 'idno', hidden:true},
 			{label: 'Author ID', name: 'authorid', width: 90 ,  classes: 'wrap', canSearch: true,},							
-			{label: 'Name', name: 'name', width: 90,  classes: 'wrap' , canSearch: true},	
+			{label: 'Name', name: 'name', width: 90,  classes: 'wrap' , canSearch: true, checked:true },	
 			{label: 'Password', name: 'password', width: 90 ,  classes: 'wrap' , hidden: true,},
 			{label: 'Department Code', name: 'deptcode', width: 90 , classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Active', name: 'active', width: 90 ,hidden:true,},
@@ -165,7 +165,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-		},
+			$("#searchForm input[name=Stext]").focus();		},
 		
 	});
 
@@ -613,9 +613,8 @@ function showdetail(cellvalue, options, rowObject){
 function cust_rules(value,name){
 	var temp;
 	switch(name){
-		case 'Deptcode':temp=$('#dtl_deptcode');break;
-		case 'Deptcode':temp=$('#d_deptcode');break;
-	
+		case 'Department':temp=$('table#jqgrid2 input[name=dtl_deptcode]');break;
+		// case 'Department':temp=$('#d_deptcode');break;
 	}
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 }

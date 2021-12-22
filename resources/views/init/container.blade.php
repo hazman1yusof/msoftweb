@@ -69,6 +69,13 @@
 			</ul>
 			@endif
 
+			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
+				<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
+				<li>
+					<input type='text' class="form-control" id="session_deptcode" readonly value="{{Session::get('deptcode')}}">
+				</li>
+			</ul>
+
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class='dropdown-toggle active' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

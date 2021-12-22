@@ -176,7 +176,7 @@ class invtran_util extends defaultController{
         //2.kalu ada stockloc, update 
         if($stockloc_obj->exists()){
 
-        //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
@@ -190,14 +190,14 @@ class invtran_util extends defaultController{
                     'NetMvVal'.$month => $NetMvVal
                 ]);
 
-        //4. tolak expdate, kalu ada batchno
+            //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
                 ->where('DeptCode','=',$ivtmphd->txndept)
                 ->where('ItemCode','=',$value->itemcode)
                 ->where('UomCode','=',$value->uomcode);
 
-            if($value->expdate == NULL){
+            if($value->expdate == null){
                 $expdate_obj
                     ->orderBy('expdate', 'asc');
             }else{
@@ -273,7 +273,7 @@ class invtran_util extends defaultController{
         //4.kalu ada stockloc, update 
         if($stockloc_obj->exists()){
 
-        //5. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            //5. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand + $txnqty; 
@@ -287,7 +287,7 @@ class invtran_util extends defaultController{
                     'NetMvVal'.$month => $NetMvVal
                 ]);
 
-        //6. tambah stockexp berdasarkan expdate dgn batchno
+            //6. tambah stockexp berdasarkan expdate dgn batchno
 
             $expdate_obj = DB::table('material.stockexp')
                 ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
@@ -312,7 +312,6 @@ class invtran_util extends defaultController{
                 $balqty_new = $expdate_first->balqty + $txnqty;
 
                 $expdate_obj->update([
-
                     'balqty' => $balqty_new
                 ]);
             }else{ 
@@ -336,7 +335,7 @@ class invtran_util extends defaultController{
         }
 
         //-- 6. posting product -> update qtyonhand, avgcost, currprice --//
-            //1. waktu OUT trandept
+        //1. waktu OUT trandept
 
         // $ret_posting_product = invtran_util::posting_product($value,$ivtmphd);
 
@@ -360,12 +359,12 @@ class invtran_util extends defaultController{
                 ->where('product.itemcode','=',$value->itemcode)
                 ->where('product.uomcode','=',$value->uomcode)
                 ->update([
-                    'qtyonhand' => $newqtyonhand,
+                    'qtyonhand' => $newqtyonhand
                 ]);
 
         }
 
-            //2. waktu IN sndrecv
+        //2. waktu IN sndrecv
         $product_obj = DB::table('material.product')
             ->where('product.compcode','=',session('compcode'))
             ->where('product.itemcode','=',$value->itemcode)
@@ -373,12 +372,26 @@ class invtran_util extends defaultController{
 
         if($product_obj->exists()){ // kalu jumpa
 
+
+            //2. tukar txnqty dgn netprice berdasarkan convfactor
+            $txnqty = floatval($value->txnqty) * (floatval($convfactor_uomcodetrdept) / floatval($convfactor_uomcoderecv));
+            $netprice = floatval($value->netprice) * (floatval($convfactor_uomcoderecv) / floatval($convfactor_uomcodetrdept));
+
             $product_obj = $product_obj->first();
 
             $month = defaultController::toMonth($ivtmphd->trandate);
-            $OldQtyOnHand = $product_obj->qtyonhand;
+            $OldQtyOnHand = floatval($product_obj->qtyonhand);
+            $currprice = floatval($netprice);
+            $Oldavgcost = floatval($product_obj->avgcost);
+            $OldAmount = $OldQtyOnHand * $Oldavgcost;
+            $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand + $txnqty;
+            if($newqtyonhand <= 0){
+                $newAvgCost = 0; //ini kes item baru (qtyonhand 0) dan txnqty kosong
+            }else{
+                $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            }
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')
@@ -387,7 +400,10 @@ class invtran_util extends defaultController{
                 ->where('product.uomcode','=',$value->uomcoderecv)
                 ->update([
                     'qtyonhand' => $newqtyonhand,
+                    'avgcost' => $newAvgCost,
+                    'currprice' => $currprice
                 ]);
+
         }
 
 	}
@@ -490,11 +506,12 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand + $txnqty;
-            if(strtoupper($isstype) == "ADJUSTMENT"){
-                $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
-            }else{
-                $newAvgCost = $Oldavgcost;
-            }
+            $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            // if(strtoupper($isstype) == "ADJUSTMENT"){
+            //     $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+            // }else{
+            //     $newAvgCost = $Oldavgcost;
+            // }
 
 
             // update qtyonhand, avgcost, currprice
@@ -526,7 +543,7 @@ class invtran_util extends defaultController{
         //2.kalu ada stockloc, update 
         if($stockloc_obj->exists()){
 
-        //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+            //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
             $month = defaultController::toMonth($ivtmphd->trandate);
             $QtyOnHand = $stockloc_first->qtyonhand - $value->txnqty; 
@@ -540,7 +557,7 @@ class invtran_util extends defaultController{
                     'NetMvVal'.$month => $NetMvVal
                 ]);
 
-        //4. tolak expdate, kalu ada batchno
+            //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('Year','=',defaultController::toYear($ivtmphd->trandate))
                 ->where('DeptCode','=',$ivtmphd->txndept)
@@ -613,11 +630,12 @@ class invtran_util extends defaultController{
             $NewAmount = $netprice * $txnqty;
 
             $newqtyonhand = $OldQtyOnHand - $txnqty;
-            if(strtoupper($isstype) == "ADJUSTMENT"){
-                $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
-            }else{
-                $newAvgCost = $Oldavgcost;
-            }
+            $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // if(strtoupper($isstype) == "ADJUSTMENT"){
+            //     $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
+            // }else{
+            //     $newAvgCost = $Oldavgcost;
+            // }
 
             // update qtyonhand, avgcost, currprice
             $product_obj = DB::table('material.product')

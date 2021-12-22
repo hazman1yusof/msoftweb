@@ -29,17 +29,11 @@ class InventoryTransactionDetailController extends defaultController
             case 'edit':
                 return $this->edit($request);
             case 'edit_all':
-
-                if($request->srcdocno != 0){
-                    // return 'edit all srcdocno !=0';
-                    return $this->edit_all_from_PO($request);
-                }else{
-                    // return 'edit all biasa';
-                    return $this->edit_all($request);
-                }
-
+                return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -100,6 +94,27 @@ class InventoryTransactionDetailController extends defaultController
 
         try {
             $recno = $request->recno;
+            $docno = $request->docno;
+
+            $ivtmphd = DB::table("material.ivtmphd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($ivtmphd->exists()){
+
+                $docno = $this->request_no($request->trantype, $request->txndept);
+                $recno = $this->recno('IV','IT');
+
+                DB::table("material.ivtmphd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $docno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
+
+
             ////1. calculate lineno_ by recno
             $sqlln = DB::table('material.ivtmpdt')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
@@ -133,8 +148,8 @@ class InventoryTransactionDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'recno' => $recno,
                     'lineno_' => $li,
-                    'itemcode' => $request->itemcode,
-                    'uomcode' => $request->uomcode,
+                    'itemcode' => strtoupper($request->itemcode),
+                    'uomcode' => strtoupper($request->uomcode),
                     'txnqty' => $request->txnqty,
                     'netprice' => $request->netprice,
                     'productcat' => $request->productcat,
@@ -167,7 +182,13 @@ class InventoryTransactionDetailController extends defaultController
                   
                 ]);
             DB::commit();
-            return response($totalAmount,200);
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $recno;
+            $responce->docno = $docno;
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -232,6 +253,71 @@ class InventoryTransactionDetailController extends defaultController
 
     }
 
+    public function edit_all(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $request->expdate = $this->null_date($request->expdate);
+
+
+
+            foreach ($request->dataobj as $key => $value) {
+                ///1. update detail
+                DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'itemcode' => strtoupper($value['itemcode']),
+                        'uomcode' => strtoupper($value['uomcode']),
+                        'txnqty' => $value['txnqty'],
+                        //'reqdept'=>$request->reqdept,
+                        // 'ivreqno'=>$request->ivreqno,
+                        // 'reqlineno'=>$request->lineno_,
+                        'netprice' => $value['netprice'],
+                        // 'productcat' => $value['productcat'],
+                        'qtyonhand' => $value['qtyonhand'],
+                        'uomcoderecv'=> strtoupper($value['uomcoderecv']),
+                        'qtyonhandrecv'=> $value['qtyonhandrecv'],
+                        'amount' => $value['amount'],
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'expdate'=> $this->chgDate($request->expdate),  
+                        'batchno' => strtoupper($value['batchno']), 
+                        'recstatus' => 'OPEN'
+                    ]);
+
+                ///2. recalculate total amount
+                $totalAmount = DB::table('material.ivtmpdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+
+                ///3. update total amount to header
+                DB::table('material.ivtmphd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$request->recno)
+                    ->update([
+                        'amount' => $totalAmount, 
+                    ]);
+            }
+
+            
+
+            DB::commit();
+            return response($totalAmount,200);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
+    }
+
+
     public function del(Request $request){
 
         DB::beginTransaction();
@@ -278,194 +364,72 @@ class InventoryTransactionDetailController extends defaultController
         
     }
 
-    public function edit_from_PO(Request $request){
+    public function edit_from_SR(Request $request){
 
         DB::beginTransaction();
 
         try {
 
             ///1. update detail
-            DB::table('material.delorddt')
+            DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
-                    'pricecode' => $request->pricecode, 
-                    'itemcode'=> $request->itemcode, 
-                    'uomcode'=> $request->uomcode, 
-                    'pouom'=> $request->pouom, 
-                    'qtyorder'=> $request->qtyorder, 
-                    'qtydelivered'=> $request->qtydelivered, 
-                    'unitprice'=> $request->unitprice,
-                    'taxcode'=> $request->taxcode, 
-                    'perdisc'=> $request->perdisc, 
-                    'amtdisc'=> $request->amtdisc, 
-                    'amtslstax'=> $request->tot_gst, 
-                    'netunitprice'=> $request->netunitprice, 
-                    'amount'=> $request->amount, 
-                    //'totamount'=> $request->totamount, 
-                    'upduser'=> session('username'), 
-                    'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
+                    'itemcode' => strtoupper($request->itemcode),
+                    'uomcode' => strtoupper($request->uomcode),
+                    'txnqty' => $request->txnqty,
+                    'netprice' => $request->netprice,
+                    'productcat' => $request->productcat,
+                    'qtyonhand' => $request->qtyonhand,
+                    'uomcoderecv'=> strtoupper($request->uomcoderecv),
+                    'qtyonhandrecv'=> $request->qtyonhandrecv,
+                    'amount' => $request->amount,
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
-                    'batchno'=> $request->batchno, 
-                    'remarks'=> $request->remarks
+                    'batchno' => strtoupper($request->batchno), 
+                    'recstatus' => 'OPEN', 
+                    'remarks' => $request->remarks
                 ]);
 
             ///2. recalculate total amount
-           /* $totalAmount = DB::table('material.delorddt')
+            $totalAmount = DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
 
-            //calculate tot gst from detail
-            $tot_gst = DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amtslstax');
-
             ///3. update total amount to header
-            DB::table('material.delordhd')
+            DB::table('material.ivtmpdt')
                 ->where('compcode','=',session('compcode'))
                 ->where('recno','=',$request->recno)
                 ->update([
-                    'totamount' => $totalAmount, 
-                    'subamount'=> $totalAmount, 
-                    'TaxAmt' => $tot_gst
-                ]);*/
-
-            ///4. cari recno dkt podt
-            $purordhd = DB::table('material.purordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('purordno','=',$this->srcdocno)
-                ->first();
-            $po_recno = $purordhd->recno;
-
-            ///5. amik old qtydelivered / qtyorder dkt qtyrequest
-            $podt_obj = DB::table('material.purorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$po_recno)
-                ->where('lineno_','=',$request->lineno_);
-            $podt_obj_lama = $podt_obj->first();
-
-            ///6. check dan bagi error kalu exceed quantity order
-
-                //step 1. cari header yang ada srcdocno ni
-            $delordhd_obj = DB::table('material.delordhd')
-                ->where('compcode','=',session('compcode'))
-                ->where('srcdocno','=',$this->srcdocno);
-
-            if($delordhd_obj->exists()){
-                $total_qtydeliverd_do = 0;
-
-                $delorhd_all = $delordhd_obj->get();
-
-                //step 2. dapatkan dia punya qtydelivered melalui lineno yg sama, pastu jumlahkan, jumlah ni qtydelivered yang blom post lagi
-                foreach ($delorhd_all as $value_hd) {
-                    $delorddt_obj = DB::table('material.delorddt')
-                        ->where('recno','=',$value_hd->recno)
-                        ->where('compcode','=',session('compcode'))
-                        ->where('lineno_','=',$request->lineno_);
-
-                    if($delorddt_obj->exists()){
-                        $delorddt_data = $delorddt_obj->first();
-                        $total_qtydeliverd_do = $total_qtydeliverd_do + $delorddt_data->qtydelivered;
-                    }
-                }
-            }
-
-                //step 3. jumlah_qtydelivered = qtydelivered yang dah post + qtydelivered yang blom post
-            $jumlah_qtydelivered = $podt_obj_lama->qtydelivered + $total_qtydeliverd_do;
-
-                //step 4. kalu melebihi qtyorder, rollback
-            if($jumlah_qtydelivered > $podt_obj_lama->qtyorder){
-                DB::rollback();
-
-                return response('Error: Quantity delivered exceed quantity order', 500)
-                  ->header('Content-Type', 'text/plain');
-            }
-
-                //step 5. update qtyoutstand
-            $qtyoutstand = $podt_obj_lama->qtyorder - $jumlah_qtydelivered;
-
-            DB::table('material.delorddt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
-                ->where('lineno_','=',$request->lineno_)
-                ->update([
-                    'qtyoutstand' => $qtyoutstand, 
+                    'amount' => $totalAmount,
                 ]);
 
-            DB::commit();
+    
+            
+            echo $totalAmount;
 
-            return response($totalAmount,200);
+            DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response('Error'.$e, 500);
         }
 
     }
 
-    public function edit_all(Request $request){
-
-        DB::beginTransaction();
-
-        try {
-
-            foreach ($request->dataobj as $key => $value) {
-
-                ///1. update detail
-                DB::table('material.ivtmpdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->where('lineno_','=',$value['lineno_'])
-                    ->update([
-                        'itemcode' => $value['itemcode'],
-                        'uomcode' => $value['uomcode'],
-                        'txnqty' => $value['txnqty'],
-                        'netprice' => $value['netprice'],
-                        // 'productcat' => $value['productcat'],
-                        'qtyonhand' => $value['qtyonhand'],
-                        'uomcoderecv'=> $value['uomcoderecv'],
-                        'qtyonhandrecv'=> $value['qtyonhandrecv'],
-                        'amount' => $value['amount'],
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate' => $value['expdate'],
-                        'batchno' => $value['batchno'], 
-                        'recstatus' => 'OPEN', 
-                        // 'remarks' => $value['remarks']
-                    ]);
-
-                ///2. recalculate total amount
-                $totalAmount = DB::table('material.ivtmpdt')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
-
-                ///3. update total amount to header
-                DB::table('material.ivtmphd')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
-                    ->update([
-                        'amount' => $totalAmount, 
-                    ]);
-            }
-
-            DB::commit();
-            return response($totalAmount,200);
-
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-
+    
+    public function delete_dd(Request $request){
+        DB::table('material.ivtmphd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
+
 
 }
 

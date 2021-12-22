@@ -37,6 +37,8 @@ class PurchaseOrderDetailController extends defaultController
                // }    
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -55,7 +57,7 @@ class PurchaseOrderDetailController extends defaultController
     
     public function PurchaseOrderDetail(Request $request){
         $table = DB::table('material.purorddt AS podt')
-                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
+                ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtydelivered','podt.qtyoutstand','podt.qtyrequest', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate')
                 ->leftJoin('material.productmaster AS p', function($join) use ($request){
                     $join = $join->on("podt.itemcode", '=', 'p.itemcode');    
                 })
@@ -115,28 +117,47 @@ class PurchaseOrderDetailController extends defaultController
         $purordno = $request->purordno;
 
         DB::beginTransaction();
-
-        //check unique
-        if($request->pricecode == 'MS'){
-            $duplicate = DB::table('material.purreqdt')
-                ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$recno)
-                ->where('itemcode','=',strtoupper($request->itemcode))
-                ->where('uomcode','=',strtoupper($request->uomcode))
-                ->where('pouom','=',strtoupper($request->pouom))
-                ->exists();
-        }
-
-        $has_prodmaster =  DB::table('material.productmaster')
-            ->where('compcode','=',session('compcode'))
-            ->where('itemcode','=',strtoupper($request->itemcode))
-            ->exists();
-
         try {
-            if($duplicate && $request->pricecode == 'MS'){
-                throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
+
+            $purordhd = DB::table("material.purordhd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($purordhd->exists()){
+                $purordno = $this->request_no('PO',$purordhd->first()->prdept);
+                $recno = $this->recno('PUR','PO');
+
+                DB::table("material.purordhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'purordno' => $purordno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
             }
 
+            //check unique
+            if($request->pricecode == 'MS'){
+                $duplicate = DB::table('material.purreqdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$recno)
+                    ->where('itemcode','=',strtoupper($request->itemcode))
+                    ->where('uomcode','=',strtoupper($request->uomcode))
+                    ->where('pouom','=',strtoupper($request->pouom))
+                    ->exists();
+
+                if($duplicate){
+                    throw new \Exception("Duplicate item and uom of itemcode: ".strtoupper($request->itemcode));
+                }
+
+            }
+
+            $has_prodmaster =  DB::table('material.productmaster')
+                ->where('compcode','=',session('compcode'))
+                ->where('itemcode','=',strtoupper($request->itemcode))
+                ->exists();
+
+            
             if(!$has_prodmaster){
                 throw new \Exception("Itemcode ".strtoupper($request->itemcode)." doesnt have productmaster");
             }
@@ -155,7 +176,7 @@ class PurchaseOrderDetailController extends defaultController
                     'recno' => $recno,
                     'lineno_' => $li,
                     'prdept' => $request->prdept,
-                    'purordno' => $request->purordno,
+                    'purordno' => $purordno,
                     'pricecode' => strtoupper($request->pricecode), 
                     'itemcode'=> strtoupper($request->itemcode), 
                     'uomcode'=> strtoupper($request->uomcode), 
@@ -164,7 +185,7 @@ class PurchaseOrderDetailController extends defaultController
                     'purdate' => $request->purdate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
-                    // 'qtyoutstand' => 0,
+                    'qtyoutstand' => $request->qtyorder,
                     'unitprice' => $request->unitprice,
                     'taxcode' => $request->taxcode,
                     'perdisc' => $request->perdisc,
@@ -177,9 +198,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN', 
                     'remarks'=> strtoupper($request->remarks),
-                    'unit' => session('unit'),
-                    'prdept' => $request->prdept,
-                    'purordno' => $request->purordno,
+                    'unit' => session('unit')
 
                 ]);
 
@@ -216,9 +235,15 @@ class PurchaseOrderDetailController extends defaultController
                 ]);
 
 
-            echo $totalAmount;
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+            $responce->recno = $recno;
+            $responce->purordno = $purordno;
 
             DB::commit();
+            
+            return json_encode($responce);
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -246,6 +271,7 @@ class PurchaseOrderDetailController extends defaultController
                     'purdate' => $request->purdate,
                     'qtyorder' => $request->qtyorder,
                     'qtydelivered' => $request->qtydelivered,
+                    'qtyoutstand' => $request->qtyorder,
                     'unitprice' => $request->unitprice,
                     'taxcode' => strtoupper($request->taxcode),
                     'perdisc' => $request->perdisc,
@@ -344,7 +370,8 @@ class PurchaseOrderDetailController extends defaultController
                     'suppcode' => strtoupper($request->suppcode),
                     'purdate' => $request->purdate,
                     'qtyorder' => $value['qtyorder'],
-                    'qtydelivered' => $value['qtydelivered'],
+                    // 'qtydelivered' => $value['qtydelivered'],
+                    'qtyoutstand' => $value['qtyoutstand'],
                     'unitprice' => $value['unitprice'],
                     'taxcode' => strtoupper($value['taxcode']),
                     'perdisc' => $value['perdisc'],
@@ -459,15 +486,20 @@ class PurchaseOrderDetailController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
-                            ->whereNull('unitprice')
-                            ->orWhereNull('pouom');
-
+                            ->where(function ($purorddt_null){
+                                $purorddt_null
+                                        ->whereNull('unitprice')
+                                        ->orWhereNull('pouom'); 
+                            });
         $purorddt_empty = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$recno)
                             ->where('recstatus','<>','DELETE')
-                            ->where('unitprice','=','0.00')
-                            ->orWhere('pouom','=','');              
+                            ->where(function ($purorddt_empty){
+                                $purorddt_empty
+                                    ->where('unitprice','=','0.00')
+                                    ->orWhere('pouom','=','');   
+                            });
 
         if($purorddt_null->exists() || $purorddt_empty->exists()){
             $incompleted = true;
@@ -488,6 +520,13 @@ class PurchaseOrderDetailController extends defaultController
                         'recstatus' => 'OPEN'
                     ]);
         }
+    }
+
+    public function delete_dd(Request $request){
+        DB::table('material.purordhd')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
     }
 
 }

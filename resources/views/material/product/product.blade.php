@@ -2,22 +2,44 @@
 
 @section('title', 'Product Setup')
 
+@section('style')
+	fieldset.scheduler-border {
+	    border: 1px groove #ddd !important;
+	    padding: 0 1.4em 1.4em 1.4em !important;
+	    margin: 0 0 1.5em 0 !important;
+	    -webkit-box-shadow:  0px 0px 0px 0px #000;
+	            box-shadow:  0px 0px 0px 0px #000;
+	}
+
+	legend.scheduler-border {
+		font-size: 1.2em !important;
+		font-weight: bold !important;
+		text-align: left !important;
+		width:auto;
+		padding:0 10px;
+		border-bottom:none;
+	}
+@endsection
+
 @section('body')
 	<div class='row'>
+		<input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="itemcode_hidden" id="itemcode_hidden">
+		<input type="hidden" name="uomcode_hidden" id="uomcode_hidden">
 		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
 			<fieldset>
 				<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
-				<div class='col-md-12' style="padding:0 0 15px 0;">
+				<div class='col-md-12' style="padding:0 0 15px 0;" onkeydown="return event.key != 'Enter';">
 					<div class="form-group"> 
 						<div class="col-md-2">
 							<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm"  tabindex="1"></select>
 		              	</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase"  tabindex="2">
 
 							<div  id="show_product_infront_asset" style="display:none">
 								<div class='input-group'>
@@ -310,11 +332,125 @@
 
 						   	<label class="col-md-2 control-label" for="itemtype">Item Type</label>  
 						  		<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="itemtype" value='NON-POISON' data-validation="required">Non-poison</label>
+									<label class="radio-inline"><input type="radio" name="itemtype" value='NON-POISON' data-validation="required" checked>Non-poison</label>
 									<label class="radio-inline"><input type="radio" name="itemtype" value='POISON'>Poison</label>
 						  		</div>
 						</div>
 						@endif
+
+
+						<!-----charges---->
+
+						<fieldset class="scheduler-border" id="charges_fieldset" style="display:none;">
+							<legend class="scheduler-border">Charges Menu</legend>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_packqty">Packing</label>  
+								<div class="col-md-3">
+									<input id="cm_packqty" name="cm_packqty" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_druggrcode">Drug Group Code</label>  
+								<div class="col-md-3">
+									<input id="cm_druggrcode" name="cm_druggrcode" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_subgroup">Sub Group</label>  
+								<div class="col-md-3">
+									<input id="cm_subgroup" name="cm_subgroup" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_stockcode">Stock Code</label>  
+								<div class="col-md-3">
+									<input id="cm_stockcode" name="cm_stockcode" type="text" class="form-control input-sm uppercase" rdonly="" readonly="">
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chgclass">Class Code</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_chgclass" name="cm_chgclass" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_dosecode">Dosage</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chggroup">Charge Group</label>  
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_chggroup" name="cm_chggroup" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_freqcode">Frequency</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+							</div>
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_chgtype">Charge Type</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_chgtype" name="cm_chgtype" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+								<label class="col-md-2 control-label" for="cm_instruction">Instruction</label>
+								<div class="col-md-3">
+									<div class="input-group">
+										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<span class="help-block"></span>
+								</div>
+
+							</div>
+
+
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="cm_invgroup">Inv. Group</label>
+								<div class="col-md-3">
+									<select class="form-control col-md-4" id="cm_invgroup" name="cm_invgroup" data-validation="required">
+										<option value="" selected="selected">Select one</option>
+										<option value="CC">Charge Code</option>
+										<option value="CG">Charge Group</option>
+										<option value="CT">Charge Type</option>
+										<option value="DC">Doctor</option>
+									</select> 
+								</div>
+
+							</div>
+
+
+
+						</fieldset>
+
+						<!----charges----> 
 
 						<div class="form-group" hideOne>
 							<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
@@ -420,10 +556,59 @@
 			</form>
 		</div>
 
+	<!---*********************************** ADD NEW PRODUCT ************************************************** -->
+		<div id="addNewChgprice" title="Add New Charge Prize" >
+			<form id='formdata2' class='form-vertical' style='width:99%'>
+				<div id="jqGrid2_c" class='col-md-12'>
+					<table id="jqGrid2" class="table table-striped"></table>
+					<div id="jqGridPager2"></div>
+				</div>
+
+				<div id="jqGridPkg2_c" class='col-md-12'>
+					<table id="jqGridPkg2" class="table table-striped"></table>
+					<div id="jqGridPagerPkg2"></div>
+				</div>
+			</form>
+			<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+		</div>
+
 	@endsection
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/material/product/product.js"></script>
 
 @endsection

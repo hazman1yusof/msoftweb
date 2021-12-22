@@ -157,13 +157,33 @@ function populateFormdata(grid,dialog,form,selRowId,state,except){
 		if(input.is("[type=radio]")){
 			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
 		}else if( except != undefined && except.indexOf(index) === -1){
-			input.val(value);
+			input.val(decodeEntities(value));
 		}
 	});
 	if(dialog!=''){
 		$(dialog).dialog( "open" );	
 	}
 }
+
+var decodeEntities = (function() {
+  // this prevents any overhead from creating the object each time
+  var element = document.createElement('div');
+
+  function decodeHTMLEntities (str) {
+    if(str && typeof str === 'string') {
+      // strip script/html tags
+      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      element.innerHTML = str;
+      str = element.textContent;
+      element.textContent = '';
+    }
+
+    return str;
+  }
+
+  return decodeHTMLEntities;
+})();
 
 function inputCtrl(dialog,form,oper,butt2){
 	switch(oper) {
@@ -216,8 +236,9 @@ function selrowData(grid){
 	return $(grid).jqGrid ('getRowData', selrow);
 }
 
-function emptyFormdata(errorField,form,except){
+function emptyFormdata(errorField,form,except=[]){
 	var temp=[];
+	except.push(form+' input[name="_token"]');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -225,6 +246,7 @@ function emptyFormdata(errorField,form,except){
 	}
 	errorField.length=0;
 	$(form).trigger('reset');
+	$(form+' input[type=hidden]').val('');
 	$(form+' .help-block').html('');
 	if(except!=null){
 		$.each(except, function( index, value ) {
@@ -233,8 +255,9 @@ function emptyFormdata(errorField,form,except){
 	}
 }
 
-function emptyFormdata_div(div,except){
+function emptyFormdata_div(div,except=[]){
 	var temp=[];
+	except.push(form+' input[name="_token"]');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -286,12 +309,12 @@ function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppe
 		$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 	}).success(function(data){
 		if(grid!=null){
-			if (callback !== undefined) {
-				callback();
-			}
 			refreshGrid(grid,urlParam,oper);
 			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 			$(dialog).dialog('close');
+			if (callback !== undefined) {
+				callback();
+			}
 
 			// addmore($(searchForm+' .StextClass input[type=checkbox]').is(':checked'),grid,oper);
 		}
@@ -336,7 +359,7 @@ function populateSelect2(grid,form){
 
 	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
 		if(value['canSearch']){
-			if(value['selected']){
+			if(value['checked']){
 				$( form+" [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
 			}else{
 				$( form+" [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
@@ -348,27 +371,33 @@ function populateSelect2(grid,form){
 function searchClick(grid,form,urlParam){
 	$(form+' [name=Stext]').on( "keyup", onchgscol_500);
 
-	$(form+' [name=Scol]').on( "change",onchgscol);
+	$(form+' [name=Scol]').on( "change", onchgscol);
 
 	function onchgscol(){
 		search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
 	}
 
-	function onchgscol_500(){
-		delay(function(){
-			search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
-		}, 500 );
+	function onchgscol_500(e){
+		var code = e.keyCode || e.which;
+		if(code != '9'){
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' input:radio[name=dcolr]:checked').val(),urlParam);
+			}, 500 );
+		}
 	}
 }
 
 function searchClick2(grid,form,urlParam){
-	$(form+' [name=Stext]').on( "keyup", function() {
-		delay(function(){
-			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#recnodepan').text("");//tukar kat depan tu
-			$('#reqdeptdepan').text("");
-			refreshGrid("#jqGrid3",null,"kosongkan");
-		}, 500 );
+	$(form+' [name=Stext]').on( "keyup", function(e) {
+		var code = e.keyCode || e.which;
+		if(code != '9'){
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				$('#recnodepan').text("");//tukar kat depan tu
+				$('#reqdeptdepan').text("");
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		}
 	});
 
 	$(form+' [name=Scol]').on( "change", function() {
@@ -473,37 +502,38 @@ function setDateToNow(){
 }
 
 function Sequences(trxtype,textfield){
-		this.backday;
-		this.deptcode;
-		this.trxtype=trxtype;
-		this.textfield=textfield;
+	this.backday;
+	this.deptcode;
+	this.trxtype=trxtype;
+	this.textfield=textfield;
 
-		this.set = function(deptcode){
-			this.deptcode = deptcode;
-			return this;
-		}
-
-		this.get = function(){
-			let self =  this;
-			var param={
-				action:'get_value_default',
-				url: '/util/get_value_default',
-				field:['backday'],
-				table_name:'material.sequence',
-				filterCol:['compcode','dept','trantype'],
-				filterVal:['session.compcode',this.deptcode,this.trxtype]
-			}
-			$.get( param.url+"?"+$.param(param), function( data ) {
-				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data)){
-					self.backday = data.rows[0].backday;
-					$(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
-				}
-			});
-		}
-
+	this.set = function(deptcode){
+		this.deptcode = deptcode;
+		return this;
 	}
+
+	this.get = function(){
+		let self =  this;
+		var param={
+			action:'get_value_default',
+			url: '/util/get_value_default',
+			field:['backday'],
+			table_name:'material.sequence',
+			filterCol:['compcode','dept','trantype'],
+			filterVal:['session.compcode',this.deptcode,this.trxtype]
+		}
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data)){
+				self.backday = data.rows[0].backday;
+				$(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
+				$(self.textfield).attr('max',moment().format("YYYY-MM-DD"))
+			}
+		});
+	}
+
+}
 
 function currencymode(arraycurrency,nopoint=false){
 	this.array = arraycurrency;
@@ -699,7 +729,16 @@ function unformatstatus_tick(cellvalue, option, rowObject) {
 
 function un_showdetail(cellvalue, option, rowObject){
 	let val = $(rowObject).html();
-	val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	
+	if(val.search("[<]") == -1){
+		val = val;
+	}else{
+		val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	}
+
+	if(val == " "){
+		val = "";
+	}
 	
 	return val;
 }
@@ -735,6 +774,9 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
 			rowdatas.forEach(function(rowdata,index){
 				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
+				if(rowdata[recstatus] == "PARTIAL" || rowdata[recstatus] == "APPROVED"){
+					return ;
+				}
 				if($.isEmptyObject(rowdata_jqgridsel)){
 					$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
 					self.delete_function_on(rowdata[idno],index+1);
@@ -831,7 +873,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			switch(status_){
 				case 'All':
 					// $('#checkbox_all_uncheck,#checkbox_all_check').hide();
-					$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").show();
+					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;
 				case 'CANCELLED':
 					$("#show_sel_tbl,#but_reopen_jq").show();
@@ -846,6 +888,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 			}
 		}else if(reccount == 0){
 			$('#checkbox_all_check').show();
+			$("#checkbox_all_uncheck").hide();
 			$('#sel_tbl_panel').hide('fast');
 			$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
@@ -919,9 +962,10 @@ function setactdate(target){
 					}
 				});
 
-			self.target.forEach(function(element,i){
-				$(element).attr('min',self.actdateopen[0].from);
-			});
+				self.target.forEach(function(element,i){
+					$(element).attr('min',self.actdateopen[0].from);
+					$(element).attr('max',self.highestdate);
+				});
 			}
 		});
 		return this;
@@ -1125,6 +1169,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			event.data.data.urlParam.searchCol2=searchCol2;
 			event.data.data.urlParam.searchVal2=searchVal2;
 		}
+		if(obj.dialog_.hasOwnProperty('justb4refresh'))obj.dialog_.justb4refresh(obj);
 		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 		$("#Dtext_"+unique).val(text);
 
@@ -1207,6 +1252,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 
 	function onChange(event){
+		renull_search(event.data.data);
 		let obj = event.data.data;
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
 		if(obj.dcolrType == 'radio'){
@@ -1887,6 +1933,32 @@ function SmoothScrollToTop(){
   }, 500, 'swing', function() {
 
   });
+}
+
+function myerrorIt(id,errorField,fail){
+	if(!fail){
+		if($.inArray(id,errorField)!==-1){
+			errorField.splice($.inArray(id,errorField), 1);
+		}
+		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		$( id ).removeClass( "error" ).addClass( "valid" );
+	}else{
+		if($.inArray(id,errorField)===-1){
+			errorField.push( id );
+			$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+			$( id ).removeClass( "valid" ).addClass( "error" );
+		}
+	}
+}
+
+function myerrorIt_only(id,fail){
+	if(!fail){
+		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
+		$( id ).removeClass( "error" ).addClass( "valid" );
+	}else{
+		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
+		$( id ).removeClass( "valid" ).addClass( "error" );
+	}
 }
 
 $(document).ready(function () {

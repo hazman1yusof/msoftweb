@@ -24,6 +24,10 @@ i.fa {
   padding: 0;
 }
 
+div.noti > li{
+	color:red;
+}
+
 .clearfix {
 	overflow: auto;
 }
@@ -54,7 +58,7 @@ i.fa {
 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 
 			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
@@ -63,12 +67,12 @@ i.fa {
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -141,16 +145,9 @@ i.fa {
 						data-oper="{{$scope_use}}" 
 						style="display: none;">
 						@if (Request::get('scope') == 'ALL')
-							{{'POST ALL'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
-					</button>
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="{{$scope_use}}" style="display: none;">
-						@if (Request::get('scope') == 'ALL')
 							{{'POST'}}
 						@else
-							{{Request::get('scope')}}
+							{{Request::get('scope').' ALL'}}
 						@endif
 					</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
@@ -363,7 +360,7 @@ i.fa {
 						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
 									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable'>No</label>
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable' selected>No</label>
 								  </div> 
 
 							   <div class="form-group">
@@ -479,7 +476,40 @@ i.fa {
 
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/material/purchaseOrder/purchaseOrder.js"></script>
 	<!-- <script src="js/material/purchaseOrder/pdfgen.js"></script> -->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>

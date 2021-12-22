@@ -96,10 +96,15 @@ $(document).ready(function () {
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
-				else{
-					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
+			if(addmore_jqgrid.more == true){
+				$('#jqGrid_iladd').click();
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
+			}
+				$("#searchForm input[name=Stext]").focus();
 
 				addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 				if(err_reroll.error == true){
@@ -115,6 +120,19 @@ $(document).ready(function () {
 		},
 	});
 
+	function check_cust_rules(rowid){
+		var chk = ['catcode','description'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+
+	}
+
 			//////////////////////////My edit options /////////////////////////////////////////////////////////
 			var myEditOptions = {
 				keys: true,
@@ -122,6 +140,7 @@ $(document).ready(function () {
 					"_token": $("#_token").val()
 				},
 				oneditfunc: function (rowid) {
+					$('#jqGrid').data('lastselrow','none');
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 
 					dialog_expacct.on();
@@ -131,6 +150,10 @@ $(document).ready(function () {
 						if (code == '9')$('#jqGrid_ilsave').click();
 						/*addmore_jqgrid.state = true;
 						$('#jqGrid_ilsave').click();*/
+					});
+					$("#jqGrid input[type='text']").on('focus',function(){
+						$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+						$("#jqGrid input[type='text']").removeClass( "error" );
 					});
 
 				},
@@ -157,6 +180,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					console.log(data);
 
+					check_cust_rules();
 					let editurl = "/categoryfin/form?"+
 						$.param({
 							action: 'categoryfin_save',
@@ -164,6 +188,7 @@ $(document).ready(function () {
 					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 				},
 				afterrestorefunc : function( response ) {
+					refreshGrid('#jqGrid',urlParam,'add');
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 				},
 				errorTextFormat: function (data) {
@@ -177,6 +202,7 @@ $(document).ready(function () {
 					"_token": $("#_token").val()
 				},
 				oneditfunc: function (rowid) {
+					$('#jqGrid').data('lastselrow',rowid);
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 
 					dialog_expacct.on();
@@ -188,12 +214,16 @@ $(document).ready(function () {
 						/*addmore_jqgrid.state = true;
 						$('#jqGrid_ilsave').click();*/
 					});
+					$("#jqGrid input[type='text']").on('focus',function(){
+						$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+						$("#jqGrid input[type='text']").removeClass( "error" );
+					});
 
 				},
 				aftersavefunc: function (rowid, response, options) {
 					if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 					//state true maksudnyer ada isi, tak kosong
-					refreshGrid('#jqGrid',urlParam,'add');
+					refreshGrid('#jqGrid',urlParam,'edit');
 					errorField.length=0;
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 				},
@@ -208,6 +238,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
+					check_cust_rules();
 					let editurl = "/categoryfin/form?"+
 						$.param({
 							action: 'categoryfin_save',
@@ -215,6 +246,7 @@ $(document).ready(function () {
 					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 				},
 				afterrestorefunc : function( response ) {
+					refreshGrid('#jqGrid',urlParam,'edit');
 					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 				},
 				errorTextFormat: function (data) {

@@ -32,6 +32,14 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+div.noti > li{
+	color:red;
+}
+
+#jqGrid2 input[type='text'].form-control{
+	text-transform: uppercase;
+}
+
 #more {display: none;}
 
 @endsection
@@ -53,7 +61,7 @@ i.fa {
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%; position:relative'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
@@ -61,12 +69,12 @@ i.fa {
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
 							<div  id="tunjukname" style="display:none">
 								<div class='input-group'>
@@ -102,21 +110,26 @@ i.fa {
 				<div id="div_for_but_post" class="col-md-6 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
-					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+
+					<?php 
+
+						$data_oper = 'posted';
+						if(strtoupper(Request::get('scope')) == 'ALL'){
+							$data_oper='posted';
+						}else if(strtoupper(Request::get('scope')) == 'CANCEL'){
+							$data_oper='soft_cancel';
+						}else if(strtoupper(Request::get('scope')) == 'REOPEN'){
+							$data_oper='reopen';
+						}
+
+					?>
+
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
-						id="but_post_jq" 
-						data-oper="posted" 
+						id="but_post_jq"
+						data-oper="{{$data_oper}}"
 						style="display: none;">
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
-					</button>
-
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
@@ -124,8 +137,6 @@ i.fa {
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -327,8 +338,8 @@ i.fa {
 
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='CLAIMABLE'>Yes</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='NON-CLAIMABLE' selected>No</label>
 								  </div>
 
 								<label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
@@ -414,7 +425,40 @@ i.fa {
 
 
 @section('scripts')
+	<script type="text/javascript">
+		$(document).ready(function () {
+			if(!$("table#jqGrid").is("[tabindex]")){
+				$("#jqGrid").bind("jqGridGridComplete", function () {
+					$("table#jqGrid").attr('tabindex',3);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").attr('tabindex',4);
+					$("td#input_jqGridPager input.ui-pg-input.form-control").on('focus',onfocus_pageof);
+					if($('table#jqGrid').data('enter')){
+						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
+						$("table#jqGrid").data('enter',false);
+					}
 
+				});
+			}
+
+			function onfocus_pageof(){
+				$(this).keydown(function(e){
+					var code = e.keyCode || e.which;
+					if (code == '9'){
+						e.preventDefault();
+						$('input[name=Stext]').focus();
+					}
+				});
+
+				$(this).keyup(function(e) {
+					var code = e.keyCode || e.which;
+					if (code == '13'){
+						$("table#jqGrid").data('enter',true);
+					}
+				});
+			}
+			
+		});
+	</script>
 	<script src="js/material/deliveryOrder/deliveryOrder.js"></script>
 	<script src="js/material/deliveryOrder/pdfgen.js"></script>
 	<script src="js/myjs/barcode.js"></script>

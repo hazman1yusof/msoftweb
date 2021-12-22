@@ -154,6 +154,7 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
 	});
@@ -189,6 +190,9 @@ $(document).ready(function () {
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
+
+	//////////handle searching, ///////////////////////////////////////////////////
+	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();

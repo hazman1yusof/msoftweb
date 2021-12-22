@@ -35,8 +35,6 @@ class PurchaseOrderController extends defaultController
                 return $this->del($request);
             case 'posted':
                 return $this->posted($request);
-            case 'posted_single':
-                return $this->posted_single($request);
             case 'reopen_single':
                 return $this->reopen($request);
             case 'soft_cancel':
@@ -73,32 +71,40 @@ class PurchaseOrderController extends defaultController
             $idno = $request->table_id;
         }
 
-        $purordno = $this->purordno('PO',$request->purordhd_prdept);
-        $recno = $this->recno('PUR','PO');
         // $purreqno = $this->purreqno($request->purordhd_purreqno);
 
 
         DB::beginTransaction();
 
-        $table = DB::table("material.purordhd");
-
-        $array_insert = [
-            'trantype' => 'PO', 
-            'recno' => $recno,
-            'purordno' => $purordno,
-            // 'purreqno' => $purreqno,
-            'compcode' => session('compcode'),
-            'unit' => session('unit'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now(),
-            'recstatus' => 'OPEN'
-        ];
-
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+
+            if(!empty($request->referral)){
+                $purordno = $this->request_no('PO',$request->purordhd_prdept);
+                $recno = $this->recno('PUR','PO');
+                $compcode = session('compcode');
+            }else{
+                $purordno = 0;
+                $recno = 0;
+                $compcode = 'DD';
+            }
+
+            $table = DB::table("material.purordhd");
+
+            $array_insert = [
+                'trantype' => 'PO', 
+                'recno' => $recno,
+                'purordno' => $purordno,
+                // 'purreqno' => $purreqno,
+                'compcode' => $compcode,
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now(),
+                'recstatus' => 'OPEN'
+            ];
+
+            foreach ($field as $key => $value) {
+                $array_insert[$value] = $request[$request->field[$key]];
+            }
 
             $idno = $table->insertGetId($array_insert);
 
@@ -126,13 +132,13 @@ class PurchaseOrderController extends defaultController
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
 
-            echo json_encode($responce);
-
             DB::commit();
+
+            return json_encode($responce);
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage().$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -256,6 +262,7 @@ class PurchaseOrderController extends defaultController
 
                 $purordhd_get = $purordhd->first();
 
+                $this->need_upd_purreq($value);
 
                 if(!$this->skip_authorization($request,$purordhd_get->prdept,$value)){
 
@@ -338,100 +345,8 @@ class PurchaseOrderController extends defaultController
             return response($e->getMessage().$e, 500);
         }
     }       
-
-    public function posted_single(Request $request){
-        DB::beginTransaction();
-
-        try{
-
-
-            $purordhd = DB::table("material.purordhd")
-                ->where('idno','=',$request->idno);
-
-            $purordhd_get = $purordhd->first();
-
-
-            if(!$this->skip_authorization($request,$purordhd_get->prdept,$request->idno)){
-
-                // 1. check authorization
-                $authorise = DB::table('material.authdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('trantype','=','PO')
-                    ->where('cando','=', 'ACTIVE')
-                    ->where('recstatus','=','SUPPORT')
-                    ->where('deptcode','=',$purordhd_get->prdept)
-                    ->where('maxlimit','>=',$purordhd_get->totamount);
-
-                if(!$authorise->exists()){
-
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PO')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','SUPPORT')
-                        ->where('deptcode','=','ALL')
-                        ->where('deptcode','=','all')
-                        ->where('maxlimit','>=',$purordhd_get->totamount);
-
-                        if(!$authorise->exists()){
-                            throw new \Exception("Authorization for this Purchase Order doesnt exists");
-                        }
-
-                }
-
-                $authorise_use = $authorise->first();
-                DB::table("material.queuepo")
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'recno' => $purordhd_get->recno,
-                        'AuthorisedID' => $authorise_use->authorid,
-                        'deptcode' => $purordhd_get->prdept,
-                        'recstatus' => 'REQUEST',
-                        'trantype' => 'SUPPORT',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                // 3. change recstatus to posted
-                $purordhd
-                    ->update([
-                        'requestby' => session('username'),
-                        'requestdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'supportby' => $authorise_use->authorid,
-                        'recstatus' => 'REQUEST'
-                    ]);
-
-                DB::table("material.purorddt")
-                    ->where('recno','=',$purordhd_get->recno)
-                    ->update([
-                        'recstatus' => 'REQUEST',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-
-                // 4. email and whatsapp
-                $data = new stdClass();
-                $data->status = 'SUPPORT';
-                $data->deptcode = $purordhd_get->reqdept;
-                $data->purreqno = $purordhd_get->purreqno;
-                $data->email_to = 'hazman.yusof@gmail.com';
-                $data->whatsapp = '01123090948';
-
-               // $this->sendemail($data);
-
-            } 
-
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
     
-     public function reopen(Request $request){
+    public function reopen(Request $request){
         DB::beginTransaction();
 
         try{
@@ -1049,7 +964,6 @@ class PurchaseOrderController extends defaultController
 
     public function save_dt_from_othr_pr($refer_recno,$recno,$purordno){
         $pr_dt = DB::table('material.purreqdt')
-                ->select('compcode', 'recno', 'lineno_', 'pricecode', 'itemcode', 'uomcode', 'pouom', 'qtyrequest', 'unitprice', 'taxcode','perdisc','amtdisc', 'amtslstax','amount','netunitprice','totamount','recstatus','remarks')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
                 ->where('recstatus', '<>', 'DELETE')
@@ -1066,7 +980,10 @@ class PurchaseOrderController extends defaultController
                 'itemcode' => $value->itemcode, 
                 'uomcode' => $value->uomcode, 
                 'pouom' => $value->pouom, 
-                'qtyorder' => $value->qtyrequest, 
+                'qtyorder' => 0, 
+                'qtydelivered' => 0,
+                'qtyoutstand' => $value->qtybalance,
+                'qtyrequest' => $value->qtyrequest,
                 'unitprice' => $value->unitprice, 
                 'taxcode' => $value->taxcode, 
                 'perdisc' => $value->perdisc, 
@@ -1252,6 +1169,106 @@ class PurchaseOrderController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
+    }
+
+
+    public function need_upd_purreq($idno){
+
+        $purordhd = DB::table("material.purordhd")
+                    ->where('idno','=',$idno)
+                    ->first();
+
+        if(!empty($purordhd->purreqno)){
+
+            $status_header = 'COMPLETED';
+
+            $purreqhd = DB::table('material.purreqhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purreqno','=',$purordhd->purreqno);
+
+            if($purreqhd->exists()){
+                $purreqhd = $purreqhd->first();
+                $purreqdt = DB::table('material.purreqdt')
+                            ->where('recno','=',$purreqhd->recno)
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('recstatus', '<>', 'DELETE');
+
+                if($purreqdt->exists()){
+                    $purreqdt = $purreqdt->get();
+
+                    foreach ($purreqdt as $key => $value) {
+                        $status = 'COMPLETED';
+
+                        $purorddt = DB::table('material.purorddt')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('recno','=',$purordhd->recno)
+                            ->where('lineno_','=',$value->lineno_)
+                            ->first();
+
+                        $qtytxn = $purorddt->qtyorder;
+                        $qtybalance = $value->qtybalance;
+                        $qtyapproved = $value->qtyapproved;
+
+                        $newbalance = intval($qtybalance) - intval($qtytxn);
+                        $newqtyapproved = intval($qtytxn) + intval($qtyapproved);
+                        // if($newbalance > 0){
+                        //     $status = 'PARTIAL';
+                        //     $status_header = 'PARTIAL';
+                        // }else{
+                        //     $status = 'COMPLETED';
+                        // }
+
+
+                        //nak buat qtyrequest1S and qtybalance1S
+                        $convfactorUOM_obj = DB::table('material.uom')
+                            ->select('convfactor')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$purorddt->uomcode)
+                            ->first();
+                        $convfactorUOM = $convfactorUOM_obj->convfactor;
+
+                        $qtyrequest1S_purorddt = $purorddt->qtyorder * $convfactorUOM;
+                        $newqtybalance1S = intval($value->qtybalance1S) - intval($qtyrequest1S_purorddt);
+                        if($newqtybalance1S > 0){
+                            $status = 'PARTIAL';
+                            $status_header = 'PARTIAL';
+                        }else{
+                            $status = 'COMPLETED';
+                        }
+                        //
+
+                        DB::table('material.purreqdt')
+                            ->where('idno','=',$value->idno)
+                            ->update([
+                                'qtybalance1S' => $newqtybalance1S,
+                                'qtyapproved' => $newqtyapproved,
+                                'qtybalance' => $newbalance,
+                                'recstatus' => $status
+                            ]);
+
+                        DB::table('material.purorddt')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('recno','=',$purordhd->recno)
+                            ->where('lineno_','=',$value->lineno_)
+                            ->update([
+                                'qtyoutstand' => $newbalance
+                            ]);
+                    }
+                    
+                    DB::table('material.purreqhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('purreqno','=',$purordhd->purreqno)
+                        ->update([
+                            'recstatus' => $status_header
+                        ]);
+
+                }else{
+                    return;
+                }
+            }else{
+                return;
+            }
+        }
     }
 
 

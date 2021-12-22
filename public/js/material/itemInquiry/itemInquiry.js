@@ -153,7 +153,8 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 		},
 
 	});
@@ -162,7 +163,7 @@ $(document).ready(function () {
 		{	
 			edit:false,view:false,add:false,del:false,search:false,
 			beforeRefresh: function(){
-				refreshGrid("#jqGrid",urlParam);
+				refreshGrid("#jqGrid",urlParam,'edit');
 			},
 			
 		}	
@@ -230,6 +231,8 @@ $(document).ready(function () {
         		getStockvalue(rowid,element);
         		rowid++;
         	});
+
+			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 		},
 
 		onSelectRow:function(rowid,selected){
@@ -419,6 +422,7 @@ $(document).ready(function () {
 
 					obj.open="<i class='fa fa-folder-open-o fa-2x' </i>";
 					obj.trandate = moment(obj.trandate).format("DD-MM-YYYY");
+					obj.dept = '';
 					
 					// obj.trantype = '-';
 					obj.qtyin = '-';
@@ -428,7 +432,7 @@ $(document).ready(function () {
 
 					if(obj.det_mov=="deptcode"){
 
-						if (obj.crdbfl == 'In'){
+						if (obj.crdbfl.toUpperCase() == 'IN'){
 							accumamt = accumamt + parseFloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
@@ -440,7 +444,7 @@ $(document).ready(function () {
 							obj.dept = obj.deptcode;
 							obj.qtyin = numeral(obj.txnqty).format('0,0');
 							obj.qtyout = '';
-						}else if (obj.crdbfl == 'Out'){
+						}else if (obj.crdbfl.toUpperCase() == 'OUT'){
 							accumamt = accumamt - parseFloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
@@ -459,7 +463,7 @@ $(document).ready(function () {
 
 					}else{
 
-						if (obj.crdbfl == 'In'){
+						if (obj.crdbfl.toUpperCase() == 'IN'){
 							accumamt = accumamt - parseFloat(obj.amount);
 							accumqty = accumqty - parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
@@ -471,7 +475,7 @@ $(document).ready(function () {
 							obj.dept = obj.deptcode;
 							obj.qtyin = '';
 							obj.qtyout = numeral(obj.txnqty).format('0,0');
-						}else if (obj.crdbfl == 'Out'){
+						}else if (obj.crdbfl.toUpperCase() == 'OUT'){
 							accumamt = accumamt + parseFloat(obj.amount);
 							accumqty = accumqty + parseInt(obj.txnqty);
 							obj.balquan = numeral(accumqty).format('0,0');
@@ -575,6 +579,9 @@ $(document).ready(function () {
 				});
 			}
 		});
+
+		$('select#monthfrom').val(moment().format('MM'));
+		$('select#monthto').val(moment().format('MM'));
 	}
 
 
