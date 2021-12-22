@@ -78,6 +78,41 @@ conf = {
 	},
 };
 
+var dialog_bloodGroup= new ordialog(
+	'anr_bloodgroup','hisdb.bloodgroup',"#formAntenatal input[name='anr_bloodgroup']",errorField,
+	{	colModel:[
+			{label:'Blood Code',name:'bloodcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+		],
+		urlParam: {
+			filterCol:['compcode', 'recstatus'],
+			filterVal:['session.compcode', 'ACTIVE']
+		},
+		ondblClickRow: function () {
+			$('#height').focus();
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$('#height').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},
+	{
+		title:"Select Blood Code",
+		open: function(){
+			dialog_bloodGroup.urlParam.filterCol=['compcode', 'recstatus'];
+			dialog_bloodGroup.urlParam.filterVal=['session.compcode', 'ACTIVE'];
+			
+		}
+	},'urlParam','radio','tab',false
+);
+dialog_bloodGroup.makedialog(true);
+
 button_state_antenatal('empty');
 function button_state_antenatal(state){
 	switch(state){
@@ -99,6 +134,7 @@ function button_state_antenatal(state){
 			$('#save_antenatal,#cancel_antenatal,#new_antenatal').attr('disabled',true);
 			break;
 		case 'wait':
+			dialog_bloodGroup.on();
 			$("#toggle_antenatal").attr('data-toggle','collapse');
 			$("#save_antenatal,#cancel_antenatal").attr('disabled',false);
 			$('#edit_antenatal,#new_antenatal').attr('disabled',true);

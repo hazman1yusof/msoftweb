@@ -755,7 +755,7 @@ function populate_triage(obj,rowdata){
 }
 
 //screen current patient//
-function populate_tiCurrentPt(obj){
+function populate_triage_currpt(obj){
 	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
 	$('#name_show_triage').text(obj.Name);

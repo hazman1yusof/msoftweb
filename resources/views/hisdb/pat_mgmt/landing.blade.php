@@ -357,6 +357,10 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+					</div>
 				@elseif (Auth::user()->nurse == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
@@ -429,6 +433,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 			@endif

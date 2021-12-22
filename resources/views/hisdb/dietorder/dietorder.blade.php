@@ -50,7 +50,7 @@
 
 					<div class='col-md-12'>
 						<div class="panel panel-info">
-							<div class="panel-heading text-center">DIET ORDER</div>
+							<!-- <div class="panel-heading text-center">DIET ORDER</div> -->
 							<div class="panel-body">
 
 								<input id="mrn_dietOrder" name="mrn_dietOrder" type="hidden">

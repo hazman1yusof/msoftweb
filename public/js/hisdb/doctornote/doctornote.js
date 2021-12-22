@@ -422,7 +422,7 @@ function populate_doctorNote(obj,rowdata){
 }
 
 //screen current patient//
-function populate_currDoctorNote(obj){
+function populate_doctorNote_currpt(obj){
 	curr_obj=obj;
 
 	console.log(obj);
@@ -599,22 +599,33 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	"sDom": "",
 	"paging":false,
     "columns": [
-        {'data': 'idno'},
+        {'data': 'mrn'},
+        {'data': 'episno'},
         {'data': 'date', 'width': '100%'},
         {'data': 'adduser'},
+    ]
+    ,columnDefs: [
+        { targets: [0, 1, 3], visible: false},
     ],
-    columnDefs: [ {
-        targets: [0,2],
-        visible: false
-    } ],
-    order: [[0, 'desc']],
-    drawCallback: function(settings, json) {
-    	// console.log(json);
-    	// if ($(this).find('tbody tr').length<=0) {
-     //    	$(this).find('tbody tr:first').first().hide();
-    	// }
+    "drawCallback": function( settings ) {
+    	$(this).find('tbody tr')[0].click();
+    }
+});
 
-	}
+var datable_medication = $('#medication_tbl').DataTable({
+	"ajax": "",
+	"sDom": "",
+    "responsive": true,
+	"paging":false,
+    "columns": [
+        {data: 'chg_desc', 'width': '30%'},
+        {data: 'quantity'},
+        {data: 'remarks'},
+        {data: 'dos_code'},
+        {data: 'fre_code'},
+        {data: 'ins_code'},
+        {data: 'dru_code'},
+    ]
 });
 
 var ajaxurl;
@@ -695,6 +706,9 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
+
+			datable_medication.clear().draw();
+			datable_medication.rows.add(data.transaction.rows).draw();
 		}
 	});
 

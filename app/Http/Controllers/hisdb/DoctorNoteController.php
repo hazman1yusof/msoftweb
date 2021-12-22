@@ -36,6 +36,20 @@ class DoctorNoteController extends defaultController
                 return $this->get_table_doctornote($request);
             case 'dialog_icd':
                 return $this->dialog_icd($request);
+            
+            //transaction stuff
+            case 'get_transaction_table':
+                return $this->get_transaction_table($request);
+            case 'get_chgcode':
+                return $this->get_chgcode($request);
+            case 'get_drugindcode':
+                return $this->get_drugindcode($request);
+            case 'get_freqcode':
+                return $this->get_freqcode($request);
+            case 'get_dosecode':
+                return $this->get_dosecode($request);
+            case 'get_inscode':
+                return $this->get_inscode($request);
 
             default:
                 return 'error happen..';
@@ -356,20 +370,169 @@ class DoctorNoteController extends defaultController
         }
     }
 
-    public function get_table_date_curr(Request $request){
+    public function get_transaction_table($request){
+        if($request->rows == null){
+            $request->rows = 100;
+        }
 
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx') //ambil dari patmast balik
+                            ->select('trx.auditno',
+                                'trx.chgcode as chg_code',
+                                'trx.quantity',
+                                'trx.remarks',
+                                'trx.instruction as ins_code',
+                                'trx.doscode as dos_code',
+                                'trx.frequency as fre_code',
+                                'trx.drugindicator as dru_code',
+
+                                'chgmast.description as chg_desc',
+                                'instruction.description as ins_desc',
+                                'dose.dosedesc as dos_desc',
+                                'freq.freqdesc as fre_desc',
+                                'drugindicator.drugindcode as dru_desc')
+
+                            ->where('trx.mrn' ,'=', $request->mrn)
+                            ->where('trx.episno' ,'=', $request->episno)
+                            ->where('trx.compcode','=',session('compcode'))
+                            ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
+                            ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
+                            ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
+                            ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
+                            ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator');
+
+        //////////paginate/////////
+        $paginate = $table_chgtrx->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table_chgtrx->toSql();
+        $responce->sql_bind = $table_chgtrx->getBindings();
+        return json_encode($responce);
+
+    }
+
+    public function get_chgcode(Request $request){
+        $pharcode = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','OE')
+                    ->where('trantype','=','PHAR')
+                    ->first();
+
+        $data = DB::table('hisdb.chgmast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chggroup','=',$pharcode->pvalue1)
+                    ->where('active','=',1)
+                    ->select('chgcode as code','description as description');
+
+        if(!empty($request->search)){
+            $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
+        }else{
+            $data = $data->get();
+        }
+        
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+        
+    }
+
+    public function get_drugindcode(Request $request){
+        $data = DB::table('hisdb.drugindicator')
+                ->select('drugindcode as code','description as description');
+
+        if(!empty($request->search)){
+            $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
+        }else{
+            $data = $data->get();
+        }
+        
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+        
+    }
+
+    public function get_freqcode(Request $request){
+        $data = DB::table('hisdb.freq')
+                ->select('freqcode as code','freqdesc as description')
+                ->where('compcode','=',session('compcode'));
+
+        if(!empty($request->search)){
+            $data = $data->where('freqdesc','LIKE','%'.$request->search.'%')->first();
+        }else{
+            $data = $data->get();
+        }
+        
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+        
+    }
+
+    public function get_dosecode(Request $request){
+        $data = DB::table('hisdb.dose')
+                ->select('dosecode as code','dosedesc as description')
+                ->where('compcode','=',session('compcode'));
+
+        if(!empty($request->search)){
+            $data = $data->where('dosedesc','LIKE','%'.$request->search.'%')->first();
+        }else{
+            $data = $data->get();
+        }
+        
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+        
+    }
+
+    public function get_inscode(Request $request){
+        $data = DB::table('hisdb.instruction')
+                ->select('inscode as code','description as description')
+                ->where('compcode','=',session('compcode'));
+
+        if(!empty($request->search)){
+            $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
+        }else{
+            $data = $data->get();
+        }
+        
+        $responce = new stdClass();
+        $responce->data = $data;
+        return json_encode($responce);
+        
+    }
+
+    public function get_table_date_curr(Request $request){
 
         $responce = new stdClass();
 
-        $patexam_obj = DB::table('hisdb.patexam')
-            ->select('idno','recorddate AS date','adduser')
+        $pathealth_obj = DB::table('hisdb.pathealth')
+            ->select('mrn','episno','recordtime','adddate','adduser')
+            ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno)
-            ->where('compcode','=',session('compcode'));
+            ->where('adddate','=',$request->date)
+            ->orderBy('adddate','desc');
 
-        if($patexam_obj->exists()){
-            $patexam_obj = $patexam_obj->get();
-            $responce->data = $patexam_obj;
+        if($pathealth_obj->exists()){
+            $pathealth_obj = $pathealth_obj->get();
+
+            $data = [];
+
+            foreach ($pathealth_obj as $key => $value) {
+                $date['date'] =  $value->adddate.' '.$value->recordtime;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['adduser'] = $value->adduser;
+
+                array_push($data,$date);
+            }
+
+            $responce->data = $data;
         }else{
             $responce->data = [];
         }
@@ -381,14 +544,27 @@ class DoctorNoteController extends defaultController
 
         $responce = new stdClass();
 
-        $patexam_obj = DB::table('hisdb.patexam')
-            ->select('idno','recorddate AS date','adduser')
+        $patexam_obj = DB::table('hisdb.pathealth')
+            ->select('mrn','episno','recordtime','adddate','adduser')
+            ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
-            ->where('compcode','=',session('compcode'));
+            ->orderBy('adddate','desc');
 
         if($patexam_obj->exists()){
             $patexam_obj = $patexam_obj->get();
-            $responce->data = $patexam_obj;
+
+            $data = [];
+
+            foreach ($patexam_obj as $key => $value) {
+                $date['date'] =  explode(" ",$value->adddate)[0].' '.$value->recordtime;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['adduser'] = $value->adduser;
+
+                array_push($data,$date);
+            }
+
+            $responce->data = $data;
         }else{
             $responce->data = [];
         }
@@ -463,6 +639,8 @@ class DoctorNoteController extends defaultController
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
         }
+
+        $responce->transaction = json_decode($this->get_transaction_table($request));
 
         return json_encode($responce);
     }

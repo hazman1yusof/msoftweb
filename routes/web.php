@@ -615,6 +615,11 @@ Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
 
+//// Dietetic Care Notes page ///
+Route::get('/dieteticCareNotes','hisdb\DieteticCareNotesController@show');
+Route::get('/dieteticCareNotes/table','hisdb\DieteticCareNotesController@table');
+Route::post('/dieteticCareNotes/form','hisdb\DieteticCareNotesController@form');
+
 //// Diet Order page ///
 Route::get('/dietorder','hisdb\DietOrderController@show');
 Route::get('/dietorder/table','hisdb\DietOrderController@table');

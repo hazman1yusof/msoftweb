@@ -56,12 +56,13 @@
                         <div class="panel panel-info">
                             <div class="panel-body">
 
-                                <table id="docnote_date_tbl" class="table-hover table-bordered" style="width: 100%">
+                                <table id="docnote_date_tbl" class="ui celled table" style="width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th>idno</th>
+                                            <th class="scope">mrn</th>
+                                            <th class="scope">episno</th>
                                             <th class="scope">Date</th>
-                                            <th>adduser</th>
+                                            <th class="scope">adduser</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -103,42 +104,42 @@
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="clinicnote" style="padding-bottom:5px">History of Presenting Complaint</label>
-                                                        <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="12"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
-                                                        <textarea id="pmh" name="pmh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="pmh" name="pmh" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="drugh" style="padding-bottom:5px">Drug History</label>
-                                                        <textarea id="drugh" name="drugh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="drugh" name="drugh" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="allergyh" style="padding-bottom:5px">Allergy History</label>
-                                                        <textarea id="allergyh" name="allergyh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="allergyh" name="allergyh" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
-                                                        <textarea id="socialh" name="socialh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="socialh" name="socialh" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <div class="col-md-12">
                                                         <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
-                                                        <textarea id="fmh" name="fmh" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="fmh" name="fmh" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
                                                 
@@ -177,7 +178,7 @@
                                                 <div class="form-group">
                                                     <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
                                                     <div class="col-md-12">
-                                                        <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="examination" name="examination" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
@@ -191,7 +192,7 @@
                                                 <div class="form-group">
                                                     <!-- <label class="col-md-3 control-label" for="diagfinal">Diagnosis</label> -->
                                                     <div class="col-md-12">
-                                                        <textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rows="4"></textarea>
+                                                        <textarea id="diagfinal" name="diagfinal" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
@@ -216,7 +217,7 @@
                                                 <div class="form-group">
                                                     <!-- <label class="col-md-3 control-label" for="plan_">Plan</label> -->
                                                     <div class="col-md-12">
-                                                        <textarea id="plan_" name="plan_" type="text" class="form-control input-sm" rows="6"></textarea>
+                                                        <textarea id="plan_" name="plan_" type="text" class="form-control input-sm" rows="3"></textarea>
                                                     </div>
                                                 </div>
 
@@ -281,7 +282,7 @@
                                         </div>
 
                                         <!-- to add spaces between panels -->
-                                        <div class="panel panel-info" style="height: 1035px;border: 0;box-shadow: none;">
+                                        <div class="panel panel-info" style="height: 920px;border: 0;box-shadow: none;">
                                             <div class="panel-body">
                                             </div>
                                         </div>
@@ -301,6 +302,27 @@
                                                 </div>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading text-center">MEDICATION</div>
+                                        <div class="panel-body" style="height: 250px;overflow: auto;padding: 0px;">
+                                            <table id="medication_tbl" class="ui selectable celled table" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Items</th>
+                                                        <th>Qty</th>
+                                                        <th>Remarks</th>
+                                                        <th>Dosage</th>
+                                                        <th>Frequency</th>
+                                                        <th>Instruction</th>
+                                                        <th>Indicator</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
