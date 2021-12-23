@@ -17,7 +17,7 @@ $(document).ready(function () {
 		onValidate : function($form) {
 			if(errorField.length>0){
 				return {
-					element : $(errorField[0]),
+                    element : $('#'+errorField[0]),
 					message : ' '
 				}
 			}
@@ -114,7 +114,7 @@ $(document).ready(function () {
 	});
 
 	function check_cust_rules(rowid){
-		var chk = ['admsrccode','description','type','addr1','addr2','addr3','addr4','telno','email'];
+		var chk = ['admsrccode', 'description','addr1','addr2','addr3','addr4','telno','email'];
 		chk.forEach(function(e,i){
 			var val = $("#jqGrid input[name='"+e+"']").val();
 			if(val.trim().length <= 0){
@@ -134,7 +134,8 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+            $("#description").focus().select();
+			$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -182,7 +183,7 @@ $(document).ready(function () {
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
@@ -192,9 +193,11 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+            $('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("input[name='admsrccode']").attr('disabled','disabled');
-			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='email']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -214,7 +217,8 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			//refreshGrid('#jqGrid',urlParam2,'add');
+            refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -222,6 +226,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/admissrc/form?"+
 				$.param({

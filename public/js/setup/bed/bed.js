@@ -4,25 +4,25 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+    check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
 	});
 
-	var errorField = [];
-	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
-				return {
-					element: $(errorField[0]),
-					message: ' '
-				}
-			}
-		},
-	};
+    var errorField=[];
+    conf = {
+        onValidate : function($form) {
+            if(errorField.length>0){
+                return {
+                    element : $('#'+errorField[0]),
+                    message : ' '
+                }
+            }
+        },
+    };
 
 	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['bednum','bedtype','occup','room','ward','statistic','bedchgcode']);
@@ -210,17 +210,20 @@ $(document).ready(function () {
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
-			else{
+			if(addmore_jqgrid.more == true){
+                $('#jqGrid_iladd').click();
+            }else if($('#jqGrid').data('lastselrow') == 'none'){
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+			$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+			$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			if(err_reroll.error == true){
 				err_reroll.reroll();
 			}
-
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowid != null) {
@@ -235,12 +238,27 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			fdl.set_array().reset();
-		},
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}			
+        },
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid2.state==true)addmore_jqgrid.more=true; //only addmore after save inline
 			//refreshGrid('#jqGrid',urlParam,'add');
 		}, 
 	});
+
+	function check_cust_rules(rowid){
+		var chk = ['bednum','bedtype','occup','room','ward','statistic','bedchgcode'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+	}
 
 	/////////////////////////////Start populate data for search By dropdown and btn////////////////////////////
 	searchBy();
@@ -313,13 +331,14 @@ $(document).ready(function () {
 		}
 	}
 
+    //////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			
+			$('#jqGrid').data('lastselrow','none');			
 			$('.selectpicker').selectpicker("refresh");
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			dialog_ward.on();
@@ -334,10 +353,14 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});	
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+            //if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+            addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
@@ -356,6 +379,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 
+			check_cust_rules();
+
 			let editurl = "/bed/form?"+
 				$.param({
 					action: 'bed_save',
@@ -368,7 +393,7 @@ $(document).ready(function () {
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	var myEditOptions_edit = {
@@ -377,6 +402,7 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+            $('#jqGrid').data('lastselrow',rowid);
 			$('.selectpicker').selectpicker("refresh");
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			dialog_ward.on();
@@ -392,18 +418,22 @@ $(document).ready(function () {
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
+            refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -411,15 +441,16 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 
+			check_cust_rules();
+
 			let editurl = "/bed/form?"+
 				$.param({
 					action: 'bed_save',
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
-
 		},
 		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -427,6 +458,7 @@ $(document).ready(function () {
 		}
 	};
 
+    /////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
@@ -457,7 +489,7 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'bed_save',
-								Code: $('#Code').val(),
+								bednum: $('#bednum').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
 							$.post( "/bed/form?"+$.param(param),{oper:'del'}, function( data ){
@@ -803,9 +835,6 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	//addParamField('#jqGrid', true, urlParam, ['mrn', 'episno', 'name']);
-	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
-
 
 	function err_reroll(jqgridname,data_array){
 		this.jqgridname = jqgridname;
@@ -824,9 +853,5 @@ $(document).ready(function () {
 			});
 			this.error = false;
 		}
-		
-
 	}
-
 });
-

@@ -17,7 +17,7 @@ $(document).ready(function () {
         onValidate : function($form) {
             if(errorField.length>0){
                 return {
-                    element : $(errorField[0]),
+                    element : $('#'+errorField[0]),
                     message : ' '
                 }
             }
@@ -127,7 +127,8 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-            $("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+            $("#description").focus().select();
+            $("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
                 /*addmore_jqgrid.state = true;
@@ -175,7 +176,7 @@ $(document).ready(function () {
         },
         errorTextFormat: function (data) {
             alert(data);
-        }
+        },
     };
 
 	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
@@ -185,9 +186,11 @@ $(document).ready(function () {
             "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
             $("input[name='addtype']").attr('disabled','disabled');
-            $("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+            $("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
                 /*addmore_jqgrid.state = true;

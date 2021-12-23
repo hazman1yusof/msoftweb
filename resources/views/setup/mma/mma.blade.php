@@ -49,17 +49,17 @@ i.fa {
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
-		            </div>
-
-					<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  	<p id="p_error"></p>
-					</div>
+		        
+                        <div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
+                            <p id="p_error"></p>
+                        </div>
+                    </div>
 				</div>
 			</fieldset> 
 		</form>
 
         <div class="panel panel-default">
-		    <div class="panel-heading">Race Setup Header</div>
+		    <div class="panel-heading">MMA Setup Header</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
@@ -93,12 +93,6 @@ i.fa {
 				</div>	
 			</div>
 		</div>
-
-
-
-
-
-
     </div>
 
 

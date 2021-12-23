@@ -18,6 +18,7 @@ class mmaController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
+        $this->duplicateCode = "mmacode";
     }
 
     public function show(Request $request)
@@ -62,12 +63,12 @@ class mmaController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {//ini baru
-            $value->description_show = $value->description;
+            $value->description = $value->description;
             if(mb_strlen($value->description)>120){
 
                 $time = time() + $key;
 
-                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+                $value->description = mb_substr($value->description,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
                 $value->callback_param = [
                     'dots_'.$time,'more_'.$time,'moreBtn_'.$time
@@ -122,39 +123,42 @@ class mmaController extends defaultController
                 ->insert([  
                     'compcode' => session('compcode'),
                     'mmacode' => strtoupper($request->mmacode),
-                    'description' => strtoupper($request->description_show),
+                    'description' => strtoupper($request->description),
                     "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
 
-                //////////paginate/////////
-                $paginate = $table->paginate($request->rows);
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
 
-                foreach ($paginate->items() as $key => $value) {//ini baru
-                    $value->remarks_show = $value->remarks;
-                    if(mb_strlen($value->remarks)>120){
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
         
-                        $time = time() + $key;
+                $time = time() + $key;
         
-                        $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
         
-                        $value->callback_param = [
-                            'dots_'.$time,'more_'.$time,'moreBtn_'.$time
-                        ];
-                    }
-                    
-                }
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
+        }
     }
 
     public function edit(Request $request){
@@ -165,13 +169,14 @@ class mmaController extends defaultController
             DB::table('hisdb.mmamaster')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'Code' => strtoupper($request->Code),
-                    'description' => strtoupper($request->description_show),
+                    'mmacode' => strtoupper($request->mmacode),
+                    'description' => strtoupper($request->description),
+                    'version' => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => session('username'),
+                    'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
@@ -179,7 +184,7 @@ class mmaController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -187,8 +192,8 @@ class mmaController extends defaultController
         DB::table('hisdb.mmamaster')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
-                'deluser' => session('username'),
+                'recstatus' => 'DEACTIVE',
+                'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }

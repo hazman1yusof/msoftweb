@@ -7,13 +7,12 @@
 input.uppercase {
 	text-transform: uppercase;
 }
-
 @endsection
 
 @section('body')
 
-		<!--***************************** Search + table ******************-->
-		<div class='row'>
+	<!--***************************** Search + table ******************-->
+	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
@@ -49,7 +48,6 @@ input.uppercase {
 		</div>
     </div>
 
-
 @endsection
 
 
@@ -65,7 +63,6 @@ input.uppercase {
 						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
 						$("table#jqGrid").data('enter',false);
 					}
-
 				});
 			}
 

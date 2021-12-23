@@ -4,51 +4,66 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+    check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
 	});
 
-	var errorField = [];
-	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
-				return {
-					element: $(errorField[0]),
-					message: ' '
-				}
-			}
-		},
-	};
+    var errorField=[];
+    conf = {
+        onValidate : function($form) {
+            if(errorField.length>0){
+                return {
+                    element : $('#'+errorField[0]),
+                    message : ' '
+                }
+            }
+        },
+    };
 
 	var fdl = new faster_detail_load();
-	var err_reroll = new err_reroll('#jqGrid',['icdcode', 'description','description_show']);
+	var err_reroll = new err_reroll('#jqGrid',['icdcode', 'description']);
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam = {
-		action: 'icd-table',
-		url: '/icd/table'
+    var urlParam={
+        action:'get_table_default',
+        url:'util/get_table_default',
+        field:'',
+        table_name:'hisdb.diagtab',
+        table_id:'icdcode',
+        sort_idno: true    
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
+        editurl: "/icd/form",
 		colModel: [
-			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
+             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
 			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'description', width: 80, checked: true, canSearch: true, hidden:true},
-			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
+			// { label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
+			// 	editoptions: 
+			// 		{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
+			// },
+			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
 			},
-			{ label: 'Type', name: 'type', width: 20, hidden: false },
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-			editoptions:{
-				value:"A:ACTIVE;D:DEACTIVE"
-			}},
+			{ label: 'Type', name: 'type', width: 20, hidden: false },            
+			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
+            { label: 'adduser', name: 'adduser', width: 90, hidden:true},
+            { label: 'adddate', name: 'adddate', width: 90, hidden:true},
+            { label: 'upduser', name: 'upduser', width: 90, hidden:true},
+            { label: 'upddate', name: 'upddate', width: 90, hidden:true},
+            { label: 'deluser', name: 'deluser', width: 90, hidden:true},
+            { label: 'deldate', name: 'deldate', width: 90, hidden:true},
+            { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+                cellattr: function(rowid, cellvalue)
+                    {return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+            },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
@@ -96,7 +111,7 @@ $(document).ready(function () {
 	});
 
 	function check_cust_rules(rowid){
-		var chk = ['icdcode','description','description_show'];
+		var chk = ['icdcode','description'];
 		chk.forEach(function(e,i){
 			var val = $("#jqGrid input[name='"+e+"']").val();
 			if(val.trim().length <= 0){
@@ -116,6 +131,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -129,8 +145,8 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			addmore_jqgrid.more = true;			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+           addmore_jqgrid.more = true;      //state true maksudnyer ada isi, tak kosong			
+            refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -163,7 +179,7 @@ $(document).ready(function () {
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
@@ -175,6 +191,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("input[name='icdcode']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -199,7 +216,7 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
+			//console.log(errorField)
             $('#p_error').text('');
 			if(errorField.length>0)return false;
 
@@ -283,11 +300,11 @@ $(document).ready(function () {
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	populateSelect2('#jqGrid', '#searchForm');
-	searchClick2('#jqGrid', '#searchForm', urlParam);
+    populateSelect2('#jqGrid','#searchForm');
+    searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+    addParamField('#jqGrid',true,urlParam);
 	function err_reroll(jqgridname,data_array){
 		this.jqgridname = jqgridname;
 		this.data_array = data_array;

@@ -4,57 +4,65 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
+	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
-		modules : 'sanitize',
 		language : {
 			requiredFields: ''
 		},
 	});
 
-	var errorField = [];
+	var errorField=[];
 	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
+		onValidate : function($form) {
+			if(errorField.length>0){
 				return {
-					element: $(errorField[0]),
-					//element : $('#'+errorField[0]),
-					message: ' '
+					element : $(errorField[0]),
+					message : ' '
 				}
 			}
 		},
 	};
 
+	var fdl = new faster_detail_load();
+	var err_reroll = new err_reroll('#jqGrid',['mmacode', 'description']);
+	
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam = {
-		action: 'mma-table',
-		url: '/mma/table'
+	var urlParam={
+		action:'get_table_default',
+		url: '/util/get_table_default',				
+		field:'',
+		table_name:'hisdb.mmamaster',
+		table_id:'idno', 
+		sort_idno: true
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
+		editurl: '/mma/form',
 		colModel: [
-			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
+			{ label: 'id', name: 'idno', width:5, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'MMA Code', name: 'mmacode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'description', width: 80, checked: true, canSearch: true, hidden:true},
-			{ label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, 	edittype: "textarea", editrules: { required: true }, 
+			{ label: 'MMA Code', name: 'mmacode', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
 			},
-			{ label: 'Version', name: 'version', width: 20, canSearch: true, align: 'right'},
-			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Version', name: 'version', width: 5, canSearch: true, align: 'right'},
+			{ label: 'Status', name: 'recstatus', width: 5, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 			editoptions:{
-				value:"A:ACTIVE;D:DEACTIVE"
-			}},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upduser', name: 'lastuser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upddate', name: 'lastupdate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
+				value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
+				cellattr: function(rowid, cellvalue)
+						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+			},
+			{ label: 'adduser', name: 'adduser', width: 30, hidden: true, classes: 'wrap' },
+			{ label: 'adddate', name: 'adddate', width: 30, hidden: true, classes: 'wrap' },
+			{ label: 'upduser', name: 'lastuser', width: 30, hidden: true, classes: 'wrap' },
+			{ label: 'upddate', name: 'lastupdate', width: 30, hidden: true, classes: 'wrap' },
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 30, hidden:true},
+			{ label: 'lastipaddress', name: 'lastipaddress', width: 30, hidden:true},
 
 		],
 		autowidth: true,
@@ -68,70 +76,93 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+            if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 			populate_formMMA(selrowData("#jqGrid"));
 		},
-		loadComplete: function(data){
-			data.rows.forEach(function(element){
-				if(element.callback_param != null){
-					$("#"+element.callback_param[2]).on('click', function() {
-						seemoreFunction(
-								element.callback_param[0],
-								element.callback_param[1],
-								element.callback_param[2]
-						)
-					});
-				}
-			});
-			if(addmore_jqgrid.more == true){$('#jqGrid2_iladd').click();}
-			else{
+		loadComplete: function(){
+			if(addmore_jqgrid.more == true){
+				$('#jqGrid_iladd').click();
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			if(err_reroll.error == true){
+				err_reroll.reroll();
+			}
 		},
-		ondblClickRow: function (rowid, iRow, iCol, e) {
+		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
+			$('#p_error').text('');   //hilangkan duplicate error msj after save				
 		},
 		gridComplete: function () {
-			empty_formMMA();
+			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}	
 		},
 	});
 
+	function check_cust_rules(rowid){
+		var chk = ['mmacode','description'];
+		chk.forEach(function(e,i){
+			var val = $("#jqGrid input[name='"+e+"']").val();
+			if(val.trim().length <= 0){
+				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+			}else{
+				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+			}
+		})
+	}
+
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
-			// let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
-
-			// $('textarea[name=description_show]').val(selrow.description)
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});	
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			var data = JSON.parse(response.responseText)
+			//$('#p_error').text(response.responseText);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;			
+            refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/mma/form?"+
 				$.param({
@@ -140,21 +171,25 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
+	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='Code']").attr('disabled','disabled');
+            $("#description").focus().select();
+			$("input[name='mmacode']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -163,27 +198,34 @@ $(document).ready(function () {
 			});
 
 			let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
+			$('textarea[name=description]').val(selrow.description)
 
-			$('textarea[name=description_show]').val(selrow.description)
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});	
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			alert(response.responseText);
+			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			console.log(errorField)
-			if(errorField.length>0)return false;
+			$('#p_error').text('');
+            if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/mma/form?"+
 				$.param({
@@ -192,6 +234,7 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
@@ -199,7 +242,7 @@ $(document).ready(function () {
 		}
 	};
 
-
+	/////////////////////////start inline jqgrid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
@@ -230,10 +273,10 @@ $(document).ready(function () {
 							param = {
 								_token: $("#_token").val(),
 								action: 'mma_save',
-								Code: $('#Code').val(),
+								mmacode: $('#mmacode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/race/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "/mma/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -256,7 +299,6 @@ $(document).ready(function () {
 		},
 	});
 
-
 	//////////////////////////////////////end grid 1/////////////////////////////////////////////////////////
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
@@ -270,9 +312,9 @@ $(document).ready(function () {
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
 
-	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 
-	$("#jqGrid3").jqGrid({
+	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		editurl: "/mma/form",
 		colModel: [
@@ -349,12 +391,12 @@ $(document).ready(function () {
 		rowNum: 30,
 		sortname: 'idno',
 		sortorder: "desc",
-		pager: "#jqGridPager3",
+		pager: "#jqGridPager2",
 		loadComplete: function(){
-			if(addmore_jqgrid2.more == true){$('#jqGrid3_iladd').click();}
+			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
-				//$('#jqGrid3').jqGrid ('setSelection', "1");
-				$("#jqGrid3").setSelection($("#jqGrid3").getDataIDs()[0]);
+				//$('#jqGrid2').jqGrid ('setSelection', "1");
+				$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
@@ -365,7 +407,7 @@ $(document).ready(function () {
 			// fdl.set_array().reset();
 			// if(!hide_init){
 			// 	hide_init=1;
-			// 	hideatdialogForm_jqGrid3(false);
+			// 	hideatdialogForm_jqGrid2(false);
 			// }
 		}
 	});
@@ -380,37 +422,37 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 
-			$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").hide();
+			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").hide();
 
 			// dialog_dtliptax.on();
 			// dialog_dtloptax.on();
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid3 input[name='feesconsult']","#jqGrid3 input[name='feessurgeon']","#jqGrid3 input[name='feesanaes']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='feesconsult']","#jqGrid2 input[name='feessurgeon']","#jqGrid2 input[name='feesanaes']"]);
 
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	//      	$("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
+			//  $("input[name='dtl_maxlimit']").keydown(function(e) {//when click tab at document, auto save
 			// 	var code = e.keyCode || e.which;
 			// 	if (code == '9')$('#jqGrid2_ilsave').click();
 			// })
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-			refreshGrid('#jqGrid3',urlParam2,'add');
-			$("#jqGridPager3EditAll,#jqGridPager3Delete,#jqGridPager3Refresh").show();
+			refreshGrid('#jqGrid2',urlParam2,'add');
+			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		}, 
 		errorfunc: function(rowid,response){
 			alert(response.responseText);
-			refreshGrid('#jqGrid3',urlParam2,'add');
-			$("#jqGridPager3Delete,#jqGridPager3Refresh").show();
+			refreshGrid('#jqGrid2',urlParam2,'add');
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
 		beforeSaveRow: function(options, rowid) {
 
 			//if(errorField.length>0)return false;  
 
-			let data = $('#jqGrid3').jqGrid ('getRowData', rowid);
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "/mma/form?"+
 				$.param({
 					action: 'mma_save',
@@ -419,16 +461,16 @@ $(document).ready(function () {
 					// uom: selrowData('#jqGrid').cm_uom//$('#cm_uom').val(),
 					// authorid:$('#authorid').val()
 				});
-			$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
+			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 		},
 		afterrestorefunc : function( response ) {
-			// hideatdialogForm_jqGrid3(false);
+			// hideatdialogForm_jqGrid2(false);
 		}
 	};
 
-	//////////////////////////////////////////pager jqgrid3/////////////////////////////////////////////
+	//////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 
-	$("#jqGrid3").inlineNav('#jqGridPager3',{	
+	$("#jqGrid2").inlineNav('#jqGridPager2',{	
 		add:true,
 		edit:true,
 		cancel: true,
@@ -438,13 +480,13 @@ $(document).ready(function () {
 			addRowParams: myEditOptions2
 		},
 		editParams: myEditOptions2
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		id: "jqGridPager3Delete",
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2Delete",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-trash",
 		title:"Delete Selected Row",
 		onClickButton: function(){
-			selRowId = $("#jqGrid3").jqGrid ('getGridParam', 'selrow');
+			selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 			if(!selRowId){
 				bootbox.alert('Please select row');
 			}else{
@@ -456,68 +498,68 @@ $(document).ready(function () {
 						if(result == true){
 							param={
 								action: 'mma_save',
-								idno: selrowData('#jqGrid3').idno,
+								idno: selrowData('#jqGrid2').idno,
 
 							}
 							$.post( "/mma/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
-								refreshGrid("#jqGrid3",urlParam2);
+								refreshGrid("#jqGrid2",urlParam2);
 							});
 						}else{
-							$("#jqGridPager3EditAll").show();
+							$("#jqGridPager2EditAll").show();
 						}
 					}
 				});
 			}
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		id: "jqGridPager3EditAll",
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2EditAll",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
 		onClickButton: function(){
 			mycurrency2.array.length = 0;
-			var ids = $("#jqGrid3").jqGrid('getDataIDs');
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			for (var i = 0; i < ids.length; i++) {
 
-				$("#jqGrid3").jqGrid('editRow',ids[i]);
+				$("#jqGrid2").jqGrid('editRow',ids[i]);
 
 				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_feesconsult","#"+ids[i]+"_feessurgeon","#"+ids[i]+"_feesanaes"]);
 			}
 			mycurrency2.formatOnBlur();
 			// onall_editfunc();
-			// hideatdialogForm_jqGrid3(true,'saveallrow');
+			// hideatdialogForm_jqGrid2(true,'saveallrow');
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		id: "jqGridPager3SaveAll",
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2SaveAll",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-download-alt",
 		title:"Save All Row",
 		onClickButton: function(){
-			var ids = $("#jqGrid3").jqGrid('getDataIDs');
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 
-			var jqgrid3_data = [];
+			var jqgrid2_data = [];
 			mycurrency2.formatOff();
 			for (var i = 0; i < ids.length; i++) {
 
-				var data = $('#jqGrid3').jqGrid('getRowData',ids[i]);
+				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 				var obj = 
 				{
 					'idno' : data.idno,
-					'effectdate' : $("#jqGrid3 input#"+ids[i]+"_effectdate").val(),
-					'mmacode' : $("#jqGrid3 input#"+ids[i]+"_mmacode").val(),
-					'version' : $("#jqGrid3 input#"+ids[i]+"_version").val(),
-					'mmaconsult' : $("#jqGrid3 input#"+ids[i]+"_mmaconsult").val(),
-					'mmasurgeon' : $("#jqGrid3 input#"+ids[i]+"_mmasurgeon").val(),
-					'mmaanaes' : $("#jqGrid3 input#"+ids[i]+"_mmaanaes").val(),
-					'feesconsult' : $("#jqGrid3 input#"+ids[i]+"_feesconsult").val(),
-					'feessurgeon' : $("#jqGrid3 input#"+ids[i]+"_feessurgeon").val(),
-					'feesanaes' : $("#jqGrid3 input#"+ids[i]+"_feesanaes").val(),
+					'effectdate' : $("#jqGrid2 input#"+ids[i]+"_effectdate").val(),
+					'mmacode' : $("#jqGrid2 input#"+ids[i]+"_mmacode").val(),
+					'version' : $("#jqGrid2 input#"+ids[i]+"_version").val(),
+					'mmaconsult' : $("#jqGrid2 input#"+ids[i]+"_mmaconsult").val(),
+					'mmasurgeon' : $("#jqGrid2 input#"+ids[i]+"_mmasurgeon").val(),
+					'mmaanaes' : $("#jqGrid2 input#"+ids[i]+"_mmaanaes").val(),
+					'feesconsult' : $("#jqGrid2 input#"+ids[i]+"_feesconsult").val(),
+					'feessurgeon' : $("#jqGrid2 input#"+ids[i]+"_feessurgeon").val(),
+					'feesanaes' : $("#jqGrid2 input#"+ids[i]+"_feesanaes").val(),
 				}
 
-				jqgrid3_data.push(obj);
+				jqgrid2_data.push(obj);
 			}
 
 			var param={
@@ -525,30 +567,30 @@ $(document).ready(function () {
 				_token: $("#_token").val()
 			}
 
-			$.post( "/mma/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
+			$.post( "/mma/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// hideatdialogForm_jqGrid3(false);
-				refreshGrid("#jqGrid3",urlParam2);
+				// hideatdialogForm_jqGrid2(false);
+				refreshGrid("#jqGrid2",urlParam2);
 			});
 		},	
-	}).jqGrid('navButtonAdd',"#jqGridPager3",{
-		id: "jqGridPager3CancelAll",
+	}).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2CancelAll",
 		caption:"",cursor: "pointer",position: "last", 
 		buttonicon:"glyphicon glyphicon-remove-circle",
 		title:"Cancel",
 		onClickButton: function(){
-			// hideatdialogForm_jqGrid3(false);
-			refreshGrid("#jqGrid3",urlParam2);
+			// hideatdialogForm_jqGrid2(false);
+			refreshGrid("#jqGrid2",urlParam2);
 		},	
-	}).jqGrid('navButtonAdd', "#jqGridPager3", {
-		id: "jqGridPager3Refresh",
+	}).jqGrid('navButtonAdd', "#jqGridPager2", {
+		id: "jqGridPager2Refresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
 		onClickButton: function () {
-			refreshGrid("#jqGrid3", urlParam2);
+			refreshGrid("#jqGrid2", urlParam2);
 		},
 	});
 
@@ -558,17 +600,37 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
+	
+	function err_reroll(jqgridname,data_array){
+		this.jqgridname = jqgridname;
+		this.data_array = data_array;
+		this.error = false;
+		this.errormsg = 'asdsds';
+		this.old_data;
+		this.reroll=function(){
 
-	$("#jqGrid3_panel").on("show.bs.collapse", function(){
-		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+			$('#p_error').text(this.errormsg);
+			var self = this;
+			$(this.jqgridname+"_iladd").click();
+
+			this.data_array.forEach(function(item,i){
+				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
+			});
+			this.error = false;
+		}		
+	}
+
+	$("#jqGrid2_panel").on("show.bs.collapse", function(){
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 	});
+
 });
 
 function populate_formMMA(obj){
 
 	//panel header
 	$('#mmacode_show').text(obj.mmacode);
-	$('#description_show').text(obj.description_show);	
+	$('#description_show').text(obj.description);	
 	// $("#btn_grp_edit_ti, #btn_grp_edit_ad, #btn_grp_edit_tpa").show();
 	
 }

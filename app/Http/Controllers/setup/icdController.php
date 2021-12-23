@@ -18,6 +18,7 @@ class icdController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
+        $this->duplicateCode = "icdcode";
     }
 
     public function show(Request $request)
@@ -63,12 +64,12 @@ class icdController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {//ini baru
-            $value->description_show = $value->description;
+            $value->description = $value->description;
             if(mb_strlen($value->description)>120){
 
                 $time = time() + $key;
 
-                $value->description_show = mb_substr($value->description_show,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+                $value->description = mb_substr($value->description,0,120).'<span id="dots_'.$time.'" style="display: inline;"> ... </span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->description,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
 
                 $value->callback_param = [
                     'dots_'.$time,'more_'.$time,'moreBtn_'.$time
@@ -122,22 +123,27 @@ class icdController extends defaultController
 
 
             DB::table('hisdb.diagtab')
-                ->insert([  
+                ->insert([
+                    'compcode' => session('compcode'),  
                     'icdcode' => strtoupper($request->icdcode),
-                    'description' => strtoupper($request->description_show),
+                    'description' => strtoupper($request->description),
                     "type" => strtoupper($type->pvalue1),
                     'recstatus' => strtoupper($request->recstatus),
-                    // 'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    // 'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
         }
     }
 
@@ -149,19 +155,20 @@ class icdController extends defaultController
             DB::table('hisdb.diagtab')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'description' => strtoupper($request->description_show),
-                    'recstatus' => strtoupper($request->recstatus),
-                    // 'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    // 'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'description' => strtoupper($request->description),
+                    'recstatus' => strtoupper($request->recstatus),                    
+                    'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => strtoupper($request->lastcomputerid),
+                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -169,7 +176,7 @@ class icdController extends defaultController
         DB::table('hisdb.diagtab')
             ->where('idno','=',$request->idno)
             ->update([  
-                'recstatus' => 'D',
+                'recstatus' => 'DEACTIVE',
                 'lastuser' => session('username'),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);

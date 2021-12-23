@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
@@ -13,17 +12,18 @@ $(document).ready(function () {
 		},
 	});
 
-	var errorField = [];
-	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
-				return {
-					element : $(errorField[0]),
-					message: ' '
-				}
-			}
-		},
-	};
+    var errorField=[];
+    conf = {
+        onValidate : function($form) {
+            if(errorField.length>0){
+                return {
+                    element : $('#'+errorField[0]),
+                    message : ' '
+                }
+            }
+        },
+    };
+    
 	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['code', 'Description']);
 
@@ -155,6 +155,8 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
+			check_cust_rules();
+
 			let editurl = "/marital/form?"+
 				$.param({
 					action: 'marital_save',
@@ -162,11 +164,12 @@ $(document).ready(function () {
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	var myEditOptions_edit = {
@@ -175,7 +178,9 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#Description").focus().select();
 			$("input[name='code']").attr('disabled','disabled');
 			$("input[name='Description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -205,6 +210,8 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
+
+			check_cust_rules();
 
 			let editurl = "/marital/form?"+
 				$.param({

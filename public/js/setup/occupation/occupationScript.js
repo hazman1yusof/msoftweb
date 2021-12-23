@@ -12,17 +12,17 @@ $(document).ready(function () {
 		},
 	});
 
-	var errorField = [];
-	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
-				return {
-					element: $(errorField[0]),
-					message: ' '
-				}
-			}
-		},
-	};
+    var errorField=[];
+    conf = {
+        onValidate : function($form) {
+            if(errorField.length>0){
+                return {
+                    element : $('#'+errorField[0]),
+                    message : ' '
+                }
+            }
+        },
+    };
 
 	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['occupcode', 'description']);
@@ -117,13 +117,17 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});	
 		},
 		aftersavefunc: function (rowid, response, options) {
 		//	if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
@@ -161,7 +165,7 @@ $(document).ready(function () {
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
@@ -171,7 +175,9 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#description").focus().select();
 			$("input[name='occupcode']").attr('disabled','disabled');
 			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -202,7 +208,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/occupation/form?"+
+			check_cust_rules();
+
+ 			let editurl = "/occupation/form?"+
 				$.param({
 					action: 'occupation_save',
 				});

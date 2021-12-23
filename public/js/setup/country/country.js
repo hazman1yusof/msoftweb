@@ -12,18 +12,17 @@ $(document).ready(function () {
 		},
 	});
 
-	var errorField = [];
-	conf = {
-		onValidate: function ($form) {
-			if (errorField.length > 0) {
-				return {
-					element: $(errorField[0]),
-					message: ' '
-				}
-			}
-		},
-	};
-
+    var errorField=[];
+    conf = {
+        onValidate : function($form) {
+            if(errorField.length>0){
+                return {
+                    element : $('#'+errorField[0]),
+                    message : ' '
+                }
+            }
+        },
+    };
 	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['Code', 'Description']);
 
@@ -123,6 +122,7 @@ $(document).ready(function () {
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#Description").focus().select();
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
@@ -171,7 +171,7 @@ $(document).ready(function () {
 		},
 		errorTextFormat: function (data) {
 			alert(data);
-		}
+		},
 	};
 
 	//////////////////////////My edit options edit /////////////////////////////////////////////////////////
@@ -181,7 +181,9 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#Description").focus().select();
 			$("input[name='Code']").attr('disabled','disabled');
 			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column, auto save
 				var code = e.keyCode || e.which;
