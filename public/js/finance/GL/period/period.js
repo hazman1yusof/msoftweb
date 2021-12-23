@@ -294,6 +294,7 @@
 					$("#viewyear").hide();
 					$("#saveyear").show();
 					$("#cancelyear").show();
+					
 					$('#formdata select').prop("disabled",false);
 					addYear();
 					hdate.check();
@@ -332,7 +333,15 @@
 				$("#datefr10").prop('disabled',false);$("#dateto10").prop('disabled',false);
 				$("#datefr11").prop('disabled',false);$("#dateto11").prop('disabled',false);
 				$("#datefr12").prop('disabled',false);$("#dateto12").prop('disabled',false);
+			
 				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+					$("#addnewyear").show();
+					$("#edityear").show();
+					$("#deleteyear").show();
+					$("#viewyear").show();
+					$("#saveyear").hide();
+					$("#cancelyear").hide();
+					$('#formdata select').prop("disabled",false);
 					saveForm("#formdata",oper,saveParam,urlParam);
 					emptyFormdata(errorField,'#formdata');
 					$('.my-alert').detach();
@@ -367,7 +376,15 @@
 				$("#datefr10").prop('disabled',false);$("#dateto10").prop('disabled',false);
 				$("#datefr11").prop('disabled',false);$("#dateto11").prop('disabled',false);
 				$("#datefr12").prop('disabled',false);$("#dateto12").prop('disabled',false);
-				$("#year").focus();
+				
+				$("#addnewyear").show();
+				$("#edityear").show();
+				$("#deleteyear").show();
+				$("#viewyear").show();
+				$("#saveyear").hide();
+				$("#cancelyear").hide();
+				$("#jqGrid").trigger('reloadGrid');
+				$('#formdata select').prop("disabled",false);
 			});
 
 			function saveForm(form,oper,saveParam,urlParam){
