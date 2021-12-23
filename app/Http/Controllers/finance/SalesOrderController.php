@@ -176,16 +176,11 @@ class SalesOrderController extends defaultController
                             ->where('idno','=',$value)
                             ->first();
 
-                $department = DB::table("sysdb.department")
-                            ->where('deptcode','=',$dbacthdr->deptcode)
-                            ->first();
-
                 $billsum = DB::table("debtor.billsum")
                             ->where('source','=',$dbacthdr->source)
                             ->where('trantype','=',$dbacthdr->trantype)
                             ->where('auditno','=',$dbacthdr->auditno)
                             ->get();
-
 
                 foreach ($billsum as $billsum_obj){
 
@@ -199,6 +194,8 @@ class SalesOrderController extends defaultController
 
                     $insertGetId = DB::table("hisdb.chargetrx")
                         ->insertGetId([
+                            'auditno' => $billsum_obj->auditno,
+                            'idno' => $billsum_obj->idno,
                             'compcode'  => session('compcode'),
                             'mrn'  => $billsum_obj->mrn,
                             'episno'  => $billsum_obj->episno,
@@ -226,7 +223,7 @@ class SalesOrderController extends defaultController
                             'discamt' => $billsum_obj->discamt,
                             'qtyorder' => $billsum_obj->quantity,
                             'qtyissue' => $billsum_obj->quantity,
-                            'units' => $department->sector,
+                            'unit' => session('unit'),
                             'chgtype' => $chgmast->chgtype,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -239,12 +236,13 @@ class SalesOrderController extends defaultController
 
                     DB::table("hisdb.billdet")
                         ->insert([
+                            'auditno' => $billsum_obj->auditno,
+                            'idno' => $billsum_obj->idno,
                             'compcode'  => session('compcode'),
                             'mrn'  => $billsum_obj->mrn,
                             'episno'  => $billsum_obj->episno,
                             'trxdate' => $dbacthdr->entrydate,
                             'chgcode' => $billsum_obj->chggroup,
-                            'auditno' => $insertGetId,
                             'billflag' => 1,
                             'billdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'billtype'  => $billsum_obj->billtype,
@@ -278,51 +276,59 @@ class SalesOrderController extends defaultController
                             'recstatus' => 'POSTED',
                         ]);
 
-                    //product
-                    /*update Product qtyonhand*/
-                    $product = DB::table('material.product')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$billsum_obj->uom)
-                            ->where('itemcode','=',$billsum_obj->chggroup);
+                    // //product
+                    // /*update Product qtyonhand*/
+                    // $product = DB::table('material.product')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('uomcode','=',$billsum_obj->uom)
+                    //         ->where('itemcode','=',$billsum_obj->chggroup);
 
-                    $stockloc = DB::table('material.stockloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$billsum_obj->uom)
-                            ->where('itemcode','=',$billsum_obj->chggroup)
-                            ->where('deptcode','=',$dbacthdr->deptcode)
-                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                    // $stockloc = DB::table('material.stockloc')
+                    //         ->where('compcode','=',session('compcode'))
+                    //         ->where('uomcode','=',$billsum_obj->uom)
+                    //         ->where('itemcode','=',$billsum_obj->chggroup)
+                    //         ->where('deptcode','=',$dbacthdr->deptcode)
+                    //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
-                    if($stockloc->exists()){
-                        $stockloc = $stockloc->first();
-                    }else{
-                        throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
-                    }
+                    // if($stockloc->exists()){
+                    //     $stockloc = $stockloc->first();
+                    // }else{
+                    //     throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
+                    // }
 
-                    if($product->exists()){
-                        $product = $product->first();
-                        if($product->groupcode == 'Stock'){
+                    // if($product->exists()){
+                    //     $product = $product->first();
+                    //     if($product->groupcode == 'Stock'){
 
-                            $ivdspdt = DB::table('material.ivdspdt')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('recno','=',$billsum_obj->idno);
+                    //         $ivdspdt = DB::table('material.ivdspdt')
+                    //             ->where('compcode','=',session('compcode'))
+                    //             ->where('recno','=',$billsum_obj->idno);
 
-                            if($ivdspdt->exists()){
-                                $this->updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
-                            }else{
-                                $this->crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
-                            }
+                    //         if($ivdspdt->exists()){
+                    //             $this->updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
+                    //         }else{
+                    //             $this->crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
+                    //         }
 
-                        }
-                    }
+                    //     }
+                    // }
 
-                    if($stockloc->disptype == 'DS'){
-                        //ignore uom
-                        // $qtyonhand = $product->qtyonhand - $billsum_obj->quantity;
+                    // if($stockloc->disptype == 'DS'){
+                    //     //ignore uom
+                    //     // $qtyonhand = $product->qtyonhand - $billsum_obj->quantity;
                         
-                    }
+                    // }
 
                 }
 
+                DB::table("debtor.billsum")
+                    ->where('source','=',$dbacthdr->source)
+                    ->where('trantype','=',$dbacthdr->trantype)
+                    ->where('auditno','=',$dbacthdr->auditno)
+                    ->update([
+                        'invno' => $invno,
+                        'recstatus' => 'POSTED',
+                    ]);
 
                 DB::table("debtor.dbacthdr")
                     ->where('idno','=',$value)

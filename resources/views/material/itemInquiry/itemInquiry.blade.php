@@ -212,6 +212,8 @@
 						<th>Trans Amount</th>
 						<th>Balance Amount</th>
 						<th>Document No</th>
+						<th>MRN</th>
+						<th>Episode</th>
 						<th>User Id</th>
 						<th>Trans Time</th>
 					</tr>

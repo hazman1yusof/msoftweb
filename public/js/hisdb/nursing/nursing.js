@@ -763,11 +763,11 @@ function populate_triage_currpt(obj){
 	$('#sex_show_triage').text((obj.Sex).toUpperCase());
 	$('#dob_show_triage').text(dob_chg(obj.DOB));
 	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_triage').text((obj.raceDesc).toUpperCase());
+	$('#race_show_triage').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_triage').text(if_none(obj.religionDesc).toUpperCase());
 	$('#occupation_show_triage').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_triage').text((obj.cityDesc).toUpperCase());
-	$('#area_show_triage').text((obj.areaDesc).toUpperCase());
+	$('#citizenship_show_triage').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_triage').text(if_none(obj.areaDesc).toUpperCase());
 
 	$("#mrn_ti").val(obj.MRN);
 	$("#episno_ti").val(obj.Episno);

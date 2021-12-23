@@ -80,6 +80,7 @@ class PatmastController extends defaultController
                 $table->whereIn('queue.epistycode', ['IP','DP']);
             }
 
+
             $paginate = $table->paginate($request->rows);
             $arr_mrn = [];
 
@@ -95,11 +96,11 @@ class PatmastController extends defaultController
                             ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
                             ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
                             ->where('pat_mast.compcode','=',session('compcode'))
-                            ->where('racecode.compcode','=',session('compcode'))
-                            ->where('religion.CompCode','=',session('compcode'))
+                            // ->where('racecode.compcode','=',session('compcode'))
+                            // ->where('religion.CompCode','=',session('compcode'))
                             // ->where('occupation.compcode','=',session('compcode'))
-                            ->where('citizen.compcode','=',session('compcode'))
-                            ->where('areacode.compcode','=',session('compcode'))
+                            // ->where('citizen.compcode','=',session('compcode'))
+                            // ->where('areacode.compcode','=',session('compcode'))
                             ->where('pat_mast.Active','=','1')
                             ->whereIn('pat_mast.mrn', $arr_mrn)
                             ->whereBetween('pat_mast.MRN',$mrn_range);

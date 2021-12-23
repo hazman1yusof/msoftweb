@@ -257,6 +257,10 @@
 			border-radius: 10px;
 	    }
 
+	    table#docnote_date_tbl tr.selected{
+	    	background-color: #dfdfdf;
+	    }
+
 	</style>
 
 </head>

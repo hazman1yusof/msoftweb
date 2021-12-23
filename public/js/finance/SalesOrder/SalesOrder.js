@@ -39,6 +39,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				errorField.length=0;
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
@@ -88,6 +89,7 @@ $(document).ready(function () {
 				}
 			},
 			close: function (event, ui) {
+				errorField.length=0;
 				addmore_jqgrid2.state = false;//reset balik
 			    addmore_jqgrid2.more = false;
 			    //reset balik
@@ -104,7 +106,6 @@ $(document).ready(function () {
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
-				errorField.length=0;
 			},
 		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
@@ -993,14 +994,16 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
+								source: 'PB',
+								trantype:'IN',
 								auditno: $('#db_auditno').val(),
 								idno:selrowData('#jqGrid2').idno
 							}
 							$.post( "/SalesOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function (data) {
+							},'json').fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								$('#db_amount').val(data);
+								$('#db_amount').val(data.totalAmount);
 								refreshGrid("#jqGrid2", urlParam2);
 							});
 						}else{
@@ -1029,7 +1032,7 @@ $(document).ready(function () {
 		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_quantity"]);
 
 		        dialog_chggroup.id_optid = ids[i];
-		        dialog_chggroup.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
+		        dialog_chggroup.check(errorField,ids[i]+"_chggroup","jqGrid2",null,
 		        	function(self){
 		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1038,7 +1041,7 @@ $(document).ready(function () {
 			    );
 
 		        dialog_uomcode.id_optid = ids[i];
-		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
+		        dialog_uomcode.check(errorField,ids[i]+"_uom","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1093,43 +1096,36 @@ $(document).ready(function () {
 		    	{
 		    		'lineno_' : data.lineno_,
 		    		'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
-		    		'chggroup' : $("#jqGrid2 input#"+ids[i]+"_itemcode").val(),
-		    		'uomcode' : $("#jqGrid2 input#"+ids[i]+"_uomcode").val(),
+		    		'chggroup' : $("#jqGrid2 input#"+ids[i]+"_chggroup").val(),
+		    		'uom' : $("#jqGrid2 input#"+ids[i]+"_uom").val(),
 		    		'pouom' : $("#jqGrid2 input#"+ids[i]+"_pouom").val(),
 		    		'quantity' : $('#'+ids[i]+"_quantity").val(),
 		    		'unitprice': $('#'+ids[i]+"_unitprice").val(),
 		    		'taxcode' : $("#jqGrid2 input#"+ids[i]+"_taxcode").val(),
                     'perdisc' : $('#'+ids[i]+"_perdisc").val(),
-                    'amtdisc' : $('#'+ids[i]+"_amtdisc").val(),
+                    'discamt' : $('#'+ids[i]+"_uom_discamt").val(),
                     'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
-                    'netunitprice' : data.netunitprice, //ni mungkin salah
-                    'amount' : data.amount,
-                    'totamount' : $("#"+ids[i]+"_totamount").val(),
-                    'remarks' : data.remarks,
-                    'unit' : $("#"+ids[i]+"_unit").val()
+                    'amount' : $('#'+ids[i]+"_amount").val(),
+                    'taxamt' : $("#"+ids[i]+"_taxamt").val(),
+                    // 'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
+                    // 'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
 		    	}
 
 		    	jqgrid2_data.push(obj);
 		    }
 
 			var param={
-    			action: 'purReq_detail_save',
 				_token: $("#_token").val(),
-				recno: $('#purreqhd_recno').val(),
-				action: 'purReq_detail_save',
-				purreqno:$('#purreqhd_purreqno').val(),
-				suppcode:$('#purreqhd_suppcode').val(),
-				purdate:$('#purreqhd_purdate').val(),
-				reqdept:$('#purreqhd_reqdept').val(),
-				purreqdt:$('#purreqhd_purreqdt').val(),
+				source: 'PB',
+				trantype:'IN',
+				auditno: $('#db_auditno').val(),
     		}
 
     		$.post( "/SalesOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
-			}).fail(function(data) {
-				alert(dialog,data.responseText);
+			},'json').fail(function(data) {
+				alert(data.responseText);
 			}).done(function(data){
-				$('#purreqhd_totamount').val(data);
-				$('#purreqhd_subamount').val(data);
+				$('#db_amount').val(data.totalAmount);
 				mycurrency.formatOn();
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
@@ -1211,9 +1207,7 @@ $(document).ready(function () {
 	}
 	function taxcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
-			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
-			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1288,15 +1282,17 @@ $(document).ready(function () {
 
 	function onall_editfunc(){
 		// if($('#purordhd_purreqno').val()!=''){
-  //   		$("#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup'],#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='taxcode'],#jqGrid2 input[name='perdisc'],#jqGrid2 input[name='amtdisc'],#jqGrid2 input[name='pricecode']").attr('readonly','readonly');
+    	$("#jqGrid2 input[name='chggroup'],#jqGrid2 input[name='uom'],#jqGrid2 input[name='taxcode']").attr('readonly','readonly');
 
 		// }else{
 		errorField.length=0;
-		dialog_chggroup.on();
-		dialog_uomcode.on();
-		dialog_tax.on();
+		// dialog_chggroup.on();
+		// dialog_uomcode.on();
+		// dialog_tax.on();
 
 		// }
+
+
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -1306,7 +1302,7 @@ $(document).ready(function () {
 		// $("#jqGrid2 input[name='quantity']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
 		// $("#jqGrid2 input[name='quantity']").on('blur',calculate_conversion_factor);
-		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
+		$("#jqGrid2 input[name='uom'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
@@ -1660,7 +1656,7 @@ $(document).ready(function () {
 			close: function(){
 				$("#jqGrid2 input[name='quantity']").focus().select();
 			}
-		},'none','radio','tab'//urlParam means check() using urlParam not check_input
+		},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_chggroup.makedialog(false);
 

@@ -923,9 +923,9 @@ $(document).ready(function () {
 		    $("#expdate").datepicker();
 		},
 		beforeSubmit: function(postdata, rowid){ 
-			dialog_itemcode.check(errorField);
-			dialog_uomcode.check(errorField);
-			dialog_pouom.check(errorField);
+			// dialog_itemcode.check(errorField);
+			// dialog_uomcode.check(errorField);
+			// dialog_pouom.check(errorField);
 	 	}
 	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
@@ -2179,7 +2179,6 @@ $(document).ready(function () {
 				},
 			},
 			ondblClickRow:function(event){
-				$("#jqGrid2 input[name='pouom']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -2219,13 +2218,15 @@ $(document).ready(function () {
 			        }
 			    );
 
+			    $("#jqGrid2 #"+id_optid+"_uomcode").focus().select();
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
+					// $(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -2301,10 +2302,10 @@ $(document).ready(function () {
 				// dialog_itemcode_init();
 			},
 			close: function(){
-				$(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
+				// $(dialog_itemcode.textfield)			//lepas close dialog focus on next textfield 
+				// 	.closest('td')						//utk dialog dalam jqgrid jer
+				// 	.next()
+				// 	.find("input[type=text]").focus();
 			}
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
@@ -2423,7 +2424,7 @@ $(document).ready(function () {
 	dialog_uomcode.makedialog(false);
 
 	var dialog_pouom = new ordialog(
-		'pouom', ['material.uom '], "#jqGrid2 input[name='pouom']", errorField,
+		'pouom', ['material.uom'], "#jqGrid2 input[name='pouom']", errorField,
 		{
 			colModel:
 			[

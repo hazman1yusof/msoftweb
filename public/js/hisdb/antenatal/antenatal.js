@@ -152,11 +152,11 @@ function populate_antenatal(obj){
 	$('#sex_show_antenatal').text((obj.Sex).toUpperCase());
 	$('#dob_show_antenatal').text(dob_chg(obj.DOB));
 	$('#age_show_antenatal').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_antenatal').text((obj.raceDesc).toUpperCase());
+	$('#race_show_antenatal').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_antenatal').text(if_none(obj.religionDesc).toUpperCase());
 	$('#occupation_show_antenatal').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_antenatal').text((obj.cityDesc).toUpperCase());
-	$('#area_show_antenatal').text((obj.areaDesc).toUpperCase());
+	$('#citizenship_show_antenatal').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_antenatal').text(if_none(obj.areaDesc).toUpperCase());
 
 	//formAntenatal
 	$('#mrn_antenatal').val(obj.MRN);

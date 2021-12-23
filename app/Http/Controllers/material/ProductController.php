@@ -118,7 +118,9 @@ class ProductController extends defaultController
                              'cm.freqcode as cm_freqcode',
                              'cm.instruction as cm_instruction')
                     ->where('p.compcode','=',session('compcode'))
-                    ->where('p.unit','=',session('unit'));
+                    ->where('p.unit','=',session('unit'))
+                    ->where('p.Class','=',$Class)
+                    ->where('p.groupcode','=',$groupcode);
 
         $table = $table->leftjoin('hisdb.chgmast as cm', function($join){
                             $join = $join->where('cm.compcode', '=', session('compcode'));
@@ -282,7 +284,6 @@ class ProductController extends defaultController
 
                 DB::table('material.product')->insert($array_insert);
 
-                dd(session('unit'));
                 $array_insert = [
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),

@@ -616,18 +616,17 @@ function populate_form_ordcom(obj,rowdata){
 
 //screen current patient//
 function populate_ordcom_currpt(obj){
-
 	//panel header	
 	$('#name_show_ordcom').text(obj.Name);
 	$('#mrn_show_ordcom').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_ordcom').text((obj.Sex).toUpperCase());
 	$('#dob_show_ordcom').text(dob_chg(obj.DOB));
 	$('#age_show_ordcom').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_ordcom').text((obj.raceDesc).toUpperCase());
+	$('#race_show_ordcom').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_ordcom').text(if_none(obj.religionDesc).toUpperCase());
 	$('#occupation_show_ordcom').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_ordcom').text((obj.cityDesc).toUpperCase());
-	$('#area_show_ordcom').text((obj.areaDesc).toUpperCase());
+	$('#citizenship_show_ordcom').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_ordcom').text(if_none(obj.areaDesc).toUpperCase());
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	

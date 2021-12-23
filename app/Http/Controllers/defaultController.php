@@ -595,7 +595,7 @@ abstract class defaultController extends Controller{
         return $seqno->seqno;
     }
 
-    public function recno($source,$trantype){
+    public function recno($source,$trantype){//sysparam pvalue 1 start dgn 1
         $pvalue1 = DB::table('sysdb.sysparam')
                 ->select('pvalue1')
                 ->where('source','=',$source)->where('trantype','=',$trantype);

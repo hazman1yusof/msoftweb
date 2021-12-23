@@ -153,7 +153,11 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			if($("#jqGrid").jqGrid('getGridParam', 'selrow') == null){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection( $("#jqGrid").jqGrid('getGridParam', 'selrow'));
+			}
 			$("#searchForm input[name=Stext]").focus();
 		},
 
@@ -195,7 +199,7 @@ $(document).ready(function () {
 		 	{ label: 'Dept Code', name: 's_deptcode', width: 40, classes: 'wrap'},
 		 	{ label: 'Description', name: 'd_description', width: 43, classes: 'wrap'},
 			{ label: 'Unit', name: 's_unit', width: 30, classes: 'wrap', hidden:false},
-			{ label: 'TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap'},
+			{ label: 'TrxType', name: 's_stocktxntype', width: 40, classes: 'wrap',formatter: TrxType,unformat: un_TrxType},
 			{ label: 'UOM Code', name: 's_uomcode', width: 40, classes: 'wrap'},
 			{ label: 'Quantity on Hand', name: 's_qtyonhand', width: 40, classes: 'wrap',align: 'right', formatter: 'currency'},
 			{ label: 'itemcode', name: 's_itemcode', width: 40, classes: 'wrap',hidden:true},
@@ -225,14 +229,17 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
         
         gridComplete:function(rowdata){
-			$("#detail").setSelection($("#detail").getDataIDs()[0]);
         	var rowid= 1;
         	$("#detail").jqGrid('getRowData').forEach(function(element){
         		getStockvalue(rowid,element);
         		rowid++;
         	});
 
-			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			if($("#detail").jqGrid('getGridParam', 'selrow') == null){
+				$("#detail").setSelection($("#detail").getDataIDs()[0]);
+			}else{
+				$("#detail").setSelection( $("#detail").jqGrid('getGridParam', 'selrow'));
+			}
 		},
 
 		onSelectRow:function(rowid,selected){
@@ -246,7 +253,28 @@ $(document).ready(function () {
 			refreshGrid('#itemExpiry',urlParam3);
 		}
 	});
-      
+     
+
+	function TrxType(cellvalue, options, rowObject){
+		if(cellvalue.toUpperCase() == 'TR'){
+			return 'STOCK';
+		}else if(cellvalue.toUpperCase() == 'IS'){
+			return 'ISSUED';
+		}else{
+			return cellvalue;
+		}
+	}
+
+	function un_TrxType(cellvalue, options, rowObject){
+		if(cellvalue.toUpperCase() == 'STOCK'){
+			return 'TR';
+		}else if(cellvalue.toUpperCase() == 'ISSUED'){
+			return 'IS';
+		}else{
+			return cellvalue;
+		}
+	}
+
 	
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
 		{	
@@ -380,6 +408,8 @@ $(document).ready(function () {
 			{ data: 'amount', className: "text-right"},
 			{ data: 'balance', className: "text-right"},
 			{ data: 'docno', className: "text-right"},
+			{ data: 'mrn', className: "text-right"},
+			{ data: 'episno', className: "text-right"},
 			{ data: 'adduser'},
 			{ data: 'trantime', className: "text-center"},
 			

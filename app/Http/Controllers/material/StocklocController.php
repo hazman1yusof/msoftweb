@@ -5,6 +5,7 @@ namespace App\Http\Controllers\material;
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
+use Carbon\Carbon;
 
 class StocklocController extends defaultController
 {   
@@ -30,19 +31,7 @@ class StocklocController extends defaultController
         try {
             switch($request->oper){
                 case 'add':
-                    $duplicate = DB::table('material.stockloc')
-                                    ->where('compcode','=',session('compcode'))
-                                    ->where('deptcode','=',$request->deptcode)
-                                    ->where('itemcode','=',$request->itemcode)
-                                    ->where('uomcode','=',$request->uomcode)
-                                    ->where('year','=',$request->year)
-                                    ->where('unit','=',session('unit'));
-
-                    if($duplicate->exists()){
-                        throw new \Exception("Itemcode ".$request->itemcode." with department ".$request->deptcode." duplicate");
-                    }
-
-                    return $this->defaultAdd($request);
+                    return $this->add($request);
                 case 'edit':
                     return $this->defaultEdit($request);
                 case 'del':
@@ -56,5 +45,53 @@ class StocklocController extends defaultController
             return response($e->getMessage(), 500);
         }
         
+    }
+
+    public function add(Request $request){
+
+        DB::beginTransaction();
+        
+        try {
+
+            $duplicate = DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('deptcode','=',$request->deptcode)
+                            ->where('itemcode','=',$request->itemcode)
+                            ->where('uomcode','=',$request->uomcode)
+                            ->where('year','=',$request->year)
+                            ->where('unit','=',session('unit'));
+
+            if($duplicate->exists()){
+                throw new \Exception("Itemcode ".$request->itemcode." with department ".$request->deptcode." duplicate");
+            }
+
+            DB::table('material.stockloc')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'deptcode' => $request->deptcode,
+                    'itemcode' => $request->itemcode,
+                    'uomcode' => $request->uomcode,
+                    'year' => $request->year,
+                    'stocktxntype' => $request->stocktxntype,
+                    'disptype' => $request->disptype,
+                    'minqty' => $request->minqty,
+                    'maxqty' => $request->maxqty,
+                    'reordlevel' => $request->reordlevel,
+                    'reordqty' => $request->reordqty,
+                    'recstatus' => 'ACTIVE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => $request->lastcomputerid,
+                    'lastipaddress' => $request->lastipaddress
+                ]);
+            
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 }

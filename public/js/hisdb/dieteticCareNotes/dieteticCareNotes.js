@@ -116,11 +116,11 @@ function populate_dieteticCareNotes_currpt(obj){
 	$('#sex_show_dieteticCareNotes').text((obj.Sex).toUpperCase());
 	$('#dob_show_dieteticCareNotes').text(dob_chg(obj.DOB));
 	$('#age_show_dieteticCareNotes').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_dieteticCareNotes').text((obj.raceDesc).toUpperCase());
+	$('#race_show_dieteticCareNotes').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_dieteticCareNotes').text(if_none(obj.religionDesc).toUpperCase());
 	$('#occupation_show_dieteticCareNotes').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_dieteticCareNotes').text((obj.cityDesc).toUpperCase());
-	$('#area_show_dieteticCareNotes').text((obj.areaDesc).toUpperCase());
+	$('#citizenship_show_dieteticCareNotes').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_dieteticCareNotes').text(if_none(obj.areaDesc).toUpperCase());
 
 	//formDieteticCareNotes
 	$('#mrn_dieteticCareNotes').val(obj.MRN);

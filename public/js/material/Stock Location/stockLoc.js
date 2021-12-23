@@ -147,7 +147,7 @@ $(document).ready(function () {
 			{ label: 'UOM Code', name: 'uomcode', width: 60, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Bin Code', name: 'bincode', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Rack No', name: 'rackno', width: 50, classes: 'wrap', hidden: true },
-			{ label: 'Tran Type', name: 'stocktxntype', width: 50, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Tran Type', name: 'stocktxntype', width: 50, classes: 'wrap', formatter: TrxType,unformat: un_TrxType },
 			{ label: 'Disp Type', name: 'disptype', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Qty On Hand', name: 'qtyonhand', width: 50, classes: 'wrap', align: 'right' },
 			{ label: 'Min Stock Qty', name: 'minqty', width: 40, classes: 'wrap', align:'right' },
@@ -204,6 +204,26 @@ $(document).ready(function () {
 
 	function enableRadioButton() {
 		$('#formdata input[name=disptype]:radio').prop("disabled", false);
+	}  
+
+	function TrxType(cellvalue, options, rowObject){
+		if(cellvalue.toUpperCase() == 'TR'){
+			return 'STOCK';
+		}else if(cellvalue.toUpperCase() == 'IS'){
+			return 'ISSUED';
+		}else{
+			return cellvalue;
+		}
+	}
+
+	function un_TrxType(cellvalue, options, rowObject){
+		if(cellvalue.toUpperCase() == 'STOCK'){
+			return 'TR';
+		}else if(cellvalue.toUpperCase() == 'ISSUED'){
+			return 'IS';
+		}else{
+			return cellvalue;
+		}
 	}
 
 	$("input[name=stocktxntype]:radio").on('change click', function () {

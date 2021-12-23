@@ -424,8 +424,6 @@ function populate_doctorNote(obj,rowdata){
 //screen current patient//
 function populate_doctorNote_currpt(obj){
 	curr_obj=obj;
-
-	console.log(obj);
 	
 	emptyFormdata(errorField,"#formDoctorNote");
 
@@ -435,11 +433,11 @@ function populate_doctorNote_currpt(obj){
 	$('#sex_show_doctorNote').text((obj.Sex).toUpperCase());
 	$('#dob_show_doctorNote').text(dob_chg(obj.DOB));
 	$('#age_show_doctorNote').text(dob_age(obj.DOB)+' (YRS)');
-	$('#race_show_doctorNote').text((obj.raceDesc).toUpperCase());
+	$('#race_show_doctorNote').text(if_none(obj.raceDesc).toUpperCase());
 	$('#religion_show_doctorNote').text(if_none(obj.religionDesc).toUpperCase());
 	$('#occupation_show_doctorNote').text(if_none(obj.occupDesc).toUpperCase());
-	$('#citizenship_show_doctorNote').text((obj.cityDesc).toUpperCase());
-	$('#area_show_doctorNote').text((obj.areaDesc).toUpperCase());
+	$('#citizenship_show_doctorNote').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_doctorNote').text(if_none(obj.areaDesc).toUpperCase());
 
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);
@@ -660,12 +658,18 @@ $("input[name=toggle_type]").on('click', function () {
 $('#docnote_date_tbl tbody').on('click', 'tr', function () { 
     var data = docnote_date_tbl.row( this ).data();
 
-    if(disable_edit_date()){
-    	return;
-	}else if(data == undefined){
+	// console.log('data');
+	// console.log(data);
+	// console.log($(this).hasClass('selected'));
+	
+ //    if(disable_edit_date()){
+ //    	return;
+	// }else 
+
+	if(data == undefined){
 		return;
 	}
-	
+
 	//to highlight selected row
 	if($(this).hasClass('selected')) {
 		$(this).removeClass('selected');
@@ -692,7 +696,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 		}
     }
     doctornote_docnote.recorddate = data.date;
-    console.log(doctornote_docnote);
+    doctornote_docnote.mrn = data.mrn;
+    doctornote_docnote.episno = data.episno;
 
     $.get( "/doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
@@ -726,10 +731,13 @@ function disable_edit_date(){
 }
 
 function check_same_usr_edit(data){
+	console.log(data);
 	let same = true;
     var adduser = data.adduser;
 
-    if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
+    if(adduser == null){
+    	same =false;
+    }else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
     	same = false;
     }
 
