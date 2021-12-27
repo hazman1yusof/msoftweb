@@ -294,12 +294,19 @@
 					$("#viewyear").hide();
 					$("#saveyear").show();
 					$("#cancelyear").show();
-					
 					$('#formdata select').prop("disabled",false);
 					addYear();
 					hdate.check();
 					$("#jqGridPager_left").show();
 				},
+			// }).jqGrid('navButtonAdd', "#jqGridPager", {
+			// 	id: "jqGridPagerRefresh",
+			// 	caption: "", cursor: "pointer", position: "last",
+			// 	buttonicon: "glyphicon glyphicon-refresh",
+			// 	title: "Refresh Table",
+			// 	onClickButton: function () {
+			// 		refreshGrid("#jqGrid", urlParam);
+			// 	},
 				
 			});
 
