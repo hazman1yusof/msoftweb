@@ -152,14 +152,14 @@ div.noti > li{
     		</div>
 		</div>
 
-        <div class="panel panel-default">
-		    	<div class="panel-heading">Delivery Order DataEntry Header</div>
-		    		<div class="panel-body">
-		    			<div class='col-md-12' style="padding:0 0 15px 0">
-            				<table id="jqGrid" class="table table-striped"></table>
-            					<div id="jqGridPager"></div>
-        				</div>
-		    		</div>
+    <div class="panel panel-default">
+    	<div class="panel-heading">Delivery Order DataEntry Header</div>
+    		<div class="panel-body">
+    			<div class='col-md-12' style="padding:0 0 15px 0">
+        				<table id="jqGrid" class="table table-striped"></table>
+        					<div id="jqGridPager"></div>
+    				</div>
+    		</div>
 		</div>
 
         	<!-- <div class='click_row'>
@@ -170,13 +170,13 @@ div.noti > li{
 				<label class="control-label">Purchase Dept</label>
         		<span id="prdeptdepan" style="display: block;">&nbsp</span>
         	</div> -->
-        	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
-				<label class="control-label" style="margin-top: 10px;">Print Label</label>
-        	</div>
+  	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
+			<label class="control-label" style="margin-top: 10px;">Print Label</label>
+  	</div>
 
 		 <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>GOOD RECEIVE NOTE NO: </b><span id="prdept_show"></span> - <span id="grnno_show"></span><br>
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
+				<b>GOOD RECEIVE NOTE NO: </b><span id="prdept_show"></span> - <span id="grnno_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -187,12 +187,24 @@ div.noti > li{
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
+				@if (Request::get('scope') == 'CANCEL')
+					<button 
+							type="button" 
+							class="btn btn-danger btn-sm" 
+							id="but_post2_jq"
+							data-oper="cancel"
+							style="float: right;margin: 0px 20px 10px 20px;">
+							Cancel DO
+					</button>
+				@endif
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3" class="table table-striped"></table>
 						<div id="jqGridPager3"></div>
 					</div>
 				</div>
-			</div>	
+				
+			</div>
+			
 		</div>
         
     </div>
@@ -283,9 +295,9 @@ div.noti > li{
 						  	<div class="form-group">
 						  	<label class="col-md-2 control-label" for="delordhd_reqdept">Request Department</label>	  
 								<div class="col-md-4" id="delordhd_reqdept_parent">
-									  <div class='input-group'>
-										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									  <div class='input-group2'>
+										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
+										<a class='input-group-addon btn btn-primary' style="display: none;"><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
 								</div>

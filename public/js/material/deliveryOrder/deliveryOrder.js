@@ -368,6 +368,8 @@ $(document).ready(function () {
 			$('#but_print_dtl').data('recno',selrowData("#jqGrid").delordhd_recno);
 
 			refreshGrid("#jqGrid3",urlParam2);
+
+			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
@@ -496,6 +498,24 @@ $(document).ready(function () {
 			
 		});
 	});
+
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.idno = selrowData('#jqGrid').delordhd_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( '/deliveryOrder/form', obj , function( data ) {
+			
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+	
 	
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -2077,7 +2097,7 @@ $(document).ready(function () {
 	dialog_deldept.makedialog();
 
 	var dialog_reqdept = new ordialog(
-		'reqdept', 'sysdb.department', '#delordhd_reqdept', errorField,
+		'reqdept', 'sysdb.department', '#delordhd_reqdept', 'errorField',
 		{
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -2107,9 +2127,10 @@ $(document).ready(function () {
 				dialog_reqdept.urlParam.filterCol=['recstatus','compcode','sector'];
 				dialog_reqdept.urlParam.filterVal=['ACTIVE', 'session.compcode', 'session.unit'];
 			}
-		},'urlParam'
+		},'urlParam','radio','tab'
 	);
 	dialog_reqdept.makedialog();
+	dialog_reqdept.required = false;
 
 	var dialog_pricecode = new ordialog(
 		'pricecode',['material.pricesource'],"#jqGrid2 input[name='pricecode']",errorField,
@@ -2577,6 +2598,27 @@ $(document).ready(function () {
 		}
 	}
 
+	function if_cancel_hide(){
+		if(selrowData('#jqGrid').delordhd_recstatus.trim().toUpperCase() == 'CANCELLED'){
+			$('#jqGrid3_panel').collapse('hide');
+			$('#ifcancel_show').text(' - CANCELLED');
+			$('#panel_jqGrid3').attr('data-target','-');
+		}else{
+			$('#jqGrid3_panel').collapse('show');
+			$('#ifcancel_show').text('');
+			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+		}
+	}
+
+	// $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
+	// 	sticky_docnotetbl(on=true);
+	//     docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+	// 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
+	// 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+	//     });
+	// });
+
+
 
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
@@ -2605,12 +2647,16 @@ $(document).ready(function () {
 });
 
 function populate_form(obj){
-
 	//panel header
 	$('#prdept_show').text(obj.delordhd_prdept);
 	$('#grnno_show').text(padzero(obj.delordhd_docno));
 	$('#suppcode_show').text(obj.supplier_name);
 	
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('t1NVB4YvxYnHs9re46yqRiJ1zvKduJutw5X').show();
+	}
 }
 
 function empty_form(){

@@ -560,31 +560,38 @@ class DeliveryOrderController extends defaultController
 
     public function cancel(Request $request){
         DB::beginTransaction();
-
         try{
 
             //--- 1. loop delorddt untuk masuk dalam ivtxndt ---//
 
+            $delordhd = DB::table('material.delordhd')
+                        ->where('idno','=',$request->idno);
+
+            $delordhd_obj = $delordhd->first();
+
+
+
                 //1.amik productcat dari table product
-            $productcat_obj = DB::table('material.delorddt')
-                ->select('product.productcat')
-                ->join('material.product', function($join) use ($request){
-                    $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
-                    $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
-                })
-                ->where('delorddt.compcode','=',session('compcode'))
-                ->where('product.groupcode','=','Stock')
-                ->where('delorddt.recno','=',$request->recno)
-                ->first();
-            $productcat = $productcat_obj->productcat;
+            // $productcat_obj = DB::table('material.delorddt')
+            //     ->select('product.productcat')
+            //     ->join('material.product', function($join) use ($request){
+            //         $join = $join->on('delorddt.itemcode', '=', 'product.itemcode');
+            //         $join = $join->on('delorddt.uomcode', '=', 'product.uomcode');
+            //     })
+            //     ->where('delorddt.compcode','=',session('compcode'))
+            //     ->where('product.groupcode','=','Stock')
+            //     ->where('delorddt.recno','=',$request->recno)
+            //     ->first();
+            // $productcat = $productcat_obj->productcat;
 
             $delorddt_obj = DB::table('material.delorddt')
                 ->where('delorddt.compcode','=',session('compcode'))
-                ->where('delorddt.recno','=',$request->recno)
+                ->where('delorddt.unit','=',session('unit'))
+                ->where('delorddt.recno','=',$delordhd_obj->recno)
                 ->where('delorddt.recstatus','!=','DELETE')
                 ->get();
 
-                //2. start looping untuk delorddt
+            //2. start looping untuk delorddt
             foreach ($delorddt_obj as $value) {
 
                 //3. dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
@@ -592,7 +599,7 @@ class DeliveryOrderController extends defaultController
                     ->select('uom.convfactor')
                     ->join('material.uom','delorddt.pouom','=','uom.uomcode')
                     ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$request->recno)
+                    ->where('delorddt.recno','=',$value->recno)
                     ->where('delorddt.lineno_','=',$value->lineno_)
                     ->first();
                 $convfactorPOUOM = $convfactorPOUOM_obj->convfactor;
@@ -601,7 +608,7 @@ class DeliveryOrderController extends defaultController
                     ->select('uom.convfactor')
                     ->join('material.uom','delorddt.uomcode','=','uom.uomcode')
                     ->where('delorddt.compcode','=',session('compcode'))
-                    ->where('delorddt.recno','=',$request->recno)
+                    ->where('delorddt.recno','=',$value->recno)
                     ->where('delorddt.lineno_','=',$value->lineno_)
                     ->first();
                 $convfactorUOM = $convfactorUOM_obj->convfactor;
@@ -612,17 +619,54 @@ class DeliveryOrderController extends defaultController
                 //4. update dalam ivtxnhd  ivtxndt
                 DB::table('material.ivtxnhd')
                     ->where('ivtxnhd.compcode', '=', session('compcode'))
-                    ->where('ivtxnhd.recno', '=', $request->recno)
+                    ->where('ivtxnhd.recno', '=', $value->recno)
                     ->update(['recstatus' => 'CANCELLED']);
 
                 DB::table('material.ivtxndt')
                     ->where('ivtxndt.compcode', '=', session('compcode'))
-                    ->where('ivtxndt.recno', '=', $request->recno)
+                    ->where('ivtxndt.recno', '=', $value->recno)
                     ->update([
-                        'netprice' => $netprice,
+                        // 'netprice' => $netprice,
                         'recstatus' =>'CANCELLED'
-                    ]);    
+                    ]);
 
+                $ivtxndt = DB::table('material.ivtxndt')
+                            ->where('ivtxndt.compcode', '=', session('compcode'))
+                            ->where('ivtxndt.unit', '=', session('unit'))
+                            ->where('ivtxndt.recno', '=', $value->recno)
+                            ->where('ivtxndt.lineno_', '=', $value->lineno_)
+                            ->first();
+
+                DB::table('material.ivtxndt')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), //ikut unit delorddt
+                        'recno' => $ivtxndt->recno, 
+                        'lineno_' => $ivtxndt->lineno_, 
+                        'itemcode' => $ivtxndt->itemcode, 
+                        'uomcode' => $ivtxndt->uomcode, 
+                        'txnqty' => $ivtxndt->txnqty, 
+                        'netprice' => $ivtxndt->netprice, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'), 
+                        'productcat' => $ivtxndt->productcat, 
+                        'draccno' => $ivtxndt->draccno, 
+                        'drccode' => $ivtxndt->drccode, 
+                        'craccno' => $ivtxndt->craccno, 
+                        'crccode' => $ivtxndt->crccode, 
+                        'expdate' => $ivtxndt->expdate, 
+                        'remarks' => $ivtxndt->remarks, 
+                        'qtyonhand' => 0, 
+                        'batchno' => $ivtxndt->batchno, 
+                        'amount' => $ivtxndt->amount, 
+                        'trandate' => $ivtxndt->trandate, 
+                        'trantype' => 'GRC',
+                        'deptcode' => $ivtxndt->deptcode, 
+                        'gstamount' => $ivtxndt->gstamount, 
+                        'totamount' => $ivtxndt->totamount
+                    ]);
 
                 //--- 3. cancel to stockloc ---///
                 //1. amik stockloc
@@ -637,7 +681,7 @@ class DeliveryOrderController extends defaultController
                 if($stockloc_obj->exists()){
                     $stockloc_obj = $stockloc_obj->first();
 
-                //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
+                    //3. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
                     $stockloc_arr = (array)$stockloc_obj;
                     $month = defaultController::toMonth($value->trandate);
                     $QtyOnHand = $stockloc_obj->qtyonhand - $txnqty; 
@@ -720,7 +764,7 @@ class DeliveryOrderController extends defaultController
                     }else{
                         $newAvgCost = ($OldAmount - $NewAmount) / ($OldQtyOnHand - $txnqty);
                     }
-
+                    
                     // update qtyonhand, avgcost, currprice
                     $product_obj = DB::table('material.product')
                         ->where('product.compcode','=',session('compcode'))
@@ -739,10 +783,8 @@ class DeliveryOrderController extends defaultController
                 //amik ivtxnhd
                 $ivtxnhd_obj = DB::table('material.ivtxnhd')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
+                    ->where('recno','=',$value->recno)
                     ->first();
-
-                // dd($request->recno);
 
                 //amik yearperiod dari delordhd
                 $yearperiod = $this->getyearperiod($ivtxnhd_obj->trandate);
@@ -758,7 +800,7 @@ class DeliveryOrderController extends defaultController
                 $row_cat = DB::table('material.category')
                     ->select('stockacct')
                     ->where('compcode','=',session('compcode'))
-                    ->where('catcode','=',$productcat)
+                    ->where('catcode','=',$ivtxndt->productcat)
                     ->first();
                 //utk credit costcode dgn accountocde
                 $row_sysparam = DB::table('sysdb.sysparam')
@@ -769,12 +811,34 @@ class DeliveryOrderController extends defaultController
                     ->first();
 
                 //1. delete gltran
+                $gltran_obj = DB::table('finance.gltran')
+                        ->where('auditno','=', $value->recno)
+                        ->where('lineno_','=', $value->lineno_)
+                        ->where('source','=','IV')
+                        ->where('trantype','=','GRN')
+                        ->first();
+
                 DB::table('finance.gltran')
-                    ->where('auditno','=', $request->recno)
-                    ->where('lineno_','=', $value->lineno_)
-                    ->where('source','=','IV')
-                    ->where('trantype','=','GRN')
-                    ->delete();
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'auditno' => $gltran_obj->auditno,
+                        'lineno_' => $gltran_obj->lineno_,
+                        'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
+                        'trantype' => 'GRC',
+                        'reference' => $gltran_obj->reference,
+                        'description' => $gltran_obj->description, 
+                        'postdate' => $gltran_obj->postdate,
+                        'year' => $gltran_obj->year,
+                        'period' => $gltran_obj->period,
+                        'drcostcode' => $gltran_obj->drcostcode,
+                        'dracc' => $gltran_obj->dracc,
+                        'crcostcode' => $gltran_obj->crcostcode,
+                        'cracc' => $gltran_obj->cracc,
+                        'amount' => -floatval($gltran_obj->amount),
+                        'idno' => $gltran_obj->idno
+                    ]);
 
                 //2. check glmastdtl utk debit, kalu ada update kalu xde create
                 if($this->isGltranExist($row_dept->costcode,$row_cat->stockacct,$yearperiod->year,$yearperiod->period)){
@@ -849,7 +913,7 @@ class DeliveryOrderController extends defaultController
 
                     //1. delete gltran utk GST
                         DB::table('finance.gltran')
-                            ->where('auditno','=', $request->recno)
+                            ->where('auditno','=', $value->recno)
                             ->where('lineno_','=', $value->lineno_)
                             ->where('source','=','IV')
                             ->where('trantype','=','GST')
@@ -891,11 +955,11 @@ class DeliveryOrderController extends defaultController
                 }
 
                 //---- 8. update po kalu ada srcdocno ---//
-                if(!empty($value->srcdocno) || $value->srcdocno != 0){
+                if(!empty($delordhd_obj->srcdocno) || $delordhd_obj->srcdocno != 0){
                     
                     $purordhd = DB::table('material.purordhd')
                         ->where('compcode','=',session('compcode'))
-                        ->where('purordno','=',$value->srcdocno)
+                        ->where('purordno','=',$delordhd_obj->srcdocno)
                         ->first();
 
                     $po_recno = $purordhd->recno;
@@ -916,32 +980,30 @@ class DeliveryOrderController extends defaultController
                     ]);
 
 
-                    //update qtyoutstand utk suma DO pulak
-                    $delordhd = DB::table('material.delorddt')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('itemcode','=',$value->itemcode)
-                        ->where('prdept','=',$delordhd_obj->prdept)
-                        ->where('srcdocno','=',$delordhd_obj->srcdocno)
-                        ->update([
-                            'qtyoutstand' => $qtyoutstand
-                        ]);
+                    // update qtyoutstand utk suma DO pulak
+                    // $delordhd = DB::table('material.delorddt')
+                    //     ->where('compcode','=',session('compcode'))
+                    //     ->where('itemcode','=',$value->itemcode)
+                    //     ->where('prdept','=',$delordhd_obj->prdept)
+                    //     ->where('srcdocno','=',$delordhd_obj->srcdocno)
+                    //     ->update([
+                    //         'qtyoutstand' => $qtyoutstand
+                    //     ]);
 
                 }
 
             } // habis looping untuk delorddt
 
+
+            if(!empty($delordhd_obj->srcdocno) || $delordhd_obj->srcdocno != 0){
+                $purordhd = DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('purordno','=',$delordhd_obj->srcdocno)
+                    ->update(['delordno' => ""]);
+            }
+
             //--- 9. change recstatus to cancelled ---//
-
-            $delordhd = DB::table('material.delordhd')
-                        ->where('recno','=',$request->recno)
-                        ->where('compcode','=',session('compcode'));
-
-            $delordhd_obj = $delordhd->first();
-
-            $purordhd = DB::table('material.purordhd')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('purordno','=',$delordhd_obj->srcdocno)
-                        ->update(['delordno' => ""]);
 
             $delordhd->update([
                     'postedby' => session('username'),

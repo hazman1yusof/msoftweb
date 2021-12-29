@@ -1520,8 +1520,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				if($.inArray(idtopush,errorField)!==-1){
 					errorField.splice($.inArray(idtopush,errorField), 1);
 				}
-				$( id ).parent().parent().removeClass( "has-error" );
-				$( id ).removeClass( "error" );
+				$( id ).parent().parent().removeClass( "has-error" ).removeClass( "has-success" );
+				$( id ).removeClass( "error" ).removeClass( "valid" );
 				$( id ).parent().siblings( ".help-block" ).html('');
 
 			}else if(self.required == false && value != ''){
@@ -1529,8 +1529,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					if($.inArray(idtopush,errorField)!==-1){
 						errorField.splice($.inArray(idtopush,errorField), 1);
 					}
-					$( id ).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
-					$( id ).removeClass( "error" ).addClass( "valid" );
+					$( id ).parent().parent().removeClass( "has-error" ).removeClass( "has-success" );
+					$( id ).removeClass( "error" ).removeClass( "valid" );
 					$( id ).parent().siblings( ".help-block" ).html(desc2);
 					$( id ).parent().siblings( ".help-block" ).show();
 				}else{
