@@ -268,7 +268,7 @@
 					{label: 'Credit Limit', name: 'creditlimit', hidden: true},
 					{label: 'Actual <br> Cost Center', name: 'actdebccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Actual <br> GL Acct', name: 'actdebglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
-					{label: 'Deposit <br> Cost Center', name: 'depccode', width: 60, formatter: showdetail,unformat: unformat_showdetail},
+					{label: 'Deposit <br> Cost Center', name: 'depccode', width: 90, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Deposit <br> GL Acct', name: 'depglacc', width: 90, formatter: showdetail,unformat: unformat_showdetail},
 					{label: 'Otherccode', name: 'otherccode', hidden: true},
 					{label: 'Otheracct', name: 'otheracct', hidden: true},

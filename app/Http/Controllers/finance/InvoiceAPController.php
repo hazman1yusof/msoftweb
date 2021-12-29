@@ -264,25 +264,69 @@ use Carbon\Carbon;
         }
     }
 
+    // public function cancel(Request $request){
+    //         $apacthdr = DB::table('finance.apacthdr')
+    //                         ->where('auditno','=',$request->auditno)
+    //                         ->where('compcode','=',session('compcode'));
+    //         $apacthdr
+    //             ->update([
+    //                 'upduser' => session('username'),
+    //                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+    //                 'recstatus' => 'CANCELLED' 
+    //             ]);
+    //         DB::table('finance.apactdtl')
+    //             ->where('source','=',$apacthdr->first()->source)
+    //             ->where('trantype','=',$apacthdr->first()->trantype)
+    //             ->where('auditno','=',$apacthdr->first()->auditno)
+    //             ->where('compcode','=',session('compcode'))
+    //             ->delete();   
+    // }
+      
     public function cancel(Request $request){
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->where('auditno','=',$request->auditno)
-                        ->where('compcode','=',session('compcode'));
+        DB::beginTransaction();
 
-        $apacthdr
-            ->update([
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                'recstatus' => 'CANCELLED' 
-            ]);
+        try {
+            foreach ($request->idno_array as $auditno){
 
-        DB::table('finance.apactdtl')
-            ->where('source','=',$apacthdr->first()->source)
-            ->where('trantype','=',$apacthdr->first()->trantype)
-            ->where('auditno','=',$apacthdr->first()->auditno)
-            ->where('compcode','=',session('compcode'))
-            ->delete();
-           
+                $apacthdr = DB::table('finance.apacthdr')
+                ->where('auditno','=',$auditno)
+                ->first();
+
+                $apactdtl = DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=', $auditno);
+                
+                DB::table('finance.apacthdr')
+                    ->where('auditno','=',$auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'recstatus' => 'CANCELLED' 
+                    ]);
+                
+                    if($apactdtl->exists()){ 
+                        foreach ($apactdtl->get() as $value) {
+                            DB::table('material.delordhd')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('recstatus','=','POSTED')
+                                ->where('delordno','=',$value->document)
+                                ->update(['invoiceno'=>""]);
+                        }
+                    }
+
+                DB::table('finance.apactdtl')
+                    ->where('source','=',$apacthdr->first()->source)
+                    ->where('trantype','=',$apacthdr->first()->trantype)
+                    ->where('auditno','=',$apacthdr->first()->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->delete();
+            }    
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function gltran($auditno){

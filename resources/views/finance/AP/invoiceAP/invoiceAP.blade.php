@@ -87,16 +87,20 @@ i.fa {
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button 
-						type="button" 
+					type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
 						data-oper="posted" 
 						style="display: none;">
-						POST
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
 					</button>
 
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == strtoupper('ALL'))
+						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}

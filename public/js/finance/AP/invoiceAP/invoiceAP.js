@@ -274,12 +274,18 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			if (stat == scope) {
-				$('#but_cancel_jq').show();
-			} else if (stat == "CANCELLED") {
+			if (stat == "CANCELLED") {
 				$('#but_reopen_jq').show();
+				$("#jqGridPager_left").hide();
+			} else if (stat == "POSTED") {
+				$('#but_cancel_jq').show();
+				$("#jqGridPager_left").show();
 			} else {
-				if(scope.toUpperCase() == 'ALL'){
+				if(scope.toUpperCase() == 'all'){
+					if(stat=='OPEN' && stat == 'POSTED'){
+						$('#but_post_jq').show();
+						$("#jqGridPager_left").show();
+					}
 				}
 			}
 
@@ -325,7 +331,7 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
-			//$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
+			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
@@ -562,16 +568,16 @@ $(document).ready(function () {
 
 	////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
-	function searchBy(){
-		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
-			if(value['canSearch']){
-				if(value['checked']){
-					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
-				}else{
-					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid','#searchForm',urlParam);
+			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
 	}
 
@@ -1131,15 +1137,15 @@ $(document).ready(function () {
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
 			{ label: 'No', name: 'lineno_', width: 60, frozen:true, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 450, classes: 'wrap', editable:false},
-			{ label: 'Price Code', name: 'pricecode', width: 150, classes: 'wrap', editable:true,
+			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
+			{ label: 'Price Code', name: 'pricecode', width: 200, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:pricecodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 150, classes: 'wrap', editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
@@ -1163,7 +1169,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Quantity Delivered', name: 'qtydelivered', width: 140, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Quantity <br> Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
@@ -1179,11 +1185,11 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'O/S Quantity', name: 'qtyoutstand', width: 130, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'O/S <br> Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Unit Price', name: 'unitprice', width: 90, align: 'right', classes: 'wrap', 
+			{ label: 'Unit Price', name: 'unitprice', width: 100, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1199,14 +1205,14 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Tax Code', name: 'taxcode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Tax Code', name: 'taxcode', width: 150, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:taxcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Percentage Discount (%)', name: 'perdisc', width: 160, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 100, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1222,7 +1228,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Discount Per Unit', name: 'amtdisc', width: 130, align: 'right', classes: 'wrap', 
+			{ label: 'Discount <br> Per Unit', name: 'amtdisc', width: 100, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1238,7 +1244,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Total GST Amount', name: 'tot_gst', width: 120, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total <br> GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
 				editoptions:{
@@ -1256,12 +1262,12 @@ $(document).ready(function () {
 			},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Total Line Amount', name: 'totamount', width: 120, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total <br> Line Amount', name: 'totamount', width: 130, align: 'right', classes: 'wrap', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Expiry <br> Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -1294,7 +1300,7 @@ $(document).ready(function () {
 		],
 		scroll: false,
 		autowidth: true,
-		shrinkToFit: true,
+		shrinkToFit: false,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
