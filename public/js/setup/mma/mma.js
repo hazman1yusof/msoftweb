@@ -16,6 +16,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -107,15 +108,29 @@ $(document).ready(function () {
 	});
 
 	function check_cust_rules(rowid){
-		var chk = ['mmacode','description'];
-		chk.forEach(function(e,i){
-			var val = $("#jqGrid input[name='"+e+"']").val();
-			if(val.trim().length <= 0){
-				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
-			}else{
-				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
-			}
-		})
+		var mmacode = $("#jqGrid input[name='mmacode']").val();
+		var description = $("#jqGrid textarea[name='description']").val();
+
+		if(mmacode.trim().length <= 0){
+			myerrorIt_only("#jqGrid input[name='mmacode']",true);
+		}else{
+			myerrorIt_only("#jqGrid input[name='mmacode']",false);
+		}
+
+		if(description.trim().length <= 0){
+			myerrorIt_only("#jqGrid input[name='description']",true);
+		}else{
+			myerrorIt_only("#jqGrid input[name='description']",false);
+		}
+
+		// chk.forEach(function(e,i){
+		// 	var val = $("#jqGrid input[name='"+e+"']").val();
+		// 	if(val.trim().length <= 0){
+		// 		myerrorIt_only("#jqGrid input[name='"+e+"']",true);
+		// 	}else{
+		// 		myerrorIt_only("#jqGrid input[name='"+e+"']",false);
+		// 	}
+		// })
 	}
 
 	//////////////////////////My edit options /////////////////////////////////////////////////////////
@@ -160,7 +175,6 @@ $(document).ready(function () {
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
 
 			check_cust_rules();
 
@@ -198,7 +212,7 @@ $(document).ready(function () {
 			});
 
 			let selrow = $("#jqGrid").jqGrid ('getRowData', rowid);
-			$('textarea[name=description]').val(selrow.description)
+			// $('textarea[name=description]').val(selrow.description)
 
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
@@ -218,7 +232,6 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
-			console.log(errorField)
 			$('#p_error').text('');
             if(errorField.length>0)return false;
 
