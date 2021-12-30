@@ -153,6 +153,16 @@ i.fa {
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
+					@if (Request::get('scope') == 'CANCEL')
+						<button 
+								type="button" 
+								class="btn btn-danger btn-sm" 
+								id="but_post2_jq"
+								data-oper="cancel"
+								style="float: right;margin: 0px 20px 10px 20px;">
+								Cancel Invoice
+						</button>
+					@endif
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3" class="table table-striped"></table>
 						<div id="jqGridPager3"></div>

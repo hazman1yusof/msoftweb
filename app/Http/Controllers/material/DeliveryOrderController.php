@@ -569,6 +569,10 @@ class DeliveryOrderController extends defaultController
 
             $delordhd_obj = $delordhd->first();
 
+            if($delordhd_obj->recstatus != 'POSTED'){
+                throw new \Exception("Cannot delete unposted DO");
+            }
+
 
 
                 //1.amik productcat dari table product
