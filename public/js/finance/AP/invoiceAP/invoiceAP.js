@@ -1164,7 +1164,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 170, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
@@ -1188,7 +1188,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Quantity <br> Delivered', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Qty <br> Delivered', name: 'qtydelivered', width: 120, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
@@ -1231,7 +1231,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 100, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 115, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1319,7 +1319,7 @@ $(document).ready(function () {
 		],
 		scroll: false,
 		autowidth: true,
-		shrinkToFit: false,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -1586,13 +1586,15 @@ $(document).ready(function () {
 	function if_cancel_hide(){
 		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
+			$('#gridDo_panel').collapse('hide');
 			$('#gridDo').hide();
 			$('#ifcancel_show').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
 			$('#panel_gridDo').attr('data-target','-')
 		}else{
 			$('#jqGrid3_panel').collapse('show');
-			$('#gridDo').collapse('show');
+			$('#gridDo_panel').collapse('show');
+			$('#gridDo').show();
 			$('#ifcancel_show').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
 			$('#panel_gridDo').attr('data-target','#gridDo_panel');
