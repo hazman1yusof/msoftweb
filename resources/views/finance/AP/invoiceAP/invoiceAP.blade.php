@@ -153,7 +153,7 @@ i.fa {
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
-					@if (Request::get('scope') == 'CANCEL')
+					@if (strtoupper(Request::get('scope')) == 'CANCEL')
 						<button 
 								type="button" 
 								class="btn btn-danger btn-sm" 

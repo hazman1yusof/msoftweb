@@ -355,7 +355,7 @@ use Carbon\Carbon;
                     'recstatus' => 'CANCELLED' 
                 ]);
                
-            // DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
             return response($e->getMessage(), 500);
