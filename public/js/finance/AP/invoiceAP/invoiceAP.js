@@ -1586,13 +1586,13 @@ $(document).ready(function () {
 	function if_cancel_hide(){
 		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
-			$('#panel_gridDo').collapse('hide');
+			$('#gridDo').hide();
 			$('#ifcancel_show').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
 			$('#panel_gridDo').attr('data-target','-')
 		}else{
 			$('#jqGrid3_panel').collapse('show');
-			$('#panel_gridDo').collapse('show');
+			$('#gridDo').collapse('show');
 			$('#ifcancel_show').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
 			$('#panel_gridDo').attr('data-target','#gridDo_panel');
