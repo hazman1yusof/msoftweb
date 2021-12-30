@@ -274,20 +274,19 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			let scope = $("#recstatus_use").val();
 
-			if (stat == "CANCELLED") {
-				$('#but_reopen_jq').show();
-				$("#jqGridPager_left").hide();
-			} else if (stat == "POSTED") {
-				$('#but_cancel_jq').show();
-				$("#jqGridPager_left").show();
-			} else {
-				if(scope.toUpperCase() == 'all'){
-					if(stat=='OPEN' && stat == 'POSTED'){
-						$('#but_post_jq').show();
-						$("#jqGridPager_left").show();
-					}
-				}
-			}
+			// if (stat == "CANCELLED" && scope == "cancel") {
+			// 	$('#but_reopen_jq').show();
+			// 	$('#but_cancel_jq').hide();
+			// 	$('td#glyphicon-plus,td#glyphicon-edit').hide();
+			// } else if (stat == "POSTED" && scope == "cancel") {
+			// 	$('#but_cancel_jq').show();
+			// 	$('td#glyphicon-plus,td#glyphicon-edit').hide();
+			// } else if (stat == "OPEN" || stat == "POSTED" && scope.toUpperCase() == 'all') {
+			// 	$('#but_cancel_jq').show();
+			// 	$('#but_post_jq').show();
+			// } else {
+			
+			// }
 
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -307,6 +306,7 @@ $(document).ready(function () {
 			//empty_form();
 
 			refreshGrid("#jqGrid3",urlParam2);
+			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -367,7 +367,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
+		caption: "", cursor: "pointer", id:"glyphicon-edit", position: "first",
 		buttonicon: "glyphicon glyphicon-edit",
 		title: "Edit Selected Row",
 		onClickButton: function () {
@@ -379,6 +379,7 @@ $(document).ready(function () {
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
 		buttonicon: "glyphicon glyphicon-plus",
+		id: 'glyphicon-plus',
 		title: "Add New Row",
 		onClickButton: function () {
 			oper = 'add';
@@ -484,6 +485,23 @@ $(document).ready(function () {
 		$.post( '/invoiceAP/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.idno = selrowData('#jqGrid').apacthdr_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( '/invoiceAP/form', obj , function( data ) {
+			
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
 		}).success(function(data){
@@ -1564,6 +1582,22 @@ $(document).ready(function () {
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 
+	function if_cancel_hide(){
+		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
+			$('#jqGrid3_panel').collapse('hide');
+			$('#panel_gridDo').collapse('hide');
+			$('#ifcancel_show').text(' - CANCELLED');
+			$('#panel_jqGrid3').attr('data-target','-');
+			$('#panel_gridDo').attr('data-target','-')
+		}else{
+			$('#jqGrid3_panel').collapse('show');
+			$('#panel_gridDo').collapse('show');
+			$('#ifcancel_show').text('');
+			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+			$('#panel_gridDo').attr('data-target','#gridDo_panel');
+		}
+	}
+
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
@@ -1612,6 +1646,11 @@ function populate_form(obj){
 	$('#document_show').text(obj.apacthdr_document);
 	$('#suppcode_show').text(obj.supplier_name);
 	
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
+	}
 }
 
 function empty_form(){

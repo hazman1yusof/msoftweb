@@ -141,8 +141,8 @@ i.fa {
 
 
 	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><br>
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
+				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -153,18 +153,27 @@ i.fa {
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
+				@if (strtoupper(Request::get('scope')) == 'CANCEL')
+					<button 
+							type="button" 
+							class="btn btn-danger btn-sm" 
+							id="but_post2_jq"
+							data-oper="cancel"
+							style="float: right;margin: 0px 20px 10px 20px;">
+							Cancel Invoice
+					</button>
+				@endif
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3" class="table table-striped"></table>
 						<div id="jqGridPager3"></div>
 					</div>
 				</div>
-			</div>	
+				
+			</div>
 		</div>   
 
 		<div class="panel panel-default" style="position: relative;" id="gridDo_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel">
-				<!-- <b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><br>
-				<b>SUPPLIER NAME: </b><span id="suppcode_show"></span> -->
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel" id="panel_gridDo">
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
