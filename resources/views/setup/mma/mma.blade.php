@@ -69,8 +69,8 @@ i.fa {
 		</div>
 
 		<div class="panel-group">
-			<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+			<div class="panel panel-default" style="position: relative;" id="jqGrid2_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid2_panel">
 					<b>MMA Code: <span id="mmacode_show"></span></b><br>
 						Description: <span id="description_show"></span>
 						<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -81,11 +81,11 @@ i.fa {
 				</div>
 
 
-				<div id="jqGrid3_panel" class="panel-collapse collapse">
+				<div id="jqGrid2_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<form id='formdata3' class='form-vertical' style='width:99%'>
 							<div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGrid3" class="table table-striped"></table>
+								<table id="jqGrid2" class="table table-striped"></table>
 								<div id="jqGridPager3"></div>
 							</div>
 						</form>

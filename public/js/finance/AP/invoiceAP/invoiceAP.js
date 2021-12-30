@@ -501,7 +501,8 @@ $(document).ready(function () {
 		oper=null;
 		
 		$.post( '/invoiceAP/form', obj , function( data ) {
-			
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
 		}).success(function(data){
