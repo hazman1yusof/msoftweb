@@ -524,7 +524,7 @@ class DoctorNoteController extends defaultController
             $data = [];
 
             foreach ($pathealth_obj as $key => $value) {
-                $date['date'] =  $value->adddate.' '.$value->recordtime;
+                $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;
@@ -556,7 +556,7 @@ class DoctorNoteController extends defaultController
             $data = [];
 
             foreach ($patexam_obj as $key => $value) {
-                $date['date'] =  explode(" ",$value->adddate)[0].' '.$value->recordtime;
+                $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;

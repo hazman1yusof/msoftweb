@@ -502,7 +502,6 @@ function populate_doctorNote_emergency(obj,rowdata){
 }
 
 function on_toggling_curr_past(obj = curr_obj){
-	console.log(obj)
 	var addnotes = document.getElementById("addnotes");
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
@@ -513,6 +512,7 @@ function on_toggling_curr_past(obj = curr_obj){
 		
 		addnotes.style.display = "none";
 		enableFields();
+		datable_medication.clear().draw();
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
@@ -534,6 +534,11 @@ function autoinsert_rowdata_doctorNote(form,rowData){
 		}else if(input.is("[type=checkbox]")){
 			if(value==1){
 				$(form+" [name='"+index+"']").prop('checked', true);
+			}
+		}else if(input.is("textarea")){
+			if(value !== null){
+				let newval = value.replaceAll("</br>",'\n');
+				input.val(newval);
 			}
 		}else{
 			input.val(value);
