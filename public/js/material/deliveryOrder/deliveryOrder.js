@@ -2603,10 +2603,12 @@ $(document).ready(function () {
 			$('#jqGrid3_panel').collapse('hide');
 			$('#ifcancel_show').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');
+			$('i.fa-angle-double-up,i.fa-angle-double-down').addClass('fa-disable');
 		}else{
 			$('#jqGrid3_panel').collapse('show');
 			$('#ifcancel_show').text('');
 			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+			$('i.fa-angle-double-up,i.fa-angle-double-down').removeClass('fa-disable');
 		}
 	}
 
@@ -2655,7 +2657,7 @@ function populate_form(obj){
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
 	}else{
-		$('t1NVB4YvxYnHs9re46yqRiJ1zvKduJutw5X').show();
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
 	}
 }
 

@@ -40,6 +40,10 @@ div.noti > li{
 	text-transform: uppercase;
 }
 
+.fa-disable{
+	opacity:.3;
+}
+
 #more {display: none;}
 
 @endsection
