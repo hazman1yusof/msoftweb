@@ -1483,6 +1483,12 @@ function populate_form(obj){
 	$('#trantype_show').text(obj.apacthdr_trantype);
 	$('#document_show').text(obj.apacthdr_document);
 	$('#suppcode_show').text(obj.supplier_name);
+
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
+	}
 	
 }
 
