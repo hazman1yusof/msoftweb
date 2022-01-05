@@ -274,6 +274,7 @@ $(document).ready(function () {
 			{ label: 'canceldate', name: 'delordhd_canceldate', width: 40, hidden:'true'},
 			{ label: 'reopenby', name: 'delordhd_reopenby', width: 40, hidden:'true'},
 			{ label: 'reopendate', name: 'delordhd_reopendate', width: 40, hidden:'true'},
+			{ label: 'unit', name: 'delordhd_unit', width: 40, hidden:true},
 
 		],
 		autowidth:true,
@@ -408,7 +409,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus']);
+	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -1462,6 +1463,7 @@ $(document).ready(function () {
 				{label:'Per Disc',name:'h_perdisc',width:400,classes:'pointer', hidden:true},
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
 				{label:'received time',name:'h_trantime',width:400,classes:'pointer', hidden:true},
+				{label:'h_taxclaimable',name:'h_taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
 				
 			],
@@ -1485,9 +1487,14 @@ $(document).ready(function () {
 				$("#delordhd_TaxAmt").val('0.00');
 				$("#delordhd_totamount").val('0.00');
 				$("#delordhd_taxclaimable").val(data['h_taxclaimable']);
+				$("#formdata input[type='radio'][name='delordhd_taxclaimable'][value='"+data['h_taxclaimable']+"']").prop('checked', true);
 				$("#delordhd_subamount").val('0.00');
 				$("#delordhd_recstatus").val(data['h_recstatus']);
 				$('#referral').val(data['h_recno']);
+
+				dialog_suppcode.check(errorField);
+				dialog_credcode.check(errorField);
+				dialog_deldept.check(errorField);
 
 				var urlParam2 = {
 					action: 'get_value_default',

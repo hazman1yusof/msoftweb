@@ -197,11 +197,6 @@ i.fa {
 									<span class="help-block"></span>
 								</div>
 
-						  		<label class="col-md-1 control-label" for="delordhd_docno">GRT No</label>  
-						  		<div class="col-md-2"> 
-									<input id="delordhd_docno" name="delordhd_docno" type="text" maxlength="12" class="form-control input-sm" rdonly >
-								</div>
-
 						  		<label class="col-md-1 control-label" for="delordhd_srcdocno">GRN No</label>  
 						  		<div class="col-md-2"> 
 						  			<div class='input-group'>
@@ -210,6 +205,11 @@ i.fa {
 						  			</div>
 									<span class="help-block"></span>
 						  		</div>
+
+						  		<label class="col-md-1 control-label" for="delordhd_docno">GRT No</label>  
+						  		<div class="col-md-2"> 
+										<input id="delordhd_docno" name="delordhd_docno" type="text" maxlength="12" class="form-control input-sm" rdonly >
+									</div>
 							</div>
 
 							<div class="form-group">
@@ -260,34 +260,22 @@ i.fa {
 						  		</div>
 						  	</div>
 
-						  	<div class="form-group">
-						  	<label class="col-md-2 control-label" for="delordhd_reqdept">Request Department</label>	  
-								<div class="col-md-4" id="delordhd_reqdept_parent">
-									<div class='input-group'>
-										<input id="delordhd_reqdept" name="delordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-
-									<span class="help-block"></span>
-								</div>
-								</div>
-
 
 						  	<hr/>
 
 						  	<div class="form-group">		
-						  		<label class="col-md-2 control-label" for="delordhd_trandate">Received Date</label>  
+						  		<label class="col-md-2 control-label" for="delordhd_trandate">Returned Date</label>  
 						  		<div class="col-md-2">
 									<input id="delordhd_trandate" name="delordhd_trandate" type="date" maxlength="10" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" min="{{Carbon\Carbon::now()->subDays(20)->format('Y-m-d')}}" 
 										max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						  		</div>
 
-						  		<label class="col-md-2 control-label" for="delordhd_trantime">Received Time</label>  
+						  		<label class="col-md-2 control-label" for="delordhd_trantime">Returned Time</label>  
 					  			<div class="col-md-2">
 									<input id="delordhd_trantime" name="delordhd_trantime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('h:i a')}}">
 					  			</div>
 
-					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Delivery Date</label>  
+					  			<label class="col-md-2 control-label" for="delordhd_deliverydate">Entered Date</label>  
 						  			<div class="col-md-2">
 									<input id="delordhd_deliverydate" name="delordhd_deliverydate" type="date" maxlength="10" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" >
 						  		</div>
@@ -319,19 +307,19 @@ i.fa {
 
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='Non-Claimable' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='CLAIMABLE'>Yes</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='NON-CLAIMABLE' selected>No</label>
 								  </div>
-
+								<!-- 
 							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  
 							  <div class="col-md-2">
 								<input id="delordhd_recstatus" name="delordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-							  </div>
+							  </div> -->
 							</div>	
 
 							<hr/>
 
-							<div class="form-group">
+							<!-- <div class="form-group">
 							  <label class="col-md-2 control-label" for="delordhd_respersonid">Certified By</label> 
 							  <div class="col-md-2">
 									<div class='input-group'>
@@ -341,7 +329,7 @@ i.fa {
 
 									<span class="help-block"></span>
 							  </div> 
-							</div>
+							</div> -->
 
 							<div class="form-group">
 					    		<label class="col-md-2 control-label" for="delordhd_remarks">Remarks</label> 
