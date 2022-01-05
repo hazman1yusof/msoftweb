@@ -200,7 +200,7 @@ use Carbon\Carbon;
             $field = $request->field;
             $idno = $request->table_id;
         }
-
+        
         DB::beginTransaction();
 
         $table = DB::table("finance.apacthdr");
