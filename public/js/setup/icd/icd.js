@@ -50,9 +50,9 @@ $(document).ready(function () {
 			// },
 			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
-					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
+					{style: "width: -webkit-fill-available; text-transform: uppercase", rows: 5}
 			},
-			{ label: 'Type', name: 'type', width: 20, hidden: false },            
+			{ label: 'Type', name: 'type', width: 20, canSearch: true, hidden: false},            
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
             { label: 'adddate', name: 'adddate', width: 90, hidden:true},
             { label: 'upduser', name: 'upduser', width: 90, hidden:true},
