@@ -36,17 +36,17 @@ $(document).ready(function () {
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
-	var oper = 'add';
 	var oper=null;
-	var unsaved = false,counter_save=0;
+	var unsaved = false;
 	$("#dialogForm")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
-				counter_save=0;
 				parent_close_disabled(true);
+				unsaved = false;
+				errorField.length=0;
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				switch (oper) {
@@ -91,7 +91,7 @@ $(document).ready(function () {
 					event.preventDefault();
 					bootbox.confirm("Are you sure want to leave without save?", function(result){
 						if (result == true) {
-							unsaved = false
+							unsaved = false;
 							$("#dialogForm").dialog('close');
 						}
 					});
@@ -103,7 +103,7 @@ $(document).ready(function () {
 				addmore_jqgrid2.more = false;
 				//reset balik
 				parent_close_disabled(false);
-				emptyFormdata(errorField,'#formdata');
+				emptyFormdata(errorField,'#formdata',['#apacthdr_source','#apacthdr_trantype']);
 				emptyFormdata(errorField,'#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
@@ -334,20 +334,6 @@ $(document).ready(function () {
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
 
-	////////////////////// function showdetail ///////////////////////////////////////////////////////
-	function showdetail(cellvalue, options, rowObject){
-		var field,table, case_;
-		switch(options.colModel.name){
-			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
-			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
-		}
-		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-	
-		fdl.get_array('paymentVoucher',options,param,case_,cellvalue);
-		
-		if(cellvalue == null)cellvalue = " ";
-		return cellvalue;
-	}
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -498,20 +484,19 @@ $(document).ready(function () {
 			alert(data.responseText);
 		}).done(function (data) {
 
-			unsaved = false;
 			hideatdialogForm(false);
 			
-			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
-				$('#jqGrid2_iladd').click();
-			}
+			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+			// 	addmore_jqgrid2.state = true;
+			// 	$('#jqGrid2_iladd').click();
+			// }
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
 				$('#apacthdr_auditno,#auditno').val(data.auditno);
+				$('#apacthdr_amount').val(data.totalAmount);
 				$('#idno').val(data.idno);
-				// $('#apacthdr_outamount').val(data.outamount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
 				
@@ -569,7 +554,7 @@ $(document).ready(function () {
 		editurl: "/paymentVoucherDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
-			{ label: 'Creditor Code', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
@@ -692,6 +677,12 @@ $(document).ready(function () {
 
 			}
 
+			unsaved = false;
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			var result = ids.filter(function(text){
+								if(text.search("jqg") != -1)return false;return true;
+							});
+			if(result.length == 0 && oper=='edit')unsaved = true;
 
 			
 		},
@@ -770,8 +761,6 @@ $(document).ready(function () {
 
         	mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
-
-			unsaved =  false;
 
         	$("input[name='document']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -938,7 +927,8 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'document':field=['delordno','srcdocno'];table="material.delordhd";case_='document';break;
+			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 		}
 		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1014,8 +1004,9 @@ $(document).ready(function () {
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
+			unsaved = false;
 			errorField.length=0;
-			$("#dialogForm").dialog('close');
+			// $("#dialogForm").dialog('close');
 		}else{
 			mycurrency.formatOn();
 		}
@@ -1073,7 +1064,6 @@ $(document).ready(function () {
 	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
 	$("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
 
-		unsaved = false;
 		$("#jqGridPager2Delete,#saveHeaderLabel").hide();
 		//dialog_document.on();//start binding event on jqgrid2
 
@@ -1258,6 +1248,8 @@ $(document).ready(function () {
 				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
+						myerrorIt_only(dialog_suppcode.textfield,false);
+
 						data.rows.forEach(function(elem) {
 							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
 								{	
@@ -1284,22 +1276,24 @@ $(document).ready(function () {
 						}
 
 					} else {
-
+						alert("This supplier doesnt have any invoice!");
+						$(dialog_suppcode.textfield).val('');
+						myerrorIt_only(dialog_suppcode.textfield,true);
 					}
 				});
 				
 			},
 		
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_payto').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_payto').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -1406,15 +1400,15 @@ $(document).ready(function () {
 				//$('#apacthdr_actdate').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							//$('#apacthdr_actdate').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){

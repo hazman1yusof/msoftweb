@@ -1955,9 +1955,11 @@ function myerrorIt_only(id,fail){
 	if(!fail){
 		$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
 		$( id ).removeClass( "error" ).addClass( "valid" );
+		// $( id ).parent().siblings( ".help-block" ).html("");
 	}else{
 		$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
 		$( id ).removeClass( "valid" ).addClass( "error" );
+		$( id ).parent().siblings( ".help-block" ).html("");
 	}
 }
 
