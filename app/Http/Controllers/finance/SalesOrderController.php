@@ -406,40 +406,30 @@ class SalesOrderController extends defaultController
 
         try{
 
-            foreach ($request->idno_array as $value){
 
-                $invno = $this->recno('PB','INV');
+            $dbacthdr = DB::table("debtor.dbacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-                $dbacthdr = DB::table("debtor.dbacthdr")
-                            ->where('idno','=',$value)
-                            ->first();
+            $billsum = DB::table("debtor.billsum")
+                        ->where('source','=',$dbacthdr->source)
+                        ->where('trantype','=',$dbacthdr->trantype)
+                        ->where('auditno','=',$dbacthdr->auditno)
+                        ->get();
 
-                $billsum = DB::table("debtor.billsum")
-                            ->where('source','=',$dbacthdr->source)
-                            ->where('trantype','=',$dbacthdr->trantype)
-                            ->where('auditno','=',$dbacthdr->auditno)
-                            ->get();
+            DB::table("debtor.billsum")
+                ->where('source','=',$dbacthdr->source)
+                ->where('trantype','=',$dbacthdr->trantype)
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                ]);
 
-                DB::table("debtor.billsum")
-                    ->where('source','=',$dbacthdr->source)
-                    ->where('trantype','=',$dbacthdr->trantype)
-                    ->where('auditno','=',$dbacthdr->auditno)
-                    ->update([
-                        'invno' => $invno,
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => strtoupper(session('username')),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                DB::table("debtor.dbacthdr")
-                    ->where('idno','=',$value)
-                    ->update([
-                        'invno' => $invno,
-                        'recstatus' => 'CANCELLED',
-                        'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
+            DB::table("debtor.dbacthdr")
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                ]);
            
             DB::commit();
         

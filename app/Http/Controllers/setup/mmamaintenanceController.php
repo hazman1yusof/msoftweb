@@ -167,13 +167,9 @@ class mmamaintenanceController extends defaultController
                 ->update([  
                     //'mmacode' => strtoupper($request->mmacode),
                     'description' => strtoupper($request->description),
-                    'version' => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
-                    'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => strtoupper(session('username')),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastipaddress' => strtoupper($request->lastipaddress)
                 ]); 
 
             DB::commit();

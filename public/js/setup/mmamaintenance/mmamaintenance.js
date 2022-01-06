@@ -81,8 +81,8 @@ $(document).ready(function () {
 			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
 			populate_formMMA(selrowData("#jqGrid"));
 
-			// urlParam2.filterVal[0]=selrowData("#jqGrid").idno;
-			// refreshGrid("#jqGrid2",urlParam2);
+			urlParam2.filterVal[1]=selrowData("#jqGrid").mmacode;
+			refreshGrid("#jqGrid2",urlParam2);
 
 			// if (rowid != null) {
 			// 	var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -328,6 +328,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.mmaprice',
 		table_id: 'idno',
+		filterCol:['compcode','mmacode'],
+		filterVal:['session.compcode','']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
