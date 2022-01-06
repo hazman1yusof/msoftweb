@@ -28,7 +28,6 @@ class icdController extends defaultController
 
     public function table(Request $request)
     {   
-
         $icdver = DB::table('sysdb.sysparam')
                         ->select('pvalue1')
                         ->where('compcode','=',session('compcode'))
@@ -117,17 +116,15 @@ class icdController extends defaultController
                             ->first();
 
             if($diagtab->exists()){
-                throw new \Exception("record duplicate");
+                throw new \Exception("Record Duplicate");
             }
-
-
 
             DB::table('hisdb.diagtab')
                 ->insert([
                     'compcode' => session('compcode'),  
                     'icdcode' => strtoupper($request->icdcode),
                     'description' => strtoupper($request->description),
-                    "type" => strtoupper($type->pvalue1),
+                    "type" => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
@@ -160,7 +157,7 @@ class icdController extends defaultController
                     'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => session('username'),
+                    'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
@@ -177,7 +174,7 @@ class icdController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'lastuser' => session('username'),
+                'lastuser' => strtoupper(session('username')),
                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }

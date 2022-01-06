@@ -245,6 +245,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 
 			$("#pdfgen1").attr('href','./SalesOrder/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
+			if_cancel_hide();
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -368,6 +369,24 @@ $(document).ready(function () {
 			$(self_).attr('disabled',false);
 		}).success(function(data){
 			$(self_).attr('disabled',false);
+		});
+	});
+
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.idno = selrowData('#jqGrid').db_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( '/SalesOrder/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 
@@ -1800,6 +1819,22 @@ $(document).ready(function () {
 		}
 	}
 
+	////////////////////////////////////Pager Hide//////////////////////////////////////////////////////////////////////////
+	$("#pg_jqGridPager2 table").hide();
+	//$("#pg_jqGridPager3 table").hide();
+
+	function if_cancel_hide(){
+		if(selrowData('#jqGrid').db_recstatus.trim().toUpperCase() == 'CANCELLED'){
+			$('#jqGrid3_panel').collapse('hide');
+			$('#ifcancel_show').text(' - CANCELLED');
+			$('#panel_jqGrid3').attr('data-target','-');
+		}else{
+			$('#jqGrid3_panel').collapse('show');
+			$('#ifcancel_show').text('');
+			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+		}
+	}
+
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
@@ -1821,6 +1856,12 @@ function populate_form(obj){
 	//panel header
 	$('#AutoNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
+
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
+	}
 }
 
 function empty_form(){
