@@ -614,7 +614,7 @@ function button_state_ti(state){
 			$("#save_ti,#cancel_ti").attr('disabled',false);
 			$('#edit_ti,#new_ti').attr('disabled',true);
 			break;
-		case 'triage':
+		case 'disableAll':
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#new_ti,#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
@@ -741,9 +741,9 @@ function populate_triage(obj,rowdata){
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
-			button_state_ti('triage');
+			button_state_ti('disableAll');
         }else{
-			button_state_ti('triage');
+			button_state_ti('disableAll');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
@@ -808,6 +808,70 @@ function populate_triage_currpt(obj){
 			button_state_ti('edit');
         }else{
 			button_state_ti('add');
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+			examination_nursing.empty();
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+        }
+
+    });
+	
+}
+
+//screen case note//
+function populate_triage_casenote(obj){
+	emptyFormdata(errorField,"#formTriageInfo");
+	//panel header
+	$('#name_show_triage').text(obj.Name);
+	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_triage').text((obj.Sex).toUpperCase());
+	$('#dob_show_triage').text(dob_chg(obj.DOB));
+	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_triage').text(if_none(obj.raceDesc).toUpperCase());
+	$('#religion_show_triage').text(if_none(obj.religionDesc).toUpperCase());
+	$('#occupation_show_triage').text(if_none(obj.occupDesc).toUpperCase());
+	$('#citizenship_show_triage').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_triage').text(if_none(obj.areaDesc).toUpperCase());
+
+	$("#mrn_ti").val(obj.MRN);
+	$("#episno_ti").val(obj.Episno);
+
+	// table examination
+	urlParam_ExamTriage.filterVal[0] = obj.MRN;
+	urlParam_ExamTriage.filterVal[1] = obj.Episno;
+	urlParam_ExamTriage.filterVal[2] = 'TRIAGE';
+
+	//table additional info
+	urlParam_AddNotesTriage.filterVal[0] = obj.MRN;
+	urlParam_AddNotesTriage.filterVal[1] = obj.Episno;
+	urlParam_AddNotesTriage.filterVal[2] = 'TRIAGE';
+
+	// document.getElementById('showTriage_curpt').style.display = 'inline';
+
+	var saveParam={
+        action:'get_table_triage',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.MRN,
+    	episno:obj.Episno
+    };
+
+    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formTriageInfo",data.triage);
+			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+			button_state_ti('disableAll');
+        }else{
+			button_state_ti('disableAll');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();

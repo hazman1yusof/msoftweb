@@ -337,7 +337,15 @@
 
 		@include('hisdb.pat_mgmt.mdl_patient')
 		@include('hisdb.pat_mgmt.mdl_episode')
-		@include('hisdb.pat_mgmt.itemselector')		
+		@include('hisdb.pat_mgmt.itemselector')
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.nursing.nursing')
+		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.doctornote.doctornote')
+		</div>		
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
@@ -371,6 +379,9 @@
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
 	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
+
+	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 
 	<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
 	<script type="text/javascript" src="js/hisdb/casenote/casenote.js"></script>
