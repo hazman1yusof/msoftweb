@@ -544,11 +544,25 @@ class DoctorNoteController extends defaultController
 
         $responce = new stdClass();
 
-        $patexam_obj = DB::table('hisdb.pathealth')
-            ->select('mrn','episno','recordtime','adddate','adduser')
-            ->where('compcode','=',session('compcode'))
-            ->where('mrn','=',$request->mrn)
-            ->orderBy('adddate','desc');
+        $patexam_obj = DB::table('hisdb.episode as e')
+            ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
+            ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
+                $join = $join->on('p.mrn', '=', 'e.mrn');
+                $join = $join->on('p.episno', '=', 'e.episno');
+                $join = $join->on('p.compcode', '=', 'e.compcode');
+            })->leftJoin('hisdb.doctor as d', function($join) use ($request){
+                $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
+                $join = $join->on('d.compcode', '=', 'e.compcode');
+            })
+            ->where('e.compcode','=',session('compcode'))
+            ->where('e.mrn','=',$request->mrn)
+            ->orderBy('p.adddate','desc');
+
+        // $patexam_obj = DB::table('hisdb.pathealth')
+        //     ->select('mrn','episno','recordtime','adddate','adduser')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('mrn','=',$request->mrn)
+        //     ->orderBy('adddate','desc');
 
         if($patexam_obj->exists()){
             $patexam_obj = $patexam_obj->get();
@@ -560,6 +574,7 @@ class DoctorNoteController extends defaultController
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;
+                $date['doctorname'] = $value->doctorname;
 
                 array_push($data,$date);
             }

@@ -653,10 +653,14 @@ $(document).ready(function () {
 });
 
 function populate_formMMA(obj){
-
-	//panel header
-	$('#mmacode_show').text(obj.mmacode);
-	$('#description_show').text(obj.description);	
+	console.log(obj);
+	if(obj.idno.trim().length == 0){
+		$('#mmacode_show').text('');
+		$('#description_show').text('');	
+	}else{
+		$('#mmacode_show').text(obj.mmacode);
+		$('#description_show').text(obj.description);	
+	}	
 }
 
 function empty_formMMA(){

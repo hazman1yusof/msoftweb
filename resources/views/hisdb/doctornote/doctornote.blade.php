@@ -52,7 +52,7 @@
                     <input id="recorddate" name="recorddate" type="hidden">
 
 
-                    <div class="col-md-2" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
+                    <div class="col-md-3" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -63,6 +63,7 @@
                                             <th class="scope">episno</th>
                                             <th class="scope">Date</th>
                                             <th class="scope">adduser</th>
+                                            <th class="scope">Doctor</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -71,7 +72,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-10" style="padding:0 0 0 5px; float: right;">
+                    <div class="col-md-9" style="padding:0 0 0 5px; float: right;">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
