@@ -104,6 +104,16 @@ $(document).ready(function () {
     $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
         $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));
         $("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));
+
+        var urlaram_nursing_date_tbl={
+			action:'get_table_date_past',
+			mrn:$("#mrn_ti").val(),
+		}
+
+	    nursing_date_tbl.ajax.url( "/doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
+			emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+			$('#nursing_date_tbl tbody tr:eq(0)').click();	//to select first row
+	    });
     });
 
     $("#jqGridTriageInfo_panel").on("hide.bs.collapse", function(){
@@ -569,7 +579,82 @@ $(document).ready(function () {
 		$("#dialognewexamFormTriage").dialog('open');
 	});
 
+
+	$('#nursing_date_tbl tbody').on('click', 'tr', function () { 
+	    var data = nursing_date_tbl.row( this ).data();
+
+		if(data == undefined){
+			return;
+		}
+
+		//to highlight selected row
+		if($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}else {
+			nursing_date_tbl.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+
+		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+	    $('#nursing_date_tbl tbody tr').removeClass('active');
+	    $(this).addClass('active');
+
+	    var saveParam={
+	        action:'get_table_triage',
+	    }
+	    var postobj={
+	    	_token : $('#csrf_token').val(),
+	    	mrn:data.mrn,
+	    	episno:data.episno
+	    };
+
+	    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        alert('there is an error');
+	    }).success(function(data){
+	    	if(!$.isEmptyObject(data)){
+				autoinsert_rowdata("#formTriageInfo",data.triage);
+				autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+				autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
+				button_state_ti('disableAll');
+	        }else{
+				button_state_ti('disableAll');
+				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
+				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
+				examination_nursing.empty();
+				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+	        }
+
+	    });
+
+	});
+
+
 });
+
+
+var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
+	"ajax": "",
+	"sDom": "",
+	"paging":false,
+    "columns": [
+        {'data': 'mrn'},
+        {'data': 'episno'},
+        {'data': 'date', 'width': '100%'},
+        {'data': 'adduser'},
+    ]
+    ,columnDefs: [
+        { targets: [0, 1, 3], visible: false},
+    ],
+    "drawCallback": function( settings ) {
+    	$(this).find('tbody tr')[0].click();
+    }
+});
+
 
 var errorField = [];
 conf = {
@@ -878,6 +963,16 @@ function populate_triage_casenote(obj){
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
         }
 
+    });
+
+    var urlaram_nursing_date_tbl={
+		action:'get_table_date_past',
+		mrn:$("#mrn_ti").val(),
+	}
+
+    nursing_date_tbl.ajax.url( "/doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
+		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
+		$('#nursing_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
 	
 }

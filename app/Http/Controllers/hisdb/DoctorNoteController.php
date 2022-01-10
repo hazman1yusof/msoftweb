@@ -541,11 +541,10 @@ class DoctorNoteController extends defaultController
     }
 
     public function get_table_date_past(Request $request){
-
         $responce = new stdClass();
 
         $patexam_obj = DB::table('hisdb.episode as e')
-            ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
+            ->select('e.mrn','e.episno','p.recordtime','e.adddate','p.adduser','e.admdoctor','d.doctorname')
             ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
                 $join = $join->on('p.mrn', '=', 'e.mrn');
                 $join = $join->on('p.episno', '=', 'e.episno');
@@ -557,6 +556,7 @@ class DoctorNoteController extends defaultController
             ->where('e.compcode','=',session('compcode'))
             ->where('e.mrn','=',$request->mrn)
             ->orderBy('p.adddate','desc');
+
 
         // $patexam_obj = DB::table('hisdb.pathealth')
         //     ->select('mrn','episno','recordtime','adddate','adduser')
@@ -570,7 +570,9 @@ class DoctorNoteController extends defaultController
             $data = [];
 
             foreach ($patexam_obj as $key => $value) {
-                $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
+                if(!empty($value->adddate)){
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
+                }
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;

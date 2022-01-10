@@ -50,9 +50,7 @@
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
                     <input id="recorddate" name="recorddate" type="hidden">
-
-
-                    <div class="col-md-3" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
+                    <div class="col-md-4" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -72,7 +70,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-9" style="padding:0 0 0 5px; float: right;">
+                    <div class="col-md-8" style="padding:0 0 0 5px; float: right;">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -82,13 +80,13 @@
                                         <input id="remarks" name="remarks" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter Patient Complaint">
                                     </div>
 
-                                    <div class="col-md-3 panel panel-info" style="margin-left:70px;">
+                                    <div class="col-md-3 panel panel-info">
                                         <div class="panel-body" style="padding-top:5px;padding-bottom:5px;">
                                             <label class="radio-inline">
                                                 <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
                                                 <label class="form-check-label" for="current">Current</label>
                                             </label>
-                                            <label class="radio-inline">
+                                            <label class="radio-inline" style="margin-left: 0px;">
                                                 <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
                                                 <label class="form-check-label" for="past">Past History</label>
                                             </label>

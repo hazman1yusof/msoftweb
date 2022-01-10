@@ -50,426 +50,450 @@
 				<div id="jqGridPagerTriageInfo"></div> -->
 
 				<form class='form-horizontal' style='width:99%' id='formTriageInfo'>
-
-					<div class='col-md-6'>
-						<div class="panel panel-info">
-							<div class="panel-heading text-center">INFORMATION</div>
-							<div class="panel-body">
-
-								<input id="mrn_ti" name="mrn_ti" type="hidden">
-								<input id="episno_ti" name="episno_ti" type="hidden">
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="admwardtime">Time</label>  
-									<div class="col-md-4">
-										<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
-									</div>
-
-									<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>  
-									<div class="col-md-3">
-										<div class='input-group'>
-											<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please select color zone.">
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-										</div>
-										<span class="help-block"></span>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="reg_date">Date</label>  
-									<div class="col-md-5">
-										<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="admreason" >Chief Complain</label>  
-									<div class="col-md-10">
-										<textarea id="admreason" name="admreason" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="medicalhistory">Medical History</label>  
-									<div class="col-md-10">
-										<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="surgicalhistory">Surgical History</label>  
-									<div class="col-md-10">
-										<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="familymedicalhist">Family Medical History</label>  
-									<div class="col-md-10">
-										<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="currentmedication">Current Medication</label>  
-									<div class="col-md-10">
-										<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>  
-									<div class="col-md-10">
-										<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
-									</div>
-								</div>
-
-								<div class="panel panel-info">
-									<div class="panel-heading text-center">ALLERGIES</div>
-									<div class="panel-body">
-
-										<table class="table table-sm table-hover">
-											<tbody>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
-													<td><label class="form-check-label" for="allergydrugs">Drugs</label></td>
-													<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
-													<td><label class="form-check-label" for="allergyplaster">Plaster</label></td>
-													<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
-													<td><label class="form-check-label" for="allergyfood">Food</label></td>
-													<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
-													<td><label class="form-check-label" for="allergyenvironment">Environment</label></td>
-													<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
-													<td><label class="form-check-label" for="allergyothers">Others</label></td>
-													<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
-													<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
-													<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-												<tr>
-													<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
-													<td><label class="form-check-label" for="allergynone">None</label></td>
-													<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
-												</tr>
-											</tbody>
-										</table>
-
-									</div>
-								</div>
-
-							</div>
+					@if (Request::path() == 'casenote')
+						<div class="col-md-2" style="padding:0 0 0 0">
+	                        <div class="panel panel-info">
+	                            <div class="panel-body">
+									<table id="nursing_date_tbl" class="ui celled table" style="width: 100%;">
+	                                    <thead>
+	                                        <tr>
+	                                            <th class="scope">mrn</th>
+	                                            <th class="scope">episno</th>
+	                                            <th class="scope">Date</th>
+	                                            <th class="scope">adduser</th>
+	                                        </tr>
+	                                    </thead>
+	                                </table>
+	                            </div>
+	                        </div>
 						</div>
-					</div>
+                    @endif
 
-					<div class='col-md-6'>
-						<div class="panel panel-info">
-							<div class="panel-heading text-center">CONDITION ON ADMISSION</div>
-							<div class="panel-body">
+					@if (Request::path() == 'casenote')
+					<div class="col-md-10">
+                    @endif
+						<div class='col-md-6'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">INFORMATION</div>
+								<div class="panel-body">
 
-								<div class='col-md-12'>
+									<input id="mrn_ti" name="mrn_ti" type="hidden">
+									<input id="episno_ti" name="episno_ti" type="hidden">
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="admwardtime">Time</label>  
+										<div class="col-md-4">
+											<input id="admwardtime" name="admwardtime" type="time" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter time.">
+										</div>
+
+										<label class="col-md-3 control-label" for="triagecolor">Triage Color Zone</label>  
+										<div class="col-md-3">
+											<div class='input-group'>
+												<input id="triagecolor" name="triagecolor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please select color zone.">
+												<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+											</div>
+											<span class="help-block"></span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="reg_date">Date</label>  
+										<div class="col-md-5">
+											<input id="reg_date" name="reg_date" type="date" class="form-control input-sm" rdonly>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="admreason" >Chief Complain</label>  
+										<div class="col-md-10">
+											<textarea id="admreason" name="admreason" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="medicalhistory">Medical History</label>  
+										<div class="col-md-10">
+											<textarea id="medicalhistory" name="medicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="surgicalhistory">Surgical History</label>  
+										<div class="col-md-10">
+											<textarea id="surgicalhistory" name="surgicalhistory" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="familymedicalhist">Family Medical History</label>  
+										<div class="col-md-10">
+											<textarea id="familymedicalhist" name="familymedicalhist" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="currentmedication">Current Medication</label>  
+										<div class="col-md-10">
+											<textarea id="currentmedication" name="currentmedication" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-md-2 control-label" for="diagnosis">Diagnosis</label>  
+										<div class="col-md-10">
+											<textarea id="diagnosis" name="diagnosis" type="text" class="form-control input-sm" rows="4" data-validation="required" data-validation-error-msg-required="Please enter information."></textarea>
+										</div>
+									</div>
+
 									<div class="panel panel-info">
-										<div class="panel-heading text-center">VITAL SIGN</div>
+										<div class="panel-heading text-center">ALLERGIES</div>
 										<div class="panel-body">
 
-											<div class="form-row">
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_temperature">Temperature</label>  
-													<div class="input-group">
-														<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
-														<span class="input-group-addon">°C</span>
-													</div>
-													<div class="error-msg" id="error-vs_temperature"></div>
-												</div>
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_pulse">Pulse</label>  
-													<div class="input-group">
-														<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
-														<span class="input-group-addon">/min</span>
-													</div>
-													<div class="error-msg" id="error-vs_pulse"></div>
-												</div>
-											</div>
-
-											<div class="form-row">
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_respiration">Respiration</label>  
-													<div class="input-group">
-														<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
-														<span class="input-group-addon">/min</span>
-													</div>
-													<div class="error-msg" id="error-vs_respiration"></div>
-												</div>
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_bloodpressure">Blood Pressure</label>
-													<div class="input-group">
-														<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
-														<!-- <label class="col-md-1 control-label">/</label>  -->
-														<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
-														<span class="input-group-addon">/mmHg</span>
-													</div>
-													<div class="error-msg" id="error-vs_bp_sys1"></div>
-													<div class="error-msg" id="error-vs_bp_dias2"></div>
-												</div>
-											</div>
-
-											<div class="form-row">
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_height">Height</label> 
-													<div class="input-group">
-														<input id="vs_height" name="vs_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
-														<span class="input-group-addon">cm</span>
-													</div>
-													<div class="error-msg" id="error-vs_height"></div>
-												</div>
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_weight">Weight</label> 
-													<div class="input-group">
-														<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
-														<span class="input-group-addon">kg</span>
-													</div>
-													<div class="error-msg" id="error-vs_weight"></div>
-												</div>
-											</div>
-
-											<div class="form-row">
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_gxt">GXT</label>  
-													<div class="input-group">
-														<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter the value of graded exercise test." data-validation-error-msg-container="#error-vs_gxt">
-														<span class="input-group-addon">mmOL</span>
-													</div>
-													<div class="error-msg" id="error-vs_gxt"></div>
-												</div>
-												<div class="form-group col-md-6" style="margin-left: 2px">
-													<label for="vs_painscore">Pain Score</label>  
-													<div class="input-group">
-														<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
-														<span class="input-group-addon">/10</span>
-													</div>
-													<div class="error-msg" id="error-vs_painscore"></div>
-												</div>
-											</div>
+											<table class="table table-sm table-hover">
+												<tbody>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
+														<td><label class="form-check-label" for="allergydrugs">Drugs</label></td>
+														<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
+														<td><label class="form-check-label" for="allergyplaster">Plaster</label></td>
+														<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
+														<td><label class="form-check-label" for="allergyfood">Food</label></td>
+														<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
+														<td><label class="form-check-label" for="allergyenvironment">Environment</label></td>
+														<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
+														<td><label class="form-check-label" for="allergyothers">Others</label></td>
+														<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
+														<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
+														<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+													<tr>
+														<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
+														<td><label class="form-check-label" for="allergynone">None</label></td>
+														<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
+													</tr>
+												</tbody>
+											</table>
 
 										</div>
 									</div>
+
 								</div>
-
-								<div class='col-md-6'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">MODE OF ADMISSION</div>
-										<div class="panel-body" style="height: 170px;margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
-												<label class="form-check-label" for="moa_walkin">Walk In</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="moa_wheelchair" id="moa_wheelchair" value="1">
-												<label class="form-check-label" for="moa_wheelchair">Wheel Chair</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="moa_trolley" id="moa_trolley" value="1">
-												<label class="form-check-label" for="moa_trolley">Trolley</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="moa_others" id="moa_others" value="1">
-												<label class="form-check-label" for="moa_others">Others</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-6'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
-										<div class="panel-body" style="height: 170px;margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
-												<label class="form-check-label" for="loc_conscious">Conscious</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
-												<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
-												<label class="form-check-label" for="loc_unconscious">UnConscious</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-6'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">MENTAL STATUS</div>
-										<div class="panel-body" style="height: 170px;margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="ms_orientated" id="ms_orientated" value="1">
-												<label class="form-check-label" for="ms_orientated">Orientated</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="ms_confused" id="ms_confused" value="1">
-												<label class="form-check-label" for="ms_confused">Confused</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="ms_restless" id="ms_restless" value="1">
-												<label class="form-check-label" for="ms_restless">Restless</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="ms_aggressive" id="ms_aggressive" value="1">
-												<label class="form-check-label" for="ms_aggressive">Aggressive</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-6'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">EMOTIONAL STATUS</div>
-										<div class="panel-body" style="height: 170px;margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="es_calm" id="es_calm" value="1">
-												<label class="form-check-label" for="es_calm">Calm</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="es_anxious" id="es_anxious" value="1">
-												<label class="form-check-label" for="es_anxious">Anxious</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="es_distress" id="es_distress" value="1">
-												<label class="form-check-label" for="es_distress">Distress</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="es_depressed" id="es_depressed" value="1">
-												<label class="form-check-label" for="es_depressed">Depressed</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="es_irritable" id="es_irritable" value="1">
-												<label class="form-check-label" for="es_irritable">Irritable</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">FALL RISK ASSESSMENT</div>
-										<div class="panel-body" style="margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_prevfalls" id="fra_prevfalls" value="1">
-												<label class="form-check-label" for="fra_prevfalls">Previous falls</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_age" id="fra_age" value="1">
-												<label class="form-check-label" for="fra_age">Age 60 years or older</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_physicalLimitation" id="fra_physicalLimitation" value="1">
-												<label class="form-check-label" for="fra_physicalLimitation">Physical limitation-visual & mobility</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_neurologicaldeficit" id="fra_neurologicaldeficit" value="1">
-												<label class="form-check-label" for="fra_neurologicaldeficit">Neurological deficit-confusion & disorientation</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_dizziness" id="fra_dizziness" value="1">
-												<label class="form-check-label" for="fra_dizziness">Dizziness associated with drugs</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_cerebralaccident" id="fra_cerebralaccident" value="1">
-												<label class="form-check-label" for="fra_cerebralaccident">Cerebral Vascular Accident</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_notatrisk" id="fra_notatrisk" value="1">
-												<label class="form-check-label" for="fra_notatrisk">Not at risk</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="fra_atrisk" id="fra_atrisk" value="1">
-												<label class="form-check-label" for="fra_atrisk">At risk</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">PRESSURE SORE RISK ASSESSMENT</div>
-										<div class="panel-body" style="margin-left: 50px">
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="psra_incontinent" id="psra_incontinent" value="1">
-												<label class="form-check-label" for="psra_incontinent">Incontinent</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="psra_immobility" id="psra_immobility" value="1">
-												<label class="form-check-label" for="psra_immobility">Immobility / Restricted mobility</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="psra_poorskintype" id="psra_poorskintype" value="1">
-												<label class="form-check-label" for="psra_poorskintype">Poor skin type</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="psra_notatrisk" id="psra_notatrisk" value="1">
-												<label class="form-check-label" for="psra_notatrisk">Not at risk</label>
-											</div>
-
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" name="psra_atrisk" id="psra_atrisk" value="1">
-												<label class="form-check-label" for="psra_atrisk">At risk</label>
-											</div>
-
-										</div>
-									</div>
-								</div>
-																
 							</div>
 						</div>
+
+						<div class='col-md-6'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">CONDITION ON ADMISSION</div>
+								<div class="panel-body">
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">VITAL SIGN</div>
+											<div class="panel-body">
+
+												<div class="form-row">
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_temperature">Temperature</label>  
+														<div class="input-group">
+															<input id="vs_temperature" name="vs_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-vs_temperature">
+															<span class="input-group-addon">°C</span>
+														</div>
+														<div class="error-msg" id="error-vs_temperature"></div>
+													</div>
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_pulse">Pulse</label>  
+														<div class="input-group">
+															<input id="vs_pulse" name="vs_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-vs_pulse">
+															<span class="input-group-addon">/min</span>
+														</div>
+														<div class="error-msg" id="error-vs_pulse"></div>
+													</div>
+												</div>
+
+												<div class="form-row">
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_respiration">Respiration</label>  
+														<div class="input-group">
+															<input id="vs_respiration" name="vs_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-vs_respiration">
+															<span class="input-group-addon">/min</span>
+														</div>
+														<div class="error-msg" id="error-vs_respiration"></div>
+													</div>
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_bloodpressure">Blood Pressure</label>
+														<div class="input-group">
+															<input id="vs_bp_sys1" name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-vs_bp_sys1">
+															<!-- <label class="col-md-1 control-label">/</label>  -->
+															<input id="vs_bp_dias2" name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-vs_bp_dias2">
+															<span class="input-group-addon">/mmHg</span>
+														</div>
+														<div class="error-msg" id="error-vs_bp_sys1"></div>
+														<div class="error-msg" id="error-vs_bp_dias2"></div>
+													</div>
+												</div>
+
+												<div class="form-row">
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_height">Height</label> 
+														<div class="input-group">
+															<input id="vs_height" name="vs_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-vs_height">
+															<span class="input-group-addon">cm</span>
+														</div>
+														<div class="error-msg" id="error-vs_height"></div>
+													</div>
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_weight">Weight</label> 
+														<div class="input-group">
+															<input id="vs_weight" name="vs_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-vs_weight">
+															<span class="input-group-addon">kg</span>
+														</div>
+														<div class="error-msg" id="error-vs_weight"></div>
+													</div>
+												</div>
+
+												<div class="form-row">
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_gxt">GXT</label>  
+														<div class="input-group">
+															<input id="vs_gxt" name="vs_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter the value of graded exercise test." data-validation-error-msg-container="#error-vs_gxt">
+															<span class="input-group-addon">mmOL</span>
+														</div>
+														<div class="error-msg" id="error-vs_gxt"></div>
+													</div>
+													<div class="form-group col-md-6" style="margin-left: 2px">
+														<label for="vs_painscore">Pain Score</label>  
+														<div class="input-group">
+															<input id="vs_painscore" name="vs_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-vs_painscore">
+															<span class="input-group-addon">/10</span>
+														</div>
+														<div class="error-msg" id="error-vs_painscore"></div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-6'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">MODE OF ADMISSION</div>
+											<div class="panel-body" style="height: 170px;margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
+													<label class="form-check-label" for="moa_walkin">Walk In</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="moa_wheelchair" id="moa_wheelchair" value="1">
+													<label class="form-check-label" for="moa_wheelchair">Wheel Chair</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="moa_trolley" id="moa_trolley" value="1">
+													<label class="form-check-label" for="moa_trolley">Trolley</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="moa_others" id="moa_others" value="1">
+													<label class="form-check-label" for="moa_others">Others</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-6'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">LEVEL OF CONSCIOUSNESS</div>
+											<div class="panel-body" style="height: 170px;margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" id="loc_conscious" name="loc_conscious" value="1">
+													<label class="form-check-label" for="loc_conscious">Conscious</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" id="loc_semiconscious" name="loc_semiconscious" value="1">
+													<label class="form-check-label" for="loc_semiconscious">SemiConscious</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" id="loc_unconscious" name="loc_unconscious" value="1">
+													<label class="form-check-label" for="loc_unconscious">UnConscious</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-6'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">MENTAL STATUS</div>
+											<div class="panel-body" style="height: 170px;margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="ms_orientated" id="ms_orientated" value="1">
+													<label class="form-check-label" for="ms_orientated">Orientated</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="ms_confused" id="ms_confused" value="1">
+													<label class="form-check-label" for="ms_confused">Confused</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="ms_restless" id="ms_restless" value="1">
+													<label class="form-check-label" for="ms_restless">Restless</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="ms_aggressive" id="ms_aggressive" value="1">
+													<label class="form-check-label" for="ms_aggressive">Aggressive</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-6'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">EMOTIONAL STATUS</div>
+											<div class="panel-body" style="height: 170px;margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="es_calm" id="es_calm" value="1">
+													<label class="form-check-label" for="es_calm">Calm</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="es_anxious" id="es_anxious" value="1">
+													<label class="form-check-label" for="es_anxious">Anxious</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="es_distress" id="es_distress" value="1">
+													<label class="form-check-label" for="es_distress">Distress</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="es_depressed" id="es_depressed" value="1">
+													<label class="form-check-label" for="es_depressed">Depressed</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="es_irritable" id="es_irritable" value="1">
+													<label class="form-check-label" for="es_irritable">Irritable</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">FALL RISK ASSESSMENT</div>
+											<div class="panel-body" style="margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_prevfalls" id="fra_prevfalls" value="1">
+													<label class="form-check-label" for="fra_prevfalls">Previous falls</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_age" id="fra_age" value="1">
+													<label class="form-check-label" for="fra_age">Age 60 years or older</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_physicalLimitation" id="fra_physicalLimitation" value="1">
+													<label class="form-check-label" for="fra_physicalLimitation">Physical limitation-visual & mobility</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_neurologicaldeficit" id="fra_neurologicaldeficit" value="1">
+													<label class="form-check-label" for="fra_neurologicaldeficit">Neurological deficit-confusion & disorientation</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_dizziness" id="fra_dizziness" value="1">
+													<label class="form-check-label" for="fra_dizziness">Dizziness associated with drugs</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_cerebralaccident" id="fra_cerebralaccident" value="1">
+													<label class="form-check-label" for="fra_cerebralaccident">Cerebral Vascular Accident</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_notatrisk" id="fra_notatrisk" value="1">
+													<label class="form-check-label" for="fra_notatrisk">Not at risk</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="fra_atrisk" id="fra_atrisk" value="1">
+													<label class="form-check-label" for="fra_atrisk">At risk</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+
+									<div class='col-md-12'>
+										<div class="panel panel-info">
+											<div class="panel-heading text-center">PRESSURE SORE RISK ASSESSMENT</div>
+											<div class="panel-body" style="margin-left: 50px">
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="psra_incontinent" id="psra_incontinent" value="1">
+													<label class="form-check-label" for="psra_incontinent">Incontinent</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="psra_immobility" id="psra_immobility" value="1">
+													<label class="form-check-label" for="psra_immobility">Immobility / Restricted mobility</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="psra_poorskintype" id="psra_poorskintype" value="1">
+													<label class="form-check-label" for="psra_poorskintype">Poor skin type</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="psra_notatrisk" id="psra_notatrisk" value="1">
+													<label class="form-check-label" for="psra_notatrisk">Not at risk</label>
+												</div>
+
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="psra_atrisk" id="psra_atrisk" value="1">
+													<label class="form-check-label" for="psra_atrisk">At risk</label>
+												</div>
+
+											</div>
+										</div>
+									</div>
+																	
+								</div>
+							</div>
+						</div>
+					@if (Request::path() == 'casenote')
 					</div>
+                    @endif
 
 					<div class='col-md-12'>
 						<div class="panel panel-default">
@@ -982,7 +1006,6 @@
 							</div>
 						</div>
 					</div>
-
 				</form>
 
 			</div>
