@@ -655,6 +655,19 @@ Route::post('/ordcom/form','hisdb\OrdcomController@form');
 Route::get('/discharge/table','hisdb\DischargeController@table');
 Route::post('/discharge/form','hisdb\DischargeController@form');
 
+//// Case Note page ////
+Route::get('/casenote','hisdb\CaseNoteController@show');
+Route::get('/casenote/get_entry','hisdb\CaseNoteController@get_entry');
+Route::post('/casenote/post_entry','hisdb\CaseNoteController@post_entry');
+Route::post('/casenote/save_patient','hisdb\CaseNoteController@save_patient');
+Route::post('/casenote/save_episode','hisdb\CaseNoteController@save_episode');
+Route::post('/casenote/save_adm','hisdb\CaseNoteController@save_adm');
+Route::post('/casenote/save_gl','hisdb\CaseNoteController@save_gl');
+Route::post('/casenote/new_occup_form','hisdb\CaseNoteController@new_occup_form');
+Route::post('/casenote/new_title_form','hisdb\CaseNoteController@new_title_form');
+Route::post('/casenote/new_areacode_form','hisdb\CaseNoteController@new_areacode_form');
+Route::post('/casenote/new_relationship_form','hisdb\CaseNoteController@new_relationship_form');
+
 ///////////////////Fixed Asset setup////////////////////////////////////
 
 //// Fixed Asset Location setup page ///
