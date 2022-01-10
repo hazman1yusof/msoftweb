@@ -286,7 +286,7 @@ i.fa {
 
 					</div>
 
-					<hr/>
+					<!-- <hr/>
 
 					<input type='checkbox' name='checkbox_selection' id='checkbox_selection_'>
 					<label for="checkbox_selection">Online Banking</label>
@@ -318,7 +318,7 @@ i.fa {
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>  	
-					</div>		  	
+					</div>		  	 -->
 
 				</form>
 				<div class="panel-body">
