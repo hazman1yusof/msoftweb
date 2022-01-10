@@ -51,8 +51,8 @@ $(document).ready(function () {
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
 			},
-			{ label: 'Version', name: 'version', width: 8, canSearch: true, align: 'right'},
-			{ label: 'Status', name: 'recstatus', width: 8, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Version', name: 'version', width: 6, canSearch: true, align: 'right'},
+			{ label: 'Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
 							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 							cellattr: function(rowid, cellvalue)
@@ -653,10 +653,14 @@ $(document).ready(function () {
 });
 
 function populate_formMMA(obj){
-
-	//panel header
-	$('#mmacode_show').text(obj.mmacode);
-	$('#description_show').text(obj.description);	
+	console.log(obj);
+	if(obj.idno.trim().length == 0){
+		$('#mmacode_show').text('');
+		$('#description_show').text('');	
+	}else{
+		$('#mmacode_show').text(obj.mmacode);
+		$('#description_show').text(obj.description);	
+	}	
 }
 
 function empty_formMMA(){

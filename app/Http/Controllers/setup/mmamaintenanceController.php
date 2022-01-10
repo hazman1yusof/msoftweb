@@ -37,7 +37,7 @@ class mmamaintenanceController extends defaultController
 
         $table = DB::table('hisdb.mmamaster')
                     ->where('version','=',$mmaver->pvalue1)
-                    ->orderBy('idno','asc');
+                    ->orderBy('idno','desc');
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -140,21 +140,21 @@ class mmamaintenanceController extends defaultController
         }
 
         //////////paginate/////////
-        $paginate = $table->paginate($request->rows);
+        // $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {//ini baru
-            $value->remarks_show = $value->remarks;
-            if(mb_strlen($value->remarks)>120){
+        // foreach ($paginate->items() as $key => $value) {//ini baru
+        //     $value->remarks_show = $value->remarks;
+        //     if(mb_strlen($value->remarks)>120){
         
-                $time = time() + $key;
+        //         $time = time() + $key;
         
-                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+        //         $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
         
-                $value->callback_param = [
-                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
-                ];
-            }
-        }
+        //         $value->callback_param = [
+        //             'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+        //         ];
+        //     }
+        // }
     }
 
     public function edit(Request $request){
