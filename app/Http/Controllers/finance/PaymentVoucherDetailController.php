@@ -29,6 +29,8 @@ class PaymentVoucherDetailController extends defaultController
                 return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'delete_dd':
+                return $this->delete_dd($request);
             default:
                 return 'error happen..';
         }
@@ -88,6 +90,23 @@ class PaymentVoucherDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+            
+            $apacthdr = DB::table("finance.apacthdr")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=','DD');
+
+            if($apacthdr->exists()){
+                $delordno = $this->request_no('DO',$delordhd->first()->prdept);
+                $recno = $this->recno('PUR','DO');
+
+                DB::table("material.delordhd")
+                    ->where('idno','=',$request->idno)
+                    ->update([
+                        'docno' => $delordno,
+                        'recno' => $recno,
+                        'compcode' => session('compcode'),
+                    ]);
+            }
            
             $auditno = $request->query('auditno');
           /*  $source = $request->source;
@@ -293,6 +312,16 @@ class PaymentVoucherDetailController extends defaultController
         }
 
     }
+
+
+
+    public function delete_dd(Request $request){
+        DB::table('finance.apacthdr')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=','DD')
+                ->delete();
+    }
+
 
 }
 

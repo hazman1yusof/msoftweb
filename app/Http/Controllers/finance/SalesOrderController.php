@@ -350,89 +350,86 @@ class SalesOrderController extends defaultController
         }
     }
 
-    public function reopen(Request $request){
+    // public function reopen(Request $request){
 
-        DB::beginTransaction();
+    //     DB::beginTransaction();
 
-        try{
+    //     try{
 
-            foreach ($request->idno_array as $value){
+    //         foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+    //             $purreqhd = DB::table("material.purreqhd")
+    //                 ->where('idno','=',$value);
 
-                $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
-                    continue;
-                }
+    //             $purreqhd_get = $purreqhd->first();
+    //             if(!in_array($purreqhd_get->recstatus, ['CANCELLED','REQUEST','SUPPORT','VERIFIED','APPROVED'])){
+    //                 continue;
+    //             }
 
-                $purreqhd->update([
-                    'recstatus' => 'OPEN',
-                    'requestby' => null,
-                    'requestdate' => null,
-                    'supportby' => null,
-                    'supportdate' => null,
-                    'verifiedby' => null,
-                    'verifieddate' => null,
-                    'approvedby' => null,
-                    'approveddate' => null,
-                ]);
+    //             $purreqhd->update([
+    //                 'recstatus' => 'OPEN',
+    //                 'requestby' => null,
+    //                 'requestdate' => null,
+    //                 'supportby' => null,
+    //                 'supportdate' => null,
+    //                 'verifiedby' => null,
+    //                 'verifieddate' => null,
+    //                 'approvedby' => null,
+    //                 'approveddate' => null,
+    //             ]);
 
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'OPEN',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    ]);
+    //             DB::table("material.purreqdt")
+    //                 ->where('recno','=',$purreqhd_get->recno)
+    //                 ->update([
+    //                     'recstatus' => 'OPEN',
+    //                     'upduser' => session('username'),
+    //                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+    //                 ]);
 
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
+    //             DB::table("material.queuepr")
+    //                 ->where('recno','=',$purreqhd_get->recno)
+    //                 ->delete();
 
-            }
+    //         }
 
-            DB::commit();
+    //         DB::commit();
         
-        } catch (\Exception $e) {
-            DB::rollback();
+    //     } catch (\Exception $e) {
+    //         DB::rollback();
 
-            return response($e->getMessage(), 500);
-        }
-    }
+    //         return response($e->getMessage(), 500);
+    //     }
+    // }
 
     public function cancel(Request $request){
         DB::beginTransaction();
 
         try{
 
-            foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+            $dbacthdr = DB::table("debtor.dbacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-                $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['OPEN'])){
-                    continue;
-                }
+            $billsum = DB::table("debtor.billsum")
+                        ->where('source','=',$dbacthdr->source)
+                        ->where('trantype','=',$dbacthdr->trantype)
+                        ->where('auditno','=',$dbacthdr->auditno)
+                        ->get();
 
-                $purreqhd->update([
-                    'recstatus' => 'CANCELLED'
+            DB::table("debtor.billsum")
+                ->where('source','=',$dbacthdr->source)
+                ->where('trantype','=',$dbacthdr->trantype)
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
                 ]);
 
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
-
-            }
+            DB::table("debtor.dbacthdr")
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                ]);
            
             DB::commit();
         

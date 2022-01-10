@@ -125,6 +125,13 @@ Route::post('/icd/form','setup\icdController@form');
 Route::get('/mma','setup\mmaController@show');
 Route::get('/mma/table','setup\mmaController@table');
 Route::post('/mma/form','setup\mmaController@form');
+Route::post('/mmaDetail/form','setup\mmaDetailController@form');
+
+//// mmamaintenance setup page ///
+Route::get('/mmamaintenance','setup\mmamaintenanceController@show');
+Route::get('/mmamaintenance/table','setup\mmamaintenanceController@table');
+Route::post('/mmamaintenance/form','setup\mmamaintenanceController@form');
+Route::post('/mmamaintenanceDetail/form','setup\mmamaintenanceDetailController@form');
 
 //// speciality setup page ///
 Route::get('/speciality','setup\SpecialityController@show');

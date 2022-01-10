@@ -134,17 +134,31 @@ i.fa {
 					
 					<span id="error_infront" style="color: red"></span>
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					<span id="error_infront" style="color: red"></span>
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button 
-						type="button" 
+					type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
+						data-oper="posted" 
 						style="display: none;">
-						POST
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
+					</button>
+
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -191,6 +205,16 @@ i.fa {
 
     		<div id="jqGrid3_panel" class="panel-collapse collapse">
 	    		<div class="panel-body">
+					@if (strtoupper(Request::get('scope')) == 'CANCEL')
+						<button 
+								type="button" 
+								class="btn btn-danger btn-sm" 
+								id="but_post2_jq"
+								data-oper="cancel"
+								style="float: right;margin: 0px 20px 10px 20px;">
+								Cancel Sales Order
+						</button>
+					@endif
 	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid3" class="table table-striped"></table>
             			<div id="jqGridPager3"></div>

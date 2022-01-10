@@ -9,7 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 
-class icdController extends defaultController
+class mmamaintenanceController extends defaultController
 {   
 
     var $table;
@@ -18,25 +18,25 @@ class icdController extends defaultController
     public function __construct()
     {
         $this->middleware('auth');
-        $this->duplicateCode = "icdcode";
+        $this->duplicateCode = "mmacode";
     }
 
     public function show(Request $request)
     {   
-        return view('setup.icd.icd');
+        return view('setup.mmamaintenance.mmamaintenance');
     }
 
     public function table(Request $request)
     {   
-        $icdver = DB::table('sysdb.sysparam')
+        $mmaver = DB::table('sysdb.sysparam')
                         ->select('pvalue1')
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=','MR')
-                        ->where('trantype','=','ICD')
+                        ->where('trantype','=','MMAVER')
                         ->first();
 
-        $table = DB::table('hisdb.diagtab')
-                    ->where('type','=',$icdver->pvalue1)
+        $table = DB::table('hisdb.mmamaster')
+                    ->where('version','=',$mmaver->pvalue1)
                     ->orderBy('idno','asc');
 
         if(!empty($request->searchCol)){
@@ -107,40 +107,53 @@ class icdController extends defaultController
         DB::beginTransaction();
         try {
 
-            $diagtab = DB::table('hisdb.diagtab')
-                            ->where('icdcode','=',strtoupper($request->icdcode));
+            $mmamaster = DB::table('hisdb.mmamaster')
+                            ->where('mmacode','=',strtoupper($request->mmacode));
 
             $type = DB::table('sysdb.sysparam')
                             ->where('source','=',"MR")
-                            ->where('trantype','=',"ICD")
+                            ->where('trantype','=',"MMAVER")
                             ->first();
 
-            if($diagtab->exists()){
+            if($mmamaster->exists()){
                 throw new \Exception("Record Duplicate");
             }
 
-            DB::table('hisdb.diagtab')
-                ->insert([
-                    'compcode' => session('compcode'),  
-                    'icdcode' => strtoupper($request->icdcode),
+            DB::table('hisdb.mmamaster')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mmacode' => strtoupper($request->mmacode),
                     'description' => strtoupper($request->description),
-                    "type" => strtoupper($request->type),
+                    "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
+                    //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            $responce = new stdClass();
-            $responce->errormsg = $e->getMessage();
-            $responce->request = $_REQUEST;
+            return response('Error'.$e, 500);
+        }
 
-            return response(json_encode($responce), 500);
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+            $value->remarks_show = $value->remarks;
+            if(mb_strlen($value->remarks)>120){
+        
+                $time = time() + $key;
+        
+                $value->remarks_show = mb_substr($value->remarks_show,0,120).'<span id="dots_'.$time.'" style="display: inline;">...</span><span id="more_'.$time.'" style="display: none;">'.mb_substr($value->remarks_show,120).'</span><a id="moreBtn_'.$time.'" style="color: #337ab7 !important;" >Read more</a>';
+        
+                $value->callback_param = [
+                    'dots_'.$time,'more_'.$time,'moreBtn_'.$time
+                ];
+            }
         }
     }
 
@@ -149,16 +162,14 @@ class icdController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.diagtab')
+            DB::table('hisdb.mmamaster')
                 ->where('idno','=',$request->idno)
                 ->update([  
+                    //'mmacode' => strtoupper($request->mmacode),
                     'description' => strtoupper($request->description),
-                    'recstatus' => strtoupper($request->recstatus),                    
-                    'idno' => strtoupper($request->idno),
+                    'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => strtoupper(session('username')),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastipaddress' => strtoupper($request->lastipaddress)
                 ]); 
 
             DB::commit();
@@ -170,12 +181,12 @@ class icdController extends defaultController
     }
 
     public function del(Request $request){
-        DB::table('hisdb.diagtab')
+        DB::table('hisdb.mmamaster')
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'lastuser' => strtoupper(session('username')),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
     }
 }

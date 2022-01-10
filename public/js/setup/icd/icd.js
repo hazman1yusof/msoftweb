@@ -1,3 +1,4 @@
+///////////////////////////icd.js////////////////////////////////////
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
@@ -29,11 +30,16 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
         action:'get_table_default',
-        url:'util/get_table_default',
-        field:'',
-        table_name:'hisdb.diagtab',
-        table_id:'icdcode',
-        sort_idno: true    
+        url:'icd/table',
+        // field:'',
+		// table_name:['hisdb.diagtab AS dt', 'sysdb.sysparam AS sp'],
+		// table_id:'idno',
+		// join_type:['LEFT JOIN'],
+		// join_onCol:['dt.type'],
+		// join_onVal:['sp.pvalue1'],
+		// filterCol:['dt.type','dt.compcode'],
+		// filterVal:['','session.coompcode'],
+		// sort_idno: true,
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -42,7 +48,7 @@ $(document).ready(function () {
 		datatype: "local",
         editurl: "/icd/form",
 		colModel: [
-             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
+            { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
 			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			// { label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 			// 	editoptions: 
@@ -50,9 +56,9 @@ $(document).ready(function () {
 			// },
 			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
-					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
+					{style: "width: -webkit-fill-available; text-transform: uppercase", rows: 5}
 			},
-			{ label: 'Type', name: 'type', width: 20, hidden: false },            
+			{ label: 'Type', name: 'type', width: 20, canSearch: true, hidden: false},            
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
             { label: 'adddate', name: 'adddate', width: 90, hidden:true},
             { label: 'upduser', name: 'upduser', width: 90, hidden:true},

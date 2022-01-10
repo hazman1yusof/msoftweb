@@ -128,19 +128,15 @@ class mmaController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'adduser' => strtoupper(session('username')),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
-            $responce = new stdClass();
-            $responce->errormsg = $e->getMessage();
-            $responce->request = $_REQUEST;
-
-            return response(json_encode($responce), 500);
+            return response('Error'.$e, 500);
         }
 
         //////////paginate/////////

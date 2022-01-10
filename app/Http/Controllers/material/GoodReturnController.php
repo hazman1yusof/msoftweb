@@ -46,6 +46,9 @@ class GoodReturnController extends defaultController
 
     public function add(Request $request){
 
+
+        DB::beginTransaction();
+
         if(!empty($request->fixPost)){
             $field = $this->fixPost2($request->field);
             $idno = substr(strstr($request->table_id,'_'),1);
@@ -54,28 +57,32 @@ class GoodReturnController extends defaultController
             $idno = $request->table_id;
         }
 
-        $request_no = $this->request_no('GRT', $request->delordhd_deldept);
-        $recno = $this->recno('PUR','DO');
-
-        DB::beginTransaction();
-
-        $table = DB::table("material.delordhd");
-
-        $array_insert = [
-            'trantype' => 'GRT', 
-            'docno' => $request_no,
-            'recno' => $recno,
-            'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'OPEN'
-        ];
-
-        foreach ($field as $key => $value) {
-            $array_insert[$value] = $request[$request->field[$key]];
-        }
-
         try {
+
+            $request_no = $this->request_no('GRT', $request->delordhd_deldept);
+            $recno = $this->recno('PUR','GRT');
+
+            $table = DB::table("material.delordhd");
+
+            $array_insert = [
+                'trantype' => 'GRT', 
+                'docno' => $request_no,
+                'recno' => $recno,
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN'
+            ];
+
+            foreach ($field as $key => $value) {
+                if(is_string($request[$request->field[$key]])){
+                    $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+                }else{
+                    $array_insert[$value] = $request[$request->field[$key]];
+                }
+            }
+
 
             $idno = $table->insertGetId($array_insert);
 
@@ -101,7 +108,7 @@ class GoodReturnController extends defaultController
             $responce->totalAmount = $totalAmount;
             echo json_encode($responce);
 
-            DB::commit();
+            // DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
