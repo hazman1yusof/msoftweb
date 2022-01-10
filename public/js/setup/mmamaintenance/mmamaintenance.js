@@ -426,7 +426,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 			if(!hide_init){
 				hide_init=1;
-				//hideatdialogForm_jqGrid2(false);
+				hideatdialogForm_jqGrid2(false);
 			}
 		}
 	});
@@ -451,7 +451,7 @@ $(document).ready(function () {
 			$("input[name='mmacode']").attr('disabled','disabled');
 			$("input[name='feesanaes']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid3_ilsave').click();
+				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -479,7 +479,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
 		},
 		afterrestorefunc : function( response ) {
-			//hideatdialogForm_jqGrid2(false);
+			hideatdialogForm_jqGrid2(false);
 		}
 	};
 	//////////////////////////////////////////end myEditOptions2 for MMA dtl/////////////////////////////////////////////
@@ -544,7 +544,7 @@ $(document).ready(function () {
 			}
 			mycurrency2.formatOnBlur();
 			//onall_editfunc();
-			//hideatdialogForm_jqGrid2(true,'saveallrow');
+			hideatdialogForm_jqGrid2(true,'saveallrow');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2SaveAll",
@@ -579,11 +579,11 @@ $(document).ready(function () {
 				_token: $("#_token").val()
 			}
 
-			$.post( "/mmamaintenanceDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
+			$.post( "/mmamaintenanceDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				//hideatdialogForm_jqGrid2(false);
+				hideatdialogForm_jqGrid2(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
 		},	
@@ -593,7 +593,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-remove-circle",
 		title:"Cancel",
 		onClickButton: function(){
-			//hideatdialogForm_jqGrid2(false);
+			hideatdialogForm_jqGrid2(false);
 			refreshGrid("#jqGrid2",urlParam2);
 		},	
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
@@ -605,6 +605,19 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	});
+
+	function hideatdialogForm_jqGrid2(hide,saveallrow){
+		if(saveallrow == 'saveallrow'){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
+		}else if(hide){
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
+			$("#saveDetailLabel").show();
+		}else{
+			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
+			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+		}
+	}
 	//////////////////////////////////////////end pager jqgrid2 MMA Dtl/////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////

@@ -325,23 +325,6 @@ use Carbon\Carbon;
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                // if($apactdtl->exists()){ 
-                //     foreach ($apactdtl->get() as $value) {
-                //         DB::table('material.delordhd')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('recstatus','=','POSTED')
-                //             ->where('delordno','=',$value->document)
-                //             ->update(['invoiceno'=>$apacthdr->document]);
-                //     }
-                // }
-
-                // DB::table('finance.apacthdr')
-                //     ->where('auditno','=',$request->auditno)
-                //     ->update([
-                //         'recstatus' => 'POSTED',
-                //         'upduser' => session('username'),
-                //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                //     ]);
             }
 
             DB::commit();
@@ -385,14 +368,14 @@ use Carbon\Carbon;
                 throw new \Exception("CANNOT DELETE UNPOSTED PAYMENT VOUCHER");
             }
 
-             $apalloc = DB::table('finance.apalloc')
+            $apalloc = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
                     ->where('unit','=',session('unit'))
                     ->where('source','=', $apacthdr->source)
                     ->where('trantype','=', $apacthdr->trantype)
                     ->where('auditno','=', $apacthdr->auditno)
                     ->update([
-                        'recstatus' => 'POSTED',
+                        'recstatus' => 'CANCELLED',
                         'lastuser' => session('username'),
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -401,14 +384,6 @@ use Carbon\Carbon;
                                 ->where('compcode','=',session('compcode'))
                                 ->where('suppcode','=',$apacthdr_first->suppcode)
                                 ->first();
-
-            foreach ($apactdtl->get() as $value) {
-                DB::table('material.delordhd')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','=','POSTED')
-                    ->where('delordno','=',$value->document)
-                    ->update(['invoiceno' => null]);
-            }
 
             //amik yearperiod dari delordhd
             $yearperiod = defaultController::getyearperiod_($apacthdr_first->actdate);
