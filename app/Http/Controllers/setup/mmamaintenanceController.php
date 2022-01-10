@@ -37,7 +37,7 @@ class mmamaintenanceController extends defaultController
 
         $table = DB::table('hisdb.mmamaster')
                     ->where('version','=',$mmaver->pvalue1)
-                    ->orderBy('idno','asc');
+                    ->orderBy('idno','desc');
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;

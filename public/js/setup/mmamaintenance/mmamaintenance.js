@@ -51,8 +51,8 @@ $(document).ready(function () {
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
 			},
-			{ label: 'Version', name: 'version', width: 8, canSearch: true, align: 'right'},
-			{ label: 'Status', name: 'recstatus', width: 8, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Version', name: 'version', width: 6, canSearch: true, align: 'right'},
+			{ label: 'Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{
 							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 							cellattr: function(rowid, cellvalue)
