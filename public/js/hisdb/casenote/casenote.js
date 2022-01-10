@@ -58,7 +58,7 @@ $(document).ready(function() {
                 _token: $('#csrf_token').val(),
             };
         },
-        url: "pat_mast/post_entry?action=get_patient_list&epistycode="+$("#epistycode").val()+"&curpat="+$("#curpat").val()+"&PatClass="+$("#PatClass").val(),
+        url: "casenote/post_entry?action=get_patient_list&epistycode="+$("#epistycode").val()+"&curpat="+$("#curpat").val()+"&PatClass="+$("#PatClass").val(),
         formatters: {
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
@@ -477,7 +477,7 @@ $(document).ready(function() {
                         
                         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
 
-                        epis_desc_show.write_desc();
+                        // epis_desc_show.write_desc();
 
                     }else{
                         alert('MRN not found')
@@ -557,34 +557,34 @@ $(document).ready(function() {
 
 });
 
-if($('#epistycode').val() == 'OP'){
-    var epis_desc_show = new loading_desc_epis([
-        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
-    ]);
-}else if($('#epistycode').val() == 'IP'){
-    var epis_desc_show = new loading_desc_epis([
-        {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
-        {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
-        {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
-        {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
-        {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
-        {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
-        {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
-        {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
-        {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
-        {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
-        {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
-        // {code:'',desc:'',id:'bed_dept'},
-        // {code:'',desc:'',id:'bed_ward'}
-    ]);
-}
+// if($('#epistycode').val() == 'OP'){
+//     var epis_desc_show = new loading_desc_epis([
+//         {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+//         {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+//         {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+//         {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+//         {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+//         {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+//         {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+//         {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+//         {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
+//     ]);
+// }else if($('#epistycode').val() == 'IP'){
+//     var epis_desc_show = new loading_desc_epis([
+//         {code:'#hid_epis_dept',desc:'#txt_epis_dept',id:'regdept'},
+//         {code:'#hid_epis_source',desc:'#txt_epis_source',id:'regsource'},
+//         {code:'#hid_epis_case',desc:'#txt_epis_case',id:'case'},
+//         {code:'#hid_epis_doctor',desc:'#txt_epis_doctor',id:'doctor'},
+//         {code:'#hid_epis_bed',desc:'#txt_epis_bed',id:'epis_bed'},//ada bed pada IP
+//         {code:'#hid_epis_fin',desc:'#txt_epis_fin',id:'epis_fin'},
+//         {code:'#hid_epis_payer',desc:'#txt_epis_payer',id:'epis_payer'},
+//         {code:'#hid_epis_bill_type',desc:'#txt_epis_bill_type',id:'bill_type'},
+//         {code:'#hid_newgl_occupcode',desc:'#txt_newgl_occupcode',id:'newgl_occupcode'},
+//         {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'},
+//         {code:'#hid_newgl_corpcomp',desc:'#txt_newgl_corpcomp',id:'newgl_corpcomp'}
+//         // {code:'',desc:'',id:'bed_dept'},
+//         // {code:'',desc:'',id:'bed_ward'}
+//     ]);
+// }
 
-epis_desc_show.load_desc();
+// epis_desc_show.load_desc();

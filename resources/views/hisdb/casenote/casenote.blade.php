@@ -373,7 +373,7 @@
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
 
 	<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/casenote.js"></script>
+	<script type="text/javascript" src="js/hisdb/casenote/casenote.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>

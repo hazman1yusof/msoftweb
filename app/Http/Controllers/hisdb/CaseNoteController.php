@@ -56,171 +56,76 @@ class CaseNoteController extends defaultController
 
         $mrn_range = $this->mrn_range($request);
 
-        if($request->curpat == 'true'){
+        $table_patm = DB::table('hisdb.pat_mast'); //ambil dari patmast balik
+                        // ->where('compcode','=',session('compcode'));
 
-            $request->rows = $request->rowCount;
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+            $count = array_count_values($searchCol_array);
 
-            $sel_epistycode = $request->epistycode;
-            $table = DB::table('hisdb.queue')
-                        ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                        ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                        ->where('queue.billflag','=',0)
-                        ->where('queue.compcode','=',session('compcode'))
-                        ->where('queue.deptcode','=',"ALL");
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
 
-            if(empty($request->searchCol) && !empty(session('isdoctor'))){
-                $table = $table->where('doctor.doctorcode','=',session('isdoctor'));
-            }else if(!empty($request->searchCol) && $request->searchCol[0]=='doctor'){
-                $table = $table->where('doctor.doctorname','like',$request->searchVal[0]);
-            }
-
-            if($sel_epistycode == 'OP'){
-                $table->whereIn('queue.epistycode', ['OP','OTC']);
-            }else{
-                $table->whereIn('queue.epistycode', ['IP','DP']);
-            }
-
-
-            $paginate = $table->paginate($request->rows);
-            $arr_mrn = [];
-
-            foreach ($paginate->items() as $key => $obj) {
-                array_push($arr_mrn, $obj->mrn);
-            }
-
-            $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
-                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc'])
-                            ->leftJoin('hisdb.racecode','racecode.Code','=','pat_mast.RaceCode')
-                            ->leftJoin('hisdb.religion','religion.Code','=','pat_mast.Religion')
-                            ->leftJoin('hisdb.occupation','occupation.occupcode','=','pat_mast.OccupCode')
-                            ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
-                            ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
-                            ->where('pat_mast.compcode','=',session('compcode'))
-                            // ->where('racecode.compcode','=',session('compcode'))
-                            // ->where('religion.CompCode','=',session('compcode'))
-                            // ->where('occupation.compcode','=',session('compcode'))
-                            // ->where('citizen.compcode','=',session('compcode'))
-                            // ->where('areacode.compcode','=',session('compcode'))
-                            ->where('pat_mast.Active','=','1')
-                            ->whereIn('pat_mast.mrn', $arr_mrn)
-                            ->whereBetween('pat_mast.MRN',$mrn_range);
-
-            if(!empty($request->searchCol) && $request->searchCol[0]!='doctor'){
-                $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
-            }
-
-            $paginate_patm = $table_patm->paginate($request->rows);
-
-            foreach ($paginate_patm->items() as $key => $value) {
-                foreach ($paginate->items() as $key2 => $value2) {
-                    if($value->MRN == $value2->mrn){
-                        $value->q_doctorname = $value2->doctorname;
-                        $value->q_epistycode = $value2->epistycode;
+                $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
                     }
-                }
+                });
+            }
+        }
 
+        $table_patm = $table_patm
+                    ->where('Active','=','1')
+                    ->where('compcode','=',session('compcode'))
+                    ->whereBetween('MRN',$mrn_range);
+
+        if(!empty($request->sort)){
+            foreach ($request->sort as $key => $value) {
+                $table_patm = $table_patm->orderBy($key, $value);
+            }
+        }
+
+        $request->page = $request->current;
+
+        //////////paginate/////////
+        $paginate = $table_patm->paginate($request->rowCount);
+
+        foreach ($paginate->items() as $key => $value) {
+            if($value->PatStatus==1){
+                // $queue = DB::table('hisdb.queue')
+                //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
+                //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
+                //             ->where('queue.mrn','=',$value->MRN)
+                //             ->where('queue.episno','=',$value->Episno)
+                //             ->where('queue.deptcode','=',"ALL");
                 $episode = DB::table('hisdb.episode')
-                            ->select('newcaseP','newcaseNP','followupP','followupNP')
-                            ->where('mrn','=',$value->MRN)
-                            ->where('episno','=',$value->Episno);
+                            ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+                            ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+                            ->where('episode.mrn','=',$value->MRN)
+                            ->where('episode.episno','=',$value->Episno);
 
                 if($episode->exists()){
                     $episode = $episode->first();
-                    if($episode->newcaseP == 1 || $episode->followupP == 1){
-                        $value->pregnant = 1;
-                    }else{
-                        $value->pregnant = 0;
-                    }
-
-                }
-
-
-            }
-
-            $responce = new stdClass();
-            $responce->current = $paginate->currentPage();
-            $responce->lastPage = $paginate->lastPage();
-            $responce->total = $paginate->total();
-            $responce->rowCount = $request->rowCount;
-            $responce->rows = $paginate_patm->items();
-            $responce->sql = $table->toSql();
-            $responce->sql_bind = $table->getBindings();
-            
-            return json_encode($responce);
-
-        }else{
-
-            $table_patm = DB::table('hisdb.pat_mast'); //ambil dari patmast balik
-                            // ->where('compcode','=',session('compcode'));
-
-            if(!empty($request->searchCol)){
-                $searchCol_array = $request->searchCol;
-                $count = array_count_values($searchCol_array);
-
-                foreach ($count as $key => $value) {
-                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
-                    $table_patm = $table_patm->orWhere(function ($table_patm) use ($request,$searchCol_array,$occur_ar) {
-                        foreach ($searchCol_array as $key => $value) {
-                            $found = array_search($key,$occur_ar);
-                            if($found !== false){
-                                $table_patm->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                            }
-                        }
-                    });
+                    $value->q_epistycode = $episode->epistycode;
+                    $value->q_doctorname = $episode->doctorname;
                 }
             }
-
-            $table_patm = $table_patm
-                        ->where('Active','=','1')
-                        ->where('compcode','=',session('compcode'))
-                        ->whereBetween('MRN',$mrn_range);
-
-            if(!empty($request->sort)){
-                foreach ($request->sort as $key => $value) {
-                    $table_patm = $table_patm->orderBy($key, $value);
-                }
-            }
-
-            $request->page = $request->current;
-
-            //////////paginate/////////
-            $paginate = $table_patm->paginate($request->rowCount);
-
-            foreach ($paginate->items() as $key => $value) {
-                if($value->PatStatus==1){
-                    // $queue = DB::table('hisdb.queue')
-                    //             ->select(['queue.mrn','doctor.doctorname','queue.epistycode'])
-                    //             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','queue.admdoctor')
-                    //             ->where('queue.mrn','=',$value->MRN)
-                    //             ->where('queue.episno','=',$value->Episno)
-                    //             ->where('queue.deptcode','=',"ALL");
-                    $episode = DB::table('hisdb.episode')
-                                ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
-                                ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
-                                ->where('episode.mrn','=',$value->MRN)
-                                ->where('episode.episno','=',$value->Episno);
-
-                    if($episode->exists()){
-                        $episode = $episode->first();
-                        $value->q_epistycode = $episode->epistycode;
-                        $value->q_doctorname = $episode->doctorname;
-                    }
-                }
-            }
-
-            $responce = new stdClass();
-            $responce->current = $paginate->currentPage();
-            $responce->lastPage = $paginate->lastPage();
-            $responce->total = $paginate->total();
-            $responce->rowCount = $request->rowCount;
-            $responce->rows = $paginate->items();
-            $responce->sql = $table_patm->toSql();
-            $responce->sql_bind = $table_patm->getBindings();
-
-            return json_encode($responce);
-
         }
+
+        $responce = new stdClass();
+        $responce->current = $paginate->currentPage();
+        $responce->lastPage = $paginate->lastPage();
+        $responce->total = $paginate->total();
+        $responce->rowCount = $request->rowCount;
+        $responce->rows = $paginate->items();
+        $responce->sql = $table_patm->toSql();
+        $responce->sql_bind = $table_patm->getBindings();
+
+        return json_encode($responce);
+
     }
 
     public function get_entry(Request $request)
@@ -2280,23 +2185,12 @@ class CaseNoteController extends defaultController
     }
 
     public function mrn_range(Request $request){
-        if($request->PatClass == 'HIS'){
-            $table = DB::table('sysdb.sysparam')
-                        ->where('source','=','HIS')
-                        ->where('trantype','=','MRN')
-                        ->first();
+        $table = DB::table('sysdb.sysparam')
+                    ->where('source','=','HIS')
+                    ->where('trantype','=','MRN')
+                    ->first();
 
-            return explode(',', $table->pvalue2);
-        }else if($request->PatClass == 'OTC'){
-            $table = DB::table('sysdb.sysparam')
-                        ->where('source','=','OTC')
-                        ->where('trantype','=','MRN')
-                        ->first();
-
-            return explode(',', $table->pvalue2);
-        }else{
-            dump('wrong patclass, choose only HIS or OTC');
-        }
+        return explode(',', $table->pvalue2);
     }
 
 
