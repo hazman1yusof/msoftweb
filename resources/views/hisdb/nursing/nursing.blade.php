@@ -51,7 +51,7 @@
 
 				<form class='form-horizontal' style='width:99%' id='formTriageInfo'>
 					@if (Request::path() == 'casenote')
-						<div class="col-md-2" style="padding:0 0 0 0">
+						<div class="col-md-4" style="padding:0 0 0 0">
 	                        <div class="panel panel-info">
 	                            <div class="panel-body">
 									<table id="nursing_date_tbl" class="ui celled table" style="width: 100%;">
@@ -61,6 +61,7 @@
 	                                            <th class="scope">episno</th>
 	                                            <th class="scope">Date</th>
 	                                            <th class="scope">adduser</th>
+                                            	<th class="scope">Doctor</th>
 	                                        </tr>
 	                                    </thead>
 	                                </table>
@@ -70,7 +71,7 @@
                     @endif
 
 					@if (Request::path() == 'casenote')
-					<div class="col-md-10">
+					<div class="col-md-8">
                     @endif
 						<div class='col-md-6'>
 							<div class="panel panel-info">

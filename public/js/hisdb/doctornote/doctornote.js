@@ -639,14 +639,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
-});
-
-$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
-	sticky_docnotetbl(on=true);
-});
-
-$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
-	sticky_docnotetbl(on=true);
+	SmoothScrollTo("#jqGridDoctorNote_panel", 500)	
 });
 
 //to reload date table on radio btn click

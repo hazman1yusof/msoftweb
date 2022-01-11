@@ -120,6 +120,15 @@ $(document).ready(function () {
     	$("#jqGridTriageInfo_panel > div").scrollTop(0);
     });
 
+	$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#jqGridTriageInfo_panel", 500)	
+		sticky_docnotetbl(on=true);
+	});
+
+	$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
+		sticky_docnotetbl(on=true);
+	});
+
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
@@ -644,8 +653,9 @@ var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
     "columns": [
         {'data': 'mrn'},
         {'data': 'episno'},
-        {'data': 'date', 'width': '100%'},
+        {'data': 'date', 'width': '60%'},
         {'data': 'adduser'},
+        {'data': 'doctorname', 'width': '30%'},
     ]
     ,columnDefs: [
         { targets: [0, 1, 3], visible: false},
