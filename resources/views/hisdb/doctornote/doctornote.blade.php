@@ -80,18 +80,33 @@
                                         <input id="remarks" name="remarks" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter Patient Complaint">
                                     </div>
 
-                                    <div class="col-md-3 panel panel-info">
+                                    
+                                    <div class="col-md-3 panel panel-info" 
+                                        style="
+                                            margin-bottom: 0px; 
+                                            @if (Request::path() == 'casenote')
+                                                display: none
+                                            @endif
+                                        ">
                                         <div class="panel-body" style="padding-top:5px;padding-bottom:5px;">
                                             <label class="radio-inline">
-                                                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" checked>
+                                                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" 
+                                                @if (Request::path() != 'casenote')
+                                                    checked
+                                                @endif>
                                                 <label class="form-check-label" for="current">Current</label>
                                             </label>
                                             <label class="radio-inline" style="margin-left: 0px;">
-                                                <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past">
+                                                <input class="form-check-input" type="radio" name="toggle_type" id="past" value="past"
+                                                @if (Request::path() == 'casenote')
+                                                    checked
+                                                @endif>
                                                 <label class="form-check-label" for="past">Past History</label>
                                             </label>
                                         </div>
-                                    </div>
+                                    </div> 
+
+                                    <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="adduser" name="adduser"></span></span>
                                 </div>
 
                                 <div class="col-md-12" style="padding:0px;">

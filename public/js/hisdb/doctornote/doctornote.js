@@ -646,7 +646,6 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 $("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
 	on_toggling_curr_past(curr_obj);
-	console.log(dateParam_docnote);
 	docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
@@ -704,6 +703,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
+			$('#formDoctorNote span#adduser').text(data.pathealth.adduser);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
