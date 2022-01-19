@@ -190,8 +190,6 @@ use Carbon\Carbon;
             'suppcode' => strtoupper($request->apacthdr_suppcode),
             'document' => strtoupper($request->apacthdr_document),
             'paymode' => strtoupper($request->apacthdr_paymode),
-            'bankcode' => strtoupper($request->apacthdr_bankcode),
-            'cheqno' => strtoupper($request->apacthdr_cheqno),
             'remarks' => strtoupper($request->apacthdr_remarks),
             
         ];
@@ -282,63 +280,6 @@ use Carbon\Carbon;
             return response('Error'.$e, 500);
         }
     }
-
-
-    // public function edit(Request $request){
-
-    //     if(!empty($request->fixPost)){
-    //         $field = $this->fixPost2($request->field);
-    //         $idno = substr(strstr($request->table_id,'_'),1);
-    //     }else{
-    //         $field = $request->field;
-    //         $idno = $request->table_id;
-    //     }
-
-    //     DB::beginTransaction();
-
-    //     $table = DB::table("finance.apacthdr");
-
-    //     $array_update = [
-    //         'unit' => session('unit'),
-    //         'compcode' => session('compcode'),
-    //         'pvno' => $request->apacthdr_pvno,
-    //         'doctype' => $request->apacthdr_doctype,
-    //         'suppcode' => $request->apacthdr_suppcode,
-    //         'document' => strtoupper($request->apacthdr_document),
-    //         'paymode' => $request->apacthdr_paymode,
-    //         'bankcode' => $request->apacthdr_bankcode,
-    //         'cheqno' => $request->apacthdr_cheqno,
-    //         'remarks' => strtoupper($request->apacthdr_remarks),
-    //         'upduser' => session('username'),
-    //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-    //     ];
-
-    //     foreach ($field as $key => $value) {
-    //         if($value == 'remarks' || $value == 'document'){
-    //             continue;
-    //         }
-    //         $array_update[$value] = $request[$request->field[$key]];
-    //     }
-
-    //     try {
-    //         //////////where//////////
-    //         $table = $table->where('idno','=',$request->idno);
-    //         $table->update($array_update);
-
-    //         $responce = new stdClass();
-    //         $responce->amount = $request->apacthdr_amount;
-    //         echo json_encode($responce);
-
-    //         // $queries = DB::getQueryLog();
-    //         // dump($queries);
-
-    //         DB::commit();
-    //     } catch (\Exception $e) {
-    //         DB::rollback();
-
-    //         return response('Error'.$e, 500);
-    //     }
-    // }
 
     public function posted(Request $request){
         DB::beginTransaction();
