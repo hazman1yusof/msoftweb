@@ -344,8 +344,20 @@
 		</div>
 
 		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.antenatal.antenatal')
+		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 			@include('hisdb.doctornote.doctornote')
 		</div>		
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+		</div>
+
+		<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+			@include('hisdb.ordcom.ordcom')
+		</div>
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
@@ -381,7 +393,10 @@
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
 
 	<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+	<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 	<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+	<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
+	<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
 
 	<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
 	<script type="text/javascript" src="js/hisdb/casenote/casenote.js"></script>
