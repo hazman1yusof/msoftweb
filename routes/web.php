@@ -567,7 +567,13 @@ Route::get('/creditNote/table','finance\CreditNoteController@table');
 Route::post('/creditNote/form','finance\CreditNoteController@form');
 Route::get('/creditNote/form','finance\CreditNoteController@form');
 
-//// Finance - Debit Note page ///
+//// Debit Note AP ///
+Route::get('/debitNoteAP','finance\DebitNoteAPController@show');
+Route::get('/debitNoteAP/table','finance\DebitNoteAPController@table');
+Route::post('/debitNoteAP/form','finance\DebitNoteAPController@form');
+Route::get('/debitNoteAP/form','finance\DebitNoteAPController@form');
+
+//// Finance - Debit Note AR page ///
 Route::get('/DebitNote','finance\DebitNoteController@show');
 Route::get('/DebitNote/table','finance\DebitNoteController@table');
 Route::post('/DebitNote/form','finance\DebitNoteController@form');

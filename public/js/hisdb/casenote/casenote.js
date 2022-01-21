@@ -225,7 +225,10 @@ $(document).ready(function() {
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         
         populate_triage_casenote(rows[bootgrid_last_rowid]);
+        populate_antenatal(rows[bootgrid_last_rowid]);
         populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
+        populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
+        populate_ordcom_currpt(rows[bootgrid_last_rowid]);
 
     });
     var bootgrid_last_rowid = 0;
