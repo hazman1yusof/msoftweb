@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Debit Note')
+@section('title', 'Debit Note AR')
 
 @section('style')
 
@@ -67,16 +67,9 @@ i.fa {
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase"  tabindex="1">
-
-							<div  id="tunjukname" style="display:none">
-								<div class='input-group'>
-									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>
-							
 						</div>
+		            </div>
+				</div>
 
 
 					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
@@ -102,21 +95,34 @@ i.fa {
 					}
 				?>
 
-				<div id="div_for_but_post" class="col-md-6 col-md-offset-6" style="padding-top: 20px; text-align: end;">
-					
-					<span id="error_infront" style="color: red"></span>
+				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
+					<span id="error_infront" style="color: red"></span>
+					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button 
 						type="button" 
 						class="btn btn-primary btn-sm" 
 						id="but_post_jq" 
-						data-oper="{{$scope_use}}" 
-						style="display: none;">
-						POST
+						data-oper="posted"
+						style="display: none;">						
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope').' ALL'}}
+						@endif
+					</button>
+
+					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
 					</button>
 
 					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
 			 </fieldset> 
@@ -163,6 +169,16 @@ i.fa {
 
     		<div id="jqGrid3_panel" class="panel-collapse collapse">
 	    		<div class="panel-body">
+					@if (strtoupper(Request::get('scope')) == 'CANCEL')
+						<button 
+								type="button" 
+								class="btn btn-danger btn-sm" 
+								id="but_post2_jq"
+								data-oper="cancel"
+								style="float: right;margin: 0px 20px 10px 20px;">
+								Cancel Debit Note
+						</button>
+					@endif
 	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid3" class="table table-striped"></table>
             			<div id="jqGridPager3"></div>

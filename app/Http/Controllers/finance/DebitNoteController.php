@@ -246,6 +246,48 @@ class DebitNoteController extends defaultController
         }
     }
 
+    public function posted(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            foreach ($request->idno_array as $value){
+
+                $purreqhd = DB::table("material.purreqhd")
+                    ->where('idno','=',$value);
+
+                $purreqhd_get = $purreqhd->first();
+                if(!in_array($purreqhd_get->recstatus, ['POSTED'])){
+                    continue;
+                }
+
+                $purreqhd->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+
+                DB::table("material.purreqdt")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->update([  
+                        'recstatus' => 'CANCELLED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                DB::table("material.queuepr")
+                    ->where('recno','=',$purreqhd_get->recno)
+                    ->delete();
+
+            }
+           
+            DB::commit();
+        
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
     public function support(Request $request){
         DB::beginTransaction();
 
