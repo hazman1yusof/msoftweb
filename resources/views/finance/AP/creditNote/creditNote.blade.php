@@ -199,7 +199,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
 							<div class="col-md-2">
 							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
-							       <option value="PV">Payment Voucher</option>
+							       <option value="CN">Credit Note</option>
 							       <option value="PD">Payment Deposit</option>
 							    </select>
 						  	</div>
