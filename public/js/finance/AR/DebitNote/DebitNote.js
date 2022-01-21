@@ -230,6 +230,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 
 			$("#pdfgen1").attr('href','./DebitNote/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
+			if_cancel_hide();
 
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -242,11 +243,14 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
+			$('#but_cancel_jq,#but_post_jq').hide();
 			if (oper == 'add' || oper == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
+			empty_form();
+
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 
@@ -340,6 +344,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		
 		$.post( 'DebitNote/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
@@ -1546,6 +1551,18 @@ $(document).ready(function () {
 		}
 	}
 
+	function if_cancel_hide(){
+		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
+			$('#jqGrid3_panel').collapse('hide');
+			$('#ifcancel_show').text(' - CANCELLED');
+			$('#panel_jqGrid3').attr('data-target','-');
+		}else{
+			$('#jqGrid3_panel').collapse('show');
+			$('#ifcancel_show').text('');
+			$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel');
+		}
+	}
+
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
@@ -1568,6 +1585,12 @@ function populate_form(obj){
 	$('#DebitNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
 }
+
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
+	}
 
 function empty_form(){
 	$('#DebitNo_show').text('');
