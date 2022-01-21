@@ -4,7 +4,7 @@ $(document).ready(function () {
 	disableForm('#form_ordcom');
 
 	// $("#new_ordcom").click(function(){
-	// 	hideatdialogForm(false);
+	// 	
 	// });
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -26,7 +26,7 @@ $(document).ready(function () {
 	};
 
 	////////////////////////////////////start dialog///////////////////////////////////////
-
+	
 	var mycurrency2 =new currencymode([]);
 
 	var dialog_isudept = new ordialog(
@@ -126,8 +126,8 @@ $(document).ready(function () {
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
-			case 'Issue Department':temp=$("#jqGrid_ordcom input[name='ordcom_isudept']");break;
-			case 'GST Code':temp=$("#jqGrid_ordcom input[name='ordcom_taxcode']");break;
+			case 'Charge Code':temp=$("#jqGrid_ordcom input[name='ordcom_chgcode']");break;
+			// case 'GST Code':temp=$("#jqGrid_ordcom input[name='ordcom_taxcode']");break;
 			break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -136,7 +136,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
-			case 'ct_chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
+			case 'chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
 			case 'ct_isudept':field=['deptcode','description'];table="sysdb.department";case_='isudept';break;
 			case 'ct_taxcode':field=['taxcode','description'];table="hisdb.chargetrx";case_='taxcode';break;
 
@@ -190,107 +190,79 @@ $(document).ready(function () {
 
 
 	/////////////////////parameter for jqgrid4 url/////////////////////////////////////////////////
-	
-	var urlParam_ordcom={
-		action:'get_table_default',
-		url:'/util/get_table_default',
-		field: '',
-		fixPost:'true',
-		table_name: ['hisdb.chargetrx AS ct','hisdb.chgmast AS cm'],
-		join_type:['LEFT JOIN'],
-		join_onCol:['cm.chgcode'],
-		join_onVal:['ct.chgcode'],
-		join_filterCol:[['cm.compcode on =']],
-		join_filterVal:[['ct.compcode']],
-		filterCol:['ct.compcode'],
-		filterVal:['session.compcode'],
-	};
 
 	var addmore_jqGrid_ordcom={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqGrid_ordcom, state true kalu
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 
-	// var saveParam = {
-	// 	action: 'save_table_default',
-	// 	url: '/ordcom/form',
-	// 	field: '',
-	// 	oper: oper,
-	// 	table_name: ['hisdb.chargetrx AS ct','hisdb.chgmast AS cm'],
-	// 	table_id: 'auditno',
-	// 	saveip:'true',
-	// 	checkduplicate:'true'
-	// };
-
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
 		editurl: "/ordcom/form",
 		colModel: [
-			{ label: 'auditno', name: 'ct_auditno', hidden:true},
-			{ label: 'compcode', name: 'ct_compcode', hidden:true},
-			{ label: 'Date', name: 'ct_trxdate', width: 100, classes: 'wrap',editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'ct_trxdate_datePicker',
-                            dateFormat: 'dd/mm/yy',
-                            minDate: 1,
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-							onSelect : function(){
-								$(this).focus();
-							}
-                        });
-                    }
-                }
-			},
-			{ label: 'Time', name: 'ct_trxtime', width: 100, classes: 'wrap',editable:true,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:ct_trxtime_custom,
-						custom_value:galGridCustomValue 	
-					},
-			},
+			{ label: 'auditno', name: 'auditno', hidden:true},
+			{ label: 'compcode', name: 'compcode', hidden:true},
+			// { label: 'Date', name: 'ct_trxdate', width: 100, classes: 'wrap',editable:true,
+			// 	formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+			// 	editoptions: {
+   //                  dataInit: function (element) {
+   //                      $(element).datepicker({
+   //                          id: 'ct_trxdate_datePicker',
+   //                          dateFormat: 'dd/mm/yy',
+   //                          minDate: 1,
+   //                          showOn: 'focus',
+   //                          changeMonth: true,
+		 //  					changeYear: true,
+			// 				onSelect : function(){
+			// 					$(this).focus();
+			// 				}
+   //                      });
+   //                  }
+   //              }
+			// },
+			// { label: 'Time', name: 'ct_trxtime', width: 100, classes: 'wrap',editable:true,
+			// 	edittype:'custom',	editoptions:
+			// 		{ 	custom_element:ct_trxtime_custom,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
 				
-			{ label: 'Charge Code', name: 'ct_chgcode', width: 150 , classes: 'wrap', editable:true,
+			{ label: 'Charge Code', name: 'chgcode', width: 150 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
 				edittype:'custom',	editoptions:
 					{ 	custom_element:chgcodeOrdcomCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Price', name: 'ct_price', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true,
+			{ label: 'Price', name: 'unitprice', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true,
 				editoptions: {
                 	dataInit: function (element) {
                     $(element).attr('disabled','disabled');
                 }
             }},	
-			{ label: 'Quantity', name: 'ct_quantity', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true},	
-			{ label: 'Issue Department', name: 'ct_isudept', width: 150,editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:isudeptOrdcomCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
-			{ label: 'GST Code', name: 'ct_taxcode', width: 120 , classes: 'wrap', editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:taxcodeOrdcomCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
-			},
-			{ label: 'Amount', name: 'ct_amt', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true,
+			{ label: 'Quantity', name: 'quantity', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true},	
+			// { label: 'Issue Department', name: 'ct_isudept', width: 150,editable:true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{ 	custom_element:isudeptOrdcomCustomEdit,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
+			// { label: 'GST Code', name: 'ct_taxcode', width: 120 , classes: 'wrap', editable:true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,unformat:un_showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{ 	custom_element:taxcodeOrdcomCustomEdit,
+			// 			custom_value:galGridCustomValue 	
+			// 		},
+			// },
+			{ label: 'Amount', name: 'amount', width: 100, formatter: 'currency', classes: 'wrap txnum', align: 'right', editable:true,
 				editoptions: {
                     dataInit: function (element) {
                         $(element).attr('disabled','disabled');
                     }
                 }},	
-			{ label: '', name: 'ct_remarks', hidden:false,width:300, editable:true,
-				edittype:'custom',	editoptions:
-					{ 	custom_element:ct_remarks_custom,
-						custom_value:galGridCustomValue 	
-					},
+			{ label: 'Remarks', name: 'remarks', hidden:false,width:300, editable:true,
+				edittype:'textarea',editoptions: { rows: 4 }
+
 			},
 		],
 		autowidth: true,
@@ -301,14 +273,14 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'ct_auditno',
+		sortname: 'auditno',
 		sortorder: 'desc',
 		pager: "#jqGridPager_ordcom",
 		onSelectRow:function(rowid, selected){
-			populate_form_ordcom(selrowData("#jqGrid_ordcom"));
+			// populate_form_ordcom(selrowData("#jqGrid_ordcom"));
 		},
 		loadComplete: function(){
-			if($('#ordcom_priceview_hide').val() != '1')$(this).jqGrid('hideCol',["ct_price"]); 
+			if($('#ordcom_priceview_hide').val() != '1')$(this).jqGrid('hideCol',["unitprice"]); 
 
 			if(addmore_jqGrid_ordcom.more == true){$('#jqGrid_ordcom_iladd').click();}
 			else{
@@ -356,19 +328,19 @@ $(document).ready(function () {
 
 
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["table#jqGrid_ordcom input[name='ct_price']","table#jqGrid_ordcom input[name='ct_amt']","table#jqGrid_ordcom input[name='ct_quantity']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["table#jqGrid_ordcom input[name='unitprice']","table#jqGrid_ordcom input[name='amount']","table#jqGrid_ordcom input[name='quantity']"]);
 			mycurrency2.formatOnBlur();
 
-			$("#jqGrid_ordcom input[name='ct_quantity'], #jqGrid_ordcom input[name='ordcom_taxcode'], #jqGrid_ordcom input[name='amtdisc']").on('blur',{currency: mycurrency2},onleave_input_ordcom);
+			$("#jqGrid_ordcom input[name='quantity'], #jqGrid_ordcom input[name='ordcom_taxcode'], #jqGrid_ordcom input[name='amtdisc']").on('blur',{currency: mycurrency2},onleave_input_ordcom);
 
 			$("#jqGrid_ordcom [name='ct_trxdate']").val(moment().format('D/M/YYYY'));
 			$("#jqGrid_ordcom [name='ct_trxtime']").val(moment().format('hh:mm:ss'));
-			$("#jqGrid_ordcom [name='ordcom_isudept']").val($("#ordcom_deptcode_hide").val());
+			// $("#jqGrid_ordcom [name='ordcom_isudept']").val($("#ordcom_deptcode_hide").val());
 
 			let selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			let drname = $("#jqGrid tr#"+selrow).find("td[aria-describedby='jqGrid_admdoctor'] span.help-block").text();
 
-			$("#jqGrid_ordcom [name='ct_remarks']").text(drname);
+			// $("#jqGrid_ordcom [name='ct_remarks']").text(drname);
 
 			$("#jqGrid_ordcom [name='ordcom_chgcode'] ~ a").click(function(){
 				let c_optid = $(this).prev('input').first().attr('optid');
@@ -383,7 +355,7 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;
-			addmore_jqgrid.more = true;
+			addmore_jqGrid_ordcom.more = true;
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 			errorField.length=0;
@@ -399,16 +371,18 @@ $(document).ready(function () {
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
-			if(errorField.length>0){console.log(errorField);return false;}
+			// if(errorField.length>0){console.log(errorField);return false;}
 
 			mycurrency2.formatOff();
-			let data = $('#jqGrid_ordcom').jqGrid ('getRowData', rowid);
 
 			let editurl = "/ordcom/form?"+
 				$.param({
-					mrn: selrowData('#jqGrid').mrn,
+					_token: $("#csrf_token").val(),	
+					mrn: $('#mrn_ordcom').val(),
+					episno: $('#episno_ordcom').val(),
 					action: 'saveForm_ordcom',
 				});
+
 			$("#jqGrid_ordcom").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
@@ -543,26 +517,12 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid_ordcom", urlParam_ordcom);	
 		},	
 	});	
-	function hideatdialogForm(hide,saveallrow){	
-		if(saveallrow == 'saveallrow'){	
-			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#saveDetailLabel").hide();	
-			$("#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").show();	
-		}else if(hide){	
-			$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").hide();	
-			$("#saveDetailLabel").show();	
-		}else{	
-			$("#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll").show();	
-			$("#saveDetailLabel,#jqGridPager_ordcomSaveAll,#jqGrid_ordcom_iledit,#jqGridPager_ordcomCancelAll").hide();	
-		}	
-	}	
-	//////////////////////////////////End grid pager ORDERCOM////////////////////////	
-	//////////////////////////////////////end grid////////////////////////////////////////////	
-	//////////handle searching, its radio button and toggle //////////////////////////////////////	
-	populateSelect('#jqGrid_ordcom', '#searchForm');	
-	searchClick2('#jqGrid_ordcom', '#searchForm', urlParam_ordcom);	
-	//////////add field into param, refresh grid if needed////////////////////////////////////////	
-	addParamField('#jqGrid_ordcom', true, urlParam_ordcom);	
-		
+
+	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
+		hideatdialogForm(false);
+		refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
+		$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+	});
 });	
 
 function onleave_input_ordcom(event){
@@ -570,8 +530,8 @@ function onleave_input_ordcom(event){
 	var c_optid = event.currentTarget.id;
 	var id_optid = c_optid.substring(0,c_optid.search("_"));
 
-	let qtyorder = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_quantity").val());
-	let unitprice = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_price").val());
+	let qtyorder = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_quantity").val());
+	let unitprice = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_unitprice").val());
 	let gstpercent = parseFloat($("table#jqGrid_ordcom input#"+id_optid+"_ct_taxcode_gstpercent").val());
 
 	var totamtperUnit = (unitprice*qtyorder);
@@ -579,10 +539,40 @@ function onleave_input_ordcom(event){
 	var tot_gst = totamtperUnit * (gstpercent / 100);
 	var totalAmount = totamtperUnit + tot_gst;
 
-	$("#"+id_optid+"_ct_amt").val(totalAmount);
+	$("#"+id_optid+"_amount").val(totalAmount);
 
 	event.data.currency.formatOn();//change format to currency on each calculation
 }
+
+function hideatdialogForm(hide,saveallrow){	
+	if(saveallrow == 'saveallrow'){	
+		$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#saveDetailLabel").hide();	
+		$("#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").show();	
+	}else if(hide){	
+		$("#jqGrid_ordcom_iledit,#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll,#jqGridPager_ordcomSaveAll,#jqGridPager_ordcomCancelAll").hide();	
+		$("#saveDetailLabel").show();	
+	}else{	
+		$("#jqGrid_ordcom_iladd,#jqGrid_ordcom_ilcancel,#jqGrid_ordcom_ilsave,#saveHeaderLabel,#jqGridPager_ordcomDelete,#jqGridPager_ordcomEditAll").show();	
+		$("#saveDetailLabel,#jqGridPager_ordcomSaveAll,#jqGrid_ordcom_iledit,#jqGridPager_ordcomCancelAll").hide();	
+	}	
+}
+	
+var urlParam_ordcom={
+	action:'ordcom_table',
+	url:'/ordcom/table',
+	mrn:'',
+	episno:''
+	// field: '',
+	// fixPost:'true',
+	// table_name: ['hisdb.chargetrx AS ct','hisdb.chgmast AS cm'],
+	// join_type:['LEFT JOIN'],
+	// join_onCol:['cm.chgcode'],
+	// join_onVal:['ct.chgcode'],
+	// join_filterCol:[['cm.compcode on =']],
+	// join_filterVal:[['ct.compcode']],
+	// filterCol:['ct.compcode'],
+	// filterVal:['session.compcode'],
+};
 
 //screen bed management//
 function populate_form_ordcom(obj,rowdata){	
@@ -600,7 +590,9 @@ function populate_form_ordcom(obj,rowdata){
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.mrn);	
-	$("#episno_ordcom").val(obj.episno);
+	$("#episno_ordcom").val(obj.Episno);
+	urlParam_ordcom.mrn = obj.MRN;
+	urlParam_ordcom.mrn = obj.Episno;
 
 	// document.getElementById('showOrdcom_bedmgmt').style.display = 'inline'; //to show hidden data
 
@@ -631,6 +623,9 @@ function populate_ordcom_currpt(obj){
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	
 	$("#episno_ordcom").val(obj.Episno);
+	urlParam_ordcom.mrn = obj.MRN;
+	urlParam_ordcom.episno = obj.Episno;
+	refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 
 	// document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
 
@@ -646,16 +641,9 @@ function populate_ordcom_currpt(obj){
 	
 }
 
-
-$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
-	$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
-});
-
 //---------------------mdl_chgcode-----------------------
 var ordcom_chgcode_selecter_;
 $('#mdl_ordcom_chgcode').on('show.bs.modal', function () {
-
-	$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft));
 
 	if(ordcom_chgcode_selecter_ == undefined){
 	    ordcom_chgcode_selecter_ = new ordcom_chgcode_selecter(
@@ -675,8 +663,8 @@ function ordcom_chgcode_selecter(c_optid,c_id){
 
     chgcode_table = $('#chgcode_table').DataTable( {
         "ajax": "ordcom/table?action=chgcode_table",
-        "paging":false,
-        "pageLength": 1000,
+        "paging":true,
+        "pageLength": 25,
         "columns": [
             {'data': 'chgcode'},
             {'data': 'desc'},
@@ -711,7 +699,7 @@ function ordcom_chgcode_selecter(c_optid,c_id){
     	let item = chgcode_table.row( this ).data();
         if(item != undefined){
             $('input#'+c_optid).val(item["chgcode"]);
-            $('input#'+id_optid+'_ct_price').val(item["amt1"]);
+            $('input#'+id_optid+'_unitprice').val(item["amt1"]);
             $('input#'+c_optid).val(item["chgcode"]);
             if($('input#'+c_optid).parent().first().siblings('span.help-block').length == 0){
             	$('input#'+c_optid).parent().first().after("<span class='help-block'>"+item["desc"]+"</span>")

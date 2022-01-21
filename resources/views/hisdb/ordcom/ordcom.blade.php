@@ -1,4 +1,4 @@
-<div class="panel panel-default" style="position: relative;" id="jqGrid_ordcom_c">
+<div class="panel panel-default" style="position: relative;">
 	<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 		id="btn_grp_edit_ordcom"
 		style="position: absolute;
@@ -30,8 +30,10 @@
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
-		<div class="panel-body">
-			<div class='col-md-12' style="padding:0 0 15px 0">
+		<div class="panel-body" id="jqGrid_ordcom_c">
+			<div class='col-md-12' style="padding:0 0 15px 0" >
+		    	<input type="hidden" id="mrn_ordcom" name="mrn_ordcom">
+		    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">
 				<input id="ordcom_deptcode_hide" type="hidden" value="{{Auth::user()->deptcode}}">
 				<input id="ordcom_priceview_hide" type="hidden" value="{{Auth::user()->priceview}}">
 				<table id="jqGrid_ordcom" class="table table-striped"></table>

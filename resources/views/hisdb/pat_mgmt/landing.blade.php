@@ -277,12 +277,16 @@
         <input name="epistycode2" id="epistycode2" type="hidden" value="OTC">
 		@endif
         <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
+        <input name="lastrowid" id="lastrowid" type="hidden" value="0">
         <div id="info"></div>
 
 		<div class="panel">
+			&nbsp;&nbsp;
 			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 			&nbsp;&nbsp;
 			<button id="btn_mykad" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> My Kad</button>
+			&nbsp;&nbsp;
+			<button id="btn_biometric" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> Biometric </button>
 		</div>
 
 		@if (!Session::has('isdoctor') && request()->get('curpat') == 'true')
@@ -400,13 +404,13 @@
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
+    <script type="text/ecmascript" src="plugins/trirand/i18n/grid.locale-en.js"></script>
+    <script type="text/ecmascript" src="plugins/trirand/jquery.jqGrid.min.js"></script>
     <script type="text/ecmascript" src="plugins/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
     <script type="text/javascript">$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
     <script type="text/ecmascript" src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 	<script type="text/ecmascript" src="plugins/form-validator/jquery.form-validator.min.js"></script>
     
-    <script type="text/ecmascript" src="plugins/trirand/i18n/grid.locale-en.js"></script>
-    <script type="text/ecmascript" src="plugins/trirand/jquery.jqGrid.min.js"></script>
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 	<script type="text/javascript" src="js/myjs/utility.js"></script>

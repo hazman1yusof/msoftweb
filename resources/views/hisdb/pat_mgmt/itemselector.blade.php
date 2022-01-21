@@ -146,7 +146,9 @@
 			</div>
 			
 		</div>
-	</div><!-- new relationship save -->
+	</div>
+
+	<!-- new relationship save -->
 	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		

@@ -486,6 +486,7 @@ class PatmastController extends defaultController
                             ->get();
                 }else{
                     $data = DB::table('debtor.debtormast')
+                            ->select('debtorcode','name')
                             ->where('compcode','=',session('compcode'))  
                             ->whereIn('debtortype', ['PR', 'PT'])
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
@@ -568,7 +569,7 @@ class PatmastController extends defaultController
                         ->select('debtormast.debtorcode as code','debtormast.name as description')
                         ->leftJoin('debtor.debtortype', 'debtortype.debtortycode', '=', 'debtormast.debtortype')
                         ->where('debtormast.compcode','=',session('compcode'))
-                        ->whereNotIn('debtortype.debtortycode',['PT','PR']);
+                        ->whereNotIn('debtormast.debtortype',['PT','PR']);
 
                 if(!empty($request->search)){
                     $data = $data->where('debtormast.name','=',$request->search)->first();
@@ -874,6 +875,7 @@ class PatmastController extends defaultController
                     "pyrmode" => $epis_paymode,
                     "billtype" => $epis_billtype,
                     "bed" => $epis_bednum,
+                    "payer" => $epis_payer,
                     $epis_typeepis => 1,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
@@ -898,7 +900,6 @@ class PatmastController extends defaultController
                     'episno' => $epis_no,
                     'patstatus' => 1,
                     'last_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'LastUser' => session('username'),
                 ]);
@@ -1109,6 +1110,7 @@ class PatmastController extends defaultController
 
             //cari queue utk source que dgn trantype epistycode
             $queue_obj = DB::table('sysdb.sysparam')
+                ->where('compcode','=',session('compcode'))
                 ->where('source','=','QUE')
                 ->where('trantype','=',$epistycode_q);
 
@@ -1116,7 +1118,7 @@ class PatmastController extends defaultController
             if(!$queue_obj->exists()){
                 DB::table('sysdb.sysparam')
                     ->insert([
-                        'compcode' => '9A',
+                        'compcode' => session('compcode'),
                         'source' => 'QUE',
                         'trantype' => $epistycode_q,
                         'description' => $epistycode_q.' Queue No.',
@@ -1124,6 +1126,7 @@ class PatmastController extends defaultController
                     ]);
 
                 $queue_obj = DB::table('sysdb.sysparam')
+                    ->where('compcode','=',session('compcode'))
                     ->where('source','=','QUE')
                     ->where('trantype','=',$epistycode_q);
             }
@@ -1134,7 +1137,7 @@ class PatmastController extends defaultController
             if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
                 $queue_obj
                     ->update([
-                        'pvalue1' => 0,
+                        'pvalue1' => 1,
                         'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
                     ]);
             }
@@ -1152,7 +1155,6 @@ class PatmastController extends defaultController
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','ALL');
 
-            $queueAll_data=$queueAll_obj->first();
             if(!$queueAll_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
@@ -1171,7 +1173,7 @@ class PatmastController extends defaultController
                         'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
                         'Bed' => '',
                         'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
+                        'QueueNo' => $current_pvalue1,
                         'Deptcode' => 'ALL',
                         'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
@@ -1192,8 +1194,6 @@ class PatmastController extends defaultController
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','SPEC');
 
-            $queueSPEC_data=$queueSPEC_obj->first();
-
             if(!$queueSPEC_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
@@ -1212,7 +1212,7 @@ class PatmastController extends defaultController
                         'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
                         'Bed' => '',
                         'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
+                        'QueueNo' => $current_pvalue1,
                         'Deptcode' => 'SPEC',
                         'DOB' => $this->null_date($patmast_data->DOB),
                         'NAME' => $patmast_data->Name,
@@ -1304,6 +1304,7 @@ class PatmastController extends defaultController
                     "billtype" => $epis_billtype,
                     "bed" => $epis_bednum,
                     $epis_typeepis => 1,
+                    "payer" => $epis_payer,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
@@ -1411,6 +1412,7 @@ class PatmastController extends defaultController
                         'CompCode' => session('compcode'),
                         'MRN' => $epis_mrn,
                         'Episno' => $epis_no,
+                        'refno' => $epis_ourrefno,
                         'EpisTyCode' => "OP",
                         'LineNo' => '1',
                         'BillType' => $epis_billtype,
@@ -1418,6 +1420,19 @@ class PatmastController extends defaultController
                         'Pay_Type' => $epis_fin,
                         'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username')
+                    ]);
+            }else{
+                DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no)
+                    ->update([
+                        'refno' => $epis_ourrefno,
+                        'BillType' => $epis_billtype,
+                        'PayerCode' => $epis_payer,
+                        'Pay_Type' => $epis_fin,
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'LastUser' => session('username')
                     ]);
@@ -1572,52 +1587,11 @@ class PatmastController extends defaultController
                 $epistycode_q = "OP";
             }
 
-            //cari queue utk source que dgn trantype epistycode
-            $queue_obj = DB::table('sysdb.sysparam')
-                ->where('source','=','QUE')
-                ->where('trantype','=',$epistycode_q);
-
-                //kalu xjumpe buat baru
-            if(!$queue_obj->exists()){
-                DB::table('sysdb.sysparam')
-                    ->insert([
-                        'compcode' => '9A',
-                        'source' => 'QUE',
-                        'trantype' => $epistycode_q,
-                        'description' => $epistycode_q.' Queue No.',
-                        'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-                    ]);
-
-                $queue_obj = DB::table('sysdb.sysparam')
-                    ->where('source','=','QUE')
-                    ->where('trantype','=',$epistycode_q);
-            }
-
-            $queue_data = $queue_obj->first();
-
-                //ni start kosong balik bila hari baru
-            // if($queue_data->pvalue2 != Carbon::now("Asia/Kuala_Lumpur")->toDateString()){
-            //     $queue_obj
-            //         ->update([
-            //             'pvalue1' => 0,
-            //             'pvalue2' => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
-            //         ]);
-            // }
-
-                //tambah satu dkt queue sysparam
-            $current_pvalue1 = intval($queue_data->pvalue1);
-            // $queue_obj
-            //     ->update([
-            //         'pvalue1' => $current_pvalue1+1
-            //     ]);
-
-
             $queueAll_obj=DB::table('hisdb.queue')
                 ->where('mrn','=',$epis_mrn)
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','ALL');
 
-            $queueAll_data=$queueAll_obj->first();
             if(!$queueAll_obj->exists()){
                 DB::table('hisdb.queue')
                     ->insert([
@@ -1663,8 +1637,6 @@ class PatmastController extends defaultController
                 ->where('mrn','=',$epis_mrn)
                 ->where('episno','=',$epis_no)
                 ->where('deptcode','=','SPEC');
-
-            $queueSPEC_data=$queueSPEC_obj->first();
 
             if(!$queueSPEC_obj->exists()){
                 DB::table('hisdb.queue')
@@ -1971,7 +1943,7 @@ class PatmastController extends defaultController
 
             $debtormast = DB::table('debtor.debtormast')
                 ->where('compcode','=', session('compcode'))
-                ->where('debtorcode','=',$request->debtorcode)
+                ->where('debtorcode','=',$request['hid_newgl_corpcomp'])
                 ->first();
 
             $sysparam = DB::table('sysdb.sysparam')
@@ -1982,11 +1954,11 @@ class PatmastController extends defaultController
                 $sysparam_get = $sysparam->first();
                 $pvalue1 = $sysparam_get->pvalue1;
 
+                $ourrefno = $debtormast->debtortype .intval($pvalue1+1);
+
                 $sysparam->update([
                     'pvalue1' => intval($pvalue1+1)
                 ]);
-
-                $ourrefno = $debtormast->debtortype .intval($pvalue1+1);
             }else{
                 DB::table('sysdb.sysparam')->insert([
                     'compcode' => session('compcode'),
@@ -2001,23 +1973,23 @@ class PatmastController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn'    =>  $request->mrn,
-                    'debtorcode'  =>  $request->debtorcode,
                     'episno' =>   $request->episno,
+                    'ourrefno' =>   $ourrefno,
+                    'refno' =>   $request['newgl-refno'],
+                    'debtorcode'  =>  $request['hid_newgl_corpcomp'],
+                    'name'  =>  $request['txt_newgl_corpcomp'],
                     'staffid' =>   $request['newgl-staffid'],
                     'childno' =>   $request['newgl-childno'],
                     'relatecode' =>   $request['hid_newgl_relatecode'],
-                    'gltype' =>   $request['newgl-childno'],
+                    'gltype' =>   $request['newgl-gltype'],
                     'startdate' =>   $request['newgl-effdate'],
                     'enddate' =>   $request['newgl-expdate'],
-                    'refno' =>   $request['newgl-refno'],
-                    'ourrefno' =>   $ourrefno,
                     'remark' =>   $request['newgl-remark'],
                     'medcase' =>   $request['newgl-case'],
                     'active' =>   'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
-
 
             DB::commit();
 
@@ -2148,10 +2120,26 @@ class PatmastController extends defaultController
                 ->where('Episno','=',$request->episno)
                 ->first();
 
+        $txt_epis_refno = "";
+        $txt_epis_our_refno = "";
+        if(!empty($epispayer->refno)){
+            $guarantee = DB::table('hisdb.guarantee')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('ourrefno','=',$epispayer->refno);
+
+            if($guarantee->exists()){
+                $guarantee = $guarantee->first();
+                $txt_epis_refno = $guarantee->refno;
+                $txt_epis_our_refno = $guarantee->ourrefno;
+            }
+        }
+
         $debtormast = DB::table('debtor.debtormast')
                 ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',$epispayer->payercode)
-                ->where('debtortype','=',$epispayer->pay_type)
+                // ->where('debtortype','=',$epispayer->pay_type)
                 ->first();
 
         $bed = DB::table('hisdb.bed')
@@ -2163,6 +2151,8 @@ class PatmastController extends defaultController
         $responce->episode = $episode;
         $responce->epispayer = $epispayer;
         $responce->debtormast = $debtormast;
+        $responce->txt_epis_refno = $txt_epis_refno;
+        $responce->txt_epis_our_refno = $txt_epis_our_refno;
         $responce->bed = $bed;
 
         return json_encode($responce);

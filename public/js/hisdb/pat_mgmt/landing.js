@@ -127,6 +127,7 @@ $(document).ready(function() {
         /* Executes after data is loaded and rendered */
         grid.find(".command-edit").on("click", function(e){
             let rowid = $(this).data("rowId");
+            $('#lastrowid').val(rowid);
 
             let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
             populate_patient(rowdata);
@@ -205,20 +206,21 @@ $(document).ready(function() {
             $(e.currentTarget).addClass( "justbc" );
         });
 
+
         if($("#load_from_addupd").data('info') == "true"){
             if($("#load_from_addupd").data('oper') == "add"){
-                $("#grid-command-buttons tr:nth-last-child(1)").click();
+                // $("#grid-command-buttons tr:nth-last-child(1)").click();
             }else{
-                $("#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").click();
+                $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
             }
+        }else{
+            $("table#grid-command-buttons tr[data-row-id=0]").click();
         }
         $("#load_from_addupd").data('info','false');
 
         // if($('#showTriage_curpt').length > 0){
         //     document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
         // }
-
-        $("table#grid-command-buttons tr[data-row-id=0]").click();
 
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
@@ -303,6 +305,10 @@ $(document).ready(function() {
                 $("#mykad_photo").attr('src', data.mykad_photo);
             }
         });
+    });
+
+     $('#btn_biometric').click(function(){
+       $('#mdl_mykad').modal('show');
     });
 
     ////////////////habis mykad///////

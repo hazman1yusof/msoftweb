@@ -1,4 +1,9 @@
 
+
+    $('#editEpisode').on('shown.bs.modal', function (e) {
+        parent_close_disabled(true);
+    });
+    
     $('#editEpisode').on('hidden.bs.modal', function (e) {
         $('#editEpisode').find("label.error").detach();
         $("#editEpisode").find('.error').removeClass("error");
@@ -12,6 +17,7 @@
             .prop("checked", "")
             .end(); //this for clearing input after hide modal
         $("#tabDoctor,#tabBed,#tabNok,#tabPayer,#tabDeposit").collapse("hide");
+        parent_close_disabled(false);
     });
 
     function check_debtormast_exists(rowid){
@@ -51,6 +57,7 @@
                $("form#form_episode input[name='pay_type']").val(data.episode.pay_type);
                $("form#form_episode select[name='pyrmode']").val(data.episode.pyrmode);
                $("form#form_episode input[name='payercode']").val(data.epispayer.payercode);
+               $("form#form_episode input[name='bill_type']").val(data.epispayer.payercode);
 
                epis_desc_show.write_desc();
             }
@@ -103,9 +110,9 @@
             episno_ = 0;
         }
 
-        if(episno_ > 0){
-            get_epis_other_data(rowdata.MRN);
-        }
+        // if(episno_ > 0){
+        //     get_epis_other_data(rowdata.MRN);
+        // }
 
         if(rowdata.PatStatus == 1){
             $("#episode_oper").val('edit');
@@ -137,9 +144,9 @@
     $('#txt_epis_fin').change(function (e){
         var iregin = $('#hid_epis_fin').val();
         if (iregin == '0' || iregin == '') {
-            disableEpisode (true);
+            disableEpisode(true);
         } else {  
-            disableEpisode (false);
+            disableEpisode(false);
             $('#cmb_epis_pay_mode').empty();
 
             $('#txt_epis_payer').prop('disabled',false);
@@ -181,11 +188,8 @@
                     ]
         } );
 
-    // $("#btn_epis_payer").on('click',epis_payer_onclick);
-
     function epis_payer_onclick(){
-        let debtor_mdl_opened = $('#mdl_epis_pay_mode');
-        debtor_mdl_opened.modal('show');
+        $('#mdl_epis_pay_mode').modal('show');
 
         if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
             debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1' ).load();
@@ -194,13 +198,15 @@
         }
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
+        $('#tbl_epis_debtor').off('dblclick', 'tr');
+
         $('#tbl_epis_debtor').on('dblclick', 'tr', function () {
             let debtor_item = debtor_table.row( this ).data();
             $('#hid_epis_payer').val(debtor_item["debtorcode"]);
             $('#txt_epis_payer').val(debtor_item["name"]);
-            $('#hid_epis_fin').val(debtor_item["debtortype"]);
-            $('#txt_epis_fin').val(debtor_item["debtortype"]);
-            debtor_mdl_opened.modal('hide');
+            // $('#hid_epis_fin').val(debtor_item["debtortype"]);
+            // $('#txt_epis_fin').val(debtor_item["debtortype"]);
+            $('#mdl_epis_pay_mode').modal('hide');
         } );
             
     }
@@ -245,7 +251,7 @@
     function btn_refno_info_onclick(){
         if(refno_object == null){
             refno_object = new refno_class();
-            refno_object.show_mdl(true);
+            refno_object.show_mdl();
         }else{
             refno_object.show_mdl();
         }
@@ -260,16 +266,15 @@
     });
 
     function disableEpisode(status) {
+
+        $("#btn_refno_info").off('click',btn_refno_info_onclick);
+        $("#btn_epis_payer").off('click',epis_payer_onclick);
+        $("#btn_bill_type_info").off('click',bill_type_info_onclick);
+
         if(status == false){
             $("#btn_refno_info").on('click',btn_refno_info_onclick);
             $("#btn_epis_payer").on('click',epis_payer_onclick);
             $("#btn_bill_type_info").on('click',bill_type_info_onclick);
-
-        }else if(status == true){
-            $("#btn_refno_info").off('click',btn_refno_info_onclick);
-            $("#btn_epis_payer").off('click',epis_payer_onclick);
-            $("#btn_bill_type_info").off('click',bill_type_info_onclick);
-
         }
 
         $('#txt_epis_payer').prop("disabled",status);
@@ -343,6 +348,8 @@
 
         }).success(function(data){
             $('#editEpisode').modal('hide');
+            $("#load_from_addupd").data('info','true');
+            $("#load_from_addupd").data('oper',episoper);
             $("#grid-command-buttons").bootgrid('reload');
         });
     }
@@ -401,16 +408,16 @@
                 $('#txt_epis_payer').val(debtormast.name);
                 $('#hid_epis_payer').val(debtormast.debtorcode);
                 $('#hid_epis_bill_type').val(episdata.billtype);
-                $('#txt_epis_refno').val();
-                $('#txt_epis_our_refno').val();
+                $('#txt_epis_refno').val(data.txt_epis_refno);
+                $('#txt_epis_our_refno').val(data.txt_epis_our_refno);
                 $('#txt_epis_queno').val();
 
                 $('#txt_epis_fin').change();
+
+                epis_desc_show.write_desc();
             }else{
                 alert('MRN not found')
             }
-
-            epis_desc_show.write_desc();
 
         }).error(function(data){
 
@@ -726,14 +733,14 @@
         this.doctor={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.epis_bed={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.epis_fin={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.epis_payer={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.bill_type={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.epis_payer={code:'debtorcode',desc:'name'};//data simpan dekat dalam ni
+        this.bill_type={code:'billtype',desc:'description'};//data simpan dekat dalam ni
         this.bed_dept={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.occupation={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.bed_ward={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.newgl_occupcode={code:'code',desc:'description'};//data simpan dekat dalam ni
         this.newgl_relatecode={code:'code',desc:'description'};//data simpan dekat dalam ni
-        this.newgl_corpcomp={code:'code',desc:'description'};//data simpan dekat dalam ni
+        this.newgl_corpcomp={code:'debtorcode',desc:'name'};//data simpan dekat dalam ni
         this.load_desc = function(){
             load_for_desc(this,'regdept','pat_mast/get_entry?action=get_reg_dept');
             load_for_desc(this,'regsource','pat_mast/get_entry?action=get_reg_source');
@@ -748,7 +755,6 @@
             load_for_desc(this,'newgl_occupcode','pat_mast/get_entry?action=get_patient_occupation');
             load_for_desc(this,'newgl_relatecode','pat_mast/get_entry?action=get_patient_relationship');
             load_for_desc(this,'newgl_corpcomp','pat_mast/get_entry?action=get_debtor_list');
-            console.log(this.bill_type)
         }
 
         function load_for_desc(selobj,id,url){
@@ -936,7 +942,6 @@
     function refno_class(){
         $("#btn_epis_new_gl").click(function() {
             $('#mdl_new_gl').modal('show');
-
         });
 
         $("#btnglclose").click(function() {
@@ -945,7 +950,7 @@
         });
 
         this.refno_table = $('#tbl_epis_reference').DataTable( {
-            "ajax": "./pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
+            // "ajax": "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
             "columns": [
                         {'data': 'debtorcode' },
                         {'data': 'name' },
@@ -974,15 +979,16 @@
 
         this.show_mdl = function(first = false){
             $('#mdl_reference').modal('show');
-            if(!first){
-                this.refno_table.ajax.reload();
-            }
+            this.refno_table.ajax.url( "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val() ).load();
+            // if(!first){
+            //     this.refno_table.ajax.reload();
+            // }
         }
 
         let self = this;
         $('#tbl_epis_reference').on('dblclick', 'tr', function () {
             let refno_item = self.refno_table.row( this ).data();
-            $('#txt_epis_our_refno').val(refno_item["debtorcode"]);
+            $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
             $('#txt_epis_refno').val(refno_item["debtorcode"]);
             
                 

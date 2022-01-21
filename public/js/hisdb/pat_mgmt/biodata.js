@@ -73,7 +73,6 @@
         $(selobj).empty();
         $.getJSON(url,{},function(data)
         {   
-            console.log(data);
             $.each(data.data, function(i,obj)
             {
                 $(selobj).append(
@@ -122,6 +121,10 @@
         return null;
     }
 
+    $('#mdl_patient_info').on('shown.bs.modal', function (e) {
+        parent_close_disabled(true);
+    });
+
     $('#mdl_patient_info').on('hidden.bs.modal', function (e) {
         $('#frm_patient_info').find("label.error").detach();
         $("#frm_patient_info").find('.error').removeClass("error");
@@ -134,6 +137,7 @@
             .prop("checked", "")
             .end(); //this for clearing input after hide modal
         $("#tabNok_emr,#tabCorp,#tabPatrec,#tabNok_pat").collapse("hide");
+        parent_close_disabled(false);
     });
 
     $("#biodata_but").click(function() {
@@ -207,6 +211,12 @@
             $("#load_from_addupd").data('info','true');
             $("#load_from_addupd").data('oper',oper);
             $("#grid-command-buttons").bootgrid('reload');
+            // if(oper == 'edit'){
+
+            //     $("#grid-command-buttons tr").removeClass( "justbc" );
+            //     $("#grid-command-buttons tr[data-row-id='"+$('#lastrowid').val()+"']").addClass( "justbc" );
+            //     // $("#grid-command-buttons").bootgrid('select',[]);
+            // }
         });
     }
 	
