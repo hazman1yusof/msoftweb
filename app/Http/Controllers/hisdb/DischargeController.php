@@ -104,4 +104,9 @@ class DischargeController extends defaultController
         }
 
     }
+
+    public function diagnose(Request $request)
+    {   
+        dd('diagnose');
+    }
 }

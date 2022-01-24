@@ -782,7 +782,7 @@ class DeliveryOrderController extends defaultController
 
                 }
 
-                //--- 6. rollover GL ---//
+                //--- 6. rollover GL ---// roolover gl macam salah
 
                 //amik ivtxnhd
                 $ivtxnhd_obj = DB::table('material.ivtxnhd')

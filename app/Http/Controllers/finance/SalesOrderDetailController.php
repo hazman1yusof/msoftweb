@@ -277,8 +277,9 @@ class SalesOrderDetailController extends defaultController
             ///2. insert detail
             $insertGetId = DB::table('debtor.billsum')
                 ->insertGetId([
-                    'auditno' => $auditno,
-                    'idno' => $recno,
+                    'auditno' => $recno, //->OE IN
+                    'billno' => $auditno,
+                    // 'idno' => $recno, //autogen
                     'compcode' => session('compcode'),
                     'source' => $source,
                     'trantype' => $trantype,
@@ -330,12 +331,14 @@ class SalesOrderDetailController extends defaultController
 
                     $ivdspdt = DB::table('material.ivdspdt')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$billsum_obj->idno);
+                        ->where('recno','=',$billsum_obj->auditno);
 
                     if($ivdspdt->exists()){
                         $this->updivdspdt($billsum_obj,$request,$dbacthdr);
+                        $this->updgltran($ivdspdt->first()->idno,$request,$dbacthdr);
                     }else{
-                        $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
+                        $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
+                        $this->crtgltran($ivdspdt_idno,$request,$dbacthdr);
                     }
 
                 // }
@@ -440,12 +443,14 @@ class SalesOrderDetailController extends defaultController
 
                         $ivdspdt = DB::table('material.ivdspdt')
                             ->where('compcode','=',session('compcode'))
-                            ->where('recno','=',$billsum_obj->idno);
+                            ->where('recno','=',$billsum_obj->auditno);
 
                         if($ivdspdt->exists()){
                             $this->updivdspdt($billsum_obj,$request,$dbacthdr);
+                            $this->updgltran($ivdspdt->first()->idno,$request,$dbacthdr);
                         }else{
-                            $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
+                            $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
+                            $this->crtgltran($ivdspdt_idno,$request,$dbacthdr);
                         }
 
                     // }
@@ -549,6 +554,126 @@ class SalesOrderDetailController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+        
+    }
+
+    public function crtivdspdt($billsum_obj,Request $request,$dbacthdr){
+
+        $product = DB::table('material.product')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$request->uom)
+            ->where('itemcode','=',$request->chggroup);
+
+        $stockloc = DB::table('material.stockloc')
+            ->where('compcode','=',session('compcode'))
+            ->where('unit','=',session('unit'))
+            ->where('uomcode','=',$request->uom)
+            ->where('itemcode','=',$request->chggroup)
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+
+        if($stockloc->exists()){
+            $curr_netprice = $product->first()->avgcost;
+            $curr_quan = $billsum_obj->quantity;
+            $qoh_quan = $stockloc->first()->qtyonhand;
+            $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
+
+            $stockloc_first = $stockloc->first();
+            $stockloc_arr = (array)$stockloc_first;
+
+            $month = defaultController::toMonth($dbacthdr->entrydate);
+            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
+            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
+
+            $stockloc
+                ->update([
+                    'QtyOnHand' => $new_qoh,
+                    'NetMvQty'.$month => $NetMvQty, 
+                    'NetMvVal'.$month => $NetMvVal
+                ]);
+
+            $sumqtyonhand = DB::table('material.stockloc')
+                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('uomcode','=',$request->uom)
+                                ->where('itemcode','=',$request->chggroup)
+                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
+                                ->first();
+
+            $product
+                ->update([
+                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
+                ]);
+
+            //4. tolak expdate, kalu ada batchno
+            $expdate_obj = DB::table('material.stockexp')
+                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                ->where('DeptCode','=',$dbacthdr->deptcode)
+                ->where('ItemCode','=',$request->chggroup)
+                ->where('UomCode','=',$request->uom)
+                ->orderBy('expdate', 'asc');
+
+            if($expdate_obj->exists()){
+                $expdate_get = $expdate_obj->get();
+                $txnqty_ = $curr_quan;
+                $balqty = 0;
+                foreach ($expdate_get as $value2) {
+                    $balqty = $value2->balqty;
+                    if($txnqty_-$balqty>0){
+                        $txnqty_ = $txnqty_-$balqty;
+                        DB::table('material.stockexp')
+                            ->where('idno','=',$value2->idno)
+                            ->update([
+                                'balqty' => '0'
+                            ]);
+                    }else{
+                        $balqty = $balqty-$txnqty_;
+                        DB::table('material.stockexp')
+                            ->where('idno','=',$value2->idno)
+                            ->update([
+                                'balqty' => $balqty
+                            ]);
+                        break;
+                    }
+                }
+
+            }else{
+                throw new \Exception("No stockexp");
+            }
+
+
+        }
+
+        $ivdspdt_arr = [
+            'compcode' => session('compcode'),
+            'recno' => $billsum_obj->auditno,//OE IN
+            'lineno_' => 1,
+            'itemcode' => $billsum_obj->chggroup,
+            'uomcode' => $billsum_obj->uom,
+            'txnqty' => $billsum_obj->quantity,
+            'adduser' => session('username'),
+            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'netprice' => $billsum_obj->unitprice,
+            'productcat' => $product->first()->productcat,
+            'isudept' => $dbacthdr->deptcode,
+            'reqdept' => $dbacthdr->deptcode,
+            'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
+            'trantype' => 'DS',
+            'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'trxaudno' => $billsum_obj->auditno,
+            'mrn' => $this->givenullifempty($dbacthdr->mrn),
+            'episno' => $this->givenullifempty($dbacthdr->episno),
+            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
+        ];
+
+
+        $insertGetId = DB::table('material.ivdspdt')
+                            ->insertGetId($ivdspdt_arr);
+
+        return $insertGetId;
+
         
     }
 
@@ -658,7 +783,6 @@ class SalesOrderDetailController extends defaultController
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $billsum_obj->unitprice,
-            'saleamt' => $billsum_obj->amount,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'updtime' => Carbon::now("Asia/Kuala_Lumpur")
         ];
@@ -667,170 +791,6 @@ class SalesOrderDetailController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$billsum_obj->idno)
             ->update($ivdspdt_arr);
-
-        // $ivtxntype = DB::table('material.ivtxntype')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('trantype','=', $stockloc->disptype)
-        //                 ->first();
-
-        // if($ivtxntype->updamt = 1){
-        //     $category = DB::table('material.category')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('catcode','=', $product->productcat)
-        //                 ->first();
-
-        //     $department = DB::table('sysdb.departmet')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('deptcode','=',$dbacthdr->deptcode)
-        //                 ->first();
-
-        //     $ivdspdt_arr['DrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['DrAccNo'] = $category->cosacct;
-        //     $ivdspdt_arr['CrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['CrAccNo'] = $category->stockacct;
-
-        //     $glinface_arr = [
-        //         'compcode' => session('compcode'),
-        //         'Source' => 'IV',
-        //         'TranType' => $stockloc->disptype,
-        //         'AuditNo' => $insertGetId,
-        //         'LineNo' => 1,
-        //         'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
-        //         'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
-        //         'Description' => 'Posted from Online-Dispensing',
-        //         'Amount' => $billsum_obj->amount,
-        //         'PostDate' => $dbacthdr->entrydate,
-        //         'OprType' => 'A',
-        //         'LastUser' => session('username'),
-        //         'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
-        //     ];
-
-        //     if($ivtxntype->crdbfl = 'OUT'){
-        //         $glinface_arr['DrCcode'] = $department->costcode;
-        //         $glinface_arr['DrAccNo'] = $category->cosacct;
-        //         $glinface_arr['CrCcode'] = $department->costcode;
-        //         $glinface_arr['CrAccNo'] = $category->stockacct;
-        //     }
-
-        //     DB::table('finance.glinface')
-        //         ->insert($glinface_arr);
-        // }
-    }
-
-    public function crtivdspdt($billsum_obj,Request $request,$dbacthdr){
-
-        $product = DB::table('material.product')
-            ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$request->uom)
-            ->where('itemcode','=',$request->chggroup);
-
-        $stockloc = DB::table('material.stockloc')
-            ->where('compcode','=',session('compcode'))
-            ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$request->uom)
-            ->where('itemcode','=',$request->chggroup)
-            ->where('deptcode','=',$dbacthdr->deptcode)
-            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-
-        if($stockloc->exists()){
-            $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $billsum_obj->quantity;
-            $qoh_quan = $stockloc->first()->qtyonhand;
-            $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
-
-            $stockloc_first = $stockloc->first();
-            $stockloc_arr = (array)$stockloc_first;
-
-            $month = defaultController::toMonth($dbacthdr->entrydate);
-            $NetMvQty = floatval($stockloc_arr['netmvqty'.$month]) - floatval($curr_quan);
-            $NetMvVal = floatval($stockloc_arr['netmvval'.$month]) - floatval(floatval($curr_netprice) * floatval($curr_quan));
-
-            $stockloc
-                ->update([
-                    'QtyOnHand' => $new_qoh,
-                    'NetMvQty'.$month => $NetMvQty, 
-                    'NetMvVal'.$month => $NetMvVal
-                ]);
-
-            $sumqtyonhand = DB::table('material.stockloc')
-                                ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
-                                ->where('compcode','=',session('compcode'))
-                                ->where('unit','=',session('unit'))
-                                ->where('uomcode','=',$request->uom)
-                                ->where('itemcode','=',$request->chggroup)
-                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
-                                ->first();
-
-            $product
-                ->update([
-                    'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
-                ]);
-
-            //4. tolak expdate, kalu ada batchno
-            $expdate_obj = DB::table('material.stockexp')
-                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
-                ->where('DeptCode','=',$dbacthdr->deptcode)
-                ->where('ItemCode','=',$request->chggroup)
-                ->where('UomCode','=',$request->uom)
-                ->orderBy('expdate', 'asc');
-
-            if($expdate_obj->exists()){
-                $expdate_get = $expdate_obj->get();
-                $txnqty_ = $curr_quan;
-                $balqty = 0;
-                foreach ($expdate_get as $value2) {
-                    $balqty = $value2->balqty;
-                    if($txnqty_-$balqty>0){
-                        $txnqty_ = $txnqty_-$balqty;
-                        DB::table('material.stockexp')
-                            ->where('idno','=',$value2->idno)
-                            ->update([
-                                'balqty' => '0'
-                            ]);
-                    }else{
-                        $balqty = $balqty-$txnqty_;
-                        DB::table('material.stockexp')
-                            ->where('idno','=',$value2->idno)
-                            ->update([
-                                'balqty' => $balqty
-                            ]);
-                        break;
-                    }
-                }
-
-            }else{
-                throw new \Exception("No stockexp");
-            }
-
-
-        }
-
-        $ivdspdt_arr = [
-            'compcode' => session('compcode'),
-            'recno' => $billsum_obj->idno,
-            'lineno_' => $billsum_obj->lineno_,
-            'itemcode' => $billsum_obj->chggroup,
-            'uomcode' => $billsum_obj->uom,
-            'txnqty' => $billsum_obj->quantity,
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'netprice' => $billsum_obj->unitprice,
-            'productcat' => $product->first()->productcat,
-            'reqdept' => $dbacthdr->deptcode,
-            'saleamt' => $billsum_obj->amount,
-            'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
-            'trantype' => 'DS',
-            'trandate' => $dbacthdr->entrydate,
-            'trxaudno' => $billsum_obj->auditno,
-            'mrn' => $this->givenullifempty($dbacthdr->mrn),
-            'episno' => $this->givenullifempty($dbacthdr->episno),
-            'updtime' => Carbon::now("Asia/Kuala_Lumpur")
-        ];
-
-
-        DB::table('material.ivdspdt')
-                ->insert($ivdspdt_arr);
 
         // $ivtxntype = DB::table('material.ivtxntype')
         //                 ->where('compcode','=', session('compcode'))
@@ -1030,6 +990,204 @@ class SalesOrderDetailController extends defaultController
         //     DB::table('finance.glinface')
         //         ->insert($glinface_arr);
         // }
+    }
+
+    public function crtgltran($ivdspdt_idno,Request $request,$dbacthdr){
+        $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+        $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('idno','=',$ivdspdt_idno)
+                        ->first();
+
+        //tengok product category
+        $product_obj = DB::table('material.product')
+            ->where('compcode','=', session('compcode'))
+            ->where('unit','=', session('unit'))
+            ->where('itemcode','=', $ivdspdt->itemcode)
+            ->first();
+
+        $row_dept = DB::table('sysdb.department')
+            ->select('costcode')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->first();
+        //utk debit accountcode
+        $row_cat = DB::table('material.category')
+            ->select('stockacct','cosacct')
+            ->where('compcode','=',session('compcode'))
+            ->where('catcode','=',$product_obj->productcat)
+            ->first();
+
+        $drcostcode = $row_dept->costcode;
+        $dracc = $row_cat->cosacct;
+        $crcostcode = $row_dept->costcode;
+        $cracc = $row_cat->stockacct;
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'auditno' => $ivdspdt->recno,
+                'lineno_' => 1,
+                'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
+                'trantype' => 'DS',
+                'reference' => $ivdspdt->uomcode,
+                'description' => $ivdspdt->itemcode, 
+                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
+                'amount' => $ivdspdt->amount
+            ]);
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $ivdspdt->amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $ivdspdt->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $ivdspdt->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
+    public function updgltran($ivdspdt_idno,Request $request,$dbacthdr){
+        $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('idno','=',$ivdspdt_idno)
+                        ->first();
+
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$ivdspdt->recno);
+
+        if($gltran->exists){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod($ivdspdt->trandate);
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            $gltran->update([
+                'amount' => $ivdspdt->amount
+            ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount + $ivdspdt->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $ivdspdt->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount - $ivdspdt->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+        }else{
+            throw new \Exception("Gltran doesnt exists");
+        }
     }
 
 }

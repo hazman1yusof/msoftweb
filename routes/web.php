@@ -668,6 +668,11 @@ Route::post('/ordcom/form','hisdb\OrdcomController@form');
 Route::get('/discharge/table','hisdb\DischargeController@table');
 Route::post('/discharge/form','hisdb\DischargeController@form');
 
+
+//// Diagnose page ///
+Route::post('/diagnose','util\DiagnoseController@post');
+Route::get('/diagnosedel','util\DiagnoseController@test');
+
 //// Case Note page ////
 Route::get('/casenote','hisdb\CaseNoteController@show');
 Route::get('/casenote/get_entry','hisdb\CaseNoteController@get_entry');

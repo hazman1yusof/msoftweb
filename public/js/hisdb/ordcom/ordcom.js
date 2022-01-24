@@ -141,7 +141,7 @@ $(document).ready(function () {
 			case 'ct_taxcode':field=['taxcode','description'];table="hisdb.chargetrx";case_='taxcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('bedmanagement',options,param,case_,cellvalue);
 		
@@ -430,7 +430,7 @@ $(document).ready(function () {
 								// cheqno: $('#cheqno').val(),	
 								// mrn: selrowData('#jqGrid_ordcom').mrn,	
 							}	
-							$.post( "/ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
+							$.post( "./ordcom/form?"+$.param(param),{oper:'del_ordcom',"_token": $("#_token").val()}, function( data ){	
 							}).fail(function (data) {	
 								$('#p_error').text(data.responseText);	
 							}).done(function (data) {	
@@ -559,7 +559,7 @@ function hideatdialogForm(hide,saveallrow){
 	
 var urlParam_ordcom={
 	action:'ordcom_table',
-	url:'/ordcom/table',
+	url:'./ordcom/table',
 	mrn:'',
 	episno:''
 	// field: '',
@@ -664,7 +664,7 @@ function ordcom_chgcode_selecter(c_optid,c_id){
     chgcode_table = $('#chgcode_table').DataTable( {
         "ajax": "ordcom/table?action=chgcode_table",
         "paging":true,
-        "pageLength": 25,
+        "pageLength": 10,
         "columns": [
             {'data': 'chgcode'},
             {'data': 'desc'},
@@ -675,7 +675,7 @@ function ordcom_chgcode_selecter(c_optid,c_id){
         ],
         order: [[2, 'asc']],
         columnDefs: [{
-                targets: [2],
+                targets: [2,3],
                 visible: false
         } ],
         rowGroup: {
