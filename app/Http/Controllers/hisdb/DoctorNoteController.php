@@ -113,11 +113,17 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-            $doctorcode = DB::table('hisdb.doctor')
+
+
+            $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('loginid','=',session('username'))
-                    ->get();
+                    ->where('loginid','=',session('username'));
+
+            $doctorcode=null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
 
             DB::table('hisdb.pathealth')
                     ->insert([
@@ -139,7 +145,6 @@ class DoctorNoteController extends defaultController
                         'respiration' => $request->respiration,
                         'doctorcode'  => $doctorcode,
                         'adduser'  => session('username'),
-                        'doctorcode'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -518,24 +523,40 @@ class DoctorNoteController extends defaultController
 
         $responce = new stdClass();
 
-        $pathealth_obj = DB::table('hisdb.pathealth')
-            ->select('mrn','episno','recordtime','adddate','adduser')
-            ->where('compcode','=',session('compcode'))
-            ->where('mrn','=',$request->mrn)
-            ->where('episno','=',$request->episno)
-            ->where('adddate','=',$request->date)
-            ->orderBy('adddate','desc');
+        $episode_obj = DB::table('hisdb.episode as e')
+            ->select('e.mrn','e.episno','p.recordtime','e.adddate','p.adduser','e.admdoctor','d.doctorname')
+            ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
+                $join = $join->on('p.mrn', '=', 'e.mrn');
+                $join = $join->on('p.episno', '=', 'e.episno');
+                $join = $join->on('p.compcode', '=', 'e.compcode');
+            })->leftJoin('hisdb.doctor as d', function($join) use ($request){
+                $join = $join->on('d.doctorcode', '=', 'e.admdoctor');
+                $join = $join->on('d.compcode', '=', 'e.compcode');
+            })
+            ->where('e.compcode','=',session('compcode'))
+            ->where('e.mrn','=',$request->mrn)
+            ->where('e.episno','=',$request->episno)
+            ->orderBy('p.adddate','desc');
 
-        if($pathealth_obj->exists()){
-            $pathealth_obj = $pathealth_obj->get();
+        // $pathealth_obj = DB::table('hisdb.pathealth')
+        //     ->select('mrn','episno','recordtime','adddate','adduser')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('mrn','=',$request->mrn)
+        //     ->where('episno','=',$request->episno)
+        //     ->where('adddate','=',$request->date)
+        //     ->orderBy('adddate','desc');
+
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->get();
 
             $data = [];
 
-            foreach ($pathealth_obj as $key => $value) {
+            foreach ($episode_obj as $key => $value) {
                 $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;
+                $date['doctorname'] = $value->doctorname;
 
                 array_push($data,$date);
             }
@@ -551,7 +572,7 @@ class DoctorNoteController extends defaultController
     public function get_table_date_past(Request $request){
         $responce = new stdClass();
 
-        $patexam_obj = DB::table('hisdb.episode as e')
+        $episode_obj = DB::table('hisdb.episode as e')
             ->select('e.mrn','e.episno','p.recordtime','e.adddate','p.adduser','e.admdoctor','d.doctorname')
             ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
                 $join = $join->on('p.mrn', '=', 'e.mrn');
@@ -572,12 +593,12 @@ class DoctorNoteController extends defaultController
         //     ->where('mrn','=',$request->mrn)
         //     ->orderBy('adddate','desc');
 
-        if($patexam_obj->exists()){
-            $patexam_obj = $patexam_obj->get();
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->get();
 
             $data = [];
 
-            foreach ($patexam_obj as $key => $value) {
+            foreach ($episode_obj as $key => $value) {
                 if(!empty($value->adddate)){
                     $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 }
@@ -722,11 +743,17 @@ class DoctorNoteController extends defaultController
 
         try {
 
-            $doctorcode = DB::table('hisdb.doctor')
+            $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
-                    ->where('loginid','=',session('username'))
-                    ->get();
+                    ->where('loginid','=',session('username'));
+
+            $doctorcode=null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
+
+
 
             DB::table('hisdb.pathealthadd')
                 ->insert([  
