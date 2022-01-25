@@ -95,7 +95,6 @@ class PatmastController extends defaultController
 
                                 $join = $join->on('queue.mrn', '=', 'pat_mast.MRN')
                                             ->where('queue.billflag','=',0)
-                                            // ->where('queue.compcode','=',session('compcode'))
                                             ->where('queue.deptcode','=',"ALL");
 
                                 if($sel_epistycode == 'OP'){
@@ -111,11 +110,6 @@ class PatmastController extends defaultController
                             ->leftJoin('hisdb.citizen','citizen.Code','=','pat_mast.Citizencode')
                             ->leftJoin('hisdb.areacode','areacode.areacode','=','pat_mast.AreaCode')
                             ->where('pat_mast.compcode','=',session('compcode'))
-                            // ->where('racecode.compcode','=',session('compcode'))
-                            // ->where('religion.CompCode','=',session('compcode'))
-                            // ->where('occupation.compcode','=',session('compcode'))
-                            // ->where('citizen.compcode','=',session('compcode'))
-                            // ->where('areacode.compcode','=',session('compcode'))
                             ->where('pat_mast.Active','=','1')
                             // ->whereIn('pat_mast.mrn', $arr_mrn)
                             ->whereBetween('pat_mast.MRN',$mrn_range);
@@ -129,31 +123,31 @@ class PatmastController extends defaultController
             $paginate_patm = $table_patm->paginate($request->rows);
 
 
-            // foreach ($paginate_patm->items() as $key => $value) {
-            //     // foreach ($paginate->items() as $key2 => $value2) {
-            //     //     if($value->MRN == $value2->mrn){
-            //     //         $value->q_doctorname = $value2->doctorname;
-            //     //         $value->q_epistycode = $value2->epistycode;
-            //     //     }
-            //     // }
+            foreach ($paginate_patm->items() as $key => $value) {
+                // foreach ($paginate->items() as $key2 => $value2) {
+                //     if($value->MRN == $value2->mrn){
+                //         $value->q_doctorname = $value2->doctorname;
+                //         $value->q_epistycode = $value2->epistycode;
+                //     }
+                // }
 
-            //     $episode = DB::table('hisdb.episode')
-            //                 ->select('newcaseP','newcaseNP','followupP','followupNP')
-            //                 ->where('mrn','=',$value->MRN)
-            //                 ->where('episno','=',$value->Episno);
+                $episode = DB::table('hisdb.episode')
+                            ->select('newcaseP','newcaseNP','followupP','followupNP')
+                            ->where('mrn','=',$value->MRN)
+                            ->where('episno','=',$value->Episno);
 
-            //     if($episode->exists()){
-            //         $episode = $episode->first();
-            //         if($episode->newcaseP == 1 || $episode->followupP == 1){
-            //             $value->pregnant = 1;
-            //         }else{
-            //             $value->pregnant = 0;
-            //         }
+                if($episode->exists()){
+                    $episode = $episode->first();
+                    if($episode->newcaseP == 1 || $episode->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
 
-            //     }
+                }
 
 
-            // }
+            }
 
             $responce = new stdClass();
             $responce->current = $paginate_patm->currentPage();

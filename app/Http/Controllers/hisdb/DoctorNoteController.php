@@ -132,6 +132,7 @@ class DoctorNoteController extends defaultController
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
                         'adduser'  => session('username'),
+                        'doctorcode'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
