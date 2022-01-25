@@ -244,7 +244,7 @@ $(document).ready(function () {
 		gridComplete: function () {
 			cbselect.show_hide_table();
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
@@ -1552,7 +1552,7 @@ $(document).ready(function () {
 	}
 
 	function if_cancel_hide(){
-		if(selrowData('#jqGrid').apacthdr_recstatus.trim().toUpperCase() == 'CANCELLED'){
+		if(selrowData('#jqGrid').db_recstatus.trim().toUpperCase() == 'CANCELLED'){
 			$('#jqGrid3_panel').collapse('hide');
 			$('#ifcancel_show').text(' - CANCELLED');
 			$('#panel_jqGrid3').attr('data-target','-');

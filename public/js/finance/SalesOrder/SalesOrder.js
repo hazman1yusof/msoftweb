@@ -258,7 +258,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
-			if (oper == 'add' || oper == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
