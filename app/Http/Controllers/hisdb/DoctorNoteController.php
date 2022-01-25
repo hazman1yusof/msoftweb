@@ -113,6 +113,12 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
+            $doctorcode = DB::table('hisdb.doctor')
+                    ->select('doctorcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('loginid','=',session('username'))
+                    ->get();
+
             DB::table('hisdb.pathealth')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -131,6 +137,7 @@ class DoctorNoteController extends defaultController
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
+                        'doctorcode'  => $doctorcode,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -714,12 +721,19 @@ class DoctorNoteController extends defaultController
 
         try {
 
+            $doctorcode = DB::table('hisdb.doctor')
+                    ->select('doctorcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('loginid','=',session('username'))
+                    ->get();
+
             DB::table('hisdb.pathealthadd')
                 ->insert([  
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
                     'additionalnote' => $request->additionalnote,
+                    'doctorcode'  => $doctorcode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
                     

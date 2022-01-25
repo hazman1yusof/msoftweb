@@ -115,7 +115,7 @@ $(document).ready(function () {
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Note', name: 'additionalnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'Entered by', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Doctor Code', name: 'doctorcode', width: 50, hidden:false},
 			{ label: 'Date', name: 'adddate', width: 50, hidden:false},
 		],
 		autowidth: true,
@@ -512,6 +512,7 @@ function on_toggling_curr_past(obj = curr_obj){
 		
 		addnotes.style.display = "none";
 		enableFields();
+		button_state_doctorNote('add'); //enable balik button
 		datable_medication.clear().draw();
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
@@ -703,7 +704,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
-			$('#formDoctorNote span#adduser').text(data.pathealth.adduser);
+			$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
 			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
