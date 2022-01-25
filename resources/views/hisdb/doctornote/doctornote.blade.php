@@ -106,7 +106,7 @@
                                         </div>
                                     </div> 
 
-                                    <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="adduser" name="adduser"></span></span>
+                                    <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span>
                                 </div>
 
                                 <div class="col-md-12" style="padding:0px;">
