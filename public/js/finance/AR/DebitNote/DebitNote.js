@@ -578,7 +578,7 @@ $(document).ready(function () {
 		table_name:['debtor.dbactdtl AS dbactdtl'],
 		table_id:'lineno_',
 		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'CM', 'RC']
+		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'DN']
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
