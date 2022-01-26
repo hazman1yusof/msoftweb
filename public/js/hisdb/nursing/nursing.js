@@ -676,51 +676,6 @@ $(document).ready(function () {
 
 });
 
-function autocheck(){
-	var plaster_length = $("#plaster_remarks").val().length;
-	var food_length = $("#food_remarks").val().length;
-	var environment_length = $("#environment_remarks").val().length;
-	var others_length = $("#others_remarks").val().length;
-	var unknown_length = $("#unknown_remarks").val().length;
-	var none_length = $("#none_remarks").val().length;
-
-	if(plaster_length > 0){
-		$("#allergyplaster").attr("checked", true);
-	}else{
-		$("#allergyplaster").attr("checked", false);
-	}
-
-	if(food_length > 0){
-		$("#allergyfood").attr("checked", true);
-	}else{
-		$("#allergyfood").attr("checked", false);
-	}
-
-	if(environment_length > 0){
-		$("#allergyenvironment").attr("checked", true);
-	}else{
-		$("#allergyenvironment").attr("checked", false);
-	}
-
-	if(others_length > 0){
-		$("#allergyothers").attr("checked", true);
-	}else{
-		$("#allergyothers").attr("checked", false);
-	}
-
-	if(unknown_length > 0){
-		$("#allergyunknown").attr("checked", true);
-	}else{
-		$("#allergyunknown").attr("checked", false);
-	}
-
-	if(none_length > 0){
-		$("#allergynone").attr("checked", true);
-	}else{
-		$("#allergynone").attr("checked", false);
-	}
-}
-
 var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
 	"ajax": "",
 	"sDom": "",

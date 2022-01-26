@@ -160,37 +160,37 @@
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergydrugs" name="allergydrugs" value="1"></td>
 														<td><label class="form-check-label" for="allergydrugs">Drugs</label></td>
-														<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="drugs_remarks" name="drugs_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergyplaster" name="allergyplaster" value="1"></td>
 														<td><label class="form-check-label" for="allergyplaster">Plaster</label></td>
-														<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="plaster_remarks" name="plaster_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergyfood" name="allergyfood" value="1"></td>
 														<td><label class="form-check-label" for="allergyfood">Food</label></td>
-														<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="food_remarks" name="food_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergyenvironment" name="allergyenvironment" value="1"></td>
 														<td><label class="form-check-label" for="allergyenvironment">Environment</label></td>
-														<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="environment_remarks" name="environment_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergyothers" name="allergyothers" value="1"></td>
 														<td><label class="form-check-label" for="allergyothers">Others</label></td>
-														<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="others_remarks" name="others_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergyunknown" name="allergyunknown" value="1"></td>
 														<td><label class="form-check-label" for="allergyunknown">Unknown</label></td>
-														<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="unknown_remarks" name="unknown_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 													<tr>
 														<td><input class="form-check-input" type="checkbox" id="allergynone" name="allergynone" value="1"></td>
 														<td><label class="form-check-label" for="allergynone">None</label></td>
-														<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm" rows="3" onkeyup="autocheck();"></textarea></td>
+														<td><textarea id="none_remarks" name="none_remarks" type="text" class="form-control input-sm" rows="3"></textarea></td>
 													</tr>
 												</tbody>
 											</table>
@@ -1274,7 +1274,7 @@
 															<label class="col-md-1 control-label" for="pa_notes" style="margin-bottom: 10px">Notes:</label>  
 															<div class="row" style="padding:30px;">
 																<textarea id="pa_notes" name="pa_notes" type="text" class="form-control input-sm" rows="15" data-validation="required" data-validation-error-msg-required="Please enter notes."></textarea>
-																<span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="adduser" name="adduser"></span></span>
+																<span class="label label-info" style="margin-left: 0px;font-size: 100%;">Written By: <span id="adduser" name="adduser"></span></span>
 															</div>
 														</div>														
 
