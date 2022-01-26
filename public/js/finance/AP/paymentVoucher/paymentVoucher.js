@@ -316,13 +316,14 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on();
