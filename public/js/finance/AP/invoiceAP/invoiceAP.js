@@ -332,7 +332,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
-			if (oper == 'add' || oper == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();

@@ -85,7 +85,37 @@ $(document).ready(function () {
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
+	});	
+
+	// to autocheck the checkbox bila fill in textarea
+	$("#drugs_remarks").on("keyup blur", function () {
+        $("#allergydrugs").prop("checked", this.value !== "");
 	});
+
+	$("#plaster_remarks").on("keyup blur", function () {
+        $("#allergyplaster").prop("checked", this.value !== "");
+	});
+
+	$("#food_remarks").on("keyup blur", function () {
+        $("#allergyfood").prop("checked", this.value !== "");
+	});
+
+	$("#environment_remarks").on("keyup blur", function () {
+        $("#allergyenvironment").prop("checked", this.value !== "");
+	});
+
+	$("#others_remarks").on("keyup blur", function () {
+        $("#allergyothers").prop("checked", this.value !== "");
+	});
+
+	$("#unknown_remarks").on("keyup blur", function () {
+        $("#allergyunknown").prop("checked", this.value !== "");
+	});
+
+	$("#none_remarks").on("keyup blur", function () {
+        $("#allergynone").prop("checked", this.value !== "");
+	});
+	// to autocheck the checkbox bila fill in textarea ends
 
 	// to limit to two decimal places (onkeypress)
 	$(document).on('keydown', 'input[pattern]', function(e){
@@ -627,6 +657,7 @@ $(document).ready(function () {
 				autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 				autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+				$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 				button_state_ti('disableAll');
@@ -644,7 +675,6 @@ $(document).ready(function () {
 
 
 });
-
 
 var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
 	"ajax": "",
@@ -762,6 +792,7 @@ function populate_formNursing(obj,rowdata){
 
 	if(rowdata.nurse_gen != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
+		$('#formTriageInfo span#adduser').text(data.nurse_gen.adduser);
 		button_state_ti('edit');
 
 		// autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
@@ -834,6 +865,7 @@ function populate_triage(obj,rowdata){
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('disableAll');
@@ -898,6 +930,7 @@ function populate_triage_currpt(obj){
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('edit');
@@ -962,6 +995,7 @@ function populate_triage_casenote(obj){
 			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
 			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('disableAll');

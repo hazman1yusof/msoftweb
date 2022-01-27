@@ -275,14 +275,6 @@ $(document).ready(function () {
 		let stat = selrowData("#jqGrid").apacthdr_recstatus;
 		let scope = $("#recstatus_use").val();
 
-		// if (stat == scope) {
-		// 	$('#but_cancel_jq').show();
-		// } else if (stat == "CANCELLED") {
-		// 	$('#but_reopen_jq').show();
-		// } else {
-		// 	if(scope.toUpperCase() == 'ALL'){
-		// 	}
-		// }
 
 		if(rowid != null) {
 			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -297,10 +289,10 @@ $(document).ready(function () {
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-
+			refreshGrid("#jqGrid3",urlParam2);
+			populate_form(selrowData("#jqGrid"));
 			refreshGrid("#jqGrid3",urlParam2);
 			if_cancel_hide();
-			populate_form(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -313,13 +305,14 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
+			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on();
@@ -541,7 +534,7 @@ $(document).ready(function () {
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
-		filterVal:['session.compcode', '', 'AP','PV']
+		filterVal:['session.compcode', '', 'AP','CN']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:true} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
