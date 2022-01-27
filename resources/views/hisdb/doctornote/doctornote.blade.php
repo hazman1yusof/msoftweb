@@ -49,7 +49,7 @@
 
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
-                    <input id="recorddate" name="recorddate" type="hidden">
+                    <input id="recorddate_doctorNote" name="recorddate_doctorNote" type="hidden">
                     <div class="col-md-4" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
                         <div class="panel panel-info">
                             <div class="panel-body">
