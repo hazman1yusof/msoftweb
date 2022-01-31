@@ -46,7 +46,10 @@ class CategoryFinController extends defaultController
         try {
 
             $category = DB::table('material.category')
-                            ->where('catcode','=',$request->catcode);
+                            ->where('compcode','=',session('compcode'))
+                            ->where('catcode','=',$request->catcode)
+                            ->where('cattype','=','CR')
+                            ->where('source','=','OTHER');
 
             if($category->exists()){
                 throw new \Exception("Record Duplicate");
