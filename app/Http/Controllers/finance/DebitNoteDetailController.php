@@ -162,13 +162,19 @@ class DebitNoteDetailController extends defaultController
 
     public function add(Request $request){
 
-        $source = 'PB';
-        $trantype = 'DN';
-        $auditno = $request->auditno;
+       
 
         DB::beginTransaction();
         
         try {
+
+             
+            $source = 'PB';
+            $trantype = 'DN';
+            $auditno = $request->auditno;
+        // dd($auditno);
+
+
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)

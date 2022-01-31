@@ -313,6 +313,7 @@ $(document).ready(function () {
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				$('#save').hide();
+				
 			}else if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 
@@ -1620,8 +1621,10 @@ function populate_form(obj){
 	
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+		$('#but_cancel_jq').show();
 	}else{
 		$('td#glyphicon-plus,td#glyphicon-edit').show();
+		$('#but_cancel_jq').hide();
 	}
 }
 
