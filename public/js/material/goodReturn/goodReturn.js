@@ -131,7 +131,7 @@ $(document).ready(function () {
 		this.target=target;
 		this.param={
 			action:'get_value_default',
-			url:"/util/get_value_default",
+			url:"util/get_value_default",
 			field: ['*'],
 			table_name:'material.sequence',
 			table_id:'idno',
@@ -174,7 +174,7 @@ $(document).ready(function () {
 
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',
 		table_name:['material.delordhd', 'material.supplier'],
@@ -188,7 +188,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
 		action:'goodReturn_save',
-		url:'/goodReturn/form',
+		url:'./goodReturn/form',
 		field:'',
 		fixPost:'true',
 		oper:oper,
@@ -498,7 +498,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['storedept'],
@@ -605,7 +605,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode', 'dodt.pouom', 'dodt.suppcode','dodt.trandate',
 		'dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.qtyreturned','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 
 		'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks','t.rate',],
@@ -622,7 +622,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/goodReturnDetail/form",
+		editurl: "./goodReturnDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
@@ -916,7 +916,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 
-			let editurl = "/goodReturnDetail/form?"+
+			let editurl = "./goodReturnDetail/form?"+
 				$.param({
 					action: 'goodReturnDetail_save',
 					docno:$('#delordhd_docno').val(),
@@ -968,7 +968,7 @@ $(document).ready(function () {
 								recno: $('#delordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "/goodReturnDetail/form"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "./goodReturnDetail/form"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1093,7 +1093,7 @@ $(document).ready(function () {
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		fdl.get_array('goodReturn',options,param,case_,cellvalue);
 		return cellvalue;
 	}
@@ -1498,7 +1498,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
-					url: '/util/get_value_default',
+					url: 'util/get_value_default',
 					field: ['dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode','dodt.pouom',
 					'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 
 					'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax', 'dodt.amount','dodt.expdate','dodt.batchno','dodt.rem_but AS remarks_button','dodt.remarks',
@@ -1512,7 +1512,7 @@ $(document).ready(function () {
 					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE']
 				};
 
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {

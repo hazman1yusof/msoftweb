@@ -44,7 +44,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/categoryfin/form",
+		editurl: "./categoryfin/form",
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -181,7 +181,7 @@ $(document).ready(function () {
 			console.log(data);
 
 			check_cust_rules();
-			let editurl = "/categoryfin/form?"+
+			let editurl = "./categoryfin/form?"+
 				$.param({
 					action: 'categoryfin_save',
 					source: $('#source').val(),
@@ -241,7 +241,7 @@ $(document).ready(function () {
 			// console.log(data);
 
 			check_cust_rules();
-			let editurl = "/categoryfin/form?"+
+			let editurl = "./categoryfin/form?"+
 				$.param({
 					action: 'categoryfin_save',
 					source: $('#source').val(),
@@ -306,7 +306,7 @@ $(document).ready(function () {
 			case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
 			
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('categoryfin',options,param,case_,cellvalue);
 		
@@ -360,7 +360,7 @@ $(document).ready(function () {
 								action: 'categoryfin_save',
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/categoryfin/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./categoryfin/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

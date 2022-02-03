@@ -109,7 +109,7 @@ $(document).ready(function () {
 	
 	var urlParam={
 	   	action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',
 		table_name:['material.authdtl as dtl'],
@@ -122,7 +122,7 @@ $(document).ready(function () {
 
 	var saveParam = {
 		action: 'save_table_default',
-		url: '/authorizationDtl/form',
+		url: './authorizationDtl/form',
 		field: '',
 		oper: oper,
 		table_name: ['material.authdtl as dtl'],

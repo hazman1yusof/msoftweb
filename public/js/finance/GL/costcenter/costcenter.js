@@ -43,7 +43,7 @@
 			var addmore_jqgrid={more:false,state:false,edit:false}	
 			$("#jqGrid").jqGrid({
 				datatype: "local",
-				editurl: "/costcenter/form",
+				editurl: "./costcenter/form",
 				 colModel: [
 					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},					
 					{ label: 'Cost Code', name: 'costcode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -162,7 +162,7 @@
 					console.log(data);
 
 					check_cust_rules();
-					let editurl = "/costcenter/form?"+
+					let editurl = "./costcenter/form?"+
 						$.param({
 							action: 'costcenter_save',
 						});
@@ -217,7 +217,7 @@
 					// console.log(data);
 
 					check_cust_rules();
-					let editurl = "/costcenter/form?"+
+					let editurl = "./costcenter/form?"+
 						$.param({
 							action: 'costcenter_save',
 						});
@@ -266,7 +266,7 @@
 										costcode: $('#costcode').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/costcenter/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "./costcenter/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

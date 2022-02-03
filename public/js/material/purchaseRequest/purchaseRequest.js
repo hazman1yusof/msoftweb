@@ -133,7 +133,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		table_name: ['material.purreqhd', 'material.supplier','material.queuepr'],
 		table_id: 'purreqhd_idno',
@@ -149,7 +149,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam = {
 		action: 'purReq_header_save',
-		url:'/purchaseRequest/form',
+		url:'./purchaseRequest/form',
 		field: '',
 		oper: oper,
 		table_name: 'material.purreqhd',
@@ -402,7 +402,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/purchaseRequest/form', obj , function( data ) {
+		$.post( './purchaseRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();
@@ -478,7 +478,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			
@@ -653,7 +653,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'/purchaseRequestDetail/table',
+		url:'./purchaseRequestDetail/table',
 		field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.qtybalance', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 't.rate'],
 		table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 		table_id: 'lineno_',
@@ -668,7 +668,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/purchaseRequestDetail/form",
+		editurl: "./purchaseRequestDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', hidden: true },
@@ -1056,7 +1056,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/purchaseRequestDetail/form?"+
+			let editurl = "./purchaseRequestDetail/form?"+
 				$.param({
 					action: 'purReq_detail_save',
 					idno: $('#purreqhd_idno').val(),
@@ -1116,7 +1116,7 @@ $(document).ready(function () {
 								recno: $('#purreqhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 							}
-							$.post( "/purchaseRequestDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./purchaseRequestDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -1250,7 +1250,7 @@ $(document).ready(function () {
 				purreqdt:$('#purreqhd_purreqdt').val(),
     		}
 
-    		$.post( "/purchaseRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./purchaseRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
@@ -1294,7 +1294,7 @@ $(document).ready(function () {
 			case 'purreqhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_reqdept';break;
 			case 'purreqhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_prdept';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('purchaseRequest',options,param,case_,cellvalue);
 		

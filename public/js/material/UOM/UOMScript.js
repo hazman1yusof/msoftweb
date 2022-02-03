@@ -41,7 +41,7 @@
 			var addmore_jqgrid={more:false,state:false,edit:false}
 			$("#jqGrid").jqGrid({
 				datatype: "local",
-				editurl: "/uom/form",
+				editurl: "./uom/form",
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
 					{ label: 'UOM Code', name: 'uomcode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -157,7 +157,7 @@
 
 					check_cust_rules();
 
-					let editurl = "/uom/form?"+
+					let editurl = "./uom/form?"+
 						$.param({
 							action: 'uom_save',
 						});
@@ -212,7 +212,7 @@
 					// console.log(data);
 
 					check_cust_rules();
-					let editurl = "/uom/form?"+
+					let editurl = "./uom/form?"+
 						$.param({
 							action: 'uom_save',
 						});
@@ -261,7 +261,7 @@
 										uomcode: $('#uomcode').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/uom/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "./uom/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

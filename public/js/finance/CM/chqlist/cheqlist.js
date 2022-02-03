@@ -43,7 +43,7 @@ $(document).ready(function () {
 
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/cheqlist/form",
+		editurl: "./cheqlist/form",
 		 colModel: [
 			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, checked: true, hidden:true},
@@ -105,7 +105,7 @@ $(document).ready(function () {
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('cheqlist',options,param,case_,cellvalue);
 		
@@ -151,7 +151,7 @@ $(document).ready(function () {
 	
 	$("#gridCheqListDetail").jqGrid({
 		datatype: "local",
-		editurl: "/cheqlistDetail/form",
+		editurl: "./cheqlistDetail/form",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},

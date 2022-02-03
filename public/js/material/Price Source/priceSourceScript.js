@@ -41,7 +41,7 @@
 			var addmore_jqgrid={more:false,state:false,edit:false}
 			$("#jqGrid").jqGrid({
 				datatype: "local",
-				editurl: "/priceSource/form",
+				editurl: "./priceSource/form",
 				 colModel: [
 				 	{ label: 'idno', name: 'idno', width: 30,hidden:true, key:true},
 					{ label: 'compcode', name: 'compcode', width: 90 , hidden: true},
@@ -157,7 +157,7 @@
 					console.log(data);
 
 					check_cust_rules();
-					let editurl = "/priceSource/form?"+
+					let editurl = "./priceSource/form?"+
 						$.param({
 							action: 'priceSource_save',
 						});
@@ -211,7 +211,7 @@
 					// console.log(data);
 
 					check_cust_rules();
-					let editurl = "/priceSource/form?"+
+					let editurl = "./priceSource/form?"+
 						$.param({
 							action: 'priceSource_save',
 						});
@@ -260,7 +260,7 @@
 										pricecode: $('#pricecode').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/priceSource/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "./priceSource/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

@@ -139,7 +139,7 @@ $(document).ready(function () {
 		this.target=target;
 		this.param={
 			action:'get_value_default',
-			url:"/util/get_value_default",
+			url:"util/get_value_default",
 			field: ['*'],
 			table_name:'material.sequence',
 			table_id:'idno',
@@ -195,7 +195,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost: 'true',
 		table_name: ['material.purordhd', 'material.supplier','material.queuepo'],
@@ -214,7 +214,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam = {
 		action: 'purOrder_header_save',
-		url:'/purchaseOrder/form',
+		url:'./purchaseOrder/form',
 		field: '',
 		fixPost: 'true',
 		oper: oper,
@@ -458,7 +458,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
 
-		$.post( '/purchaseOrder/form', obj , function( data ) {
+		$.post( './purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -478,7 +478,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/purchaseOrder/form', obj , function( data ) {
+		$.post( './purchaseOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -557,7 +557,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['purdept'],
@@ -730,7 +730,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'/purchaseOrderDetail/table',
+		url:'./purchaseOrderDetail/table',
 		field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtyoutstand','podt.qtyrequest','podt.qtydelivered', 'podt.perslstax', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount','podt.amount','podt.rem_but AS remarks_button','podt.remarks', 'podt.unit', 't.rate'],
 		table_name: ['material.purorddt AS podt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 		table_id: 'lineno_',
@@ -746,7 +746,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/purchaseOrderDetail/form",
+		editurl: "./purchaseOrderDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
@@ -1156,7 +1156,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/purchaseOrderDetail/form?"+
+			let editurl = "./purchaseOrderDetail/form?"+
 				$.param({
 					action: 'purOrder_detail_save',
 					idno: $('#purordhd_idno').val(),
@@ -1219,7 +1219,7 @@ $(document).ready(function () {
 								recno: $('#purordhd_recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 				    		}
-				    		$.post( "/purchaseOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+				    		$.post( "./purchaseOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1348,7 +1348,7 @@ $(document).ready(function () {
 				expecteddate:$('#purordhd_expecteddate').val(),
     		}
 
-    		$.post( "/purchaseOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./purchaseOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
@@ -1392,7 +1392,7 @@ $(document).ready(function () {
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'purordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purordhd_prdept';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('purchaseOrder',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
@@ -1870,7 +1870,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
-					url: '/util/get_value_default',
+					url: 'util/get_value_default',
 					field: ['prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.qtybalance', 'prdt.itemcode', 'p.description', 'prdt.uomcode','prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax', 'prdt.amount','rem_but AS remarks_button','prdt.remarks','prdt.recstatus','t.rate'],
 					table_name: ['material.purreqdt AS prdt', 'material.productmaster AS p', 'hisdb.taxmast AS t'],
 					table_id: 'lineno_',
@@ -1881,7 +1881,7 @@ $(document).ready(function () {
 					filterVal: [data['h_recno'], 'session.compcode', '<>.DELETE']
 				};
 
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
@@ -2702,7 +2702,7 @@ $(document).ready(function () {
 		this.urlParam = {
 			action: 'add_from_pr',
 			oper: 'add_from_pr',
-			url:'/purchaseOrder/form'
+			url:'./purchaseOrder/form'
 		}
 
 		this.dialog = `<div id="dialog_add_fr_pr" title="Add From Purchase Request">

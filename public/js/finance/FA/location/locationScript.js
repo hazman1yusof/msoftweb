@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'sysdb.location',
 		table_id:'idno',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: '/location/form',
+		editurl: './location/form',
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
@@ -165,7 +165,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/location/form?"+
+			let editurl = "./location/form?"+
 				$.param({
 					action: 'location_save',
 				});
@@ -221,7 +221,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/location/form?"+
+			let editurl = "./location/form?"+
 				$.param({
 					action: 'location_save',
 				});
@@ -270,7 +270,7 @@ $(document).ready(function () {
 								loccode: $('#loccode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/location/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./location/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

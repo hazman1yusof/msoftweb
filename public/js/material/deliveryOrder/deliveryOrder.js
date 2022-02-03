@@ -139,7 +139,7 @@ $(document).ready(function () {
 		this.target=target;
 		this.param={
 			action:'get_value_default',
-			url:"/util/get_value_default",
+			url:"util/get_value_default",
 			field: ['*'],
 			table_name:'material.sequence',
 			table_id:'idno',
@@ -187,7 +187,7 @@ $(document).ready(function () {
 	
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',
 		table_name:['material.delordhd', 'material.supplier'],
@@ -201,7 +201,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
 		action:'delOrd_save',
-		url:'/deliveryOrder/form',
+		url:'./deliveryOrder/form',
 		field:'',
 		fixPost:'true',
 		oper:oper,
@@ -469,7 +469,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
 
-		$.post( '/deliveryOrder/form', obj , function( data ) {
+		$.post( './deliveryOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -489,7 +489,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/deliveryOrder/form', obj , function( data ) {
+		$.post( './deliveryOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -507,7 +507,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/deliveryOrder/form', obj , function( data ) {
+		$.post( './deliveryOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -586,7 +586,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['purdept'],
@@ -695,7 +695,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_dtl',
-		url:'/deliveryOrderDetail/table',
+		url:'./deliveryOrderDetail/table',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
@@ -710,7 +710,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/deliveryOrderDetail/form",
+		editurl: "./deliveryOrderDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
@@ -1154,7 +1154,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			
-			let editurl = "/deliveryOrderDetail/form?"+
+			let editurl = "./deliveryOrderDetail/form?"+
 				$.param({
 					action: 'delOrdDetail_save',
 					idno: $('#delordhd_idno').val(),
@@ -1216,7 +1216,7 @@ $(document).ready(function () {
 									recno: $('#delordhd_recno').val(),
 									lineno_: selrowData('#jqGrid2').lineno_,
 					    		}
-					    		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+					    		$.post( "./deliveryOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -1353,7 +1353,7 @@ $(document).ready(function () {
 				deliverydate:$('#delordhd_deliverydate').val(),
     		}
 
-    		$.post( "/deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./deliveryOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
@@ -1397,7 +1397,7 @@ $(document).ready(function () {
 			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
 			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('deliveryOrder',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));
@@ -1482,7 +1482,7 @@ $(document).ready(function () {
 			var param={
 				func:'getDONo',
 				action:'get_value_default',
-				url: '/util/get_value_default',
+				url: 'util/get_value_default',
 				field:['delordno'],
 				table_name:'material.delordhd'
 			}
@@ -1923,7 +1923,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
-					url: '/util/get_value_default',
+					url: 'util/get_value_default',
 					field: ['podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.suppcode', 'podt.purdate','podt.pricecode', 'podt.itemcode', 'p.description','podt.uomcode','podt.pouom','podt.qtyorder','podt.qtyoutstand',
 							 'podt.qtydelivered','podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc','podt.amtslstax as tot_gst','podt.netunitprice','podt.totamount',
 							 'podt.amount','podt.rem_but AS remarks_button','podt.remarks', 't.rate'],
@@ -1937,7 +1937,7 @@ $(document).ready(function () {
 					sortby:['lineno_ desc']
 				};
 
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
