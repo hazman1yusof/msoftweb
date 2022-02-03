@@ -256,6 +256,16 @@ class DoctorNoteController extends defaultController
                     ]);
             }
 
+            $doctorcode_obj = DB::table('hisdb.doctor')
+                    ->select('doctorcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('loginid','=',session('username'));
+
+            $doctorcode=null;
+            if($doctorcode_obj->exists()){
+                $doctorcode = $doctorcode_obj->first()->doctorcode;
+            }
+
             if($pathealth->exists()){
                 $pathealth
                     ->update([
@@ -275,6 +285,7 @@ class DoctorNoteController extends defaultController
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
+                        // 'doctorcode'  => $doctorcode,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
@@ -299,6 +310,7 @@ class DoctorNoteController extends defaultController
                         'pulse' => $request->pulse,
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
+                        'doctorcode'  => $doctorcode,
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
