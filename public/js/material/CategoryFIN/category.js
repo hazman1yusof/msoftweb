@@ -36,7 +36,7 @@ $(document).ready(function () {
 		table_name:'material.category',
 		table_id:'catcode',
 		filterCol:['source', 'cattype'],
-		filterVal:[$('#source2').val(), $('#cattype').val()],
+		filterVal:[$('#source').val(), $('#cattype').val()],
 		sort_idno: true,
 	}
 
@@ -184,6 +184,8 @@ $(document).ready(function () {
 					let editurl = "/categoryfin/form?"+
 						$.param({
 							action: 'categoryfin_save',
+							source: data.source,
+						//	cattype:$('#cattype').val(),
 						});
 					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 				},

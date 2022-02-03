@@ -45,11 +45,15 @@ class CategoryFinController extends defaultController
         DB::beginTransaction();
         try {
 
+         
+            $source = $request->source;
+            dd($source);
+
             $category = DB::table('material.category')
                             ->where('compcode','=',session('compcode'))
                             ->where('catcode','=',$request->catcode)
-                            ->where('cattype','=','CR')
-                            ->where('source','=','OTHER');
+                            ->where('cattype','=',$request->cattype)
+                            ->where('source','=',$source);
 
             if($category->exists()){
                 throw new \Exception("Record Duplicate");
@@ -58,7 +62,7 @@ class CategoryFinController extends defaultController
             DB::table('material.category')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'source' => 'CR',
+                    'source' => $source,
                     'cattype' => 'OTHER',
                     'catcode' => strtoupper($request->catcode),
                     'description' => strtoupper($request->description),
@@ -77,6 +81,7 @@ class CategoryFinController extends defaultController
             DB::rollback();
 
             $responce = new stdClass();
+            $responce->source = $source;
             $responce->errormsg = $e->getMessage();
             $responce->request = $_REQUEST;
 
