@@ -171,7 +171,7 @@ function populate_antenatal(obj){
     	episno:obj.Episno
     };
 
-    $.post( "antenatal/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./antenatal/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');

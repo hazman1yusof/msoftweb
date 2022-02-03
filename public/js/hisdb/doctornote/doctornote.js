@@ -458,7 +458,7 @@ function populate_doctorNote_currpt(obj){
 
     button_state_doctorNote('add');
 
-    docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+    docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -590,7 +590,7 @@ function saveForm_doctorNote(callback){
         }).get()
 	);
 
-    $.post( "/doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         callback(data);
@@ -637,7 +637,7 @@ var datable_medication = $('#medication_tbl').DataTable({
 var ajaxurl;
 $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	sticky_docnotetbl(on=true);
-    docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+    docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -648,7 +648,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 $("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
 	on_toggling_curr_past(curr_obj);
-	docnote_date_tbl.ajax.url( "/doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+	docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -702,7 +702,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     doctornote_docnote.episno = data.episno;
     doctornote_docnote.recorddate = data.date;
 
-    $.get( "/doctornote/table?"+$.param(doctornote_docnote), function( data ) {
+    $.get( "./doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){

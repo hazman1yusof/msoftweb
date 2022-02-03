@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_doctor = {
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: '',
 		fixPost:'true',
 		table_name: ['hisdb.docalloc AS da','hisdb.doctor AS d'],
@@ -178,7 +178,7 @@ $(document).ready(function () {
 			status : doc_status
 	    };
 
-	    $.post( "/episode/save_doc", $.param(postobj) , function( data ) {
+	    $.post( "episode/save_doc", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

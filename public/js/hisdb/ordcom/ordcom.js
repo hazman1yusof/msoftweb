@@ -197,7 +197,7 @@ $(document).ready(function () {
 
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
-		editurl: "/ordcom/form",
+		editurl: "ordcom/form",
 		colModel: [
 			{ label: 'auditno', name: 'auditno', hidden:true},
 			{ label: 'compcode', name: 'compcode', hidden:true},
@@ -481,7 +481,7 @@ $(document).ready(function () {
 				mrn: selrowData('#jqGrid').mrn,	
 				
 			}	
-			$.post( "/ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){	
+			$.post( "./ordcom/form?"+$.param(param),{oper:'edit_all_ordcom',dataobj:jqGrid_ordcom_data}, function( data ){	
 			}).fail(function(data) {	
 				$('#p_error').text(data.responseText);	
 				////errorText(dialog,data.responseText);	

@@ -6,7 +6,7 @@ var editedRow=0;
 /////////////////////parameter for jqGridExamTriage url/////////////////////////////////////////////////
 var urlParam_ExamTriage = {
 	action: 'get_table_default',
-	url: '/util/get_table_default',
+	url: './util/get_table_default',
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
@@ -17,7 +17,7 @@ var urlParam_ExamTriage = {
 /////////////////////parameter for jqGridAddNotesTriage url/////////////////////////////////////////////////
 var urlParam_AddNotesTriage = {
 	action: 'get_table_default',
-	url: '/util/get_table_default',
+	url: './util/get_table_default',
 	field: '',
 	table_name: 'nursing.triage_addnotes',
 	table_id: 'idno',
@@ -140,7 +140,7 @@ $(document).ready(function () {
 			mrn:$("#mrn_ti").val(),
 		}
 
-	    nursing_date_tbl.ajax.url( "/doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
+	    nursing_date_tbl.ajax.url( "./doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
 			emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
 			$('#nursing_date_tbl tbody tr:eq(0)').click();	//to select first row
 	    });
@@ -165,7 +165,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqGridExamTriage ///////////////////////////////////////////////////
 	$("#jqGridExamTriage").jqGrid({
 		datatype: "local",
-		editurl: "/nursing/form",
+		editurl: "./nursing/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -247,7 +247,7 @@ $(document).ready(function () {
 			let data = $('#jqGridExamTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/nursing/form?"+
+			let editurl = "./nursing/form?"+
 				$.param({
 					episno:$('#episno_ti').val(),
 					mrn:$('#mrn_ti').val(),
@@ -301,7 +301,7 @@ $(document).ready(function () {
 			let data = $('#jqGridExamTriage').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/nursing/form?"+
+			let editurl = "./nursing/form?"+
 				$.param({
 					episno:$('#episno_ti').val(),
 					mrn:$('#mrn_ti').val(),
@@ -346,7 +346,7 @@ $(document).ready(function () {
 						action: 'nursing_save',
 						idno: selrowData('#jqGridExamTriage').idno,
 					}
-					$.post( "/nursing/form?"+$.param(param),{oper:'del'}, function( data ){
+					$.post( "./nursing/form?"+$.param(param),{oper:'del'}, function( data ){
 					}).fail(function (data) {
 						//////////////////errorText(dialog,data.responseText);
 					}).done(function (data) {
@@ -439,7 +439,7 @@ $(document).ready(function () {
 			let data = $('#jqGridAddNotesTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/nursing/form?"+
+			let editurl = "./nursing/form?"+
 				$.param({
 					episno:$('#episno_ti').val(),
 					mrn:$('#mrn_ti').val(),
@@ -523,7 +523,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('nursing',options,param,case_,cellvalue);
 		
@@ -599,7 +599,7 @@ $(document).ready(function () {
 			    	description : $('#descriptions').val(),
 			    };
 
-				$.post( '/nursing/form?'+$.param(saveParam), postobj , function( data ) {
+				$.post( './nursing/form?'+$.param(saveParam), postobj , function( data ) {
 		
 				}).fail(function(data) {
 				}).success(function(data){
@@ -647,7 +647,7 @@ $(document).ready(function () {
 	    	episno:data.episno
 	    };
 
-	    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        alert('there is an error');
@@ -855,7 +855,7 @@ function populate_triage(obj,rowdata){
 
     };
 
-    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -920,7 +920,7 @@ function populate_triage_currpt(obj){
     	episno:obj.Episno
     };
 
-    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -985,7 +985,7 @@ function populate_triage_casenote(obj){
     	episno:obj.Episno
     };
 
-    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -1014,7 +1014,7 @@ function populate_triage_casenote(obj){
 		mrn:$("#mrn_ti").val(),
 	}
 
-    nursing_date_tbl.ajax.url( "/doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
+    nursing_date_tbl.ajax.url( "./doctornote/table?"+$.param(urlaram_nursing_date_tbl) ).load(function(data){
 		emptyFormdata_div("#formTriageInfo",['#mrn_ti','#episno_ti']);
 		$('#nursing_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -1103,7 +1103,7 @@ function saveForm_ti(callback){
     //     }).get()
     // );
 
-    $.post( "/nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -1162,7 +1162,7 @@ function saveForm_patmast(callback){
     //     }).get()
     // );
 
-    $.post( "nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

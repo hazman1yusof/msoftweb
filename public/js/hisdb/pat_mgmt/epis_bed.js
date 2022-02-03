@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_bed = {
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.bedalloc',
 		filterCol:['compcode','mrn','episno'],
@@ -193,7 +193,7 @@ $(document).ready(function () {
 	    	bed_lodger : $('#bed_lodger').val()
 	    };
 
-	    $.post( "/episode/save_bed", $.param(postobj) , function( data ) {
+	    $.post( "episode/save_bed", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
