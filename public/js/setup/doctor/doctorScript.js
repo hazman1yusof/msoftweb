@@ -114,7 +114,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
-				url:'/util/get_table_default',
+				url:'util/get_table_default',
 				field: '',
 				table_name:'hisdb.doctor',
 				table_id:'doctorcode',
@@ -124,7 +124,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'doctor_save',
-				url:'/doctor/form',
+				url:'./doctor/form',
 				field:'',
 				oper:oper,
 				table_name:'hisdb.doctor',

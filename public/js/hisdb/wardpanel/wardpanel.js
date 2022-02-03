@@ -6,7 +6,7 @@ var editedRow=0;
 /////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
 var urlParam_Exam = {
 	action: 'get_table_default',
-	url: '/util/get_table_default',
+	url: 'util/get_table_default',
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
@@ -84,7 +84,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqGridExam ///////////////////////////////////////////////////
 	$("#jqGridExam").jqGrid({
 		datatype: "local",
-		editurl: "/wardpanel/form",
+		editurl: "./wardpanel/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -161,7 +161,7 @@ $(document).ready(function () {
 			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/wardpanel/form?"+
+			let editurl = "./wardpanel/form?"+
 				$.param({
 					episno:$('#episno_ward').val(),
 					mrn:$('#mrn_ward').val(),
@@ -215,7 +215,7 @@ $(document).ready(function () {
 			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/wardpanel/form?"+
+			let editurl = "./wardpanel/form?"+
 				$.param({
 					episno:$('#episno_ward').val(),
 					mrn:$('#mrn_ward').val(),
@@ -264,7 +264,7 @@ $(document).ready(function () {
 								action: 'wardpanel_save',
 								idno: selrowData('#jqGridExam').idno,
 							}
-							$.post( "/wardpanel/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./wardpanel/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -304,7 +304,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('wardpanel',options,param,case_,cellvalue);
 		
@@ -381,7 +381,7 @@ $(document).ready(function () {
 			    	description : $('#description').val()
 			    };
 
-				$.post( '/wardpanel/form?'+$.param(saveParam), postobj , function( data ) {
+				$.post( './wardpanel/form?'+$.param(saveParam), postobj , function( data ) {
 		
 				}).fail(function(data) {
 				}).success(function(data){
@@ -480,7 +480,7 @@ function populate_formWard(obj,rowdata){
 
     };
 
-    $.post( "/wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -575,7 +575,7 @@ function saveForm_ward(callback){
     //     }).get()
     // );
 
-    $.post( "/wardpanel/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

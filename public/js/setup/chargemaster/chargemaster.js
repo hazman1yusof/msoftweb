@@ -152,7 +152,7 @@
 
 		var urlParam={
 			action:'get_table_default',
-			url:'/util/get_table_default',
+			url:'util/get_table_default',
 			field:'',
 			fixPost:'true',
 			table_name:['hisdb.chgmast AS CM', 'hisdb.chgclass AS CC', 'hisdb.chggroup AS CG', 'hisdb.chgtype AS CT'],
@@ -167,7 +167,7 @@
 		/////////////////////parameter for saving url////////////////////////////////////////////////
 		var saveParam={
 			action:'save_table_default',
-			url:'chargemaster/form',
+			url:'./chargemaster/form',
 			fixPost:'true',
 			field:'',
 			idnoUse:'cm_idno',
@@ -483,7 +483,7 @@
 		/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 		var urlParam2={
 			action:'get_table_default',
-			url:'/util/get_table_default',
+			url:'util/get_table_default',
 			field:['cp.effdate','cp.amt1','cp.amt2','cp.amt3','cp.costprice','cp.iptax','cp.optax','cp.adduser','cp.adddate','cp.chgcode','cm.chgcode','cp.idno','cp.autopull','cp.addchg','cp.pkgstatus','cp.recstatus','cp.uom'],
 			table_name:['hisdb.chgprice AS cp', 'hisdb.chgmast AS cm'],
 			table_id:'lineno_',
@@ -501,7 +501,7 @@
 		////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 		$("#jqGrid2").jqGrid({
 			datatype: "local",
-			editurl: "/chargemasterDetail/form",
+			editurl: "./chargemasterDetail/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
@@ -624,7 +624,7 @@
 				case 'cm_uom': field = ['uomcode', 'description']; table = "material.uom";case_='cm_uom';break;
 				case 'uom': field = ['uomcode', 'description']; table = "material.uom";case_='uom';break;
 			}
-			var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+			var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 			fdl.get_array('chargemaster',options,param,case_,cellvalue);
 			if(cellvalue == null)cellvalue = " ";
@@ -783,7 +783,7 @@
 	        	//if(errorField.length>0)return false;  
 
 				let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-				let editurl = "/chargemasterDetail/form?"+
+				let editurl = "./chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
@@ -831,7 +831,7 @@
 									idno: selrowData('#jqGrid2').idno,
 
 					    		}
-					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -895,7 +895,7 @@
 					_token: $("#_token").val()
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+	    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
@@ -928,7 +928,7 @@
 		////////////////////////////////////////////////jqGridPkg2///////////////////////////////////////////////
 		$("#jqGridPkg2").jqGrid({
 			datatype: "local",
-			editurl: "/chargemasterDetail/form",
+			editurl: "./chargemasterDetail/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
@@ -1081,7 +1081,7 @@
 	        	//if(errorField.length>0)return false;  
 
 				let data = $('#jqGridPkg2').jqGrid ('getRowData', rowid);
-				let editurl = "/chargemasterDetail/form?"+
+				let editurl = "./chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
@@ -1129,7 +1129,7 @@
 									idno: selrowData('#jqGridPkg2').idno,
 
 					    		}
-					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -1195,7 +1195,7 @@
 					_token: $("#_token").val()
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGridPkg2_data}, function( data ){
+	    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGridPkg2_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
@@ -1279,7 +1279,7 @@
 
 		$("#jqGrid3").jqGrid({
 			datatype: "local",
-			editurl: "/chargemasterDetail/form",
+			editurl: "./chargemasterDetail/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
@@ -1424,7 +1424,7 @@
 	        	//if(errorField.length>0)return false;  
 
 				let data = $('#jqGrid3').jqGrid ('getRowData', rowid);
-				let editurl = "/chargemasterDetail/form?"+
+				let editurl = "./chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
@@ -1472,7 +1472,7 @@
 									idno: selrowData('#jqGrid3').idno,
 
 					    		}
-					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -1536,7 +1536,7 @@
 					_token: $("#_token").val()
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
+	    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
@@ -1568,7 +1568,7 @@
 
 		$("#jqGridPkg3").jqGrid({
 			datatype: "local",
-			editurl: "/chargemasterDetail/form",
+			editurl: "./chargemasterDetail/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
@@ -1734,7 +1734,7 @@
 	        	//if(errorField.length>0)return false;  
 
 				let data = $('#jqGridPkg3').jqGrid ('getRowData', rowid);
-				let editurl = "/chargemasterDetail/form?"+
+				let editurl = "./chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
@@ -1785,7 +1785,7 @@
 									idno: selrowData('#jqGridPkg3').idno,
 
 					    		}
-					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -1852,7 +1852,7 @@
 					_token: $("#_token").val()
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGridPkg3_data}, function( data ){
+	    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGridPkg3_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
@@ -1882,7 +1882,7 @@
 		/////////////////////////////parameter for jqgrid4 url///////////////////////////////////////////////
 		var urlParam4={
 			action:'get_table_default',
-			url:'/util/get_table_default',
+			url:'util/get_table_default',
 			field:['pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
 			table_name:['hisdb.pkgdet AS pd'],
 			table_id:'lineno_',
@@ -1897,7 +1897,7 @@
 
 		$("#jqGrid4").jqGrid({
 			datatype: "local",
-			editurl: "/chargemasterDetail/form",
+			editurl: "./chargemasterDetail/form",
 			colModel: [
 				{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 				{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
@@ -2039,7 +2039,7 @@
 	        	//if(errorField.length>0)return false;  
 
 				let data = $('#jqGrid4').jqGrid ('getRowData', rowid);
-				let editurl = "/chargemasterDetail/form?"+
+				let editurl = "./chargemasterDetail/form?"+
 					$.param({
 						action: 'chargemasterDetail_save',
 						oper: 'add',
@@ -2093,7 +2093,7 @@
 									_token: $("#_token").val(),
 									"pkg_dtl": "pkg_dtl"
 								}
-					    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+					    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 								}).fail(function(data) {
 									//////////////////errorText(dialog,data.responseText);
 								}).done(function(data){
@@ -2164,7 +2164,7 @@
 					"pkg_dtl": "pkg_dtl"
 	    		}
 
-	    		$.post( "/chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid4_data}, function( data ){
+	    		$.post( "./chargemasterDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid4_data}, function( data ){
 				}).fail(function(data) {
 					//////////////////errorText(dialog,data.responseText);
 				}).done(function(data){
@@ -2990,7 +2990,7 @@
 		function get_chg_productmaster(itemcode,uom){
 			var param={
 				action:'get_value_default',
-				url: '/util/get_value_default',
+				url: 'util/get_value_default',
 				field:['cm_uom','cm_invflag','cm_packqty','cm_druggrcode','cm_subgroup','cm_stockcode','cm_chgclass','cm_chggroup','cm_chgtype','cm_invgroup'],
 				table_name:'material.product',
 				filterCol:['compcode','itemcode','uomcode'],

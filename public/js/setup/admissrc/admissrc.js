@@ -31,7 +31,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'hisdb.admissrc',
 		table_id:'idno',
@@ -42,7 +42,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/admissrc/form",
+		editurl: "./admissrc/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},						
 			{ label: 'Adm Source', name: 'admsrccode', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -171,7 +171,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 	
-			let editurl = "/admissrc/form?"+
+			let editurl = "./admissrc/form?"+
 				$.param({
 					action: 'admissrc_save',
 				});
@@ -229,7 +229,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/admissrc/form?"+
+			let editurl = "./admissrc/form?"+
 				$.param({
 					action: 'admissrc_save',
 				});
@@ -278,7 +278,7 @@ $(document).ready(function () {
 								admsrccode: $('#admsrccode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/admissrc/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./admissrc/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

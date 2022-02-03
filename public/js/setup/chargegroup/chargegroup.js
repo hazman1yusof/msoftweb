@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.chggroup',
 		table_id: 'idno',
@@ -43,7 +43,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid ///////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/chargegroup/form",
+		editurl: "./chargegroup/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Group Code', name: 'grpcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -161,7 +161,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/chargegroup/form?"+
+			let editurl = "./chargegroup/form?"+
 				$.param({
 					action: 'chargegroup_save',
 				});
@@ -217,7 +217,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/chargegroup/form?"+
+			let editurl = "./chargegroup/form?"+
 				$.param({
 					action: 'chargegroup_save',
 				});
@@ -266,7 +266,7 @@ $(document).ready(function () {
 								grpcode: $('#grpcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/chargegroup/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./chargegroup/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

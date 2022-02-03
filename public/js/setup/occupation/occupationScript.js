@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: "/util/get_table_default",
+		url: "util/get_table_default",
 		field: '',
 		table_name: 'hisdb.occupation',
 		table_id: 'occupcode',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/occupation/form",
+		editurl: "./occupation/form",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true},
 			{ label: 'Code', name: 'occupcode', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -154,7 +154,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/occupation/form?"+
+			let editurl = "./occupation/form?"+
 				$.param({
 					action: 'occupation_save',
 				});
@@ -210,7 +210,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
- 			let editurl = "/occupation/form?"+
+ 			let editurl = "./occupation/form?"+
 				$.param({
 					action: 'occupation_save',
 				});
@@ -259,7 +259,7 @@ $(document).ready(function () {
 								occupcode: $('#occupcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/occupation/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./occupation/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

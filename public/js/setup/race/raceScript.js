@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.racecode',
 		table_id: 'idno',
@@ -40,7 +40,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/race/form",
+		editurl: "./race/form",
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
@@ -130,7 +130,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "./race/form?"+
 				$.param({
 					action: 'race_save',
 				});
@@ -178,7 +178,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/race/form?"+
+			let editurl = "./race/form?"+
 				$.param({
 					action: 'race_save',
 				});
@@ -226,7 +226,7 @@ $(document).ready(function () {
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/race/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./race/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url:"/util/get_table_default",
+		url:"util/get_table_default",
 		field:'',
 		table_name:'hisdb.title',
 		table_id:'Code',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/salutation/form",
+		editurl: "./salutation/form",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},		
 			{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -154,7 +154,7 @@ function check_cust_rules(rowid){
 
 			check_cust_rules();
 
-			let editurl = "/salutation/form?"+
+			let editurl = "./salutation/form?"+
 				$.param({
 					action: 'salutation_save',
 				});
@@ -208,7 +208,7 @@ function check_cust_rules(rowid){
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/salutation/form?"+
+			let editurl = "./salutation/form?"+
 				$.param({
 					action: 'salutation_save',
 				});
@@ -257,7 +257,7 @@ function check_cust_rules(rowid){
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/salutation/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./salutation/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

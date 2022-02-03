@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.marital',
 		table_id: 'code',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/marital/form",
+		editurl: "./marital/form",
 		colModel: [
 
 			{ label: 'compcode', name: 'compcode', hidden: true },
@@ -157,7 +157,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/marital/form?"+
+			let editurl = "./marital/form?"+
 				$.param({
 					action: 'marital_save',
 				});
@@ -213,7 +213,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/marital/form?"+
+			let editurl = "./marital/form?"+
 				$.param({
 					action: 'marital_save',
 				});
@@ -262,7 +262,7 @@ $(document).ready(function () {
 								code: $('#code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/marital/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./marital/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
