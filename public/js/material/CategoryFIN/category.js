@@ -133,253 +133,255 @@ $(document).ready(function () {
 
 	}
 
-			//////////////////////////My edit options /////////////////////////////////////////////////////////
-			var myEditOptions = {
-				keys: true,
-				extraparam:{
-					"_token": $("#_token").val()
-				},
-				oneditfunc: function (rowid) {
-					$('#jqGrid').data('lastselrow','none');
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+	//////////////////////////My edit options /////////////////////////////////////////////////////////
+	var myEditOptions = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 
-					dialog_expacct.on();
+			dialog_expacct.on();
 
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
-						var code = e.keyCode || e.which;
-						if (code == '9')$('#jqGrid_ilsave').click();
-						/*addmore_jqgrid.state = true;
-						$('#jqGrid_ilsave').click();*/
-					});
-					$("#jqGrid input[type='text']").on('focus',function(){
-						$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-						$("#jqGrid input[type='text']").removeClass( "error" );
-					});
-
-				},
-				aftersavefunc: function (rowid, response, options) {
-					//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-					addmore_jqgrid.more = true;
-					//state true maksudnyer ada isi, tak kosong
-					refreshGrid('#jqGrid',urlParam,'add');
-					errorField.length=0;
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorfunc: function(rowid,response){
-					var data = JSON.parse(response.responseText)
-					//$('#p_error').text(response.responseText);
-					err_reroll.old_data = data.request;
-					err_reroll.error = true;
-					err_reroll.errormsg = data.errormsg;
-					refreshGrid('#jqGrid',urlParam,'add');
-				},
-				beforeSaveRow: function (options, rowid) {
-					$('#p_error').text('');
-					if(errorField.length>0)return false;
-
-					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-					console.log(data);
-
-					check_cust_rules();
-					let editurl = "/categoryfin/form?"+
-						$.param({
-							action: 'categoryfin_save',
-							source: data.source,
-						//	cattype:$('#cattype').val(),
-						});
-					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
-				},
-				afterrestorefunc : function( response ) {
-					refreshGrid('#jqGrid',urlParam,'add');
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorTextFormat: function (data) {
-					alert(data);
-				}
-			};
-
-			var myEditOptions_edit = {
-				keys: true,
-				extraparam:{
-					"_token": $("#_token").val()
-				},
-				oneditfunc: function (rowid) {
-					$('#jqGrid').data('lastselrow',rowid);
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-
-					dialog_expacct.on();
-
-					$("input[name='catcode']").attr('disabled','disabled');
-					$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
-						var code = e.keyCode || e.which;
-						if (code == '9')$('#jqGrid_ilsave').click();
-						/*addmore_jqgrid.state = true;
-						$('#jqGrid_ilsave').click();*/
-					});
-					$("#jqGrid input[type='text']").on('focus',function(){
-						$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-						$("#jqGrid input[type='text']").removeClass( "error" );
-					});
-
-				},
-				aftersavefunc: function (rowid, response, options) {
-					if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-					//state true maksudnyer ada isi, tak kosong
-					refreshGrid('#jqGrid',urlParam,'edit');
-					errorField.length=0;
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorfunc: function(rowid,response){
-					$('#p_error').text(response.responseText);
-					refreshGrid('#jqGrid',urlParam,'add');
-				},
-				beforeSaveRow: function (options, rowid) {
-					$('#p_error').text('');
-					if(errorField.length>0)return false;
-
-					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-					// console.log(data);
-
-					check_cust_rules();
-					let editurl = "/categoryfin/form?"+
-						$.param({
-							action: 'categoryfin_save',
-						});
-					$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
-				},
-				afterrestorefunc : function( response ) {
-					refreshGrid('#jqGrid',urlParam,'edit');
-					$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-				},
-				errorTextFormat: function (data) {
-					alert(data);
-				}
-			};
-
-				////////////////////////formatter tick///////////////////////////////////////////////////////////
-				function formatterstatus_tick2(cellvalue, option, rowObject) {
-					if (cellvalue == '1') {
-						return `<span class="fa fa-check"></span>`;
-					}else{
-						return '';
-					}
-				}
-			
-			
-				function unformatstatus_tick2(cellvalue, option, rowObject) {
-					if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
-						return '1';
-					}else{
-						return '0';
-					}
-				}
-	
-				function formatter(cellvalue, options, rowObject){
-					return parseInt(cellvalue) ? "YES" : "NO";
-				}
-	
-				function unformat(cellvalue, options){
-					//return parseInt(cellvalue) ? "Yes" : "No";
-	
-					if (cellvalue == 'YES') {
-						return "1";
-					}
-					else {
-						return "0";
-					}
-				}
-
-			///////////////////////////////////////cust_rules//////////////////////////////////////////////
-			function cust_rules(value,name){
-				var temp;
-				switch(name){
-					case 'Expenses Account':temp=$('#expacct');break;
-				}
-				return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-			}
-
-			function showdetail(cellvalue, options, rowObject){
-				var field,table,case_;
-				switch(options.colModel.name){
-					case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
-					
-				}
-				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-
-				fdl.get_array('categoryfin',options,param,case_,cellvalue);
-				
-				return cellvalue;
-			}
-
-			function expacctCustomEdit(val, opt) {
-				val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-				return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="expacct" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-			}
-
-			function galGridCustomValue (elem, operation, value){
-				if(operation == 'get') {
-					return $(elem).find("input").val();
-				} 
-				else if(operation == 'set') {
-					$('input',elem).val(value);
-				}
-			}
-
-			/////////////////////////start grid pager/////////////////////////////////////////////////////////
-			$("#jqGrid").inlineNav('#jqGridPager', {
-				add: true,
-				edit: true,
-				cancel: true,
-				//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-				restoreAfterSelect: false,
-				addParams: {
-					addRowParams: myEditOptions
-				},
-				editParams: myEditOptions_edit
-			}).jqGrid('navButtonAdd', "#jqGridPager", {
-				id: "jqGridPagerDelete",
-				caption: "", cursor: "pointer", position: "last",
-				buttonicon: "glyphicon glyphicon-trash",
-				title: "Delete Selected Row",
-				onClickButton: function () {
-					selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-					if (!selRowId) {
-						bootbox.alert('Please select row');
-					} else {
-						bootbox.confirm({
-							message: "Are you sure you want to delete this row?",
-							buttons: {
-								confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-							},
-							callback: function (result) {
-								if (result == true) {
-									param = {
-										_token: $("#_token").val(),
-										action: 'categoryfin_save',
-										idno: selrowData('#jqGrid').idno,
-									}
-									$.post( "/categoryfin/form?"+$.param(param),{oper:'del'}, function( data ){
-									}).fail(function (data) {
-										//////////////////errorText(dialog,data.responseText);
-									}).done(function (data) {
-										refreshGrid("#jqGrid", urlParam);
-									});
-								}else{
-									$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-								}
-							}
-						});
-					}
-				},
-			}).jqGrid('navButtonAdd', "#jqGridPager", {
-				id: "jqGridPagerRefresh",
-				caption: "", cursor: "pointer", position: "last",
-				buttonicon: "glyphicon glyphicon-refresh",
-				title: "Refresh Table",
-				onClickButton: function () {
-					refreshGrid("#jqGrid", urlParam);
-				},
+			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				/*addmore_jqgrid.state = true;
+				$('#jqGrid_ilsave').click();*/
 			});
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+
+		},
+		aftersavefunc: function (rowid, response, options) {
+			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			addmore_jqgrid.more = true;
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			var data = JSON.parse(response.responseText)
+			//$('#p_error').text(response.responseText);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
+			refreshGrid('#jqGrid',urlParam,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			console.log(data);
+
+			check_cust_rules();
+			let editurl = "/categoryfin/form?"+
+				$.param({
+					action: 'categoryfin_save',
+					source: $('#source').val(),
+					cattype:$('#cattype').val(),
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+	var myEditOptions_edit = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow',rowid);
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+
+			dialog_expacct.on();
+
+			$("input[name='catcode']").attr('disabled','disabled');
+			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				/*addmore_jqgrid.state = true;
+				$('#jqGrid_ilsave').click();*/
+			});
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'edit');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			// console.log(data);
+
+			check_cust_rules();
+			let editurl = "/categoryfin/form?"+
+				$.param({
+					action: 'categoryfin_save',
+					source: $('#source').val(),
+					cattype:$('#cattype').val(),
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+		////////////////////////formatter tick///////////////////////////////////////////////////////////
+		function formatterstatus_tick2(cellvalue, option, rowObject) {
+			if (cellvalue == '1') {
+				return `<span class="fa fa-check"></span>`;
+			}else{
+				return '';
+			}
+		}
+	
+	
+		function unformatstatus_tick2(cellvalue, option, rowObject) {
+			if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+				return '1';
+			}else{
+				return '0';
+			}
+		}
+
+		function formatter(cellvalue, options, rowObject){
+			return parseInt(cellvalue) ? "YES" : "NO";
+		}
+
+		function unformat(cellvalue, options){
+			//return parseInt(cellvalue) ? "Yes" : "No";
+
+			if (cellvalue == 'YES') {
+				return "1";
+			}
+			else {
+				return "0";
+			}
+		}
+
+	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	function cust_rules(value,name){
+		var temp;
+		switch(name){
+			case 'Expenses Account':temp=$('#expacct');break;
+		}
+		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
+	}
+
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'expacct':field=['glaccno','description'];table="finance.glmasref";case_='expacct';break;
+			
+		}
+		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('categoryfin',options,param,case_,cellvalue);
+		
+		return cellvalue;
+	}
+
+	function expacctCustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid" optid="'+opt.id+'" id="'+opt.id+'" name="expacct" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function galGridCustomValue (elem, operation, value){
+		if(operation == 'get') {
+			return $(elem).find("input").val();
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
+
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").inlineNav('#jqGridPager', {
+		add: true,
+		edit: true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions
+		},
+		editParams: myEditOptions_edit
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		id: "jqGridPagerDelete",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function () {
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				bootbox.alert('Please select row');
+			} else {
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if (result == true) {
+							param = {
+								_token: $("#_token").val(),
+								action: 'categoryfin_save',
+								idno: selrowData('#jqGrid').idno,
+							}
+							$.post( "/categoryfin/form?"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function (data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data) {
+								refreshGrid("#jqGrid", urlParam);
+							});
+						}else{
+							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+						}
+					}
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd', "#jqGridPager", {
+		id: "jqGridPagerRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#jqGrid", urlParam);
+		},
+	});
 
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////

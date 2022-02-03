@@ -46,13 +46,12 @@ class CategoryFinController extends defaultController
         try {
 
          
-            $source = $request->source;
-            dd($source);
+            $source = strtoupper($request->source);
 
             $category = DB::table('material.category')
                             ->where('compcode','=',session('compcode'))
-                            ->where('catcode','=',$request->catcode)
-                            ->where('cattype','=',$request->cattype)
+                            ->where('catcode','=',strtoupper($request->catcode))
+                            ->where('cattype','=',strtoupper($request->cattype))
                             ->where('source','=',$source);
 
             if($category->exists()){
