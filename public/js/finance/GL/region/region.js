@@ -32,7 +32,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'sysdb.region',
 		table_id: 'regioncode',
@@ -43,7 +43,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/region/form",
+		editurl: "./region/form",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true},
 			{ label: 'Section Code', name: 'regioncode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -156,7 +156,7 @@ $(document).ready(function () {
 					console.log(data);
 
 					check_cust_rules();
-					let editurl = "/region/form?"+
+					let editurl = "./region/form?"+
 						$.param({
 							action: 'region_save',
 						});
@@ -210,7 +210,7 @@ $(document).ready(function () {
 					let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 					// console.log(data);
 
-					let editurl = "/region/form?"+
+					let editurl = "./region/form?"+
 						$.param({
 							action: 'region_save',
 						});
@@ -259,7 +259,7 @@ $(document).ready(function () {
 										regioncode: $('#regioncode').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/region/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "./region/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

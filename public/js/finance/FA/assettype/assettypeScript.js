@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url: '/util/get_table_default',				
+		url: 'util/get_table_default',				
 		field:'',
 		table_name:'finance.fatype',
 		table_id:'idno', 
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: '/assettype/form',
+		editurl: './assettype/form',
 			colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},						
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/assettype/form?"+
+			let editurl = "./assettype/form?"+
 				$.param({
 					action: 'assettype_save',
 				});
@@ -219,7 +219,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/assettype/form?"+
+			let editurl = "./assettype/form?"+
 				$.param({
 					action: 'assettype_save',
 				});
@@ -268,7 +268,7 @@ $(document).ready(function () {
 								assettype: $('#assettype').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/assettype/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./assettype/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

@@ -329,7 +329,7 @@ $(document).ready(function() {
 
             this.urlParam_preepis = {
                     action:'get_table_default',
-                    url:'/util/get_table_default',
+                    url:'./util/get_table_default',
                     field: '',
                     table_name: ['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
                     join_type : ['LEFT JOIN'],
@@ -453,7 +453,7 @@ $(document).ready(function() {
                     filterVal:['session.compcode',mrn,episno],
                 };
 
-                $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+                $.get( "./util/get_value_default?"+$.param(param), function( data ) {
 
                 },'json').done(function(data) {
 
@@ -505,7 +505,7 @@ $(document).ready(function() {
                 if(mrn != '00000'){
                     var param={
                         action:'get_value_default',
-                        url:'/util/get_value_default',
+                        url:'./util/get_value_default',
                         field:"*",
                         table_name:'hisdb.pat_mast',
                         filterCol:['compcode','mrn'],filterVal:['session.compcode',mrn]
@@ -513,7 +513,7 @@ $(document).ready(function() {
                 }else{
                     var param={
                         action:'get_preepis_data',
-                        url:'/get_preepis_data',
+                        url:'./get_preepis_data',
                         apptidno:apptidno,
                         idno:idno
                     };

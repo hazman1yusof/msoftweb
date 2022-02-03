@@ -6,7 +6,11 @@ var editedRow=0;
 /////////////////////parameter for jqGridExamTriage url/////////////////////////////////////////////////
 var urlParam_ExamTriage = {
 	action: 'get_table_default',
+<<<<<<< HEAD
 	url: 'util/get_table_default',
+=======
+	url: './util/get_table_default',
+>>>>>>> 7d21b2ba5a7f7e33cc661a0196d09090ae1be25f
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
@@ -17,7 +21,11 @@ var urlParam_ExamTriage = {
 /////////////////////parameter for jqGridAddNotesTriage url/////////////////////////////////////////////////
 var urlParam_AddNotesTriage = {
 	action: 'get_table_default',
+<<<<<<< HEAD
 	url: 'util/get_table_default',
+=======
+	url: './util/get_table_default',
+>>>>>>> 7d21b2ba5a7f7e33cc661a0196d09090ae1be25f
 	field: '',
 	table_name: 'nursing.triage_addnotes',
 	table_id: 'idno',
@@ -523,7 +531,11 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
 		}
+<<<<<<< HEAD
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+=======
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+>>>>>>> 7d21b2ba5a7f7e33cc661a0196d09090ae1be25f
 
 		fdl.get_array('nursing',options,param,case_,cellvalue);
 		

@@ -362,7 +362,7 @@
             episno:episno
         };
 
-        $.get( "/episode/get_episode_by_mrn?"+$.param(param), function( data ) {
+        $.get( "episode/get_episode_by_mrn?"+$.param(param), function( data ) {
 
         },'json').done(function(data) {
 
@@ -653,7 +653,7 @@
                             _token: _token
                     }
                     
-                    $.post( '/pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $.post( 'pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                         $("#adm_form").trigger('reset');
                         selecter.ajax.reload()
                         $('#mdl_add_new_adm').modal('hide');
@@ -672,7 +672,7 @@
                             _token: _token
                     }
                     
-                    $.post( '/pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $.post( 'pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                         $("#new_occup_form").trigger('reset');
                         selecter.ajax.reload()
                         $('#mdl_add_new_occ').modal('hide');
@@ -691,7 +691,7 @@
                             _token: _token
                     }
                     
-                    $.post( '/pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $.post( 'pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                         $("#new_title_form").trigger('reset');
                         selecter.ajax.reload()
                         $('#mdl_add_new_title').modal('hide');
@@ -710,7 +710,7 @@
                             _token: _token
                     }
                     
-                    $.post( '/pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                    $.post( 'pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                         $("#new_areacode_form").trigger('reset');
                         selecter.ajax.reload()
                         $('#mdl_add_new_title').modal('hide');
@@ -979,7 +979,7 @@
 
         this.show_mdl = function(first = false){
             $('#mdl_reference').modal('show');
-            this.refno_table.ajax.url( "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val() ).load();
+            this.refno_table.ajax.url( "pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val() ).load();
             // if(!first){
             //     this.refno_table.ajax.reload();
             // }
@@ -1011,7 +1011,7 @@
                     'episno': $('#txt_epis_no').val(),
                 };
                 
-                $.post('/pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $.post('pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#glform").trigger('reset');
                     $('#mdl_new_gl').modal('hide');
                     $('#mdl_reference').modal('show');

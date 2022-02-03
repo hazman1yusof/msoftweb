@@ -161,7 +161,7 @@ $(document).ready(function () {
 	
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',
 		table_name:['finance.apacthdr','material.supplier'],
@@ -176,7 +176,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
 		action:'debitNoteAP_save',
-		url:'/debitNoteAP/form',
+		url:'./debitNoteAP/form',
 		field:'',
 		fixPost:'true',
 		oper:oper,
@@ -313,6 +313,7 @@ $(document).ready(function () {
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				$('#save').hide();
+				
 			}else if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 
@@ -458,7 +459,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
 
-		$.post( '/debitNoteAP/form', obj , function( data ) {
+		$.post( './debitNoteAP/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -481,7 +482,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( '/debitNoteAP/form', obj , function( data ) {
+		$.post( './debitNoteAP/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -499,7 +500,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/debitNoteAP/form', obj , function( data ) {
+		$.post( './debitNoteAP/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -602,7 +603,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
@@ -614,7 +615,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/invoiceAPDetail/form",
+		editurl: "./invoiceAPDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
@@ -769,7 +770,7 @@ $(document).ready(function () {
 
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/invoiceAPDetail/form?"+
+			let editurl = "./invoiceAPDetail/form?"+
 				$.param({
 					action: 'invoiceAPDetail_save',
 					idno: $('#apacthdr_idno').val(),
@@ -817,7 +818,7 @@ $(document).ready(function () {
 								lineno_: selrowData('#jqGrid2').lineno_,
 
 				    		}
-				    		$.post( "/invoiceAPDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+				    		$.post( "./invoiceAPDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -923,7 +924,7 @@ $(document).ready(function () {
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('debitNoteAP',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
@@ -1025,7 +1026,7 @@ $(document).ready(function () {
 			var param={
 				func:'getDocNo',
 				action:'get_value_default',
-				url: '/util/get_value_default',
+				url: 'util/get_value_default',
 				field:['document'],
 				table_name:'finance.apacthdr'
 			}
@@ -1136,7 +1137,7 @@ $(document).ready(function () {
 	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
 	var urlParam_gridDo={
 		action:'get_table_dtl',
-		url:'/deliveryOrderDetail/table',
+		url:'./deliveryOrderDetail/table',
 		field:['dodt.compcode','dodt.recno','dodt.lineno_','dodt.pricecode','dodt.itemcode','p.description','dodt.uomcode','dodt.pouom', 'dodt.suppcode','dodt.trandate','dodt.deldept','dodt.deliverydate','dodt.qtyorder','dodt.qtydelivered', 'dodt.qtyoutstand','dodt.unitprice','dodt.taxcode', 'dodt.perdisc','dodt.amtdisc','dodt.amtslstax as tot_gst','dodt.netunitprice','dodt.totamount', 'dodt.amount', 'dodt.expdate','dodt.batchno','dodt.polineno','dodt.rem_but AS remarks_button','dodt.remarks', 'dodt.unit','t.rate','dodt.idno'],
 		table_name:['material.delorddt AS dodt','material.productmaster AS p','hisdb.taxmast AS t'],
 		table_id:'lineno_',
@@ -1537,7 +1538,7 @@ $(document).ready(function () {
 		},{
 			title:"Select DO No",
 			open: function(){
-				dialog_document.urlParam.url = "/debitNoteAP/table";
+				dialog_document.urlParam.url = "./debitNoteAP/table";
 				dialog_document.urlParam.suppcode =  $("#apacthdr_suppcode").val();
 
 			}
@@ -1620,8 +1621,10 @@ function populate_form(obj){
 	
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
 		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+		$('#but_cancel_jq').show();
 	}else{
 		$('td#glyphicon-plus,td#glyphicon-edit').show();
+		$('#but_cancel_jq').hide();
 	}
 }
 

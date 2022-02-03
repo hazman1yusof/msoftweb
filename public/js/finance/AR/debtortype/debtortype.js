@@ -108,7 +108,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action:'get_table_default',
-				url:'/util/get_table_default',
+				url:'util/get_table_default',
 				field: '',
 				table_name:'debtor.debtortype',
 				table_id:'debtortycode',
@@ -118,7 +118,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url:'/debtortype/form',
+				url:'./debtortype/form',
 				field:'',
 				oper:oper,
 				table_name:'debtor.debtortype',
@@ -237,7 +237,7 @@
 					case 'depccode':field=['costcode','description'];table="finance.costcenter";break;
 					case 'depglacc':field=['glaccno','name'];table="finance.glmasref";break;
 				}
-				var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+				var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 			
 				fdl.get_array('debtortype',options,param,case_,cellvalue);
 				return cellvalue;

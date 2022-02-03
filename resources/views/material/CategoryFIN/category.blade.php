@@ -39,22 +39,21 @@ input.uppercase {
 		 <div class="panel panel-default">
 		    <div class="panel-heading">Category Finance Setup Header</div>
 		    <div class="panel-body">
+				<input type="hidden" name="idno">
+				<input id="source" name="source" type="hidden" value="{{$_GET['source']}}">	
+				<input id="cattype" name="cattype" type="hidden" value="{{$_GET['cattype']}}">
+					
+				<input id="stockacct" name="stockacct" type="hidden">
+				<input id="cosacct" name="cosacct" type="hidden">
+				<input id="adjacct" name="adjacct" type="hidden">
+				<input id="woffacct" name="woffacct" type="hidden">
+				<input id="loanacct" name="loanacct" type="hidden">
 
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
-            		<table id="jqGrid" class="table table-striped">
-            			<input type="hidden" name="idno">
-						<input id="source2" name="source" type="hidden" value="{{$_GET['source']}}">	
-						<input id="cattype" name="cattype" type="hidden" value="{{$_GET['cattype']}}">
-							
-						<input id="stockacct" name="stockacct" type="hidden">
-						<input id="cosacct" name="cosacct" type="hidden">
-						<input id="adjacct" name="adjacct" type="hidden">
-						<input id="woffacct" name="woffacct" type="hidden">
-						<input id="loanacct" name="loanacct" type="hidden">
-            			
-            		</table>
-            		<div id="jqGridPager"></div>
-        		</div>
+	        		<table id="jqGrid" class="table table-striped">
+	        		</table>
+	        		<div id="jqGridPager"></div>
+	    		</div>
 		    </div>
 		</div>
     </div>

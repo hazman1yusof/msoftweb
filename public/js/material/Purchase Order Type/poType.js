@@ -1,4 +1,3 @@
-
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
 		var editedRow=0;
@@ -41,7 +40,7 @@
 			var addmore_jqgrid={more:false,state:false,edit:false}		
 			$("#jqGrid").jqGrid({
 				datatype: "local",
-				editurl: "/potype/form",
+				editurl: "./potype/form",
 				 colModel: [						
 					{ label: 'idno', name: 'idno', hidden:true, key:true},						
 					{ label: 'PO Type', name: 'potype', width: 10,  classes: 'wrap' ,canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -151,7 +150,7 @@
 					console.log(data);
 
 					check_cust_rules();
-					let editurl = "/potype/form?"+
+					let editurl = "./potype/form?"+
 						$.param({
 							action: 'potype_save',
 						});
@@ -206,7 +205,7 @@
 					// console.log(data);
 
 					check_cust_rules();
-					let editurl = "/potype/form?"+
+					let editurl = "./potype/form?"+
 						$.param({
 							action: 'potype_save',
 						});
@@ -255,7 +254,7 @@
 										potype: $('#potype').val(),
 										idno: selrowData('#jqGrid').idno,
 									}
-									$.post( "/potype/form?"+$.param(param),{oper:'del'}, function( data ){
+									$.post( "./potype/form?"+$.param(param),{oper:'del'}, function( data ){
 									}).fail(function (data) {
 										//////////////////errorText(dialog,data.responseText);
 									}).done(function (data) {

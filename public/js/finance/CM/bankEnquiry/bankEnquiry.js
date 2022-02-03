@@ -75,7 +75,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost: true,
 		table_name:['finance.bank AS fb', 'finance.bankdtl AS fd'],
@@ -311,7 +311,7 @@ $(document).ready(function () {
 			case 'fd_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='fd_bankcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('bankEnquiry',options,param,case_,cellvalue);
 		
@@ -428,7 +428,7 @@ $(document).ready(function () {
 	function getdatadr(fetchall,page){
 		var param={
 					action:'get_value_default',
-					url: '/bankEnquiry/table',
+					url: './bankEnquiry/table',
 					oper: 'getdatadr',
 					bankcode : selrowData("#jqGrid").fd_bankcode,
 					year : $('#year').val(),
@@ -704,7 +704,7 @@ $(document).ready(function () {
 	function set_yearperiod(){
 		param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field: ['year'],
 			sortby:['year desc'],
 			table_name:'sysdb.period',

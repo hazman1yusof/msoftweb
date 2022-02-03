@@ -209,7 +209,11 @@ function saveForm_dieteticCareNotes(callback){
         }).get()
 	);
 
+<<<<<<< HEAD
     $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+=======
+    $.post( "dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+>>>>>>> 7d21b2ba5a7f7e33cc661a0196d09090ae1be25f
         
     },'json').fail(function(data) {
         // alert('there is an error');

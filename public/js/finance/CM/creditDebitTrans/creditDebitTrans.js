@@ -388,7 +388,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
 		table_name:['finance.apactdtl AS apactdtl'],
 		table_id:'lineno_',
@@ -400,7 +400,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/creditDebitTransDetail/form",
+		editurl: "./creditDebitTransDetail/form",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
@@ -578,7 +578,7 @@ $(document).ready(function () {
 
 			mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/creditDebitTransDetail/form?"+
+			let editurl = "./creditDebitTransDetail/form?"+
 				$.param({
 					action: 'creditDebitTransDetail_save',
 					auditno:$('#auditno').val(),
@@ -625,7 +625,7 @@ $(document).ready(function () {
 								trantype: $('#trantype').val(),
 
 				    		}
-				    		$.post( "/creditDebitTransDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+				    		$.post( "./creditDebitTransDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -738,7 +738,7 @@ $(document).ready(function () {
 			//case 'trantype':field=['bankcode','bankname'];table="finance.bank";case_='trantype';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('creditDebitTrans',options,param,case_,cellvalue);
 		return cellvalue;

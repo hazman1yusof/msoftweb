@@ -103,7 +103,7 @@ function populate_EnquiryDtl2AE(obj,rowdata){
 
     };
 
-    $.post( "/assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -151,7 +151,7 @@ function saveForm_EnquiryDtl2(callback){
 
 	values = $("#formEnquiryDtl2").serializeArray();
 
-    $.post( "/assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./assetenquiryDtl2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

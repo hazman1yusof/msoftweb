@@ -197,7 +197,7 @@
                     {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno};
                     //kalu ada mrn, maksudnya dia dari merging duplicate 
 
-        $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');
