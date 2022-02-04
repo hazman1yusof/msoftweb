@@ -30,7 +30,7 @@ $(document).ready(function () {
     /////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
         action:'get_table_default',
-        url: '/util/get_table_default',
+        url: 'util/get_table_default',
         field:'',
         table_name:'hisdb.casetype',
         table_id:'idno',
@@ -40,7 +40,7 @@ $(document).ready(function () {
     var addmore_jqgrid={more:false,state:false,edit:false}
     $("#jqGrid").jqGrid({
         datatype: "local",
-        editurl: "/casetype/form",
+        editurl: "./casetype/form",
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
             { label: 'Case Code', name: 'case_code', width: 30, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -155,7 +155,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-            let editurl = "/casetype/form?"+
+            let editurl = "./casetype/form?"+
                 $.param({
                     action: 'casetype_save',
                 });
@@ -208,7 +208,7 @@ $(document).ready(function () {
             let data = $('#jqGrid').jqGrid ('getRowData', rowid);
             // console.log(data);
 
-            let editurl = "/casetype/form?"+
+            let editurl = "./casetype/form?"+
                 $.param({
                     action: 'casetype_save',
                 });
@@ -257,7 +257,7 @@ $(document).ready(function () {
                                 case_code: $('#case_code').val(),
                                 idno: selrowData('#jqGrid').idno,
                             }
-                            $.post( "/casetype/form?"+$.param(param),{oper:'del'}, function( data ){
+                            $.post( "./casetype/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {
                                 //////////////////errorText(dialog,data.responseText);
                             }).done(function (data) {

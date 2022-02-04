@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.state',
 		table_id: 'idno',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/state/form",
+		editurl: "./state/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, hidden:true},		
 			{ label: 'State Code', name: 'StateCode', width: 15, canSearch: true, editable: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -161,7 +161,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/state/form?"+
+			let editurl = "./state/form?"+
 				$.param({
 					action: 'state_save',
 				});
@@ -219,7 +219,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/state/form?"+
+			let editurl = "./state/form?"+
 				$.param({
 					action: 'state_save',
 				});
@@ -268,7 +268,7 @@ $(document).ready(function () {
 								StateCode: $('#StateCode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/state/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./state/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

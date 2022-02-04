@@ -157,7 +157,7 @@ $(document).ready(function () {
 
 	var saveParam = {
 		action: 'DebitNote_header_save',
-		url:'/DebitNote/form',
+		url:'./DebitNote/form',
 		field: '',
 		oper: oper,
 		table_name: 'debtor.dbacthdr',
@@ -585,7 +585,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/DebitNoteDetail/form",
+		editurl: "./DebitNoteDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
             { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
@@ -895,7 +895,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/DebitNoteDetail/form?"+
+			let editurl = "./DebitNoteDetail/form?"+
 				$.param({
 					action: 'debitnote_detail_save',
 					source: $('#db_source').val(),
@@ -954,7 +954,7 @@ $(document).ready(function () {
 								lineno_: selrowData('#jqGrid2').lineno_,
 								idno: selrowData('#jqGrid2').idno,
 							}
-							$.post( "/DebitNoteDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
+							$.post( "./DebitNoteDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
 							function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);

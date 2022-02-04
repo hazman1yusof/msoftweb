@@ -116,7 +116,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.billtymst',
 		table_id: 'billtype',
@@ -127,7 +127,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam = {
 		action: 'save_table_default',
-		url: '/billtype/form',
+		url: './billtype/form',
 		field: '',
 		oper: oper,
 		table_name: 'hisdb.billtymst',
@@ -491,7 +491,7 @@ $(document).ready(function () {
 
 	var saveParam_svc = {
 		action: 'save_table_default',
-		url:'/billtype/form',
+		url:'./billtype/form',
 		field: '',
 		oper: oper_svc,
 		table_name: 'hisdb.billtysvc',
@@ -838,7 +838,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url Item/////////////////////////////////////////////////
 	var urlParam_item = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
 		table_name: ['hisdb.billtyitem AS i', 'hisdb.billtysvc AS svc', 'hisdb.chggroup AS c', 'hisdb.chgmast as m'],
@@ -855,7 +855,7 @@ $(document).ready(function () {
 
 	var saveParam_item = {
 		action: 'save_table_default',
-		url: '/billtype/form',
+		url: './billtype/form',
 		field: '',
 		oper: oper_item,
 		table_name: 'hisdb.billtyitem ',
@@ -1123,7 +1123,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url Type/////////////////////////////////////////////////
 	var urlParam_type = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		fixPost: 'true',//replace underscore with dot
 		table_name: ['hisdb.billtytype AS t', 'hisdb.billtysvc AS svc', 'hisdb.chgtype AS ct', 'hisdb.chggroup as cg'],
@@ -1140,7 +1140,7 @@ $(document).ready(function () {
 
 	var saveParam_type = {
 		action: 'save_table_default',
-		url: '/billtype/form',
+		url: './billtype/form',
 		field: '',
 		oper: oper_type,
 		table_name: 'hisdb.billtytype ',

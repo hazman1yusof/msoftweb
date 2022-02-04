@@ -245,7 +245,7 @@ function saveForm_antenatal(callback){
         }).get()
 	);
 
-    $.post( "/antenatal/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./antenatal/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

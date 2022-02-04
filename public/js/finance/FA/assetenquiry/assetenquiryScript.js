@@ -154,7 +154,7 @@ $(document).ready(function () {
 
     var urlParamhist = {
 		action:'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field:['assetno','assetcode','assettype','deptcode','olddeptcode','curloccode','oldloccode','trandate','adduser'],
 		table_name:'finance.fatran',
 		table_id:'deptcode',
@@ -282,7 +282,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table',
-		url: '/assetenquiry/table',
+		url: './assetenquiry/table',
 		field:'',
 		table_name:'finance.faregister',
 		table_id:'idno',
@@ -291,7 +291,7 @@ $(document).ready(function () {
 
 	var saveParam={
 		action:'assetenquiry_save',
-		url:'/assetenquiry/form',
+		url:'./assetenquiry/form',
 		field:'',
 		//fixPost:'true',
 		oper:oper,
@@ -444,7 +444,7 @@ $(document).ready(function () {
 		
 			default: return cellvalue;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('assetenquiry',options,param,case_,cellvalue);
 		
@@ -522,7 +522,7 @@ $(document).ready(function () {
 			filterCol:['assetcode'],
 			filterVal:[assetcode],
 		}
-		$.get( "/util/get_value_default"+$.param(param), function( data ) {
+		$.get( "util/get_value_default"+$.param(param), function( data ) {
 				
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -541,7 +541,7 @@ $(document).ready(function () {
 			filterCol:['assetcode'],
 			filterVal:[assetcode],
 		}
-		$.get( "/util/get_value_default"+$.param(param), function( data ) {
+		$.get( "util/get_value_default"+$.param(param), function( data ) {
 				
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -594,7 +594,7 @@ $(document).ready(function () {
         	/*if(errorField.length>0)return false;
 
 			let data = selrowData('#jqGrid2');
-			let editurl = "/inventoryTransactionDetail/form?"+
+			let editurl = "./inventoryTransactionDetail/form?"+
 				$.param({
 					action: 'invTranDetail_save',
 					docno:$('#docno').val(),
@@ -647,7 +647,7 @@ $(document).ready(function () {
         }, 
         beforeSaveRow: function(options, rowid) {
 			// let data = selrowData('#jqGrid2');
-			// let editurl = "/assetenquiry/form?"+
+			// let editurl = "./assetenquiry/form?"+
 			// 	$.param({
 			// 		oper: 'comp_edit',
 			// 		_token:$('#_token').val()
@@ -745,7 +745,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for saving jqgrid2 url Asset Movement///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['ft.assetcode','ft.assettype','ft.assetno','ft.auditno','ft.trandate','fr.trantype','fr.origcost','ft.deptcode','ft.olddeptcode','ft.curloccode','ft.oldloccode','ft.idno'],
 		table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
 		table_id:'idno',
@@ -828,7 +828,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid3 url Asset Serial List///////////////////////////////////////////////
 	var urlParam3={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['fc.assetcode','fc.assettype','fr.description','fc.assetno','fc.assetlineno','fc.loccode','fc.deptcode','fc.idno','fc.trackingno','fc.bem_no','fc.ppmschedule'],
 		table_name:['finance.facompnt AS fc',' finance.faregister AS fr'],
 		table_id:'idno',
@@ -872,7 +872,7 @@ $(document).ready(function () {
 
 					values = $("#formtransferFA2").serializeArray();
 
-				    $.post( "/assettransfer2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+				    $.post( "./assettransfer2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
 						refreshGrid('#jqGrid3', urlParam3);
 				    	$("#jqGridtransferFA_panel2").dialog('close');
 				        
@@ -898,7 +898,7 @@ $(document).ready(function () {
 
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		editurl: "/assetenquiry/form?action=comp_edit",
+		editurl: "./assetenquiry/form?action=comp_edit",
 		colModel: [
 			{ label: 'Asset Code', name:'assetcode', width:5, classes:'wrap'},
 			{ label: 'Asset Type', name:'assettype', width:5, classes:'wrap'},

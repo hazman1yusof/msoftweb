@@ -223,7 +223,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'save_table_default',
-		url: '/department/form',
+		url: './department/form',
 		field:'',
 		oper:oper,
 		table_name:'sysdb.department',
@@ -374,7 +374,7 @@ $(document).ready(function () {
 			case 'costcode':field=['costcode','description'];table="finance.costcenter";case_='costcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('department',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));

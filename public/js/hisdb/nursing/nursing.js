@@ -6,7 +6,7 @@ var editedRow=0;
 /////////////////////parameter for jqGridExamTriage url/////////////////////////////////////////////////
 var urlParam_ExamTriage = {
 	action: 'get_table_default',
-	url: './util/get_table_default',
+	url: 'util/get_table_default',
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
@@ -17,7 +17,7 @@ var urlParam_ExamTriage = {
 /////////////////////parameter for jqGridAddNotesTriage url/////////////////////////////////////////////////
 var urlParam_AddNotesTriage = {
 	action: 'get_table_default',
-	url: './util/get_table_default',
+	url: 'util/get_table_default',
 	field: '',
 	table_name: 'nursing.triage_addnotes',
 	table_id: 'idno',
@@ -372,7 +372,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqGridAddNotesTriage ///////////////////////////////////////////////////
 	$("#jqGridAddNotesTriage").jqGrid({
 		datatype: "local",
-		editurl: "/nursing/form",
+		editurl: "./nursing/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -484,7 +484,7 @@ $(document).ready(function () {
 	// 					action: 'addNotesTriage_save',
 	// 					idno: selrowData('#jqGridAddNotesTriage').idno,
 	// 				}
-	// 				$.post( "/nursing/form?"+$.param(param),{oper:'del'}, function( data ){
+	// 				$.post( "./nursing/form?"+$.param(param),{oper:'del'}, function( data ){
 	// 				}).fail(function (data) {
 	// 					//////////////////errorText(dialog,data.responseText);
 	// 				}).done(function (data) {
@@ -523,7 +523,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
 		}
-		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('nursing',options,param,case_,cellvalue);
 		

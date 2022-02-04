@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.chgclass',
 		table_id: 'idno',
@@ -43,7 +43,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid ///////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/chargeclass/form",
+		editurl: "./chargeclass/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Class Code', name: 'classcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -166,7 +166,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/chargeclass/form?"+
+			let editurl = "./chargeclass/form?"+
 				$.param({
 					action: 'chargeclass_save',
 				});
@@ -223,7 +223,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/chargeclass/form?"+
+			let editurl = "./chargeclass/form?"+
 				$.param({
 					action: 'chargeclass_save',
 				});
@@ -272,7 +272,7 @@ $(document).ready(function () {
 								classcode: $('#classcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/chargeclass/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./chargeclass/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

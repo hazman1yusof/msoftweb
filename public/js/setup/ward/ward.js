@@ -30,7 +30,7 @@ $(document).ready(function () {
 	//////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'sysdb.department',
 		table_id: 'idno',
@@ -43,7 +43,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/ward/form",
+		editurl: "./ward/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Ward', name: 'deptcode', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/ward/form?"+
+			let editurl = "./ward/form?"+
 				$.param({
 					action: 'ward_save',
 				});
@@ -218,7 +218,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/ward/form?"+
+			let editurl = "./ward/form?"+
 				$.param({
 					action: 'ward_save',
 				});
@@ -267,7 +267,7 @@ $(document).ready(function () {
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/ward/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./ward/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

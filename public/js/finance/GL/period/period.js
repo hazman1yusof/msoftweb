@@ -100,7 +100,7 @@
 			/////////////////////parameter for saving url////////////////////////////////////////////////
 			var saveParam={
 				action:'save_table_default',
-				url:'period/form',
+				url:'./period/form',
 				field:'',
 				//skipduplicate: true,
 				oper:oper,
@@ -397,7 +397,7 @@
 			function saveForm(form,oper,saveParam,urlParam){
 				saveParam.oper=oper;
 				
-				$.post( "period/form?"+$.param(saveParam), $( form ).serialize() , function( data ) {
+				$.post("./period/form?"+$.param(saveParam), $(form).serialize() , function(data) {
 					
 				}).fail(function(data) {
 					errorText(dialog,data.responseText);

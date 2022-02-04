@@ -128,7 +128,7 @@ $(document).ready(function () {
 		this.target=target;
 		this.param={
 			action:'get_value_default',
-			url:"/util/get_value_default",
+			url:"util/get_value_default",
 			field: ['*'],
 			table_name:'material.sequence',
 			table_id:'idno',
@@ -171,7 +171,7 @@ $(document).ready(function () {
 
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		fixPost:'true',
 		table_name:['finance.apacthdr','material.supplier'],
@@ -186,7 +186,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
 		action:'creditNote_save',
-		url:'/creditNote/form',
+		url:'./creditNote/form',
 		field:'',
 		fixPost:'true',
 		oper:oper,
@@ -394,7 +394,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
 
-		$.post( '/creditNote/form', obj , function( data ) {
+		$.post( './creditNote/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -417,7 +417,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( '/creditNote/form', obj , function( data ) {
+		$.post( './creditNote/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -529,7 +529,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
@@ -541,7 +541,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/creditNoteDetail/form",
+		editurl: "./creditNoteDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
@@ -773,7 +773,7 @@ $(document).ready(function () {
         	//if(errorField.length>0)return false;
         	mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-			let editurl = "/creditNoteDetail/form?"+
+			let editurl = "./creditNoteDetail/form?"+
 				$.param({
 					action: 'creditNoteDetail_save',
 					auditno:$('#apacthdr_auditno').val(),
@@ -921,7 +921,7 @@ $(document).ready(function () {
 			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('creditNote',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
@@ -960,7 +960,7 @@ $(document).ready(function () {
 			var param={
 				func:'getDocNo',
 				action:'get_value_default',
-				url: '/util/get_value_default',
+				url: 'util/get_value_default',
 				field:['document'],
 				table_name:'finance.apacthdr'
 			}
@@ -1190,7 +1190,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
-					url: '/util/get_value_default',
+					url: 'util/get_value_default',
 					field: [],
 					table_name: ['finance.apacthdr'],
 					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
@@ -1200,7 +1200,7 @@ $(document).ready(function () {
 					table_id: 'idno',
 				};
 
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						myerrorIt_only(dialog_suppcode.textfield,false);

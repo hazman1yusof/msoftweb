@@ -197,7 +197,7 @@ $(document).ready(function () {
 
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
-		editurl: "ordcom/form",
+		editurl: "./ordcom/form",
 		colModel: [
 			{ label: 'auditno', name: 'auditno', hidden:true},
 			{ label: 'compcode', name: 'compcode', hidden:true},
@@ -375,7 +375,7 @@ $(document).ready(function () {
 
 			mycurrency2.formatOff();
 
-			let editurl = "/ordcom/form?"+
+			let editurl = "./ordcom/form?"+
 				$.param({
 					_token: $("#csrf_token").val(),	
 					mrn: $('#mrn_ordcom').val(),

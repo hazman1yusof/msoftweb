@@ -214,7 +214,6 @@ i.fa {
 							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
 							       <option value="Supplier">Supplier</option>
 							       <option value="Others">Others</option>
-							       <option value="Debit_Note">Debit Note</option>
 							    </select>
 						  	</div>
 

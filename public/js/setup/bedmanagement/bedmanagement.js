@@ -51,7 +51,7 @@ $(document).ready(function () {
 			case 'ba_ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ba_ward';break;
 			//case 'chgcode':field=['chgcode','description'];table="hisdb.chgmast";case_='chgcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('bedmanagement',options,param,case_,cellvalue);
 		
@@ -121,7 +121,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table',
-		url: '/bedmanagement/table',
+		url: './bedmanagement/table',
 		field: '',
 		table_name: 'hisdb.bed as b',
 		sort_idno: true,
@@ -132,7 +132,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/bedmanagement/form",
+		editurl: "./bedmanagement/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'Bed No', name: 'bednum', width: 10, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -239,7 +239,7 @@ $(document).ready(function () {
 		loadComplete: function(){
 			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 
-			button_state_ti('triage');
+			button_state_ti('disableAll');
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowid != null) {
@@ -346,7 +346,7 @@ $(document).ready(function () {
 
 	statistics();
 	function statistics(){
-		$.get( "/bedmanagement/statistic", function( data ) {
+		$.get( "./bedmanagement/statistic", function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
@@ -398,7 +398,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 
-			let editurl = "/bedmanagement/form?"+
+			let editurl = "./bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
 					name: $('#reservebedHide').val()
@@ -447,7 +447,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 
-			let editurl = "/bedmanagement/form?"+
+			let editurl = "./bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
 					name: $('#reservebedHide').val()
@@ -495,7 +495,7 @@ $(document).ready(function () {
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/bedmanagement/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./bedmanagement/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -879,7 +879,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url BED ALLOCATION///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: '',
 		fixPost:'true',
 		table_name: ['hisdb.bedalloc AS ba','hisdb.bed AS b'],
@@ -1122,7 +1122,7 @@ $(document).ready(function () {
 	    var values = $("#form_trf").serializeArray();
 
 
-	    $.post( "/bedmanagement/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+	    $.post( "./bedmanagement/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

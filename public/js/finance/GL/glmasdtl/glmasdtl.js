@@ -70,7 +70,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		table_id:'costcode',
 		table_name:['finance.glmasdtl','finance.costcenter'],
@@ -284,7 +284,7 @@ $(document).ready(function () {
 	function getdatadr(fetchall,start,limit){
 		var param={
 					action:'get_value_default',
-					url:'/util/get_value_default',
+					url:'util/get_value_default',
 					field:['source','trantype','auditno','postdate','description','reference','cracc as acccode','amount as dramount'],
 					table_name:'finance.gltran',
 					table_id:'auditno',
@@ -301,7 +301,7 @@ $(document).ready(function () {
 			param.offset=start;
 			param.limit=limit;
 		}
-		$.get( "/util/get_value_default?"+$.param(param), function( data ) {
+		$.get( "util/get_value_default?"+$.param(param), function( data ) {
 				
 		},'json').done(function(data) {
 			mymodal.hide();

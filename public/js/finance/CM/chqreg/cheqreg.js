@@ -44,7 +44,7 @@ $(document).ready(function () {
 
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/cheqreg/form",
+		editurl: "./cheqreg/form",
 		 colModel: [
 			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, checked: true, hidden: true},
@@ -106,7 +106,7 @@ $(document).ready(function () {
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('cheqreg',options,param,case_,cellvalue);
 		
@@ -151,7 +151,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#gridCheqRegDetail").jqGrid({
 		datatype: "local",
-		editurl: "/cheqregDetail/form",
+		editurl: "./cheqregDetail/form",
 		colModel: [
 			{ label: 'Comp Code', name: 'compcode', width: 50, hidden:true},	
 			{ label: 'Bank Code', name: 'bankcode', width: 30, hidden: true,},
@@ -274,7 +274,7 @@ $(document).ready(function () {
 
 			let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
 
-			let editurl = "/cheqregDetail/form?"+
+			let editurl = "./cheqregDetail/form?"+
 				$.param({
 					bankcode: selrowData('#jqGrid').bankcode,
 					action: 'cheqregDetail_save',
@@ -326,7 +326,7 @@ $(document).ready(function () {
 
 			let data = $('#gridCheqRegDetail').jqGrid ('getRowData', rowid);
 
-			let editurl = "/cheqregDetail/form?"+
+			let editurl = "./cheqregDetail/form?"+
 				$.param({
 					bankcode: selrowData('#jqGrid').bankcode,
 					action: 'cheqregDetail_save',
@@ -379,7 +379,7 @@ $(document).ready(function () {
 								cheqno: $('#cheqno').val(),
 								idno: selrowData('#gridCheqRegDetail').idno,
 							}
-							$.post( "/cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							$.post( "./cheqregDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function (data) {
 								$('#p_error').text(data.responseText);
 							}).done(function (data) {

@@ -434,7 +434,7 @@ $(document).ready(function () {
 		var param={
 					oper:'detailMovement',
 					action:'get_value_default',
-					url:'/itemEnquiry/form',
+					url:'./itemEnquiry/form',
 					itemcode:selrowData("#detail").s_itemcode,
 					deptcode:selrowData("#detail").s_deptcode,
 					uomcode:selrowData("#detail").s_uomcode,

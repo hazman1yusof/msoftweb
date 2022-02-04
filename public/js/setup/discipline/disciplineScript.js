@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'hisdb.discipline',
 		table_id:'idno',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: '/discipline/form',
+		editurl: './discipline/form',
 			colModel: [
 			
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/discipline/form?"+
+			let editurl = "./discipline/form?"+
 				$.param({
 					action: 'discipline_save',
 				});
@@ -216,7 +216,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/discipline/form?"+
+			let editurl = "./discipline/form?"+
 				$.param({
 					action: 'discipline_save',
 				});
@@ -265,7 +265,7 @@ $(document).ready(function () {
 								code: $('#code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/discipline/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./discipline/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

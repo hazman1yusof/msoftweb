@@ -151,7 +151,7 @@ $(document).ready(function () {
 
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: ['ivt.recno','ivt.txndept','ivt.trantype','ivt.docno','ivt.trandate','ivt.trantime','ivt.sndrcv','ivt.sndrcvtype','ivt.amount','ivt.recstatus','ivt.srcdocno','ivt.remarks','ivt.adduser','ivt.adddate','ivt.upduser','ivt.upddate','ivt.source','ivt.idno','itt.isstype','itt.crdbfl'],
 		table_name:['material.ivtmphd as ivt','material.ivtxntype as itt'],
 		join_type:['LEFT JOIN'],
@@ -164,7 +164,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
 		action:'invTran_save',
-		url:'/inventoryTransaction/form',
+		url:'./inventoryTransaction/form',
 		field:'',
 		oper:oper,
 		table_name:'material.ivtmphd',
@@ -616,7 +616,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['storedept'],
@@ -722,7 +722,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:['ivt.compcode','ivt.recno','ivt.lineno_','ivt.itemcode','p.description', 'ivt.qtyonhand','ivt.uomcode', 'ivt.qtyonhandrecv','ivt.uomcoderecv','s.maxqty',
 		'ivt.txnqty','ivt.qtyrequest','ivt.netprice','ivt.amount','ivt.expdate','ivt.batchno'],
 		table_name:['material.ivtmpdt AS ivt', 'material.stockloc AS s', 'material.productmaster AS p'],
@@ -738,7 +738,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/inventoryTransactionDetail/form",
+		editurl: "./inventoryTransactionDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
@@ -1033,7 +1033,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 
-			let editurl = "/inventoryTransactionDetail/form?"+
+			let editurl = "./inventoryTransactionDetail/form?"+
 				$.param({					
 					action: 'invTranDetail_save',
 					idno: $('#idno').val(),
@@ -1093,7 +1093,7 @@ $(document).ready(function () {
 								lineno_: selrowData('#jqGrid2').lineno_,
 
 				    		}
-				    		$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+				    		$.post( "./inventoryTransactionDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
@@ -1261,7 +1261,7 @@ $(document).ready(function () {
 			case 'trantype':field=['trantype','description'];table="material.ivtxntype";case_='trantype';break;
 			case 'sndrcv':field=['deptcode','description'];table="sysdb.department";case_='sndrcv';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('inventoryTransaction',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
@@ -1284,7 +1284,7 @@ $(document).ready(function () {
 		let year=($('#trandate').val().trim()!='')?moment($('#trandate').val()).year():selrowData('#jqGrid').trandate;
 		let txndept=($('#txndept').val().trim()!='')?$('#txndept').val():selrowData('#jqGrid').txndept;
 		var param={action:'get_value_default',
-			url: '/util/get_value_default',field:['qtyonhand'],table_name:'material.stockloc'}
+			url: 'util/get_value_default',field:['qtyonhand'],table_name:'material.stockloc'}
 
 		param.filterCol = ['year','itemcode', 'deptcode','uomcode'];
 		param.filterVal = [year,rowObject[3], txndept,rowObject[4]];
@@ -1415,7 +1415,7 @@ $(document).ready(function () {
 		var param={
 			func:'getQOHsndrcv',
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['qtyonhand'],
 			table_name:'material.stockloc'
 		}
@@ -1451,7 +1451,7 @@ $(document).ready(function () {
 		var param={
 			func:'getQOHtxndept',
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['qtyonhand'],
 			table_name:'material.stockloc'
 		}
@@ -2102,7 +2102,7 @@ $(document).ready(function () {
 
 				var urlParam2 = {
 					action: 'get_value_default',
-					url: '/util/get_value_default',
+					url: 'util/get_value_default',
 					field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
 					's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm', 'ivdt.reqdept', 'ivdt.ivreqno',
 					'ivdt.recstatus','ivdt.netprice'],
@@ -2118,7 +2118,7 @@ $(document).ready(function () {
 					sortby:['lineno_ desc']
 				};
 
-				$.get("/util/get_value_default?" + $.param(urlParam2), function (data) {
+				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
 				}, 'json').done(function (data) {
 					if (!$.isEmptyObject(data.rows)) {
 						data.rows.forEach(function(elem) {
