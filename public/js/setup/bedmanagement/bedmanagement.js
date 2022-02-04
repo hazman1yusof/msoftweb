@@ -239,7 +239,7 @@ $(document).ready(function () {
 		loadComplete: function(){
 			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 
-			button_state_ti('triage');
+			button_state_ti('disableAll');
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowid != null) {

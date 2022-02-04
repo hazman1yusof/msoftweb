@@ -197,11 +197,7 @@ $(document).ready(function () {
 
 	$("#jqGrid_ordcom").jqGrid({
 		datatype: "local",
-<<<<<<< HEAD
 		editurl: "./ordcom/form",
-=======
-		editurl: "ordcom/form",
->>>>>>> 7d21b2ba5a7f7e33cc661a0196d09090ae1be25f
 		colModel: [
 			{ label: 'auditno', name: 'auditno', hidden:true},
 			{ label: 'compcode', name: 'compcode', hidden:true},
