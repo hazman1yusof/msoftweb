@@ -229,7 +229,7 @@ $(document).ready(function() {
             populate_ordcom_currpt(rows[bootgrid_last_rowid]);
         }
 
-        if($('#epistycode').val() == 'OP' && $('#curpat').val() == 'true'){
+        if($('#curpat').val() == 'true'){
             populate_triage_currpt(rows[bootgrid_last_rowid]);
             populate_antenatal(rows[bootgrid_last_rowid]);
             populate_doctorNote_currpt(rows[bootgrid_last_rowid]);

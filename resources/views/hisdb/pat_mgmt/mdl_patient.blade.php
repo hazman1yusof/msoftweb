@@ -10,7 +10,7 @@
 
             <div class="modal-content">
                 <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                     <div class="form-group ">

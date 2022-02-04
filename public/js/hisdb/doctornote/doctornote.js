@@ -707,13 +707,13 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
-			$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
-			autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
+			if(!emptyobj_(data.episode))autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
+			if(!emptyobj_(data.pathealth))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
+			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
+			if(!emptyobj_(data.pathistory))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
+			if(!emptyobj_(data.patexam))autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
+			if(!emptyobj_(data.episdiag))autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
+			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
 

@@ -328,9 +328,10 @@
 			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 			&nbsp;&nbsp;
 			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
-			<img src="img/mykad.png" width="35" />  My Kad</button>
+			<img src="img/mykad.png" width="35" /> My Kad</button>
 			&nbsp;&nbsp;
-			<button id="btn_biometric" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> Biometric </button>
+			<button id="btn_biometric" type="button" class="btn btn-default btn-md" >
+			<img src="img/biometric.png" width="22" /> Biometric </button>
 		</div>
 
 		@if (!Session::has('isdoctor') && request()->get('curpat') == 'true')
@@ -520,8 +521,18 @@
 		@endif
 
 		@if (request()->get('epistycode') == 'IP')
-			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
-			<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+			@if (Auth::user()->doctor == 1)
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
+			@elseif (Auth::user()->nurse == 1)
+				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+			@endif
+
+			@if (Auth::user()->billing == 1)
+				<script type="text/javascript" src="js/hisdb/ordcom/ordcom.js"></script>
+			@endif
 		@endif
 	@endif
 

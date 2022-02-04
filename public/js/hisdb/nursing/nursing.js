@@ -926,11 +926,11 @@ function populate_triage_currpt(obj){
         alert('there is an error');
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
-			autoinsert_rowdata("#formTriageInfo",data.triage);
-			autoinsert_rowdata("#formTriageInfo",data.triage_gen);
-			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
-			autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
-			$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
+			if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
+			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
+			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			if(!emptyobj_(data.triage_nurshistory))autoinsert_rowdata("#formTriageInfo",data.triage_nurshistory);
+			if(!emptyobj_(data.triage_gen))$('#formTriageInfo span#adduser').text(data.triage_gen.adduser);
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('edit');
@@ -939,7 +939,7 @@ function populate_triage_currpt(obj){
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
-			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
         }
 
     });
