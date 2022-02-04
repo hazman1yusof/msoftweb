@@ -264,7 +264,50 @@
 	</style>
 
 </head>
+<script type="text/javascript">
+    var desc_show = null;
 
+    function closemodalfp(){
+       $('#mdl_biometric').modal('hide');
+       if($("#patientBox").data('gotpat') == true){
+       		$("#patientBox").click();
+       }
+    }
+
+    function populatefromfp(obj){
+    	$("#patientBox").data('gotpat',true);
+        $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
+        $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
+
+        $('#txt_pat_name').val(obj.name);
+        $('#txt_pat_newic').val(obj.icnum);
+        if(obj.gender == 'P' || obj.gender == 'F'){
+        	$('#cmb_pat_sex').val('F');
+        }else if(obj.gender == 'L' || obj.gender == 'M'){
+        	$('#cmb_pat_sex').val('M');
+        }
+        $('#txt_ID_Type').val("O");
+
+        //"19950927"
+
+        var olddob = obj.dob;
+		newdob = [olddob.slice(0, 4), '-', olddob.slice(4,6), '-', olddob.slice(6)].join('');
+
+        $('#txt_pat_dob').val(newdob);
+        $('#txt_pat_age').val(gettheage(newdob));
+        $('#hid_RaceCode').val(obj.race);
+        $('#hid_Religion').val(obj.religion);
+        $('#cmb_pat_category').val(obj.pat_category);
+        $('#hid_pat_citizen').val(obj.citizenship);
+
+        $('#txt_pat_curradd1').val(obj.address1);
+        $('#txt_pat_curradd2').val(obj.address2);
+        $('#txt_pat_curradd3').val(obj.address3);
+        $('#txt_pat_currpostcode').val(obj.postcode);
+
+        desc_show.write_desc();
+    }
+</script>
 
 <body class="header-fixed">
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
@@ -280,11 +323,12 @@
         <input name="lastrowid" id="lastrowid" type="hidden" value="0">
         <div id="info"></div>
 
-		<div class="panel">
+		<div class="panel" style="padding: 5px;">
 			&nbsp;&nbsp;
 			<button id="patientBox" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-inbox" aria-hidden="true"> </span> Register New</button>
 			&nbsp;&nbsp;
-			<button id="btn_mykad" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> My Kad</button>
+			<button id="btn_mykad" type="button" class="btn btn-default btn-md" >
+			<img src="img/mykad.png" width="35" />  My Kad</button>
 			&nbsp;&nbsp;
 			<button id="btn_biometric" type="button" class="btn btn-success btn-md" ><span class="glyphicon glyphicon-credit-card" aria-hidden="true"> </span> Biometric </button>
 		</div>
@@ -388,9 +432,33 @@
 			@endif
 
 			@if (request()->get('epistycode') == 'IP')
-				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
-					@include('hisdb.ordcom.ordcom')
-				</div>
+				@if (Auth::user()->doctor == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
+						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
+						@include('hisdb.antenatal.antenatal')
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.doctornote.doctornote')
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
+					</div>
+				@elseif (Auth::user()->nurse == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+					</div>
+				@endif
+
+				@if (Auth::user()->billing == 1)
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.ordcom.ordcom')
+					</div>
+				@endif
 
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])

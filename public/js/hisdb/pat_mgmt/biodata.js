@@ -298,7 +298,7 @@
         },
     });
 
-    var desc_show = new loading_desc_bio([
+    desc_show = new loading_desc_bio([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
         {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},

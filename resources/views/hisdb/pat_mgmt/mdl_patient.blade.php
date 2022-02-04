@@ -773,7 +773,7 @@
 					<div class="form-group">
 						<div class="col-md-2">
 							<img id="mykad_photo" src="{{asset('img/defaultprofile.png')}}" width="120" height="140" class="addressinp" />
-							<button type="button" class="btn btn-primary" id="read_mykad">Read mykad</button>
+							<button type="button" class="btn btn-primary" id="read_mykad">Scan ID</button>
 						</div>
 						<div class="col-md-10">
 							<div class="row"><br /></div>
@@ -863,4 +863,10 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+
+<div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;">
+    <iframe src="mykadFP" style="display:block; border:none; height:100vh; width:100%;">
+    </iframe>
 </div>

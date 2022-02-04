@@ -269,6 +269,12 @@ $(document).ready(function() {
     // }
 
     $( "#patientBox").click(function() { // register new patient
+        let gotpat = $("#patientBox").data('gotpat');
+        if(gotpat == true){
+            $("#patientBox").data('gotpat',false);
+        }else{
+
+        }
         $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
@@ -283,7 +289,7 @@ $(document).ready(function() {
     });
 
     $('#read_mykad').click(function(){
-        $.getJSON('http://mycard.test/mycard_read', function(data){
+        $.getJSON('http://mycard.test:8080/mycard_read', function(data){
             if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
@@ -307,8 +313,8 @@ $(document).ready(function() {
         });
     });
 
-     $('#btn_biometric').click(function(){
-       $('#mdl_mykad').modal('show');
+    $('#btn_biometric').click(function(){
+       $('#mdl_biometric').modal('show');
     });
 
     ////////////////habis mykad///////

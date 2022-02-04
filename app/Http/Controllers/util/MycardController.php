@@ -65,4 +65,36 @@ class MycardController extends defaultController
         // return json_encode($responce);
     }
 
+
+    public function mykadFP(Request $request)
+    {  
+        return view('hisdb.mykadfp.mykadfp');
+    }
+
+
+    public function mykadfp_store(Request $request)
+    {  
+        if($request->type == 'mykad'){
+            // $txt = $_POST['icnum']."|".
+            //         $_POST['dob']."|".
+            //         $_POST['name']."|".
+            //         $_POST['religion']."|".
+            //         $_POST['gender']."|".
+            //         $_POST['race']."|".
+            //         $_POST['address1']."|".
+            //         $_POST['address2']."|".
+            //         $_POST['address3']."|".
+            //         $_POST['postcode']."|".
+            //         $_POST['city']."|".
+            //         $_POST['state']."|".
+            //         $_POST['citizenship']."|".
+            //         $_POST['birthplace']."|";
+
+            // $data = base64_decode($_POST['base64']);
+
+            // file_put_contents('C:\cmas\mykad\mykadfp\myphotov1.jpg', $data);
+            dd('storing');
+        }
+    }
+
 }
