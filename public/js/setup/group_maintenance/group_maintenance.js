@@ -112,7 +112,7 @@ $(document).ready(function () {
 	var saveParam = {
 		action: 'grpmaintenance_save',
 		field: ['groupid','description'],
-		url: 'group_maintenance/form',
+		url: './group_maintenance/form',
 		oper: oper,
 		table_name: 'sysdb.groups',
 		table_id: 'groupid'
@@ -201,7 +201,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_default',
-		url: 'menu_maintenance/table',
+		url: './menu_maintenance/table',
 		table_name: ['sysdb.programtab', 'sysdb.groupacc'],
 		field:['programtab.lineno','programtab.programname','programtab.programtype','programtab.programid','groupacc.canrun','groupacc.yesall','programtab.idno'],
 		join_type: ['LEFT JOIN'],
@@ -216,7 +216,7 @@ $(document).ready(function () {
 
 	var saveParam2 = {
 		action: 'grpaccess_save',
-		url: 'group_maintenance/form',
+		url: './group_maintenance/form',
 		field: '',
 		oper: oper,
 		table_name: 'sysdb.programtab',
