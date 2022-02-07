@@ -42,7 +42,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/taxmast/form",
+		editurl: "./taxmast/form",
 		 colModel: [
 			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Tax Code', name: 'taxcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
@@ -164,7 +164,7 @@ $(document).ready(function () {
 			check_cust_rules();
 
 
-			let editurl = "/taxmast/form?"+
+			let editurl = "./taxmast/form?"+
 				$.param({
 					action: 'taxmast_save',
 				});
@@ -222,7 +222,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/taxmast/form?"+
+			let editurl = "./taxmast/form?"+
 				$.param({
 					action: 'taxmast_save',
 				});
@@ -271,7 +271,7 @@ $(document).ready(function () {
 								taxcode: $('#taxcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/taxmast/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./taxmast/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

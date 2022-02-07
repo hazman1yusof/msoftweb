@@ -50,7 +50,7 @@ $(document).ready(function () {
 			case 'ward': field = ['deptcode', 'description']; table = "sysdb.department";case_='ward';break;
 			case 'bedchgcode': field = ['chgcode', 'description']; table = "hisdb.chgmast";case_='bedchgcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		fdl.get_array('bed',options,param,case_,cellvalue);
 		
 		if(cellvalue==null)return "";
@@ -107,7 +107,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table',
-		url: '/bed/table',
+		url: './bed/table',
 		field: '',
 		table_name: 'hisdb.bed as b',
 		sort_idno: true,
@@ -119,7 +119,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/bed/form",
+		editurl: "./bed/form",
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'Bed No', name: 'bednum', width: 10, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
@@ -381,7 +381,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/bed/form?"+
+			let editurl = "./bed/form?"+
 				$.param({
 					action: 'bed_save',
 				});
@@ -443,7 +443,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/bed/form?"+
+			let editurl = "./bed/form?"+
 				$.param({
 					action: 'bed_save',
 				});
@@ -492,7 +492,7 @@ $(document).ready(function () {
 								bednum: $('#bednum').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/bed/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./bed/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

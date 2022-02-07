@@ -197,7 +197,7 @@
                     {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno};
                     //kalu ada mrn, maksudnya dia dari merging duplicate 
 
-        $.post( "/pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');
@@ -298,7 +298,7 @@
         },
     });
 
-    var desc_show = new loading_desc_bio([
+    desc_show = new loading_desc_bio([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
         {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},

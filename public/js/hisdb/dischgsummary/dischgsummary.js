@@ -140,7 +140,7 @@ function populate_dischgSummary(obj,rowdata){
 
     };
 
-    $.post( "/dischgsummary/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./dischgsummary/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -213,7 +213,7 @@ function saveForm_dischgSummary(callback){
         }).get()
 	);
 
-    $.post( "/dischgsummary/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./dischgsummary/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

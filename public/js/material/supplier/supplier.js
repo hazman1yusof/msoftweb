@@ -339,7 +339,7 @@ $(document).ready(function () {
 			case 'sb_bonsitemcode':field=['itemcode','description'];table="material.product";case_='sb_bonsitemcode';break;
 
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('supplier',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));

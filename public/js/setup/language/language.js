@@ -31,7 +31,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.languagecode',
 		table_id: 'Code',
@@ -42,7 +42,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/language/form",
+		editurl: "./language/form",
 		colModel: [
 			{ label: 'Language Code', name: 'Code', width: 25, classes: 'wrap', editable: true, canSearch: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
 			{ label: 'Description', name: 'Description', width: 90, classes: 'wrap', canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
@@ -152,7 +152,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/language/form?"+
+			let editurl = "./language/form?"+
 				$.param({
 					action: 'language_save',
 				});
@@ -204,7 +204,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/language/form?"+
+			let editurl = "./language/form?"+
 				$.param({
 					action: 'language_save',
 				});
@@ -253,7 +253,7 @@ $(document).ready(function () {
 								Code: $('#Code').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/language/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./language/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

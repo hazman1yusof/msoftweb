@@ -114,7 +114,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		table_name: ['material.ivreqhd'],
 		table_id: 'idno',
@@ -127,7 +127,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam = {
 		action: 'invReq_header_save',
-		url:'/inventoryRequest/form',
+		url:'./inventoryRequest/form',
 		field: '',
 		oper: oper,
 		table_name: 'material.ivreqhd',
@@ -351,7 +351,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = $(this).data('oper')+'_single';
 
-		$.post( '/inventoryRequest/form', obj , function( data ) {
+		$.post( './inventoryRequest/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
@@ -370,7 +370,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( '/inventoryRequest/form', obj , function( data ) {
+		$.post( './inventoryRequest/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -445,7 +445,7 @@ $(document).ready(function () {
 	function trandept(){
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: 'util/get_value_default',
 			field:['deptcode'],
 			table_name:'sysdb.department',
 			filterCol:['storedept'],
@@ -620,7 +620,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: ['ivdt.compcode', 'ivdt.recno', 'ivdt.lineno_', 'ivdt.itemcode', 'p.description', 'ivdt.uomcode', 'ivdt.pouom',
 		's.maxqty', 's.qtyonhand', 'ivdt.qtyrequest', 'ivdt.qtytxn', 'ivdt.qohconfirm','ivdt.netprice',
 		'ivdt.recstatus'],
@@ -639,7 +639,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/inventoryRequestDetail/form",
+		editurl: "./inventoryRequestDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: false, hidden: true },
@@ -917,7 +917,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 
-			let editurl = "/inventoryRequestDetail/form?"+
+			let editurl = "./inventoryRequestDetail/form?"+
 				$.param({
 					action: 'invReqDetail_save',
 					idno: $('#idno').val(),
@@ -976,7 +976,7 @@ $(document).ready(function () {
 								recno: $('#recno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 							}
-							$.post( "/inventoryRequestDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./inventoryRequestDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -1095,7 +1095,7 @@ $(document).ready(function () {
 				qtyonhand:$('#qtyonhand').val(),
     		}
 
-    		$.post( "/inventoryRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./inventoryRequestDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
@@ -1137,7 +1137,7 @@ $(document).ready(function () {
 			case 'reqdept':field=['deptcode','description'];table="sysdb.department";case_='reqdept';break;
 			case 'reqtodept':field=['deptcode','description'];table="sysdb.department";case_='reqtodept';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('inventoryRequest',options,param,case_,cellvalue);
 		

@@ -26,7 +26,7 @@
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-			<h5>Order Communication Detail</h5>
+			<h5>Order Entry</h5>
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">

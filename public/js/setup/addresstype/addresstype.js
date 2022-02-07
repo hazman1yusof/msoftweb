@@ -30,7 +30,7 @@ $(document).ready(function () {
     /////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
         action:'get_table_default',
-        url: '/util/get_table_default',
+        url: 'util/get_table_default',
         field:'',
         table_name:'hisdb.addcode',
         table_id:'idno',
@@ -41,7 +41,7 @@ $(document).ready(function () {
     var addmore_jqgrid={more:false,state:false,edit:false}
     $("#jqGrid").jqGrid({
         datatype: "local",
-        editurl: "/addresstype/form",
+        editurl: "./addresstype/form",
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
             //{ label: 'Address Type', name: 'addtype', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }},
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-            let editurl = "/addresstype/form?"+
+            let editurl = "./addresstype/form?"+
                 $.param({
                     action: 'addresstype_save',
                 });
@@ -221,7 +221,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-            let editurl = "/addresstype/form?"+
+            let editurl = "./addresstype/form?"+
                 $.param({
                     action: 'addresstype_save',
                 });
@@ -270,7 +270,7 @@ $(document).ready(function () {
                                 addtype: $('#addtype').val(),
                                 idno: selrowData('#jqGrid').idno,
                             }
-                            $.post( "/addresstype/form?"+$.param(param),{oper:'del'}, function( data ){
+                            $.post( "./addresstype/form?"+$.param(param),{oper:'del'}, function( data ){
                             }).fail(function (data) {
                                 //////////////////errorText(dialog,data.responseText);
                             }).done(function (data) {

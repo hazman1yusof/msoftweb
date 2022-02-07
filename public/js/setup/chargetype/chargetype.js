@@ -113,7 +113,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.chgtype',
 		table_id: 'idno',
@@ -125,7 +125,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'save_table_default',
-		url:'chargetype/form',
+		url:'./chargetype/form',
 		field:'',
 		oper:oper,
 		table_name:'hisdb.chgtype',

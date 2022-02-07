@@ -1592,101 +1592,101 @@ class PatmastController extends defaultController
                 //epistycode = IP if epis_type  = IP @ DP
                 //epistycode = OP if epis_type  = OP @ OTC
 
-            if($epis_type == "IP" || $epis_type == "DP"){
-                $epistycode_q = "IP";
-            }else{
-                $epistycode_q = "OP";
-            }
+            // if($epis_type == "IP" || $epis_type == "DP"){
+            //     $epistycode_q = "IP";
+            // }else{
+            //     $epistycode_q = "OP";
+            // }
 
-            $queueAll_obj=DB::table('hisdb.queue')
-                ->where('mrn','=',$epis_mrn)
-                ->where('episno','=',$epis_no)
-                ->where('deptcode','=','ALL');
+            // $queueAll_obj=DB::table('hisdb.queue')
+            //     ->where('mrn','=',$epis_mrn)
+            //     ->where('episno','=',$epis_no)
+            //     ->where('deptcode','=','ALL');
 
-            if(!$queueAll_obj->exists()){
-                DB::table('hisdb.queue')
-                    ->insert([
-                        'AdmDoctor' => $epis_doctor,
-                        'AttnDoctor' => $epis_doctor,
-                        'BedType' => '',
-                        'Case_Code' => "MED",
-                        'CompCode' => session('compcode'),
-                        'Episno' => $epis_no,
-                        'EpisTyCode' => $epistycode_q,
-                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
-                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'Lastuser' => session('username'),
-                        'MRN' => $epis_mrn,
-                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
-                        'Bed' => '',
-                        'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
-                        'Deptcode' => 'ALL',
-                        'DOB' => $this->null_date($patmast_data->DOB),
-                        'NAME' => $patmast_data->Name,
-                        'Newic' => $patmast_data->Newic,
-                        'Oldic' => $patmast_data->Oldic,
-                        'Sex' => $patmast_data->Sex,
-                        'Religion' => $patmast_data->Religion,
-                        'RaceCode' => $patmast_data->RaceCode,
-                        'EpisStatus' => '',
-                        'chggroup' => $epis_billtype
-                    ]);
-            }else{
-                $queueAll_obj
-                    ->update([
-                        'AdmDoctor' => $epis_doctor,
-                        'AttnDoctor' => $epis_doctor,
-                        'chggroup' => $epis_billtype
-                    ]);
-            }
+            // if(!$queueAll_obj->exists()){
+            //     DB::table('hisdb.queue')
+            //         ->insert([
+            //             'AdmDoctor' => $epis_doctor,
+            //             'AttnDoctor' => $epis_doctor,
+            //             'BedType' => '',
+            //             'Case_Code' => "MED",
+            //             'CompCode' => session('compcode'),
+            //             'Episno' => $epis_no,
+            //             'EpisTyCode' => $epistycode_q,
+            //             'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+            //             'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'Lastuser' => session('username'),
+            //             'MRN' => $epis_mrn,
+            //             'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+            //             'Bed' => '',
+            //             'Room' => '',
+            //             'QueueNo' => $current_pvalue1+1,
+            //             'Deptcode' => 'ALL',
+            //             'DOB' => $this->null_date($patmast_data->DOB),
+            //             'NAME' => $patmast_data->Name,
+            //             'Newic' => $patmast_data->Newic,
+            //             'Oldic' => $patmast_data->Oldic,
+            //             'Sex' => $patmast_data->Sex,
+            //             'Religion' => $patmast_data->Religion,
+            //             'RaceCode' => $patmast_data->RaceCode,
+            //             'EpisStatus' => '',
+            //             'chggroup' => $epis_billtype
+            //         ]);
+            // }else{
+            //     $queueAll_obj
+            //         ->update([
+            //             'AdmDoctor' => $epis_doctor,
+            //             'AttnDoctor' => $epis_doctor,
+            //             'chggroup' => $epis_billtype
+            //         ]);
+            // }
 
-            //QUEUE FOR SPECIALIST
+            // //QUEUE FOR SPECIALIST
 
-            $queueSPEC_obj=DB::table('hisdb.queue')
-                ->where('mrn','=',$epis_mrn)
-                ->where('episno','=',$epis_no)
-                ->where('deptcode','=','SPEC');
+            // $queueSPEC_obj=DB::table('hisdb.queue')
+            //     ->where('mrn','=',$epis_mrn)
+            //     ->where('episno','=',$epis_no)
+            //     ->where('deptcode','=','SPEC');
 
-            if(!$queueSPEC_obj->exists()){
-                DB::table('hisdb.queue')
-                    ->insert([
-                        'AdmDoctor' => $epis_doctor,
-                        'AttnDoctor' => $epis_doctor,
-                        'BedType' => '',
-                        'Case_Code' => "MED",
-                        'CompCode' => session('compcode'),
-                        'Episno' => $epis_no,
-                        'EpisTyCode' => $epistycode_q,
-                        'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
-                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'Lastuser' => session('username'),
-                        'MRN' => $epis_mrn,
-                        'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
-                        'Bed' => '',
-                        'Room' => '',
-                        'QueueNo' => $current_pvalue1+1,
-                        'Deptcode' => 'SPEC',
-                        'DOB' => $this->null_date($patmast_data->DOB),
-                        'NAME' => $patmast_data->Name,
-                        'Newic' => $patmast_data->Newic,
-                        'Oldic' => $patmast_data->Oldic,
-                        'Sex' => $patmast_data->Sex,
-                        'Religion' => $patmast_data->Religion,
-                        'RaceCode' => $patmast_data->RaceCode,
-                        'EpisStatus' => '',
-                        'chggroup' => $epis_billtype
-                    ]);
-            }else{
-                $queueSPEC_obj
-                    ->update([
-                        'AdmDoctor' => $epis_doctor,
-                        'AttnDoctor' => $epis_doctor,
-                        'chggroup' => $epis_billtype
-                    ]);
-            }
+            // if(!$queueSPEC_obj->exists()){
+            //     DB::table('hisdb.queue')
+            //         ->insert([
+            //             'AdmDoctor' => $epis_doctor,
+            //             'AttnDoctor' => $epis_doctor,
+            //             'BedType' => '',
+            //             'Case_Code' => "MED",
+            //             'CompCode' => session('compcode'),
+            //             'Episno' => $epis_no,
+            //             'EpisTyCode' => $epistycode_q,
+            //             'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
+            //             'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'Lastuser' => session('username'),
+            //             'MRN' => $epis_mrn,
+            //             'Reg_Date' => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+            //             'Reg_Time' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+            //             'Bed' => '',
+            //             'Room' => '',
+            //             'QueueNo' => $current_pvalue1+1,
+            //             'Deptcode' => 'SPEC',
+            //             'DOB' => $this->null_date($patmast_data->DOB),
+            //             'NAME' => $patmast_data->Name,
+            //             'Newic' => $patmast_data->Newic,
+            //             'Oldic' => $patmast_data->Oldic,
+            //             'Sex' => $patmast_data->Sex,
+            //             'Religion' => $patmast_data->Religion,
+            //             'RaceCode' => $patmast_data->RaceCode,
+            //             'EpisStatus' => '',
+            //             'chggroup' => $epis_billtype
+            //         ]);
+            // }else{
+            //     $queueSPEC_obj
+            //         ->update([
+            //             'AdmDoctor' => $epis_doctor,
+            //             'AttnDoctor' => $epis_doctor,
+            //             'chggroup' => $epis_billtype
+            //         ]);
+            // }
 
             $queries = DB::getQueryLog();
 

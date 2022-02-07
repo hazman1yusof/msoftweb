@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.bloodgroup',
 		table_id: 'bloodcode',
@@ -41,7 +41,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/bloodGroup/form",
+		editurl: "./bloodGroup/form",
 		colModel: [
 
 			{ label: 'compcode', name: 'compcode', hidden: true },
@@ -158,7 +158,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/bloodGroup/form?"+
+			let editurl = "./bloodGroup/form?"+
 				$.param({
 					action: 'bloodgroup_save',
 				});
@@ -211,7 +211,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/bloodGroup/form?"+
+			let editurl = "./bloodGroup/form?"+
 				$.param({
 					action: 'bloodgroup_save',
 				});
@@ -260,7 +260,7 @@ $(document).ready(function () {
 								bloodcode: $('#bloodcode').val(),
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "/bloodGroup/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./bloodGroup/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {

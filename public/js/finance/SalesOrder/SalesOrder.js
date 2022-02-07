@@ -171,7 +171,7 @@ $(document).ready(function () {
 
 	var saveParam = {
 		action: 'SalesOrder_header_save',
-		url:'/SalesOrder/form',
+		url:'./SalesOrder/form',
 		field: '',
 		oper: oper,
 		table_name: 'debtor.dbacthdr',
@@ -961,7 +961,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "/SalesOrderDetail/form?"+
+			let editurl = "./SalesOrderDetail/form?"+
 				$.param({
 					action: 'saleord_detail_save',
 					source: 'PB',
@@ -1018,7 +1018,7 @@ $(document).ready(function () {
 								auditno: $('#db_auditno').val(),
 								idno:selrowData('#jqGrid2').idno
 							}
-							$.post( "/SalesOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./SalesOrderDetail/form?"+$.param(param),{oper:'del'}, function( data ){
 							},'json').fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -1140,7 +1140,7 @@ $(document).ready(function () {
 				auditno: $('#db_auditno').val(),
     		}
 
-    		$.post( "/SalesOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./SalesOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			},'json').fail(function(data) {
 				alert(data.responseText);
 			}).done(function(data){

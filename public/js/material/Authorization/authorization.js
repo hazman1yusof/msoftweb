@@ -104,7 +104,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field:'',
 		table_name:'material.authorise',
 		table_id:'authorid',
@@ -114,7 +114,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'save_table_default',
-		url:'/authorization/form',
+		url:'./authorization/form',
 		field:'',
 		oper:oper,
 		table_name:'material.authorise',
@@ -297,7 +297,7 @@ $(document).ready(function () {
 
 var urlParam2={
 	action:'get_table_default',
-	url:'/util/get_table_default',
+	url:'util/get_table_default',
 	field:'',
 	fixPost:'true',
 	table_name:['material.authdtl AS dtl'],
@@ -312,7 +312,7 @@ var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, a
 ////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 $("#jqGrid2").jqGrid({
 	datatype: "local",
-	editurl: "/authorizationDetail/form",
+	editurl: "./authorizationDetail/form",
 	colModel: [
 	 	{ label: 'idno', name: 'dtl_idno', width: 20, classes: 'wrap', key: true, editable: true, hidden:true},
 	 	{ label: 'compcode', name: 'dtl_compcode', width: 20, classes: 'wrap', hidden:true},
@@ -460,7 +460,7 @@ var myEditOptions = {
 		mycurrency2.formatOff();
 
 		let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-		let editurl = "/authorizationDetail/form?"+
+		let editurl = "./authorizationDetail/form?"+
 			$.param({
 				action: 'authorizationDetail_save',
 				authorid:$('#authorid').val()
@@ -504,7 +504,7 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 							idno: $('#dtl_idno').val(),
 
 			    		}
-			    		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+			    		$.post( "./authorizationDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 						}).fail(function(data) {
 							//////////////////errorText(dialog,data.responseText);
 						}).done(function(data){
@@ -567,7 +567,7 @@ $("#jqGrid2").inlineNav('#jqGridPager2',{
 			_token: $("#_token").val()
 		}
 
-		$.post( "/authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+		$.post( "./authorizationDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 		}).fail(function(data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function(data){
@@ -603,7 +603,7 @@ function showdetail(cellvalue, options, rowObject){
 		case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 		case 'dtl_deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
 	}
-	var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 	fdl.get_array('authorization',options,param,case_,cellvalue);
 	return cellvalue;
@@ -889,7 +889,7 @@ if($("#dtl_cando").val() == 'DEACTIVE'){
 
 var urlParam_authdtl={
 	action:'get_table_default',
-	url:'/util/get_table_default',
+	url:'util/get_table_default',
 	field:'',
 	fixPost:'true',
 	table_name:['material.authdtl AS dtl'],

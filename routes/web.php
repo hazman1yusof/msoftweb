@@ -29,6 +29,9 @@ Route::get('/util/get_table_default','UtilController@get_table_default');
 Route::get('/util/save_table_default','UtilController@defaultSetter');
 Route::get('/util/input_check','UtilController@input_check'); //jgn guna
 Route::get('/util/mycard_read','util\MycardController@get_data');
+Route::get('/util/mycard_read','util\MycardController@get_data');
+Route::get('/mykadFP','util\MycardController@mykadFP');
+Route::post('/mykadfp_store','util\MycardController@mykadfp_store');
 
 /// announcement thingy ///
 Route::get('/announcement/generate','setup\AnnouncementController@generate');

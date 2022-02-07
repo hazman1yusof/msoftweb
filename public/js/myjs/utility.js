@@ -1963,6 +1963,14 @@ function myerrorIt_only(id,fail){
 	}
 }
 
+function emptyobj_(obj){
+	if($.isEmptyObject(obj)){
+		return true;
+	}else{
+		return false;
+	}
+}
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){

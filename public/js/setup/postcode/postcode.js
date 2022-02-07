@@ -30,7 +30,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
-		url: '/util/get_table_default',
+		url: 'util/get_table_default',
 		field: '',
 		table_name: ['hisdb.postcode AS PC', 'hisdb.state AS ST', 'hisdb.country AS CN'],
 		table_id: 'pc_compcode',
@@ -47,7 +47,7 @@ $(document).ready(function () {
 	var addmore_jqgrid={more:false,state:false,edit:false}
 	$("#jqGrid").jqGrid({
 		datatype: "local",
-		editurl: "/postcode/form",
+		editurl: "./postcode/form",
 		colModel: [
             { label: 'compcode', name: 'pc_compcode', hidden: true },
             { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
@@ -184,7 +184,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/postcode/form?"+
+			let editurl = "./postcode/form?"+
 				$.param({
 					action: 'postcode_save',
 				});
@@ -244,7 +244,7 @@ $(document).ready(function () {
 
 			check_cust_rules();
 
-			let editurl = "/postcode/form?"+
+			let editurl = "./postcode/form?"+
 				$.param({
 					action: 'postcode_save',
 				});
@@ -290,7 +290,7 @@ $(document).ready(function () {
 							param = {
 								action: 'postcode_save'
 							}
-							$.post( "/postcode/form?"+$.param(param),{oper:'del'}, function( data ){
+							$.post( "./postcode/form?"+$.param(param),{oper:'del'}, function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
@@ -358,7 +358,7 @@ $(document).ready(function () {
 
 		}
 
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('postcode',options,param,case_,cellvalue);
 		

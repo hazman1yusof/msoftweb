@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 	var urlParam_nok_pat = {
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'util/get_table_default',
 		field: '',
 		table_name: 'hisdb.nok_ec',
 		filterCol:['compcode','episno','mrn'],
@@ -171,7 +171,7 @@ $(document).ready(function () {
 			tel_o_ext : $("#nok_ext_pat").val()
 	    };
 
-	    $.post( "/episode/save_nok", $.param(postobj) , function( data ) {
+	    $.post( "episode/save_nok", $.param(postobj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');

@@ -229,7 +229,7 @@ $(document).ready(function() {
             populate_ordcom_currpt(rows[bootgrid_last_rowid]);
         }
 
-        if($('#epistycode').val() == 'OP' && $('#curpat').val() == 'true'){
+        if($('#curpat').val() == 'true'){
             populate_triage_currpt(rows[bootgrid_last_rowid]);
             populate_antenatal(rows[bootgrid_last_rowid]);
             populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
@@ -269,6 +269,12 @@ $(document).ready(function() {
     // }
 
     $( "#patientBox").click(function() { // register new patient
+        let gotpat = $("#patientBox").data('gotpat');
+        if(gotpat == true){
+            $("#patientBox").data('gotpat',false);
+        }else{
+
+        }
         $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
         $('#mdl_patient_info').modal({backdrop: "static"});
         $("#btn_register_patient").data("oper","add");
@@ -283,7 +289,7 @@ $(document).ready(function() {
     });
 
     $('#read_mykad').click(function(){
-        $.getJSON('http://mycard.test/mycard_read', function(data){
+        $.getJSON('http://mycard.test:8080/mycard_read', function(data){
             if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
@@ -307,8 +313,8 @@ $(document).ready(function() {
         });
     });
 
-     $('#btn_biometric').click(function(){
-       $('#mdl_mykad').modal('show');
+    $('#btn_biometric').click(function(){
+       $('#mdl_biometric').modal('show');
     });
 
     ////////////////habis mykad///////
@@ -329,7 +335,7 @@ $(document).ready(function() {
 
             this.urlParam_preepis = {
                     action:'get_table_default',
-                    url:'/util/get_table_default',
+                    url:'./util/get_table_default',
                     field: '',
                     table_name: ['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
                     join_type : ['LEFT JOIN'],
@@ -453,7 +459,7 @@ $(document).ready(function() {
                     filterVal:['session.compcode',mrn,episno],
                 };
 
-                $.get( "/util/get_value_default?"+$.param(param), function( data ) {
+                $.get( "./util/get_value_default?"+$.param(param), function( data ) {
 
                 },'json').done(function(data) {
 
@@ -505,7 +511,7 @@ $(document).ready(function() {
                 if(mrn != '00000'){
                     var param={
                         action:'get_value_default',
-                        url:'/util/get_value_default',
+                        url:'./util/get_value_default',
                         field:"*",
                         table_name:'hisdb.pat_mast',
                         filterCol:['compcode','mrn'],filterVal:['session.compcode',mrn]
@@ -513,7 +519,7 @@ $(document).ready(function() {
                 }else{
                     var param={
                         action:'get_preepis_data',
-                        url:'/get_preepis_data',
+                        url:'./get_preepis_data',
                         apptidno:apptidno,
                         idno:idno
                     };

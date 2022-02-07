@@ -287,33 +287,36 @@ use Carbon\Carbon;
         DB::beginTransaction();
         try {
 
-            $apacthdr = DB::table('finance.apacthdr')
-                ->where('auditno','=',$request->auditno)
-                ->first();
 
-            $apactdtl = DB::table('finance.apactdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=', $request->auditno);
+            foreach ($request->idno_array as $idno){
 
-            $this->gltran($request->auditno);
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno)
+                    ->first();
 
-            if($apactdtl->exists()){ 
-                foreach ($apactdtl->get() as $value) {
-                    DB::table('material.delordhd')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED')
-                        ->where('delordno','=',$value->document)
-                        ->update(['invoiceno'=>$apacthdr->document]);
-                }
+                // $this->gltran($apacthdr->auditno);
+
+                $apacthdr = DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno)
+                    ->update([
+                        'recstatus' => 'POSTED',
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
+                $apalloc = DB::table('finance.apalloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('source','=', $apacthdr->source)
+                    ->where('trantype','=', $apacthdr->trantype)
+                    ->where('auditno','=', $apacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'POSTED',
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+
             }
-
-            DB::table('finance.apacthdr')
-                ->where('auditno','=',$request->auditno)
-                ->update([
-                    'recstatus' => 'POSTED',
-                    'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
 
             DB::commit();
         } catch (\Exception $e) {
