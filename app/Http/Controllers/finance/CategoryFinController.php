@@ -48,15 +48,15 @@ class CategoryFinController extends defaultController
          
             $source = strtoupper($request->source);
 
-            $category = DB::table('material.category')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('catcode','=',strtoupper($request->catcode))
-                            ->where('cattype','=',strtoupper($request->cattype))
-                            ->where('source','=',$source);
+            // $category = DB::table('material.category')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('catcode','=',strtoupper($request->catcode))
+            //                 ->where('cattype','=',strtoupper($request->cattype))
+            //                 ->where('source','=',$source);
 
-            if($category->exists()){
-                throw new \Exception("Record Duplicate");
-            }
+            // if($category->exists()){
+            //     throw new \Exception("Record Duplicate");
+            // }
 
             DB::table('material.category')
                 ->insert([  
