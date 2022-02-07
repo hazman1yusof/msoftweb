@@ -10,8 +10,11 @@
 
             <div class="modal-content">
                 <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
-                    <button type="button" class="" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
+                    <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+                            color: white;
+                            background: #d34242;
+                            border-radius: 5px;">
+                      <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span>
                     </button>
                     <div class="form-group ">
                     </div>

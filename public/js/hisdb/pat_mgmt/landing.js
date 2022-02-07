@@ -308,7 +308,7 @@ $(document).ready(function() {
                 $("#mykad_city").val(data.city);
                 $("#mykad_state").val(data.state);
                 $("#mykad_postcode").val(data.postcode);
-                $("#mykad_photo").attr('src', data.mykad_photo);
+                $("#mykad_photo").attr('src', data.photo);
             }
         });
     });
