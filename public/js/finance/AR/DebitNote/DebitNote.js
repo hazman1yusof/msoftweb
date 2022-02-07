@@ -588,6 +588,7 @@ $(document).ready(function () {
 		editurl: "/DebitNoteDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'AuditNo', name: 'auditno', hidden: true},
             { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
             { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
