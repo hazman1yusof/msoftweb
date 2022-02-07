@@ -93,7 +93,7 @@
 			/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 			var urlParam={
 				action: 'get_table_default',
-				url: '/menu_maintenance/table',
+				url: './menu_maintenance/table',
 				table_name: 'sysdb.programtab',
 				filterCol:['programmenu'],
 				filterVal:['main']
@@ -101,7 +101,7 @@
 
 			var saveParam={
 				action: 'save_table_default',
-				url: '/menu_maintenance/form',
+				url: './menu_maintenance/form',
 				oper: oper
 			};
 
@@ -234,7 +234,7 @@
 							filterVal:[arraybtngrp[arraybtngrp.length-1]],
 							sortby: ['lineno asc']
 						}
-					$.get( "/util/get_value_default?"+$.param(param), function( data ) {
+					$.get( "./util/get_value_default?"+$.param(param), function( data ) {
 						
 					},'json').done(function(data) {
 						if(!$.isEmptyObject(data.rows)){
