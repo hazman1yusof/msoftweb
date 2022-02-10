@@ -436,6 +436,24 @@ $(document).ready(function () {
 		}).success(function(data){
 			
 		});
+
+		$("#but_post2_jq").click(function(){
+	
+			var obj={};
+			obj.idno = selrowData('#jqGrid').apacthdr_idno;
+			obj.oper = $(this).data('oper');
+			obj._token = $('#_token').val();
+			oper=null;
+			
+			$.post(  './paymentVoucher/form', obj , function( data ) {
+				cbselect.empty_sel_tbl();
+				refreshGrid('#jqGrid', urlParam);
+			}).fail(function(data) {
+				$('#error_infront').text(data.responseText);
+			}).success(function(data){
+				
+			});
+		});
 	});
 
 	///////////check postdate & docdate///////////////////
@@ -787,6 +805,7 @@ $(document).ready(function () {
 			let editurl = "./paymentVoucherDetail/form?"+
 				$.param({
 					action: 'paymentVoucherDetail_save',
+					idno: $('#apacthdr_idno').val(),
 					auditno:$('#apacthdr_auditno').val(),
 					amount:data.amount,
 				});
