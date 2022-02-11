@@ -60,6 +60,84 @@ $(document).ready(function () {
 		}, 0);
 	});
 
+	$("#jqGridDieteticCareNotes_panel").on("show.bs.collapse", function(){
+        var urlparam_dietetic_date_tbl={
+			action:'get_table_date_dietetic',
+			mrn:$("#mrn_dieteticCareNotes").val(),
+			episno:$("#episno_dieteticCareNotes").val(),
+		}
+
+	    dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
+			emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+			$('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
+	    });
+	});
+	
+	$('#dietetic_date_tbl tbody').on('click', 'tr', function () { 
+	    var data = dietetic_date_tbl.row( this ).data();
+
+		if(data == undefined){
+			return;
+		}
+
+		//to highlight selected row
+		if($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}else {
+			dietetic_date_tbl.$('tr.selected').removeClass('selected');
+			$(this).addClass('selected');
+		}
+
+		emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+	    $('#dietetic_date_tbl tbody tr').removeClass('active');
+	    $(this).addClass('active');
+
+	    var saveParam={
+	        action:'get_table_dieteticCareNotes',
+	    }
+	    var postobj={
+	    	_token : $('#csrf_token').val(),
+	    	mrn:data.mrn,
+	    	episno:data.episno
+	    };
+
+	    $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        alert('there is an error');
+	    }).success(function(data){
+	    	if(!$.isEmptyObject(data)){
+				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
+				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
+				button_state_dieteticCareNotes('edit');
+				disableFields_dieteticCareNotes();
+	        }else{
+				button_state_dieteticCareNotes('add');
+	        }
+
+	    });
+
+	});
+
+});
+
+var dietetic_date_tbl = $('#dietetic_date_tbl').DataTable({
+	"ajax": "",
+	"sDom": "",
+	"paging":false,
+    "columns": [
+        {'data': 'mrn'},
+        {'data': 'episno'},
+        {'data': 'date', 'width': '60%'},
+        {'data': 'adduser'},
+        {'data': 'doctorname', 'width': '30%'},
+    ]
+    ,columnDefs: [
+        { targets: [0, 1, 3], visible: false},
+    ],
+    "drawCallback": function( settings ) {
+    	$(this).find('tbody tr')[0].click();
+    }
 });
 
 var errorField = [];
@@ -77,6 +155,21 @@ conf = {
 		}
 	},
 };
+
+// to disable all fields except those in follow up
+function disableFields_dieteticCareNotes() {
+	// var fieldsNotToBeDisabled = new Array("additionalnote");
+
+	// $("form input").filter(function(index){
+	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	// }).prop("disabled", true);
+
+	// $("form textarea").filter(function(index){
+	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
+	// }).prop("disabled", true);
+
+	$('#ncase_medical_his,#ncase_surgical_his,#ncase_fam_medical_his,#ncase_history,#ncase_diagnosis,#ncase_intervention,#ncase_temperature,#ncase_pulse,#ncase_respiration,#ncase_bp_sys1,#ncase_bp_dias2,#ncase_height,#ncase_weight,#ncase_gxt,#ncase_painscore').prop('disabled',true);
+}
 
 button_state_dieteticCareNotes('empty');
 function button_state_dieteticCareNotes(state){
@@ -141,14 +234,26 @@ function populate_dieteticCareNotes_currpt(obj){
         alert('there is an error');
     }).success(function(data){
     	if(!$.isEmptyObject(data)){
-			// autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.an_pathistory);
-			// autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.an_pathealth);
+			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
+			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
 			button_state_dieteticCareNotes('edit');
+			disableFields_dieteticCareNotes();
         }else{
 			button_state_dieteticCareNotes('add');
         }
 
 	});
+
+	var urlparam_dietetic_date_tbl={
+		action:'get_table_date_dietetic',
+		mrn:$("#mrn_dieteticCareNotes").val(),
+		episno:$("#episno_dieteticCareNotes").val(),
+	}
+
+    dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
+		emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+		$('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
+    });
 	
 }
 
