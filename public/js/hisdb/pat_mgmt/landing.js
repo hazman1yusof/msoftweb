@@ -249,9 +249,9 @@ $(document).ready(function() {
 
         if(rows[bootgrid_last_rowid].pregnant == 1){
             $('#antenatal_row,#jqGridAntenatal_c').show();
-            $('#nursing_row,#jqGridTriageInfo_c').hide();
+            // $('#nursing_row,#jqGridTriageInfo_c').hide();
         }else{
-            $('#nursing_row,#jqGridTriageInfo_c').show();
+            // $('#nursing_row,#jqGridTriageInfo_c').show();
             $('#antenatal_row,#jqGridAntenatal_c').hide();
         }
     });
