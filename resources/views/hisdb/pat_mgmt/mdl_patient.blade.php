@@ -62,7 +62,7 @@
                                     <!-- Tab content begin -->
                                     <div class="form-group"> 
                                         <div class="col-md-2">
-                                            <img src="{{asset('img/defaultprofile.png')}}" width="120" height="140" />
+                                            <img id="photobase64" src="{{asset('img/defaultprofile.png')}}" width="120" height="140" defaultsrc="{{asset('img/defaultprofile.png')}}" />
                                         </div>
                                         <div class="col-md-10">
                                             <div class="row"><br /></div>
@@ -775,7 +775,7 @@
         		<form id="frm_mykad_info" class="form-horizontal">
 					<div class="form-group">
 						<div class="col-md-2">
-							<img id="mykad_photo" src="{{asset('img/defaultprofile.png')}}" width="120" height="140" class="addressinp" />
+							<img id="mykad_photo" src="{{asset('img/defaultprofile.png')}}" width="120" height="140" class="addressinp" defaultsrc="{{asset('img/defaultprofile.png')}}" />
 							<button type="button" class="btn btn-primary" id="read_mykad">Scan ID</button>
 						</div>
 						<div class="col-md-10">
@@ -862,7 +862,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<!-- <button type="button" class="btn btn-success" id="btn_reg_proceed">Proceed</button> -->
+				<button type="button" class="btn btn-success" id="btn_reg_proceed">Proceed</button>
 			</div>
 		</div>
 	</div>

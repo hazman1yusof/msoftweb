@@ -86,8 +86,8 @@
                                     <div class="col-md-offset-1 col-md-10">
                                         <small for="txt_epis_dept">Registration Department</small>
                                         <div class="input-group">
-                                            <input value="{{$userdeptdesc ?? ''}}" type="text" class="form-control form-mandatory" id="txt_epis_dept" required tabindex=1>
-                                            <input value="{{$userdeptcode ?? ''}}" type="hidden" id="hid_epis_dept" name="regdept" />
+                                            <input type="text" class="form-control form-mandatory" id="txt_epis_dept" required tabindex=1>
+                                            <input type="hidden" id="hid_epis_dept" name="regdept" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>

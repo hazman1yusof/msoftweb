@@ -21,14 +21,59 @@
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
+		.preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: fixed;
+            z-index: 99999;
+            background: #fff;
+        }
+        .cssload-speeding-wheel {
+            position: absolute;
+            top: calc(50% - 3.5px);
+            left: calc(50% - 3.5px);
+            width: 31px;
+            height: 31px;
+            margin: 0 auto;
+            border: 2px solid rgba(97,100,193,0.98);
+            border-radius: 50%;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            animation: cssload-spin 425ms infinite linear;
+            -o-animation: cssload-spin 425ms infinite linear;
+            -ms-animation: cssload-spin 425ms infinite linear;
+            -webkit-animation: cssload-spin 425ms infinite linear;
+            -moz-animation: cssload-spin 425ms infinite linear;
+        }
+        @keyframes cssload-spin {
+          100%{ transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-o-keyframes cssload-spin {
+          100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-ms-keyframes cssload-spin {
+          100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-webkit-keyframes cssload-spin {
+          100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-moz-keyframes cssload-spin {
+          100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
 		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
 			display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
 		}
 		.smallmodal{
-			width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
+			width: 40% !important; margin: auto !important;margin-top:10% !important;
 		}
 		.smallmodal > .modal-content{
-			border: 1px solid grey;
+			border: 3px solid darkblue !important;min-height: fit-content !important;
 		}
 		tr.dtrg-group{
 			font-size: 15px;
@@ -296,6 +341,7 @@
         $('#txt_pat_dob').val(newdob);
         $('#txt_pat_age').val(gettheage(newdob));
         $('#hid_RaceCode').val(obj.race);
+
         $('#hid_Religion').val(obj.religion);
         $('#cmb_pat_category').val(obj.pat_category);
         $('#hid_pat_citizen').val(obj.citizenship);
@@ -304,12 +350,58 @@
         $('#txt_pat_curradd2').val(obj.address2);
         $('#txt_pat_curradd3').val(obj.address3);
         $('#txt_pat_currpostcode').val(obj.postcode);
+        $("img#photobase64").attr('src','data:image/png;base64,'+obj.base64);
+
+        mykad_check_existing_patient();
+
+        auto_save('race',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.racecode',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.race,
+        	Description: obj.race,
+        },
+        desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
+
+        auto_save('religioncode',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.religion',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.religion,
+        	Description: obj.religion,
+        },
+        desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
+
+        auto_save('citizencode',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.citizen',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.citizenship,
+        	Description: obj.citizenship,
+        },desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen'));
 
         desc_show.write_desc();
+    }
+
+    function auto_save(id,obj,callback){
+        if(desc_show.get_desc(obj.Code,id) == "N/A"){
+        	$.post( './pat_mast/auto_save', obj , function( data ) {
+	        }).fail(function(data) {
+	            console.log(data.responseText);
+	        }).success(function(data){
+	        	callback();
+	        });
+        }
     }
 </script>
 
 <body class="header-fixed">
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
@@ -321,6 +413,11 @@
 		@endif
         <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
         <input name="lastrowid" id="lastrowid" type="hidden" value="0">
+        <input name="userdeptcode" id="userdeptcode" type="hidden" value="{{$userdeptcode ?? ''}}">
+        <input name="userdeptdesc" id="userdeptdesc" type="hidden" value="{{$userdeptdesc ?? ''}}">
+        <input name="lastMrn" id="lastMrn" type="hidden" >
+        <input name="lastidno" id="lastidno" type="hidden" >
+
         <div id="info"></div>
 
 		<div class="panel" style="padding: 5px;">

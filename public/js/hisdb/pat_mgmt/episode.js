@@ -103,8 +103,6 @@
             $('#cmb_epis_pregnancy').prop("disabled", false);
         }
 
-        get_billtype_default(rowdata.MRN);
-
         var episno_ = parseInt(rowdata.Episno);
         if(isNaN(episno_)){
             episno_ = 0;
@@ -123,7 +121,9 @@
             $("#episode_oper").val('add');
             $('#txt_epis_no').val(parseInt(episno_) + 1);
             $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
-            $('#txt_epis_dept').blur();
+
+            $('#hid_epis_dept').val($('#userdeptcode').val());
+            get_billtype_default(rowdata.MRN);
         }
     }
 
@@ -642,7 +642,7 @@
             });
 
             $('#add_new_adm').click(function(){
-                $($(this).data('modal-target')).modal('show');
+                $('#mdl_add_new_adm').modal('show');
             });
 
             $('#adm_save').click(function(){
@@ -818,7 +818,7 @@
                 return obj[code_] == search_code;
             });
 
-            return (retdata == undefined)? "" : retdata[desc_];
+            return (retdata == undefined)? "N/A" : retdata[desc_];
         }
     }
 

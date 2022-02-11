@@ -13,18 +13,22 @@ var Global = function () {
 			case "LanguageCode":
 				act = "get_patient_language";
 				title = "Select Patient Language";
+                mdl = "none";
 				break;
 			case "Religion":
 				act = "get_patient_religioncode";
 				title = "Select Patient Religion";
+                mdl = "none";
 				break;
 			case "RaceCode":
 				act = "get_patient_race";
 				title = "Select Patient race";
+                mdl = "none";
 				break;
 			case "ID_Type":
 				act = "get_patient_idtype";
 				title = "Select Patient ID Type";
+                mdl = "none";
 				break;
 			case "pat_title":
                 act = "get_patient_title";
@@ -41,26 +45,32 @@ var Global = function () {
 			case "pat_citizen":
 				act = "get_patient_citizen";
 				title = "Select Patient Citizen";
+                mdl = "none";
 				break;
 			case "payer_relation":
 				act = "get_patient_relationship";
 				title = "Select Patient Relationship";
+                mdl = "none";
 				break;
 			case "payer_occupation":
 				act = "get_patient_occupation";
 				title = "Select Patient Occupation";
+                mdl = "none";
 				break;
 			case "payer_company":
 				act = "get_all_company";
 				title = "Select Patient Company";
+                mdl = "none";
 				break;
 			case "grtr_relation":
 				act = "get_patient_relationship";
 				title = "Select Patient Relationship";
+                mdl = "none";
 				break;
 			case "epis_dept":
 				act = "get_reg_dept";
 				title = "Select Patient Register Department";
+                mdl = "none";
 				break;
             case "epis_source":
                 act = "get_reg_source";
@@ -69,30 +79,37 @@ var Global = function () {
 			case "epis_case":
 				act = "get_reg_case";
 				title = "Select Patient Case";
+                mdl = "none";
 				break;
 			case "epis_doctor":
 				act = "get_reg_doctor";
 				title = "Select Patient Doctor";
+                mdl = "none";
 				break;
 			case "epis_fin":
 				act = "get_reg_fin";
 				title = "Select Patient Finance";
+                mdl = "none";
 				break;
 			case "epis_bed":
 				act = "get_reg_bed";
 				title = "Select Patient Bed";
+                mdl = "none";
 				break;
 			case "newgl_occupcode":
 				act = "get_patient_occupation";
 				title = "Select GL Occupation";
+                mdl = "none";
 				break;
 			case "newgl_relatecode":
 				act = "get_patient_relationship";
 				title = "Select GL Relationship";
+                mdl = "none";
 				break;
 			case "newgl_corpcomp":
 				act = "get_all_company";
 				title = "Select Company";
+                mdl = "none";
 				break;
 
 				
@@ -127,9 +144,11 @@ var Global = function () {
                         selecter.search( text_val ).draw();
                     }
                     // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-                    if(mdl!=null){
+                    if(mdl!='none'){
                         $('#add_new_adm').data('modal-target',mdl)
                         $('#add_new_adm').show();
+                    }else{
+                    	$('#add_new_adm').hide();
                     }
                     if(selecter.page.info().recordsDisplay == 1){
                         $('#tbl_item_select tbody tr:eq(0)').dblclick();
@@ -169,12 +188,14 @@ var Global = function () {
 			//		} );
 		});
 
-        $("#mdl_item_selector").on('show.bs.modal', function () {
+        $("#mdl_item_selector,#mdl_add_new_title,#mdl_add_new_occ,#mdl_add_new_adm,#mdl_add_new_relationship,#mdl_add_new_areacode,#mdl_accomodation").on('show.bs.modal', function () {
         	$(this).eq(0).css('z-index','120');
         });
 
 		$('#add_new_adm').click(function(){
-            $($(this).data('modal-target')).modal('show');
+			if($(this).data('modal-target') != ''){
+            	$($(this).data('modal-target')).modal('show');
+			}
         });
 
         $('#adm_save').click(function(){
@@ -185,7 +206,7 @@ var Global = function () {
                         _token: _token
                 }
                 
-                $.post( '/pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $.post( './pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#adm_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_adm').modal('hide');
@@ -204,7 +225,7 @@ var Global = function () {
                         _token: _token
                 }
                 
-                $.post( '/pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $.post( './pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#new_occup_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_occ').modal('hide');
@@ -223,7 +244,7 @@ var Global = function () {
                         _token: _token
                 }
                 
-                $.post( '/pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $.post( './pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#new_title_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_title').modal('hide');
@@ -242,7 +263,7 @@ var Global = function () {
                         _token: _token
                 }
                 
-                $.post( '/pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $.post( './pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#new_areacode_form").trigger('reset');
                     selecter.ajax.reload()
                     $('#mdl_add_new_title').modal('hide');
@@ -252,6 +273,15 @@ var Global = function () {
                 });
               }
         });
+
+        function religion_auto_save(obj){
+        	$.post( './pat_mast/religion_auto_save', obj , function( data ) {
+        		
+            }).fail(function(data) {
+                console.log(data.responseText);
+            }).success(function(data){
+            });
+        }
 			
 		
 	}

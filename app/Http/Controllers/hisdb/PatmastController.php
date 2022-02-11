@@ -90,7 +90,7 @@ class PatmastController extends defaultController
             // dump($arr_mrn);
 
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
-                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode'])
+                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.Reg_Date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode'])
                             ->join('hisdb.queue', function($join) use ($request,$sel_epistycode){
 
                                 $join = $join->on('queue.mrn', '=', 'pat_mast.MRN')
@@ -161,8 +161,24 @@ class PatmastController extends defaultController
 
         }else{
 
-            $table_patm = DB::table('hisdb.pat_mast'); //ambil dari patmast balik
-                            // ->where('compcode','=',session('compcode'));
+            // SELECT COUNT(*) FROM `pat_mast` WHERE idno <= 62863
+            // if(!empty($request->lastidno)){
+                // $count_ = DB::table('hisdb.pat_mast')
+                //             ->where('idno','<=','62863')
+                //             ->count();
+            // }
+            // dd($count_);
+
+            // SELECT * FROM pat_mast WHERE idno = 62863
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+
+            // SELECT * FROM pat_mast LIMIT 10 OFFSET 62814  
+            // $lastrow = DB::table('hisdb.pat_mast')
+            //                 ->where('idno','<=','62863');
+
+            $table_patm = DB::table('hisdb.pat_mast');
+            // dd($table_patm->limit(10)->offset(intval($count_) - 10)->get());
 
             if(!empty($request->searchCol)){
                 $searchCol_array = $request->searchCol;
@@ -186,6 +202,7 @@ class PatmastController extends defaultController
                         ->where('Active','=','1')
                         ->where('compcode','=',session('compcode'))
                         ->whereBetween('MRN',$mrn_range);
+
 
             if(!empty($request->sort)){
                 foreach ($request->sort as $key => $value) {
@@ -638,12 +655,20 @@ class PatmastController extends defaultController
             $loginid = $request->Newic;
         }
 
+        if(!empty($request->PatientImage)){
+            $PatientImage = $request->PatientImage;
+        }else{
+            $PatientImage = null;
+        }
+
         $array_insert = [
             'loginid' => $loginid,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'A'
+            'recstatus' => 'A',
+            'Active' => 1,
+            'PatientImage' => $PatientImage,
         ];
 
         $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
@@ -744,6 +769,8 @@ class PatmastController extends defaultController
 
             $responce = new stdClass();
             $responce->sql = $queries;
+            $responce->lastMrn = $request->MRN;
+            $responce->lastidno = $request->idno;
             echo json_encode($responce);
 
             DB::commit();
@@ -767,6 +794,7 @@ class PatmastController extends defaultController
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'D',
+                'Active' => 0,
             ]);
 
             $responce = new stdClass();
@@ -2202,15 +2230,17 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
-
-            $idno = DB::table('hisdb.title')->max('idno');
+            
+            if($this->default_duplicate('hisdb.title','Code',$request->title_code)>0){
+                throw new \Exception("Username already exist");
+            }
 
             DB::table('hisdb.title')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'Code' => intval($idno) + 1,
+                    'Code' => $request->title_code,
                     'description' => $request->title_desc,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2359,6 +2389,39 @@ class PatmastController extends defaultController
                 ]);
         }
 
+    }
+
+    public function auto_save(Request $request){
+        DB::beginTransaction();
+
+        try {
+
+            if($this->default_duplicate( ///check duplicate
+                $request->table_name,
+                $request->code_name,
+                $request[$request->code_name]
+            )){
+                return response('Already Exists', 500);
+            };
+
+
+            DB::table($request->table_name)
+                ->insert([
+                    'compcode'          =>  session('compcode'),
+                    $request->code_name =>  $request[$request->code_name],
+                    $request->desc_name =>  $request[$request->desc_name],
+                    'recstatus'         =>  'ACTIVE',
+                    'adduser'           =>  session('username'),
+                    'adddate'           =>  Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
 

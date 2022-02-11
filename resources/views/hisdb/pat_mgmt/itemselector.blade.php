@@ -32,7 +32,7 @@
 
 
 	<!-- new adm save -->
-	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_add_new_adm" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 130;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
@@ -87,7 +87,7 @@
 	</div>
 
 	<!-- new occupation save -->
-	<div id="mdl_add_new_occ" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_add_new_occ" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 130;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
@@ -118,7 +118,7 @@
 	</div>
 
 	<!-- new title save -->
-	<div id="mdl_add_new_title" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_add_new_title" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 130;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
@@ -131,7 +131,7 @@
 					<form id="new_title_form">
 					<div class="col-md-3 col-md-offset-1">
 	                    <small for="title_code">Code</small>
-	                    <input type="text" class="form-control form-mandatory" id="title_code" name="title_code" aria-required="true" disabled>
+	                    <input type="text" class="form-control form-mandatory" id="title_code" name="title_code" aria-required="true">
 	                </div>
 	                <div class="col-md-7">
 	                    <small for="title_desc">Description</small>
@@ -149,7 +149,7 @@
 	</div>
 
 	<!-- new relationship save -->
-	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_add_new_relationship" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 130;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
@@ -179,7 +179,7 @@
 	</div>
 
 	<!-- new areacode save -->
-	<div id="mdl_add_new_areacode" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);">
+	<div id="mdl_add_new_areacode" class="modal fade" role="dialog" title="title" data-backdrop="static" style="display: none; z-index: 130;background-color: rgba(0, 0, 0, 0.3);">
 		<div class="modal-dialog smallmodal">
 		
 			<!-- Modal content-->
