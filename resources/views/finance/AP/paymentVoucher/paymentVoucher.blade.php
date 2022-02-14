@@ -250,20 +250,17 @@ i.fa {
 						  	</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
-							<div class="col-md-2">
-								<div class='input-group'>
-									<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-								</div>
-							</div>		
+				  			<div class="col-md-2" id="apacthdr_cheqdate">
+								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+							
 					</div>
 
 					<div class="form-group">
 					<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
-							<div class="col-md-2">
-								<div class='input-group'>
-									<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-								</div>
-							</div>
+				  			<div class="col-md-2" id="apacthdr_recdate">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
 			   		</div>
 
 					<hr/>
