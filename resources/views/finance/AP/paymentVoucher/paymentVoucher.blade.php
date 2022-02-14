@@ -257,6 +257,15 @@ i.fa {
 							</div>		
 					</div>
 
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
+							<div class="col-md-2">
+								<div class='input-group'>
+									<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								</div>
+							</div>
+			   		</div>
+
 					<hr/>
 
 					<div class="form-group">
@@ -291,6 +300,8 @@ i.fa {
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
+
+							 
 
 					</div>
 

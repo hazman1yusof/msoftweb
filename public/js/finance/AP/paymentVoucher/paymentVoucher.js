@@ -247,7 +247,7 @@ $(document).ready(function () {
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
 		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
+		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
