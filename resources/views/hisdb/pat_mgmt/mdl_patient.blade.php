@@ -862,7 +862,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-success" id="btn_reg_proceed">Proceed</button>
+				<button type="button" class="btn btn-success" id="btn_mykad_proceed">Proceed</button>
 			</div>
 		</div>
 	</div>

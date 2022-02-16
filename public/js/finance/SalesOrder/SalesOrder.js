@@ -237,7 +237,7 @@ $(document).ready(function () {
 
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
-			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
+			urlParam2.billno = selrowData("#jqGrid").db_auditno;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -380,7 +380,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 		
-		$.post( '/SalesOrder/form', obj , function( data ) {
+		$.post( './SalesOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
@@ -421,7 +421,7 @@ $(document).ready(function () {
 
 				urlParam2.source = 'PB';
 				urlParam2.trantype = 'IN';
-				urlParam2.auditno = data.auditno;
+				urlParam2.billno = data.auditno;
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
@@ -1624,7 +1624,7 @@ $(document).ready(function () {
 				
 			],
 			urlParam: {
-					url:"/SalesOrderDetail/table",
+					url:"./SalesOrderDetail/table",
 					action: 'get_itemcode_price',
 					filterCol:['deptcode','price'],
 					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
@@ -1666,7 +1666,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Sales Order",
 			open:function(obj_){
-				dialog_chggroup.urlParam.url = "/SalesOrderDetail/table";
+				dialog_chggroup.urlParam.url = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
 				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
 				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];

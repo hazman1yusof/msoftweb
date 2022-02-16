@@ -3,8 +3,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-
-	$("body").show();
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -231,38 +229,38 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 
 	$("#jqGrid").jqGrid({
-	datatype: "local",
-	colModel: [
-		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
-		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden: true},
-		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
-		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
-		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
-		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:false},
-		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
-		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},	
-		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
-		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
-		{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
+		datatype: "local",
+		colModel: [
+			//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
+			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
+			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden: true},
+			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
+			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
+			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap'},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},	
+			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true},
+			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
+			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
 
-	],
+		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -416,43 +414,68 @@ $(document).ready(function () {
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
-	
+		console.log($(this).data('date'))
+		if($(this).data('date') == undefined || $(this).data('date') == ""){
+			alert('Please enter post Date');
+			return false;
+		}else{
+			var idno_date_array = $(this).data('date').split(",");
+		}
+
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	idno_array.push(data.apacthdr_auditno);
+	    	var found = idno_date_array.find(function(e){
+				return (e.split("_")[1] == data.apacthdr_idno);
+	    	});
+
+	    	if(found == -1){
+	    		alert('Please enter post Date');
+	    		return false;//return for atau return function??
+	    	}else{
+		    	idno_array.push({
+		    		idno:data.apacthdr_idno,
+		    		date:found.split("_")[0]
+		    	});
+	    	}
 	    }
 	    
 		var obj={};
 		obj.idno_array = idno_array;
+		obj.idno_date_array = idno_date_array;
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
+		oper=null;
+
+		console.log(obj);
 		
-		$.post( './paymentVoucher/form', obj , function( data ) {
+		// $.post( './paymentVoucher/form', obj , function( data ) {
+		// 	cbselect.empty_sel_tbl();
+		// 	refreshGrid('#jqGrid', urlParam);
+		// }).fail(function(data) {
+		// 	$('#error_infront').text(data.responseText);
+		// }).success(function(data){
+			
+		// });
+
+	});
+
+	$("#but_post2_jq").click(function(){
+	
+		var obj={};
+		obj.idno = selrowData('#jqGrid').apacthdr_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+			
+		$.post(  './paymentVoucher/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
 		}).success(function(data){
 			
-		});
-
-		$("#but_post2_jq").click(function(){
-	
-			var obj={};
-			obj.idno = selrowData('#jqGrid').apacthdr_idno;
-			obj.oper = $(this).data('oper');
-			obj._token = $('#_token').val();
-			oper=null;
-			
-			$.post(  './paymentVoucher/form', obj , function( data ) {
-				cbselect.empty_sel_tbl();
-				refreshGrid('#jqGrid', urlParam);
-			}).fail(function(data) {
-				$('#error_infront').text(data.responseText);
-			}).success(function(data){
-				
-			});
 		});
 	});
 
@@ -758,9 +781,9 @@ $(document).ready(function () {
 		let recstatus = cbselect.recstatus;
 		
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
 		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject['apacthdr_idno']+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
 		}
@@ -1512,4 +1535,52 @@ function empty_form(){
 	$('#document_show').text('');
 	$('#suppcode_show').text('');
 
+}
+
+function click_selection(id){
+	var date_id = 'date_injqgrid_'+$(id).data('idno');
+	var date_idno = $(id).data('idno');
+
+	if($(id).is(':checked')){
+		$(id).parent().prev().html( "<input class='form-control input-sm' type='date' id='"+date_id+"' data-idno='"+date_idno+"'>" )
+
+		$('#'+date_id).change(function () {
+			var date = $('#but_post_jq').data('date');
+			let this_idno = $(this).data('idno');
+			var date_arr;
+
+			if(date == undefined){
+		    	$('#but_post_jq').data('date',$(this).val()+'_'+this_idno);
+			}else{
+				date_arr = date.split(",");
+				var found_idx = date_arr.findIndex(function(e,i){
+					return (e.split("_")[1] == this_idno)
+				});
+
+				date_arr[found_idx] = $(this).val()+'_'+this_idno;
+
+		    	$('#but_post_jq').data('date',date_arr.join(','));
+			}
+		});
+
+	}else{
+		var date = $('#but_post_jq').data('date');
+		var date_arr;
+
+		if(date != undefined){
+			date_arr = date.split(",");
+			var found_idx = date_arr.findIndex(function(e,i){
+				return (e.split("_")[1] == date_idno)
+			});
+
+			date_arr.splice(found_idx, 1);
+
+			if(date_arr.length == 0){
+	    		$('#but_post_jq').data('date',undefined);//sini last
+			}else{
+	    		$('#but_post_jq').data('date',date_arr.join(','));
+			}
+		}
+		$(id).parent().prev().html( " " )
+	}
 }

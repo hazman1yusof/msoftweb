@@ -41,12 +41,12 @@
 			<div class="column"></div>
 			<div class="column">
 	    		<div class="ui rounded small image bordered">
-				  <img src="{{ asset('img/no-image.gif') }}" id="image">
+				  <img src="{{ asset('img/no-image.gif') }}" id="image" defaultsrc="{{ asset('img/no-image.gif') }}">
 				</div>
 			</div>
 			<div class="column" style="position: relative">
 	    		<div class="ui rounded tiny image" style="position: absolute; top: 42px; left: 22px;">
-				  <img src="{{ asset('img/fingerprint.png') }}" id="fingerprint">
+				  <img src="{{ asset('img/fingerprint.png') }}" id="fingerprint" defaultsrc="{{ asset('img/fingerprint.png') }}">
 				</div>
 			</div>
 

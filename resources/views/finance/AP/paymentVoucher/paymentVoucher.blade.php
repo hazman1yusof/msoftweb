@@ -95,7 +95,7 @@ i.fa {
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
-							{{Request::get('scope').' ALL'}}
+							{{Request::get('scope')}}
 						@endif
 					</button>
 
