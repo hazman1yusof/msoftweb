@@ -276,15 +276,6 @@ $(document).ready(function () {
 		let stat = selrowData("#jqGrid").apacthdr_recstatus;
 		let scope = $("#recstatus_use").val();
 
-		// if (stat == scope) {
-		// 	$('#but_cancel_jq').show();
-		// } else if (stat == "CANCELLED") {
-		// 	$('#but_reopen_jq').show();
-		// } else {
-		// 	if(scope.toUpperCase() == 'ALL'){
-		// 	}
-		// }
-
 		if(rowid != null) {
 			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 			refreshGrid('#jqGrid2', urlParam2,'kosongkan');
@@ -1462,10 +1453,6 @@ $(document).ready(function () {
 			},'urlParam','radio','tab'
 		);
 	dialog_payto.makedialog(true);
-
-	
-	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();*/
 
 	$("#jqGrid_selection").jqGrid({
 		datatype: "local",

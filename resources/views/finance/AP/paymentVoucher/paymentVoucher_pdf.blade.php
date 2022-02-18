@@ -47,20 +47,14 @@ hr {
 								<td><b>Date</b></td>
 								<td><b>Bank Acc No</b></td>
                             </tr>
-                            <tr class="add">
-								<td colspan="3"><b>Remark</b></td>
-								
-                            </tr>
+                           
                             <tr class="content">
                                 <td colspan="3" class="font-weight-bold">
-									<p>{{$apacthdr->suppcode}}</p>
+									<p>{{$apacthdr->suppname}}</p>
 									
 								</td>
-								<td> <!-- auditno -->
-									<p>{{str_pad($apacthdr->auditno, 7, '0', STR_PAD_LEFT)}}</td>			
-								</td>
 								<td> <!-- voucher no -->
-                                <p>{{$apacthdr->pvno}}</p>			
+                                	<p>{{$apacthdr->pvno}}</p>			
 								</td>
 								<td> <!-- paymode -->
 									<p>{{$apacthdr->paymode}}</p>			
@@ -69,9 +63,23 @@ hr {
 									<p>{{\Carbon\Carbon::createFromFormat('Y-m-d',$apacthdr->actdate)->format('d-m-Y')}}</p>			
 								</td>
 								<td> <!-- bank acc no -->
-									<p>{{str_pad($apacthdr->invno, 7, '0', STR_PAD_LEFT)}}</td>					
+									<p>{{$apacthdr->bankaccno}}</p>				
 								</td>
+							
+                            </tr>
+                        </tbody>
+                    </table>
+
+					<table class="table table-borderless">
+                        <tbody>
+							<tr class="add">
+								<td colspan="3"><b>Remark</b></td>
 								
+                            </tr>
+							<tr class="content">
+                                <td colspan="3" class="font-weight-bold">
+									<p>{{$apacthdr->remarks}}</p>
+								</td>				
                             </tr>
                         </tbody>
                     </table>
@@ -81,80 +89,101 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
 							<tr>
-								<td colspan="5"><b>Invoice Date</b></td>
+								<td><b>Invoice Date</b></td>
 								<td><b>Invoice No</b></td>
-								<td><b>Description</b></td>
+								<td colspan="4"><b>Description</b></td>
 								<td><b>Amount</b></td>
 							</tr>
 							<tr >
-								<td colspan="5" height="180"> <!-- description of chgcode from hisdb.chgmast-->
-									@foreach ($billsum as $obj)
-										<p>{{$obj->chgmast_desc}}</p>
+								<td> <!-- invoice date -->
+									@foreach ($apalloc as $obj)
+									<p>{{$obj->allocdate}}</p>
 									@endforeach
 								</td>
-								<td> <!-- uomcode -->
-									@foreach ($billsum as $obj)
-										<p>{{$obj->uom}}</p>
+								<td> <!-- invoice no -->
+									@foreach ($apalloc as $obj)
+										<p>{{$obj->reference}}</p>
 									@endforeach
 								</td>
-								<td> <!-- quantity -->
-									@foreach ($billsum as $obj)
-										<p>{{$obj->quantity}}</p>
-									@endforeach
-								</td>
-								<td> <!-- unit price -->
-									@foreach ($billsum as $obj)
-										<p>{{number_format($obj->unitprice,2)}}</p>
-									@endforeach
-								</td>
-								<td> <!--tax amount -->
-									@foreach ($billsum as $obj)
-										<p>{{number_format($obj->taxamt,2)}}</p>
+								<td colspan="4" height="80"> <!-- description -->
+									@foreach ($apalloc as $obj)
+										<p>{{$obj->remarks}}</p>
 									@endforeach
 								</td>
 								<td> <!-- amount -->
-									@foreach ($billsum as $obj)
-										<p>{{number_format($obj->amount,2)}}</p>
+									@foreach ($apalloc as $obj)
+										<p>{{number_format($obj->refamount,2)}}</p>
 									@endforeach
 								</td>
 							</tr>
 
 							<tr>
-								<td colspan="5">
+								<td colspan="4">
 									<p><b>Ringgit Malaysia</b></p>
 									<p><i>{{$totamt_bm}}</i></p>
 								</td>
-								<td colspan="5">
+								<td colspan="4">
 									<p><b>Total Amount</b></p>
-									<p>{{number_format($dbacthdr->amount,2)}}</p>
+									<p>{{number_format($apacthdr->amount,2)}}</p>
+								</td>
+							</tr>
+							<tr>
+								<td colspan ="2">
+									<p><b>Prepared By:</b></p>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>________________</p>
+									<p>Name:</p>
+								</td>
+								<td colspan ="2">
+									<p><b>Checked By:</b></p>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>________________</p>
+									<p>Name:</p>
+								</td>
+								<td colspan ="2">
+									<p><b>Approved By:</b></p>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>________________</p>
+									<p>Name:</p>
+								</td>
+								<td colspan ="2">
+									<p><b>Signatories:</b></p>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>________________</p>
+									<p>Name:</p>
+								</td>
+							</tr>
+							
+                        </tbody>
+                    </table>
+					<table class="table table-borderless">
+                        <tbody>
+							<tr>
+								<td colspan ="4">
+									<p><b>Received By:</b></p>
+									<p>&nbsp;</p>
+									<p>Name:</p>
+									<p>&nbsp;</p>
+									<p>IC or Passport:</p>
+									<p>&nbsp;</p>
+									<p>Signature:</p>
+									<p>&nbsp;</p>
 								</td>
 							</tr>
                         </tbody>
                     </table>
-                </div>
-
-                <hr>
-                <div class="address p-2">
-                    <table class="table table-borderless">
+					<table class="table table-borderless">
                         <tbody>
-                            <tr class="add">
-                                <td>ATTENTION</td>
-                            </tr>
-                            <tr class="content">
-                                <td>
-									<ol> 
-										<li>Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.</li>
-										<li>Payment can be made by cash. </li>
-										<li>Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of					{{$company->name}}.</li>
-									 	<li>Any inquiries must be issue to : <br> 
-											<p style="margin-left:10%; margin-right:10%;">{{$company->name}}</p>
-											<p style="margin-left:10%; margin-right:10%;">{{$company->address1}}</p>
-											<p style="margin-left:10%; margin-right:10%;">{{$company->address2}} {{$company->address3}}</p>
-											<p style="margin-left:10%; margin-right:10%;">{{$company->address4}}</p></li>
-
-									</ol>
+							<tr>
+								<td colspan ="4">
+									<p><b>DR</b> {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{$apacthdr->amount}}</p>
+									<p><b>CR</b> {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{$apacthdr->amount}}</p>
 								</td>
-                            </tr>
+							</tr>
                         </tbody>
                     </table>
                 </div>

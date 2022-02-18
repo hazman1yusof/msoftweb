@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use PDF;
 
     class PaymentVoucherController extends defaultController
 {   
@@ -567,6 +568,53 @@ use Carbon\Carbon;
                 ->first();
 
         return $obj;
+    }
+
+    public function showpdf(Request $request){
+        $auditno = $request->auditno;
+        if(!$auditno){
+            abort(404);
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as h', 'material.supplier as m', 'finance.bank as b')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->leftJoin('material.supplier as m', 'h.suppcode', '=', 'm.suppcode')
+            ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
+            ->where('auditno','=',$auditno)
+            ->first();
+
+        if ($apacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($apacthdr->recstatus == "POSTED"){
+            $title = " PAYMENT VOUCHER";
+        }
+
+        $apalloc = DB::table('finance.apalloc')
+            ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+
+            ->where('auditno','=',$auditno)
+            ->get();
+
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+        $totamount_expld = explode(".", (float)$apacthdr->amount);
+
+        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        if(count($totamount_expld) > 1){
+            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        }
+
+        $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_bm','company', 'title'));
+        return $pdf->stream();      
+
+        
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_bm','company', 'title'));
     }
 
 }
