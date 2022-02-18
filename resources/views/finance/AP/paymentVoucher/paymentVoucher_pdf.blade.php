@@ -72,14 +72,9 @@ hr {
 
 					<table class="table table-borderless">
                         <tbody>
-							<tr class="add">
-								<td colspan="3"><b>Remark</b></td>
-								
-                            </tr>
-							<tr class="content">
-                                <td colspan="3" class="font-weight-bold">
+							<tr>
+								<td colspan="3"><b>Remark:</b></td>
 									<p>{{$apacthdr->remarks}}</p>
-								</td>				
                             </tr>
                         </tbody>
                     </table>
@@ -115,18 +110,25 @@ hr {
 										<p>{{number_format($obj->refamount,2)}}</p>
 									@endforeach
 								</td>
-							</tr>
-
+							</tr>					
+                        </tbody>
+                    </table>
+					<table class="table table-borderless">
+                        <tbody>
 							<tr>
-								<td colspan="4">
+								<td colspan="2">
 									<p><b>Ringgit Malaysia</b></p>
 									<p><i>{{$totamt_bm}}</i></p>
 								</td>
-								<td colspan="4">
+								<td colspan="2">
 									<p><b>Total Amount</b></p>
 									<p>{{number_format($apacthdr->amount,2)}}</p>
 								</td>
-							</tr>
+							</tr>		
+						</tbody>
+					</table>
+					<table class="table table-borderless">
+                        <tbody>
 							<tr>
 								<td colspan ="2">
 									<p><b>Prepared By:</b></p>
@@ -156,10 +158,16 @@ hr {
 									<p>________________</p>
 									<p>Name:</p>
 								</td>
+								<td colspan ="2">
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>&nbsp;</p>
+									<p>________________</p>
+									<p>Name:</p>
+								</td>
 							</tr>
-							
-                        </tbody>
-                    </table>
+						</tbody>
+					</table>
 					<table class="table table-borderless">
                         <tbody>
 							<tr>
@@ -180,8 +188,8 @@ hr {
                         <tbody>
 							<tr>
 								<td colspan ="4">
-									<p><b>DR</b> {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{$apacthdr->amount}}</p>
-									<p><b>CR</b> {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{$apacthdr->amount}}</p>
+									<p><b>DR</b> {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{number_format($apacthdr->amount,2)}}</p>
+									<p><b>CR</b> {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{number_format($apacthdr->amount,2)}}</p>
 								</td>
 							</tr>
                         </tbody>
