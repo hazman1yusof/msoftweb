@@ -298,22 +298,21 @@ use PDF;
         try {
 
 
-            foreach ($request->idno_array as $idno){
-
+            foreach ($request->idno_array as $idno_obj){
                 $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno)
+                    ->where('idno','=',$idno_obj['idno'])
                     ->first();
 
-                $apacthdr = DB::table('finance.apacthdr')
-                    ->where('idno','=',$idno)
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_obj['idno'])
                     ->update([
-                        'recdate' => 'POSTED',
+                        'recdate' => $idno_obj['date'],
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                $this->gltran($apacthdr->auditno);
+                $this->gltran($idno_obj['idno']);
 
                 $apalloc = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
@@ -322,6 +321,7 @@ use PDF;
                     ->where('trantype','=', $apacthdr->trantype)
                     ->where('auditno','=', $apacthdr->auditno)
                     ->update([
+                        'allocdate' => $idno_obj['date'],
                         'recstatus' => 'POSTED',
                         'lastuser' => session('username'),
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -456,8 +456,7 @@ use PDF;
 
     public function gltran($auditno){
         $apacthdr_obj = DB::table('finance.apacthdr')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('auditno','=',$auditno)
+                            ->where('idno','=',$auditno)
                             ->first();
 
         //amik yearperiod dari delordhd
@@ -477,7 +476,7 @@ use PDF;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
-                'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
+                'description' => $apacthdr_obj->bankcode.'</br>'.$apacthdr_obj->cheqno,
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
@@ -508,8 +507,8 @@ use PDF;
             DB::table('finance.glmasdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'costcode' => $debit_obj->drcostcode,
-                    'glaccount' => $debit_obj->draccno,
+                    'costcode' => $debit_obj->costcode,
+                    'glaccount' => $debit_obj->glaccno,
                     'year' => $yearperiod->year,
                     'actamount'.$yearperiod->period => $apacthdr_obj->amount,
                     'adduser' => session('username'),
@@ -537,7 +536,7 @@ use PDF;
             DB::table('finance.glmasdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'costcode' => $credit_obj->costcode,
+                    'costcode' => $credit_obj->glccode,
                     'glaccount' => $credit_obj->glaccno,
                     'year' => $yearperiod->year,
                     'actamount'.$yearperiod->period => -$apacthdr_obj->amount,
