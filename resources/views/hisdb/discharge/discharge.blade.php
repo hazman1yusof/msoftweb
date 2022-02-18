@@ -121,7 +121,7 @@
 									</div>
 								</div>
 
-								<div class="form-group row">
+								<!-- <div class="form-group row">
 									<label class="col-md-1 control-label" for="dest_discharge">Destination</label>	 
 									 <div class="col-md-6">
 										  <div class='input-group'>
@@ -130,7 +130,81 @@
 										  </div>
 										  <span class="help-block"></span>
 									  </div>
+								</div> -->
+							</div>
+
+							<div class="col-md-8">
+                                <label class="control-label" for="clinicnote" style="padding:15px 1px 0px 1px">Provisional Diagnosis</label>
+                                <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="5" readonly=""></textarea>
+
+
+                                <label class="control-label" for="clinicnote" style="padding:15px 1px 0px 1px">Final Diagnosis</label>
+                                <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="5" readonly=""></textarea>
+
+
+                                <label class="control-label" for="clinicnote" style="padding:15px 1px 0px 1px">Operation Procedure</label>
+                                <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="5" readonly=""></textarea>
+
+
+                                <label class="control-label" for="clinicnote" style="padding:15px 1px 0px 1px">Summary Of Treatment</label>
+                                <textarea id="clinicnote" name="clinicnote" type="text" class="form-control input-sm" rows="5" readonly=""></textarea>
+                            </div>
+
+
+							<div class="col-md-4">
+                                <div class="col-md-12" style="padding:0px">
+	                                <div id="jqGrid_doctor_disc_c">
+	                                    <div class='col-md-12' style="padding:0 0 15px 0">
+	                                        <table id="jqGrid_doctor_disc" class="table table-striped"></table>
+	                                        <div id="jqGridPager_doctor_disc"></div>
+	                                    </div>
+	                                </div>
 								</div>
+
+
+                                <div class="col-md-12" style="padding:0px">
+	                                <div class="panel panel-info">
+	                                    <div class="panel-heading text-center">Status On Discharge</div>
+	                                    <div class="panel-body" style="margin-left: 50px">
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discWell" value="Well">
+												<label class="form-check-label" for="status_discWell">Well</label>
+											</div>
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discImproved" value="Improved">
+												<label class="form-check-label" for="status_discImproved">Improved</label>
+											</div>
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discAOR" value="AOR">
+												<label class="form-check-label" for="status_discAOR">AOR</label>
+											</div>
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discExpired" value="Expired">
+												<label class="form-check-label" for="status_discExpired">Expired</label>
+											</div>
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discAbsconded" value="Absconded">
+												<label class="form-check-label" for="status_discAbsconded">Absconded</label>
+											</div>
+	                                    	<div class="form-check">
+												<input class="form-check-input" type="radio" name="status_disc" id="status_discTransferred" value="Transferred">
+												<label class="form-check-label" for="status_discTransferred">Transferred</label>
+											</div>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+	                            <div class="col-md-12" style="padding:10px">
+	                            	<div class="form-check">
+										<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
+										<label class="form-check-label" for="moa_walkin">Medication(s) On Discharge</label>
+									</div>
+
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" name="moa_walkin" id="moa_walkin" value="1">
+										<label class="form-check-label" for="moa_walkin">Medical Certificate Given</label>
+									</div>
+	                            </div>
 							</div>
 
 						</div>

@@ -441,7 +441,7 @@ $(document).ready(function () {
 					trandate_from:yr_from+'-'+mon_from+"-01",
 					trandate_to:yr_to+'-'+mon_to+"-31"
 				}
-		$.get( "/itemEnquiry/form?"+$.param(param), function( data ) {
+		$.get( "./itemEnquiry/form?"+$.param(param), function( data ) {
 				
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){

@@ -836,13 +836,16 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 		});
 	}
 
-	this.checkbox_function_on = function(){
+	this.checkbox_function_on = function(callback){
 		let self = this;
 		let idno = self.idno;
 		$("#jqGrid input[type='checkbox'][name='checkbox_selection']").on('click',function(){
 			let rowid = $(this).data('rowid');
 			let checked = $(this).is(":checked");
 			let rowdata = $('#jqGrid').jqGrid ('getRowData', rowid);
+			if (callback !== undefined) {
+				callback(rowdata);
+			}
 			rowdata.jqgrid_rowid = rowid;
 			if(checked){//delete from seltable
 				$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno], rowdata);

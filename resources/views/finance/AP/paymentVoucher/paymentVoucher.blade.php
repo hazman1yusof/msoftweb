@@ -95,7 +95,7 @@ i.fa {
 						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
-							{{Request::get('scope').' ALL'}}
+							{{Request::get('scope')}}
 						@endif
 					</button>
 
@@ -130,7 +130,9 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Voucher Header</div>
+		    <div class="panel-heading">Payment Voucher Header
+			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -176,9 +178,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Payment Voucher Header
-				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-			</div>
+			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
@@ -402,7 +402,8 @@ i.fa {
 		});
 	</script>
 	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js"></script>
-	<!-- <script src="js/finance/AP/paymentVoucher/pdfgen.js"></script> -->
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
 	
 @endsection

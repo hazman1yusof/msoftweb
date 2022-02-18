@@ -3,8 +3,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-
-	$("body").show();
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -231,38 +229,38 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 
 	$("#jqGrid").jqGrid({
-	datatype: "local",
-	colModel: [
-		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
-		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden: true},
-		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
-		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
-		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
-		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
-		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
-		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true'},
-		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
-		{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
+		datatype: "local",
+		colModel: [
+			//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
+			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
+			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden: true},
+			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
+			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
+			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap'},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},	
+			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true},
+			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
+			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
 
-	],
+		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -277,15 +275,6 @@ $(document).ready(function () {
 		$('#error_infront').text('');
 		let stat = selrowData("#jqGrid").apacthdr_recstatus;
 		let scope = $("#recstatus_use").val();
-
-		// if (stat == scope) {
-		// 	$('#but_cancel_jq').show();
-		// } else if (stat == "CANCELLED") {
-		// 	$('#but_reopen_jq').show();
-		// } else {
-		// 	if(scope.toUpperCase() == 'ALL'){
-		// 	}
-		// }
 
 		if(rowid != null) {
 			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -302,6 +291,7 @@ $(document).ready(function () {
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
+			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
 			if_cancel_hide();
 			populate_form(selrowData("#jqGrid"));
 		},
@@ -326,7 +316,9 @@ $(document).ready(function () {
 			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
-			cbselect.checkbox_function_on();
+			cbselect.checkbox_function_on(function(rowdata){
+				delete rowdata.apacthdr_recdate
+			});
 			cbselect.refresh_seltbl();
 		},
 		
@@ -416,17 +408,26 @@ $(document).ready(function () {
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
-	
+
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
+
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	idno_array.push(data.apacthdr_auditno);
+			if(data.apacthdr_recdate == ''){
+				alert("Please insert Post Date");
+				return false;
+			}
+	    	idno_array.push({
+	    		idno:data.apacthdr_idno,
+	    		date:data.apacthdr_recdate
+	    	});
 	    }
 	    
 		var obj={};
 		obj.idno_array = idno_array;
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
+		oper=null;
 		
 		$.post( './paymentVoucher/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
@@ -437,22 +438,23 @@ $(document).ready(function () {
 			
 		});
 
-		$("#but_post2_jq").click(function(){
+	});
+
+	$("#but_post2_jq").click(function(){
 	
-			var obj={};
-			obj.idno = selrowData('#jqGrid').apacthdr_idno;
-			obj.oper = $(this).data('oper');
-			obj._token = $('#_token').val();
-			oper=null;
+		var obj={};
+		obj.idno = selrowData('#jqGrid').apacthdr_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
 			
-			$.post(  './paymentVoucher/form', obj , function( data ) {
-				cbselect.empty_sel_tbl();
-				refreshGrid('#jqGrid', urlParam);
-			}).fail(function(data) {
-				$('#error_infront').text(data.responseText);
-			}).success(function(data){
-				
-			});
+		$.post(  './paymentVoucher/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 
@@ -758,9 +760,9 @@ $(document).ready(function () {
 		let recstatus = cbselect.recstatus;
 		
 		if(options.gid == "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject['apacthdr_idno']+"' data-idno='"+rowObject['apacthdr_idno']+"' data-rowid='"+options.rowId+"' onclick='click_selection(checkbox_selection_"+rowObject['apacthdr_idno']+");'>";
 		}else if(options.gid != "jqGrid" && rowObject[recstatus] == recstatus_filter[0][0]){
-			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
+			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject['apacthdr_idno']+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
 			return ' ';
 		}
@@ -1439,10 +1441,6 @@ $(document).ready(function () {
 		);
 	dialog_payto.makedialog(true);
 
-	
-	/*var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();*/
-
 	$("#jqGrid_selection").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
@@ -1454,7 +1452,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
-			console.log(rowdata);
 		},
 		gridComplete: function(){
 			
@@ -1512,4 +1509,20 @@ function empty_form(){
 	$('#document_show').text('');
 	$('#suppcode_show').text('');
 
+}
+
+function click_selection(id){
+	var date_id = 'date_injqgrid_'+$(id).data('idno');
+	var date_idno = $(id).data('idno');
+	if($(id).is(':checked')){
+		$(id).parent().prev().html( "<input class='form-control input-sm' type='date' id='"+date_id+"' data-idno='"+date_idno+"'>" )
+
+		$('#'+date_id).change(function () {
+			let this_idno = $(this).data('idno');
+			$("#jqGrid_selection").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
+		});
+
+	}else{
+		$(id).parent().prev().html( " " )
+	}
 }

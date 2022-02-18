@@ -168,6 +168,8 @@
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 					},
 					{label: 'Interval Time', name: 'intervaltime', width: 90 , classes: 'wrap',hidden: true},
+					{label: 'mmcid', name: 'mmcid', width: 90 , classes: 'wrap',hidden: true},
+					{label: 'apcid', name: 'apcid', width: 90 , classes: 'wrap',hidden: true},
 					{label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{label: 'adddate', name: 'adddate', width: 90, hidden:true},
 					{label: 'upduser', name: 'upduser', width: 90, hidden:true},

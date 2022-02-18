@@ -52,7 +52,7 @@ class SalesOrderDetailController extends defaultController
         $table = DB::table('debtor.billsum')
                     ->where('source','=',$request->source)
                     ->where('trantype','=',$request->trantype)
-                    ->where('auditno','=',$request->auditno)
+                    ->where('billno','=',$request->billno)
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');

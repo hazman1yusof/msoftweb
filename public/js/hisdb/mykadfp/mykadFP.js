@@ -22,6 +22,8 @@ $(document).ready(function () {
 
 	$('#closemodalfp').click(function(){
 		emptyFormdata([],"form#myform");
+        $("img#image").attr('src',$("img#image").attr("defaultsrc"));
+        $("img#fingerprint").attr('src',$("img#fingerprint").attr("defaultsrc"));
 		if (window.frameElement) {
 			parent.closemodalfp();
 		}

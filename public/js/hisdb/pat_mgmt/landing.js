@@ -69,11 +69,11 @@ $(document).ready(function() {
         formatters: {
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
-                if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
-                }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
-                }
+                // if(row.PatStatus == 1 && row.q_epistycode=='IP'){
+                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
+                // }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
+                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
+                // }
                 return retval;
             },
             "col_mrn": function (column,row) {
@@ -100,8 +100,8 @@ $(document).ready(function() {
                 let rowid = counter++;//just for specify each row
                 if(row.q_epistycode == '' || row.q_epistycode == undefined){
                     return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
-                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button>";
+                           "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
+                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div>";
 
                 }else{
                     if(row.q_epistycode == $("#epistycode").val() ){
@@ -313,9 +313,13 @@ $(document).ready(function() {
             if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
+                var olddob = data.dob;
+                newdob = [olddob.slice(6), '-', olddob.slice(3,5), '-', olddob.slice(0,2)].join('');
+
+                $("#patientBox").data('gotpat',true);
                 $("#mykad_reponse").text("");
                 $("#mykad_newic").val(data.ic);
-                $("#mykad_DOB").val(data.dob);
+                $("#mykad_DOB").val(newdob);
                 $("#mykad_birthPlace").val(data.birthplace);
                 $("#mykad_pat_name").val(data.name);
                 $("#mykad_oldic").val(data.oldic);
@@ -335,17 +339,14 @@ $(document).ready(function() {
 
                 $('#txt_pat_name').val(data.name);
                 $('#txt_pat_newic').val(data.ic);
-                if(data.sex == 'P' || data.sex == 'F'){
+                if(data.sex == 'P' || data.sex == 'FEMALE'){
                     $('#cmb_pat_sex').val('F');
-                }else if(data.sex == 'L' || data.sex == 'M'){
+                }else if(data.sex == 'L' || data.sex == 'MALE'){
                     $('#cmb_pat_sex').val('M');
                 }
                 $('#txt_ID_Type').val("O");
 
                 //"19950927"
-
-                var olddob = data.dob;
-                newdob = [olddob.slice(0, 4), '-', olddob.slice(4,6), '-', olddob.slice(6)].join('');
 
                 $('#txt_pat_dob').val(newdob);
                 $('#txt_pat_age').val(gettheage(newdob));
@@ -354,13 +355,15 @@ $(document).ready(function() {
                 // $('#cmb_pat_category').val(data.pat_category);
                 // $('#hid_pat_citizen').val(obj.citizenship);
 
+                mykad_check_existing_patient(); 
+
                 auto_save('race',{
                     _token : $('#csrf_token').val(),
                     table_name: 'hisdb.racecode',
                     code_name: 'Code',
                     desc_name: 'Description',
-                    Code: obj.race,
-                    Description: obj.race,
+                    Code: data.race,
+                    Description: data.race,
                 },
                 desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
 
@@ -369,14 +372,14 @@ $(document).ready(function() {
                     table_name: 'hisdb.religion',
                     code_name: 'Code',
                     desc_name: 'Description',
-                    Code: obj.religion,
-                    Description: obj.religion,
+                    Code: data.religion,
+                    Description: data.religion,
                 },
                 desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
 
-                $('#txt_pat_curradd1').val(data.address1);
-                $('#txt_pat_curradd2').val(data.address2);
-                $('#txt_pat_curradd3').val(data.address3);
+                $('#txt_pat_curradd1').val(data.addr1);
+                $('#txt_pat_curradd2').val(data.addr2);
+                $('#txt_pat_curradd3').val(data.addr3);
                 $('#txt_pat_currpostcode').val(data.postcode);
                 $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
 
@@ -389,8 +392,10 @@ $(document).ready(function() {
        $('#mdl_biometric').modal('show');
     });
 
-    $('#btn_reg_proceed').click(function(){
-        $("#patientBox").data('gotpat',true);
+    $('#btn_mykad_proceed').click(function(){
+        emptyFormdata([],"form#frm_mykad_info");
+        $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
+        $('#mdl_mykad').modal('hide');
     });
 
     ////////////////habis mykad///////

@@ -484,7 +484,11 @@
         $('#cmb_pat_MRFolder').val(rowdata.MRFolder);
         $('#txt_bloodgroup').val(rowdata.bloodgrp);
         $('#txt_newmrn').val(rowdata.NewMrn);
-        $("img#photobase64").attr('src',rowdata.PatientImage);
+        if(rowdata.PatientImage != null && rowdata.PatientImage.startsWith('data')){
+            $("img#photobase64").attr('src',rowdata.PatientImage);
+        }else{
+            $("img#photobase64").attr('src',$("img#photobase64").attr("defaultsrc"));
+        }
         // $('#name').val(rowdata.name);
 
         //populate_payer_guarantee_info(d); tgk balik nanti

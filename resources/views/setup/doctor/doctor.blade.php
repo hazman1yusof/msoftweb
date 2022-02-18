@@ -161,6 +161,18 @@
 					</div>
 
 					<div class="form-group">
+						<label class="col-md-2 control-label" for="mmcid">Malaysian Medical Council (MMC) ID</label>  
+							<div class="col-md-4">
+								<input id="mmcid" name="mmcid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+							</div>
+
+						<label class="col-md-2 control-label" for="apcid">Advanced Practice Clinician (APC) ID</label>  
+							<div class="col-md-4">
+								<input id="apcid" name="apcid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+							</div> 
+					</div>
+
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="admright">Admission Right</label>  
 						<div class="col-md-4">
 							<label class="radio-inline"><input type="radio" name="admright" value='1' data-validation="required" checked="">Yes</label>

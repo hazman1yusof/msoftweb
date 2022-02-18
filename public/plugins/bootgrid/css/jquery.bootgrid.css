@@ -88,7 +88,7 @@
   cursor: pointer;
 }
 .bootgrid-table th > .column-header-anchor > .text {
-  display: block;
+  display: unset;
   margin: 0 16px 0 0;
   overflow: hidden;
   -ms-text-overflow: ellipsis;
