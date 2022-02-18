@@ -178,9 +178,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Payment Voucher Header
-				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-			</div>
+			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}

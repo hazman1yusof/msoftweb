@@ -563,6 +563,7 @@ Route::get('/paymentVoucher','finance\PaymentVoucherController@show');
 Route::get('/paymentVoucher/table','finance\PaymentVoucherController@table');
 Route::post('/paymentVoucher/form','finance\PaymentVoucherController@form');
 Route::get('/paymentVoucher/form','finance\PaymentVoucherController@form');
+Route::get('/paymentVoucher/showpdf','finance\PaymentVoucherController@showpdf');
 
 //// Credit Note ///
 Route::get('/creditNote','finance\CreditNoteController@show');
