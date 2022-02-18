@@ -324,7 +324,9 @@ $(document).ready(function () {
 			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 
-			cbselect.checkbox_function_on();
+			cbselect.checkbox_function_on(function(rowdata){
+				delete rowdata.apacthdr_recdate
+			});
 			cbselect.refresh_seltbl();
 		},
 		
@@ -414,50 +416,35 @@ $(document).ready(function () {
 
 	$("#but_post_jq").click(function(){
 		var idno_array = [];
-		console.log($(this).data('date'))
-		if($(this).data('date') == undefined || $(this).data('date') == ""){
-			alert('Please enter post Date');
-			return false;
-		}else{
-			var idno_date_array = $(this).data('date').split(",");
-		}
 
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
 
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	var found = idno_date_array.find(function(e){
-				return (e.split("_")[1] == data.apacthdr_idno);
+			if(data.apacthdr_recdate == ''){
+				alert("Please insert Post Date");
+				return false;
+			}
+	    	idno_array.push({
+	    		idno:data.apacthdr_idno,
+	    		date:data.apacthdr_recdate
 	    	});
-
-	    	if(found == -1){
-	    		alert('Please enter post Date');
-	    		return false;//return for atau return function??
-	    	}else{
-		    	idno_array.push({
-		    		idno:data.apacthdr_idno,
-		    		date:found.split("_")[0]
-		    	});
-	    	}
 	    }
 	    
 		var obj={};
 		obj.idno_array = idno_array;
-		obj.idno_date_array = idno_date_array;
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		oper=null;
-
-		console.log(obj);
 		
-		// $.post( './paymentVoucher/form', obj , function( data ) {
-		// 	cbselect.empty_sel_tbl();
-		// 	refreshGrid('#jqGrid', urlParam);
-		// }).fail(function(data) {
-		// 	$('#error_infront').text(data.responseText);
-		// }).success(function(data){
+		$.post( './paymentVoucher/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
 			
-		// });
+		});
 
 	});
 
@@ -1477,7 +1464,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
-			console.log(rowdata);
 		},
 		gridComplete: function(){
 			
@@ -1540,47 +1526,15 @@ function empty_form(){
 function click_selection(id){
 	var date_id = 'date_injqgrid_'+$(id).data('idno');
 	var date_idno = $(id).data('idno');
-
 	if($(id).is(':checked')){
 		$(id).parent().prev().html( "<input class='form-control input-sm' type='date' id='"+date_id+"' data-idno='"+date_idno+"'>" )
 
 		$('#'+date_id).change(function () {
-			var date = $('#but_post_jq').data('date');
 			let this_idno = $(this).data('idno');
-			var date_arr;
-
-			if(date == undefined){
-		    	$('#but_post_jq').data('date',$(this).val()+'_'+this_idno);
-			}else{
-				date_arr = date.split(",");
-				var found_idx = date_arr.findIndex(function(e,i){
-					return (e.split("_")[1] == this_idno)
-				});
-
-				date_arr[found_idx] = $(this).val()+'_'+this_idno;
-
-		    	$('#but_post_jq').data('date',date_arr.join(','));
-			}
+			$("#jqGrid_selection").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
 		});
 
 	}else{
-		var date = $('#but_post_jq').data('date');
-		var date_arr;
-
-		if(date != undefined){
-			date_arr = date.split(",");
-			var found_idx = date_arr.findIndex(function(e,i){
-				return (e.split("_")[1] == date_idno)
-			});
-
-			date_arr.splice(found_idx, 1);
-
-			if(date_arr.length == 0){
-	    		$('#but_post_jq').data('date',undefined);//sini last
-			}else{
-	    		$('#but_post_jq').data('date',date_arr.join(','));
-			}
-		}
 		$(id).parent().prev().html( " " )
 	}
 }
