@@ -300,6 +300,7 @@ $(document).ready(function () {
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
+			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
 			if_cancel_hide();
 			populate_form(selrowData("#jqGrid"));
 		},
