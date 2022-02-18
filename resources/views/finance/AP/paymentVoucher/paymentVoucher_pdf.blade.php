@@ -65,7 +65,6 @@ hr {
 								<td> <!-- bank acc no -->
 									<p>{{$apacthdr->bankaccno}}</p>				
 								</td>
-							
                             </tr>
                         </tbody>
                     </table>
@@ -73,8 +72,10 @@ hr {
 					<table class="table table-borderless">
                         <tbody>
 							<tr>
-								<td colspan="3"><b>Remark:</b></td>
+								<td><b>Remark:</b></td>
+								<td colspan="10">
 									<p>{{$apacthdr->remarks}}</p>
+								</td>
                             </tr>
                         </tbody>
                     </table>
