@@ -60,7 +60,7 @@ $(document).ready(function () {
 		}, 0);
 	});
 
-	$("#jqGridDieteticCareNotes_panel").on("show.bs.collapse", function(){
+	$("#jqGridDieteticCareNotes_panel").on("shown.bs.collapse", function(){
         var urlparam_dietetic_date_tbl={
 			action:'get_table_date_dietetic',
 			mrn:$("#mrn_dieteticCareNotes").val(),
@@ -69,8 +69,9 @@ $(document).ready(function () {
 
 	    dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
 			emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
-			$('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
+			// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
 	    });
+		SmoothScrollTo("#jqGridDieteticCareNotes_panel", 500)	
 	});
 	
 	$('#dietetic_date_tbl tbody').on('click', 'tr', function () { 
@@ -252,7 +253,7 @@ function populate_dieteticCareNotes_currpt(obj){
 
     dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
 		emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
-		$('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
+		// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
 	
 }
