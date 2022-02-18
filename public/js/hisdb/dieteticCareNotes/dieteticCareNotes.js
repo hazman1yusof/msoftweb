@@ -15,6 +15,7 @@ $(document).ready(function () {
 		button_state_dieteticCareNotes('wait');
 		enableForm('#formDieteticCareNotes');
 		rdonly('#formDieteticCareNotes');
+		disableFields_dieteticCareNotes();
 		// dialog_mrn_edit.on();
 		
 	});
