@@ -362,6 +362,17 @@ Route::get('/SalesOrder/form','finance\SalesOrderController@form');
 Route::post('/SalesOrderDetail/form','finance\SalesOrderDetailController@form');
 Route::get('/SalesOrderDetail/table','finance\SalesOrderDetailController@table');
 Route::get('/SalesOrder/showpdf','finance\SalesOrderController@showpdf');
+//// Finance - report sales//
+Route::get('/SalesOrderReport','finance\SalesOrderReportController@show');
+Route::get('/SalesOrderReport/table','finance\SalesOrderReportController@table');
+Route::post('/SalesOrderReport/form','finance\SalesOrderReportController@form');
+Route::get('/SalesOrderReport/showExcel','finance\SalesOrderReportController@showExcel');
+
+//// Finance - report sales ///
+Route::get('/SalesOrder_Report','finance\SalesOrder_ReportController@show');
+Route::get('/SalesOrder_Report/table','finance\SalesOrder_ReportController@table');
+Route::post('/SalesOrder_Report/form','finance\SalesOrder_ReportController@form');
+Route::get('/SalesOrder_Report/showExcel','finance\SalesOrder_ReportController@showExcel');
 
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');
