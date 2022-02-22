@@ -338,7 +338,7 @@ $(document).ready(function () {
 			param.offset=start;
 			param.limit=limit;
 		}
-		$.get( "/util/get_value_default?"+$.param(param), function( data ) {
+		$.get( "util/get_value_default?"+$.param(param), function( data ) {
 				
 		},'json').done(function(data) {
 			mymodal.hide();

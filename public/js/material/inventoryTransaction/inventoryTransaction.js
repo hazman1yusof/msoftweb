@@ -538,7 +538,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 
-		$.post('/inventoryTransaction/form',obj,function (data) {
+		$.post('inventoryTransaction/form',obj,function (data) {
 			cbselect.empty_sel_tbl();
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
@@ -1218,7 +1218,7 @@ $(document).ready(function () {
 				
     		}
 
-    		$.post( "/inventoryTransactionDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./inventoryTransactionDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
@@ -2237,7 +2237,7 @@ $(document).ready(function () {
 			'_token':$('#_token').val()
 		}
 		if(idno != null || idno !=undefined || idno != ''){
-			$.post( '/inventoryTransactionDetail/form',obj,function( data ) {
+			$.post( './inventoryTransactionDetail/form',obj,function( data ) {
 					
 			});
 		}

@@ -339,7 +339,7 @@
         },
     });
 
-    var desc_show = new loading_desc([
+    desc_show = new loading_desc([
         {code:'#hid_pat_citizen',desc:'#txt_pat_citizen',id:'citizencode'},
         {code:'#hid_pat_area',desc:'#txt_pat_area',id:'areacode'},
         {code:'#hid_pat_title',desc:'#txt_pat_title',id:'titlecode'},
@@ -369,9 +369,16 @@
             load_for_desc(this,'religioncode','pat_mast/get_entry?action=get_patient_religioncode');
         }
 
-        function load_for_desc(selobj,id,url){
+        this.load_sp_desc = function(code,url){
+            load_for_desc(this,code,url,true);
+        }
+
+        function load_for_desc(selobj,id,url,reload=false){
             $.getJSON(url,{},function(data){
                 selobj[id].data = data.data;
+                if(reload){
+                    selobj.write_desc();
+                }
             });
         }
 

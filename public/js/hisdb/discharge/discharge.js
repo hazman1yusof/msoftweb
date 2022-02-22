@@ -91,8 +91,62 @@ $(document).ready(function () {
 	});
 
 	$("#jqGrid_discharge_panel").on("shown.bs.collapse", function(){
-		SmoothScrollTo("#jqGrid_discharge_panel", 500)	
+		SmoothScrollTo("#jqGrid_discharge_panel", 500);
+		$("#jqGrid_doctor_disc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_doctor_disc_c")[0].offsetWidth-$("#jqGrid_doctor_disc_c")[0].offsetLeft-0));
+		urlParam_doctor_disc.filterCol = ['da.compcode','da.episno','da.mrn'],
+		urlParam_doctor_disc.filterVal = ['session.compcode',$("#episno_discharge").val(),$("#mrn_discharge").val()]
+		refreshGrid("#jqGrid_doctor_disc", urlParam_doctor_disc);
 	});
+
+	var urlParam_doctor_disc = {
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field: '',
+		fixPost:'true',
+		table_name: ['hisdb.docalloc AS da','hisdb.doctor AS d'],
+		join_type:['LEFT JOIN'],
+		join_onCol:['da.doctorcode'],
+		join_onVal:['d.doctorcode'],
+		filterCol:['da.compcode','da.episno','da.mrn'],
+		filterVal:['session.compcode',$("#episno_discharge").val(),$("#mrn_discharge").val()],
+	}
+
+	$("#jqGrid_doctor_disc").jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Doctorcode', name: 'da_doctorcode' , width: 30 },
+            { label: 'Name', name: 'd_doctorname' ,classes: 'wrap', width: 70},
+            { label: 'compcode', name: 'da_compcode', hidden: true },
+            { label: 'allocno', name: 'da_allocno', hidden: true  },
+            { label: 'MRN', name: 'da_mrn', hidden: true  },
+            { label: 'Epis no', name: 'da_episno' , hidden: true },
+            { label: 'd_disciplinecode', name: 'd_disciplinecode' , hidden: true },
+            { label: 'da_asdate', name: 'da_asdate' , hidden: true },
+            { label: 'da_astime', name: 'da_astime' , hidden: true },
+            { label: 'da_astatus', name: 'da_astatus' , hidden: true },
+		],
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce: false,
+		viewrecords: false,
+		width: 900,
+		sortname: 'da_allocno',
+		sortorder: 'asc',
+		height: 250, 
+		rowNum: 30,
+		pager: "#jqGridPager_doctor",
+		onSelectRow:function(rowid, selected){
+		},
+		loadComplete: function(){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+		gridComplete: function () {
+		},
+	});
+
+	addParamField('#jqGrid_doctor_disc', false, urlParam_doctor_disc);
 		
 });
 

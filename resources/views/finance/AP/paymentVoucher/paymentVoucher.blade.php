@@ -28,6 +28,10 @@ i.fa {
    overflow: auto;
 }
 
+.whtspc_wrap{
+	white-space: pre-wrap !important;
+}
+
 @endsection
 
 @section('body')
@@ -88,11 +92,15 @@ i.fa {
 						id="but_post_jq" 
 						data-oper="posted" 
 						style="display: none;">
-						POST
+						@if (strtoupper(Request::get('scope')) == 'ALL')
+							{{'POST'}}
+						@else
+							{{Request::get('scope')}}
+						@endif
 					</button>
 
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
-						@if (Request::get('scope') == strtoupper('ALL'))
+						@if (strtoupper(Request::get('scope')) == 'ALL')
 							{{'POST'}}
 						@else
 							{{Request::get('scope')}}
@@ -122,7 +130,9 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Voucher Header</div>
+		    <div class="panel-heading">Payment Voucher Header
+			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -168,9 +178,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Payment Voucher Header
-				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-			</div>
+			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
@@ -242,12 +250,18 @@ i.fa {
 						  	</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
-							<div class="col-md-2">
-								<div class='input-group'>
-									<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12"  class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-								</div>
-							</div>		
+				  			<div class="col-md-2" id="apacthdr_cheqdate">
+								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+							
 					</div>
+
+					<div class="form-group">
+					<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
+				  			<div class="col-md-2" id="apacthdr_recdate">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+			   		</div>
 
 					<hr/>
 
@@ -283,6 +297,8 @@ i.fa {
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
+
+							 
 
 					</div>
 
@@ -386,7 +402,8 @@ i.fa {
 		});
 	</script>
 	<script src="js/finance/AP/paymentVoucher/paymentVoucher.js"></script>
-	<!-- <script src="js/finance/AP/paymentVoucher/pdfgen.js"></script> -->
+	<script src="plugins/pdfmake/pdfmake.min.js"></script>
+	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
 	
 @endsection

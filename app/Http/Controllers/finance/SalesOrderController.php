@@ -179,7 +179,7 @@ class SalesOrderController extends defaultController
                 $billsum = DB::table("debtor.billsum")
                             ->where('source','=',$dbacthdr->source)
                             ->where('trantype','=',$dbacthdr->trantype)
-                            ->where('auditno','=',$dbacthdr->auditno)
+                            ->where('billno','=',$dbacthdr->auditno)
                             ->get();
 
                 foreach ($billsum as $billsum_obj){

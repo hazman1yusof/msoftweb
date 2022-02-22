@@ -21,14 +21,59 @@
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
 
 	<style type="text/css" class="init">
+		.preloader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            position: fixed;
+            z-index: 99999;
+            background: #fff;
+        }
+        .cssload-speeding-wheel {
+            position: absolute;
+            top: calc(50% - 3.5px);
+            left: calc(50% - 3.5px);
+            width: 31px;
+            height: 31px;
+            margin: 0 auto;
+            border: 2px solid rgba(97,100,193,0.98);
+            border-radius: 50%;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            animation: cssload-spin 425ms infinite linear;
+            -o-animation: cssload-spin 425ms infinite linear;
+            -ms-animation: cssload-spin 425ms infinite linear;
+            -webkit-animation: cssload-spin 425ms infinite linear;
+            -moz-animation: cssload-spin 425ms infinite linear;
+        }
+        @keyframes cssload-spin {
+          100%{ transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-o-keyframes cssload-spin {
+          100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-ms-keyframes cssload-spin {
+          100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-webkit-keyframes cssload-spin {
+          100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
+        @-moz-keyframes cssload-spin {
+          100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+
 		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
 			display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
 		}
 		.smallmodal{
-			width: 70% !important; margin: auto !important;margin-top:30px;margin-top: 30px !important;
+			width: 40% !important; margin: auto !important;margin-top:10% !important;
 		}
 		.smallmodal > .modal-content{
-			border: 1px solid grey;
+			border: 3px solid darkblue !important;min-height: fit-content !important;
 		}
 		tr.dtrg-group{
 			font-size: 15px;
@@ -261,6 +306,17 @@
 	    	background-color: #dfdfdf;
 	    }
 
+	    button.command-otc-episode, button.command-episode{
+	    	border-color: #744747;
+	    	padding: 1px 5px 1px 5px;
+	    }
+
+		.wrap{
+			word-wrap: break-word;
+			white-space: pre-line !important;
+			vertical-align: top !important;
+		}
+
 	</style>
 
 </head>
@@ -296,6 +352,7 @@
         $('#txt_pat_dob').val(newdob);
         $('#txt_pat_age').val(gettheage(newdob));
         $('#hid_RaceCode').val(obj.race);
+
         $('#hid_Religion').val(obj.religion);
         $('#cmb_pat_category').val(obj.pat_category);
         $('#hid_pat_citizen').val(obj.citizenship);
@@ -304,12 +361,58 @@
         $('#txt_pat_curradd2').val(obj.address2);
         $('#txt_pat_curradd3').val(obj.address3);
         $('#txt_pat_currpostcode').val(obj.postcode);
+        $("img#photobase64").attr('src','data:image/png;base64,'+obj.base64);
+
+        mykad_check_existing_patient();
+
+        auto_save('race',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.racecode',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.race,
+        	Description: obj.race,
+        },
+        desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
+
+        auto_save('religioncode',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.religion',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.religion,
+        	Description: obj.religion,
+        },
+        desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
+
+        auto_save('citizencode',{
+            _token : $('#csrf_token').val(),
+        	table_name: 'hisdb.citizen',
+        	code_name: 'Code',
+        	desc_name: 'Description',
+        	Code: obj.citizenship,
+        	Description: obj.citizenship,
+        },desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen'));
 
         desc_show.write_desc();
+    }
+
+    function auto_save(id,obj,callback){
+        if(desc_show.get_desc(obj.Code,id) == "N/A"){
+        	$.post( './pat_mast/auto_save', obj , function( data ) {
+	        }).fail(function(data) {
+	            console.log(data.responseText);
+	        }).success(function(data){
+	        	callback();
+	        });
+        }
     }
 </script>
 
 <body class="header-fixed">
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
@@ -321,6 +424,11 @@
 		@endif
         <input name="curpat" id="curpat" type="hidden" value="{{request()->get('curpat')}}">
         <input name="lastrowid" id="lastrowid" type="hidden" value="0">
+        <input name="userdeptcode" id="userdeptcode" type="hidden" value="{{$userdeptcode ?? ''}}">
+        <input name="userdeptdesc" id="userdeptdesc" type="hidden" value="{{$userdeptdesc ?? ''}}">
+        <input name="lastMrn" id="lastMrn" type="hidden" >
+        <input name="lastidno" id="lastidno" type="hidden" >
+
         <div id="info"></div>
 
 		<div class="panel" style="padding: 5px;">
@@ -369,17 +477,21 @@
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
                 <tr>
-                	<th data-column-id="mrn" data-formatter="col_add" data-width="5%">#</th>
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="6%">MRN No</th>
+                	<th data-column-id="mrn" data-formatter="col_add" data-width="2%">#</th>
+                    @if (request()->get('curpat') == 'true')
+                    <th data-column-id="QueueNo" data-width="4%">Queue</th>
+                    <th data-column-id="reg_date" data-width="7%">Reg Date</th>
+					@endif
+                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="20%">Name</th>
                 	<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
                     <th data-column-id="q_doctorname" data-width="20%">Doctor</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
-                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">Birth Date</th>
-                    <th data-column-id="Sex" data-width="4%">Sex</th>
-                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="5%">Age</th>
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="8%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
+                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
+                    <th data-column-id="Sex" data-width="2%">Sex</th>
+                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
+					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
 				</tr>
 				</thead>
 
@@ -496,15 +608,14 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
 
-	
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
-
-
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
 	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
 	<input type="hidden" id="user_doctor" value="{{Auth::user()->doctor}}">
 
 	@if (request()->get('curpat') == 'true')
+		<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
+
+
 		@if (request()->get('epistycode') == 'OP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
@@ -537,9 +648,10 @@
 	@endif
 
 
-	<script type="text/javascript" src="js/hisdb/discharge/discharge.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
+	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script> -->
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 

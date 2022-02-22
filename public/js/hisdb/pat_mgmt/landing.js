@@ -1,6 +1,6 @@
 var preepisode;
 $(document).ready(function() {
-
+    $(".preloader").fadeOut();
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
     jQuery.validator.setDefaults({
       debug: true,
@@ -45,11 +45,18 @@ $(document).ready(function() {
             }
 
             let _page = $("#grid-command-buttons").bootgrid("getCurrentPage");
+            let lastMrn = null;
+            let lastidno = null;
+
             if($("#load_from_addupd").data('info') == "true" && $("#load_from_addupd").data('oper') == "add"){
                 _page = $("#grid-command-buttons").bootgrid("getTotalPageCount");
+                lastMrn = $("#lastMrn").val();
+                lastidno = $("#lastidno").val();
             }
 
             return {
+                lastMrn:lastMrn,
+                lastidno:lastidno,
                 page: _page,
                 searchCol:_searchCol,
                 searchVal:_searchVal,
@@ -62,11 +69,11 @@ $(document).ready(function() {
         formatters: {
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
-                if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
-                }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
-                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
-                }
+                // if(row.PatStatus == 1 && row.q_epistycode=='IP'){
+                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
+                // }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
+                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
+                // }
                 return retval;
             },
             "col_mrn": function (column,row) {
@@ -93,8 +100,8 @@ $(document).ready(function() {
                 let rowid = counter++;//just for specify each row
                 if(row.q_epistycode == '' || row.q_epistycode == undefined){
                     return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
-                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button>";
+                           "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
+                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div>";
 
                 }else{
                     if(row.q_epistycode == $("#epistycode").val() ){
@@ -109,6 +116,8 @@ $(document).ready(function() {
         }
     }).on("loaded.rs.jquery.bootgrid", function(){
         counter = 0;
+
+
 
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field
             $(".actionBar").prepend(`
@@ -133,7 +142,6 @@ $(document).ready(function() {
             populate_patient(rowdata);
             $('#mdl_patient_info').modal({backdrop: "static"});
             $("#btn_register_patient").data("oper","edit");
-            // console.log($("#grid-command-buttons").bootgrid("getCurrentRows")[rowid]);
             $("#btn_register_patient").data("idno",$("#grid-command-buttons").bootgrid("getCurrentRows")[rowid].idno);
             
             desc_show.write_desc();
@@ -206,10 +214,9 @@ $(document).ready(function() {
             $(e.currentTarget).addClass( "justbc" );
         });
 
-
         if($("#load_from_addupd").data('info') == "true"){
             if($("#load_from_addupd").data('oper') == "add"){
-                // $("#grid-command-buttons tr:nth-last-child(1)").click();
+                $("#grid-command-buttons tbody tr:nth-last-child(1)").click();
             }else{
                 $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
             }
@@ -270,16 +277,23 @@ $(document).ready(function() {
 
     $( "#patientBox").click(function() { // register new patient
         let gotpat = $("#patientBox").data('gotpat');
+        let oper_mykad = $("#btn_register_patient").data("oper_mykad");
+
         if(gotpat == true){
             $("#patientBox").data('gotpat',false);
-        }else{
-
         }
-        $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
+
+        if(oper_mykad == 'edit'){
+            $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().show();
+            $("#btn_register_patient").data("oper","edit");
+        }else{
+            $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().hide();
+            $("#btn_register_patient").data("oper","add");
+            $('#episno').val('1');
+        }
+
         $('#mdl_patient_info').modal({backdrop: "static"});
-        $("#btn_register_patient").data("oper","add");
         $('#PatClass').val(getUrlParameter('PatClass'));
-        $('#episno').val('1');
     });
 
     /////////////////mykad///////////////
@@ -288,14 +302,24 @@ $(document).ready(function() {
        $('#mdl_mykad').modal('show');
     });
 
+    $('#mdl_mykad').on('hidden.bs.modal', function (e) {
+       if($("#patientBox").data('gotpat') == true){
+            $("#patientBox").click();
+       }
+    });
+
     $('#read_mykad').click(function(){
         $.getJSON('http://mycard.test:8080/mycard_read', function(data){
             if(data.status == 'failed'){
                 alert("Error reading Mycard");
             }else{
+                var olddob = data.dob;
+                newdob = [olddob.slice(6), '-', olddob.slice(3,5), '-', olddob.slice(0,2)].join('');
+
+                $("#patientBox").data('gotpat',true);
                 $("#mykad_reponse").text("");
                 $("#mykad_newic").val(data.ic);
-                $("#mykad_DOB").val(data.dob);
+                $("#mykad_DOB").val(newdob);
                 $("#mykad_birthPlace").val(data.birthplace);
                 $("#mykad_pat_name").val(data.name);
                 $("#mykad_oldic").val(data.oldic);
@@ -308,13 +332,70 @@ $(document).ready(function() {
                 $("#mykad_city").val(data.city);
                 $("#mykad_state").val(data.state);
                 $("#mykad_postcode").val(data.postcode);
-                $("#mykad_photo").attr('src', data.photo);
+                $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.photo);
+
+                $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
+                $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
+
+                $('#txt_pat_name').val(data.name);
+                $('#txt_pat_newic').val(data.ic);
+                if(data.sex == 'P' || data.sex == 'FEMALE'){
+                    $('#cmb_pat_sex').val('F');
+                }else if(data.sex == 'L' || data.sex == 'MALE'){
+                    $('#cmb_pat_sex').val('M');
+                }
+                $('#txt_ID_Type').val("O");
+
+                //"19950927"
+
+                $('#txt_pat_dob').val(newdob);
+                $('#txt_pat_age').val(gettheage(newdob));
+                $('#hid_RaceCode').val(data.race);
+                $('#hid_Religion').val(data.religion);
+                // $('#cmb_pat_category').val(data.pat_category);
+                // $('#hid_pat_citizen').val(obj.citizenship);
+
+                mykad_check_existing_patient(); 
+
+                auto_save('race',{
+                    _token : $('#csrf_token').val(),
+                    table_name: 'hisdb.racecode',
+                    code_name: 'Code',
+                    desc_name: 'Description',
+                    Code: data.race,
+                    Description: data.race,
+                },
+                desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
+
+                auto_save('religioncode',{
+                    _token : $('#csrf_token').val(),
+                    table_name: 'hisdb.religion',
+                    code_name: 'Code',
+                    desc_name: 'Description',
+                    Code: data.religion,
+                    Description: data.religion,
+                },
+                desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
+
+                $('#txt_pat_curradd1').val(data.addr1);
+                $('#txt_pat_curradd2').val(data.addr2);
+                $('#txt_pat_curradd3').val(data.addr3);
+                $('#txt_pat_currpostcode').val(data.postcode);
+                $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
+
+                desc_show.write_desc();
             }
         });
     });
 
     $('#btn_biometric').click(function(){
        $('#mdl_biometric').modal('show');
+    });
+
+    $('#btn_mykad_proceed').click(function(){
+        emptyFormdata([],"form#frm_mykad_info");
+        $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
+        $('#mdl_mykad').modal('hide');
     });
 
     ////////////////habis mykad///////
@@ -568,6 +649,8 @@ $(document).ready(function() {
 
 
 });
+
+
 
 if($('#epistycode').val() == 'OP'){
     var epis_desc_show = new loading_desc_epis([
