@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalesOrder_ReportController extends defaultController
 {   
@@ -21,7 +23,10 @@ class SalesOrder_ReportController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.SalesOrder_Report.SalesOrder_Report');
+        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+        return view('finance.SalesOrder_Report.SalesOrder_Report',[
+                'company_name' => $comp->name
+        ]);
     }
 
     public function form(Request $request)
@@ -41,5 +46,6 @@ class SalesOrder_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
+        return Excel::download(new UsersExport($request->datefr,$request->dateto), 'users.xlsx');
     }
 }
