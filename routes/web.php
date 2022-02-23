@@ -354,6 +354,12 @@ Route::post('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::get('/invoiceAP/form','finance\InvoiceAPController@form');
 Route::post('/invoiceAPDetail/form','finance\InvoiceAPDetailController@form');
 
+//// invoice AP - report  ///
+Route::get('/invoiceAP_Report','finance\InvoiceAP_ReportController@show');
+Route::get('/invoiceAP_Report/table','finance\InvoiceAP_ReportController@table');
+Route::post('/invoiceAP_Report/form','finance\InvoiceAP_ReportController@form');
+Route::get('/invoiceAP_Report/showExcel','finance\InvoiceAP_ReportController@showExcel');
+
 //// Finance - SalesOrder page ///
 Route::get('/SalesOrder','finance\SalesOrderController@show');
 Route::get('/SalesOrder/table','finance\SalesOrderController@table');
@@ -362,11 +368,6 @@ Route::get('/SalesOrder/form','finance\SalesOrderController@form');
 Route::post('/SalesOrderDetail/form','finance\SalesOrderDetailController@form');
 Route::get('/SalesOrderDetail/table','finance\SalesOrderDetailController@table');
 Route::get('/SalesOrder/showpdf','finance\SalesOrderController@showpdf');
-//// Finance - report sales//
-Route::get('/SalesOrderReport','finance\SalesOrderReportController@show');
-Route::get('/SalesOrderReport/table','finance\SalesOrderReportController@table');
-Route::post('/SalesOrderReport/form','finance\SalesOrderReportController@form');
-Route::get('/SalesOrderReport/showExcel','finance\SalesOrderReportController@showExcel');
 
 //// Finance - report sales ///
 Route::get('/SalesOrder_Report','finance\SalesOrder_ReportController@show');
