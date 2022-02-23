@@ -7,7 +7,7 @@
 	<div class="card">
 		<p style="text-align:center;"><img src="{{url('/img/logo.jpg')}}" alt="Logo" height="75px"></p>
 		<div class="d-flex flex-column"> 
-            <h2 style="text-align: center; letter-spacing: 1px;line-height: 1.5"> {{$company_name}} </h2>
+            <h2 style="text-align: center; letter-spacing: 1px; line-height: 1.5"> {{$company_name}} </h2>
 		</div>
     </div>
 
@@ -15,20 +15,19 @@
 		<form method="get" id="genreport" action="/SalesOrder_Report/showExcel">
 		<h2>SALES ORDER REPORT</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
-					
-		<div class="form-group" >
-            <label class="col-md-3 control-label" for="reqdt">Date From</label>
-			<div class="col-md-3">
-				<input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-			</div>
-
-			<label class="col-md-3 control-label" for="reqdt">Date To</label>
-			<div class="col-md-3">
-				<input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-			</div>
-		</div>			
-		<br>
-		<br>
+		
+			<table class="table" style="width: 50%;margin: auto;">
+		    <tbody>
+				<tr class="success">
+					<th width="50%">Date From</th>
+					<td><input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"></td>
+				</tr>
+				<tr class="success">
+					<th width="50%">Date To</th>
+					<td><input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"></td>
+				</tr> 
+		    </tbody>
+		</table>
         <br>
 		<br>
 			{{ csrf_field() }}
