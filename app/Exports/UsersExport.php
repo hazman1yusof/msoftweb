@@ -14,13 +14,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 
-class UsersExport implements FromCollection,ShouldAutoSize,WithDrawings,WithHeadings,WithEvents
+class UsersExport implements FromCollection,ShouldAutoSize,WithEvents,WithHeadings
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-
-    public $results;
 
     public function __construct($datefr,$dateto)
     {
@@ -35,9 +33,6 @@ class UsersExport implements FromCollection,ShouldAutoSize,WithDrawings,WithHead
                         ->whereBetween('entrydate',[$this->datefr,$this->dateto])
                         ->get();
 
-
-        $this->results = $dbacthdr->toArray();
-
         return $dbacthdr;
     }
 
@@ -48,24 +43,15 @@ class UsersExport implements FromCollection,ShouldAutoSize,WithDrawings,WithHead
         ];
     }
 
-    public function drawings()
-    {
-        $drawing = new Drawing();
-        $drawing->setName('Logo');
-        $drawing->setDescription('This is my logo');
-        $drawing->setPath(public_path('/img/logo.jpg'));
-        $drawing->setHeight(80);
-        $drawing->setCoordinates('E1');
-
-        return $drawing;
-    }
-
     public function registerEvents(): array
     {
         return [
-            BeforeSheet::class => function(BeforeSheet $event) {
+            AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting
-                $style_text_center = [
+                $style_header = [
+                    'font' => [
+                        'bold' => true,
+                    ],
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER
                     ]
@@ -79,11 +65,21 @@ class UsersExport implements FromCollection,ShouldAutoSize,WithDrawings,WithHead
                 $event->sheet->mergeCells('A6:I6');
 
                 // assign cell values
-                $event->sheet->setCellValue('A5','Top Triggers Report');
-                $event->sheet->setCellValue('A6','SECURITY CLASSIFICATION - UNCLASSIFIED [Generator: Admin]');
+                $event->sheet->setCellValue('A5','SALES ORDER REPORT');
+                $event->sheet->setCellValue('A6',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
 
                 // assign cell styles
-                $event->sheet->getStyle('A1:A2')->applyFromArray($style_text_center);
+                $event->sheet->getStyle('5:8')->applyFromArray($style_header);
+
+                $drawing = new Drawing();
+                $drawing->setName('Logo');
+                $drawing->setDescription('This is my logo');
+                $drawing->setPath(public_path('/img/logo.jpg'));
+                $drawing->setHeight(80);
+                $drawing->setCoordinates('E1');
+                $drawing->setOffsetX(40);
+                $drawing->setWorksheet($event->sheet->getDelegate());
+
             },
         ];
     }
