@@ -244,7 +244,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			$("#pdfgen1").attr('href','./SalesOrder/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
+			$("#pdfgen1").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
 			if_cancel_hide();
 
 		},
