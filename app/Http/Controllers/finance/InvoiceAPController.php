@@ -118,9 +118,16 @@ use Carbon\Carbon;
 
             // $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
             // $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
-            $auditno = 0;
-            $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
-            $compcode = 'DD';
+
+            if($request->apacthdr_doctype == 'Supplier'){
+                $auditno = 0;
+                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+                $compcode = 'DD';
+            }else{
+                $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
+                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+                $compcode = session('compcode');
+            }
 
             $table = DB::table("finance.apacthdr");
             

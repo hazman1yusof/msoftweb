@@ -349,7 +349,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno)
+                    ->where('billno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
