@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
-use App\Exports\UsersExport;
+use App\Exports\InvoiceAPExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceAP_ReportController extends defaultController
@@ -46,6 +46,6 @@ class InvoiceAP_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new UsersExport($request->datefr,$request->dateto), 'users.xlsx');
+        return Excel::download(new InvoiceAPExport($request->datefr,$request->dateto), 'InvoiceAPReport.xlsx');
     }
 }

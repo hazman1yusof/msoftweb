@@ -4,13 +4,6 @@
 
 @section('body')
 <div class="container">
-	<div class="card">
-		<p style="text-align:center;"><img src="{{url('/img/logo.jpg')}}" alt="Logo" height="75px"></p>
-		<div class="d-flex flex-column"> 
-            <h2 style="text-align: center; letter-spacing: 1px; line-height: 1.5"> {{$company_name}} </h2>
-		</div>
-    </div>
-
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
 		<form method="get" id="genreport" action="/invoiceAP_Report/showExcel">
 		<h2>INVOICE AP REPORT</h2>
