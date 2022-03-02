@@ -10,12 +10,18 @@ use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use DateTime;
+use Carbon\Carbon;
 
-class InvoiceAPExport implements FromCollection,WithEvents,WithHeadings,WithColumnWidths
+class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithMapping, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -25,8 +31,6 @@ class InvoiceAPExport implements FromCollection,WithEvents,WithHeadings,WithColu
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
-
-
 
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -46,7 +50,7 @@ class InvoiceAPExport implements FromCollection,WithEvents,WithHeadings,WithColu
     public function headings(): array
     {
         return [
-            'compcode','source','trantype','auditno','actdate','suppcode','document','deptcode'
+            'Compcode','Source','Trantype','Auditno','Actdate','Suppcode','Document','Deptcode'
         ];
     }
 
@@ -60,8 +64,24 @@ class InvoiceAPExport implements FromCollection,WithEvents,WithHeadings,WithColu
             'E' => 20,
             'F' => 30,   
             'G' => 30,
-            'H' => 50,   
-            'I' => 10,          
+            'H' => 30,          
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+          
+            'A1' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+        ];
+    }
+
+    public function map($date): array
+    {
+        return [
+            //$date = Carbon::now();
+            //$date->toDateString();
+            Date::dateTimeToExcel($date->Carbon::now())
         ];
     }
 
@@ -92,12 +112,25 @@ class InvoiceAPExport implements FromCollection,WithEvents,WithHeadings,WithColu
 
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
-
-                // merge cells for full-width
-                // $event->sheet->mergeCells('A5:I5');
-                // $event->sheet->mergeCells('A6:I6');
+                
+                // $dateTimeNow = time();
+                // $excelDateValue = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $dateTimeNow );
+                // // Set cell A6 with the Excel date/time value
+                // $event->sheet->setCellValue(
+                //     'A1',
+                //     $excelDateValue
+                // );
+                // // Set the number format mask so that the excel timestamp will be displayed as a human-readable date/time
+                // $event->sheet->getStyle('A1')
+                //     ->getNumberFormat()
+                //     ->setFormatCode(
+                //         \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DATETIME
+                //     );
 
                 // assign cell values
+                $event->sheet->setCellValue('A1','PRINTED DATE:', );
+                $event->sheet->setCellValue('A2','PRINTED TIME:',);
+                $event->sheet->setCellValue('A3','PRINTED BY:',);
                 $event->sheet->setCellValue('F1','INVOICE AP REPORT');
                 $event->sheet->setCellValue('F2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
                 $event->sheet->setCellValue('H1',$this->comp->name);
