@@ -224,7 +224,7 @@ $(document).ready(function () {
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
 
 					populate_triage(selrowData("#jqGrid"));
-					populate_formWard(selrowData("#jqGrid"));
+					populate_nursAssessment(selrowData("#jqGrid"));
 					populate_doctorNote(selrowData("#jqGrid"));
 					populate_dietOrder(selrowData("#jqGrid"));
 					populate_dischgSummary(selrowData("#jqGrid"));

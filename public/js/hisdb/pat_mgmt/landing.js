@@ -243,6 +243,10 @@ $(document).ready(function() {
             populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
         }
 
+        if($('#epistycode').val() == 'IP'){
+            populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
+        }
+
         if(rows[bootgrid_last_rowid].PatStatus == 1 && $('#curpat').val() == 'true'){
             populate_discharge_currpt(rows[bootgrid_last_rowid]);
         }
@@ -476,6 +480,9 @@ $(document).ready(function() {
             });
             $("#jqGridDoctorNote_panel").on("show.bs.collapse", function(){
                 $("#jqGridAddNotes").jqGrid ('setGridWidth', Math.floor($("#jqGridDoctorNote_c")[0].offsetWidth-$("#jqGridDoctorNote_c")[0].offsetLeft-228));
+            });
+            $("#jqGridWard_panel").on("show.bs.collapse", function(){
+                $("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
             });
 
 

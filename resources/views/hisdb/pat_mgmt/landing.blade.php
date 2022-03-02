@@ -550,6 +550,10 @@
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.wardpanel.wardpanel')
+					</div>
+
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
 						@include('hisdb.antenatal.antenatal')
 					</div>
@@ -564,6 +568,10 @@
 				@elseif (Auth::user()->nurse == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
+					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.wardpanel.wardpanel')
 					</div>
 				@endif
 
@@ -634,11 +642,13 @@
 		@if (request()->get('epistycode') == 'IP')
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
+				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

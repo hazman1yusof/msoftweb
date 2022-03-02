@@ -92,7 +92,7 @@ class DoctorNoteController extends defaultController
                 ->where('episno','=',$request->episno_doctorNote)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'remarks' => $request->remarks,
+                    // 'remarks' => $request->remarks,
                     'diagfinal' => $request->diagfinal,
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -112,8 +112,6 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
 
-
-
             $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
@@ -129,6 +127,7 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_doctorNote,
                         'episno' => $request->episno_doctorNote,
+                        'complain' => $request->complain,
                         'clinicnote' => $request->clinicnote,
                         'drugh' => $request->drugh,
                         'allergyh' => $request->allergyh,
@@ -198,7 +197,7 @@ class DoctorNoteController extends defaultController
                 ->where('episno','=',$request->episno_doctorNote)
                 ->where('compcode','=',session('compcode'))
                 ->update([
-                    'remarks' => $request->remarks,
+                    // 'remarks' => $request->remarks,
                     'diagfinal' => $request->diagfinal,
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
@@ -269,9 +268,7 @@ class DoctorNoteController extends defaultController
             if($pathealth->exists()){
                 $pathealth
                     ->update([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_doctorNote,
-                        'episno' => $request->episno_doctorNote,
+                        'complain' => $request->complain,
                         'clinicnote' => $request->clinicnote,
                         'drugh' => $request->drugh,
                         'allergyh' => $request->allergyh,
@@ -286,8 +283,6 @@ class DoctorNoteController extends defaultController
                         'temperature' => $request->temperature,
                         'respiration' => $request->respiration,
                         // 'doctorcode'  => $doctorcode,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -297,6 +292,7 @@ class DoctorNoteController extends defaultController
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_doctorNote,
                         'episno' => $request->episno_doctorNote,
+                        'complain' => $request->complain,
                         'clinicnote' => $request->clinicnote,
                         'drugh' => $request->drugh,
                         'allergyh' => $request->allergyh,
@@ -641,9 +637,8 @@ class DoctorNoteController extends defaultController
 
         $responce = new stdClass();
 
-
         $episode_obj = DB::table('hisdb.episode')
-            ->select('remarks','diagfinal')
+            ->select('diagfinal')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
@@ -776,8 +771,6 @@ class DoctorNoteController extends defaultController
             if($doctorcode_obj->exists()){
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
-
-
 
             DB::table('hisdb.pathealthadd')
                 ->insert([  

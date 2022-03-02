@@ -16,7 +16,7 @@
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridWard_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridWard_panel"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 25px;">
-			<h5>Ward</h5>
+			<h5>Nursing Assessment</h5>
 		</div>
 		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 			id="btn_grp_edit_ward"

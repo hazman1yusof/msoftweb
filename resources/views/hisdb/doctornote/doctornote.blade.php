@@ -75,11 +75,10 @@
                             <div class="panel-body">
 
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="remarks">Patient Complaint</label>
+                                    <label class="col-md-2 control-label" for="complain">Patient Complaint</label>
                                     <div class="col-md-6">
-                                        <input id="remarks" name="remarks" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg-required="Please enter Patient Complaint">
+                                        <input id="complain" name="complain" type="text" class="form-control input-sm">
                                     </div>
-
                                     
                                     <div class="col-md-3 panel panel-info" 
                                         style="
@@ -106,7 +105,7 @@
                                         </div>
                                     </div> 
 
-                                    <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span>
+                                    <!-- <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span> -->
                                 </div>
 
                                 <div class="col-md-12" style="padding:0px;">
