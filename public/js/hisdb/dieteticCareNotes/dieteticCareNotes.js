@@ -2,6 +2,7 @@
 $(document).ready(function () {
 
 	disableForm('#formDieteticCareNotes');
+	disableForm('#formDieteticCareNotes_fup');
 
 	$("#new_dieteticCareNotes").click(function(){
 		button_state_dieteticCareNotes('wait');
@@ -22,6 +23,7 @@ $(document).ready(function () {
 
 	$("#save_dieteticCareNotes").click(function(){
 		disableForm('#formDieteticCareNotes');
+		button_state_dieteticCareNotes('disable_ncase');
 		if( $('#formDieteticCareNotes').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_dieteticCareNotes(function(){
 				$("#cancel_dieteticCareNotes").data('oper','edit');
@@ -44,38 +46,38 @@ $(document).ready(function () {
 
 	$("#new_dieteticCareNotes_fup").click(function(){
 		button_state_dieteticCareNotes('wait_fup');
-		enableForm('#formDieteticCareNotes');
-		rdonly('#formDieteticCareNotes');
+		enableForm('#formDieteticCareNotes_fup');
+		rdonly('#formDieteticCareNotes_fup');
 		// dialog_mrn_edit.on();
 		
 	});
 
 	$("#edit_dieteticCareNotes_fup").click(function(){
 		button_state_dieteticCareNotes('wait_fup');
-		enableForm('#formDieteticCareNotes');
-		rdonly('#formDieteticCareNotes');
+		enableForm('#formDieteticCareNotes_fup');
+		rdonly('#formDieteticCareNotes_fup');
 		// disableFields_dieteticCareNotes();
 		// dialog_mrn_edit.on();
 		
 	});
 
 	$("#save_dieteticCareNotes_fup").click(function(){
-		disableForm('#formDieteticCareNotes');
-		if( $('#formDieteticCareNotes').isValid({requiredFields: ''}, conf, true) ) {
+		disableForm('#formDieteticCareNotes_fup');
+		if( $('#formDieteticCareNotes_fup').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_dieteticCareNotes_fup(function(){
 				$("#cancel_dieteticCareNotes_fup").data('oper','edit_fup');
 				$("#cancel_dieteticCareNotes_fup").click();
 				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
-			enableForm('#formDieteticCareNotes');
-			rdonly('#formDieteticCareNotes');
+			enableForm('#formDieteticCareNotes_fup');
+			rdonly('#formDieteticCareNotes_fup');
 		}
 
 	});
 
 	$("#cancel_dieteticCareNotes_fup").click(function(){
-		disableForm('#formDieteticCareNotes');
+		disableForm('#formDieteticCareNotes_fup');
 		button_state_dieteticCareNotes($(this).data('oper'));
 		// dialog_mrn_edit.off();
 
@@ -103,12 +105,12 @@ $(document).ready(function () {
 	$("#jqGridDieteticCareNotes_panel").on("shown.bs.collapse", function(){
         var urlparam_dietetic_date_tbl={
 			action:'get_table_date_dietetic',
-			mrn:$("#mrn_dieteticCareNotes").val(),
-			episno:$("#episno_dieteticCareNotes").val(),
+			mrn:$("#mrn_dieteticCareNotes_fup").val(),
+			episno:$("#episno_dieteticCareNotes_fup").val(),
 		}
 
 	    dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
-			emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+			emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
 			// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
 	    });
 		SmoothScrollTo("#jqGridDieteticCareNotes_panel", 500)	
@@ -129,7 +131,7 @@ $(document).ready(function () {
 			$(this).addClass('selected');
 		}
 
-		emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+		emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
 	    $('#dietetic_date_tbl tbody tr').removeClass('active');
 	    $(this).addClass('active');
 
@@ -149,10 +151,12 @@ $(document).ready(function () {
 	    }).success(function(data){
 	    	if(!$.isEmptyObject(data)){
 				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
-				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
+				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes_fup",data.patdietfup);
+				button_state_dieteticCareNotes('disable_ncase');
 				button_state_dieteticCareNotes('edit_fup');
-				disableFields_dieteticCareNotes();
+				// disableFields_dieteticCareNotes();
 	        }else{
+				button_state_dieteticCareNotes('add');
 				button_state_dieteticCareNotes('add_fup');
 	        }
 
@@ -229,8 +233,8 @@ function button_state_dieteticCareNotes(state){
 		case 'edit':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
 			$('#cancel_dieteticCareNotes').data('oper','edit');
-			$("#edit_dieteticCareNotes,#new_dieteticCareNotes").attr('disabled',false);
-			$('#save_dieteticCareNotes,#cancel_dieteticCareNotes').attr('disabled',true);
+			$("#edit_dieteticCareNotes").attr('disabled',false);
+			$('#save_dieteticCareNotes,#cancel_dieteticCareNotes,#new_dieteticCareNotes').attr('disabled',true);
 			break;
 		case 'wait':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
@@ -264,6 +268,7 @@ function button_state_dieteticCareNotes(state){
 //screen current patient//
 function populate_dieteticCareNotes_currpt(obj){	
 	emptyFormdata(errorField,"#formDieteticCareNotes");
+	emptyFormdata(errorField,"#formDieteticCareNotes_fup");
 
 	//panel header
 	$('#name_show_dieteticCareNotes').text(obj.Name);
@@ -278,8 +283,8 @@ function populate_dieteticCareNotes_currpt(obj){
 	$('#area_show_dieteticCareNotes').text(if_none(obj.areaDesc).toUpperCase());
 
 	//formDieteticCareNotes
-	$('#mrn_dieteticCareNotes').val(obj.MRN);
-	$("#episno_dieteticCareNotes").val(obj.Episno);
+	$('#mrn_dieteticCareNotes,#mrn_dieteticCareNotes_fup').val(obj.MRN);
+	$("#episno_dieteticCareNotes,#episno_dieteticCareNotes_fup").val(obj.Episno);
 
 	var saveParam={
         action:'get_table_dieteticCareNotes',
@@ -297,13 +302,12 @@ function populate_dieteticCareNotes_currpt(obj){
     }).success(function(data){
     		console.log('data');
     	if(!$.isEmptyObject(data)){
-
     		console.log(data);
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
-			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
+			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes_fup",data.patdietfup);
 			button_state_dieteticCareNotes('disable_ncase');
 			button_state_dieteticCareNotes('edit_fup');
-			disableFields_dieteticCareNotes();
+			// disableFields_dieteticCareNotes();
         }else{
 			button_state_dieteticCareNotes('add');
 			button_state_dieteticCareNotes('add_fup');
@@ -313,12 +317,12 @@ function populate_dieteticCareNotes_currpt(obj){
 
 	var urlparam_dietetic_date_tbl={
 		action:'get_table_date_dietetic',
-		mrn:$("#mrn_dieteticCareNotes").val(),
-		episno:$("#episno_dieteticCareNotes").val(),
+		mrn:$("#mrn_dieteticCareNotes_fup").val(),
+		episno:$("#episno_dieteticCareNotes_fup").val(),
 	}
 
     dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
-		emptyFormdata_div("#formDieteticCareNotes",['#mrn_dieteticCareNotes','#episno_dieteticCareNotes']);
+		emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
 		// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
 	
@@ -403,31 +407,31 @@ function saveForm_dieteticCareNotes_fup(callback){
 
     };
 
-	values = $("#formDieteticCareNotes").serializeArray();
+	values = $("#formDieteticCareNotes_fup").serializeArray();
 	
 	values = values.concat(
-        $('#formDieteticCareNotes input[type=checkbox]:not(:checked)').map(
+        $('#formDieteticCareNotes_fup input[type=checkbox]:not(:checked)').map(
         function() {
             return {"name": this.name, "value": 0}
         }).get()
     );
 
     values = values.concat(
-        $('#formDieteticCareNotes input[type=checkbox]:checked').map(
+        $('#formDieteticCareNotes_fup input[type=checkbox]:checked').map(
         function() {
             return {"name": this.name, "value": 1}
         }).get()
 	);
 	
 	values = values.concat(
-        $('#formDieteticCareNotes input[type=radio]:checked').map(
+        $('#formDieteticCareNotes_fup input[type=radio]:checked').map(
         function() {
             return {"name": this.name, "value": this.value}
         }).get()
     );
 
     values = values.concat(
-        $('#formDieteticCareNotes select').map(
+        $('#formDieteticCareNotes_fup select').map(
         function() {
             return {"name": this.name, "value": this.value}
         }).get()

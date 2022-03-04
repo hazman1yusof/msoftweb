@@ -212,6 +212,10 @@
 						</div>
 					</div>
 
+				</form>
+
+				<form class='form-horizontal' style='width:99%' id='formDieteticCareNotes_fup'>
+
 					<div class='col-md-12'>
 						<div class="panel panel-default">
 							<div class="panel-heading text-center">FOLLOW UP DIETETIC CARE NOTES	
@@ -261,6 +265,9 @@
 									<div class='col-md-9'>
 										<div class="panel panel-info">
 											<div class="panel-body">
+
+												<input id="mrn_dieteticCareNotes_fup" name="mrn_dieteticCareNotes_fup" type="hidden">
+												<input id="episno_dieteticCareNotes_fup" name="episno_dieteticCareNotes_fup" type="hidden">
 
 												<div class='col-md-12'>
 													<div class="panel panel-info">

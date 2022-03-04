@@ -118,8 +118,8 @@ class DieteticCareNotesController extends defaultController
             DB::table('hisdb.patdietfup')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_dieteticCareNotes,
-                        'episno' => $request->episno_dieteticCareNotes,
+                        'mrn' => $request->mrn_dieteticCareNotes_fup,
+                        'episno' => $request->episno_dieteticCareNotes_fup,
                         'progress' => $request->fup_progress,
                         'diagnosis' => $request->fup_diagnosis,
                         'intervention' => $request->fup_intervention,
@@ -153,8 +153,8 @@ class DieteticCareNotesController extends defaultController
         try {
 
             DB::table('hisdb.patdietfup')
-                ->where('mrn','=',$request->mrn_dieteticCareNotes)
-                ->where('episno','=',$request->episno_dieteticCareNotes)
+                ->where('mrn','=',$request->mrn_dieteticCareNotes_fup)
+                ->where('episno','=',$request->episno_dieteticCareNotes_fup)
                 ->where('compcode','=',session('compcode'))
                 ->update([
                     'progress' => $request->fup_progress,
@@ -180,8 +180,8 @@ class DieteticCareNotesController extends defaultController
             DB::commit();
 
             $responce = new stdClass();
-            $responce->mrn = $request->mrn_dieteticCareNotes;
-            $responce->episno = $request->episno_dieteticCareNotes;
+            $responce->mrn = $request->mrn_dieteticCareNotes_fup;
+            $responce->episno = $request->episno_dieteticCareNotes_fup;
 
             return json_encode($responce);
 
