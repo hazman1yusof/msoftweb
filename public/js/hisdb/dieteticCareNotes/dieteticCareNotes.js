@@ -23,11 +23,11 @@ $(document).ready(function () {
 
 	$("#save_dieteticCareNotes").click(function(){
 		disableForm('#formDieteticCareNotes');
-		button_state_dieteticCareNotes('disable_ncase');
 		if( $('#formDieteticCareNotes').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_dieteticCareNotes(function(){
 				$("#cancel_dieteticCareNotes").data('oper','edit');
 				$("#cancel_dieteticCareNotes").click();
+				button_state_dieteticCareNotes('disable_ncase');
 				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
@@ -45,6 +45,7 @@ $(document).ready(function () {
 	});
 
 	$("#new_dieteticCareNotes_fup").click(function(){
+		$("#cancel_dieteticCareNotes_fup").data('oper','add_fup');
 		button_state_dieteticCareNotes('wait_fup');
 		enableForm('#formDieteticCareNotes_fup');
 		rdonly('#formDieteticCareNotes_fup');
@@ -53,6 +54,7 @@ $(document).ready(function () {
 	});
 
 	$("#edit_dieteticCareNotes_fup").click(function(){
+		$("#cancel_dieteticCareNotes_fup").data('oper','edit_fup');
 		button_state_dieteticCareNotes('wait_fup');
 		enableForm('#formDieteticCareNotes_fup');
 		rdonly('#formDieteticCareNotes_fup');
@@ -62,11 +64,21 @@ $(document).ready(function () {
 	});
 
 	$("#save_dieteticCareNotes_fup").click(function(){
+		var urlparam_dietetic_date_tbl={
+			action:'get_table_date_dietetic',
+			mrn:$("#mrn_dieteticCareNotes_fup").val(),
+			episno:$("#episno_dieteticCareNotes_fup").val(),
+		}
+		
 		disableForm('#formDieteticCareNotes_fup');
 		if( $('#formDieteticCareNotes_fup').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_dieteticCareNotes_fup(function(){
 				$("#cancel_dieteticCareNotes_fup").data('oper','edit_fup');
 				$("#cancel_dieteticCareNotes_fup").click();
+				dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
+					emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
+					// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
+			    });
 				// $("#jqGridPagerRefresh").click();
 			});
 		}else{

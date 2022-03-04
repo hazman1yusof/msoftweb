@@ -224,9 +224,9 @@ class DieteticCareNotesController extends defaultController
     public function get_table_date_dietetic(Request $request){
         $responce = new stdClass();
 
-        $dietetic_obj = DB::table('hisdb.episode as e')
+        $dietetic_obj = DB::table('hisdb.patdietfup as p')
             ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
-            ->leftJoin('hisdb.patdietfup as p', function($join) use ($request){
+            ->leftJoin('hisdb.episode as e', function($join) use ($request){
                 $join = $join->on('p.mrn', '=', 'e.mrn');
                 $join = $join->on('p.episno', '=', 'e.episno');
                 $join = $join->on('p.compcode', '=', 'e.compcode');
