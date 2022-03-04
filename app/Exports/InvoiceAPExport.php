@@ -12,7 +12,7 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-use Maatwebsite\Excel\Concerns\WithMapping;
+//use Maatwebsite\Excel\Concerns\WithMapping;, WithMapping
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use DateTime;
 use Carbon\Carbon;
 
-class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithMapping, WithColumnFormatting
+class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -29,6 +29,7 @@ class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithC
 
     public function __construct($datefr,$dateto)
     {
+        
         $this->datefr = $datefr;
         $this->dateto = $dateto;
 
@@ -40,7 +41,7 @@ class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithC
     public function collection()
     {
         $apacthdr = DB::table('finance.apacthdr')
-                        ->select('compcode','source','trantype','auditno','actdate','suppcode','document','deptcode')
+                        ->select('auditno','actdate','suppcode','document','deptcode')
                         ->whereBetween('actdate',[$this->datefr,$this->dateto])
                         ->get();
 
@@ -50,40 +51,43 @@ class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithC
     public function headings(): array
     {
         return [
-            'Compcode','Source','Trantype','Auditno','Actdate','Suppcode','Document','Deptcode'
+            'Auditno','Actdate','Suppcode','Document','Deptcode'
         ];
     }
 
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
+            'A' => 15,
             'B' => 10,    
-            'C' => 10,
-            'D' => 10,   
-            'E' => 20,
-            'F' => 30,   
-            'G' => 30,
-            'H' => 30,          
+            'C' => 30,
+            'D' => 20,
+            'E' => 30, 
+            'D' => 20,
+               
         ];
     }
+
+    // public function map($apacthdr): array
+    // {
+    //     return [
+           
+    //       //  Date::dateTimeToExcel($apacthdr->Carbon::now("Asia/Kuala_Lumpur")),
+    //     ];
+    // }
 
     public function columnFormats(): array
     {
         return [
+            
+            //  'B1' => 'dd-mm-yyyy',
+           // 'F2' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+           'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+
           
-            'A1' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 
-    public function map($date): array
-    {
-        return [
-            //$date = Carbon::now();
-            //$date->toDateString();
-            Date::dateTimeToExcel($date->Carbon::now())
-        ];
-    }
 
     public function registerEvents(): array
     {
@@ -112,36 +116,25 @@ class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithC
 
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
-                
-                // $dateTimeNow = time();
-                // $excelDateValue = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $dateTimeNow );
-                // // Set cell A6 with the Excel date/time value
-                // $event->sheet->setCellValue(
-                //     'A1',
-                //     $excelDateValue
-                // );
-                // // Set the number format mask so that the excel timestamp will be displayed as a human-readable date/time
-                // $event->sheet->getStyle('A1')
-                //     ->getNumberFormat()
-                //     ->setFormatCode(
-                //         \PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_DATETIME
-                //     );
 
                 // assign cell values
-                $event->sheet->setCellValue('A1','PRINTED DATE:', );
+                $event->sheet->setCellValue('A1','PRINTED DATE:');
+                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
                 $event->sheet->setCellValue('A2','PRINTED TIME:',);
-                $event->sheet->setCellValue('A3','PRINTED BY:',);
-                $event->sheet->setCellValue('F1','INVOICE AP REPORT');
-                $event->sheet->setCellValue('F2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                $event->sheet->setCellValue('H1',$this->comp->name);
-                $event->sheet->setCellValue('H2',$this->comp->address1);
-                $event->sheet->setCellValue('H3',$this->comp->address2);
-                $event->sheet->setCellValue('H4',$this->comp->address3);
-                $event->sheet->setCellValue('H5',$this->comp->address4);
+                $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->setCellValue('A3','PRINTED BY:');
+                $event->sheet->setCellValue('B3', session('username'));
+                $event->sheet->setCellValue('D1','INVOICE AP REPORT');
+                $event->sheet->setCellValue('D2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
+                $event->sheet->setCellValue('G1',$this->comp->name);
+                $event->sheet->setCellValue('G2',$this->comp->address1);
+                $event->sheet->setCellValue('G3',$this->comp->address2);
+                $event->sheet->setCellValue('G4',$this->comp->address3);
+                $event->sheet->setCellValue('G5',$this->comp->address4);
 
                 // assign cell styles
-                $event->sheet->getStyle('F1:F2')->applyFromArray($style_header);
-                $event->sheet->getStyle('H1:H5')->applyFromArray($style_address);
+                $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
+                $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
 
                 // $drawing = new Drawing();
                 // $drawing->setName('Logo');
