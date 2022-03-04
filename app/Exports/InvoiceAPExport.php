@@ -119,8 +119,9 @@ class InvoiceAPExport implements FromCollection, WithEvents, WithHeadings, WithC
 
                 // assign cell values
                 $event->sheet->setCellValue('A1','PRINTED DATE:');
-                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur"));
+                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
                 $event->sheet->setCellValue('A2','PRINTED TIME:',);
+                $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 $event->sheet->setCellValue('A3','PRINTED BY:');
                 $event->sheet->setCellValue('B3', session('username'));
                 $event->sheet->setCellValue('D1','INVOICE AP REPORT');
