@@ -432,15 +432,15 @@ class DoctorNoteController extends defaultController
     }
 
     public function get_chgcode(Request $request){
-        $pharcode = DB::table('sysdb.sysparam')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=','OE')
-                    ->where('trantype','=','PHAR')
-                    ->first();
+        // $pharcode = DB::table('sysdb.sysparam')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('source','=','OE')
+        //             ->where('trantype','=','PHAR')
+        //             ->first();
 
         $data = DB::table('hisdb.chgmast')
                     ->where('compcode','=',session('compcode'))
-                    ->where('chggroup','=',$pharcode->pvalue1)
+                    // ->where('chggroup','=',$pharcode->pvalue1)
                     ->where('active','=',1)
                     ->select('chgcode as code','description as description');
 
