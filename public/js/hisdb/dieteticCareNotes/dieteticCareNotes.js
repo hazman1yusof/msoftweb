@@ -150,10 +150,10 @@ $(document).ready(function () {
 	    	if(!$.isEmptyObject(data)){
 				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
 				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
-				button_state_dieteticCareNotes('edit');
+				button_state_dieteticCareNotes('edit_fup');
 				disableFields_dieteticCareNotes();
 	        }else{
-				button_state_dieteticCareNotes('add');
+				button_state_dieteticCareNotes('add_fup');
 	        }
 
 	    });
@@ -229,8 +229,8 @@ function button_state_dieteticCareNotes(state){
 		case 'edit':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
 			$('#cancel_dieteticCareNotes').data('oper','edit');
-			$("#edit_dieteticCareNotes").attr('disabled',false);
-			$('#save_dieteticCareNotes,#cancel_dieteticCareNotes,#new_dieteticCareNotes').attr('disabled',true);
+			$("#edit_dieteticCareNotes,#new_dieteticCareNotes").attr('disabled',false);
+			$('#save_dieteticCareNotes,#cancel_dieteticCareNotes').attr('disabled',true);
 			break;
 		case 'wait':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
@@ -246,8 +246,8 @@ function button_state_dieteticCareNotes(state){
 		case 'edit_fup':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
 			$('#cancel_dieteticCareNotes_fup').data('oper','edit_fup');
-			$("#edit_dieteticCareNotes_fup").attr('disabled',false);
-			$('#save_dieteticCareNotes_fup,#cancel_dieteticCareNotes_fup,#new_dieteticCareNotes_fup').attr('disabled',true);
+			$("#edit_dieteticCareNotes_fup,#new_dieteticCareNotes_fup").attr('disabled',false);
+			$('#save_dieteticCareNotes_fup,#cancel_dieteticCareNotes_fup').attr('disabled',true);
 			break;
 		case 'wait_fup':
 			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
@@ -295,7 +295,10 @@ function populate_dieteticCareNotes_currpt(obj){
     },'json').fail(function(data) {
         alert('there is an error');
     }).success(function(data){
+    		console.log('data');
     	if(!$.isEmptyObject(data)){
+
+    		console.log(data);
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
 			button_state_dieteticCareNotes('disable_ncase');
