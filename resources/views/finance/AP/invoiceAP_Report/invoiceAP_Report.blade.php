@@ -1,12 +1,12 @@
 @extends('layouts.main')
 
-@section('title', 'Sales Order Report')
+@section('title', 'Invoice AP Report')
 
 @section('body')
 <div class="container">
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
-		<form method="get" id="genreport" action="/SalesOrder_Report/showExcel">
-		<h2>SALES ORDER REPORT</h2>
+		<form method="get" id="genreport" action="/invoiceAP_Report/showExcel">
+		<h2>INVOICE AP REPORT</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 		
 			<table class="table" style="width: 50%;margin: auto;">
@@ -35,6 +35,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/SalesOrder_Report/SalesOrder_Report.js"></script>
+	<script src="js/finance/AP/invoiceAP_Report/invoiceAP_Report.js"></script>
 
 @endsection

@@ -451,7 +451,8 @@ function button_state_ward(state){
 	// }
 }
 
-function populate_formWard(obj,rowdata){
+// screen bed management //
+function populate_nursAssessment(obj,rowdata){
 	emptyFormdata(errorField,"#formWard");
 
 	//panel header
@@ -509,6 +510,65 @@ function populate_formWard(obj,rowdata){
 
     });
 
+}
+
+// screen current patient //
+function populate_nursAssessment_currpt(obj){
+	emptyFormdata(errorField,"#formWard");
+	//panel header
+	$('#name_show_ward').text(obj.Name);
+	$('#mrn_show_ward').text(("0000000" + obj.MRN).slice(-7));
+	$('#sex_show_ward').text((obj.Sex).toUpperCase());
+	$('#dob_show_ward').text(dob_chg(obj.DOB));
+	$('#age_show_ward').text(dob_age(obj.DOB)+' (YRS)');
+	$('#race_show_ward').text(if_none(obj.raceDesc).toUpperCase());
+	$('#religion_show_ward').text(if_none(obj.religionDesc).toUpperCase());
+	$('#occupation_show_ward').text(if_none(obj.occupDesc).toUpperCase());
+	$('#citizenship_show_ward').text(if_none(obj.cityDesc).toUpperCase());
+	$('#area_show_ward').text(if_none(obj.areaDesc).toUpperCase());
+
+	$("#mrn_ward").val(obj.MRN);
+	$("#episno_ward").val(obj.Episno);
+
+	var saveParam={
+        action:'get_table_ward',
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	mrn:obj.MRN,
+    	episno:obj.Episno
+
+    };
+
+    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+    	if(!$.isEmptyObject(data)){
+			autoinsert_rowdata("#formWard",data.ward);
+			autoinsert_rowdata("#formWard",data.ward_gen);
+			autoinsert_rowdata("#formWard",data.ward_regdate);
+
+			// autoinsert_rowdata("#formWard",data.ward_exm);
+			if(!$.isEmptyObject(data.ward_exm)){
+				urlParam_Exam.filterVal[0] = obj.MRN;
+				urlParam_Exam.filterVal[1] = obj.Episno;
+				refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
+				// examination_ward.empty();
+				// examination_ward.examarray = data.ward_exm;
+				// examination_ward.loadexam().disable();
+			}
+			
+			button_state_ward('edit');
+        }else{
+			button_state_ward('add');
+			autoinsert_rowdata("#formWard",data.ward_regdate);
+			// examination_ward.empty();
+        }
+
+    });
+	
 }
 
 function autoinsert_rowdata(form,rowData){
