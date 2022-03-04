@@ -51,6 +51,17 @@ class DieteticCareNotesController extends defaultController
                         return 'error happen..';
                 }
 
+            case 'save_table_dieteticCareNotes_fup':
+
+                switch($request->oper){
+                    case 'add_fup':
+                        return $this->add_fup($request);
+                    case 'edit_fup':
+                        return $this->edit_fup($request);
+                    default:
+                        return 'error happen..';
+                }
+
                 case 'get_table_dieteticCareNotes':
                     return $this->get_table_dieteticCareNotes($request);
 
@@ -89,6 +100,21 @@ class DieteticCareNotesController extends defaultController
                         'adduser'  => session('username'),
                     ]);
 
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error DB rollback!'.$e, 500);
+        }
+    }
+
+    public function add_fup(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
             DB::table('hisdb.patdietfup')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -110,6 +136,7 @@ class DieteticCareNotesController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser'  => session('username'),
                     ]);
+
             DB::commit();
 
         } catch (\Exception $e) {
@@ -119,7 +146,7 @@ class DieteticCareNotesController extends defaultController
         }
     }
 
-    public function edit(Request $request){
+    public function edit_fup(Request $request){
 
         DB::beginTransaction();
 
@@ -146,7 +173,17 @@ class DieteticCareNotesController extends defaultController
                     'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     'adduser'  => session('username'),
                 ]);
+
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
             DB::commit();
+
+            $responce = new stdClass();
+            $responce->mrn = $request->mrn_dieteticCareNotes;
+            $responce->episno = $request->episno_dieteticCareNotes;
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();

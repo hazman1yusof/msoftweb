@@ -15,7 +15,7 @@ $(document).ready(function () {
 		button_state_dieteticCareNotes('wait');
 		enableForm('#formDieteticCareNotes');
 		rdonly('#formDieteticCareNotes');
-		disableFields_dieteticCareNotes();
+		// disableFields_dieteticCareNotes();
 		// dialog_mrn_edit.on();
 		
 	});
@@ -36,6 +36,45 @@ $(document).ready(function () {
 	});
 
 	$("#cancel_dieteticCareNotes").click(function(){
+		disableForm('#formDieteticCareNotes');
+		button_state_dieteticCareNotes($(this).data('oper'));
+		// dialog_mrn_edit.off();
+
+	});
+
+	$("#new_dieteticCareNotes_fup").click(function(){
+		button_state_dieteticCareNotes('wait_fup');
+		enableForm('#formDieteticCareNotes');
+		rdonly('#formDieteticCareNotes');
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#edit_dieteticCareNotes_fup").click(function(){
+		button_state_dieteticCareNotes('wait_fup');
+		enableForm('#formDieteticCareNotes');
+		rdonly('#formDieteticCareNotes');
+		// disableFields_dieteticCareNotes();
+		// dialog_mrn_edit.on();
+		
+	});
+
+	$("#save_dieteticCareNotes_fup").click(function(){
+		disableForm('#formDieteticCareNotes');
+		if( $('#formDieteticCareNotes').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_dieteticCareNotes_fup(function(){
+				$("#cancel_dieteticCareNotes_fup").data('oper','edit_fup');
+				$("#cancel_dieteticCareNotes_fup").click();
+				// $("#jqGridPagerRefresh").click();
+			});
+		}else{
+			enableForm('#formDieteticCareNotes');
+			rdonly('#formDieteticCareNotes');
+		}
+
+	});
+
+	$("#cancel_dieteticCareNotes_fup").click(function(){
 		disableForm('#formDieteticCareNotes');
 		button_state_dieteticCareNotes($(this).data('oper'));
 		// dialog_mrn_edit.off();
@@ -198,6 +237,27 @@ function button_state_dieteticCareNotes(state){
 			$("#save_dieteticCareNotes,#cancel_dieteticCareNotes").attr('disabled',false);
 			$('#edit_dieteticCareNotes,#new_dieteticCareNotes').attr('disabled',true);
 			break;
+		case 'add_fup':
+			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
+			$('#cancel_dieteticCareNotes_fup').data('oper','add_fup');
+			$("#new_dieteticCareNotes_fup").attr('disabled',false);
+			$('#save_dieteticCareNotes_fup,#cancel_dieteticCareNotes_fup,#edit_dieteticCareNotes_fup').attr('disabled',true);
+			break;
+		case 'edit_fup':
+			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
+			$('#cancel_dieteticCareNotes_fup').data('oper','edit_fup');
+			$("#edit_dieteticCareNotes_fup").attr('disabled',false);
+			$('#save_dieteticCareNotes_fup,#cancel_dieteticCareNotes_fup,#new_dieteticCareNotes_fup').attr('disabled',true);
+			break;
+		case 'wait_fup':
+			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
+			$("#save_dieteticCareNotes_fup,#cancel_dieteticCareNotes_fup").attr('disabled',false);
+			$('#edit_dieteticCareNotes_fup,#new_dieteticCareNotes_fup').attr('disabled',true);
+			break;
+		case 'disable_ncase':
+			$("#toggle_dieteticCareNotes").attr('data-toggle','collapse');
+			$('#edit_dieteticCareNotes,#new_dieteticCareNotes,#save_dieteticCareNotes,#cancel_dieteticCareNotes').attr('disabled',true);
+			break;
 	}
 }
 
@@ -238,10 +298,12 @@ function populate_dieteticCareNotes_currpt(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietfup);
-			button_state_dieteticCareNotes('edit');
+			button_state_dieteticCareNotes('disable_ncase');
+			button_state_dieteticCareNotes('edit_fup');
 			disableFields_dieteticCareNotes();
         }else{
 			button_state_dieteticCareNotes('add');
+			button_state_dieteticCareNotes('add_fup');
         }
 
 	});
@@ -278,6 +340,58 @@ function saveForm_dieteticCareNotes(callback){
 	var saveParam={
         action:'save_table_dieteticCareNotes',
         oper:$("#cancel_dieteticCareNotes").data('oper')
+    }
+    var postobj={
+    	_token : $('#csrf_token').val(),
+    	// sex_edit : $('#sex_edit').val(),
+    	// idtype_edit : $('#idtype_edit').val()
+
+    };
+
+	values = $("#formDieteticCareNotes").serializeArray();
+	
+	values = values.concat(
+        $('#formDieteticCareNotes input[type=checkbox]:not(:checked)').map(
+        function() {
+            return {"name": this.name, "value": 0}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDieteticCareNotes input[type=checkbox]:checked').map(
+        function() {
+            return {"name": this.name, "value": 1}
+        }).get()
+	);
+	
+	values = values.concat(
+        $('#formDieteticCareNotes input[type=radio]:checked').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+    );
+
+    values = values.concat(
+        $('#formDieteticCareNotes select').map(
+        function() {
+            return {"name": this.name, "value": this.value}
+        }).get()
+	);
+
+    $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+function saveForm_dieteticCareNotes_fup(callback){
+	var saveParam={
+        action:'save_table_dieteticCareNotes_fup',
+        oper:$("#cancel_dieteticCareNotes_fup").data('oper')
     }
     var postobj={
     	_token : $('#csrf_token').val(),

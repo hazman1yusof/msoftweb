@@ -15,11 +15,11 @@
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDieteticCareNotes_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDieteticCareNotes_panel"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 310px; top: 25px;">
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
 			<h5>Dietetic Care Notes</h5>
 		</div>	
 
-		<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+		<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
 			id="btn_grp_edit_dieteticCareNotes"
 			style="position: absolute;
 					padding: 0 0 0 0;
@@ -39,7 +39,7 @@
 		<button type="button" class="btn btn-default" id="cancel_dieteticCareNotes">
 			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
 		</button>
-	</div>			
+	</div>			 -->
 	</div>
 	<div id="jqGridDieteticCareNotes_panel" class="panel-collapse collapse">
 		<div class="panel-body">
@@ -50,8 +50,30 @@
 				<form class='form-horizontal' style='width:99%' id='formDieteticCareNotes'>
 
 					<div class='col-md-12'>
-						<div class="panel panel-info">
-							<!-- <div class="panel-heading text-center">DIETETIC CARE NOTES</div> -->
+						<div class="panel panel-default">
+							<div class="panel-heading text-center">DIETETIC CARE NOTES	
+
+								<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+									id="btn_grp_edit_dieteticCareNotes"
+									style="position: absolute;
+											padding: 0 0 0 0;
+											right: 40px;
+											top: 5px;">
+									<button type="button" class="btn btn-default" id="new_dieteticCareNotes">
+										<span class="fa fa-plus-square-o"></span> New
+									</button>
+									<button type="button" class="btn btn-default" id="edit_dieteticCareNotes">
+										<span class="fa fa-edit fa-lg"></span> Edit
+									</button>
+									<button type="button" class="btn btn-default" data-oper='add' id="save_dieteticCareNotes">
+										<span class="fa fa-save fa-lg"></span> Save
+									</button>
+									<button type="button" class="btn btn-default" id="cancel_dieteticCareNotes">
+										<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+									</button>
+								</div>
+
+							</div>
 							<div class="panel-body">
 
 								<input id="mrn_dieteticCareNotes" name="mrn_dieteticCareNotes" type="hidden">
@@ -191,8 +213,30 @@
 					</div>
 
 					<div class='col-md-12'>
-						<div class="panel panel-info">
-							<div class="panel-heading text-center">FOLLOW UP DIETETIC CARE NOTES</div>
+						<div class="panel panel-default">
+							<div class="panel-heading text-center">FOLLOW UP DIETETIC CARE NOTES	
+
+								<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+									id="btn_grp_edit_dieteticCareNotes_fup"
+									style="position: absolute;
+											padding: 0 0 0 0;
+											right: 40px;
+											top: 5px;">
+									<button type="button" class="btn btn-default" id="new_dieteticCareNotes_fup">
+										<span class="fa fa-plus-square-o"></span> New
+									</button>
+									<button type="button" class="btn btn-default" id="edit_dieteticCareNotes_fup">
+										<span class="fa fa-edit fa-lg"></span> Edit
+									</button>
+									<button type="button" class="btn btn-default" data-oper='add' id="save_dieteticCareNotes_fup">
+										<span class="fa fa-save fa-lg"></span> Save
+									</button>
+									<button type="button" class="btn btn-default" id="cancel_dieteticCareNotes_fup">
+										<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+									</button>
+								</div>	
+							
+							</div>
 							<div class="panel-body">
 
 								<div class="col-md-4" style="padding:0 0 0 0">
