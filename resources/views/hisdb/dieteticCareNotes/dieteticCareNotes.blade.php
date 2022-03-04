@@ -268,6 +268,7 @@
 
 												<input id="mrn_dieteticCareNotes_fup" name="mrn_dieteticCareNotes_fup" type="hidden">
 												<input id="episno_dieteticCareNotes_fup" name="episno_dieteticCareNotes_fup" type="hidden">
+												<input id="fup_recordtime" name="fup_recordtime" type="hidden">
 
 												<div class='col-md-12'>
 													<div class="panel panel-info">

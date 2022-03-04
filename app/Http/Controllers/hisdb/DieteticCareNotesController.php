@@ -65,6 +65,10 @@ class DieteticCareNotesController extends defaultController
                 case 'get_table_dieteticCareNotes':
                     return $this->get_table_dieteticCareNotes($request);
 
+                case 'get_table_dieteticCareNotes_fup':
+                    return $this->get_table_dieteticCareNotes_fup($request);
+
+
             default:
                 return 'error happen..';
         }
@@ -101,6 +105,10 @@ class DieteticCareNotesController extends defaultController
                     ]);
 
             DB::commit();
+            
+            $responce = new stdClass();
+            $responce->mrn = $request->mrn_dieteticCareNotes;
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -139,6 +147,11 @@ class DieteticCareNotesController extends defaultController
 
             DB::commit();
 
+            $responce = new stdClass();
+            $responce->mrn = $request->mrn_dieteticCareNotes_fup;
+            $responce->episno = $request->episno_dieteticCareNotes_fup;
+            return json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -153,9 +166,10 @@ class DieteticCareNotesController extends defaultController
         try {
 
             DB::table('hisdb.patdietfup')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn_dieteticCareNotes_fup)
                 ->where('episno','=',$request->episno_dieteticCareNotes_fup)
-                ->where('compcode','=',session('compcode'))
+                ->where('recordtime','=',$request->fup_recordtime)
                 ->update([
                     'progress' => $request->fup_progress,
                     'diagnosis' => $request->fup_diagnosis,
@@ -169,12 +183,9 @@ class DieteticCareNotesController extends defaultController
                     'weight' => $request->fup_weight,
                     'gxt' => $request->fup_gxt,
                     'painscore' => $request->fup_painscore,
-                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'adduser'  => session('username'),
                 ]);
 
-            $queries = DB::getQueryLog();
+            // $queries = DB::getQueryLog();
             // dump($queries);
             
             DB::commit();
@@ -199,18 +210,29 @@ class DieteticCareNotesController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
 
-        $patdietfup_obj = DB::table('hisdb.patdietfup')
-                    ->select('progress as fup_progress','diagnosis as fup_diagnosis','intervention as fup_intervention','temperature as fup_temperature','pulse as fup_pulse','respiration as fup_respiration','bp_sys1 as fup_bp_sys1','bp_dias2 as fup_bp_dias2','height as fup_height','weight as fup_weight','gxt as fup_gxt','painscore as fup_painscore')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
-
         $responce = new stdClass();
 
         if($patdietncase_obj->exists()){
             $patdietncase_obj = $patdietncase_obj->first();
             $responce->patdietncase = $patdietncase_obj;
         }
+
+        return json_encode($responce);
+
+    }
+
+    public function get_table_dieteticCareNotes_fup(Request $request){
+
+        $date_fup = explode(" ",$request->date);
+
+        $patdietfup_obj = DB::table('hisdb.patdietfup')
+                    ->select('progress as fup_progress','diagnosis as fup_diagnosis','intervention as fup_intervention','temperature as fup_temperature','pulse as fup_pulse','respiration as fup_respiration','bp_sys1 as fup_bp_sys1','bp_dias2 as fup_bp_dias2','height as fup_height','weight as fup_weight','gxt as fup_gxt','painscore as fup_painscore','recordtime as fup_recordtime')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno)
+                    ->where('recordtime','=',$date_fup[1]);
+
+        $responce = new stdClass();
 
         if($patdietfup_obj->exists()){
             $patdietfup_obj = $patdietfup_obj->first();
