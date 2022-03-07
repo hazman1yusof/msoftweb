@@ -10,12 +10,17 @@ use Maatwebsite\Excel\Concerns\WithDrawings;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use DateTime;
+use Carbon\Carbon;
 
-class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithColumnWidths
+class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithColumnWidths, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -25,8 +30,6 @@ class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithCol
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
-
-
 
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -46,28 +49,37 @@ class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithCol
     public function headings(): array
     {
         return [
-            'compcode','source','trantype','auditno','entrydate','debtorcode','payercode','remark','deptcode'
+            'compcode','source','trantype','auditno','entrydate','deptcode','debtorcode','payercode','remark'
         ];
     }
 
     public function columnWidths(): array
     {
         return [
-            'A' => 10,
+            'A' => 15,
             'B' => 10,    
             'C' => 10,
-            'D' => 10,   
-            'E' => 20,
-            'F' => 30,   
-            'G' => 30,
-            'H' => 50,   
-            'I' => 10,          
+            'D' => 8,   
+            'E' => 12,
+            'F' => 12,   
+            'G' => 12,
+            'H' => 12,   
+            'I' => 50,          
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+
+           'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+
+          
         ];
     }
 
     public function registerEvents(): array
     {
-
 
         return [
             AfterSheet::class => function(AfterSheet $event) {
@@ -90,6 +102,15 @@ class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithCol
                     ]
                 ];
 
+                $style_datetime = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_LEFT
+                    ]
+                ];
+
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
 
@@ -97,18 +118,27 @@ class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithCol
                 // $event->sheet->mergeCells('A5:I5');
                 // $event->sheet->mergeCells('A6:I6');
 
-                // assign cell values
+                ///// assign cell values
+                $event->sheet->setCellValue('A1','PRINTED DATE :');
+                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
+                $event->sheet->setCellValue('A2','PRINTED TIME :');
+                $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->setCellValue('A3','PRINTED BY :');
+                $event->sheet->setCellValue('B3', session('username'));
                 $event->sheet->setCellValue('F1','SALES ORDER REPORT');
                 $event->sheet->setCellValue('F2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                $event->sheet->setCellValue('H1',$this->comp->name);
-                $event->sheet->setCellValue('H2',$this->comp->address1);
-                $event->sheet->setCellValue('H3',$this->comp->address2);
-                $event->sheet->setCellValue('H4',$this->comp->address3);
-                $event->sheet->setCellValue('H5',$this->comp->address4);
+                $event->sheet->setCellValue('I1',$this->comp->name);
+                $event->sheet->setCellValue('I2',$this->comp->address1);
+                $event->sheet->setCellValue('I3',$this->comp->address2);
+                $event->sheet->setCellValue('I4',$this->comp->address3);
+                $event->sheet->setCellValue('I5',$this->comp->address4);
 
-                // assign cell styles
+                //Date::dateTimeToExcel($invoice->created_at);
+
+                ///// assign cell styles
+                $event->sheet->getStyle('A1:A3')->applyFromArray($style_datetime);
                 $event->sheet->getStyle('F1:F2')->applyFromArray($style_header);
-                $event->sheet->getStyle('H1:H5')->applyFromArray($style_address);
+                $event->sheet->getStyle('I1:I5')->applyFromArray($style_address);
 
                 // $drawing = new Drawing();
                 // $drawing->setName('Logo');
