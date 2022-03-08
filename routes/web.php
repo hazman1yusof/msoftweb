@@ -515,6 +515,12 @@ Route::get('/debtorMaster','finance\DebtorMasterController@show');
 Route::get('/debtorMaster/table','finance\DebtorMasterController@table');
 Route::post('/debtorMaster/form','finance\DebtorMasterController@form');
 
+//// Debtor Master - report sales ///
+Route::get('/DebtorMaster_Report','finance\DebtorMaster_ReportController@show');
+Route::get('/DebtorMaster_Report/table','finance\DebtorMaster_ReportController@table');
+Route::post('/DebtorMaster_Report/form','finance\DebtorMaster_ReportController@form');
+Route::get('/DebtorMaster_Report/showExcel','finance\DebtorMaster_ReportController@showExcel');
+
 //// Deposit Type setup ///
 Route::get('/depositType','finance\DepositTypeController@show');
 Route::get('/depositType/table','finance\DepositTypeController@table');
@@ -530,10 +536,16 @@ Route::get('/categoryfin','finance\CategoryFinController@show');
 Route::get('/categoryfin/table','finance\CategoryFinController@table');
 Route::post('/categoryfin/form','finance\CategoryFinController@form');
 
-//// Debit Note Category Mode setup ///
+//// Debit Note Category AR Mode setup ///
 Route::get('/DebitNoteCategory','finance\DebitNoteCategoryController@show');
 Route::get('/DebitNoteCategory/table','finance\DebitNoteCategoryController@table');
 Route::post('/DebitNoteCategory/form','finance\DebitNoteCategoryController@form');
+
+//// Debit Note Category AR - report sales ///
+Route::get('/DebitNoteAR_Report','finance\DebitNoteAR_ReportController@show');
+Route::get('/DebitNoteAR_Report/table','finance\DebitNoteAR_ReportController@table');
+Route::post('/DebitNoteAR_Report/form','finance\DebitNoteAR_ReportController@form');
+Route::get('/DebitNoteAR_Report/showExcel','finance\DebitNoteAR_ReportController@showExcel');
 
 //// Bank setup ///
 Route::get('/bank','finance\BankController@show');
