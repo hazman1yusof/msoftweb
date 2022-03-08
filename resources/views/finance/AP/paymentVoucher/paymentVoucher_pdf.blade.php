@@ -192,11 +192,14 @@ hr {
 									<p><b>DR</b> {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{number_format($apacthdr->amount,2)}}</p>
 									<p><b>CR</b> {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{number_format($apacthdr->amount,2)}}</p>
 								</td>
-								<td colspan ="4">
+		
+							</tr>
+							<tr class="content">
 									<p><b>Printed Date:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}</p>
 									<p><b>Printed Time:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}</p>
 									<p><b>Printed By:</b> {{session('username')}}</p>
 								</td>
+							</tr>
 							</tr>
                         </tbody>
                     </table>

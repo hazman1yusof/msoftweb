@@ -427,6 +427,12 @@ Route::get('/supplier','material\SupplierController@show');
 Route::get('/supplier/table','material\SupplierController@table');
 Route::post('/supplier/form','material\SupplierController@form');
 
+/// Supplier - report  ///
+Route::get('/supplier_Report','material\Supplier_ReportController@show');
+Route::get('/supplier_Report/table','material\Supplier_ReportController@table');
+Route::post('/supplier_Report/form','material\Supplier_ReportController@form');
+Route::get('/supplier_Report/showExcel','material\Supplier_ReportController@showExcel');
+
 //// Stock Loc Enquiry ///
 Route::get('/stocklocEnquiry','material\StocklocEnquiryController@show');
 Route::get('/stocklocEnquiry/table','material\StocklocEnquiryController@table');
@@ -583,11 +589,23 @@ Route::get('/creditNote/table','finance\CreditNoteController@table');
 Route::post('/creditNote/form','finance\CreditNoteController@form');
 Route::get('/creditNote/form','finance\CreditNoteController@form');
 
+/// Credit Note AP - report  ///
+Route::get('/creditNote_Report','finance\CreditNote_ReportController@show');
+Route::get('/creditNote_Report/table','finance\CreditNote_ReportController@table');
+Route::post('/creditNote_Report/form','finance\CreditNote_ReportController@form');
+Route::get('/creditNote_Report/showExcel','finance\CreditNote_ReportController@showExcel');
+
 //// Debit Note AP ///
 Route::get('/debitNoteAP','finance\DebitNoteAPController@show');
 Route::get('/debitNoteAP/table','finance\DebitNoteAPController@table');
 Route::post('/debitNoteAP/form','finance\DebitNoteAPController@form');
 Route::get('/debitNoteAP/form','finance\DebitNoteAPController@form');
+
+//// Debit Note AP - report  ///
+Route::get('/debitNoteAP_Report','finance\DebitNoteAP_ReportController@show');
+Route::get('/debitNoteAP_Report/table','finance\DebitNoteAP_ReportController@table');
+Route::post('/debitNoteAP_Report/form','finance\DebitNoteAP_ReportController@form');
+Route::get('/debitNoteAP_Report/showExcel','finance\DebitNoteAP_ReportController@showExcel');
 
 //// Finance - Debit Note AR page ///
 Route::get('/DebitNote','finance\DebitNoteController@show');
