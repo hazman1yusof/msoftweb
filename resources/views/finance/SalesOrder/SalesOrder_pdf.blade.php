@@ -152,10 +152,17 @@ hr {
 											<p style="margin-left:10%; margin-right:10%;">{{$company->address1}}</p>
 											<p style="margin-left:10%; margin-right:10%;">{{$company->address2}} {{$company->address3}}</p>
 											<p style="margin-left:10%; margin-right:10%;">{{$company->address4}}</p></li>
-
 									</ol>
 								</td>
                             </tr>
+							<tr>
+							<br></br>
+								<td colspan ="4">
+									<p><b>Printed Date:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}</p>
+									<p><b>Printed Time:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}</p>
+									<p><b>Printed By:</b> {{session('username')}}</p>
+								</td>
+							</tr>
                         </tbody>
                     </table>
                 </div>
