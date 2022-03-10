@@ -119,7 +119,7 @@ hr {
 							<tr>
 								<td colspan="2">
 									<p><b>Ringgit Malaysia</b></p>
-									<p><i>{{$totamt_bm}}</i></p>
+									<p><i>{{$totamt_eng}}</i></p>
 								</td>
 								<td colspan="2">
 									<p><b>Total Amount</b></p>
