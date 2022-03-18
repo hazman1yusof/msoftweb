@@ -200,7 +200,7 @@ i.fa {
 							<div class="col-md-2">
 							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
 							       <option value="CN">Credit Note</option>
-							       <option value="PD">Payment Deposit</option>
+							       <option value="CNU">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 
@@ -267,7 +267,7 @@ i.fa {
 		 					</div>
 
 					</div>
-
+					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 				</form>
 				<div class="panel-body">
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
@@ -276,7 +276,7 @@ i.fa {
 		</div>
 			
 
-		<div class='panel panel-info' id="ap_parent">
+		<div class='panel panel-info' id="cn_detail">
 			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
