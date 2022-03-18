@@ -167,7 +167,7 @@ use PDF;
 
             echo json_encode($responce);
 
-            DB::commit();
+           
             
             } else {
                 $table = DB::table("finance.apacthdr");
@@ -196,10 +196,10 @@ use PDF;
                     'recstatus' => 'OPEN'
                 ];
 
-                DB::commit();  
+                
             }
 
-            
+            DB::commit();  
         } catch (\Exception $e) {
             DB::rollback();
 

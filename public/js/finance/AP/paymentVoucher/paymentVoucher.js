@@ -416,6 +416,7 @@ $(document).ready(function () {
 			urlParam.filterCol = ['trantype'];
 			urlParam.filterVal = [$('#apacthdr_trantype').val()];
 			//urlParam2.filterVal[4] = $('#apacthdr_trantype').val();
+			//alert($('#apacthdr_trantype').val())
 			refreshGrid('#jqGrid',urlParam);
 
 			if(trantype == 'PV') {
@@ -1266,66 +1267,74 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
+				if (($('#apacthdr_trantype').val()=="PV")) {
+					//alert($('#apacthdr_trantype').val())
 
-				$("#jqGrid2").jqGrid("clearGridData", true);
+					$("#jqGrid2").jqGrid("clearGridData", true);
 
-				let data=selrowData('#'+dialog_suppcode.gridname);
-				$("#apacthdr_payto").val(data['suppcode']);
-				$("#jqGrid2 input[name='document']").val(data['suppcode']);
-				$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
-				$("#jqGrid2 input[name='reference']").val(data['document']);
-				$("#jqGrid2 input[name='refamount']").val(data['amount']);
-				$("#jqGrid2 input[name='outamount']").val(data['outamount']);
+					let data=selrowData('#'+dialog_suppcode.gridname);
+					$("#apacthdr_payto").val(data['suppcode']);
+					$("#jqGrid2 input[name='document']").val(data['suppcode']);
+					$("#jqGrid2 input[name='entrydate']").val(data['recdate']); 
+					$("#jqGrid2 input[name='reference']").val(data['document']);
+					$("#jqGrid2 input[name='refamount']").val(data['amount']);
+					$("#jqGrid2 input[name='outamount']").val(data['outamount']);
 
-				var urlParam2 = {
-					action: 'get_value_default',
-					url: 'util/get_value_default',
-					field: [],
-					table_name: ['finance.apacthdr'],
-					filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
-					filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
-					WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-        			WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-					table_id: 'idno',
-				};
+					var urlParam2 = {
+						action: 'get_value_default',
+						url: 'util/get_value_default',
+						field: [],
+						table_name: ['finance.apacthdr'],
+						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+						table_id: 'idno',
+					};
 
-				$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
-				}, 'json').done(function (data) {
-					if (!$.isEmptyObject(data.rows)) {
-						myerrorIt_only(dialog_suppcode.textfield,false);
+					$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
+					}, 'json').done(function (data) {
+						if (!$.isEmptyObject(data.rows)) {
+							myerrorIt_only(dialog_suppcode.textfield,false);
 
-						data.rows.forEach(function(elem) {
-							$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-								{	
-									idno:elem['idno'],
-									suppcode:elem['suppcode'],
-									allocdate:elem['recdate'],
-									reference:elem['document'],
-									refamount:elem['amount'],
-									outamount:elem['outamount'],
-									allocamount: 0,
-									balance:elem['outamount'],
-								
-								}
-							);
-						});
+							data.rows.forEach(function(elem) {
+								$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
+									{	
+										idno:elem['idno'],
+										suppcode:elem['suppcode'],
+										allocdate:elem['recdate'],
+										reference:elem['document'],
+										refamount:elem['amount'],
+										outamount:elem['outamount'],
+										allocamount: 0,
+										balance:elem['outamount'],
+									
+									}
+								);
+							});
 
-						calc_amtpaid_bal();
-						
-						var ids = $("#jqGrid2").jqGrid('getDataIDs');
-						for (var i = 0; i < ids.length; i++) {
-							$("#jqGrid2").jqGrid('editRow',ids[i]);
+							calc_amtpaid_bal();
+							
+							var ids = $("#jqGrid2").jqGrid('getDataIDs');
+							for (var i = 0; i < ids.length; i++) {
+								$("#jqGrid2").jqGrid('editRow',ids[i]);
 
-							$('#jqGrid2 input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+								$('#jqGrid2 input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+							}
+
+						} else {
+							alert("This supplier doesnt have any invoice!");
+							$(dialog_suppcode.textfield).val('');
+							myerrorIt_only(dialog_suppcode.textfield,true);
 						}
+					});
+				} else {
+					$("#jqGrid2").jqGrid("clearGridData", true);
 
-					} else {
-						alert("This supplier doesnt have any invoice!");
-						$(dialog_suppcode.textfield).val('');
-						myerrorIt_only(dialog_suppcode.textfield,true);
-					}
-				});
-				
+					let data=selrowData('#'+dialog_suppcode.gridname);
+					$("#apacthdr_payto").val(data['suppcode']);
+					$('#apacthdr_payto').focus();
+				}
 			},
 		
 			gridComplete: function(obj){
