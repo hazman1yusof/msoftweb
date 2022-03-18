@@ -39,11 +39,9 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
         $debtormast = DB::table('debtor.debtormast')
                         ->select([
                             'compcode','debtorcode','name',
-                            DB::raw('CONCAT(debtormast.address1, " ", debtormast.address2, " ", debtormast.address3, " ",debtormast.address4) AS cust_address')
+                            DB::raw('CONCAT_WS("\n",debtormast.address1, debtormast.address2, debtormast.address3, debtormast.address4) AS cust_address')
                         ])
                         ->get();
-                       // DB::raw('CONCAT(address1, " ", address2, " ", address3, " ", address4) AS cust_address)
-
         return $debtormast;
         
     }
@@ -61,7 +59,7 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
             'A' => 15,
             'B' => 15,    
             'C' => 30,
-            'D' => 30,   
+            'D' => 35,   
             'E' => 20,
             'F' => 20,   
             'G' => 40,         
@@ -73,7 +71,7 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
     {
         return [
 
-           'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,    
+           //'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,    
         ];
     }
 
@@ -101,6 +99,15 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
                     ]
                 ];
 
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
+                    ]
+                ];
+
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
 
@@ -122,11 +129,15 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
                 $event->sheet->setCellValue('G3',$this->comp->address2);
                 $event->sheet->setCellValue('G4',$this->comp->address3);
                 $event->sheet->setCellValue('G5',$this->comp->address4);
-               // $event->sheet->setCellValue('D7','ADDRESS');
+                $event->sheet->setCellValue('A7','COMPCODE');
+                $event->sheet->setCellValue('B7','DEBTOR CODE');
+                $event->sheet->setCellValue('C7','NAME');
+                $event->sheet->setCellValue('D7','CUSTOMER ADDRESS');
 
                 ///// assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address_header);
+                $event->sheet->getStyle('A7:G7')->applyFromArray($style_columnheader);
 
                 ////// wraptext 
                 $event->sheet->getStyle('D:G')->getAlignment()->setWrapText(true);
