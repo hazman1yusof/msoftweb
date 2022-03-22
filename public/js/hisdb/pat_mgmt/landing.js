@@ -239,6 +239,7 @@ $(document).ready(function() {
         if($('#curpat').val() == 'true'){
             populate_triage_currpt(rows[bootgrid_last_rowid]);
             populate_antenatal(rows[bootgrid_last_rowid]);
+            populate_paediatric(rows[bootgrid_last_rowid]);
             populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
             populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
         }
@@ -483,6 +484,9 @@ $(document).ready(function() {
             });
             $("#jqGridWard_panel").on("show.bs.collapse", function(){
                 $("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
+            });
+            $("#jqGridPaediatric_panel").on("show.bs.collapse", function(){
+                $("#jqGridMedicalSurgical").jqGrid ('setGridWidth', Math.floor($("#jqGridPaediatric_c")[0].offsetWidth-$("#jqGridPaediatric_c")[0].offsetLeft-150));
             });
 
 

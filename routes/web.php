@@ -680,6 +680,11 @@ Route::get('/antenatal','hisdb\AntenatalController@show');
 Route::get('/antenatal/table','hisdb\AntenatalController@table');
 Route::post('/antenatal/form','hisdb\AntenatalController@form');
 
+//// Paediatric page ///
+Route::get('/paediatric','hisdb\PaediatricController@show');
+Route::get('/paediatric/table','hisdb\PaediatricController@table');
+Route::post('/paediatric/form','hisdb\PaediatricController@form');
+
 //// Ward Panel page ///
 Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');

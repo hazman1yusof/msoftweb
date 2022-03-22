@@ -142,7 +142,7 @@
 
 								<div class="col-md-2" style="padding:0 0 0 0">
 									<div class="panel panel-info">
-										<div class="panel-heading text-center">Vital Sign</div>
+										<div class="panel-heading text-center">Anthropometric Measurement</div>
 										<div class="panel-body">
 
 											<div class="form-group col-md-12">
@@ -186,6 +186,11 @@
 													<input id="ncase_weight" name="ncase_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">kg</span>
 												</div>
+											</div>
+
+											<div class="form-group col-md-12">
+												<label class="control-label" for="ncase_bmi" style="padding-bottom:5px">BMI</label>
+												<input id="ncase_bmi" name="ncase_bmi" type="number" class="form-control input-sm" rdonly>
 											</div>
 
 											<div class="form-group col-md-12">
@@ -304,7 +309,7 @@
 
 									<div class="col-md-3" style="padding:0 0 0 0">
 										<div class="panel panel-info">
-											<div class="panel-heading text-center">Vital Sign</div>
+											<div class="panel-heading text-center">Anthropometric Measurement</div>
 											<div class="panel-body">
 
 												<div class="form-group col-md-12">
@@ -348,6 +353,11 @@
 														<input id="fup_weight" name="fup_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">kg</span>
 													</div>
+												</div>
+
+												<div class="form-group col-md-12">
+													<label class="control-label" for="fup_bmi" style="padding-bottom:5px">BMI</label>
+													<input id="fup_bmi" name="fup_bmi" type="number" class="form-control input-sm" rdonly>
 												</div>
 
 												<div class="form-group col-md-12">

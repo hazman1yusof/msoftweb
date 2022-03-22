@@ -49,135 +49,8 @@
 
 				<form class='form-horizontal' style='width:99%' id='formAntenatal'>
 
-					<div class='col-md-7'>
-						<div class="panel panel-info">
-							<div class="panel-body">
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">PAST GYNAECOLOGICAL HISTORY</div>
-										<div class="panel-body">
-
-											<input id="mrn_antenatal" name="mrn_antenatal" type="hidden">
-											<input id="episno_antenatal" name="episno_antenatal" type="hidden">
-
-											<div class="form-check">
-												<label class="checkbox-inline" for="pgh_myomectomy" style="margin-left: 50px">
-													<input type="checkbox" name="pgh_myomectomy" id="pgh_myomectomy" value="1">Myomectomy
-												</label>
-												<label class="checkbox-inline" for="pgh_laparoscopy" style="margin-left: 30px">
-													<input type="checkbox" name="pgh_laparoscopy" id="pgh_laparoscopy" value="1">Laparoscopy
-												</label>
-												<label class="checkbox-inline" for="pgh_endometriosis" style="margin-left: 30px">
-													<input type="checkbox" name="pgh_endometriosis" id="pgh_endometriosis" value="1">Endometriosis
-												</label>
-											</div>
-
-											<div class="form-row">
-												<div class="form-group col-md-5" style="margin-top: 10px;margin-left: 35px">
-													<label for="lastpapsmear">Last Pap Smear</label>
-													<input id="lastpapsmear" name="lastpapsmear" type="date" class="form-control input-sm">
-												</div>
-												<div class="form-group col-md-6" style="margin-top: 10px;margin-left: 2px">
-													<label for="pgh_others">Others</label>
-													<input id="pgh_others" name="pgh_others" type="text" class="form-control input-sm">
-												</div>
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">PAST MEDICAL HISTORY</div>
-										<div class="panel-body">
-
-											<div class="form-check">
-												<label class="checkbox-inline" for="pmh_renaldisease" style="margin-left: 50px">
-													<input type="checkbox" name="pmh_renaldisease" id="pmh_renaldisease" value="1">Renal Disease
-												</label>
-												<label class="checkbox-inline" for="pmh_hypertension" style="margin-left: 30px">
-													<input type="checkbox" name="pmh_hypertension" id="pmh_hypertension" value="1">Hypertension
-												</label>
-												<label class="checkbox-inline" for="pmh_diabetes" style="margin-left: 30px">
-													<input type="checkbox" name="pmh_diabetes" id="pmh_diabetes" value="1">Diabetes
-												</label>
-												<label class="checkbox-inline" for="pmh_heartdisease" style="margin-left: 30px">
-													<input type="checkbox" name="pmh_heartdisease" id="pmh_heartdisease" value="1">Heart Disease
-												</label>
-											</div>
-
-											<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
-												<label for="pmh_others">Others</label>
-												<input id="pmh_others" name="pmh_others" type="text" class="form-control input-sm">
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">PAST SURGICAL HISTORY</div>
-										<div class="panel-body">
-
-											<div class="form-check">
-												<label class="checkbox-inline" for="psh_appendicectomy" style="margin-left: 50px">
-													<input type="checkbox" name="psh_appendicectomy" id="psh_appendicectomy" value="1">Appendicectomy
-												</label>
-												<label class="checkbox-inline" for="psh_hypertension" style="margin-left: 30px">
-													<input type="checkbox" name="psh_hypertension" id="psh_hypertension" value="1">Hypertension
-												</label>
-												<label class="checkbox-inline" for="psh_laparotomy" style="margin-left: 30px">
-													<input type="checkbox" name="psh_laparotomy" id="psh_laparotomy" value="1">Laparotomy
-												</label>
-												<label class="checkbox-inline" for="psh_thyroidsurgery" style="margin-left: 30px">
-													<input type="checkbox" name="psh_thyroidsurgery" id="psh_thyroidsurgery" value="1">Thyroid Surgery
-												</label>
-											</div>
-
-											<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
-												<label for="psh_others">Others</label>
-												<input id="psh_others" name="psh_others" type="text" class="form-control input-sm">
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-								<div class='col-md-12'>
-									<div class="panel panel-info">
-										<div class="panel-heading text-center">FAMILY HISTORY</div>
-										<div class="panel-body">
-
-											<div class="form-check">
-												<label class="checkbox-inline" for="fh_hypertension" style="margin-left: 50px">
-													<input type="checkbox" name="fh_hypertension" id="fh_hypertension" value="1">Hypertension
-												</label>
-												<label class="checkbox-inline" for="fh_diabetes" style="margin-left: 30px">
-													<input type="checkbox" name="fh_diabetes" id="fh_diabetes" value="1">Diabetes
-												</label>
-												<label class="checkbox-inline" for="fh_epilepsy" style="margin-left: 30px">
-													<input type="checkbox" name="fh_epilepsy" id="fh_epilepsy" value="1">Epilepsy
-												</label>
-												<label class="checkbox-inline" for="fh_multipregnancy" style="margin-left: 30px">
-													<input type="checkbox" name="fh_multipregnancy" id="fh_multipregnancy" value="1">Multiple Pregnancy
-												</label>
-											</div>
-
-											<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
-												<label for="fh_congenital">Congenital Abnormalities (Specify)</label>
-												<input id="fh_congenital" name="fh_congenital" type="text" class="form-control input-sm">
-											</div>
-
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
-					</div>
+					<input id="mrn_antenatal" name="mrn_antenatal" type="hidden">
+					<input id="episno_antenatal" name="episno_antenatal" type="hidden">
 
 					<div class='col-md-5'>
 						<div class="panel panel-info">
@@ -271,19 +144,153 @@
 									</div>
 								</div>
 
-								<hr style="width: 100%;background-color: #96cdcd;height: 1px">
+								<!-- <hr style="width: 100%;background-color: #96cdcd;height: 1px"> -->
 
 								<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
 									<label for="anr_bloodTrans">Blood Transfusion</label>
 									<input id="anr_bloodTrans" name="anr_bloodTrans" type="text" class="form-control input-sm">
 								</div>
 
-								<hr style="width: 100%;background-color: #96cdcd;height: 1px">
+								<!-- <hr style="width: 100%;background-color: #96cdcd;height: 1px"> -->
 
 								<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
 									<label for="anr_drugAllergies">Drug Allergies</label>
 									<textarea id="anr_drugAllergies" name="anr_drugAllergies" type="text" class="form-control input-sm" rows="4"></textarea>
 								</div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class='col-md-7'>
+
+						<div class='col-md-12'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">PAST GYNAECOLOGICAL HISTORY</div>
+								<div class="panel-body" style="padding:28px 15px">
+
+									<div class="form-check">
+										<label class="checkbox-inline" for="pgh_myomectomy" style="margin-left: 50px">
+											<input type="checkbox" name="pgh_myomectomy" id="pgh_myomectomy" value="1">Myomectomy
+										</label>
+										<label class="checkbox-inline" for="pgh_laparoscopy" style="margin-left: 30px">
+											<input type="checkbox" name="pgh_laparoscopy" id="pgh_laparoscopy" value="1">Laparoscopy
+										</label>
+										<label class="checkbox-inline" for="pgh_endometriosis" style="margin-left: 30px">
+											<input type="checkbox" name="pgh_endometriosis" id="pgh_endometriosis" value="1">Endometriosis
+										</label>
+									</div>
+
+									<div class="form-row">
+										<div class="form-group col-md-5" style="margin-top: 10px;margin-left: 35px">
+											<label for="lastpapsmear">Last Pap Smear</label>
+											<input id="lastpapsmear" name="lastpapsmear" type="date" class="form-control input-sm">
+										</div>
+										<div class="form-group col-md-6" style="margin-top: 10px;margin-left: 2px">
+											<label for="pgh_others">Others</label>
+											<input id="pgh_others" name="pgh_others" type="text" class="form-control input-sm">
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class='col-md-12'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">PAST MEDICAL HISTORY</div>
+								<div class="panel-body" style="padding:28px 15px">
+
+									<div class="form-check">
+										<label class="checkbox-inline" for="pmh_renaldisease" style="margin-left: 50px">
+											<input type="checkbox" name="pmh_renaldisease" id="pmh_renaldisease" value="1">Renal Disease
+										</label>
+										<label class="checkbox-inline" for="pmh_hypertension" style="margin-left: 30px">
+											<input type="checkbox" name="pmh_hypertension" id="pmh_hypertension" value="1">Hypertension
+										</label>
+										<label class="checkbox-inline" for="pmh_diabetes" style="margin-left: 30px">
+											<input type="checkbox" name="pmh_diabetes" id="pmh_diabetes" value="1">Diabetes
+										</label>
+										<label class="checkbox-inline" for="pmh_heartdisease" style="margin-left: 30px">
+											<input type="checkbox" name="pmh_heartdisease" id="pmh_heartdisease" value="1">Heart Disease
+										</label>
+									</div>
+
+									<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
+										<label for="pmh_others">Others</label>
+										<input id="pmh_others" name="pmh_others" type="text" class="form-control input-sm">
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class='col-md-12'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">PAST SURGICAL HISTORY</div>
+								<div class="panel-body" style="padding:28px 15px">
+
+									<div class="form-check">
+										<label class="checkbox-inline" for="psh_appendicectomy" style="margin-left: 50px">
+											<input type="checkbox" name="psh_appendicectomy" id="psh_appendicectomy" value="1">Appendicectomy
+										</label>
+										<label class="checkbox-inline" for="psh_hypertension" style="margin-left: 30px">
+											<input type="checkbox" name="psh_hypertension" id="psh_hypertension" value="1">Hypertension
+										</label>
+										<label class="checkbox-inline" for="psh_laparotomy" style="margin-left: 30px">
+											<input type="checkbox" name="psh_laparotomy" id="psh_laparotomy" value="1">Laparotomy
+										</label>
+										<label class="checkbox-inline" for="psh_thyroidsurgery" style="margin-left: 30px">
+											<input type="checkbox" name="psh_thyroidsurgery" id="psh_thyroidsurgery" value="1">Thyroid Surgery
+										</label>
+									</div>
+
+									<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
+										<label for="psh_others">Others</label>
+										<input id="psh_others" name="psh_others" type="text" class="form-control input-sm">
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class='col-md-12'>
+							<div class="panel panel-info">
+								<div class="panel-heading text-center">FAMILY HISTORY</div>
+								<div class="panel-body" style="padding:28px 15px">
+
+									<div class="form-check">
+										<label class="checkbox-inline" for="fh_hypertension" style="margin-left: 50px">
+											<input type="checkbox" name="fh_hypertension" id="fh_hypertension" value="1">Hypertension
+										</label>
+										<label class="checkbox-inline" for="fh_diabetes" style="margin-left: 30px">
+											<input type="checkbox" name="fh_diabetes" id="fh_diabetes" value="1">Diabetes
+										</label>
+										<label class="checkbox-inline" for="fh_epilepsy" style="margin-left: 30px">
+											<input type="checkbox" name="fh_epilepsy" id="fh_epilepsy" value="1">Epilepsy
+										</label>
+										<label class="checkbox-inline" for="fh_multipregnancy" style="margin-left: 30px">
+											<input type="checkbox" name="fh_multipregnancy" id="fh_multipregnancy" value="1">Multiple Pregnancy
+										</label>
+									</div>
+
+									<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
+										<label for="fh_congenital">Congenital Abnormalities (Specify)</label>
+										<input id="fh_congenital" name="fh_congenital" type="text" class="form-control input-sm">
+									</div>
+
+								</div>
+							</div>
+						</div>
+							
+					</div>
+
+					<div class='col-md-12'>
+						<div class="panel panel-info" style="margin-right:10px">
+							<div class="panel-heading text-center">SYSTEMATIC EXAMINATION</div>
+							<div class="panel-body">
+
+								
 
 							</div>
 						</div>

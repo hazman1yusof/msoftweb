@@ -115,6 +115,24 @@ $(document).ready(function () {
 		}, 0);
 	});
 
+	//bmi calculator
+	$('#ncase_height').keyup(function(event) {
+		getBMI_ncase();
+	});
+
+	$('#ncase_weight').keyup(function(event) {
+		getBMI_ncase();
+	});
+
+	$('#fup_height').keyup(function(event) {
+		getBMI_fup();
+	});
+
+	$('#fup_weight').keyup(function(event) {
+		getBMI_fup();
+	});
+	//bmi calculator ends
+
 	$("#jqGridDieteticCareNotes_panel").on("shown.bs.collapse", function(){
         var urlparam_dietetic_date_tbl={
 			action:'get_table_date_dietetic',
@@ -167,6 +185,7 @@ $(document).ready(function () {
 	    	if(!$.isEmptyObject(data)){
 				autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes_fup",data.patdietfup);
 				button_state_dieteticCareNotes('edit_fup');
+				getBMI_fup();
 				// disableFields_dieteticCareNotes();
 	        }else{
 				button_state_dieteticCareNotes('add_fup');
@@ -212,6 +231,34 @@ conf = {
 		}
 	},
 };
+
+//bmi calculator
+function getBMI_ncase() {
+    var ncase_height = parseFloat($("#ncase_height").val());
+    var ncase_weight = parseFloat($("#ncase_weight").val());
+
+	var ncase_myBMI = (ncase_weight / ncase_height / ncase_height) * 10000;
+
+    var ncase_bmi = ncase_myBMI.toFixed(2);
+
+    if (isNaN(ncase_bmi)) ncase_bmi = 0;
+
+    $('#ncase_bmi').val((ncase_bmi));
+}
+
+function getBMI_fup() {
+    var fup_height = parseFloat($("#fup_height").val());
+    var fup_weight = parseFloat($("#fup_weight").val());
+
+	var fup_myBMI = (fup_weight / fup_height / fup_height) * 10000;
+
+    var fup_bmi = fup_myBMI.toFixed(2);
+
+    if (isNaN(fup_bmi)) fup_bmi = 0;
+
+    $('#fup_bmi').val((fup_bmi));
+}
+//bmi calculator ends
 
 // to disable all fields except those in follow up
 function disableFields_dieteticCareNotes() {
@@ -317,6 +364,7 @@ function populate_dieteticCareNotes_currpt(obj){
     		console.log(data);
 			autoinsert_rowdata_dieteticCareNotes("#formDieteticCareNotes",data.patdietncase);
 			button_state_dieteticCareNotes('disable_ncase');
+			getBMI_ncase();
 			// disableFields_dieteticCareNotes();
         }else{
 			button_state_dieteticCareNotes('add');

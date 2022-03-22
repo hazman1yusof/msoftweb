@@ -520,6 +520,10 @@
 					</div>
 
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.paediatric.paediatric')
+					</div>
+
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
 
@@ -628,6 +632,7 @@
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
+				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
