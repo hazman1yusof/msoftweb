@@ -54,14 +54,14 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					if ($('#apacthdr_trantype').val() == 'PD') {
-						$('#save').show();
-						$('#pvpd_detail').hide();
-					} else {
-						$('#save').hide();
-						$('#pvpd_detail').show();
-						rdonly('#apacthdr_amount');
-					}
+					// if ($('#apacthdr_trantype').val() == 'PD') {
+					// 	$('#save').show();
+					// 	$('#pvpd_detail').hide();
+					// } else {
+					// 	$('#save').hide();
+					// 	$('#pvpd_detail').show();
+					// 	rdonly('#apacthdr_amount');
+					// }
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -90,7 +90,7 @@ $(document).ready(function () {
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
-				//init_jq2();
+				init_jq2(oper);
 			},
 			beforeClose: function(event, ui){
 				if(unsaved){
@@ -281,7 +281,6 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 		$('#error_infront').text('');
-		$('#save').hide();
 		let stat = selrowData("#jqGrid").apacthdr_recstatus;
 		let scope = $("#recstatus_use").val();
 
@@ -308,20 +307,11 @@ $(document).ready(function () {
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
-				$('#save').hide();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-	
-					if (rowData['apacthdr_trantype'] == 'PV') {
-						$('#save').hide();
-						$('#pvpd_detail').show();
-					} else {
-						$('#save').show();
-						$('#pvpd_detail').hide();
-					}
 				}
 			}
 		},
@@ -409,25 +399,18 @@ $(document).ready(function () {
 		}
 	}
 
-		////////////////////selected///////////////
+	////////////////////selected///////////////
 
-		$('#apacthdr_trantype').on('change', function() {
-			let trantype = $("#apacthdr_trantype option:selected").val();
-			urlParam.filterCol = ['trantype'];
-			urlParam.filterVal = [$('#apacthdr_trantype').val()];
-			//urlParam2.filterVal[4] = $('#apacthdr_trantype').val();
-			//alert($('#apacthdr_trantype').val())
-			refreshGrid('#jqGrid',urlParam);
-
-			if(trantype == 'PV') {
-				$('#save').hide();
-				$('#pvpd_detail').show();
-			}else if (trantype == 'PD') {
-				$('#save').show();
-				$('#pvpd_detail').hide();
-			}
-			
-		});
+	$('#apacthdr_trantype').on('change', function() {
+		let trantype = $("#apacthdr_trantype option:selected").val();
+		urlParam.filterCol = ['trantype'];
+		urlParam.filterVal = [$('#apacthdr_trantype').val()];
+		//urlParam2.filterVal[4] = $('#apacthdr_trantype').val();
+		//alert($('#apacthdr_trantype').val())
+		refreshGrid('#jqGrid',urlParam);
+		init_jq2(oper);
+		
+	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
@@ -568,8 +551,9 @@ $(document).ready(function () {
 			}
 			disableForm('#formdata');
 
-			if(needrefresh === 'refreshGrid'){
+			if(needrefresh == 'refreshGrid'){
 				refreshGrid("#jqGrid", urlParam);
+				$("#dialogForm").dialog('close');
 			}
 			
 		});
@@ -1067,7 +1051,7 @@ $(document).ready(function () {
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
 			unsaved = false;
-			$("#dialogForm").dialog('close');
+			// $("#dialogForm").dialog('close');
 		}else{
 			mycurrency.formatOn();
 		}
@@ -1519,21 +1503,14 @@ $(document).ready(function () {
 
 });
 
-function init_jq2(){
-	if(oper == 'add'){
-		if($('#apacthdr_trantype').val() == 'PV'){
-			$('#save').hide();
-			$('#pvpd_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-		}
-	}
-
-	if(oper == 'view'){
-		if($('#apacthdr_trantype').val() == 'PV'){
-			$('#save').hide();
-			$('#pvpd_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-		}
+function init_jq2(oper){
+	if($('#apacthdr_trantype').val() == 'PV'){
+		$('#save').hide();
+		$('#pvpd_detail').show();
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+	}else{
+		$('#save').show();
+		$('#pvpd_detail').hide();
 	}
 }
 
