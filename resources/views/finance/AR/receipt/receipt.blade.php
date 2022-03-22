@@ -57,6 +57,7 @@
 		<input type='hidden' name='postdate'>
 		<input type='hidden' name='dbacthdr_RCOSbalance'>
 		<input type='hidden' name='dbacthdr_units'>
+		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
 		
 		<div class='col-md-6'>
 			<div class='panel panel-info'>
@@ -394,7 +395,7 @@
 		</div>
 </div>
 
-	@include('layouts.till_part')
+	<!-- @include('layouts.till_part') -->
 
 	@include('layouts.allocate_part')
 
@@ -404,7 +405,6 @@
 @section('scripts')
 	
 
-	<script src="js/myjs/AR/receipt/receipt.js"></script>
 	<script src="js/finance/AR/receipt/receipt.js"></script>
 	
 @endsection

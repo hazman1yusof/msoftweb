@@ -107,6 +107,7 @@ class CreditDebitTransController extends defaultController
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
+            DB::commit();
             $responce = new stdClass();
             $responce->amount = $request->apacthdr_amount;
             echo json_encode($responce);
@@ -114,7 +115,6 @@ class CreditDebitTransController extends defaultController
             // $queries = DB::getQueryLog();
             // dump($queries);
 
-            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 

@@ -3,23 +3,25 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-var tabform="#f_tab-cash";
+	var tabform="#f_tab-cash";
 
 	function getcr(paytype){
 		var param={
 			action:'get_value_default',
 			field:['glaccno','ccode'],
+			url: 'util/get_value_default',
 			table_name:'debtor.paymode',
 			table_id:'paymode',
 			filterCol:['paytype','source'],
 			filterVal:[paytype,'AR'],
 		}
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-				
-			},'json').done(function(data) {
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
 				$("#formdata input[name='dbacthdr_drcostcode']").val(data.rows[0].ccode);
 				$("#formdata input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
-			});
+		});
 	}
 	
 	function setDateToNow(){
@@ -42,6 +44,7 @@ var tabform="#f_tab-cash";
 	function getLastrcnumber(){//lastrcnummber for till or receipt number
 		var param={
 			action:'get_value_default',
+			url: 'util/get_value_default',
 			field:['lastrcnumber'],
 			table_name:'debtor.till',
 			filterCol:['tillcode'],
@@ -49,8 +52,7 @@ var tabform="#f_tab-cash";
 		}
 		param.filterVal=[$("#formdata input[name='dbacthdr_tillcode']").val()];
 
-
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
@@ -65,6 +67,7 @@ var tabform="#f_tab-cash";
 	function getRcpOutAmt(payercode){////// get outstanding amount for recepit trantype
 		var param={
 			action:'get_value_default',
+			url: 'util/get_value_default',
 			field:['SUM(outamount) as sum'],
 			table_name:['debtor.dbacthdr','sysdb.sysparam'],
 			join_type:['JOIN'],
@@ -73,7 +76,7 @@ var tabform="#f_tab-cash";
 			filterCol:['dbacthdr.payercode','sysparam.source','sysparam.pvalue2','dbacthdr.recstatus','dbacthdr.trantype','dbacthdr.compcode'],
 			filterVal:[payercode,'PB','DR','A','skip.sysparam.trantype','skip.sysparam.compcode'],
 		};
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
@@ -88,6 +91,7 @@ var tabform="#f_tab-cash";
 	function getOut(payercode){ //tak guna
 		var param={
 			action:'get_value_default',
+			url: 'util/get_value_default',
 			field:['SUM(outamount)'],
 			table_name:'debtor.dbacthdr',
 			filterCol:['payercode','source','recstatus'],
@@ -96,7 +100,7 @@ var tabform="#f_tab-cash";
 			filterInType:['IN'],
 			filterInVal:[['DN','IN']]
 		};
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data)){
@@ -196,10 +200,49 @@ var tabform="#f_tab-cash";
 
 	////////////////////////////end transaction minimum date////////////////////////////////
 
-	dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
-	dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
-	dialog_dbtype=new makeDialog('debtor.debtortype','#dbacthdr_debtortype',['debtortycode','description'], 'debtortycode');
-	dialog_episode=new makeDialog('hisdb.patmast','#dbacthdr_mrn',['mrn','name','episno','newic'], 'Select Episode list');
+	// dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
+	// dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
+	var dialog_payercode = new ordialog(
+		'payercode','debtor.debtormast','#dbacthdr_payercode',errorField,
+		{	colModel:[
+				{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'debtortype',name:'debtortype',hidden:true},
+				{label:'actdebccode',name:'actdebccode',hidden:true},
+				{label:'actdebglacc',name:'actdebglacc',hidden:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_payercode.gridname);
+				//$('#apacthdr_actdate').focus();
+				$('#dbacthdr_payername').val(data.name);
+				$('#dbacthdr_debtortype').val(data.debtortype);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Payer code",
+			open: function(){
+				dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_payercode.makedialog(true);
+
+	// dialog_dbtype=new makeDialog('debtor.debtortype','#dbacthdr_debtortype',['debtortycode','description'], 'debtortycode');
+	// dialog_episode=new makeDialog('hisdb.patmast','#dbacthdr_mrn',['mrn','name','episno','newic'], 'Select Episode list');
 
 	$( "#divMrnEpisode" ).hide();
 	amountchgOn(true);
@@ -234,6 +277,7 @@ var tabform="#f_tab-cash";
 	///////////////////////////////////////////trantype//////////////////////
 	var urlParam_sys={
 		action:'get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'sysdb.sysparam',
 		table_id:'trantype',
@@ -301,6 +345,7 @@ var tabform="#f_tab-cash";
 	///////////////////////////////////////////Bank Paytype/////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
@@ -344,6 +389,7 @@ var tabform="#f_tab-cash";
 	///////////////////////////////////////////Card paytype//////////////////////////////////////////////
 	var urlParam3={
 		action:'get_table_default',
+		url: 'util/get_table_default',
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
@@ -494,7 +540,7 @@ var tabform="#f_tab-cash";
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,$(tabform).serializeArray());
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 			}else{
 				mycurrency.formatOn();
 			}
@@ -521,8 +567,8 @@ var tabform="#f_tab-cash";
 		autoOpen: false,
 		open: function( event, ui ) {
 			parent_close_disabled(true);
-			getcr('CASH');
-			getLastrcnumber();setDateToNow();
+			// getcr('CASH');
+			// getLastrcnumber();
 			$('.nav-tabs a').on('shown.bs.tab', function(e){
 				tabform=$(this).attr('form');
 				rdonly(tabform);
@@ -592,12 +638,10 @@ var tabform="#f_tab-cash";
 					break;
 			}
 			if(oper!='view'){
-				dialog_dbmast.handler(errorField);
-				dialog_dbtype.handler(errorField);
+				dialog_payercode.on();
 			}
 			if(oper!='add'){
-				dialog_dbtype.check(errorField);
-				dialog_episode.check(errorField);
+				dialog_payercode.check(errorField);
 				showingForCash(selrowData("#jqGrid").dbacthdr_amount,selrowData("#jqGrid").dbacthdr_outamount,selrowData("#jqGrid").dbacthdr_RCCASHbalance,selrowData("#jqGrid").dbacthdr_RCFinalbalance,selrowData("#jqGrid").dbacthdr_paytype);
 			}
 		},
@@ -623,22 +667,23 @@ var tabform="#f_tab-cash";
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'get_table_default',
+		url: 'util/get_table_default',
 		field:'',
-		table_name:['debtor.dbacthdr','hisdb.patmast'],
+		fixPost:'true',
+		table_name:['debtor.dbacthdr','hisdb.pat_mast'],
 		table_id:'dbacthdr_idno',
-		sort_idno:true,
 		join_type:['LEFT JOIN'],
 		join_onCol:['dbacthdr.mrn'],
-		join_onVal:['patmast.mrn'],
-		fixPost:true,
-		filterCol:['dbacthdr.tillno'],
-		filterVal:''
+		join_onVal:['pat_mast.mrn'],
+		// filterCol:['dbacthdr.tillno'],
+		// filterVal:''
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	
 	var saveParam={	
 		action:'receipt_save',
+		url: 'receipt/form',
 		oper:'add',
 		field:'',
 		table_name:'debtor.dbacthdr',
@@ -676,7 +721,7 @@ var tabform="#f_tab-cash";
 			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap', canSearch:true},//tunjuk
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 60, formatter:mrnFormatter}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
-			{label: 'Patient Name', name: 'patmast_name', width: 150, classes: 'wrap'}, //tunjuk
+			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap'}, //tunjuk
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
 			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
@@ -687,7 +732,7 @@ var tabform="#f_tab-cash";
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
-			{label: 'units', name: 'dbacthdr_units', hidden: true},
+			{label: 'units', name: 'dbacthdr_unit', hidden: true},
 			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
 			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
 			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
@@ -771,8 +816,8 @@ var tabform="#f_tab-cash";
 			$('#dbacthdr_recptno').hide();
 			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
 			$( "input:radio[name='optradio'][value='receipt']" ).change();
-			$("#formdata input[name='dbacthdr_tillcode']").val(def_tillcode);	
-			$("#formdata input[name='dbacthdr_tillno']").val(def_tillno);
+			// $("#formdata input[name='dbacthdr_tillcode']").val(def_tillcode);	
+			// $("#formdata input[name='dbacthdr_tillno']").val(def_tillno);
 			$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			enabledPill();
 			$( "#dialogForm" ).dialog( "open" );
