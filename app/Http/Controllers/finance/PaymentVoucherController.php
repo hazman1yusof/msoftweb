@@ -64,101 +64,101 @@ use PDF;
 
         DB::beginTransaction();
         try {
-        
-            $auditno = $this->defaultSysparam($request->apacthdr_source,'PV');
-
-            $table = DB::table("finance.apacthdr");
             
-            $array_insert = [
-                'source' => 'AP',
-                'auditno' => $auditno,
-                'trantype' => 'PV',
-                'actdate' => $request->apacthdr_actdate,
-                // 'recdate' => $request->apacthdr_actdate,
-                'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
-                'document' => strtoupper($request->apacthdr_document),
-                'paymode' => $request->apacthdr_paymode,
-                'bankcode' => $request->apacthdr_bankcode,
-                'cheqno' => $request->apacthdr_cheqno,
-                'cheqdate' => $request->apacthdr_cheqdate,
-                'remarks' => strtoupper($request->apacthdr_remarks),
-                'suppcode' => $request->apacthdr_suppcode,
-                'payto' => $request->apacthdr_payto,
-                'compcode' => session('compcode'),
-                'unit' => session('unit'),
-                'adduser' => session('username'),
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'recstatus' => 'OPEN'
-            ];
+            $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
+            
+            if ($request->apacthdr_trantype == 'PV'){
 
+                $table = DB::table("finance.apacthdr");
+            
+                $array_insert = [
+                    'source' => 'AP',
+                    'auditno' => $auditno,
+                    'trantype' => $request->apacthdr_trantype,
+                    'actdate' => $request->apacthdr_actdate,
+                    // 'recdate' => $request->apacthdr_actdate,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'document' => strtoupper($request->apacthdr_document),
+                    'paymode' => $request->apacthdr_paymode,
+                    'bankcode' => $request->apacthdr_bankcode,
+                    'cheqno' => $request->apacthdr_cheqno,
+                    'cheqdate' => $request->apacthdr_cheqdate,
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN'
+                ];
 
+                $idno_apacthdr = $table->insertGetId($array_insert);
 
-            $idno_apacthdr = $table->insertGetId($array_insert);
+                foreach ($request->data_detail as $key => $value){
 
-            foreach ($request->data_detail as $key => $value){
+                    $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$value['idno'])
+                                ->first();
 
-                $apacthdr_IV = DB::table('finance.apacthdr')
-                            ->where('idno','=',$value['idno'])
-                            ->first();
+                    $outamount = floatval($value['outamount']);
+                    $allocamount = floatval($value['outamount']) - floatval($value['balance']);
+                    $newoutamount_IV = floatval($outamount - $allocamount);
 
-                $outamount = floatval($value['outamount']);
-                $allocamount = floatval($value['outamount']) - floatval($value['balance']);
-                $newoutamount_IV = floatval($outamount - $allocamount);
+                    DB::table('finance.apalloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'unit' => session('unit'),
+                            'source' => 'AP',
+                            'trantype' => 'PV',
+                            'auditno' => $auditno,
+                            'lineno_' => $key+1,
+                            'docsource' => 'AP',
+                            'doctrantype' => 'PV',
+                            'docauditno' => $auditno,
+                            'refsource' => $apacthdr_IV->source,
+                            'reftrantype' => $apacthdr_IV->trantype,
+                            'refauditno' => $apacthdr_IV->auditno,
+                            'refamount' => $apacthdr_IV->amount,
+                            'allocdate' => $request->apacthdr_actdate,//blank
+                            'reference' => $value['reference'],
+                            'allocamount' => $allocamount,
+                            'outamount' => $outamount,
+                            'paymode' => $request->apacthdr_paymode,
+                            'cheqdate' => $request->apacthdr_cheqdate,
+                            'bankcode' => $request->apacthdr_bankcode,
+                            'suppcode' => $request->apacthdr_suppcode,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'OPEN'
+                        ]);
 
-                DB::table('finance.apalloc')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'unit' => session('unit'),
-                        'source' => 'AP',
-                        'trantype' => 'PV',
-                        'auditno' => $auditno,
-                        'lineno_' => $key+1,
-                        'docsource' => 'AP',
-                        'doctrantype' => 'PV',
-                        'docauditno' => $auditno,
-                        'refsource' => $apacthdr_IV->source,
-                        'reftrantype' => $apacthdr_IV->trantype,
-                        'refauditno' => $apacthdr_IV->auditno,
-                        'refamount' => $apacthdr_IV->amount,
-                        'allocdate' => $request->apacthdr_actdate,//blank
-                        'reference' => $value['reference'],
-                        'allocamount' => $allocamount,
-                        'outamount' => $outamount,
-                        'paymode' => $request->apacthdr_paymode,
-                        'cheqdate' => $request->apacthdr_cheqdate,
-                        'bankcode' => $request->apacthdr_bankcode,
-                        'suppcode' => $request->apacthdr_suppcode,
-                        'lastuser' => session('username'),
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$value['idno'])
+                                ->update([
+                                    'outamount' => $newoutamount_IV
+                                ]);
+
+                }
+
+                //calculate total amount from detail
+                $totalAmount = DB::table('finance.apalloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','PV')
+                    ->where('auditno','=',$auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('allocamount');
+                
+                DB::table('finance.apacthdr')
+                    ->where('idno','=',$idno_apacthdr)
+                    ->update([
+                        'amount' => $totalAmount,
+                        'outamount' => '0',
                         'recstatus' => 'OPEN'
                     ]);
-
-                $apacthdr_IV = DB::table('finance.apacthdr')
-                            ->where('idno','=',$value['idno'])
-                            ->update([
-                                'outamount' => $newoutamount_IV
-                            ]);
-
-            }
-
-            //calculate total amount from detail
-            $totalAmount = DB::table('finance.apalloc')
-                ->where('compcode','=',session('compcode'))
-                ->where('unit','=',session('unit'))
-                ->where('source','=','AP')
-                ->where('trantype','=','PV')
-                ->where('auditno','=',$auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('allocamount');
-            
-            DB::table('finance.apacthdr')
-                ->where('idno','=',$idno_apacthdr)
-                ->update([
-                    'amount' => $totalAmount,
-                    'outamount' => '0',
-                    'recstatus' => 'OPEN'
-                ]);
 
             $responce = new stdClass();
             $responce->auditno = $auditno;
@@ -167,7 +167,39 @@ use PDF;
 
             echo json_encode($responce);
 
-            DB::commit();
+           
+            
+            } else {
+                $table = DB::table("finance.apacthdr");
+            
+                $array_insert = [
+                    'source' => 'AP',
+                    'auditno' => $auditno,
+                    'trantype' => $request->apacthdr_trantype,
+                    'actdate' => $request->apacthdr_actdate,
+                    // 'recdate' => $request->apacthdr_actdate,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'document' => strtoupper($request->apacthdr_document),
+                    'paymode' => $request->apacthdr_paymode,
+                    'bankcode' => $request->apacthdr_bankcode,
+                    'cheqno' => $request->apacthdr_cheqno,
+                    'cheqdate' => $request->apacthdr_cheqdate,
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    'amount' => $request->apacthdr_amount,
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN'
+                ];
+
+                
+            }
+
+            DB::commit();  
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -600,20 +632,28 @@ use PDF;
                     ->first();
 
         $totamount_expld = explode(".", (float)$apacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
 
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])." RINGGIT ";
+        $totamt_eng = $totamt_eng_rm." ONLY";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_bm','company', 'title'));
+        $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
         return $pdf->stream();      
 
         
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_bm','company', 'title'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
     }
 
 }

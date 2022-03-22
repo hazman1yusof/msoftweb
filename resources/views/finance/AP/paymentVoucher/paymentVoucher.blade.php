@@ -183,7 +183,7 @@ i.fa {
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" value = "PV" type="hidden">
+					<!-- <input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden"> -->
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="idno" name="idno" type="hidden">
 
@@ -295,7 +295,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" > 
 		 					</div>
 
 							 
@@ -335,7 +335,8 @@ i.fa {
 							  	<span class="help-block"></span>
 						  	</div>  	
 					</div>		  	 -->
-
+					
+					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 				</form>
 				<div class="panel-body">
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
@@ -344,7 +345,7 @@ i.fa {
 		</div>
 			
 
-		<div class='panel panel-info' id="ap_parent">
+		<div class='panel panel-info' id="pvpd_detail">
 			<div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>

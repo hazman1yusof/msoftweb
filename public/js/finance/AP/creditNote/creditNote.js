@@ -56,7 +56,13 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					//$("#apacthdr_cheqdate").blur(data['apacthdr_actdate']);
+					if ($('#apacthdr_trantype').val() == 'CN') {
+						$('#save').hide();
+						$('#cn_detail').show();
+					} else {
+						$('#save').show();
+						$('#cn_detail').hide();
+					}
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -133,7 +139,7 @@ $(document).ready(function () {
 			table_name:'material.sequence',
 			table_id:'idno',
 			filterCol:['trantype'],
-			filterVal:['PV'],
+			filterVal:['CN'],
 		}
 
 		this.getdata = function(){
@@ -271,6 +277,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+		$('#save').hide();
 		$('#error_infront').text('');
 		let stat = selrowData("#jqGrid").apacthdr_recstatus;
 		let scope = $("#recstatus_use").val();
@@ -301,6 +308,17 @@ $(document).ready(function () {
 				$('#save').hide();
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
+				if (rowid != null) {
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+	
+					if (rowData['apacthdr_trantype'] == 'CN') {
+						$('#save').hide();
+						$('#cn_detail').show();
+					} else {
+						$('#save').show();
+						$('#cn_detail').hide();
+					}
+				}
 			}
 		},
 		gridComplete: function () {
@@ -370,6 +388,19 @@ $(document).ready(function () {
 	addParamField('#jqGrid', true, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox']);
 
+	$("#save").click(function(){
+		unsaved = false;
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
+			unsaved = false;
+			$("#dialogForm").dialog('close');
+		}else{
+			mycurrency.formatOn();
+		}
+	});
+	
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
 	function hideatdialogForm(hide,saveallrow){
@@ -384,6 +415,21 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
+
+	////////////////////selected///////////////
+
+	$('#apacthdr_trantype').on('change', function() {
+		let trantype = $("#apacthdr_trantype option:selected").val();
+		
+		if(trantype == 'Credit Note') {
+			$('#save').hide();
+			$('#cn_detail').show();
+		}else if (trantype == 'Credit Note Unallocated') {
+			$('#save').show();
+			$('#cn_detail').hide();
+		}
+		
+	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
