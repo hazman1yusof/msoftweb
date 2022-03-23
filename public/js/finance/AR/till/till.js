@@ -149,7 +149,7 @@ $(document).ready(function () {
 			{label: 'Department', name: 'dept', width: 90 },
 			{label: 'Effect Date', name: 'effectdate', width: 90 },
 			{label: 'defopenamt', name: 'defopenamt', width: 90 , hidden: true},
-			{label: 'tillstatus', name: 'tillstatus', width: 90 , canSearch:true},
+			{label: 'Till Status', name: 'tillstatus', width: 90 , canSearch:true},
 			{label: 'lastrcnumber', name: 'lastrcnumber', width: 90 , hidden: true},
 			{label: 'lastrefundno', name: 'lastrefundno', width: 90 , hidden: true},
 			{label: 'lastcrnoteno', name: 'lastcrnoteno', width: 90 , hidden: true},

@@ -11,10 +11,13 @@ use Carbon\Carbon;
 
 class TillController extends defaultController
 {   
+    var $table;
+    var $duplicateCode;
 
     public function __construct()
     {
         $this->middleware('auth');
+        $this->duplicateCode = "tillcode";
     }
 
     public function show(Request $request)
@@ -28,8 +31,6 @@ class TillController extends defaultController
         switch($request->action){
             case 'default':
                 switch($request->oper){
-                    case 'edit':
-                        return $this->edit($request);break;
                     case 'add':
                         return $this->add($request);break;
                     case 'edit':
@@ -63,12 +64,17 @@ class TillController extends defaultController
         DB::beginTransaction();
         try {
 
+            $tillcode = DB::table('debtor.till')
+                            ->where('tillcode','=',$request->tillcode);
+
+            if($tillcode->exists()){
+                throw new \Exception("Record Duplicate");
+            }
             DB::table('debtor.till')
                 ->insert([
                     'compcode' => session('compcode'),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    // 'unit' => session('unit'),
                     'tillcode' => $request->tillcode, 
                     'description' => $request->description, 
                     'dept' => $request->dept, 
@@ -93,7 +99,22 @@ class TillController extends defaultController
         
         DB::beginTransaction();
         try {
-
+            
+            DB::table('debtor.till')
+                ->where('tillcode','=',$request->tillcode)
+                ->update([
+                    'description' => $request->description, 
+                    'dept' => $request->dept, 
+                    'effectdate' => $request->effectdate, 
+                    'defopenamt' => $request->defopenamt, 
+                    'tillstatus' => $request->tillstatus, 
+                    'lastrcnumber' => $request->lastrcnumber, 
+                    'lastrefundno' => $request->lastrefundno, 
+                    'lastcrnoteno' => $request->lastcrnoteno, 
+                    'lastinnumber' => $request->lastinnumber,
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -103,14 +124,12 @@ class TillController extends defaultController
     }
 
     public function del(Request $request){
-        DB::beginTransaction();
-        try {
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
+        DB::table('debtor.till')
+            ->where('tillcode','=',$request->tillcode)
+            ->update([  
+                'recstatus' => 'DEACTIVE',
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+            ]);
     }
 }
