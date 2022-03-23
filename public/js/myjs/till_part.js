@@ -4,21 +4,56 @@
 	
 	var def_tillcode,def_tillno;
 
+
+	// dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
+	var dialog_till = new ordialog(
+		'till','debtor.till','#tilldetTillcode','errorField',
+		{	colModel:[
+				{label:'Till Code',name:'tillcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Till Name',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'tillstatus',name:'tillstatus',hidden:true}
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow:function(){
+				// let data=selrowData('#'+dialog_till.gridname);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Till",
+			open: function(){
+				dialog_till.urlParam.filterCol=['recstatus', 'compcode'],
+				dialog_till.urlParam.filterVal=['ACTIVE', 'session.compcode']
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_till.makedialog(true);
+
 	function updateTillUsage(){
-		var param={action:'save_table_default_arr',array:
-			[{	oper:'add',
-				table_name:'debtor.tilldetl',
-				field:['cashier','tillcode','opendate','opentime','tillno'],
-				table_id:'sysno',
-				sysparam:{source:'AR',trantype:'TN',useOn:'tillno'},
-			},{	oper:'edit',
-				table_name:'debtor.till',
-				field:['tillstatus'],
-				table_id:'tillcode',
-			}],
-		};
-		$.post( "../../../../assets/php/entry.php?"+$.param(param),
-			{cashier:$('#cashier').val(),tillcode:$('#tilldetTillcode').val(),opendate:'NOW()',opentime:'NOW()',tillstatus:'O'}, 
+		var param={
+				action:'use_till',
+				url:'till/form',
+			};
+
+		var obj = {
+			cashier:$('#cashier').val(),
+			tillcode:$('#tilldetTillcode').val(),
+			opendate:'NOW()',
+			opentime:'NOW()',
+			tillstatus:'O'
+		}
+		$.post( param.url+"?"+$.param(param),obj, 
 			function( data ) {
 				
 			}
@@ -30,9 +65,10 @@
 		});
 	}
 	
-	function checkIfTillOpen(){
+	function checkIfTillOpen(callback){
 		var param={
 			action:'get_value_default',
+			url:'util/get_value_default',
 			field:['tilldetl.tillcode','till.lastrcnumber','till.dept','tilldetl.tillno','tilldetl.opendate','tilldetl.opentime','tilldetl.closedate','tilldetl.closetime','tilldetl.cashier','department.sector','department.region'],
 			table_name:['debtor.till','debtor.tilldetl','sysdb.department'],
 			join_type:['LEFT JOIN','LEFT JOIN'],
@@ -41,14 +77,17 @@
 			filterCol:['cashier','closedate'],
 			filterVal:['session.username','IS NULL']
 		}
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
 				def_tillcode = data.rows[0].tillcode;
 				def_tillno = data.rows[0].tillno;
-				urlParam.filterVal = [data.rows[0].tillno];
-				refreshGrid('#jqGrid',urlParam);
+				if (callback !== undefined) {
+					// urlParam.filterVal = [data.rows[0].tillno];
+					// refreshGrid('#jqGrid',urlParam);
+					callback(data);
+				}
 				$("#formdata input[name='dbacthdr_tillcode']").val(data.rows[0].tillcode);
 				$("#formdata input[name='dbacthdr_lastrcnumber']").val(parseInt(data.rows[0].lastrcnumber) + 1);
 				$("#formdata input[name='dbacthdr_recptno']").val(data.rows[0].tillcode+"-"+pad('000000000',parseInt(data.rows[0].lastrcnumber) + 1,true));
@@ -57,7 +96,7 @@
 
 				$( "#tilldet" ).dialog('close');
 			}else{
-				dialog_till.handler([]);
+				// dialog_till.handler([]);
 			}
 		});
 	}

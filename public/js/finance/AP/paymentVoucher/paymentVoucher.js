@@ -181,8 +181,10 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
-		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
+		filterCol: ['source'],
+		filterVal: [$('#apacthdr_source').val()],
+        WhereInCol:['trantype'],
+        WhereInVal:[['PD','PV']]
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -194,8 +196,8 @@ $(document).ready(function () {
 		oper:oper,
 		table_name:'finance.apacthdr',
 		table_id:'apacthdr_auditno',
-		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
+		filterCol: ['source'],
+		filterVal: [$('#apacthdr_source').val()],
 	};
 
 	function padzero(cellvalue, options, rowObject){
@@ -396,11 +398,11 @@ $(document).ready(function () {
 
 	$('#apacthdr_trantype').on('change', function() {
 		let trantype = $("#apacthdr_trantype option:selected").val();
-		urlParam.filterCol = ['trantype'];
-		urlParam.filterVal = [$('#apacthdr_trantype').val()];
+		// urlParam.filterCol = ['trantype'];
+		// urlParam.filterVal = [$('#apacthdr_trantype').val()];
 		//urlParam2.filterVal[4] = $('#apacthdr_trantype').val();
 		//alert($('#apacthdr_trantype').val())
-		refreshGrid('#jqGrid',urlParam);
+		// refreshGrid('#jqGrid',urlParam);
 		init_jq2(oper);
 		
 	});

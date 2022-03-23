@@ -28,15 +28,15 @@ use PDF;
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
-                return $this->add($request);
+                return $this->add($request);break;
             case 'edit':
-                return $this->edit($request);
+                return $this->edit($request);break;
             case 'del':
-                return $this->del($request);
+                return $this->del($request);break;
             case 'posted':
-                return $this->posted($request);
+                return $this->posted($request);break;
             case 'cancel':
-                return $this->cancel($request);
+                return $this->cancel($request);break;
             default:
                 return 'error happen..';
         }
@@ -349,39 +349,32 @@ use PDF;
             $table = DB::table("finance.apacthdr");
 
             $array_update = [
-                'unit' => session('unit'),
-                'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
+                // 'doctype' => $request->apacthdr_doctype,
+                'actdate' => $request->apacthdr_actdate,
                 'recdate' => $request->apacthdr_recdate,
+                'amount' => $request->apacthdr_amount,
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
+                'payto' => strtoupper($request->apacthdr_payto),
                 'document' => strtoupper($request->apacthdr_document),
                 'paymode' => strtoupper($request->apacthdr_paymode),
                 'bankcode' => strtoupper($request->apacthdr_bankcode),
                 'cheqno' => strtoupper($request->apacthdr_cheqno),
                 'remarks' => strtoupper($request->apacthdr_remarks),
-                
             ];
-
-            foreach ($field as $key => $value) {
-                if(is_string($request[$request->field[$key]])){
-                    $array_update[$value] = strtoupper($request[$request->field[$key]]);
-                }else{
-                    $array_update[$value] = $request[$request->field[$key]];
-                }
-            }
 
             try {
                 //////////where//////////
-                $table = $table->where('idno','=',$request->apacthdr_idno);
+                $table = $table->where('idno','=',$request->idno);
                 $table->update($array_update);
+
+
+                DB::commit();
 
                 $responce = new stdClass();
                 echo json_encode($responce);
-
-                DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();
 

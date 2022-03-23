@@ -200,7 +200,6 @@ $(document).ready(function () {
 
 	////////////////////////////end transaction minimum date////////////////////////////////
 
-	// dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
 	// dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
 	var dialog_payercode = new ordialog(
 		'payercode','debtor.debtormast','#dbacthdr_payercode',errorField,
@@ -1321,6 +1320,7 @@ $(document).ready(function () {
 			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
 		}
 	}
+	
 	function setbal(idno,balance){
 		$("#gridAllo").jqGrid('setCell', idno, 'amtbal', balance);
 	}

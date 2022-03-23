@@ -785,6 +785,11 @@ Route::get('/facontrol','finance\facontrolController@show');
 Route::get('/facontrol/table','finance\facontrolController@table');
 Route::post('/facontrol/form','finance\facontrolController@form');
 
+//// till ///
+Route::get('/till','finance\tillController@show');
+Route::get('/till/table','finance\tillController@table');
+Route::post('/till/form','finance\tillController@form');
+
 // //// facontrol2 ///
 // Route::get('/facontrol2','finance\facontrolController2@show');
 // Route::get('/facontrol2/table','finance\facontrolController2@table');
