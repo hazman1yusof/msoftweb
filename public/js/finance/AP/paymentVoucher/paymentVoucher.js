@@ -54,14 +54,7 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					// if ($('#apacthdr_trantype').val() == 'PD') {
-					// 	$('#save').show();
-					// 	$('#pvpd_detail').hide();
-					// } else {
-					// 	$('#save').hide();
-					// 	$('#pvpd_detail').show();
-					// 	rdonly('#apacthdr_amount');
-					// }
+					
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -189,7 +182,7 @@ $(document).ready(function () {
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
 		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()]
+		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -411,6 +404,29 @@ $(document).ready(function () {
 		init_jq2(oper);
 		
 	});
+
+	// $('#apacthdr_paymode').on('change', function() {
+	// 	if ($('#apacthdr_paymode').val() == 'CHEQUE'){
+	// 		$('#apacthdr_bankcode').show();
+	// 			$('#bankcode_dh').show();
+	// 			$('#bankcode_parent').show();
+	// 			$('#apacthdr_cheqno').show();
+	// 			$('#cheqno_parent').show();
+	// 			$('#cheqno_dh').show();
+	// 			$('#apacthdr_cheqdate').show();
+	// 			$('#cheqdate_parent').show();
+	// 	} else{
+	// 				$('#apacthdr_bankcode').hide();
+	// 					$('#bankcode_dh').hide();
+	// 					$('#bankcode_parent').hide();
+	// 					$('#apacthdr_cheqno').hide();
+	// 					$('#cheqno_parent').hide();
+	// 					$('#cheqno_dh').hide();
+	// 					$('#apacthdr_cheqdate').hide();
+	// 					$('#cheqdate_parent').hide();
+	// 	}
+		
+	// });
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){

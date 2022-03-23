@@ -231,27 +231,27 @@ i.fa {
 
 					<div class="form-group">
 
-						<label class="col-md-2 control-label" for="apacthdr_bankcode">Bank Code</label>	 
+						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
-							  	<span class="help-block"></span>
+							  	<span class="help-block" ></span>
 						</div>	  	
 
-						<label class="col-md-2 control-label" for="apacthdr_cheqno">Cheque No</label>	  
+						<label class="col-md-2 control-label" for="apacthdr_cheqno" id="cheqno_parent">Cheque No</label>	  
 				  			<div class="col-md-2">
 							  	<div class='input-group'>
 									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									<a class='input-group-addon btn btn-primary' id="cheqno_dh"><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_cheqdate">Cheque Date</label>  
+						<label class="col-md-2 control-label" for="apacthdr_cheqdate" id="cheqdate_parent">Cheque Date</label>  
 				  			<div class="col-md-2" id="apacthdr_cheqdate">
-								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 							
 					</div>
