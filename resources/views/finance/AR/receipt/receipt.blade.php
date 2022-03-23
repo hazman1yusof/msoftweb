@@ -61,7 +61,7 @@
 		
 		<div class='col-md-6'>
 			<div class='panel panel-info'>
-				<div class="panel-heading">Select either Receipt or deposit</div>
+				<div class="panel-heading">Select either Receipt or Deposit</div>
 				<div class="panel-body">
 					<div class="form-group">
 						<label class="radio-inline"><input type="radio" name="optradio" value='receipt' checked>Receipt</label>
@@ -87,7 +87,7 @@
 
 		<div class='col-md-6'>
 			<div class='panel panel-info'>
-				<div class="panel-heading">Choose Payer code</div>
+				<div class="panel-heading">Choose Payer Code</div>
 				<div class="panel-body">
 		  			<div class="col-md-12 minuspad-15">
 						<label class="control-label" for="dbacthdr_payercode">Payer Code</label>  
@@ -114,14 +114,14 @@
 		  			<div class='clearfix'></div>
 					<hr>
 					<label class="control-label" for="dbacthdr_debtortype">Receipt Number</label>
-					<input id="dbacthdr_recptno" name="dbacthdr_recptno" type="text" class="form-control input-sm" rdonly>
+					<input id="dbacthdr_recptno" name="dbacthdr_recptno" type="text" class="form-control input-sm text-uppercase" rdonly>
 					<div id='divMrnEpisode'>
 						
 						<div class="col-md-8 minuspad-15">
 							<label class="control-label" for="dbacthdr_mrn">MRN</label>  
 				  			<div class="">
 					  			<div class='input-group'>
-									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm" data-validation="required" rdonly>
+									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -145,7 +145,7 @@
 			<div class="form-group">
 				<label class="control-label col-md-1" for="dbacthdr_remark">Remark</label> 
 		  		<div class='col-md-11'> 
-					<input id="dbacthdr_remark" name="dbacthdr_remark" type="text" class="form-control input-sm">
+					<input id="dbacthdr_remark" name="dbacthdr_remark" type="text" class="form-control input-sm text-uppercase">
 				</div>
 			</div>
 			<div class='clearfix'></div>
@@ -173,23 +173,23 @@
 							<div class="myformgroup">
 								<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" data-validation="required">
+									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
 								</div>
 
 								<label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" rdonly>
+									<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-md-2" for="dbacthdr_RCCASHbalance">Cash Balance</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_RCCASHbalance" name="dbacthdr_RCCASHbalance" type="text" class="form-control input-sm">
+									<input id="dbacthdr_RCCASHbalance" name="dbacthdr_RCCASHbalance" type="text" class="form-control input-sm" value="0.00">
 								</div>
 
 								<label class="control-label col-md-2" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" rdonly>
+									<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 								</div>
 							</div>
 							</form>
@@ -205,7 +205,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
 							  		<div class='col-md-9'> 
-										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm">
+										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm text-uppercase">
 									</div>
 								</div>
 							</div>
@@ -213,37 +213,37 @@
 								<div class="form-group">
 							  		<div class='col-md-4'> 
 										<label class="control-label" for="dbacthdr_amount">Payment</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="form-group">
 							  		<div class='col-md-6'> 
 										<label class="control-label" for="dbacthdr_outamount">Outstanding</label> 
-										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
 									</div>
 							  		<div class='col-md-6'> 
 										<label class="control-label" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
-										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 									</div>
 								</div>
 								<div class="form-group">
 							  		<div class='col-md-12'>
 										<label class="control-label" for="dbacthdr_reference">Reference</label> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm">
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase">
 									</div>
 								</div>
 								<div class="form-group">
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_authno">Authorization No.</label> 
 								  		<div class=''> 
-											<input id="dbacthdr_authno" name="dbacthdr_authno" type="text" class="form-control input-sm">
+											<input id="dbacthdr_authno" name="dbacthdr_authno" type="text" class="form-control input-sm text-uppercase">
 										</div>
 							  		</div>
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_expdate">Expiry Date</label> 
 								  		<div class=''> 
-											<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="date" class="form-control input-sm">
+											<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 										</div>
 							  		</div>
 								</div>
@@ -257,30 +257,30 @@
 							<div class="myformgroup">
 								<label class="control-label col-md-2" for="dbacthdr_entrydate">Transaction Date</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm">
+									<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 								</div>
 
 								<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" data-validation="required">
+									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" rdonly>
+									<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
 								</div>
 
 								<label class="control-label col-md-2" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" rdonly>
+									<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 								</div>
 							</div>
 
 							<div class="form-group">
 								<label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
 						  		<div class='col-md-8'> 
-									<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm" data-validation="required">
+									<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 								</div>
 							</div>
 							</form>
@@ -295,7 +295,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
 							  		<div class='col-md-9'> 
-										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm" data-validation="required" rdonly>
+										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 									</div>
 								</div>
 							</div>
@@ -303,34 +303,35 @@
 								<div class="form-group">
 							  		<div class='col-md-4'> 
 										<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required">
+										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="myformgroup">
 							  		<div class='col-md-6'> 
 										<label class="control-label" for="dbacthdr_bankcharges">Bank Charges</label> 
-										<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm">
+										<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm" value="0.00">
 									</div>
 							  		<div class='col-md-6'> 
 										<label class="control-label" for="dbacthdr_amount">Payment</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
 									</div>
 								</div>
 								<div class="form-group">
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
-										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 							  		</div>
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_outamount">Outstanding</label> 
-										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
 							  		</div>
 								</div>
 								<div class="form-group">
 							  		<div class='col-md-12'> 
 										<label class="control-label" for="dbacthdr_reference">Reference</label> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm" data-validation="required">
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
 									</div>
 								</div>
 							</div>
@@ -349,7 +350,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
 							  		<div class='col-md-9'> 
-										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" rdonly>
 									</div>
 								</div>
 							</div>
@@ -357,11 +358,11 @@
 								<div class="myformgroup">
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_outamount">Outstanding</label> 
-										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
 							  		</div>
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
-										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" rdonly>
+										<input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 							  		</div>
 								</div>
 								<div class="myformgroup">
@@ -371,18 +372,18 @@
 									</div>
 							  		<div class='col-md-8'> 
 										<label class="control-label" for="dbacthdr_amount">Amount</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
 									</div>
 								</div>
 								<div class="clearfix"></div>
 								<div class="myformgroup">
 									<div class='col-md-4'> 
 										<label class="control-label" for="curroth">Currency</label> 
-										<input id="curroth" name="curroth" type="text" class="form-control input-sm" rdonly>
+										<input id="curroth" name="curroth" type="text" class="form-control input-sm text-uppercase" rdonly>
 									</div>
 							  		<div class='col-md-8'>
 										<label class="control-label" for="dbacthdr_amount2">Amount</label> 
-										<input id="dbacthdr_amount2" name="dbacthdr_amount2" type="text" class="form-control input-sm">
+										<input id="dbacthdr_amount2" name="dbacthdr_amount2" type="text" class="form-control input-sm" value="0.00">
 									</div>
 								</div>
 								<div class="clearfix"></div>
