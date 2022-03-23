@@ -355,6 +355,7 @@
 
             if(!storage_obj){
 
+                $.ajaxSetup({async: false});
                 $.get( url, function( data ) {
                         
                 },'json').done(function(data) {

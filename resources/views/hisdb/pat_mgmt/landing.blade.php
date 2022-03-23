@@ -477,7 +477,7 @@
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
                 <tr>
-                	<th data-column-id="mrn" data-formatter="col_add" data-width="2%">#</th>
+                	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
                     @if (request()->get('curpat') == 'true')
                     <th data-column-id="QueueNo" data-width="4%">Queue</th>
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
@@ -663,12 +663,12 @@
 	@endif
 
 
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script> -->
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 
 	</div>
 

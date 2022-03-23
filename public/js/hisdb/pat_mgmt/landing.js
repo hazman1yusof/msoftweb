@@ -69,11 +69,11 @@ $(document).ready(function() {
         formatters: {
             "col_add": function (column,row) {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
-                // if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
-                // }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
-                //     retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
-                // }
+                if(row.PatStatus == 1 && row.q_epistycode=='IP'){
+                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
+                }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
+                    retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
+                }
                 return retval;
             },
             "col_mrn": function (column,row) {

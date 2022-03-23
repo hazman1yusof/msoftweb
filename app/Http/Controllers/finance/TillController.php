@@ -19,7 +19,7 @@ class TillController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.GL.region.region');
+        return view('finance.AR.till.till');
     }
 
     public function form(Request $request)
@@ -29,13 +29,13 @@ class TillController extends defaultController
             case 'default':
                 switch($request->oper){
                     case 'edit':
-                        return $this->edit($request);
+                        return $this->edit($request);break;
                     case 'add':
-                        return $this->add($request);
+                        return $this->add($request);break;
                     case 'edit':
-                        return $this->edit($request);
+                        return $this->edit($request);break;
                     case 'del':
-                        return $this->del($request);
+                        return $this->del($request);break;
                     default:
                         return 'error happen..';
                 }
@@ -63,6 +63,23 @@ class TillController extends defaultController
         DB::beginTransaction();
         try {
 
+            DB::table('debtor.till')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'), 
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    // 'unit' => session('unit'),
+                    'tillcode' => $request->tillcode, 
+                    'description' => $request->description, 
+                    'dept' => $request->dept, 
+                    'effectdate' => $request->effectdate, 
+                    'defopenamt' => $request->defopenamt, 
+                    'tillstatus' => $request->tillstatus, 
+                    'lastrcnumber' => $request->lastrcnumber, 
+                    'lastrefundno' => $request->lastrefundno, 
+                    'lastcrnoteno' => $request->lastcrnoteno, 
+                    'lastinnumber' => $request->lastinnumber,
+                ]);
 
              DB::commit();
         } catch (\Exception $e) {

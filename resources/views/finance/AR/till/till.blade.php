@@ -1,7 +1,10 @@
-<?php 
-	include_once('../../../../header.php'); 
-?>
-<body>
+@extends('layouts.main')
+
+@section('title', 'Receipt Setup')
+
+@section('body')
+
+	
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -30,10 +33,7 @@
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:99%' id='formdata'>
 
-				<div class="prevnext btn-group pull-right">
-					<a class='btn btn-default' name='prev'><i class='fa fa-chevron-left'></i></a>
-					<a class='btn btn-primary' name='next' style='color:white'> Next <i class='fa fa-chevron-right'></i></a>
-				</div>
+				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="tillcode">Till Code</label>  
@@ -106,21 +106,9 @@
 			</form>
 		</div>
 
-	<?php 
-		include_once('../../../../footer.php'); 
-	?>
-	
-	<!-- JS Implementing Plugins -->
+@endsection
 
-	<!-- JS Customization -->
 
-	<!-- JS Page Level -->
-	<script src="till.js"></script>
-	<script src="../../../../assets/js/utility.js"></script>
-	<script src="../../../../assets/js/dialogHandler.js"></script>
-
-<script>
-		
-</script>
-</body>
-</html>
+@section('scripts')
+	<script src="js/finance/AR/till/till.js"></script>
+@endsection
