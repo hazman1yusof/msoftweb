@@ -62,6 +62,7 @@ class ReceiptController extends defaultController
                 'payercode' => $request->dbacthdr_payercode,
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
+                'amount' => $request->dbacthdr_amount,               
             ];
 
             DB::table('debtor.dbacthdr')
