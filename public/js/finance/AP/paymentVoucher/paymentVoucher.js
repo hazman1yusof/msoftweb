@@ -296,6 +296,8 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
 			if_cancel_hide();
+			//if_trantype();
+
 			populate_form(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -398,11 +400,6 @@ $(document).ready(function () {
 
 	$('#apacthdr_trantype').on('change', function() {
 		let trantype = $("#apacthdr_trantype option:selected").val();
-		// urlParam.filterCol = ['trantype'];
-		// urlParam.filterVal = [$('#apacthdr_trantype').val()];
-		//urlParam2.filterVal[4] = $('#apacthdr_trantype').val();
-		//alert($('#apacthdr_trantype').val())
-		// refreshGrid('#jqGrid',urlParam);
 		init_jq2(oper);
 		
 	});
@@ -1515,6 +1512,16 @@ $(document).ready(function () {
 		}
 	}
 
+	// function if_trantype(){
+	// 	if(selrowData('#jqGrid').apacthdr_trantype == 'PD'){
+	// 		$('#jqGrid3_panel').collapse('hide');
+		
+	// 	}else{
+	// 		$('#jqGrid3_panel').collapse('show');
+		
+	// 	}
+	// }
+
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
@@ -1544,6 +1551,7 @@ function populate_form(obj){
 	}else{
 		$('td#glyphicon-plus,td#glyphicon-edit').show();
 	}
+
 	
 }
 

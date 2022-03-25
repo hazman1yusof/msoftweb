@@ -200,7 +200,7 @@ i.fa {
 							<div class="col-md-2">
 							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
 							       <option value="CN">Credit Note</option>
-							       <option value="CNU">Credit Note Unallocated</option>
+							       <option value="CN">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Payment Voucher')
+@section('title', 'Payment Voucher/Deposit')
 
 @section('style')
 
@@ -130,7 +130,7 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Payment Voucher Header
+		    <div class="panel-heading">Payment Voucher/Deposit Header
 			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
 		    	<div class="panel-body">
@@ -259,7 +259,7 @@ i.fa {
 					<div class="form-group">
 					<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
 				  			<div class="col-md-2" id="apacthdr_recdate">
-								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 			   		</div>
 
