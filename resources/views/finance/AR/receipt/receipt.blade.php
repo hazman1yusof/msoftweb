@@ -32,7 +32,60 @@
 	</div>
 </div>
 <!-------------------------------- End Search + table ------------------>
-		
+
+<!-------------------------------- Start Add + Login ------------------>
+
+<div id="LoginDiv" hidden>
+  <form class='form-horizontal' style='width:99%' id="LoginForm" >LOGIN
+    <!-- <div class="col-sm-12">
+      <input placeholder="Example placeholder 1" id="ex1" />
+    </div> -->
+	<br><br><br>
+	<div class="form-group">
+        <label class="col-md-2 control-label" for="till_tillcode">Till Code</label>  
+        <div class="col-md-6">
+            <div class='input-group'>
+                <input id="till_tillcode" name="till_tillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+                <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+            </div>
+        </div>
+	</div>
+
+	<div class="form-group">
+        <label class="col-md-2 control-label" for="description">Description</label>  
+        <div class="col-md-6">
+            <input id="description" name="description" type="text" class="form-control input-sm" rdonly>
+        </div>				  
+    </div>
+
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="till_dept">Department</label>  
+		<div class="col-md-6">
+			<div class='input-group'>
+				<input id="till_dept" name="till_dept" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+			</div>
+		</div>				  
+	</div>
+
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="tillstatus">Till Status</label>  
+		<div class="col-md-4">
+			<input id="tillstatus" name="tillstatus" type="text" class="form-control input-sm" value="C">
+		</div>
+	</div>
+        
+	<div class="myformgroup">
+		<label class="control-label col-md-2" for="defopenamt">Opening Amount</label> 
+		<div class='col-md-4'> 
+			<input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+		</div>
+	</div>
+  </form>
+</div>
+
+<!-------------------------------- End Add + Login ------------------>
+
 <div id="dialogForm" title="Add Form" >
 	<form style='width:99%' id='formdata' autocomplete="off">
 		<input type='hidden' name='dbacthdr_source' value='PB'>

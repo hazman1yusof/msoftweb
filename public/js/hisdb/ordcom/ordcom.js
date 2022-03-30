@@ -643,7 +643,7 @@ function populate_ordcom_currpt(obj){
 
 //---------------------mdl_chgcode-----------------------
 var ordcom_chgcode_selecter_;
-$('#mdl_ordcom_chgcode').on('show.bs.modal', function () {
+$('#mdl_ordcom_chgcode').on('show.bs.modal', function () {		//////mdl = modal, search show.bs.modal
 
 	if(ordcom_chgcode_selecter_ == undefined){
 	    ordcom_chgcode_selecter_ = new ordcom_chgcode_selecter(

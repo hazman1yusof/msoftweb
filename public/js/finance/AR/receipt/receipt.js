@@ -111,7 +111,7 @@ $(document).ready(function () {
 		});
 	}
 
-	///////////////////  for hadling amount based on trantype/////////////////////////
+	///////////////////  for handling amount based on trantype/////////////////////////
 	function handleAmount(){
 		if($("input:radio[name='optradio'][value='receipt']").is(':checked')){
 			amountchgOn(true);
@@ -200,6 +200,7 @@ $(document).ready(function () {
 
 	////////////////////////////end transaction minimum date////////////////////////////////
 
+	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	// dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
 	var dialog_payercode = new ordialog(
 		'payercode','debtor.debtormast','#dbacthdr_payercode',errorField,
@@ -240,8 +241,83 @@ $(document).ready(function () {
 		);
 	dialog_payercode.makedialog(true);
 
-	// dialog_dbtype=new makeDialog('debtor.debtortype','#dbacthdr_debtortype',['debtortycode','description'], 'debtortycode');
-	// dialog_episode=new makeDialog('hisdb.patmast','#dbacthdr_mrn',['mrn','name','episno','newic'], 'Select Episode list');
+	var dialog_logindeptcode = new ordialog(
+		'till_dept', 'sysdb.department', '#till_dept', errorField,
+		{
+			colModel: [
+				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function (event) {
+				$('#tillstatus').focus();
+
+				let data=selrowData('#'+dialog_logindeptcode.gridname);
+				
+				sequence.set(data['deptcode']).get();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tillstatus').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Department",
+			open: function(){
+				dialog_logindeptcode.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_logindeptcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_logindeptcode.makedialog();
+
+	var dialog_logintillcode = new ordialog(
+		'till_tillcode', 'debtor.till', '#till_tillcode', errorField,
+		{
+			colModel: [
+				{ label: 'Till', name: 'tillcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus','tillstatus'],
+				filterVal:['session.compcode','A','C']
+			},
+			ondblClickRow: function (event) {
+				$('#till_dept').focus();
+
+				let data=selrowData('#'+dialog_logintillcode.gridname);
+				
+				sequence.set(data['tillcode']).get();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tillcode').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		}, {
+			title: "Select Till Code",
+			open: function(){
+				dialog_logintillcode.urlParam.filterCol=['recstatus', 'compcode','tillstatus'];
+				dialog_logintillcode.urlParam.filterVal=['A', 'session.compcode','C'];
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_logintillcode.makedialog();
+	////////////////////////////////////////////////////END ordialog////////////////////////////////////////
+
 
 	$( "#divMrnEpisode" ).hide();
 	amountchgOn(true);
@@ -526,6 +602,9 @@ $(document).ready(function () {
 			}
 		},
 	};
+
+	var fdl = new faster_detail_load();
+
 	//////////////////////////////////////////////////////////////
 
 
@@ -558,13 +637,25 @@ $(document).ready(function () {
 
 	$("input[name=dbacthdr_entrydate]").keydown(false);
 
+	////////////////////////////////////start dialog////////////////////////////////////
 	var oper = 'add';
+
 	$("#dialogForm")
 	  .dialog({ 
 		width: 9/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
-		open: function( event, ui ) {
+		open: function( event, ui ) {			
+			////// Popup login //////
+			var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
+
+			bootbox.confirm(bootboxHtml, function(result) {
+				console.log($('#ex1', '.LoginBootboxForm').val());
+				console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val()); 
+
+			});
+			////// End Popup login //////
+
 			parent_close_disabled(true);
 			// getcr('CASH');
 			// getLastrcnumber();
@@ -638,8 +729,12 @@ $(document).ready(function () {
 			}
 			if(oper!='view'){
 				dialog_payercode.on();
+				dialog_logindeptcode.on();
+				dialog_logintillcode.on();
 			}
 			if(oper!='add'){
+				dialog_logindeptcode.check(errorField);
+				dialog_logintillcode.check(errorField);
 				dialog_payercode.check(errorField);
 				showingForCash(selrowData("#jqGrid").dbacthdr_amount,selrowData("#jqGrid").dbacthdr_outamount,selrowData("#jqGrid").dbacthdr_RCCASHbalance,selrowData("#jqGrid").dbacthdr_RCFinalbalance,selrowData("#jqGrid").dbacthdr_paytype);
 			}
@@ -653,7 +748,10 @@ $(document).ready(function () {
 			emptyFormdata(errorField, "#f_tab-debit");
 			emptyFormdata(errorField, '#f_tab-forex');
 			$('.alert').detach();
+			dialog_logindeptcode.off();
+			dialog_logintillcode.off();
 			$("#formdata a").off();
+			$("#refresh_jqGrid").click();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
@@ -743,6 +841,7 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortorder:'desc',
 		width: 900,
 		height: 350,
 		rowNum: 30,
@@ -754,11 +853,14 @@ $(document).ready(function () {
 			allocate("#jqGrid");
 		},
 		gridComplete: function(){
+			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
 			if(oper == 'add'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			refreshGrid("#jqGrid",urlParam);
 		},
 		
 	});
@@ -843,7 +945,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',false,urlParam);
-	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno']);
+	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno','dbacthdr_amount']);
 
 	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 	function makeDialog(table,id,cols,title){
