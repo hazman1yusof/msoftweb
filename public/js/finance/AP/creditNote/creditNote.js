@@ -1360,8 +1360,7 @@ $(document).ready(function () {
 	function setjqgridHeight(data,grid){
 		if(data.rows.length>=6){
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
-		}else if(data.rows.length>=3){
-			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else if(data.rows.length>=3){		$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
 		}else{
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
