@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use Auth;
 
 class TillController extends defaultController
 {   
@@ -46,10 +47,27 @@ class TillController extends defaultController
     }
 
     public function use_till(Request $request){
-        dd('use_till');
         DB::beginTransaction();
         try {
 
+            DB::table('debtor.till')
+                ->where('tillcode','=',$request->tillcode)
+                ->update([
+                    'tillstatus' => 'O', 
+                    'dept' => auth()->user()->deptcode,
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table('debtor.tilldetl')
+                ->insert([
+                    'compcode' => session('compcode'), 
+                    'tillcode' => $request->tillcode,
+                    'cashamt' => $request->openamt,
+                    'cashier' => session('username'),
+                    'opendate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'opentime' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
              DB::commit();
         } catch (\Exception $e) {

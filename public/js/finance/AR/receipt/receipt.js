@@ -2,9 +2,10 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-	$("body").show();
 	var tabform="#f_tab-cash";
 
+	checkifuserlogin();
+	
 	function getcr(paytype){
 		var param={
 			action:'get_value_default',
@@ -25,7 +26,6 @@ $(document).ready(function () {
 	}
 	
 	function setDateToNow(){
-		console.log(moment().format('YYYY-MM-DD'));
 		$('input[name=dbacthdr_entrydate]').val(moment().format('YYYY-MM-DD'));
 	}
 
@@ -88,28 +88,28 @@ $(document).ready(function () {
 		});
 	}
 
-	function getOut(payercode){ //tak guna
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['SUM(outamount)'],
-			table_name:'debtor.dbacthdr',
-			filterCol:['payercode','source','recstatus'],
-			filterVal:[payercode,'PB','A'],
-			filterInCol:['trantype'],
-			filterInType:['IN'],
-			filterInVal:[['DN','IN']]
-		};
-		$.get( param.url+"?"+$.param(param), function( data ) {
+	// function getOut(payercode){ //tak guna
+	// 	var param={
+	// 		action:'get_value_default',
+	// 		url: 'util/get_value_default',
+	// 		field:['SUM(outamount)'],
+	// 		table_name:'debtor.dbacthdr',
+	// 		filterCol:['payercode','source','recstatus'],
+	// 		filterVal:[payercode,'PB','A'],
+	// 		filterInCol:['trantype'],
+	// 		filterInType:['IN'],
+	// 		filterInVal:[['DN','IN']]
+	// 	};
+	// 	$.get( param.url+"?"+$.param(param), function( data ) {
 			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$(tabform+" input[name='dbacthdr_outamount']").val(data['SUM(outamount)']);
-			}else{
+	// 	},'json').done(function(data) {
+	// 		if(!$.isEmptyObject(data)){
+	// 			$(tabform+" input[name='dbacthdr_outamount']").val(data['SUM(outamount)']);
+	// 		}else{
 
-			}
-		});
-	}
+	// 		}
+	// 	});
+	// }
 
 	///////////////////  for handling amount based on trantype/////////////////////////
 	function handleAmount(){
@@ -279,43 +279,43 @@ $(document).ready(function () {
 	);
 	dialog_logindeptcode.makedialog();
 
-	var dialog_logintillcode = new ordialog(
-		'till_tillcode', 'debtor.till', '#till_tillcode', errorField,
-		{
-			colModel: [
-				{ label: 'Till', name: 'tillcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus','tillstatus'],
-				filterVal:['session.compcode','A','C']
-			},
-			ondblClickRow: function (event) {
-				$('#till_dept').focus();
+	// var dialog_logintillcode = new ordialog(
+	// 	'till_tillcode', 'debtor.till', '#till_tillcode', errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Till', name: 'tillcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus','tillstatus'],
+	// 			filterVal:['session.compcode','A','C']
+	// 		},
+	// 		ondblClickRow: function (event) {
+	// 			$('#till_dept').focus();
 
-				let data=selrowData('#'+dialog_logintillcode.gridname);
+	// 			let data=selrowData('#'+dialog_logintillcode.gridname);
 				
-				sequence.set(data['tillcode']).get();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#tillcode').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		}, {
-			title: "Select Till Code",
-			open: function(){
-				dialog_logintillcode.urlParam.filterCol=['recstatus', 'compcode','tillstatus'];
-				dialog_logintillcode.urlParam.filterVal=['A', 'session.compcode','C'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_logintillcode.makedialog();
+	// 			sequence.set(data['tillcode']).get();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#tillcode').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	}, {
+	// 		title: "Select Till Code",
+	// 		open: function(){
+	// 			dialog_logintillcode.urlParam.filterCol=['recstatus', 'compcode','tillstatus'];
+	// 			dialog_logintillcode.urlParam.filterVal=['A', 'session.compcode','C'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_logintillcode.makedialog();
 	////////////////////////////////////////////////////END ordialog////////////////////////////////////////
 
 
@@ -647,13 +647,13 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {			
 			////// Popup login //////
-			var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
+			// var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
 
-			bootbox.confirm(bootboxHtml, function(result) {
-				console.log($('#ex1', '.LoginBootboxForm').val());
-				console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val()); 
+			// bootbox.confirm(bootboxHtml, function(result) {
+			// 	console.log($('#ex1', '.LoginBootboxForm').val());
+			// 	console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val()); 
 
-			});
+			// });
 			////// End Popup login //////
 
 			parent_close_disabled(true);
@@ -730,11 +730,11 @@ $(document).ready(function () {
 			if(oper!='view'){
 				dialog_payercode.on();
 				dialog_logindeptcode.on();
-				dialog_logintillcode.on();
+				// dialog_logintillcode.on();
 			}
 			if(oper!='add'){
 				dialog_logindeptcode.check(errorField);
-				dialog_logintillcode.check(errorField);
+				// dialog_logintillcode.check(errorField);
 				dialog_payercode.check(errorField);
 				showingForCash(selrowData("#jqGrid").dbacthdr_amount,selrowData("#jqGrid").dbacthdr_outamount,selrowData("#jqGrid").dbacthdr_RCCASHbalance,selrowData("#jqGrid").dbacthdr_RCFinalbalance,selrowData("#jqGrid").dbacthdr_paytype);
 			}
@@ -749,13 +749,12 @@ $(document).ready(function () {
 			emptyFormdata(errorField, '#f_tab-forex');
 			$('.alert').detach();
 			dialog_logindeptcode.off();
-			dialog_logintillcode.off();
+			// dialog_logintillcode.off();
 			$("#formdata a").off();
 			$("#refresh_jqGrid").click();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
-			ismrn=true;//lol
 		},
 		buttons :butt1,
 	  });
@@ -816,7 +815,7 @@ $(document).ready(function () {
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
 			{label: 'Payer Code', name: 'dbacthdr_payercode',width: 90}, //tunjuk
 			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap', canSearch:true},//tunjuk
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 60, formatter:mrnFormatter}, //tunjuk
+			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 60}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap'}, //tunjuk
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
@@ -850,7 +849,7 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		onSelectRow: function(rowid){
-			allocate("#jqGrid");
+			// allocate("#jqGrid");
 		},
 		gridComplete: function(){
 			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
@@ -860,7 +859,6 @@ $(document).ready(function () {
 			}
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-			refreshGrid("#jqGrid",urlParam);
 		},
 		
 	});
@@ -924,519 +922,306 @@ $(document).ready(function () {
 			$( "#dialogForm" ).dialog( "open" );
 		},
 	});
-	var ismrn=true;
-	function mrnFormatter(cellvalue, options, rowObject){
-		if(ismrn){
-			if(cellvalue.trim()!='' && cellvalue.trim()!='0'){
-				return pad('0000000',cellvalue,true);
-			}else{
-				return '';
-			}
-		}else{
-			return cellvalue;
-		}
-	}
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
-	searchClick('#jqGrid','#searchForm',urlParam);
+	searchClick2('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',false,urlParam);
+	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno','dbacthdr_amount']);
 
 	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-	function makeDialog(table,id,cols,title){
-		this.table=table;
-		this.id=id;
-		this.cols=cols;
-		this.title=title;
-		this.handler=dialogHandler;
-		this.check=checkInput;
-	}
-
-	$( "#dialog" ).dialog({
-		autoOpen: false,
-		width: 7/10 * $(window).width(),
-		modal: true,
-		open: function(){
-			$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-		},
-		close: function( event, ui ){
-			paramD.searchCol=null;
-			paramD.searchVal=null;
-		},
-	});
-
-	var selText,Dtable,Dcols;
-	$("#gridDialog").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'Code', name: 'code', width: 60,  classes: 'pointer',formatter:mrnFormatter, canSearch:true,checked:true}, 
-			{ label: 'Description', name: 'desc', width: 200, canSearch:true, classes: 'pointer'},
-			{ label: 'Till Status', name: 'tillstatus', width: 50, classes: 'pointer'},
-			{ label: 'I/C', name: 'newic', width: 50, classes: 'pointer',hidden:true},
-			{ label: 'I/C', name: '5', width: 50, classes: 'pointer',hidden:true},
-		],
-		autowidth: true,
-		viewrecords: true,
-		loadonce: false,
-		multiSort: true,
-		rowNum: 30,
-		pager: "#gridDialogPager",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-			if(selText=='#tilldetTillcode' && data['tillstatus']!='C'){
-				alert('The till already open');
-				$( "#tilldetCheck" ).button( "option", "disabled", true );
-			}else{
-				$("#gridDialog").jqGrid("clearGridData", true);
-				$("#dialog").dialog( "close" );
-				if(selText=='#dbacthdr_payercode'){
-					$('#dbacthdr_debtortype').val(data['tillstatus']);
-					$( '#dbacthdr_payername' ).val(data['desc']);
-					$( "input[name='dbacthdr_billdebtor']" ).val(data['code']);
-					$( "input[name='dbacthdr_debtorcode']" ).val(data['code']);
-					dialog_dbtype.check(errorField);
-
-					if($("input:radio[name='optradio'][value='receipt']").is(':checked')){
-						getRcpOutAmt(data['code']);
-						$("#formdata input[name='dbacthdr_crcostcode']").val(data['newic']);
-						$("#formdata input[name='dbacthdr_cracc']").val(data['5']);
-					}else{
-						//getOut(data['code']);
-					}
-					
-				}
-				if(selText=='#dbacthdr_mrn'){
-					if($("input:hidden[name='updepisode']").val() == 1){
-						$( '#dbacthdr_episno' ).val(data['tillstatus']);
-					}else{
-						$( '#dbacthdr_episno' ).val(data[' ']);
-					}
-					$( "input[name='dbacthdr_epistype']" ).val(data['5']);
-				}
-				$(selText).val(rowid);
-				$(selText).focus();
-				$(selText).parent().next().html(data['desc']);
-				if(selText=='#tilldetTillcode'){
-					$( "#tilldetCheck" ).button( "option", "disabled", false );
-				}
-			}
-		},
-		
-	});
-
-	var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-	function dialogHandler(errorField){
-		var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-		$( id+" ~ a" ).on( "click", function() {
-			ismrn=true;
-			selText=id,Dtable=table,Dcols=cols,
-			paramD.table_name=table;
-			paramD.field=cols;
-			paramD.table_id=cols[0];
-			paramD.join_type=null;
-			paramD.join_onCol=null;
-			paramD.join_onVal=null;
-			paramD.filterCol=null;
-			paramD.filterVal=null;
-
-			if(id=='#dbacthdr_payercode'){
-				$("#gridDialog").jqGrid('setLabel','code','Code');
-				$("#gridDialog").jqGrid('setLabel','tillstatus','Financial Class');
-				$("#gridDialog").jqGrid('setLabel','desc','Description');
-				$("#gridDialog").jqGrid('showCol',["tillstatus"]);
-				$("#gridDialog").jqGrid('hideCol',["newic"]);
-				ismrn = false;
-			}
-
-			if(id=='#dbacthdr_mrn' && $("input:hidden[name='updepisode']").val() == 1){
-				paramD.table_name=['hisdb.episode','hisdb.patmast'];
-				paramD.field=['episode.mrn','patmast.name','episode.episno','patmast.newic','episode.epistycode'];
-				paramD.join_type=['LEFT JOIN'];
-				paramD.join_onCol=['patmast.mrn'];
-				paramD.join_onVal=['episode.mrn'];
-				paramD.filterCol=['episode.episactive'];
-				paramD.filterVal=['1'];
-				$("#gridDialog").jqGrid('setLabel','code','MRN');
-				$("#gridDialog").jqGrid('setLabel','desc','Name');
-				$("#gridDialog").jqGrid('setLabel','tillstatus','Episode');
-				$("#gridDialog").jqGrid('showCol',["tillstatus"]);
-				$("#gridDialog").jqGrid('showCol',["newic"]);
-				
-			}else if (id=='#dbacthdr_mrn' && $("input:hidden[name='updepisode']").val() == 0){
-				$("#gridDialog").jqGrid('setLabel','code','MRN');
-				$("#gridDialog").jqGrid('setLabel','desc','Name');
-				$("#gridDialog").jqGrid('hideCol',["tillstatus"]);
-				$("#gridDialog").jqGrid('showCol',["newic"]);
-			}
-
-			$( "#dialog" ).dialog( "open" );
-			$( "#dialog" ).dialog( "option", "title", title );
-
-			$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-			$('#Dtext').val('');$('#Dcol').html('');
-			
-			$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-				if(value['canSearch']){
-					if(value['checked']){
-						$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-					}else{
-						$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-					}
-				}
-			});
-		});
-		$(id).on("blur", function(){
-			self.check(errorField);
-		});
-	}
-	
-	function checkInput(errorField){
-		var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-		var param={action:'input_check',table:table,field:field,value:value};
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(data.msg=='success'){
-				if($.inArray(id,errorField)!==-1){
-					errorField.splice($.inArray(id,errorField), 1);
-				}
-
-				if(id=='#dbacthdr_payercode'){
-					$( '#dbacthdr_payername' ).val(data.row[field[1]]);
-				}else{
-					$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-					$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-				}
-			}else if(data.msg=='fail'){
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-				if($.inArray(id,errorField)===-1){
-					errorField.push(id);
-				}
-			}
-		});
-	}
-	
-	$('#Dtext').keyup(function() {
-		delay(function(){
-			Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-		}, 500 );
-	});
-	
-	$('#Dcol').change(function(){
-		Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-	});
-	
-	function Dsearch(Dtext,Dcol){
-		paramD.searchCol=null;
-		paramD.searchVal=null;
-		Dtext=Dtext.trim();
-		if(Dtext != ''){
-			var split = Dtext.split(" "),searchCol=[],searchVal=[];
-			$.each(split, function( index, value ) {
-				searchCol.push(Dcol);
-				searchVal.push('%'+value+'%');
-			});
-			paramD.searchCol=searchCol;
-			paramD.searchVal=searchVal;
-		}
-		refreshGrid("#gridDialog",paramD);
-	}
-	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
 
 	////////////////////////////////start allocation part///////////////////////////////////
 
-	$('#allocate').hide();
-	function allocate(grid){
-		if(selrowData(grid).dbacthdr_outamount>0){
-			$('#allocate').show();
-		}else{
-			$('#allocate').hide();
-		}
-	}
+	// $('#allocate').hide();
+	// function allocate(grid){
+	// 	if(selrowData(grid).dbacthdr_outamount>0){
+	// 		$('#allocate').show();
+	// 	}else{
+	// 		$('#allocate').hide();
+	// 	}
+	// }
 
-	var myallocation = new Allocation();
-	var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);
+	// var myallocation = new Allocation();
+	// var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);
 
-	$( "#allocateDialog" ).dialog({
-		autoOpen: false,
-		width: 9/10 * $(window).width(),
-		modal: true,
-		open: function(){
-			$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
-			grid='#jqGrid';
-			$('#AlloDtype').val(selrowData(grid).dbacthdr_trantype);
-			$('#AlloDno').val(selrowData(grid).dbacthdr_recptno);
-			$('#AlloDebtor').val(selrowData(grid).dbacthdr_payercode);
-			$('#AlloDebtor2').html(selrowData(grid).dbacthdr_payername);
-			$('#AlloPayer').val(selrowData(grid).dbacthdr_payercode);
-			$('#AlloPayer2').html(selrowData(grid).dbacthdr_payername);
-			$('#AlloAmt').val(selrowData(grid).dbacthdr_amount);
-			$('#AlloOutamt').val(selrowData(grid).dbacthdr_outamount);
-			$('#AlloBalance').val(selrowData(grid).dbacthdr_outamount);
-			$('#AlloTotal').val(0);
-			urlParamAllo.filterVal[0]=selrowData(grid).dbacthdr_payercode;
-			refreshGrid("#gridAllo",urlParamAllo);
-			parent_close_disabled(true);
-			myallocation.renewAllo(selrowData(grid).dbacthdr_outamount);
-		},
-		close: function( event, ui ){
-			parent_close_disabled(false);
+	// $( "#allocateDialog" ).dialog({
+	// 	autoOpen: false,
+	// 	width: 9/10 * $(window).width(),
+	// 	modal: true,
+	// 	open: function(){
+	// 		$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
+	// 		grid='#jqGrid';
+	// 		$('#AlloDtype').val(selrowData(grid).dbacthdr_trantype);
+	// 		$('#AlloDno').val(selrowData(grid).dbacthdr_recptno);
+	// 		$('#AlloDebtor').val(selrowData(grid).dbacthdr_payercode);
+	// 		$('#AlloDebtor2').html(selrowData(grid).dbacthdr_payername);
+	// 		$('#AlloPayer').val(selrowData(grid).dbacthdr_payercode);
+	// 		$('#AlloPayer2').html(selrowData(grid).dbacthdr_payername);
+	// 		$('#AlloAmt').val(selrowData(grid).dbacthdr_amount);
+	// 		$('#AlloOutamt').val(selrowData(grid).dbacthdr_outamount);
+	// 		$('#AlloBalance').val(selrowData(grid).dbacthdr_outamount);
+	// 		$('#AlloTotal').val(0);
+	// 		urlParamAllo.filterVal[0]=selrowData(grid).dbacthdr_payercode;
+	// 		refreshGrid("#gridAllo",urlParamAllo);
+	// 		parent_close_disabled(true);
+	// 		myallocation.renewAllo(selrowData(grid).dbacthdr_outamount);
+	// 	},
+	// 	close: function( event, ui ){
+	// 		parent_close_disabled(false);
 
-		},
-		buttons:
-			[{
-				text: "Save",click: function() {
+	// 	},
+	// 	buttons:
+	// 		[{
+	// 			text: "Save",click: function() {
 					
-				}
-			},{
-				text: "Cancel",click: function() {
-					$(this).dialog('close');
-				}
-			}],
-	});
+	// 			}
+	// 		},{
+	// 			text: "Cancel",click: function() {
+	// 				$(this).dialog('close');
+	// 			}
+	// 		}],
+	// });
 
-	var urlParamAllo={
-		action:'get_table_default',
-		field:'',
-		table_name:'debtor.dbacthdr',
-		table_id:'idno',
-		sort_idno:true,
-		filterCol:['payercode','source','recstatus','outamount'],
-		filterVal:['','PB','A','>.0'],
-		filterInCol:['trantype'],
-		filterInType:['IN'],
-		filterInVal:[['DN','IN']]
-	}
+	// var urlParamAllo={
+	// 	action:'get_table_default',
+	// 	field:'',
+	// 	table_name:'debtor.dbacthdr',
+	// 	table_id:'idno',
+	// 	sort_idno:true,
+	// 	filterCol:['payercode','source','recstatus','outamount'],
+	// 	filterVal:['','PB','A','>.0'],
+	// 	filterInCol:['trantype'],
+	// 	filterInType:['IN'],
+	// 	filterInVal:[['DN','IN']]
+	// }
 
-	$("#gridAllo").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, hidden: true}, 
-			{ label: 'Auditno', name: 'auditno', width: 40},
-			{ label: 'Src', name: 'source', width: 20, hidden: true}, 
-			{ label: 'Type', name: 'trantype', width: 20 , hidden: true},
-			{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true},
-			{ label: 'Batchno', name: 'NULL', width: 40},
-			{ label: 'Document Date', name: 'entrydate', width: 50},
-			{ label: 'MRN', name: 'mrn', width: 50, formatter:mrnFormatter},
-			{ label: 'EpisNo', name: 'episno', width: 50},
-			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50},
-			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50},
-			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center'},
-			{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true},
-			{ label: 'Balance', name: 'amtbal', width: 50,formatter:'currency',formatoptions:{prefix: ""} },
-		],
-		autowidth: true,
-		viewrecords: true,
-		multiSort: true,
-		height: 400,
-		rowNum: 9,
-		pager: "#pagerAllo",
-		onSelectRow: function(rowid){
-		},
-		onPaging: function(button){
-		},
-		gridComplete: function(rowid){
-			startEdit();
-			$("#gridAllo_c input[type='checkbox']").on('click',function(){
-				var idno = $(this).attr("rowid");
-				var rowdata = $("#gridAllo").jqGrid ('getRowData', idno);
-				if($(this).prop("checked") == true){
-					$("#"+idno+"_amtpaid").val(rowdata.outamount).addClass( "valid" ).removeClass( "error" );
-					setbal(idno,0);
-					if(!myallocation.alloInArray(idno)){
-						myallocation.addAllo(idno,rowdata.outamount,0);
-					}else{
-						$("#"+idno+"_amtpaid").trigger("change");
-					}
-				}
-			});
-			$("#gridAllo_c input[type='text'][rowid]").on('click',function(){
-				var idno = $(this).attr("rowid");
-				if(!myallocation.alloInArray(idno)){
-					myallocation.addAllo(idno,' ',0);
-				}
-				console.log(myallocation.arrayAllo);
-			});
+	// $("#gridAllo").jqGrid({
+	// 	datatype: "local",
+	// 	colModel: [
+	// 		{ label: 'idno', name: 'idno', width: 40, hidden: true}, 
+	// 		{ label: 'Auditno', name: 'auditno', width: 40},
+	// 		{ label: 'Src', name: 'source', width: 20, hidden: true}, 
+	// 		{ label: 'Type', name: 'trantype', width: 20 , hidden: true},
+	// 		{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true},
+	// 		{ label: 'Batchno', name: 'NULL', width: 40},
+	// 		{ label: 'Document Date', name: 'entrydate', width: 50},
+	// 		{ label: 'MRN', name: 'mrn', width: 50},
+	// 		{ label: 'EpisNo', name: 'episno', width: 50},
+	// 		{ label: 'Amount', name: 'amount',formatter:'currency', width: 50},
+	// 		{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50},
+	// 		{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center'},
+	// 		{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true},
+	// 		{ label: 'Balance', name: 'amtbal', width: 50,formatter:'currency',formatoptions:{prefix: ""} },
+	// 	],
+	// 	autowidth: true,
+	// 	viewrecords: true,
+	// 	multiSort: true,
+	// 	height: 400,
+	// 	rowNum: 9,
+	// 	pager: "#pagerAllo",
+	// 	onSelectRow: function(rowid){
+	// 	},
+	// 	onPaging: function(button){
+	// 	},
+	// 	gridComplete: function(rowid){
+	// 		startEdit();
+	// 		$("#gridAllo_c input[type='checkbox']").on('click',function(){
+	// 			var idno = $(this).attr("rowid");
+	// 			var rowdata = $("#gridAllo").jqGrid ('getRowData', idno);
+	// 			if($(this).prop("checked") == true){
+	// 				$("#"+idno+"_amtpaid").val(rowdata.outamount).addClass( "valid" ).removeClass( "error" );
+	// 				setbal(idno,0);
+	// 				if(!myallocation.alloInArray(idno)){
+	// 					myallocation.addAllo(idno,rowdata.outamount,0);
+	// 				}else{
+	// 					$("#"+idno+"_amtpaid").trigger("change");
+	// 				}
+	// 			}
+	// 		});
+	// 		$("#gridAllo_c input[type='text'][rowid]").on('click',function(){
+	// 			var idno = $(this).attr("rowid");
+	// 			if(!myallocation.alloInArray(idno)){
+	// 				myallocation.addAllo(idno,' ',0);
+	// 			}
+	// 			console.log(myallocation.arrayAllo);
+	// 		});
 
-			delay(function(){
-	        	//$("#alloText").focus();//AlloTotal
-	        	myallocation.retickallotogrid();
-			}, 100 );
-		},
-	});
+	// 		delay(function(){
+	//         	//$("#alloText").focus();//AlloTotal
+	//         	myallocation.retickallotogrid();
+	// 		}, 100 );
+	// 	},
+	// });
 	
-	AlloSearch("#gridAllo",urlParamAllo);
-	function AlloSearch(grid,urlParam){
-		$("#alloText").on( "keyup", function() {
-			delay(function(){
-				search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
-			}, 500 );
-		});
+	// AlloSearch("#gridAllo",urlParamAllo);
+	// function AlloSearch(grid,urlParam){
+	// 	$("#alloText").on( "keyup", function() {
+	// 		delay(function(){
+	// 			search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+	// 		}, 500 );
+	// 	});
 
-		$("#alloCol").on( "change", function() {
-			search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
-		});
-	}
+	// 	$("#alloCol").on( "change", function() {
+	// 		search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+	// 	});
+	// }
 
-	function startEdit() {
-        var ids = $("#gridAllo").jqGrid('getDataIDs');
+	// function startEdit() {
+ //        var ids = $("#gridAllo").jqGrid('getDataIDs');
 
-        for (var i = 0; i < ids.length; i++) {
-        	var entrydate = $("#gridAllo").jqGrid ('getRowData', ids[i]).entrydate;
-        	$("#gridAllo").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
-            $("#gridAllo").jqGrid('editRow',ids[i]);
-        }
-    };
+ //        for (var i = 0; i < ids.length; i++) {
+ //        	var entrydate = $("#gridAllo").jqGrid ('getRowData', ids[i]).entrydate;
+ //        	$("#gridAllo").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
+ //            $("#gridAllo").jqGrid('editRow',ids[i]);
+ //        }
+ //    };
 
-	addParamField('#gridAllo',false,urlParamAllo,['tick','amtpaid','amtbal']);
+	// addParamField('#gridAllo',false,urlParamAllo,['tick','amtpaid','amtbal']);
 
-	function Allocation(){
-		this.arrayAllo=[];
-		this.alloBalance=0;
-		this.alloTotal=0;
-		this.outamt=0;
+	// function Allocation(){
+	// 	this.arrayAllo=[];
+	// 	this.alloBalance=0;
+	// 	this.alloTotal=0;
+	// 	this.outamt=0;
 
-		this.renewAllo = function(os){
-			this.arrayAllo.length = 0;
-			this.alloTotal=0;
-			this.alloBalance=parseFloat(os);
-			this.outamt=parseFloat(os);
+	// 	this.renewAllo = function(os){
+	// 		this.arrayAllo.length = 0;
+	// 		this.alloTotal=0;
+	// 		this.alloBalance=parseFloat(os);
+	// 		this.outamt=parseFloat(os);
 
-			this.updateAlloField();
-		}
-		this.addAllo = function(idno,paid,bal){
-			var obj=getlAlloFromGrid(idno);
-			obj.amtpaid = paid;
-			obj.amtbal = bal;
-			var fieldID="#"+idno+"_amtpaid";
-			var self=this;
+	// 		this.updateAlloField();
+	// 	}
+	// 	this.addAllo = function(idno,paid,bal){
+	// 		var obj=getlAlloFromGrid(idno);
+	// 		obj.amtpaid = paid;
+	// 		obj.amtbal = bal;
+	// 		var fieldID="#"+idno+"_amtpaid";
+	// 		var self=this;
 
-			this.arrayAllo.push({idno:idno,obj:obj});
+	// 		this.arrayAllo.push({idno:idno,obj:obj});
 			
-			$(fieldID).on('change',[idno,self.arrayAllo],onchangeField);
+	// 		$(fieldID).on('change',[idno,self.arrayAllo],onchangeField);
 
-			this.updateAlloField();
-		}
-		function onchangeField(obj){
-			var idno = obj.handleObj.data[0];
-			var arrayAllo = obj.handleObj.data[1];
-			var alloIndex = getIndex(arrayAllo,idno);
-			var outamt = $("#gridAllo").jqGrid('getRowData', idno).outamount;
-			var newamtpaid = parseFloat(obj.target.value);
-			newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
-			if(parseFloat(newamtpaid)>parseFloat(outamt)){
-				alert("Amount paid exceed O/S amount");
-				$("#"+idno+"_amtpaid").addClass( "error" ).removeClass( "valid" );
-				obj.target.focus();
-				return false;
-			}
-			$("#"+idno+"_amtpaid").removeClass( "error" ).addClass( "valid" );
-			var balance = outamt - newamtpaid;
+	// 		this.updateAlloField();
+	// 	}
+	// 	function onchangeField(obj){
+	// 		var idno = obj.handleObj.data[0];
+	// 		var arrayAllo = obj.handleObj.data[1];
+	// 		var alloIndex = getIndex(arrayAllo,idno);
+	// 		var outamt = $("#gridAllo").jqGrid('getRowData', idno).outamount;
+	// 		var newamtpaid = parseFloat(obj.target.value);
+	// 		newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
+	// 		if(parseFloat(newamtpaid)>parseFloat(outamt)){
+	// 			alert("Amount paid exceed O/S amount");
+	// 			$("#"+idno+"_amtpaid").addClass( "error" ).removeClass( "valid" );
+	// 			obj.target.focus();
+	// 			return false;
+	// 		}
+	// 		$("#"+idno+"_amtpaid").removeClass( "error" ).addClass( "valid" );
+	// 		var balance = outamt - newamtpaid;
 
-			obj.target.value = numeral(newamtpaid).format('0,0.00');;
-			arrayAllo[alloIndex].obj.amtpaid = newamtpaid;
-			arrayAllo[alloIndex].obj.amtbal = balance;
-			setbal(idno,balance);
+	// 		obj.target.value = numeral(newamtpaid).format('0,0.00');;
+	// 		arrayAllo[alloIndex].obj.amtpaid = newamtpaid;
+	// 		arrayAllo[alloIndex].obj.amtbal = balance;
+	// 		setbal(idno,balance);
 
-			myallocation.updateAlloField();
-		}
-		function getIndex(array,idno){
-			var retval=0;
-			$.each(array, function( index, obj ) {
-				if(obj.idno==idno){
-					retval=index;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-			return retval;
-		}
-		this.deleteAllo = function(idno){
-			var self=this;
-			$.each(self.arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					self.arrayAllo.splice(index, 1);
-					return false;
-				}
-			});
-		}
-		this.alloInArray = function(idno){
-			var retval=false;
-			$.each(this.arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					retval=true;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-			return retval;
-		}
-		this.retickallotogrid = function(){
-			var self=this;
-			$.each(this.arrayAllo, function( index, obj ) {
-				$("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
-				if(obj.obj.amtpaid != " "){
-					$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
-					setbal(obj.idno,obj.obj.amtbal);
-				}
-			});
-		}
-		this.updateAlloField = function(){
-			var self=this;
-			this.alloTotal = 0;
-			$.each(this.arrayAllo, function( index, obj ) {
-				if(obj.obj.amtpaid != " "){
-					self.alloTotal += parseFloat(obj.obj.amtpaid);
-				}
-			});
-			this.alloBalance = this.outamt - this.alloTotal;
+	// 		myallocation.updateAlloField();
+	// 	}
+	// 	function getIndex(array,idno){
+	// 		var retval=0;
+	// 		$.each(array, function( index, obj ) {
+	// 			if(obj.idno==idno){
+	// 				retval=index;
+	// 				return false;//bila return false, skip .each terus pegi return retval
+	// 			}
+	// 		});
+	// 		return retval;
+	// 	}
+	// 	this.deleteAllo = function(idno){
+	// 		var self=this;
+	// 		$.each(self.arrayAllo, function( index, obj ) {
+	// 			if(obj.idno==idno){
+	// 				self.arrayAllo.splice(index, 1);
+	// 				return false;
+	// 			}
+	// 		});
+	// 	}
+	// 	this.alloInArray = function(idno){
+	// 		var retval=false;
+	// 		$.each(this.arrayAllo, function( index, obj ) {
+	// 			if(obj.idno==idno){
+	// 				retval=true;
+	// 				return false;//bila return false, skip .each terus pegi return retval
+	// 			}
+	// 		});
+	// 		return retval;
+	// 	}
+	// 	this.retickallotogrid = function(){
+	// 		var self=this;
+	// 		$.each(this.arrayAllo, function( index, obj ) {
+	// 			$("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
+	// 			if(obj.obj.amtpaid != " "){
+	// 				$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
+	// 				setbal(obj.idno,obj.obj.amtbal);
+	// 			}
+	// 		});
+	// 	}
+	// 	this.updateAlloField = function(){
+	// 		var self=this;
+	// 		this.alloTotal = 0;
+	// 		$.each(this.arrayAllo, function( index, obj ) {
+	// 			if(obj.obj.amtpaid != " "){
+	// 				self.alloTotal += parseFloat(obj.obj.amtpaid);
+	// 			}
+	// 		});
+	// 		this.alloBalance = this.outamt - this.alloTotal;
 
-			$("#AlloTotal").val(this.alloTotal);
-			$("#AlloBalance").val(this.alloBalance);
-			if(this.alloBalance<0){
-				$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
-				alert("Balance cannot in negative values");
-			}else{
-				$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
-			}
-			allocurrency.formatOn();
-		}
+	// 		$("#AlloTotal").val(this.alloTotal);
+	// 		$("#AlloBalance").val(this.alloBalance);
+	// 		if(this.alloBalance<0){
+	// 			$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
+	// 			alert("Balance cannot in negative values");
+	// 		}else{
+	// 			$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
+	// 		}
+	// 		allocurrency.formatOn();
+	// 	}
 
-		function updateAllo(idno,amtpaid,arrayAllo){
-			$.each(arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					obj.obj.amtpaid=amtpaid;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-		}
+	// 	function updateAllo(idno,amtpaid,arrayAllo){
+	// 		$.each(arrayAllo, function( index, obj ) {
+	// 			if(obj.idno==idno){
+	// 				obj.obj.amtpaid=amtpaid;
+	// 				return false;//bila return false, skip .each terus pegi return retval
+	// 			}
+	// 		});
+	// 	}
 
-		function getlAlloFromGrid(idno){
-			var temp=$("#gridAllo").jqGrid ('getRowData', idno);
-			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
-		}
-	}
+	// 	function getlAlloFromGrid(idno){
+	// 		var temp=$("#gridAllo").jqGrid ('getRowData', idno);
+	// 		return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
+	// 	}
+	// }
 	
-	function setbal(idno,balance){
-		$("#gridAllo").jqGrid('setCell', idno, 'amtbal', balance);
-	}
+	// function setbal(idno,balance){
+	// 	$("#gridAllo").jqGrid('setCell', idno, 'amtbal', balance);
+	// }
 	
-	$("#gridAllo").jqGrid('navGrid','#pagerAllo',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#gridAllo",urlParamAllo);
-		},
-	})
+	// $("#gridAllo").jqGrid('navGrid','#pagerAllo',{	
+	// 	view:false,edit:false,add:false,del:false,search:false,
+	// 	beforeRefresh: function(){
+	// 		refreshGrid("#gridAllo",urlParamAllo);
+	// 	},
+	// })
 
-	$('#allocate').click(function(){
-		$( "#allocateDialog" ).dialog( "open" );
-	});
+	// $('#allocate').click(function(){
+	// 	$( "#allocateDialog" ).dialog( "open" );
+	// });
 	////////////////////////////////end allocation part/////////////////////////////////////
 
 });

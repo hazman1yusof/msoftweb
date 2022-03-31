@@ -449,17 +449,17 @@
 		</div>
 </div>
 
-	<!-- @include('layouts.till_part')
+	@include('layouts.till_part')
 
-	@include('layouts.allocate_part')
- -->
+	<!-- @include('layouts.allocate_part') -->
+
 @endsection
 
 
 @section('scripts')
 	
 
+	<script src="js/myjs/till_part.js"></script>
 	<script src="js/finance/AR/receipt/receipt.js"></script>
-	<!-- <script src="js/myjs/till_part.js"></script> -->
 	
 @endsection

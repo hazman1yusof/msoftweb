@@ -93,7 +93,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}	
+			}
 		},		
 });
 

@@ -17,5 +17,12 @@
 			  <span class="help-block"></span>
 			</div>
 		</div>
+
+		<div class="form-group">
+			<label class="col-md-2 control-label" for="dept">Open Amount</label>  
+			<div class="col-md-2">
+				<input id="openamt" name="openamt" type="text" class="form-control input-sm" >
+			</div>
+		</div>	
 	</form>
 </div>

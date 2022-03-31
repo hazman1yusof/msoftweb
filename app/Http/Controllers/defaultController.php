@@ -258,6 +258,7 @@ abstract class defaultController extends Controller{
 
         // filterCol:['trandate','trandate']
         // filterVal:['<.10-01-2000','>.10-12-2000']
+        // filterVal:['null.null']
         
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
@@ -276,6 +277,8 @@ abstract class defaultController extends Controller{
                     $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
                 }else if($pieces[0] == 'on'){
                     $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
                 }else if($pieces[0] == 'raw'){
                     $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
                 }else{
