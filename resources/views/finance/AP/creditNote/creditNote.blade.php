@@ -174,7 +174,7 @@ i.fa {
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" value = "CN" type="hidden">
+					<!-- <input id="apacthdr_trantype" name="apacthdr_trantype" value = "CN" type="hidden"> -->
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="idno" name="idno" type="hidden">
 

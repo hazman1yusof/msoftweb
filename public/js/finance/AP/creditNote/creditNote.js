@@ -180,7 +180,7 @@ $(document).ready(function () {
 		join_onCol:['supplier.suppcode'],
 		join_onVal:['apacthdr.suppcode'],
 		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()]
+		filterVal: [$('#apacthdr_source').val(),'CN']
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -193,7 +193,7 @@ $(document).ready(function () {
 		table_name:'finance.apacthdr',
 		table_id:'apacthdr_auditno',
 		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
+		filterVal: [$('#apacthdr_source').val(),'CN'],
 	};
 
 	function padzero(cellvalue, options, rowObject){
@@ -1385,15 +1385,17 @@ $(document).ready(function () {
 });
 
 function init_jq2(oper){
+
+
 	
-		if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
-			$('#save').hide();
-			$('#cn_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-		} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
-			$('#save').show();
-			$('#cn_detail').hide();
-		}
+	if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+		$('#save').hide();
+		$('#cn_detail').show();
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
+		$('#save').show();
+		$('#cn_detail').hide();
+	}
 	
 }
 

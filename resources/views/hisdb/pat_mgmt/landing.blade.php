@@ -479,7 +479,7 @@
                 <tr>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
                     @if (request()->get('curpat') == 'true')
-                    <th data-column-id="QueueNo" data-width="4%">Queue</th>
+                    <th data-column-id="QueueNo" data-width="3%">Queue</th>
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
 					@endif
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>

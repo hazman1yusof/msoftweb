@@ -123,6 +123,8 @@
             $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
 
             $('#hid_epis_dept').val($('#userdeptcode').val());
+            $('#txt_epis_dept').val($('#userdeptcode').val());
+
             get_billtype_default(rowdata.MRN);
         }
     }
@@ -805,12 +807,12 @@
             self=this;
             obj.forEach(function(elem){
                 if($(elem.code).val().trim() != ""){
-                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id));
+                    $(elem.desc).val(self.get_desc($(elem.code).val(),elem.id,elem.desc));
                 }
             });
         }
 
-        this.get_desc = function(search_code,id){
+        this.get_desc = function(search_code,id,inp){
             let code_ = this[id].code;
             let desc_ = this[id].desc;
             let retdata="";
@@ -819,7 +821,17 @@
                 return obj[code_] == search_code;
             });
 
-            return (retdata == undefined)? "N/A" : retdata[desc_];
+            if(retdata == undefined){
+                if(search_code.trim() != ''){
+                    myerrorIt_only(inp,true);
+                    return search_code;
+                }else{
+                    myerrorIt_only(inp,false);
+                    return '';
+                }
+            }else{
+                return retdata[desc_];
+            }
         }
     }
 
