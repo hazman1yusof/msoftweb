@@ -1209,9 +1209,8 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
-				if (($('#apacthdr_trantype').val("CN") == 'Credit Note')) {
-					//alert($('#apacthdr_trantype').val())
-
+				if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+					
 					$("#jqGrid2").jqGrid("clearGridData", true);
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
@@ -1270,7 +1269,7 @@ $(document).ready(function () {
 							myerrorIt_only(dialog_suppcode.textfield,true);
 						}
 					});
-				} else  {
+				} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) {
 					$("#jqGrid2").jqGrid("clearGridData", true);
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
