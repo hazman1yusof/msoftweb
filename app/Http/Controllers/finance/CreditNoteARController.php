@@ -10,7 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 
-class DebitNoteController extends defaultController
+class CreditNoteARController extends defaultController
 {   
     var $gltranAmount;
 
@@ -21,7 +21,7 @@ class DebitNoteController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.AR.DebitNote.DebitNote');
+        return view('finance.AR.CreditNoteAR.CreditNoteAR');
     }
 
     public function form(Request $request)
@@ -61,11 +61,11 @@ class DebitNoteController extends defaultController
 
         try { 
 
-            $auditno = $this->recno('PB','DN');
+            $auditno = $this->recno('PB','CN');
 
             $array_insert = [
                 'source' => 'PB',
-                'trantype' => 'DN',
+                'trantype' => 'CN',
                 'auditno' => $auditno,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
@@ -567,11 +567,11 @@ class DebitNoteController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('finance.DebitNote.DebitNote_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        $pdf = PDF::loadView('finance.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
         return $pdf->stream();      
 
         
-        return view('finance.DebitNote.DebitNote_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        return view('finance.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     }
 
 }

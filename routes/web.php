@@ -628,6 +628,15 @@ Route::post('/DebitNoteDetail/form','finance\DebitNoteDetailController@form');
 Route::get('/DebitNoteDetail/table','finance\DebitNoteDetailController@table');
 Route::get('/DebitNote/showpdf','finance\DebitNoteController@showpdf');
 
+//// Finance - Credit Note AR page ///
+Route::get('/CreditNoteAR','finance\CreditNoteARController@show');
+Route::get('/CreditNoteAR/table','finance\CreditNoteARController@table');
+Route::post('/CreditNoteAR/form','finance\CreditNoteARController@form');
+Route::get('/CreditNoteAR/form','finance\CreditNoteARController@form');
+Route::post('/CreditNoteARDetail/form','finance\CreditNoteARDetailController@form');
+Route::get('/CreditNoteARDetail/table','finance\CreditNoteARDetailController@table');
+Route::get('/CreditNoteAR/showpdf','finance\CreditNoteARController@showpdf');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
