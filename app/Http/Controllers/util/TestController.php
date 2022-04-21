@@ -29,7 +29,7 @@ class TestController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('test.testpdf');
+        return view('test.test2');
 
     }
 

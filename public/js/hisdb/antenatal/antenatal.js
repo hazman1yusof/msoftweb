@@ -390,7 +390,7 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Date', name: 'date', width: 60, classes: 'wrap', editable:true,
+			{ label: 'Date', name: 'date', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -408,13 +408,20 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{ label: 'Report', name: 'report', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
+			{ label: 'Report', name: 'report', classes: 'wrap', width: 220, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
 			{ label: 'POA/POG', name: 'poaORpog', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Uterine Size', name: 'uterineSize', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Albumin/Protein', name: 'albumin', classes: 'wrap', width: 90, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Sugar', name: 'sugar', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Weight', name: 'weight', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Blood Pressure', name: 'bp_sys', classes: 'wrap', width: 90, editable: true, formatter: combineCol, editoptions: {style: "text-transform: none" }},
+			{ label: 'Weight', name: 'weight', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }, edittype:'custom',	editoptions:
+					{ 	custom_element:weightCustomEdit,
+						custom_value:galGridCustomValue 	
+					}},
+			{ label: 'Blood Pressure', name: 'bp_sys', classes: 'wrap', width: 90, editable: true, formatter: combineCol, editoptions: {style: "text-transform: none" },
+				edittype:'custom',	editoptions:
+					{ 	custom_element:bp_sysCustomEdit,
+						custom_value:galGridCustomValue 	
+					}},
 			{ label: 'Blood Pressure', name: 'bp_dias', classes: 'wrap', width: 90, editable: true, hidden:true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Hb', name: 'hb', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Oedema', name: 'oedema', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
@@ -425,13 +432,15 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 		],
-		autowidth: true,
+		scroll: false,
+		autowidth: false,
+		shrinkToFit: false,
 		multiSort: true,
 		sortname: 'idno',
 		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
-		width: 900,
+		width: 1150,
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPagerCurrPregnancy",
@@ -615,8 +624,26 @@ $(document).ready(function () {
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
+	function weightCustomEdit(val, opt) {
+
+		return $(`<div class="input-group">
+					<input id="ncase_weight" name="ncase_weight" type="number" class="" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon">kg</span>
+				</div>`);
+	}
+
+	function bp_sysCustomEdit(val, opt) {
+		// val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $(`<div class="input-group">
+		            <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+		            <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+		            <span class="input-group-addon" style='padding:2px;'>mm<br>Hg</span>
+		        </div>`);
+	}
+
 	function combineCol(cellvalue, options, rowObject){
 		// return cellvalue + ' ' + rowObject.bp_sys + ' ' + rowObject.bp_dias;
+		return ``
 	}
 
 });

@@ -5,7 +5,7 @@
 @section('body')
 
 <form id='testform'>
-	<input type="button" name="submit" id="submit" value="submit">
+	<a type="button" name="submit" id="submit" value="submit" href="http://patientcare.test/doctornote" class="btn btn-default">goto patientcare</a>
 </form>	
 
 @endsection
