@@ -628,6 +628,13 @@ Route::post('/DebitNoteDetail/form','finance\DebitNoteDetailController@form');
 Route::get('/DebitNoteDetail/table','finance\DebitNoteDetailController@table');
 Route::get('/DebitNote/showpdf','finance\DebitNoteController@showpdf');
 
+//// Doctor Contribution setup page ///
+Route::get('/contribution','finance\ContributionController@show');
+Route::get('/contribution/table','finance\ContributionController@table');
+Route::post('/contribution/form','finance\ContributionController@form');
+Route::get('/contribution/form','finance\ContributionController@form');
+
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
