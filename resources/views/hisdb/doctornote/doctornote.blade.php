@@ -246,7 +246,7 @@
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="height" style="padding-bottom:5px">Height</label>
                                                     <div class="input-group">
-                                                        <input id="height" name="height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <input id="height" name="height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                         <span class="input-group-addon">cm</span>
                                                     </div>
                                                 </div>
@@ -254,7 +254,7 @@
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="weight" style="padding-bottom:5px">Weight</label>
                                                     <div class="input-group">
-                                                        <input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                         <span class="input-group-addon">kg</span>
                                                     </div>
                                                 </div>
@@ -267,28 +267,28 @@
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="bp" style="padding-bottom:5px">BP</label>
                                                     <div class="input-group">
-                                                        <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-                                                        <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                         <span class="input-group-addon">mmHg</span>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="pulse" style="padding-bottom:5px">Pulse Rate</label>
-                                                    <input id="pulse" name="pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <input id="pulse" name="pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                 </div>
 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="temperature" style="padding-bottom:5px">Temperature</label>
                                                     <div class="input-group">
-                                                        <input id="temperature" name="temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                        <input id="temperature" name="temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                         <span class="input-group-addon">°C</span>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group col-md-12">
                                                     <label class="control-label" for="respiration" style="padding-bottom:5px">Respiration</label>
-                                                    <input id="respiration" name="respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                    <input id="respiration" name="respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
                                                 </div>
 
                                             </div>

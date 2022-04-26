@@ -64,20 +64,6 @@ $(document).ready(function () {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
 
-	// to limit to two decimal places (onkeypress)
-	$(document).on('keydown', 'input[pattern]', function(e){
-		var input = $(this);
-		var oldVal = input.val();
-		var regex = new RegExp(input.attr('pattern'), 'g');
-	  
-		setTimeout(function(){
-			var newVal = input.val();
-			if(!regex.test(newVal)){
-				input.val(oldVal); 
-		  	}
-		}, 0);
-	});
-
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 

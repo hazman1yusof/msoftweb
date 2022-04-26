@@ -186,7 +186,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_temperature">Temperature</label>  
 													<div class="input-group">
-														<input name="vs_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-temperature">
+														<input name="vs_temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter temperature." data-validation-error-msg-container="#error-temperature">
 														<span class="input-group-addon">°C</span>
 													</div>
 													<div class="error-msg" id="error-temperature"></div>
@@ -194,7 +194,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_pulse">Pulse</label>  
 													<div class="input-group">
-														<input name="vs_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-pulse">
+														<input name="vs_pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pulse." data-validation-error-msg-container="#error-pulse">
 														<span class="input-group-addon">/min</span>
 													</div>
 													<div class="error-msg" id="error-pulse"></div>
@@ -205,7 +205,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_respiration">Respiration</label>  
 													<div class="input-group">
-														<input name="vs_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-respiration">
+														<input name="vs_respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter respiratory rate." data-validation-error-msg-container="#error-respiration">
 														<span class="input-group-addon">/min</span>
 													</div>
 													<div class="error-msg" id="error-respiration"></div>
@@ -213,9 +213,9 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_bloodpressure">Blood Pressure</label>
 													<div class="input-group">
-														<input name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-bp_sys1">
+														<input name="vs_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter systolic reading." data-validation-error-msg-container="#error-bp_sys1">
 														<!-- <label class="col-md-1 control-label">/</label>  -->
-														<input name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-bp_dias2">
+														<input name="vs_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter diastolic reading." data-validation-error-msg-container="#error-bp_dias2">
 														<span class="input-group-addon">/mmHg</span>
 													</div>
 													<div class="error-msg" id="error-bp_sys1"></div>
@@ -227,7 +227,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_height">Height</label> 
 													<div class="input-group">
-														<input name="vs_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-height">
+														<input name="vs_height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter height." data-validation-error-msg-container="#error-height">
 														<span class="input-group-addon">cm</span>
 													</div>
 													<div class="error-msg" id="error-height"></div>
@@ -235,7 +235,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_weight">Weight</label> 
 													<div class="input-group">
-														<input name="vs_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-weight">
+														<input name="vs_weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter weight." data-validation-error-msg-container="#error-weight">
 														<span class="input-group-addon">kg</span>
 													</div>
 													<div class="error-msg" id="error-weight"></div>
@@ -246,7 +246,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_gxt">GXT</label>  
 													<div class="input-group">
-														<input name="vs_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter the value of graded exercise test." data-validation-error-msg-container="#error-gxt">
+														<input name="vs_gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter the value of graded exercise test." data-validation-error-msg-container="#error-gxt">
 														<span class="input-group-addon">mmOL</span>
 													</div>
 													<div class="error-msg" id="error-gxt"></div>
@@ -254,7 +254,7 @@
 												<div class="form-group col-md-6" style="margin-left: 2px">
 													<label for="vs_painscore">Pain Score</label>  
 													<div class="input-group">
-														<input name="vs_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-painscore">
+														<input name="vs_painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;" data-validation="required" data-validation-error-msg-required="Please enter pain score." data-validation-error-msg-container="#error-painscore">
 														<span class="input-group-addon">/10</span>
 													</div>
 													<div class="error-msg" id="error-painscore"></div>

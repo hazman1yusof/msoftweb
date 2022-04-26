@@ -117,20 +117,6 @@ $(document).ready(function () {
 	});
 	// to autocheck the checkbox bila fill in textarea ends
 
-	// to limit to two decimal places (onkeypress)
-	$(document).on('keydown', 'input[pattern]', function(e){
-		var input = $(this);
-		var oldVal = input.val();
-		var regex = new RegExp(input.attr('pattern'), 'g');
-	  
-		setTimeout(function(){
-			var newVal = input.val();
-			if(!regex.test(newVal)){
-				input.val(oldVal); 
-		  	}
-		}, 0);
-	});
-
     $("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
         $("#jqGridExamTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));
         $("#jqGridAddNotesTriage").jqGrid ('setGridWidth', Math.floor($("#jqGridTriageInfo_c")[0].offsetWidth-$("#jqGridTriageInfo_c")[0].offsetLeft-248));

@@ -148,26 +148,26 @@
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_temperature" style="padding-bottom:5px">Temperature</label>
 												<div class="input-group">
-													<input id="ncase_temperature" name="ncase_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_temperature" name="ncase_temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">°C</span>
 												</div>
 											</div>
 
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_pulse" style="padding-bottom:5px">Pulse</label>
-												<input id="ncase_pulse" name="ncase_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="ncase_pulse" name="ncase_pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 											</div>
 
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_respiration" style="padding-bottom:5px">Respiration</label>
-												<input id="ncase_respiration" name="ncase_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="ncase_respiration" name="ncase_respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 											</div>
 
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_bp" style="padding-bottom:5px">Blood Pressure</label>
 												<div class="input-group">
-													<input id="ncase_bp_sys1" name="ncase_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-													<input id="ncase_bp_dias2" name="ncase_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_bp_sys1" name="ncase_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_bp_dias2" name="ncase_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">mmHg</span>
 												</div>
 											</div>
@@ -175,7 +175,7 @@
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_height" style="padding-bottom:5px">Height</label>
 												<div class="input-group">
-													<input id="ncase_height" name="ncase_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_height" name="ncase_height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">cm</span>
 												</div>
 											</div>
@@ -183,7 +183,7 @@
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_weight" style="padding-bottom:5px">Weight</label>
 												<div class="input-group">
-													<input id="ncase_weight" name="ncase_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_weight" name="ncase_weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">kg</span>
 												</div>
 											</div>
@@ -196,7 +196,7 @@
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_gxt" style="padding-bottom:5px">GXT</label>
 												<div class="input-group">
-													<input id="ncase_gxt" name="ncase_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_gxt" name="ncase_gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">mmOL</span>
 												</div>
 											</div>
@@ -204,7 +204,7 @@
 											<div class="form-group col-md-12">
 												<label class="control-label" for="ncase_painscore" style="padding-bottom:5px">Pain Score</label>
 												<div class="input-group">
-													<input id="ncase_painscore" name="ncase_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_painscore" name="ncase_painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">/10</span>
 												</div>
 											</div>
@@ -315,26 +315,26 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_temperature" style="padding-bottom:5px">Temperature</label>
 													<div class="input-group">
-														<input id="fup_temperature" name="fup_temperature" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_temperature" name="fup_temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">°C</span>
 													</div>
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_pulse" style="padding-bottom:5px">Pulse</label>
-													<input id="fup_pulse" name="fup_pulse" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="fup_pulse" name="fup_pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_respiration" style="padding-bottom:5px">Respiration</label>
-													<input id="fup_respiration" name="fup_respiration" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="fup_respiration" name="fup_respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_bp" style="padding-bottom:5px">Blood Pressure</label>
 													<div class="input-group">
-														<input id="fup_bp_sys1" name="fup_bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-														<input id="fup_bp_dias2" name="fup_bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_bp_sys1" name="fup_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_bp_dias2" name="fup_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">mmHg</span>
 													</div>
 												</div>
@@ -342,7 +342,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_height" style="padding-bottom:5px">Height</label>
 													<div class="input-group">
-														<input id="fup_height" name="fup_height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_height" name="fup_height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">cm</span>
 													</div>
 												</div>
@@ -350,7 +350,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_weight" style="padding-bottom:5px">Weight</label>
 													<div class="input-group">
-														<input id="fup_weight" name="fup_weight" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_weight" name="fup_weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">kg</span>
 													</div>
 												</div>
@@ -363,7 +363,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_gxt" style="padding-bottom:5px">GXT</label>
 													<div class="input-group">
-														<input id="fup_gxt" name="fup_gxt" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_gxt" name="fup_gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">mmOL</span>
 													</div>
 												</div>
@@ -371,7 +371,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_painscore" style="padding-bottom:5px">Pain Score</label>
 													<div class="input-group">
-														<input id="fup_painscore" name="fup_painscore" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_painscore" name="fup_painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">/10</span>
 													</div>
 												</div>
