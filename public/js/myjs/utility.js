@@ -1583,11 +1583,11 @@ String.prototype.replaceAt=function(index, replacement) {
 
 /////////////////////////////////compid and ipaddress at cookies//////////////////////
 function getcompid(callback){
-	$.getJSON('http://ip-api.com/json?callback=?', function(data) {
-	  if(!$.isEmptyObject(data)){
-			callback(data);
-		}
-	});
+	// $.getJSON('http://ip-api.com/json?callback=?', function(data) {
+	//   if(!$.isEmptyObject(data)){
+	// 		callback(data);
+	// 	}
+	// });
 }
 
 function check_compid_exist(lastcompid,lastip,compid,ip){

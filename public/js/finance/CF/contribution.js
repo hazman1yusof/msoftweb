@@ -94,6 +94,7 @@
 		$("#jqGrid").jqGrid({
 			datatype: "local",
 			colModel: [
+				{label: 'idno', name: 'idno', key: true, hidden:true},
 				{label: 'compcode', name: 'compcode', width: 90 , hidden: true, classes: 'wrap'},
 				{label: 'Doctor Code', name: 'doctorcode', width: 10, canSearch:true, classes: 'wrap'},
 				{label: 'Doctor Name', name: 'doctorname', width: 90, canSearch:true , classes: 'wrap', checked:true},
@@ -143,7 +144,7 @@
 			onSelectRow:function(rowid, selected){
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 			
-				urlParam2.filterVal[2]=selrowData("#jqGrid3").drcode;
+				urlParam2.filterVal[2]=selrowData("#jqGrid").doctorcode;
 				refreshGrid("#jqGrid3",urlParam2);
 				
 			},
@@ -157,12 +158,11 @@
 
 				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				$("#searchForm input[name=Stext]").focus();
-				refreshGrid("#jqGrid",urlParam);
+
 			},
-			beforeRefresh: function(){
-				refreshGrid("#jqGrid",urlParam);
-			}
 		});
+
+		addParamField('#jqGrid',true,urlParam);
 
 		/////////////////////////pager///////////////////
 		$("#jqGrid").jqGrid('navGrid','#jqGridPager',
@@ -286,8 +286,8 @@
 			join_type:['LEFT JOIN'],
 			join_onCol:['dc.drcode'],
 			join_onVal:['d.doctorcode'],
-			filterCol:['dc.compcode', 'dc.unit'],
-			filterVal:['session.compcode', 'session.unit']
+			filterCol:['dc.compcode', 'dc.unit','d.doctorcode'],
+			filterVal:['session.compcode', 'session.unit','']
 		};
 
 		var addmore_jqgrid3={more:false,state:true,edit:false}
@@ -445,7 +445,7 @@
 
 	        	unsaved = false;
 				mycurrency2.array.length = 0;
-				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid3 input[name='stfamount']","#jqGrid3 input[name='corpamt']"]);
+				Array.prototype.push.apply(mycurrency2.array, ["#jqGrid3 input[name='stfamount']","#jqGrid3 input[name='amount']"]);
 
 				mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
@@ -467,14 +467,15 @@
 	        },
 	        beforeSaveRow: function(options, rowid) {
 
-	        	//if(errorField.length>0)return false;  
+	        	//if(errorField.length>0)return false; 
 
+				mycurrency2.formatOff();
 				let data = $('#jqGrid3').jqGrid ('getRowData', rowid);
 				let editurl = "./contribution/form?"+
 					$.param({
 						action: 'contribution_save',
 						oper: 'add',
-						chgcode: selrowData('#jqGrid').chgcode,
+						drcode: selrowData('#jqGrid').doctorcode,
 					});
 				$("#jqGrid3").jqGrid('setGridParam',{editurl:editurl});
 	        },

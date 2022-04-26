@@ -628,14 +628,12 @@ Route::post('/DebitNoteDetail/form','finance\DebitNoteDetailController@form');
 Route::get('/DebitNoteDetail/table','finance\DebitNoteDetailController@table');
 Route::get('/DebitNote/showpdf','finance\DebitNoteController@showpdf');
 
-<<<<<<< HEAD
 //// Doctor Contribution setup page ///
 Route::get('/contribution','finance\ContributionController@show');
 Route::get('/contribution/table','finance\ContributionController@table');
 Route::post('/contribution/form','finance\ContributionController@form');
 Route::get('/contribution/form','finance\ContributionController@form');
 
-=======
 //// Finance - Credit Note AR page ///
 Route::get('/CreditNoteAR','finance\CreditNoteARController@show');
 Route::get('/CreditNoteAR/table','finance\CreditNoteARController@table');
@@ -644,7 +642,6 @@ Route::get('/CreditNoteAR/form','finance\CreditNoteARController@form');
 Route::post('/CreditNoteARDetail/form','finance\CreditNoteARDetailController@form');
 Route::get('/CreditNoteARDetail/table','finance\CreditNoteARDetailController@table');
 Route::get('/CreditNoteAR/showpdf','finance\CreditNoteARController@showpdf');
->>>>>>> 50e891ac502f535b3db25e2a4b61efa704fa7f90
 
 ////////////////patient mgt setup/////////////////////////////////////////
 
