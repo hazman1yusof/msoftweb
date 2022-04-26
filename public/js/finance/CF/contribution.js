@@ -167,7 +167,7 @@
 		/////////////////////////pager///////////////////
 		$("#jqGrid").jqGrid('navGrid','#jqGridPager',
 			{	
-				edit:false,view:false,add:false,del:false,search:false,
+				view:false,edit:false,add:false,del:false,search:false,
 				beforeRefresh: function(){
 					refreshGrid("#jqGrid",urlParam);
 				},
