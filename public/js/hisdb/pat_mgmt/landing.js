@@ -488,7 +488,11 @@ $(document).ready(function() {
                 $("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
             });
             $("#jqGridPaediatric_panel").on("show.bs.collapse", function(){
-                $("#jqGridMedicalSurgical").jqGrid ('setGridWidth', Math.floor($("#jqGridPaediatric_c")[0].offsetWidth-$("#jqGridPaediatric_c")[0].offsetLeft-150));
+                $("#jqGridMedicalSurgical").jqGrid ('setGridWidth', Math.floor($("#jqGridPaediatric_c")[0].offsetWidth-$("#jqGridPaediatric_c")[0].offsetLeft-140));
+            });
+            $("#jqGridAntenatal_panel").on("show.bs.collapse", function(){
+                $("#jqGridObstetricsUltraScan").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-120));
+                $("#jqGridCurrPregnancy").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-120));
             });
 
 

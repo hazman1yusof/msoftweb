@@ -149,15 +149,15 @@ $(document).ready(function () {
 		join_onCol: ['db.debtorcode'],
 		join_onVal: ['dm.debtorcode'],
 		filterCol: ['source','trantype'],
-		filterVal: ['PB','DN'],
+		filterVal: ['PB','CN'],
 		// WhereInCol:['purreqhd.recstatus'],
 		// WhereInVal: recstatus_filter,
 		fixPost: true,
 	}
 
 	var saveParam = {
-		action: 'DebitNote_header_save',
-		url:'./DebitNote/form',
+		action: 'CreditNoteAR_header_save',
+		url:'./CreditNoteAR/form',
 		field: '',
 		oper: oper,
 		table_name: 'debtor.dbacthdr',
@@ -175,8 +175,7 @@ $(document).ready(function () {
 			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, checked: true, classes: 'wrap' },
 			{ label: 'Docdate', name: 'db_entrydate', width: 15},
-			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
-			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
+			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
@@ -229,7 +228,7 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3", urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
-			$("#pdfgen1").attr('href','./DebitNote/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
+			$("#pdfgen1").attr('href','./CreditNoteAR/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			if_cancel_hide();
 
 		},
@@ -343,7 +342,7 @@ $(document).ready(function () {
 		obj.oper = $(this).data('oper');
 		obj._token = $('#_token').val();
 		
-		$.post( 'DebitNote/form', obj , function( data ) {
+		$.post( 'CreditNoteAR/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
@@ -570,7 +569,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
 		action: 'get_table_dtl',
-		url:'DebitNoteDetail/table',
+		url:'CreditNoteARDetail/table',
 		source:'',
 		trantype:'',
 		auditno:'',
@@ -578,14 +577,14 @@ $(document).ready(function () {
 		table_name:['debtor.dbactdtl AS dbactdtl'],
 		table_id:'lineno_',
 		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'DN']
+		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "./DebitNoteDetail/form",
+		editurl: "./CreditNoteARDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
@@ -896,9 +895,9 @@ $(document).ready(function () {
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			let editurl = "./DebitNoteDetail/form?"+
+			let editurl = "./CreditNoteARDetail/form?"+
 				$.param({
-					action: 'debitnote_detail_save',
+					action: 'CreditNoteAR_detail_save',
 					source: $('#db_source').val(),
 					trantype: $('#db_trantype').val(),
 					auditno: $('#db_auditno').val(),
@@ -948,14 +947,14 @@ $(document).ready(function () {
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
-								action: 'debitnote_detail_save',
+								action: 'CreditNoteAR_detail_save',
 								source: $('#db_source').val(),
 								trantype: $('#db_trantype').val(),
 								auditno: $('#db_auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
 								idno: selrowData('#jqGrid2').idno,
 							}
-							$.post( "./DebitNoteDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
+							$.post( "./CreditNoteARDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, 
 							function( data ){
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
@@ -1041,14 +1040,14 @@ $(document).ready(function () {
 		    }
 
 			var param={
-    			action: 'debitnote_detail_save',
+    			action: 'CreditNoteAR_detail_save',
 				_token: $("#_token").val(),
 				auditno: $('#db_auditno').val(),
 				source: $('#db_source').val(),
 				trantype: $('#db_trantype').val()
     		}
 
-    		$.post( "/DebitNoteDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "/CreditNoteARDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				alert(dialog,data.responseText);
 			}).done(function(data){
@@ -1093,7 +1092,7 @@ $(document).ready(function () {
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
-		fdl.get_array('DebitNote',options,param,case_,cellvalue);
+		fdl.get_array('CreditNoteAR',options,param,case_,cellvalue);
 		
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
@@ -1349,7 +1348,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','source', 'cattype', 'recstatus'],
-				filterVal:['session.compcode','PBDN', 'Other', 'ACTIVE']
+				filterVal:['session.compcode','PBCN', 'Other', 'ACTIVE']
 			},
 			ondblClickRow: function () {
 				$("#jqGrid2 input[name='document']").focus();
@@ -1368,7 +1367,7 @@ $(document).ready(function () {
 			title:"Select Category",
 			open: function(){
 				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
-				dialog_category.urlParam.filterVal=['session.compcode','PBDN', 'Other', 'ACTIVE']
+				dialog_category.urlParam.filterVal=['session.compcode','PBCN', 'Other', 'ACTIVE']
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1583,7 +1582,7 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#DebitNo_show').text(obj.db_auditno);
+	$('#CreditNo_show').text(obj.db_auditno);
 	$('#CustName_show').text(obj.dm_name);
 }
 
@@ -1594,7 +1593,7 @@ function populate_form(obj){
 	}
 
 function empty_form(){
-	$('#DebitNo_show').text('');
+	$('#CreditNo_show').text('');
 	$('#CustName_show').text('');
 }
 
