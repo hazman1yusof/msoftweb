@@ -162,8 +162,6 @@ class CreditNoteARDetailController extends defaultController
 
     public function add(Request $request){
 
-       
-
         DB::beginTransaction();
         
         try {
@@ -171,7 +169,7 @@ class CreditNoteARDetailController extends defaultController
             $source = 'PB';
             $trantype = 'CN';
             $auditno = $request->auditno;
-        // dd($auditno);
+        //  dd($auditno);
 
 
             $dbacthdr = DB::table('debtor.dbacthdr')
