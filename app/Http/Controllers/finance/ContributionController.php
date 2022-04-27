@@ -32,8 +32,8 @@ class ContributionController extends defaultController
         switch($request->oper){
             case 'add':
                 return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
+            case 'edit_all':
+                return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
             default:
@@ -85,9 +85,41 @@ class ContributionController extends defaultController
        
     }
 
-    public function edit(Request $request){
+    public function edit_all(Request $request){
 
-       
+        DB::beginTransaction();
+
+        try {
+
+            foreach ($request->dataobj as $key => $value) {
+
+                DB::table('debtor.drcontrib')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('drcode','=',$request->drcode)
+                    ->where('idno','=',$request->idno)
+                    ->where('lineno_','=',$value['lineno_'])
+                    ->update([
+                        'chgcode' => strtoupper($value['chgcode']),
+                        'effdate' => $value['effdate'],
+                        'epistype' => $value['epistype'],
+                        'stfamount' => $value['stfamount'],
+                        'stfpercent' => $value['stfpercent'],
+                        'drprcnt' => $value['drprcnt'],
+                        'amount' => $value['amount'],
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       
+                    ]);
+            }
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+
     }
 
     public function del(Request $request){

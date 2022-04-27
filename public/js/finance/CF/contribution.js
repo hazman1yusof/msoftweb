@@ -158,6 +158,7 @@
 
 				$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 				$("#searchForm input[name=Stext]").focus();
+				fdl.set_array().reset();
 
 			},
 		});
@@ -431,7 +432,7 @@
 		});
 		var hide_init=0;
 
-		//////////////////////////////////////////myEditOptions2 for Charge Price/////////////////////////////////////////////
+		//////////////////////////////////////////myEditOptions2 for doctor contribution/////////////////////////////////////////////
 		var myEditOptions2 = {
 	        keys: true,
 	        extraparam:{
@@ -542,7 +543,7 @@
 
 			        $("#jqGrid3").jqGrid('editRow',ids[i]);
 
-			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_stfamount","#"+ids[i]+"_amount"]);
 			    }
 			    mycurrency2.formatOnBlur();
 		    	onall_editfunc();
@@ -564,13 +565,14 @@
 			    	var obj = 
 			    	{
 			    		'idno' : data.idno,
+						'lineno_' : ids[i],
 						'chgcode' : $("#jqGrid3 input#"+ids[i]+"_chgcode").val(),
 			    		'effdate' : $("#jqGrid3 input#"+ids[i]+"_effdate").val(),
 						'epistype' : $("#jqGrid3 input#"+ids[i]+"_epistype").val(),
 						'stfamount' : $("#jqGrid3 input#"+ids[i]+"_stfamount").val(),
 						'stfpercent' : $("#jqGrid3 input#"+ids[i]+"_stfpercent").val(),
-						'corpprcnt' : $("#jqGrid3 input#"+ids[i]+"_corpprcnt").val(),
-						'corpamt' : $("#jqGrid3 input#"+ids[i]+"_corpamt").val(),
+						'drprcnt' : $("#jqGrid3 input#"+ids[i]+"_drprcnt").val(),
+						'amount' : $("#jqGrid3 input#"+ids[i]+"_amount").val(),
 			    	}
 
 			    	jqgrid3_data.push(obj);
@@ -578,7 +580,8 @@
 
 				var param={
 	    			action: 'contribution_save',
-					_token: $("#_token").val()
+					_token: $("#_token").val(),
+					idno: $('#idno').val()
 	    		}
 
 	    		$.post( "./contribution/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid3_data}, function( data ){
@@ -612,10 +615,6 @@
 	        dialog_chgcode.on();
 
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-
-			// if(jqgrid == "jqGrid4"){
-			// 	$("#jqGrid4 input[name='quantity'],#jqGrid4 input[name='pkgprice1'],#jqGrid4 input[name='pkgprice2'],#jqGrid4 input[name='pkgprice3']").on('blur',jqgrid4_calc_totprice);
-			// }
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 

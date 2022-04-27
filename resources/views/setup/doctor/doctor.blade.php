@@ -48,6 +48,9 @@
 		</form>
 		
 		<div class="panel panel-default">
+			<div class="panel-heading">Doctor
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			</div>
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
 					<table id="jqGrid" class="table table-striped"></table>
