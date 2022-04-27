@@ -649,6 +649,12 @@ Route::post('/CreditNoteARDetail/form','finance\CreditNoteARDetailController@for
 Route::get('/CreditNoteARDetail/table','finance\CreditNoteARDetailController@table');
 Route::get('/CreditNoteAR/showpdf','finance\CreditNoteARController@showpdf');
 
+//// Credit Note Category AR - report sales ///
+Route::get('/CreditNoteAR_Report','finance\CreditNoteAR_ReportController@show');
+Route::get('/CreditNoteAR_Report/table','finance\CreditNoteAR_ReportController@table');
+Route::post('/CreditNoteAR_Report/form','finance\CreditNoteAR_ReportController@form');
+Route::get('/CreditNoteAR_Report/showExcel','finance\CreditNoteAR_ReportController@showExcel');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
