@@ -17,10 +17,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use DateTime;
 use Carbon\Carbon;
 
-class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting
+class ContributionExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -37,19 +38,22 @@ class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithCo
 
     public function collection()
     {
-        $supplier = DB::table('material.supplier')
-                        ->select(['SuppCode','Name',
-                        DB::raw('CONCAT(supplier.Addr1, "\n", supplier.Addr2, "\n", supplier.Addr3, "\n", supplier.Addr4) AS Address'), 'TelNo'
-                        ])
+        $drcontrib = DB::table('debtor.drcontrib')
+                        ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode')
+                        ->leftJoin('hisdb.doctor', function($join){
+                            $join = $join->on('doctor.doctorcode', '=', 'drcontrib.drcode');
+                            $join = $join->on('doctor.compcode', '=', 'drcontrib.compcode');
+                        })
+                        ->where('drcontrib.compcode','=',session('compcode'))
                         ->get();
-
-        return $supplier;
+                        
+        return $drcontrib;
     }
 
     public function headings(): array
     {
         return [
-            'Suppcode','Name','Address', 'Tel No'
+            'Doctor Code','Doctor Name','Charge Code'
         ];
     }
 
@@ -77,7 +81,7 @@ class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithCo
     public function columnFormats(): array
     {
         return [
-           'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+         //  'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 
@@ -124,7 +128,7 @@ class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithCo
                 $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 $event->sheet->setCellValue('A3','PRINTED BY:');
                 $event->sheet->setCellValue('B3', session('username'));
-                $event->sheet->setCellValue('C1','SUPPLIER REPORT');
+                $event->sheet->setCellValue('C1','DOCTOR CONTRIBUTION');
                 $event->sheet->setCellValue('G1',$this->comp->name);
                 $event->sheet->setCellValue('G2',$this->comp->address1);
                 $event->sheet->setCellValue('G3',$this->comp->address2);
@@ -135,16 +139,6 @@ class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithCo
                 $event->sheet->getStyle('C1:C2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
                 $event->sheet->getStyle('C:D')->getAlignment()->setWrapText(true);
-
-                //getAlignment()->setWrapText(true);
-                // $drawing = new Drawing();
-                // $drawing->setName('Logo');
-                // $drawing->setDescription('This is my logo');
-                // $drawing->setPath(public_path('/img/logo.jpg'));
-                // $drawing->setHeight(80);
-                // $drawing->setCoordinates('E1');
-                // $drawing->setOffsetX(40);
-                // $drawing->setWorksheet($event->sheet->getDelegate());
 
             },
         ];

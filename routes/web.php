@@ -635,10 +635,10 @@ Route::post('/contribution/form','finance\ContributionController@form');
 Route::get('/contribution/form','finance\ContributionController@form');
 
 /// Doctor Contribution - report  ///
-Route::get('/contribution_Report','material\Contribution_ReportController@show');
-Route::get('/contribution_Report/table','material\Contribution_ReportController@table');
-Route::post('/contribution_Report/form','material\Contribution_ReportController@form');
-Route::get('/contribution_Report/showExcel','material\Contribution_ReportController@showExcel');
+Route::get('/contribution_Report','finance\Contribution_ReportController@show');
+Route::get('/contribution_Report/table','finance\Contribution_ReportController@table');
+Route::post('/contribution_Report/form','finance\Contribution_ReportController@form');
+Route::get('/contribution_Report/showExcel','finance\Contribution_ReportController@showExcel');
 
 //// Finance - Credit Note AR page ///
 Route::get('/CreditNoteAR','finance\CreditNoteARController@show');
