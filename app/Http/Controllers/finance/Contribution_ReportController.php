@@ -21,13 +21,13 @@ class Contribution_ReportController extends defaultController
         $this->middleware('auth');
     }
 
-    public function show(Request $request)
-    {   
-        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('material.supplier_Report.supplier_Report',[
-                'company_name' => $comp->name
-        ]);
-    }
+    // public function show(Request $request)
+    // {   
+    //     $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+    //     return view('material.supplier_Report.supplier_Report',[
+    //             'company_name' => $comp->name
+    //     ]);
+    // }
 
     public function form(Request $request)
     {   
