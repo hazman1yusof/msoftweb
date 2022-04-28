@@ -17,6 +17,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use DateTime;
 use Carbon\Carbon;
 
@@ -38,10 +39,12 @@ class ContributionExport implements FromCollection, WithEvents, WithHeadings, Wi
     public function collection()
     {
         $drcontrib = DB::table('debtor.drcontrib')
-                        ->join('drcontrib', 'drcode', '=', 'drcontrib.drcode')
-                        ->join('doctor', 'doctorcode', '=', 'doctor.doctorcode')
                         ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode')
-                        ->where('drcontrib.drcode', '=', 'doctor.doctorcode')
+                        ->leftJoin('hisdb.doctor', function($join){
+                            $join = $join->on('doctor.doctorcode', '=', 'drcontrib.drcode');
+                            $join = $join->on('doctor.compcode', '=', 'drcontrib.compcode');
+                        })
+                        ->where('drcontrib.compcode','=',session('compcode'))
                         ->get();
                         
         return $drcontrib;
