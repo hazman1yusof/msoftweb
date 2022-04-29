@@ -74,20 +74,6 @@ $(document).ready(function () {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
 
-	// to limit to two decimal places (onkeypress)
-	$(document).on('keydown', 'input[pattern]', function(e){
-		var input = $(this);
-		var oldVal = input.val();
-		var regex = new RegExp(input.attr('pattern'), 'g');
-	  
-		setTimeout(function(){
-			var newVal = input.val();
-			if(!regex.test(newVal)){
-				input.val(oldVal); 
-		  	}
-		}, 0);
-	});
-
 	// to autocheck the checkbox bila fill in textarea
 	$("#cerebrum_text").on("keyup blur", function () {
         $(".cerebrum").prop("checked", this.value !== "");
@@ -158,7 +144,7 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Date', name: 'date', width: 60, classes: 'wrap', editable:true,
+			{ label: 'Date', name: 'date', width: 150, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -176,29 +162,86 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{ label: 'POA', name: 'poa', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'POG (SCAN)', name: 'pog', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'CRL', name: 'crl', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'BPD', name: 'bpd', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'HC', name: 'hc', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'AC', name: 'ac', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'FL', name: 'fl', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'ATD', name: 'atd', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'ALD', name: 'ald', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'EFBW', name: 'efbw', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'AFI', name: 'afi', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'PRES', name: 'pres', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'PLACENTA', name: 'placenta', classes: 'wrap', width: 60, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'POA', name: 'poa', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:poaCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'POG (SCAN)', name: 'pog', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:pogCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'CRL', name: 'crl', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:crlCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'BPD', name: 'bpd', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:bpdCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'HC', name: 'hc', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:hcCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'AC', name: 'ac', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:acCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'FL', name: 'fl', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:flCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'ATD', name: 'atd', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:atdCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'ALD', name: 'ald', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:aldCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'EFBW', name: 'efbw', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:efbwCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'AFI', name: 'afi', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:afiCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'PRES', name: 'pres', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'PLACENTA', name: 'placenta', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 		],
-		autowidth: true,
+		scroll: false,
+		autowidth: false,
+		shrinkToFit: false,
 		multiSort: true,
 		sortname: 'idno',
 		sortorder: 'desc',
 		viewrecords: true,
 		loadonce: false,
-		width: 900,
+		width: 1150,
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPagerObstetricsUltraScan",
@@ -390,7 +433,7 @@ $(document).ready(function () {
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Date', name: 'date', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Date', name: 'date', width: 150, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -408,27 +451,59 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{ label: 'Report', name: 'report', classes: 'wrap', width: 220, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'POA/POG', name: 'poaORpog', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Uterine Size', name: 'uterineSize', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Albumin/Protein', name: 'albumin', classes: 'wrap', width: 90, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Sugar', name: 'sugar', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Weight', name: 'weight', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }, edittype:'custom',	editoptions:
-					{ 	custom_element:weightCustomEdit,
-						custom_value:galGridCustomValue 	
-					}},
-			{ label: 'Blood Pressure', name: 'bp_sys', classes: 'wrap', width: 90, editable: true, formatter: combineCol, editoptions: {style: "text-transform: none" },
-				edittype:'custom',	editoptions:
-					{ 	custom_element:bp_sysCustomEdit,
-						custom_value:galGridCustomValue 	
-					}},
-			{ label: 'Blood Pressure', name: 'bp_dias', classes: 'wrap', width: 90, editable: true, hidden:true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Hb', name: 'hb', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Oedema', name: 'oedema', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Lie', name: 'fetusLie', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Pres', name: 'fetusPres', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'FHR', name: 'fetusHeartRate', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'FM', name: 'fetalMovement', classes: 'wrap', width: 80, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'Report', name: 'report', classes: 'wrap', width: 250, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;", rows: 5}},
+			{ label: 'POA/POG', name: 'poaORpog', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:poaORpogCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Uterine Size', name: 'uterineSize', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:uterineSizeCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Albumin', name: 'albumin', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:albuminCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Sugar', name: 'sugar', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:sugarCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Weight', name: 'weight', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:weightCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Blood Pressure', name: 'bp', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:bpCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Hb', name: 'hb', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:hbCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'Oedema', name: 'oedema', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'Lie', name: 'fetusLie', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'Pres', name: 'fetusPres', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'FHR', name: 'fetusHeartRate', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+				editoptions:
+				{ 	custom_element:fhrCustomEdit,
+					custom_value:galGridCustomValue 	
+				}
+			},
+			{ label: 'FM', name: 'fetalMovement', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 		],
@@ -460,7 +535,7 @@ $(document).ready(function () {
 	jQuery("#jqGridCurrPregnancy").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 
 		groupHeaders:[
-		  {startColumnName: 'poaORpog', numberOfColumns: 9, titleText: 'Tests'},
+		  {startColumnName: 'poaORpog', numberOfColumns: 8, titleText: 'Tests'},
 		  {startColumnName: 'fetusLie', numberOfColumns: 4, titleText: 'Examination (Fetus)'}
 		]
 	});
@@ -624,27 +699,225 @@ $(document).ready(function () {
 
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
-	function weightCustomEdit(val, opt) {
-
+	//////////////////////////////////////////////custom edits//////////////////////////////////////////////
+	function poaCustomEdit(val, opt) {
 		return $(`<div class="input-group">
-					<input id="ncase_weight" name="ncase_weight" type="number" class="" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon">kg</span>
+					<input id="obs_poa" name="obs_poa" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+					<span class="input-group-addon" style='padding:2px;'>months</span>
 				</div>`);
 	}
 
-	function bp_sysCustomEdit(val, opt) {
-		// val = (val == "undefined") ? "" : val.slice(0, val.search("[<]"));
+	function pogCustomEdit(val, opt) {
 		return $(`<div class="input-group">
-		            <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-		            <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<input id="obs_pog" name="obs_pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+					<span class="input-group-addon" style='padding:2px;'>months</span>
+				</div>`);
+	}
+	  
+	function crlCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_crl" name="obs_crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_crl_w" name="obs_crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_crl_d" name="obs_crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function bpdCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_bpd" name="obs_bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_bpd_w" name="obs_bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_bpd_d" name="obs_bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function hcCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_hc" name="obs_hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_hc_w" name="obs_hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_hc_d" name="obs_hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function acCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_ac" name="obs_ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_ac_w" name="obs_ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_ac_d" name="obs_ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function flCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_fl" name="obs_fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_fl_w" name="obs_fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_fl_d" name="obs_fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function atdCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_atd" name="obs_atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_atd_w" name="obs_atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_atd_d" name="obs_atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function aldCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="obs_ald" name="obs_ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="obs_ald_w" name="obs_ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="obs_ald_d" name="obs_ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+	}
+
+	function efbwCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="obs_efbw" name="obs_efbw" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>gm</span>
+				</div>`);
+	}
+
+	function afiCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="obs_afi" name="obs_afi" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>cm</span>
+				</div>`);
+	}
+
+	function poaORpogCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_poaORpog" name="currPreg_poaORpog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+					<span class="input-group-addon" style='padding:2px;'>months</span>
+				</div>`);
+	}
+
+	function uterineSizeCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_uterineSize" name="currPreg_uterineSize" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>cm</span>
+				</div>`);
+	}
+
+	function albuminCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_albumin" name="currPreg_albumin" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>g/dL</span>
+				</div>`);
+	}
+
+	function sugarCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_sugar" name="currPreg_sugar" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>mg/dL</span>
+				</div>`);
+	}
+
+	function weightCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_weight" name="currPreg_weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>kg</span>
+				</div>`);
+	}
+
+	function bpCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+		            <input id="currPreg_bp_sys1" name="currPreg_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+		            <input id="currPreg_bp_dias2" name="currPreg_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
 		            <span class="input-group-addon" style='padding:2px;'>mm<br>Hg</span>
 		        </div>`);
 	}
 
-	function combineCol(cellvalue, options, rowObject){
-		// return cellvalue + ' ' + rowObject.bp_sys + ' ' + rowObject.bp_dias;
-		return ``
+	function hbCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_hb" name="currPreg_hb" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>gm%</span>
+				</div>`);
 	}
+
+	function fhrCustomEdit(val, opt) {
+		return $(`<div class="input-group">
+					<input id="currPreg_fhr" name="currPreg_fhr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+					<span class="input-group-addon" style='padding:2px;'>bpm</span>
+				</div>`);
+	}
+	//////////////////////////////////////////////custom edits ends//////////////////////////////////////////////
 
 });
 

@@ -70,7 +70,7 @@
 										<div class="form-group col-md-6" style="margin-left: 2px">
 											<label for="height">Height</label>  
 											<div class="input-group">
-												<input id="height" name="height" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="height" name="height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												<span class="input-group-addon">cm</span>
 											</div>
 										</div>
@@ -93,7 +93,7 @@
 										<div class="form-group col-md-6" style="margin-left: 2px">
 											<label for="anr_rubella">Rubella Status</label>  
 											<div class="input-group">
-												<input id="anr_rubella" name="anr_rubella" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="anr_rubella" name="anr_rubella" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												<span class="input-group-addon">IU/mL</span>
 											</div>
 										</div>
@@ -103,14 +103,14 @@
 										<div class="form-group col-md-6" style="margin-left: 2px">
 											<label for="anr_vdrl">VDRL</label>  
 											<div class="input-group">
-												<input id="anr_vdrl" name="anr_vdrl" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="anr_vdrl" name="anr_vdrl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												<span class="input-group-addon">%</span>
 											</div>
 										</div>
 										<div class="form-group col-md-6" style="margin-left: 2px">
 											<label for="anr_hiv">HIV</label>  
 											<div class="input-group">
-												<input id="anr_hiv" name="anr_hiv" type="number" class="form-control input-sm floatNumberField" pattern="^\d*(\.\d{0,2})?$" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+												<input id="anr_hiv" name="anr_hiv" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												<span class="input-group-addon">cells/mm3</span>
 											</div>
 										</div>
