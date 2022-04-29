@@ -258,7 +258,7 @@ function disableFields_dieteticCareNotes() {
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
 
-	$('#ncase_medical_his,#ncase_surgical_his,#ncase_fam_medical_his,#ncase_history,#ncase_diagnosis,#ncase_intervention,#ncase_temperature,#ncase_pulse,#ncase_respiration,#ncase_bp_sys1,#ncase_bp_dias2,#ncase_height,#ncase_weight,#ncase_gxt,#ncase_painscore').prop('disabled',true);
+	$('#ncase_medical_his,#ncase_surgical_his,#ncase_fam_medical_his,#ncase_history,#ncase_diagnosis,#ncase_intervention,#ncase_temperature,#ncase_pulse,#ncase_respiration,#ncase_bp_sys1,#ncase_bp_dias2,#ncase_height,#ncase_weight,#ncase_gxt,#ncase_pain_score').prop('disabled',true);
 }
 
 button_state_dieteticCareNotes('empty');

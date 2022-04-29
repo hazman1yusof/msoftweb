@@ -202,9 +202,9 @@
 											</div>
 
 											<div class="form-group col-md-12">
-												<label class="control-label" for="ncase_painscore" style="padding-bottom:5px">Pain Score</label>
+												<label class="control-label" for="ncase_pain_score" style="padding-bottom:5px">Pain Score</label>
 												<div class="input-group">
-													<input id="ncase_painscore" name="ncase_painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input id="ncase_pain_score" name="ncase_pain_score" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 													<span class="input-group-addon">/10</span>
 												</div>
 											</div>
@@ -369,9 +369,9 @@
 												</div>
 
 												<div class="form-group col-md-12">
-													<label class="control-label" for="fup_painscore" style="padding-bottom:5px">Pain Score</label>
+													<label class="control-label" for="fup_pain_score" style="padding-bottom:5px">Pain Score</label>
 													<div class="input-group">
-														<input id="fup_painscore" name="fup_painscore" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input id="fup_pain_score" name="fup_pain_score" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">/10</span>
 													</div>
 												</div>
