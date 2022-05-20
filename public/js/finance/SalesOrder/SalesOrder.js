@@ -162,6 +162,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN'],
 		join_onCol: ['db.debtorcode'],
 		join_onVal: ['dm.debtorcode'],
+		filterCol: ['db.source','db.trantype'],
+		filterVal: ['PB','IN'],
 		// filterCol: filterCol_urlParam,
 		// filterVal: filterVal_urlParam,
 		// WhereInCol:['purreqhd.recstatus'],
@@ -190,7 +192,7 @@ $(document).ready(function () {
 			{ label: 'Docdate', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, canSearch: true, formatter: padzero5, unformat: unpadzero },
-			//{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
+			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
@@ -204,7 +206,7 @@ $(document).ready(function () {
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
-			{ label: 'units', name: 'db_units', width: 10, hidden: true },
+			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -1464,7 +1466,7 @@ $(document).ready(function () {
 				}
 			}
 		}, {
-			title: "Select Units",
+			title: "Select Unit",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept','storedept'];
 				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
