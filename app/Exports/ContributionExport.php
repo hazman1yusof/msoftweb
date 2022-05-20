@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Exports;
-use App\Contribution;
+use App\Exports\Sheets\ContributionExportSheet;
 
 use DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -87,10 +87,17 @@ class ContributionExport implements FromCollection, WithEvents, WithHeadings, Wi
                         ->where('drcontrib.compcode','=',session('compcode'))
                         ->get();
 
-        $length = count($drcode);
-        for ($count = 0; $count <= $length; $count++) {
-            $sheets[] = new ContributionExportSheet($this->drcode, $count);
+        // $length = count($drcode);
+
+        foreach ($drcode as $key => $value) {
+            $sheets[] = new ContributionExportSheet($value->drcode);
         }
+
+        // dd($sheets);
+
+        // for ($count = 0; $count <= $length; $count++) {
+        //     $sheets[] = new ContributionExportSheet($drcode[$count]->drcode);
+        // }
 
         return $sheets;
     }
