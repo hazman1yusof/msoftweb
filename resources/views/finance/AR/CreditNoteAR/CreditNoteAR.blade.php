@@ -71,14 +71,6 @@ i.fa {
 		            </div>
 				</div>
 
-
-					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
-
-		             </div>
-				</div>
-
 				<?php 
 					$scope_use = 'posted';
 
@@ -95,7 +87,7 @@ i.fa {
 					}
 				?>
 
-				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
+				<div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>

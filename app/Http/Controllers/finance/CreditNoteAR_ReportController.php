@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
-use App\Exports\DebitNoteARExport;
+use App\Exports\CreditNoteARExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class DebitNoteAR_ReportController extends defaultController
+class CreditNoteAR_ReportController extends defaultController
 {   
 
     var $table;
@@ -24,7 +24,7 @@ class DebitNoteAR_ReportController extends defaultController
     public function show(Request $request)
     {   
         $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('finance.AR.DebitNoteAR_Report.DebitNoteAR_Report',[
+        return view('finance.AR.CreditNoteAR_Report.CreditNoteAR_Report',[
                 'company_name' => $comp->name
         ]);
     }
@@ -46,6 +46,6 @@ class DebitNoteAR_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new DebitNoteARExport($request->datefr,$request->dateto), 'DebitNoteARReport.xlsx');
+        return Excel::download(new CreditNoteARExport($request->datefr,$request->dateto), 'CreditNoteARReport.xlsx');
     }
 }

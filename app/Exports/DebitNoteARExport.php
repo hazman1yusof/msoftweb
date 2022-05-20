@@ -20,14 +20,17 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use DateTime;
 use Carbon\Carbon;
 
-class DebitNoteARExport implements FromCollection,WithEvents,WithHeadings,WithColumnWidths, WithColumnFormatting
+class DebitNoteARExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting
 {
     /**
     * @return \Illuminate\Support\Collection
     */
 
-    public function __construct()
+    public function __construct($datefr,$dateto)
     {
+
+        $this->datefr = $datefr;
+        $this->dateto = $dateto;
 
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -36,17 +39,18 @@ class DebitNoteARExport implements FromCollection,WithEvents,WithHeadings,WithCo
 
     public function collection()
     {
-        $category = DB::table('material.category')
-                        ->select('compcode','catcode','description','cattype')
+        $payer = DB::table('debtor.dbacthdr')
+                        ->select('compcode','payercode','amount','entrydate')
+                        ->whereBetween('entrydate',[$this->datefr,$this->dateto])
                         ->get();
 
-        return $category;
+        return $payer;
     }
 
     public function headings(): array
     {
         return [
-            'compcode','catcode','description','cattype'
+            'compcode','payercode','amount','entrydate'
         ];
     }
 
@@ -64,7 +68,7 @@ class DebitNoteARExport implements FromCollection,WithEvents,WithHeadings,WithCo
     {
         return [
 
-           //'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+           'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
 
           
         ];
@@ -118,7 +122,7 @@ class DebitNoteARExport implements FromCollection,WithEvents,WithHeadings,WithCo
                 $event->sheet->setCellValue('A3','PRINTED BY :');
                 $event->sheet->setCellValue('B3', session('username'));
                 $event->sheet->setCellValue('C1','DEBIT NOTE AR REPORT');
-               // $event->sheet->setCellValue('C2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
+                $event->sheet->setCellValue('C2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
                 $event->sheet->setCellValue('F1',$this->comp->name);
                 $event->sheet->setCellValue('F2',$this->comp->address1);
                 $event->sheet->setCellValue('F3',$this->comp->address2);

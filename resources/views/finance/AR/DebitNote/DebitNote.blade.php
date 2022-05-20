@@ -28,12 +28,6 @@ i.fa {
 	overflow: auto;
 }
 
-.whtspc_wrap{
-	white-space: pre-wrap !important;
-}
-
-#more {display: none;}
-
 @endsection
 
 @section('body')
@@ -61,22 +55,14 @@ i.fa {
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase"  tabindex="1">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
 		            </div>
-				</div>
-
-
-					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
-
-		             </div>
 				</div>
 
 				<?php 
@@ -95,7 +81,7 @@ i.fa {
 					}
 				?>
 
-				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
+				<div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
