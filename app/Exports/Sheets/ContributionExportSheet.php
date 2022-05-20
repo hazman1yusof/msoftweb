@@ -87,41 +87,6 @@ class ContributionExportSheet implements FromQuery, WithTitle, WithEvents, WithH
         ];
     }
 
-    public function sheets(): array
-    {
-        $sheets = [];
-        $drcode = DB::table('debtor.drcontrib')
-                        ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode')
-                        ->leftJoin('hisdb.doctor', function($join){
-                            $join = $join->on('doctor.doctorcode', '=', 'drcontrib.drcode');
-                            $join = $join->on('doctor.compcode', '=', 'drcontrib.compcode');
-                        })
-                        ->where('drcontrib.compcode','=',session('compcode'))
-                        ->get();
-
-        // $length = count($drcode);
-
-        foreach ($drcode as $key => $value) {
-            $sheets[] = new ContributionExportSheet($value->drcode);
-        }
-
-        // dd($sheets);
-
-        // for ($count = 0; $count <= $length; $count++) {
-        //     $sheets[] = new ContributionExportSheet($drcode[$count]->drcode);
-        // }
-
-        return $sheets;
-    }
-
-    // public function map($apacthdr): array
-    // {
-    //     return [
-           
-    //       //  Date::dateTimeToExcel($apacthdr->Carbon::now("Asia/Kuala_Lumpur")),
-    //     ];
-    // }
-
     public function columnFormats(): array
     {
         return [
