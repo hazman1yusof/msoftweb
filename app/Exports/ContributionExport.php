@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exports;
+use App\Contribution;
 
 use DB;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -17,15 +18,19 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use DateTime;
 use Carbon\Carbon;
 
-class ContributionExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting
+class ContributionExport implements FromCollection, WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting, WithMultipleSheets
 {
     /**
     * @return \Illuminate\Support\Collection
     */
+    use Exportable;
+
+    protected $drcode;
 
     public function __construct()
     {
@@ -61,13 +66,33 @@ class ContributionExport implements FromCollection, WithEvents, WithHeadings, Wi
     {
         return [
             'A' => 15,
-            'B' => 40,    
+            'B' => 50,    
             'C' => 35,
             'D' => 30,
             'E' => 30, 
             'D' => 20,
                
         ];
+    }
+
+    public function sheets(): array
+    {
+        $sheets = [];
+        $drcode = DB::table('debtor.drcontrib')
+                        ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode')
+                        ->leftJoin('hisdb.doctor', function($join){
+                            $join = $join->on('doctor.doctorcode', '=', 'drcontrib.drcode');
+                            $join = $join->on('doctor.compcode', '=', 'drcontrib.compcode');
+                        })
+                        ->where('drcontrib.compcode','=',session('compcode'))
+                        ->get();
+
+        $length = count($drcode);
+        for ($count = 0; $count <= $length; $count++) {
+            $sheets[] = new ContributionExportSheet($this->drcode, $count);
+        }
+
+        return $sheets;
     }
 
     // public function map($apacthdr): array
@@ -139,6 +164,7 @@ class ContributionExport implements FromCollection, WithEvents, WithHeadings, Wi
                 $event->sheet->getStyle('C1:C2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
                 $event->sheet->getStyle('C:D')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('B')->getAlignment()->setWrapText(true);
 
             },
         ];

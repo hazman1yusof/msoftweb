@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
 use App\Exports\ContributionExport;
+use App\Exports\Sheets\ContributionExportSheet;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Contribution_ReportController extends defaultController
@@ -24,7 +25,7 @@ class Contribution_ReportController extends defaultController
     // public function show(Request $request)
     // {   
     //     $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-    //     return view('material.supplier_Report.supplier_Report',[
+    //     return view('finance.contribution_Report.contribution_Report',[
     //             'company_name' => $comp->name
     //     ]);
     // }
