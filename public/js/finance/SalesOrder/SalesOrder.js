@@ -240,6 +240,7 @@ $(document).ready(function () {
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.billno = selrowData("#jqGrid").db_auditno;
+			urlParam2.deptcode = selrowData("#jqGrid").db_deptcode;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -424,6 +425,7 @@ $(document).ready(function () {
 				urlParam2.source = 'PB';
 				urlParam2.trantype = 'IN';
 				urlParam2.billno = data.auditno;
+				urlParam2.deptcode = $('#db_deptcode').val();
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
@@ -638,6 +640,7 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
+		deptcode:''
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -727,7 +730,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
-			{ label: 'idno', name: 'idno', width: 10, hidden: true, key:true },
+			{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -737,7 +740,7 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 10,
-		sortname: 'lineno_',
+		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
@@ -1670,6 +1673,8 @@ $(document).ready(function () {
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
+				dialog_chggroup.urlParam.url_chk = "./SalesOrderDetail/table";
+				dialog_chggroup.urlParam.action_chk = "get_itemcode_price_check";
 				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
 				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 

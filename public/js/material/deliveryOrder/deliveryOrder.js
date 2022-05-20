@@ -2205,13 +2205,13 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
-					$(event.currentTarget).parent().next().html('');
+					// $(event.currentTarget).parent().next().html('');
 				}else{
 
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
-					$(event.currentTarget).parent().next().html('');
+					// $(event.currentTarget).parent().next().html('');
 				}
 
 				let data=selrowData('#'+dialog_itemcode.gridname);

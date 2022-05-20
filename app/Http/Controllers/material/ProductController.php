@@ -284,46 +284,51 @@ class ProductController extends defaultController
 
                 DB::table('material.product')->insert($array_insert);
 
-                $array_insert = [
-                    'compcode' => session('compcode'),
-                    'unit' => session('unit'),
-                    'chgcode' => $request->itemcode,
-                    'uom' => $request->uomcode,
-                    'description' => strtoupper($request->description),
-                    'brandname' => strtoupper($request->generic),
-                    'chgclass' => $request->cm_chgclass,
-                    'chggroup' => $request->cm_chggroup,
-                    'chgtype' => $request->cm_chgtype,
-                    'recstatus' => 'ACTIVE',
-                    'packqty' => $request->cm_packqty,
-                    'druggrcode' => strtoupper($request->cm_druggrcode),
-                    'subgroup' => strtoupper($request->cm_subgroup),
-                    'stockcode' => strtoupper($request->cm_stockcode),
-                    'invgroup' => strtoupper($request->cm_invgroup),
-                    'dosecode' => $request->cm_dosecode,
-                    'freqcode' => $request->cm_freqcode,
-                    'instruction' => $request->cm_instruction,
-                    'invflag' => 1,
 
-                    // 'barcode' => strtoupper($request->cm_barcode),
-                    // 'constype' => strtoupper($request->cm_constype),
-                    // 'invflag' => $request->cm_invflag,
-                    // 'costcode' => $request->cm_costcode, 
-                    // 'revcode' => $request->cm_revcode, 
-                    // 'seqno' => $request->cm_seqno,
+                if($request->chgflag == 1){
+                    $array_insert = [
+                        'compcode' => session('compcode'),
+                        'unit' => session('unit'),
+                        'chgcode' => $request->itemcode,
+                        'uom' => $request->uomcode,
+                        'description' => strtoupper($request->description),
+                        'brandname' => strtoupper($request->generic),
+                        'chgclass' => $request->cm_chgclass,
+                        'chggroup' => $request->cm_chggroup,
+                        'chgtype' => $request->cm_chgtype,
+                        'recstatus' => 'ACTIVE',
+                        'packqty' => $request->cm_packqty,
+                        'druggrcode' => strtoupper($request->cm_druggrcode),
+                        'subgroup' => strtoupper($request->cm_subgroup),
+                        'stockcode' => strtoupper($request->cm_stockcode),
+                        'invgroup' => strtoupper($request->cm_invgroup),
+                        'dosecode' => $request->cm_dosecode,
+                        'freqcode' => $request->cm_freqcode,
+                        'instruction' => $request->cm_instruction,
+                        'invflag' => 1,
 
-                    'overwrite' => 0, 
-                    'doctorstat' => 0, 
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'computerid' => $request->cm_computerid, 
-                    'ipaddress' => $request->cm_ipaddress, 
-                    'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                    'lastipaddress' => strtoupper($request->cm_lastipaddress),
-                ];
+                        // 'barcode' => strtoupper($request->cm_barcode),
+                        // 'constype' => strtoupper($request->cm_constype),
+                        // 'invflag' => $request->cm_invflag,
+                        // 'costcode' => $request->cm_costcode, 
+                        // 'revcode' => $request->cm_revcode, 
+                        // 'seqno' => $request->cm_seqno,
 
-                DB::table('hisdb.chgmast')->insert($array_insert);
+                        'overwrite' => 0, 
+                        'doctorstat' => 0, 
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => $request->cm_computerid, 
+                        'ipaddress' => $request->cm_ipaddress, 
+                        'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
+                        'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                    ];
 
+                    DB::table('hisdb.chgmast')->insert($array_insert);
+
+                }
+
+                
                 $responce = new stdClass();
                 $queries = DB::getQueryLog();
                 $responce->queries = $queries;
@@ -374,81 +379,85 @@ class ProductController extends defaultController
                 ];
                 $table->update($array_update);
 
-                //2. update chgmast 
-                $chgmast = DB::table('hisdb.chgmast')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('unit','=',session('unit'))
-                            ->where('chgcode','=',$request->itemcode)
-                            ->where('uom','=',$request->uomcode);
+                if($request->chgflag == 1){
 
-                if($chgmast->exists()){
-                    $array_update = [
-                        'chgclass' => $request->cm_chgclass,
-                        'chggroup' => $request->cm_chggroup,
-                        'chgtype' => $request->cm_chgtype,
-                        'packqty' => $request->cm_packqty,
-                        'druggrcode' => strtoupper($request->cm_druggrcode),
-                        'subgroup' => strtoupper($request->cm_subgroup),
-                        'stockcode' => strtoupper($request->cm_stockcode),
-                        'invgroup' => strtoupper($request->cm_invgroup),
-                        'dosecode' => $request->cm_dosecode,
-                        'freqcode' => $request->cm_freqcode,
-                        'instruction' => $request->cm_instruction,
-                        'invflag' => 1,
+                    //2. update chgmast 
+                    $chgmast = DB::table('hisdb.chgmast')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('unit','=',session('unit'))
+                                ->where('chgcode','=',$request->itemcode)
+                                ->where('uom','=',$request->uomcode);
 
-                        // 'barcode' => strtoupper($request->cm_barcode),
-                        // 'constype' => strtoupper($request->cm_constype),
-                        // 'invflag' => $request->cm_invflag,
-                        // 'costcode' => $request->cm_costcode, 
-                        // 'revcode' => $request->cm_revcode, 
-                        // 'seqno' => $request->cm_seqno,
+                    if($chgmast->exists()){
+                        $array_update = [
+                            'chgclass' => $request->cm_chgclass,
+                            'chggroup' => $request->cm_chggroup,
+                            'chgtype' => $request->cm_chgtype,
+                            'packqty' => $request->cm_packqty,
+                            'druggrcode' => strtoupper($request->cm_druggrcode),
+                            'subgroup' => strtoupper($request->cm_subgroup),
+                            'stockcode' => strtoupper($request->cm_stockcode),
+                            'invgroup' => strtoupper($request->cm_invgroup),
+                            'dosecode' => $request->cm_dosecode,
+                            'freqcode' => $request->cm_freqcode,
+                            'instruction' => $request->cm_instruction,
+                            'invflag' => 1,
 
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                        'lastipaddress' => strtoupper($request->cm_lastipaddress),
-                    ];
-                    $chgmast->update($array_update);
-                }else{
-                    $array_insert = [
-                        'compcode' => session('compcode'),
-                        'unit' => session('unit'),
-                        'chgcode' => $request->itemcode,
-                        'uom' => $request->uomcode,
-                        'description' => strtoupper($request->description),
-                        'brandname' => strtoupper($request->generic),
-                        'chgclass' => $request->cm_chgclass,
-                        'chggroup' => $request->cm_chggroup,
-                        'chgtype' => $request->cm_chgtype,
-                        'recstatus' => 'ACTIVE',
-                        'packqty' => $request->cm_packqty,
-                        'druggrcode' => strtoupper($request->cm_druggrcode),
-                        'subgroup' => strtoupper($request->cm_subgroup),
-                        'stockcode' => strtoupper($request->cm_stockcode),
-                        'invgroup' => strtoupper($request->cm_invgroup),
-                        'dosecode' => $request->cm_dosecode,
-                        'freqcode' => $request->cm_freqcode,
-                        'instruction' => $request->cm_instruction,
-                        'invflag' => 1,
+                            // 'barcode' => strtoupper($request->cm_barcode),
+                            // 'constype' => strtoupper($request->cm_constype),
+                            // 'invflag' => $request->cm_invflag,
+                            // 'costcode' => $request->cm_costcode, 
+                            // 'revcode' => $request->cm_revcode, 
+                            // 'seqno' => $request->cm_seqno,
 
-                        // 'barcode' => strtoupper($request->cm_barcode),
-                        // 'constype' => strtoupper($request->cm_constype),
-                        // 'invflag' => $request->cm_invflag,
-                        // 'costcode' => $request->cm_costcode, 
-                        // 'revcode' => $request->cm_revcode, 
-                        // 'seqno' => $request->cm_seqno,
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
+                            'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                        ];
+                        $chgmast->update($array_update);
+                    }else{
+                        $array_insert = [
+                            'compcode' => session('compcode'),
+                            'unit' => session('unit'),
+                            'chgcode' => $request->itemcode,
+                            'uom' => $request->uomcode,
+                            'description' => strtoupper($request->description),
+                            'brandname' => strtoupper($request->generic),
+                            'chgclass' => $request->cm_chgclass,
+                            'chggroup' => $request->cm_chggroup,
+                            'chgtype' => $request->cm_chgtype,
+                            'recstatus' => 'ACTIVE',
+                            'packqty' => $request->cm_packqty,
+                            'druggrcode' => strtoupper($request->cm_druggrcode),
+                            'subgroup' => strtoupper($request->cm_subgroup),
+                            'stockcode' => strtoupper($request->cm_stockcode),
+                            'invgroup' => strtoupper($request->cm_invgroup),
+                            'dosecode' => $request->cm_dosecode,
+                            'freqcode' => $request->cm_freqcode,
+                            'instruction' => $request->cm_instruction,
+                            'invflag' => 1,
 
-                        'overwrite' => 0, 
-                        'doctorstat' => 0, 
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'computerid' => $request->cm_computerid, 
-                        'ipaddress' => $request->cm_ipaddress, 
-                        'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                        'lastipaddress' => strtoupper($request->cm_lastipaddress),
-                    ];
+                            // 'barcode' => strtoupper($request->cm_barcode),
+                            // 'constype' => strtoupper($request->cm_constype),
+                            // 'invflag' => $request->cm_invflag,
+                            // 'costcode' => $request->cm_costcode, 
+                            // 'revcode' => $request->cm_revcode, 
+                            // 'seqno' => $request->cm_seqno,
 
-                    DB::table('hisdb.chgmast')->insert($array_insert);
+                            'overwrite' => 0, 
+                            'doctorstat' => 0, 
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => $request->cm_computerid, 
+                            'ipaddress' => $request->cm_ipaddress, 
+                            'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
+                            'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                        ];
+
+                        DB::table('hisdb.chgmast')->insert($array_insert);
+                    }
+
                 }
 
                 // $responce = new stdClass();

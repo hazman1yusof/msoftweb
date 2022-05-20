@@ -43,19 +43,30 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_table_dtl($request);
             case 'get_itemcode_price':
                 return $this->get_itemcode_price($request);
+            case 'get_itemcode_price_check':
+                return $this->get_itemcode_price_check($request);
             default:
                 return 'error happen..';
         }
     }
 
     public function get_table_dtl(Request $request){
-        $table = DB::table('debtor.billsum')
-                    ->where('source','=',$request->source)
-                    ->where('trantype','=',$request->trantype)
-                    ->where('billno','=',$request->billno)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','<>','DELETE')
-                    ->orderBy('idno','desc');
+        $table = DB::table('debtor.billsum as bs')
+                    ->select('bs.compcode','bs.lineno_','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.recstatus','st.qtyonhand')
+                    ->join('material.stockloc as st', function($join) use ($request){
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->on('st.itemcode', '=', 'bs.chggroup');
+                            $join = $join->on('st.uomcode', '=', 'bs.uom');
+                            $join = $join->where('st.deptcode', '=', $request->deptcode);
+                            $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
+                        })
+                    ->where('bs.source','=',$request->source)
+                    ->where('bs.trantype','=',$request->trantype)
+                    ->where('bs.billno','=',$request->billno)
+                    ->where('bs.compcode','=',session('compcode'))
+                    ->where('bs.recstatus','<>','DELETE')
+                    ->orderBy('bs.id','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -235,6 +246,17 @@ class SalesOrderDetailController extends defaultController
         return json_encode($responce);
     }
 
+    public function get_itemcode_price_check(Request $request){
+        $table =  DB::table('hisdb.chgmast')
+                    ->select('chgcode','description')
+                    ->where('chgcode','=',$request->filterVal[2]);
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+
+        return json_encode($responce);
+    }
+
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);
@@ -269,7 +291,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
+                        ->where('billno','=',$auditno)
                         ->count('lineno_');
 
             $li=intval($sqlln)+1;
@@ -278,7 +300,7 @@ class SalesOrderDetailController extends defaultController
             $insertGetId = DB::table('debtor.billsum')
                 ->insertGetId([
                     'auditno' => $recno, //->OE IN
-                    'billno' => $auditno,
+                    'billno' => $auditno, // dari dbacthdr.auditno
                     // 'idno' => $recno, //autogen
                     'compcode' => session('compcode'),
                     'source' => $source,
@@ -400,7 +422,7 @@ class SalesOrderDetailController extends defaultController
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$source)
                             ->where('trantype','=',$trantype)
-                            ->where('auditno','=',$auditno)
+                            ->where('billno','=',$auditno)
                             ->where('lineno_','=',$value['lineno_']);
 
                 ///2. update detail
@@ -461,7 +483,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('source','=',$source)
                         ->where('trantype','=',$trantype)
-                        ->where('auditno','=',$auditno)
+                        ->where('billno','=',$auditno)
                         ->where('recstatus','!=','DELETE')
                         ->sum('amount');
 
@@ -681,7 +703,7 @@ class SalesOrderDetailController extends defaultController
 
         $ivdspdt_lama = DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$billsum_obj->idno);
+            ->where('recno','=',$billsum_obj->auditno);
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
@@ -789,7 +811,7 @@ class SalesOrderDetailController extends defaultController
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$billsum_obj->idno)
+            ->where('recno','=',$billsum_obj->auditno)
             ->update($ivdspdt_arr);
 
         // $ivtxntype = DB::table('material.ivtxntype')
@@ -845,7 +867,7 @@ class SalesOrderDetailController extends defaultController
 
         $ivdspdt_lama = DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$billsum_obj->idno);
+            ->where('recno','=',$billsum_obj->auditno);
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
@@ -935,7 +957,7 @@ class SalesOrderDetailController extends defaultController
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$billsum_obj->idno)
+            ->where('recno','=',$billsum_obj->auditno)
             ->update([
                 'txnqty' => 0,
                 'upduser' => session('username'),
@@ -1113,7 +1135,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=',$ivdspdt->recno);
 
-        if($gltran->exists){
+        if($gltran->exists()){
             $gltran_first = $gltran->first();
 
             $OldAmount = $gltran_first->amount;

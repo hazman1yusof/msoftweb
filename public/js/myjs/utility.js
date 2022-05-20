@@ -1460,6 +1460,12 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			param.action="get_value_default";
 			param.url='util/get_value_default';
+
+			if(this.urlParam.hasOwnProperty('url_chk')){
+				param.url = this.urlParam.url_chk;
+				param.action= this.urlParam.action_chk;
+			}
+
 			if(this.check_take_all_field){
 				param.field=this.urlParam.field;
 			}else{
