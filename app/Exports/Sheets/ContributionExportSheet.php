@@ -44,7 +44,7 @@ class ContributionExportSheet implements FromQuery, WithTitle, WithEvents, WithH
     {
 
         $drcode_obj = DB::table('debtor.drcontrib')
-                    ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode')
+                    ->select('drcontrib.drcode', 'doctor.doctorname', 'drcontrib.chgcode', 'drcontrib.epistype', 'drcontrib.drprcnt', 'drcontrib.amount', 'drcontrib.stfpercent', 'drcontrib.stfamount')
                     ->leftJoin('hisdb.doctor', function($join){
                         $join = $join->on('doctor.doctorcode', '=', 'drcontrib.drcode');
                         $join = $join->on('doctor.compcode', '=', 'drcontrib.compcode');
@@ -70,7 +70,7 @@ class ContributionExportSheet implements FromQuery, WithTitle, WithEvents, WithH
     public function headings(): array
     {
         return [
-            'Doctor Code','Doctor Name','Charge Code'
+            'Doctor Code','Doctor Name','Charge Code', 'Epistype', 'Patient %', 'Amount', 'Staff %', 'Amount'
         ];
     }
 
@@ -79,10 +79,12 @@ class ContributionExportSheet implements FromQuery, WithTitle, WithEvents, WithH
         return [
             'A' => 15,
             'B' => 50,    
-            'C' => 35,
-            'D' => 30,
-            'E' => 30, 
-            'D' => 20,
+            'C' => 20,
+            'D' => 15,
+            'E' => 10, 
+            'F' => 10,
+            'G' => 10,
+            'H' => 10,
                
         ];
     }
