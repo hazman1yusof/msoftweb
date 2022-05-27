@@ -235,7 +235,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [					
-			{ label: 'Dept', name: 'deptcode', width: 30, classes: 'wrap', canSearch: true},
+			{ label: 'Department', name: 'deptcode', width: 30, classes: 'wrap', canSearch: true},
 			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true,checked:true},
 			{ label: 'Cost Code', name: 'costcode', width: 40, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{ label: 'Sector', name: 'sector', width: 30, hidden:false, classes: 'wrap'},

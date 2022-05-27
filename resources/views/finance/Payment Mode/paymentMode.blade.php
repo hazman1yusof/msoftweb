@@ -38,14 +38,14 @@
 				<input id="source2" name="source" type="hidden" value="{{$_GET['source']}}">
 			
 				<div class="form-group">
-				  <label class="col-md-2 control-label" for="paymode">Pay Mode</label>  
+				  <label class="col-md-2 control-label" for="paymode">Payment Mode</label>  
 				  <div class="col-md-3">
 				  <input id="paymode" name="paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 				  </div>
 				</div>
 				
 				<div class="form-group">
-				  <label class="col-md-2 control-label" for="paytype">Paytype</label>  
+				  <label class="col-md-2 control-label" for="paytype">Payment Type</label>  
 				  <div class="col-md-8">
 					    <table>
 	                     	<tr>

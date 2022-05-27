@@ -2,9 +2,8 @@
 	
 	////////////////////////////////////////till checking at start of program supposedly///////////////////
 	
-var def_tillcode,def_tillno;
-$(document).ready(function () {
-
+	var def_tillcode,def_tillno;
+	$(document).ready(function () {
 
 	// dialog_till=new makeDialog('debtor.till','#tilldetTillcode',['tillcode','description','tillstatus'], 'Select Till');
 	var dialog_till = new ordialog(
@@ -12,7 +11,7 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Till Code',name:'tillcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Till Name',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'tillstatus',name:'tillstatus',hidden:true},
+				{label:'Till Status',name:'tillstatus',hidden:true},
 				{label:'defopenamt',name:'defopenamt',hidden:true}
 			],
 			urlParam: {

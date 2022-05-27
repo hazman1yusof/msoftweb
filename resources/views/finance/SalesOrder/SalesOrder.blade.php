@@ -253,7 +253,7 @@ i.fa {
 								<input id="db_invno" name="db_invno" type="text" class="form-control input-sm" rdonly>
 							</div>
 
-							<label class="col-md-1 control-label" for="db_entrydate">Doc Date</label>  
+							<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
 							<div class="col-md-2">
 								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>">
 							</div>

@@ -24,6 +24,7 @@ $(document).ready(function () {
 	};
 	//////////////////////////////////////////////////////////////
 
+	var fdl = new faster_detail_load();
 
 	////////////////////object for dialog handler//////////////////
 	var dialog_deptcode = new ordialog(
@@ -146,7 +147,7 @@ $(document).ready(function () {
 		 colModel: [
 			{label: 'Till Code', name: 'tillcode', width: 90, canSearch:true, checked:true},
 			{label: 'Description', name: 'description', width: 90, canSearch:true },
-			{label: 'Department', name: 'dept', width: 90 },
+			{label: 'Department', name: 'dept', width: 90, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{label: 'Effect Date', name: 'effectdate', width: 90 },
 			{label: 'defopenamt', name: 'defopenamt', width: 90 , hidden: true},
 			{label: 'Till Status', name: 'tillstatus', width: 90 , canSearch:true},
@@ -170,9 +171,29 @@ $(document).ready(function () {
 			/*if(editedRow!=0){
 				$("#jqGrid").jqGrid('setSelection',editedRow,false);
 			}*/
+			fdl.set_array().reset();
 		},
 		
 	});
+
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'dept':field=['deptcode','description'];table="sysdb.department";case_='dept';break;
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('assetregister',options,param,case_,cellvalue);
+		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
+		
+		return cellvalue;
+	}
+
+	function unformat_showdetail(cellvalue, options, rowObject){
+		return $(rowObject).attr('title');
+	}
+	////////////////////////////////////end formatter checkdetail//////////////////////////////////////////
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	

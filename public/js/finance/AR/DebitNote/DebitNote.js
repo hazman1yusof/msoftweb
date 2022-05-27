@@ -174,7 +174,7 @@ $(document).ready(function () {
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, checked: true, classes: 'wrap' },
-			{ label: 'Docdate', name: 'db_entrydate', width: 15},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15},
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
 			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },

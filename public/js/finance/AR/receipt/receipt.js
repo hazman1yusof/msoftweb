@@ -798,7 +798,6 @@ $(document).ready(function () {
 			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
 			{label: 'outamount', name: 'dbacthdr_outamount', hidden: true},
-			{label: 'recstatus', name: 'dbacthdr_recstatus', hidden: true},
 			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
 			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
 			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
@@ -807,15 +806,15 @@ $(document).ready(function () {
 			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
 			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
 			{label: 'debtorcode', name: 'dbacthdr_debtorcode', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 70}, //tunjuk
-			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 100}, //tunjuk
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 120, canSearch:true}, //tunjuk
+			{label: 'Date', name: 'dbacthdr_adddate',width: 50}, //tunjuk
+			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
+			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 100, canSearch:true}, //tunjuk
 			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer Code', name: 'dbacthdr_payercode',width: 90}, //tunjuk
+			{label: 'Payer Code', name: 'dbacthdr_payercode',width: 70}, //tunjuk
 			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap', canSearch:true},//tunjuk
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 60}, //tunjuk
+			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap'}, //tunjuk
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
@@ -823,8 +822,9 @@ $(document).ready(function () {
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Pay Mode', name: 'dbacthdr_paymode',width: 50}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount',width: 90,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
+			{label: 'Amount', name: 'dbacthdr_amount',width: 70,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'Status', name: 'dbacthdr_recstatus',width: 70}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},

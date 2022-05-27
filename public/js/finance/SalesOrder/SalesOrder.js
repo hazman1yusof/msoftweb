@@ -189,7 +189,7 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
-			{ label: 'Docdate', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
@@ -715,7 +715,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
-			{ label: 'Total Amount <br>B4 Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},

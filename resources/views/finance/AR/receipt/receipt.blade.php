@@ -182,7 +182,7 @@
 		  			</div>
 
 					<div class="col-md-6 minuspad-15">
-						<label class="control-label" for="dbacthdr_debtortype">Fin Class</label>
+						<label class="control-label" for="dbacthdr_debtortype">Financial Class</label>
 			  			<div class=''>
 							<input id="dbacthdr_debtortype" name="dbacthdr_debtortype" type="text" class="form-control input-sm" data-validation="required" rdonly>
 						</div>
@@ -477,12 +477,12 @@
 	<form id='formallo'>
 		<div class='col-md-9'>
 			<div class="col-md-6">
-				<label class="control-label">Documnet Type</label>
+				<label class="control-label">Document Type</label>
 				<input id="AlloDtype" type="text" class="form-control input-sm" readonly>
 			</div>
 
 			<div class="col-md-6">
-				<label class="control-label">Documnet No.</label>
+				<label class="control-label">Document No.</label>
 				<input id="AlloDno" type="text" class="form-control input-sm" readonly>
 			</div>
 
@@ -512,12 +512,12 @@
 		<div class='col-md-3'>
 			
 				<div class="col-md-12"><hr>
-					<label class="control-label">Balance after allocate</label>
+					<label class="control-label">Balance After Allocate</label>
 					<input id="AlloBalance" type="text" class="form-control input-sm" readonly>
 				</div>
 
 				<div class="col-md-12">
-					<label class="control-label">Total allocate</label>
+					<label class="control-label">Total Allocate</label>
 					<input id="AlloTotal" type="text" class="form-control input-sm" readonly><hr>
 				</div>
 		</div>
@@ -533,13 +533,13 @@
 		<label class="control-label" id='alloLabel'>Search</label>
 		<input id="alloText" type="text" class="form-control input-sm">
 		<select class="form-control" id="alloCol">
-			<option value="invno" >invoice no</option>
-			<option value="auditno" >auditno</option>
-			<option value="mrn" >mrn</option>
-			<option value="recptno" >docno</option>
-			<option value="newic" >newic</option>
-			<option value="staffid" >staffid</option>
-			<option value="batchno" >batchno</option>
+			<option value="invno" >Invoice No</option>
+			<option value="auditno" >Audit No</option>
+			<option value="mrn" >MRN</option>
+			<option value="recptno" >Document No</option>
+			<option value="newic" >New IC</option>
+			<option value="staffid" >Staff ID</option>
+			<option value="batchno" >Batch No</option>
 		</select>
 	</div>
 </div>
@@ -551,7 +551,6 @@
 
 @section('scripts')
 	
-
 	<script src="js/myjs/till_part.js"></script>
 	<script src="js/finance/AR/receipt/receipt.js"></script>
 	
