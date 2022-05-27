@@ -771,8 +771,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['dbacthdr.mrn'],
 		join_onVal:['pat_mast.mrn'],
-		// filterCol:['dbacthdr.tillno'],
-		// filterVal:''
+		filterCol:['dbacthdr.trantype'],
+		filterVal:['RC']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
