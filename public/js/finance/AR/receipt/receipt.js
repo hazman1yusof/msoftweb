@@ -41,76 +41,6 @@ $(document).ready(function () {
 		$('.nav li').find('a').attr("data-toggle","tab");
 	}
 
-	function getLastrcnumber(){//lastrcnummber for till or receipt number
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['lastrcnumber'],
-			table_name:'debtor.till',
-			filterCol:['tillcode'],
-			filterVal:[]
-		}
-		param.filterVal=[$("#formdata input[name='dbacthdr_tillcode']").val()];
-
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$("#formdata input[name='dbacthdr_lastrcnumber']").val(parseInt(data.rows[0].lastrcnumber) + 1);
-				$("#formdata input[name='dbacthdr_recptno']").val($("#formdata input[name='dbacthdr_tillcode']").val()+"-"+pad('000000000',parseInt(data.rows[0].lastrcnumber) + 1,true));
-			}else{
-
-			}
-		});
-	}
-
-	function getRcpOutAmt(payercode){////// get outstanding amount for recepit trantype
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['SUM(outamount) as sum'],
-			table_name:['debtor.dbacthdr','sysdb.sysparam'],
-			join_type:['JOIN'],
-			join_onCol:['dbacthdr.source'],
-			join_onVal:['sysparam.source'],
-			filterCol:['dbacthdr.payercode','sysparam.source','sysparam.pvalue2','dbacthdr.recstatus','dbacthdr.trantype','dbacthdr.compcode'],
-			filterVal:[payercode,'PB','DR','A','skip.sysparam.trantype','skip.sysparam.compcode'],
-		};
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$("input[name='dbacthdr_outamount']").val(data.rows[0].sum);
-				mycurrency.formatOn();
-			}else{
-
-			}
-		});
-	}
-
-	// function getOut(payercode){ //tak guna
-	// 	var param={
-	// 		action:'get_value_default',
-	// 		url: 'util/get_value_default',
-	// 		field:['SUM(outamount)'],
-	// 		table_name:'debtor.dbacthdr',
-	// 		filterCol:['payercode','source','recstatus'],
-	// 		filterVal:[payercode,'PB','A'],
-	// 		filterInCol:['trantype'],
-	// 		filterInType:['IN'],
-	// 		filterInVal:[['DN','IN']]
-	// 	};
-	// 	$.get( param.url+"?"+$.param(param), function( data ) {
-			
-	// 	},'json').done(function(data) {
-	// 		if(!$.isEmptyObject(data)){
-	// 			$(tabform+" input[name='dbacthdr_outamount']").val(data['SUM(outamount)']);
-	// 		}else{
-
-	// 		}
-	// 	});
-	// }
-
 	///////////////////  for handling amount based on trantype/////////////////////////
 	function handleAmount(){
 		if($("input:radio[name='optradio'][value='receipt']").is(':checked')){
@@ -201,7 +131,6 @@ $(document).ready(function () {
 	////////////////////////////end transaction minimum date////////////////////////////////
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
-	// dialog_dbmast=new makeDialog('debtor.debtormast','#dbacthdr_payercode',['debtorcode','name','debtortype','actdebccode','actdebglacc'], 'Payer code');
 	var dialog_payercode = new ordialog(
 		'payercode','debtor.debtormast','#dbacthdr_payercode',errorField,
 		{	colModel:[
@@ -236,10 +165,52 @@ $(document).ready(function () {
 			open: function(){
 				dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
+			},
+			close: function(){
+				let data=selrowData('#'+dialog_payercode.gridname);
+				get_debtorcode_outamount(data.debtorcode);
+				$('#dbacthdr_remark').focus();
+			}
+		  },'urlParam','radio','tab'
+		);
+	dialog_payercode.makedialog(true);
+
+	var dialog_mrn = new ordialog(
+		'mrn','hisdb.pat_mast','#dbacthdr_mrn',errorField,
+		{	colModel:[
+				{label:'MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Last Episode',name:'Episno',width:100,classes:'pointer'},
+			],
+			urlParam: {
+					filterCol:['compcode'],
+					filterVal:['session.compcode']
+				},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_mrn.gridname);
+				//$('#apacthdr_actdate').focus();
+				$('#dbacthdr_mrn').val(data.MRN);
+				$('#dbacthdr_episno').val(data.Episno);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select MRN",
+			open: function(){
+				dialog_payercode.urlParam.filterCol=['compcode'],
+				dialog_payercode.urlParam.filterVal=['session.compcode']
 				}
 			},'urlParam','radio','tab'
 		);
-	dialog_payercode.makedialog(true);
+	dialog_mrn.makedialog(true);
 
 	var dialog_logindeptcode = new ordialog(
 		'till_dept', 'sysdb.department', '#till_dept', errorField,
@@ -257,7 +228,7 @@ $(document).ready(function () {
 
 				let data=selrowData('#'+dialog_logindeptcode.gridname);
 				
-				sequence.set(data['deptcode']).get();
+				// sequence.set(data['deptcode']).get();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -378,6 +349,9 @@ $(document).ready(function () {
 		width: 300,
 		height: 150,
 		rowNum: 30,
+		gridComplete: function(rowid){
+			$("#sysparam").setSelection($("#sysparam").getDataIDs()[0]);
+		},
 		onSelectRow:function(rowid, selected){
 			if(rowid != null) {
 				rowData = $('#sysparam').jqGrid ('getRowData', rowid);
@@ -391,7 +365,8 @@ $(document).ready(function () {
 					$("#formdata input[name='dbacthdr_crcostcode']").val(rowData['depccode']);
 					$("#formdata input[name='dbacthdr_cracc']").val(rowData['depglacc']);
 					if(oper!='view'){
-						dialog_episode.handler(errorField);
+						dialog_mrn.on();
+						// dialog_episode.handler(errorField);
 					}
 					if(rowData['updpayername'] == 1){
 						$('#dbacthdr_payername').prop('readonly',false);
@@ -401,8 +376,8 @@ $(document).ready(function () {
 				}else{
 					$('#dbacthdr_payername').prop('readonly',true);
 					$("input:hidden[name='dbacthdr_hdrtype']").val('');
-					$("input:hidden[name='updpayername']").val('');
-					$("#mrn ~a").off();
+					$("input:hidden[name='updpayername'],input:hidden[name='updepisode']").val('');
+					dialog_mrn.off();
 				}
 			}
 		},
@@ -613,12 +588,44 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	
+	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
+
+
+
+		var formname = $("a[aria-expanded='true']").attr('form')
+
+		var paymentform =  $( formname ).serializeArray();
+
+		$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
+		saveParam.oper=oper;
+
+		let serializedForm = trimmall(form,uppercase);
+
+		$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(paymentform) , function( data ) {
+			
+		}).fail(function(data) {
+			errorText(dialog.substr(1),data.responseText);
+			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
+		}).success(function(data){
+			if(grid!=null){
+				refreshGrid(grid,urlParam,oper);
+				$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
+				$(dialog).dialog('close');
+				if (callback !== undefined) {
+					callback();
+				}
+			}
+		});
+	}
+
+
+
 	var butt1=[{
 		text: "Save",click: function() {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+				saveFormdata_receipt("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
 			}else{
 				mycurrency.formatOn();
 			}
@@ -657,8 +664,7 @@ $(document).ready(function () {
 			////// End Popup login //////
 
 			parent_close_disabled(true);
-			// getcr('CASH');
-			// getLastrcnumber();
+
 			$('.nav-tabs a').on('shown.bs.tab', function(e){
 				tabform=$(this).attr('form');
 				rdonly(tabform);
@@ -932,6 +938,25 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno','dbacthdr_amount']);
+
+
+	function get_debtorcode_outamount(payercode){
+		var param={
+			url: './receipt/table',
+			action:'get_debtorcode_outamount',
+			payercode:payercode
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(data.result == 'true'){
+				$('input[name="dbacthdr_outamount"]').val(data.outamount);
+			}else{
+				// alert('Payer doesnt have outstanding amount');
+			}
+		});
+	}
 
 	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 

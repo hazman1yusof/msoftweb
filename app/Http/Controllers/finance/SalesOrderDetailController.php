@@ -315,7 +315,7 @@ class SalesOrderDetailController extends defaultController
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
                     'amount' => $request->amount,
-                    'outamount' => $request->outamount,
+                    'outamt' => $request->outamount,
                     'discamt' => floatval($request->discamt),
                     'taxamt' => floatval($request->taxamt),
                     'lastuser' => session('username'), 
@@ -386,6 +386,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('auditno','=',$auditno)
                     ->update([
                         'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
                     ]);
 
             echo $totalAmount;

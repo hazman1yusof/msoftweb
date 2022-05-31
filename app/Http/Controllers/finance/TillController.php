@@ -53,9 +53,11 @@ class TillController extends defaultController
             DB::table('debtor.till')
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
+                    'compcode' => session('compcode'), 
                     'tillstatus' => 'O', 
                     'dept' => auth()->user()->deptcode,
-                    'upduser' => strtoupper(session('username')),
+                    'upduser' => session('username'),
+                    'lastuser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -68,6 +70,9 @@ class TillController extends defaultController
                     'opendate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'opentime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
+
+
+            $request->session()->put('till', $request->tillcode);
 
              DB::commit();
         } catch (\Exception $e) {
