@@ -318,13 +318,13 @@ $(document).ready(function () {
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 	
-					if (rowData['apacthdr_doctype'] == 'Supplier') {
-						$('#save').hide();
-						$('#ap_detail').show();
-					} else {
-						$('#save').show();
-						$('#ap_detail').hide();
-					}
+					// if (rowData['apacthdr_doctype'] == 'Supplier') {
+					// 	$('#save').hide();
+					// 	$('#ap_detail').show();
+					// } else {
+					// 	$('#save').show();
+					// 	$('#ap_detail').hide();
+					// }
 				}
 			}
 		},
@@ -431,9 +431,11 @@ $(document).ready(function () {
 		if(doctype == 'Supplier') {
 			$('#save').hide();
 			$('#ap_detail').show();
+			$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
 		}else if (doctype == 'Others') {
 			$('#save').show();
 			$('#ap_detail').hide();
+			$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
 		}
 		
 	});
@@ -692,12 +694,12 @@ $(document).ready(function () {
 		gridComplete: function(){
 			fdl.set_array().reset();
 
-			unsaved = false;
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-			var result = ids.filter(function(text){
-								if(text.search("jqg") != -1)return false;return true;
-							});
-			if(result.length == 0 && oper=='edit')unsaved = true;
+			// unsaved = false;
+			// var ids = $("#jqGrid2").jqGrid('getDataIDs');
+			// var result = ids.filter(function(text){
+			// 					if(text.search("jqg") != -1)return false;return true;
+			// 				});
+			// if(result.length == 0 && oper=='edit')unsaved = true;
 			
 		},
 		beforeSubmit: function(postdata, rowid){ 
@@ -1603,6 +1605,26 @@ $(document).ready(function () {
 			if($('#apacthdr_doctype').val() == 'Supplier'){
 				$('#save').hide();
 				$('#ap_detail').show();
+				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}else{
+				$('#save').show();
+				$('#ap_detail').hide();
+				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}
+		}
+
+		if(oper == 'edit'){
+			if($('#apacthdr_doctype').val() == 'Supplier'){
+				$('#save').hide();
+				$('#ap_detail').show();
+				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}else{
+				$('#save').show();
+				$('#ap_detail').hide();
+				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			}
 		}
@@ -1611,6 +1633,10 @@ $(document).ready(function () {
 			if($('#apacthdr_doctype').val() == 'Supplier'){
 				$('#save').hide();
 				$('#ap_detail').show();
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			}else{
+				$('#save').show();
+				$('#ap_detail').hide();
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			}
 		}

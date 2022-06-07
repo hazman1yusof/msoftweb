@@ -230,8 +230,6 @@ use PDF;
             ->select('trantype')
             ->where('compcode','=',session('compcode'))
             ->where('auditno','=',$request->apacthdr_auditno)->first();
-
-            //dd($apacthdr_trantype);
           
         if ($request->apacthdr_trantype == 'PV'){
             

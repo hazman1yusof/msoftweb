@@ -120,7 +120,7 @@ use Carbon\Carbon;
             // $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
             if($request->apacthdr_doctype == 'Supplier'){
-                $auditno = 0;
+                $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
                 $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
                 $compcode = 'DD';
             }else{

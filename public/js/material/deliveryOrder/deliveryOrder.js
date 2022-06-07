@@ -1357,7 +1357,9 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
+				if(data){
+					$('#delordhd_subamount, #delordhd_totamount').val(data);
+				}
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2);
 			});
