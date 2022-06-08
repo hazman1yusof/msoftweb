@@ -28,7 +28,6 @@
 	    </tr>
 	    <tr>
 	      <td colspan="2"><b>Purchase Date</b></td>
-	      <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purorddt)->format('d-m-Y')}}</td>
 	    </tr>
 	    <tr>
 	      <td colspan="2"><b>Contract No.</b></td>

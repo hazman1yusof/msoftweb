@@ -42,6 +42,16 @@ use PDF;
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'get_alloc_table':
+                return $this->get_alloc_table($request);break;
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function suppgroup($suppcode){
         $query = DB::table('material.supplier')
                 ->select('supplier.SuppGroup')
@@ -66,6 +76,7 @@ use PDF;
         try {
             
             $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
+            $ALauditno = $this->defaultSysparam('AP','AL');
             
             if ($request->apacthdr_trantype == 'PV'){
 
@@ -91,7 +102,8 @@ use PDF;
                     'unit' => session('unit'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'OPEN'
+                    'recstatus' => 'OPEN',
+                    'amount' => $request->apacthdr_amount,
                 ];
 
                 $idno_apacthdr = $table->insertGetId($array_insert);
@@ -111,11 +123,11 @@ use PDF;
                             'compcode' => session('compcode'),
                             'unit' => session('unit'),
                             'source' => 'AP',
-                            'trantype' => 'PV',
-                            'auditno' => $auditno,
+                            'trantype' => 'AL',
+                            'auditno' => $ALauditno,
                             'lineno_' => $key+1,
-                            'docsource' => 'AP',
-                            'doctrantype' => 'PV',
+                            'docsource' => $request->apacthdr_source,
+                            'doctrantype' => $request->apacthdr_trantype,
                             'docauditno' => $auditno,
                             'refsource' => $apacthdr_IV->source,
                             'reftrantype' => $apacthdr_IV->trantype,
@@ -127,7 +139,7 @@ use PDF;
                             'outamount' => $outamount,
                             'paymode' => $request->apacthdr_paymode,
                             'cheqdate' => $request->apacthdr_cheqdate,
-                            'recdate' => $request->apacthdr_recdate,
+                            // 'recdate' => $request->apacthdr_recdate,
                             'bankcode' => $request->apacthdr_bankcode,
                             'suppcode' => $request->apacthdr_suppcode,
                             'lastuser' => session('username'),
@@ -148,8 +160,8 @@ use PDF;
                     ->where('compcode','=',session('compcode'))
                     ->where('unit','=',session('unit'))
                     ->where('source','=','AP')
-                    ->where('trantype','=','PV')
-                    ->where('auditno','=',$auditno)
+                    ->where('trantype','=','AL')
+                    ->where('auditno','=',$ALauditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('allocamount');
                 
@@ -157,7 +169,7 @@ use PDF;
                     ->where('idno','=',$idno_apacthdr)
                     ->update([
                         'amount' => $totalAmount,
-                        'outamount' => '0',
+                        // 'outamount' => '0',
                         'recstatus' => 'OPEN'
                     ]);
 
@@ -540,6 +552,27 @@ use PDF;
             return response($e->getMessage(), 500);
         }
            
+    }
+
+    public function get_alloc_table(Request $request){
+        $alloc_table = DB::table('finance.apalloc')
+                            ->where('compcode','=', session('compcode'))
+                            ->where('source','=', 'AP')
+                            ->where('trantype','=', 'AL')
+                            ->where('docsource','=', 'AP')
+                            ->where('doctrantype','=', 'PV')
+                            ->where('docauditno','=', $request->apacthdr_auditno);
+
+        $paginate = $alloc_table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($alloc_table);
+        
+        return json_encode($responce);
     }
 
     public function gltran($auditno){

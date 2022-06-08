@@ -258,7 +258,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
@@ -292,12 +292,12 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"  data-validation="required" rdonly> 
 		 					</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm"  data-validation="required" rdonly> 
 		 					</div>
 					</div>
 

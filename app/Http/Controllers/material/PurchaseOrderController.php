@@ -8,6 +8,7 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use PDF;
 
 
 use App\Jobs\SendEmailPR;
@@ -934,11 +935,11 @@ class PurchaseOrderController extends defaultController
 
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 

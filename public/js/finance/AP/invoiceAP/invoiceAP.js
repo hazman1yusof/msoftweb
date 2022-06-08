@@ -220,20 +220,20 @@ $(document).ready(function () {
 	datatype: "local",
 	colModel: [
 		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
-		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden:true},
-		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
-		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap text-uppercase',formatter: padzero, unformat: unpadzero},
+		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
+		{ label: 'Document<br/>Type', name: 'apacthdr_doctype', width: 20, classes: 'wrap text-uppercase', hidden:false},
+		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: true, checked: true, hidden:true},
+		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
+		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap text-uppercase'},
+		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
-		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
+		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true},
+		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -432,10 +432,12 @@ $(document).ready(function () {
 			$('#save').hide();
 			$('#ap_detail').show();
 			$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+			$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 		}else if (doctype == 'Others') {
 			$('#save').show();
 			$('#ap_detail').hide();
 			$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
+			$("label[for='apacthdr_outamount'], input#apacthdr_outamount").hide();
 		}
 		
 	});
@@ -1012,7 +1014,11 @@ $(document).ready(function () {
 	///////////Validation for document number////////////////////////////////////////////////////////
 	
 	$("#apacthdr_document").blur(function(){
-		if(oper == 'add'){
+		check_suppcode_duplicate();
+	});
+
+	function check_suppcode_duplicate(){
+		if(oper == 'add' && $("#apacthdr_document").val().trim() != '' && $("#apacthdr_suppcode").val().trim() != '' ){
 			var id = "#apacthdr_document";
 			var param={
 				func:'getDocNo',
@@ -1022,27 +1028,29 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document'];
-			param.filterVal = [$("#apacthdr_document").val()];
+			param.filterCol = ['document','suppcode'];
+			param.filterVal = [$("#apacthdr_document").val(),$('#apacthdr_suppcode').val()];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if ($.isEmptyObject(data.rows)) {
-					if($.inArray(id,errorField)!==-1){
-						errorField.splice($.inArray(id,errorField), 1);
-					}
-					$( id ).removeClass( "error" ).addClass( "valid" );
+					// if($.inArray(id,errorField)!==-1){
+					// 	errorField.splice($.inArray(id,errorField), 1);
+					// }
+					// $( id ).removeClass( "error" ).addClass( "valid" );
 				} else {
-					bootbox.alert("Duplicate Document No");
-					$( id ).removeClass( "valid" ).addClass( "error" );
-					if($.inArray(id,errorField)===-1){
-						errorField.push( id );
-					}
+					bootbox.alert("Duplicate Document No", function(){
+					    $("#apacthdr_document").val('');
+					});
+					// $( id ).removeClass( "valid" ).addClass( "error" );
+					// if($.inArray(id,errorField)===-1){
+					// 	errorField.push( id );
+					// }
 				}
 			});
 		}
-	});
+	}
 	
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function(){
@@ -1360,6 +1368,7 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_supplier.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
+				dialog_payto.check(errorField);
 				$('#apacthdr_recdate').focus();
 			},
 			gridComplete: function(obj){
@@ -1374,9 +1383,12 @@ $(document).ready(function () {
 					}
 		},{
 			title:"Select Supplier Code",
-			open: function(){
-				dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_supplier.urlParam.filterVal=['ACTIVE', 'session.compcode']
+				open: function(){
+					dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
+					dialog_supplier.urlParam.filterVal=['ACTIVE', 'session.compcode']
+				},
+				close: function(){
+					check_suppcode_duplicate();
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1607,11 +1619,13 @@ $(document).ready(function () {
 				$('#ap_detail').show();
 				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 			}else{
 				$('#save').show();
 				$('#ap_detail').hide();
 				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").hide();
 			}
 		}
 
@@ -1621,11 +1635,13 @@ $(document).ready(function () {
 				$('#ap_detail').show();
 				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 			}else{
 				$('#save').show();
 				$('#ap_detail').hide();
 				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',false);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").hide();
 			}
 		}
 
@@ -1634,10 +1650,12 @@ $(document).ready(function () {
 				$('#save').hide();
 				$('#ap_detail').show();
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 			}else{
 				$('#save').show();
 				$('#ap_detail').hide();
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").hide();
 			}
 		}
 	}

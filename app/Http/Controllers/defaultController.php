@@ -368,6 +368,7 @@ abstract class defaultController extends Controller{
         $responce->rows = $table->get();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
