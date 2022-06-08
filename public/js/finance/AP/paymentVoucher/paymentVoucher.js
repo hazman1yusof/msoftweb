@@ -403,29 +403,6 @@ $(document).ready(function () {
 		init_jq2(oper);
 		
 	});
-
-	// $('#apacthdr_paymode').on('change', function() {
-	// 	if ($('#apacthdr_paymode').val() == 'CHEQUE'){
-	// 		$('#apacthdr_bankcode').show();
-	// 			$('#bankcode_dh').show();
-	// 			$('#bankcode_parent').show();
-	// 			$('#apacthdr_cheqno').show();
-	// 			$('#cheqno_parent').show();
-	// 			$('#cheqno_dh').show();
-	// 			$('#apacthdr_cheqdate').show();
-	// 			$('#cheqdate_parent').show();
-	// 	} else{
-	// 				$('#apacthdr_bankcode').hide();
-	// 					$('#bankcode_dh').hide();
-	// 					$('#bankcode_parent').hide();
-	// 					$('#apacthdr_cheqno').hide();
-	// 					$('#cheqno_parent').hide();
-	// 					$('#cheqno_dh').hide();
-	// 					$('#apacthdr_cheqdate').hide();
-	// 					$('#cheqdate_parent').hide();
-	// 	}
-		
-	// });
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
