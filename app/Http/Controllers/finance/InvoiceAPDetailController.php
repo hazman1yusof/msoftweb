@@ -117,6 +117,7 @@ class InvoiceAPDetailController extends defaultController
             //check duplicate
             $dupli = DB::table('finance.apactdtl')
                         ->where('compcode','=',session('compcode'))
+                        ->where('recstatus','!=','DELETE')
                         ->where('document','=',$request->document);
 
             if($dupli->exists()){
@@ -157,8 +158,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
                 ->update([
-                    'outamount' => $totalAmount,
-                    'amount' => $totalAmount
+                    'outamount' => $totalAmount
                 ]);
 
             
@@ -252,7 +252,9 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
-                ->delete();
+                ->update([
+                    'recstatus' => 'DELETE'
+                ]);
 
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
@@ -270,6 +272,12 @@ class InvoiceAPDetailController extends defaultController
                     'outamount' => $totalAmount
                   
                 ]);
+
+            DB::table('material.delordhd')
+                ->where('compcode','=',session('compcode'))
+                ->where('recstatus','=','POSTED')
+                ->where('delordno','=',strtoupper($request->document))
+                ->update(['invoiceno'=>null]);
 
             DB::commit();
 

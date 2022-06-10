@@ -83,8 +83,8 @@ i.fa {
 	            </div>
 
 				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">
-					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
+					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button 
 					type="button" 
@@ -292,12 +292,12 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"  data-validation="required" rdonly> 
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"  data-validation="required"> 
 		 					</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm"  data-validation="required" rdonly> 
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
 					</div>
 

@@ -24,51 +24,70 @@ use Carbon\Carbon;
 
     public function table(Request $request){
 
-        DB::insert(
-            DB::raw("
-                CREATE TEMPORARY TABLE table_temp_a 
-                    AS (
-                        SELECT *
-                        FROM material.delordhd 
-                        WHERE compcode = '".session('compcode')."'
-                        AND suppcode = '$request->suppcode'
-                        AND recstatus = 'POSTED'
-                        AND invoiceno IS NULL
-                    );
-            ")
-        );
+        // DB::insert(
+        //     DB::raw("
+        //         CREATE TEMPORARY TABLE table_temp_a 
+        //             AS (
+        //                 SELECT *
+        //                 FROM material.delordhd 
+        //                 WHERE compcode = '".session('compcode')."'
+        //                 AND suppcode = '$request->suppcode'
+        //                 AND recstatus = 'POSTED'
+        //                 AND invoiceno IS NULL
+        //             );
+        //     ")
+        // );
 
-        //grt negative, buat temp table sebab nak negative kan ni
-        DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
+        // //grt negative, buat temp table sebab nak negative kan ni
+        // DB::update("update table_temp_a set totamount = 0-totamount where trantype = 'GRT'");
 
-        $table = DB::select("
-                    SELECT table_temp_a.delordno as delordno,
-                        SUM(table_temp_a.totamount) as amount,
-                        max(delordhd.docno) as docno,
-                        max(delordhd.deliverydate) as deliverydate,
-                        max(delordhd.srcdocno) as srcdocno,
-                        max(delordhd.taxclaimable) as taxclaimable,
-                        max(delordhd.TaxAmt) as TaxAmt,
-                        max(delordhd.recno) as recno,
-                        max(delordhd.suppcode) as suppcode
-                    FROM table_temp_a
-                    LEFT JOIN material.delordhd on delordhd.delordno = table_temp_a.delordno 
-                    AND delordhd.trantype = 'GRN' 
-                    AND delordhd.suppcode = '$request->suppcode' 
-                    AND delordhd.recstatus = 'POSTED'
-                    GROUP BY table_temp_a.delordno
-                ");
+        // $table = DB::select("
+        //             SELECT table_temp_a.delordno as delordno,
+        //                 SUM(table_temp_a.totamount) as amount,
+        //                 max(delordhd.docno) as docno,
+        //                 max(delordhd.deliverydate) as deliverydate,
+        //                 max(delordhd.srcdocno) as srcdocno,
+        //                 max(delordhd.taxclaimable) as taxclaimable,
+        //                 max(delordhd.TaxAmt) as TaxAmt,
+        //                 max(delordhd.recno) as recno,
+        //                 max(delordhd.suppcode) as suppcode
+        //             FROM table_temp_a
+        //             LEFT JOIN material.delordhd on delordhd.delordno = table_temp_a.delordno 
+        //             AND delordhd.trantype = 'GRN' 
+        //             AND delordhd.suppcode = '$request->suppcode' 
+        //             AND delordhd.recstatus = 'POSTED'
+        //             GROUP BY table_temp_a.delordno
+        //         ");
 
-        $chunk = collect($table)->forPage($request->page,$request->rows);
+        // $chunk = collect($table)->forPage($request->page,$request->rows);
 
-        $responce = new stdClass();
+        // $responce = new stdClass();
         // $responce->page = $paginate->currentPage();
         // $responce->total = $paginate->lastPage();
         // $responce->records = $paginate->total();
-        $responce->rows = $chunk;
+        // $responce->rows = $chunk;
         // $responce->sql = $table->toSql();
         // $responce->sql_bind = $table->getBindings();
 
+        $table = DB::table('material.delordhd')
+                    ->select('delordno','srcdocno','docno','deliverydate','subamount as amount','taxclaimable','TaxAmt','recno','suppcode',)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('suppcode','=',$request->suppcode)
+                    ->where('recstatus','=','POSTED')
+                    ->whereNull('invoiceno');
+
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
 
@@ -170,7 +189,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -223,7 +242,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -241,6 +260,10 @@ use Carbon\Carbon;
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('auditno','=', $auditno);
+
+                if($apacthdr->amount != $apacthdr->outamount){
+                    throw new \Exception("TOTAL DETAIL AMOUNT NOT EQUAL TO INVOICE AMOUNT");
+                }
 
                 $this->gltran($auditno);
 
@@ -267,7 +290,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
       

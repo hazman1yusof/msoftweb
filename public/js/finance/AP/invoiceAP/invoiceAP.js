@@ -195,7 +195,6 @@ $(document).ready(function () {
 	}
 
 	function unpadzero(cellvalue, options, rowObject){
-		console.log(cellvalue.substring(cellvalue.search(/[1-9]/)))
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
@@ -399,7 +398,7 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
+			saveHeader("#formdata", oper,saveParam,{idno:$('#apacthdr_idno').val()},'refreshGrid');
 			unsaved = false;
 			$("#dialogForm").dialog('close');
 		}else{
@@ -431,7 +430,7 @@ $(document).ready(function () {
 		if(doctype == 'Supplier') {
 			$('#save').hide();
 			$('#ap_detail').show();
-			$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+			$('#apacthdr_outamount').prop('readonly',true);
 			$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 		}else if (doctype == 'Others') {
 			$('#save').show();
@@ -614,7 +613,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false}, //canSearch: true, checked: true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false, key:true}, //canSearch: true, checked: true},
 			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -744,7 +743,6 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			var resobj = JSON.parse(response.responseText);
 			$('#apacthdr_auditno').val(resobj.auditno);
-			$('#apacthdr_amount').val(resobj.totalAmount);
         	$('#apacthdr_outamount').val(resobj.totalAmount);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 
@@ -809,6 +807,7 @@ $(document).ready(function () {
 				    			action: 'invoiceAPDetail_save',
 								auditno: $('#apacthdr_auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
+								document: selrowData('#jqGrid2').document,
 
 				    		}
 				    		$.post( "./invoiceAPDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
@@ -990,7 +989,6 @@ $(document).ready(function () {
 					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
 					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
 				</div>
-
 			`);
 	}
 	function taxcodeCustomEdit(val,opt){
@@ -1040,9 +1038,9 @@ $(document).ready(function () {
 					// }
 					// $( id ).removeClass( "error" ).addClass( "valid" );
 				} else {
-					bootbox.alert("Duplicate Document No", function(){
-					    $("#apacthdr_document").val('');
-					});
+
+					var supp_name = $('#apacthdr_suppcode').parent().next().text();
+					bootbox.alert("Duplicate Document No for <b>"+supp_name+'</b>');
 					// $( id ).removeClass( "valid" ).addClass( "error" );
 					// if($.inArray(id,errorField)===-1){
 					// 	errorField.push( id );
@@ -1151,11 +1149,11 @@ $(document).ready(function () {
 	$("#gridDo").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 60, frozen:true, classes: 'wrap', editable:false},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'No', name: 'lineno_', width: 60, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false},
 			{ label: 'Price Code', name: 'pricecode', width: 200, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -1394,6 +1392,10 @@ $(document).ready(function () {
 		);
 	dialog_supplier.makedialog(true);
 
+	$('#apacthdr_suppcode').blur(function(){
+		$('#apacthdr_payto').val($('#apacthdr_suppcode').val()).blur();
+	});
+
 	var dialog_payto = new ordialog(
 		'payto','material.supplier','#apacthdr_payto',errorField,
 		{	colModel:[
@@ -1510,7 +1512,6 @@ $(document).ready(function () {
 				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
-				
 				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
@@ -1617,7 +1618,7 @@ $(document).ready(function () {
 			if($('#apacthdr_doctype').val() == 'Supplier'){
 				$('#save').hide();
 				$('#ap_detail').show();
-				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+				$('#apacthdr_outamount').prop('readonly',true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 			}else{
@@ -1633,7 +1634,7 @@ $(document).ready(function () {
 			if($('#apacthdr_doctype').val() == 'Supplier'){
 				$('#save').hide();
 				$('#ap_detail').show();
-				$('#apacthdr_amount,#apacthdr_outamount').prop('readonly',true);
+				$('#apacthdr_outamount').prop('readonly',true);
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 				$("label[for='apacthdr_outamount'], input#apacthdr_outamount").show();
 			}else{
