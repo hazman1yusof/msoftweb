@@ -656,6 +656,7 @@
 										<form class='form-horizontal' style='width:99%' id='formUltrasound'>
 											<input id="mrn_ultrasound" name="mrn_ultrasound" type="hidden">
 											<input id="episno_ultrasound" name="episno_ultrasound" type="hidden">
+											<input name="date" type="hidden">
 
 											<div class='col-md-12'>
 												<div class='col-md-6'>

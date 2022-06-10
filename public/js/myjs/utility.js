@@ -1980,6 +1980,17 @@ function emptyobj_(obj){
 	}
 }
 
+function getjqcust_oper(opt){
+	var rowid = opt.rowId;
+	let got = opt.rowId.search('jqg');
+
+	if(got == -1){
+		return 'edit';
+	}else{
+		return 'add';
+	}
+}
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){

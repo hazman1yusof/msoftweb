@@ -275,16 +275,16 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-		$('#error_infront').text('');
-		let stat = selrowData("#jqGrid").apacthdr_recstatus;
-		let scope = $("#recstatus_use").val();
+			$('#error_infront').text('');
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			let scope = $("#recstatus_use").val();
 
-		if(rowid != null) {
-			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-			refreshGrid('#jqGrid2', urlParam2,'kosongkan');
-			$("#pg_jqGridPager3 table").hide();
-			$("#pg_jqGridPager2 table").show();
-		}
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+				$("#pg_jqGridPager3 table").hide();
+				$("#pg_jqGridPager2 table").show();
+			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);

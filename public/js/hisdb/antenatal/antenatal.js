@@ -27,11 +27,8 @@ var urlParam_CurrPregnancy = {
 
 /////////////////////parameter for jqGridObstetricsUltrasound url/////////////////////////////////////////////////
 var urlParam_ObstetricsUltrasound = {
-	action: 'get_table_default',
-	url: 'util/get_table_default',
-	field: '',
-	table_name: 'nursing.antenatal_ultrasound',
-	table_id: 'idno',
+	action: 'ObstetricsUltrasound',
+	url: 'antenatal/table',
 	filterCol:['mrn'],
 	filterVal:[''],
 }
@@ -777,12 +774,15 @@ $(document).ready(function () {
 					custom_value:galGridCustomValue 	
 				}
 			},
-			{ label: 'CRL', name: 'crl', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'CRL', name: 'crl_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:crlCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2 	
 				}
 			},
+			{ label: 'crl_d', name: 'crl', hidden: true },
+			{ label: 'crl_d', name: 'crl_d', hidden: true },
+			{ label: 'crl_w', name: 'crl_w', hidden: true },
 			{ label: 'BPD', name: 'bpd', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:bpdCustomEdit,
@@ -848,13 +848,18 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPagerObstetricsUltrasound",
+		onSelectRow:function(rowid, selected){
+			let data =selrowData('#jqGridObstetricsUltrasound');
+			populate_ultrasound(data);
+		},
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGridObstetricsUltrasound_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			$('.ui-pg-button').prop('disabled',true);
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			$("#jqGridObstetricsUltrasound").setSelection($("#jqGridObstetricsUltrasound").getDataIDs()[0]);
+			// if(addmore_jqgrid.more == true){$('#jqGridObstetricsUltrasound_iladd').click();}
+			// else{
+			// 	$('#jqGrid2').jqGrid ('setSelection', "1");
+			// }
+			// $('.ui-pg-button').prop('disabled',true);
+			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridObstetricsUltrasound_iledit").click();
@@ -1039,6 +1044,21 @@ $(document).ready(function () {
 		}
 	}
 
+	function galGridCustomValue2 (elem, operation, value){
+		if(operation == 'get') {
+			var inpgrp = $(elem).find("input").get();
+			var val_array=[];
+			inpgrp.forEach(function(e,i){
+				val_array.push($(e).val());
+			});
+
+			return val_array;
+		} 
+		else if(operation == 'set') {
+			$('input',elem).val(value);
+		}
+	}
+
 	// jqGridPrevObstetrics starts
 	function gestationCustomEdit(val, opt) {
 		return $(`<div class="input-group">
@@ -1116,10 +1136,20 @@ $(document).ready(function () {
 
 	// jqGridObstetricsUltrasound starts
 	function poaCustomEdit(val, opt) {
-		return $(`<div class="input-group">
+
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+					<input id="poa" name="poa" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" value='`+val+`'>
+					<span class="input-group-addon" style='padding:2px;'>weeks</span>
+				</div>`);
+		}else{
+			return $(`<div class="input-group">
 					<input id="poa" name="poa" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
 					<span class="input-group-addon" style='padding:2px;'>weeks</span>
 				</div>`);
+		}
 	}
 
 	function pogCustomEdit(val, opt) {
@@ -1130,7 +1160,29 @@ $(document).ready(function () {
 	}
 	  
 	function crlCustomEdit(val, opt) {
-		return $(`<div class="input-group">
+
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+					<div class="input-group">
+						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.crl+`'>
+						<span class="input-group-addon" style='padding:2px;'>mm</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">=</small>
+					<div class="input-group">
+						<input id="crl_w" name="crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false" value='`+data.crl_w+`'>
+						<span class="input-group-addon" style='padding:2px;'>W</span>
+					</div>
+					<small class="w-100" style="padding-left:60px">+</small>
+					<div class="input-group">
+						<input id="crl_d" name="crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.crl_d+`'>
+						<span class="input-group-addon" style='padding:2px;'>D</span>
+					</div>
+				</div>`);
+		}else{
+			return $(`<div class="input-group">
 					<div class="input-group">
 						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
 						<span class="input-group-addon" style='padding:2px;'>mm</span>
@@ -1146,6 +1198,8 @@ $(document).ready(function () {
 						<span class="input-group-addon" style='padding:2px;'>D</span>
 					</div>
 				</div>`);
+		}
+		
 	}
 
 	function bpdCustomEdit(val, opt) {
@@ -1463,24 +1517,48 @@ function populate_antenatal(obj){
     	if(!$.isEmptyObject(data)){
 			autoinsert_rowdata_antenatal("#formAntenatal",data.antenatal);
 			autoinsert_rowdata_antenatal("#formPregnancy",data.pregnancy);
-			autoinsert_rowdata_antenatal("#formUltrasound",data.antenatal_ultrasound);
+			// autoinsert_rowdata_antenatal("#formUltrasound",data.antenatal_ultrasound);
 			refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
 			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
 			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
 			button_state_antenatal('edit_antenatal');
 			button_state_antenatal('edit_pregnancy');
-			button_state_antenatal('edit_ultrasound');
+			// button_state_antenatal('edit_ultrasound');
         }else{
 			button_state_antenatal('add_antenatal');
 			button_state_antenatal('add_pregnancy');
-			button_state_antenatal('add_ultrasound');
+			// button_state_antenatal('add_ultrasound');
         }
 
 	});
 	
 }
 
+function populate_ultrasound(obj){
+	emptyFormdata(errorField,"#formUltrasound");
+
+	$('#mrn_ultrasound').val(obj.mrn);
+	$("form#formUltrasound input[name='date']").val(moment(obj.date,"DD/MM/YYYY").format("YYYY-MM-DD"));
+
+	let param = {
+		action: 'get_table_ultrasound',
+		url: 'antenatal/table',
+		mrn: obj.mrn,
+		date: moment(obj.date,"DD/MM/YYYY").format("YYYY-MM-DD"),
+	}
+
+	$.get("./antenatal/table?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data.rows)){
+			autoinsert_rowdata_antenatal("#formUltrasound",data.rows);
+			button_state_antenatal('edit_ultrasound');
+		}
+	});
+}
+
 function autoinsert_rowdata_antenatal(form,rowData){
+	console.log(rowData);
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){

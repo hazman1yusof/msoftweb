@@ -25,6 +25,54 @@ class AntenatalController extends defaultController
         return view('hisdb.antenatal.antenatal');
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'ObstetricsUltrasound':
+                return $this->ObstetricsUltrasound($request);break;
+            case 'get_table_ultrasound':
+                return $this->get_table_ultrasound($request);break;
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function ObstetricsUltrasound(Request $request){
+        $table = DB::table('nursing.antenatal_ultrasound')
+                            ->where('compcode','=', session('compcode'))
+                            ->where('mrn','=', $request->filterVal[0]);
+
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $value->crl_ = $value->crl.' = '.$value->crl_d.' + '.$value->crl_w;
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+
+    }
+
+    public function get_table_ultrasound(Request $request){
+        $table = DB::table('nursing.antenatal_ultrasound')
+                            ->where('compcode','=', session('compcode'))
+                            ->where('mrn','=', $request->mrn)
+                            ->where('date','=', $request->date);
+
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -511,6 +559,7 @@ class AntenatalController extends defaultController
 
             $antenatal_ultrasound = DB::table('nursing.antenatal_ultrasound')
                 ->where('mrn','=',$request->mrn_ultrasound)
+                ->where('date','=',$request->date)
                 ->where('compcode','=',session('compcode'));
 
             if($antenatal_ultrasound->exists()){
@@ -862,9 +911,9 @@ class AntenatalController extends defaultController
                     'date' => $this->turn_date($request->date),
                     'poa' => $request->poa,
                     'pog' => $request->pog,
-                    'crl' => $request->crl,
-                    'crl_w' => $request->crl_w,
-                    'crl_d' => $request->crl_d,
+                    'crl' => $request->crl_[0],
+                    'crl_w' => $request->crl_[1],
+                    'crl_d' => $request->crl_[2],
                     'bpd' => $request->bpd,
                     'bpd_w' => $request->bpd_w,
                     'bpd_d' => $request->bpd_d,
@@ -914,9 +963,9 @@ class AntenatalController extends defaultController
                     'date' => $this->turn_date($request->date),
                     'poa' => $request->poa,
                     'pog' => $request->pog,
-                    'crl' => $request->crl,
-                    'crl_w' => $request->crl_w,
-                    'crl_d' => $request->crl_d,
+                    'crl' => $request->crl_[0],
+                    'crl_w' => $request->crl_[1],
+                    'crl_d' => $request->crl_[2],
                     'bpd' => $request->bpd,
                     'bpd_w' => $request->bpd_w,
                     'bpd_d' => $request->bpd_d,
