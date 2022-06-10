@@ -6,29 +6,28 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use Carbon\Carbon;
-use App\Exports\ContributionExport;
-use App\Exports\Sheets\ContributionExportSheet;
+use App\Exports\CreditNoteARExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class Contribution_ReportController extends defaultController
+class CreditNoteAR_ReportController extends defaultController
 {   
 
     var $table;
     var $duplicateCode;
-    var $idno;
+    var $auditno;
 
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    // public function show(Request $request)
-    // {   
-    //     $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-    //     return view('finance.contribution_Report.contribution_Report',[
-    //             'company_name' => $comp->name
-    //     ]);
-    // }
+    public function show(Request $request)
+    {   
+        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+        return view('finance.AR.CreditNoteAR_Report.CreditNoteAR_Report',[
+                'company_name' => $comp->name
+        ]);
+    }
 
     public function form(Request $request)
     {   
@@ -47,6 +46,6 @@ class Contribution_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new ContributionExport, 'ContributionReport.xlsx');
+        return Excel::download(new CreditNoteARExport($request->datefr,$request->dateto), 'CreditNoteARReport.xlsx');
     }
 }

@@ -381,7 +381,7 @@
 								<label class="col-md-2 control-label" for="cm_dosecode">Dosage</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_dosecode" name="cm_dosecode" type="text" maxlength="12" class="form-control input-sm uppercase">
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -402,7 +402,7 @@
 								<label class="col-md-2 control-label" for="cm_freqcode">Frequency</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_freqcode" name="cm_freqcode" type="text" maxlength="12" class="form-control input-sm uppercase" >
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -423,7 +423,7 @@
 								<label class="col-md-2 control-label" for="cm_instruction">Instruction</label>
 								<div class="col-md-3">
 									<div class="input-group">
-										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="12" class="form-control input-sm uppercase" data-validation="required">
+										<input id="cm_instruction" name="cm_instruction" type="text" maxlength="12" class="form-control input-sm uppercase" >
 										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -455,24 +455,24 @@
 						<div class="form-group" hideOne>
 							<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 								<div class="col-md-3">
-								  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit>
 								</div>
 
 							<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit>
 								  	</div>
 						</div>    
 
 						<div class="form-group" hideOne>
 							<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 								<div class="col-md-3">
-								  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit>
+								  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" frozeOnEdit>
 								</div>
 
 							<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
 								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
+									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit>
 								  	</div>
 						</div>  
 					</form>

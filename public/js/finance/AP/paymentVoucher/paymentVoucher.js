@@ -76,14 +76,14 @@ $(document).ready(function () {
 					dialog_payto.on();
 				}
 				if(oper!='add'){
-					refreshGrid("#jqGrid2",urlParam2);
 					dialog_bankcode.check(errorField);
 					dialog_paymode.check(errorField);
-					dialog_cheqno.check(errorField);
+					// dialog_cheqno.check(errorField);
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
-				init_jq2(oper);
+				init_jq2(oper,urlParam2);
+				init_paymode(oper,dialog_cheqno);
 			},
 			beforeClose: function(event, ui){
 				if(unsaved){
@@ -291,7 +291,7 @@ $(document).ready(function () {
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
-			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			urlParam2.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
@@ -403,29 +403,6 @@ $(document).ready(function () {
 		init_jq2(oper);
 		
 	});
-
-	// $('#apacthdr_paymode').on('change', function() {
-	// 	if ($('#apacthdr_paymode').val() == 'CHEQUE'){
-	// 		$('#apacthdr_bankcode').show();
-	// 			$('#bankcode_dh').show();
-	// 			$('#bankcode_parent').show();
-	// 			$('#apacthdr_cheqno').show();
-	// 			$('#cheqno_parent').show();
-	// 			$('#cheqno_dh').show();
-	// 			$('#apacthdr_cheqdate').show();
-	// 			$('#cheqdate_parent').show();
-	// 	} else{
-	// 				$('#apacthdr_bankcode').hide();
-	// 					$('#bankcode_dh').hide();
-	// 					$('#bankcode_parent').hide();
-	// 					$('#apacthdr_cheqno').hide();
-	// 					$('#cheqno_parent').hide();
-	// 					$('#cheqno_dh').hide();
-	// 					$('#apacthdr_cheqdate').hide();
-	// 					$('#cheqdate_parent').hide();
-	// 	}
-		
-	// });
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
@@ -558,10 +535,10 @@ $(document).ready(function () {
 				$('#apacthdr_amount').val(data.totalAmount);
 				$('#idno').val(data.idno);
 				
-				urlParam2.filterVal[1]=data.auditno;
+				urlParam2.apacthdr_auditno=data.auditno;
 				
 			}else if(selfoper=='edit'){
-				urlParam2.filterVal[1]=$('#apacthdr_auditno').val();
+				urlParam2.apacthdr_auditno=$('#apacthdr_auditno').val();
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
@@ -599,13 +576,9 @@ $(document).ready(function () {
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
-		table_name:['finance.apalloc AS apdt'],
-		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
-		filterVal:['session.compcode', '', 'AP','PV']
+		action:'get_alloc_table',
+		url:'paymentVoucher/table',
+		apacthdr_auditno:'',
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:true} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -755,7 +728,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
-	addParamField('#jqGrid2',false,urlParam2,['checkbox','balance','entrydate'])
+	// addParamField('#jqGrid2',false,urlParam2,['checkbox','balance','entrydate'])
 	jqgrid_label_align_right("#jqGrid2");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){
@@ -773,6 +746,8 @@ $(document).ready(function () {
 				$('#jqGrid2 input#'+rowid+'_allocamount').val(0);
 				$("#jqGrid2").jqGrid('setCell', rowid, 'balance', data.outamount);
 			}
+
+			recalc_totamt();
 		});
 	}
 
@@ -792,7 +767,20 @@ $(document).ready(function () {
 		var balance = parseFloat(data.outamount) - parseFloat($(this).val());
 		$("#jqGrid2").jqGrid('setCell', rowid, 'balance', balance);
 
+		recalc_totamt();
+	}
 
+	function recalc_totamt(){
+		var ids = $("#jqGrid2").jqGrid('getDataIDs');
+		var totamt = 0;
+		for (var i = 0; i < ids.length; i++) {
+			let amt = currencyRealval('#jqGrid2 input#'+ids[i]+'_allocamount');
+
+			totamt = totamt + amt;
+		}
+
+		$('#apacthdr_amount').val(totamt);
+		mycurrency.formatOn();
 	}
 	
 	function formatterCheckbox(cellvalue, options, rowObject){
@@ -1126,9 +1114,18 @@ $(document).ready(function () {
 	}
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
+
+	function setcolmodelforjqg3(){
+		var clone = $.extend({}, $("#jqGrid2").jqGrid('getGridParam','colModel'));
+		var arrayclone = Object.values(clone);
+		arrayclone.splice(0,1);
+
+		return arrayclone;
+	}
+
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
+		colModel: setcolmodelforjqg3(),
 		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
@@ -1162,6 +1159,33 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_paymode.gridname);
+				$('#apacthdr_cheqno').prop('readonly',false);
+				switch(data.paymode){
+					case 'BD':
+					case 'DRAFT':
+								$('#cheqno_parent').text('Bank No');
+								dialog_cheqno.off();
+								break;
+
+					case 'CHEQUE':
+								$('#cheqno_parent').text('Cheque No');
+								dialog_cheqno.on();
+								break;
+
+					case 'CASH':
+								$('#apacthdr_cheqno').prop('readonly',true);
+								dialog_cheqno.off();
+								break;
+
+					case 'TT':
+								$('#cheqno_parent').text('TT No');
+								dialog_cheqno.off();
+								break;
+
+				}
+
+
 				$('#apacthdr_bankcode').focus();
 			},
 			gridComplete: function(obj){
@@ -1279,7 +1303,7 @@ $(document).ready(function () {
 					$("#jqGrid2 input[name='refamount']").val(data['amount']);
 					$("#jqGrid2 input[name='outamount']").val(data['outamount']);
 
-					var urlParam2 = {
+					var urlParam_ = {
 						action: 'get_value_default',
 						url: 'util/get_value_default',
 						field: [],
@@ -1291,7 +1315,7 @@ $(document).ready(function () {
 						table_id: 'idno',
 					};
 
-					$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
+					$.get("util/get_value_default?" + $.param(urlParam_), function (data) {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_suppcode.textfield,false);
@@ -1318,7 +1342,7 @@ $(document).ready(function () {
 							for (var i = 0; i < ids.length; i++) {
 								$("#jqGrid2").jqGrid('editRow',ids[i]);
 
-								$('#jqGrid2 input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+								$('#jqGrid2 input#'+ids[i]+'_allocamount').on('change',{rowid:ids[i]},calc_amtpaid);
 							}
 
 						} else {
@@ -1528,15 +1552,62 @@ $(document).ready(function () {
 
 });
 
-function init_jq2(oper){
+function init_jq2(oper,urlParam2){
 	if($('#apacthdr_trantype').val() == 'PV'){
 		$('#save').hide();
 		$('#pvpd_detail').show();
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+		refreshGrid("#jqGrid2",urlParam2);
 	}else{
 		$('#save').show();
 		$('#pvpd_detail').hide();
 	}
+}
+
+function init_paymode(oper,dialog_cheqno){
+	let paymode = $('#apacthdr_paymode').val();
+	$('#cheqno_parent').text('Cheque No');
+
+	if(oper=='edit'){
+		$('#apacthdr_cheqno').prop('readonly',false);
+		switch(paymode){
+			case 'BD':
+			case 'DRAFT':
+						$('#cheqno_parent').text('Bank No');
+						dialog_cheqno.off();
+						break;
+			case 'CHEQUE':
+						$('#cheqno_parent').text('Cheque No');
+						dialog_cheqno.on();
+						dialog_cheqno.check(errorField);
+						break;
+			case 'CASH':
+						$('#apacthdr_cheqno').prop('readonly',true);
+						dialog_cheqno.off();
+						break;
+			case 'TT':
+						$('#cheqno_parent').text('TT No');
+						dialog_cheqno.off();
+						break;
+		}
+	}else if(oper=='view'){
+		switch(paymode){
+			case 'BD':
+			case 'DRAFT':
+						$('#cheqno_parent').text('Bank No');
+						break;
+			case 'CHEQUE':
+						$('#cheqno_parent').text('Cheque No');
+						dialog_cheqno.check(errorField);
+						break;
+			case 'CASH':
+						break;
+			case 'TT':
+						$('#cheqno_parent').text('TT No');
+						break;
+		}
+	}
+	
 }
 
 function populate_form(obj){

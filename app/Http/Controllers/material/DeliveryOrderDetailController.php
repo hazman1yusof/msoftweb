@@ -218,6 +218,12 @@ class DeliveryOrderDetailController extends defaultController
                         'recno' => $recno,
                         'compcode' => session('compcode'),
                     ]);
+            }else{
+                $delordhd = DB::table("material.delordhd")
+                            ->where('idno','=',$request->idno)
+                            ->where('compcode','=', session('compcode'))
+                            ->first();
+                $delordno =  $delordhd->docno;
             }
 
             $draccno = $this->get_draccno($request->itemcode,$request->pricecode);

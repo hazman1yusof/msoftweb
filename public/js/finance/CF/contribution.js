@@ -325,7 +325,7 @@
 						}
 					}
 				},
-				{ label: 'Type', name: 'epistype', width: 100, align: 'right', classes: 'wrap', editable:true,
+				{ label: 'Type', name: 'epistype', width: 100, classes: 'wrap', editable:true,
 					edittype: "select",
 					editoptions: {
 						value: "IP:IP;OP:OP",
@@ -484,6 +484,9 @@
 				hideatdialogForm_jqGrid3(false);
 		    }
 	    };
+
+		////////////////////// set label jqGrid right ////////////////////////////////////////////////
+		jqgrid_label_align_right("#jqGrid3");
 
 		//////////////////////////////////////////pager jqgrid3/////////////////////////////////////////////
 

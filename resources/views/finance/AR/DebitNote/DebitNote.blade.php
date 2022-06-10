@@ -28,12 +28,6 @@ i.fa {
 	overflow: auto;
 }
 
-.whtspc_wrap{
-	white-space: pre-wrap !important;
-}
-
-#more {display: none;}
-
 @endsection
 
 @section('body')
@@ -61,22 +55,14 @@ i.fa {
 					<div class="form-group"> 
 					  <div class="col-md-2">
 					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
+					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              </div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase"  tabindex="1">
+								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
 		            </div>
-				</div>
-
-
-					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
-
-		             </div>
 				</div>
 
 				<?php 
@@ -95,7 +81,7 @@ i.fa {
 					}
 				?>
 
-				<div id="div_for_but_post" class="col-md-8 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
+				<div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">					
 					<button style="display:none" type="button" id='show_sel_tbl' data-hide='true' class='btn btn-info btn-sm button_custom_hide' >Show Selection Item</button>
 					<span id="error_infront" style="color: red"></span>
 					<button type="button" class="btn btn-primary btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
@@ -140,8 +126,8 @@ i.fa {
 
         <div class="panel panel-default">
 			<div class="panel-heading">Debit Note DataEntry Header
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
-			</div>
+<!-- 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+ -->			</div>
 			
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
@@ -223,7 +209,7 @@ i.fa {
 								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
 							
-							<label class="col-md-3 control-label" for="db_entrydate">Doc Date</label>  
+							<label class="col-md-3 control-label" for="db_entrydate">Document Date</label>  
 							<div class="col-md-2">
 								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">

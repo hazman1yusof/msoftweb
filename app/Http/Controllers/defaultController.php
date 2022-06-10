@@ -368,6 +368,7 @@ abstract class defaultController extends Controller{
         $responce->rows = $table->get();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -544,6 +545,27 @@ abstract class defaultController extends Controller{
 
         //4. return pvalue1
         return $pvalue1;
+    }
+
+    public function defaultTill($tillcode,$field){
+
+        //1. get pvalue 1
+        $till = DB::table('debtor.till')
+            ->select($field)
+            ->where('compcode', '=', session('compcode'))
+            ->where('tillcode', '=', $tillcode)->first();
+
+        $till_ = (array)$till;
+        
+        //2. add 1 into the value
+        $lastvalue = intval($till_[$field]) + 1;
+
+        //3. update the value
+        DB::table('debtor.till')->where('compcode', '=', session('compcode'))->where('tillcode', '=', $tillcode)
+        ->update(array($field => $lastvalue));
+
+        //4. return pvalue1
+        return $lastvalue;
     }
 
     public function null_date($date){

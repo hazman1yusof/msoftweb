@@ -162,6 +162,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN'],
 		join_onCol: ['db.debtorcode'],
 		join_onVal: ['dm.debtorcode'],
+		filterCol: ['db.source','db.trantype'],
+		filterVal: ['PB','IN'],
 		// filterCol: filterCol_urlParam,
 		// filterVal: filterVal_urlParam,
 		// WhereInCol:['purreqhd.recstatus'],
@@ -187,10 +189,10 @@ $(document).ready(function () {
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
-			{ label: 'Docdate', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, canSearch: true, formatter: padzero5, unformat: unpadzero },
-			//{ label: 'Sector', name: 'db_units', width: 15, canSearch: true, classes: 'wrap' },
+			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
@@ -204,7 +206,7 @@ $(document).ready(function () {
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
-			{ label: 'units', name: 'db_units', width: 10, hidden: true },
+			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termdays', name: 'db_termdays', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -238,6 +240,7 @@ $(document).ready(function () {
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.billno = selrowData("#jqGrid").db_auditno;
+			urlParam2.deptcode = selrowData("#jqGrid").db_deptcode;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -422,6 +425,7 @@ $(document).ready(function () {
 				urlParam2.source = 'PB';
 				urlParam2.trantype = 'IN';
 				urlParam2.billno = data.auditno;
+				urlParam2.deptcode = $('#db_deptcode').val();
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
@@ -636,6 +640,7 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
+		deptcode:''
 	};
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
@@ -710,7 +715,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
-			{ label: 'Total Amount <br>B4 Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -725,7 +730,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
-			{ label: 'idno', name: 'idno', width: 10, hidden: true, key:true },
+			{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -735,7 +740,7 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 10,
-		sortname: 'lineno_',
+		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
@@ -1464,7 +1469,7 @@ $(document).ready(function () {
 				}
 			}
 		}, {
-			title: "Select Units",
+			title: "Select Unit",
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept','storedept'];
 				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
@@ -1668,6 +1673,8 @@ $(document).ready(function () {
 			open:function(obj_){
 				dialog_chggroup.urlParam.url = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
+				dialog_chggroup.urlParam.url_chk = "./SalesOrderDetail/table";
+				dialog_chggroup.urlParam.action_chk = "get_itemcode_price_check";
 				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
 				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 

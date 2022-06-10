@@ -295,7 +295,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" > 
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" data-validation="required"> 
 		 					</div>
 
 							 

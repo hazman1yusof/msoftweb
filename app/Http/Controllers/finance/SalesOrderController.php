@@ -81,7 +81,7 @@ class SalesOrderController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'units' => strtoupper($request->db_deptcode),//department.sector
+                'unit' => strtoupper($request->db_deptcode),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'entrydate' => strtoupper($request->db_entrydate),
@@ -126,7 +126,7 @@ class SalesOrderController extends defaultController
 
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
-            'units' => strtoupper($request->db_deptcode),
+            'unit' => strtoupper($request->db_deptcode),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
             'entrydate' => strtoupper($request->db_entrydate),
@@ -265,7 +265,7 @@ class SalesOrderController extends defaultController
                             'discamt' => $billsum_obj->discamt,
                             // 'qtyorder' => $billsum_obj->quantity,
                             // 'qtyissue' => $billsum_obj->quantity,
-                            // 'units' => $department->sector,
+                            // 'unit' => $department->sector,
                             // 'chgtype' => $chgmast->chgtype,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -716,11 +716,11 @@ class SalesOrderController extends defaultController
 
         $totamount_expld = explode(".", (float)$dbacthdr->amount);
 
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 

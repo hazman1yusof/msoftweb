@@ -46,6 +46,6 @@ class DebitNoteAR_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new DebitNoteARExport(), 'DebitNoteARReport.xlsx');
+        return Excel::download(new DebitNoteARExport($request->datefr,$request->dateto), 'DebitNoteARReport.xlsx');
     }
 }
