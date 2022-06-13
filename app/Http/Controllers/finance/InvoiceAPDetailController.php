@@ -88,6 +88,8 @@ class InvoiceAPDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+
+
            
             $auditno = $request->auditno;
             
@@ -106,23 +108,38 @@ class InvoiceAPDetailController extends defaultController
                     ]);
             }
 
+            $apacthdr = DB::table("finance.apacthdr")
+                        ->where('idno','=',$request->idno)
+                        ->first();
+
             ////1. calculate lineno_ by auditno
-            $sqlln = DB::table('finance.apactdtl')->select('lineno_')
+            $apactdtl = DB::table('finance.apactdtl')
+                        ->select('lineno_')
                         ->where('compcode','=',session('compcode'))
-                        ->where('auditno','=',$auditno)
-                        ->count('lineno_');
+                        ->where('auditno','=',$auditno);
 
-            $li=intval($sqlln)+1;
+            if($apactdtl->exists()){
+                $apactdtl = $apactdtl->orderBy('idno', 'DESC')->first();
 
-            //check duplicate
-            $dupli = DB::table('finance.apactdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','!=','DELETE')
-                        ->where('document','=',$request->document);
-
-            if($dupli->exists()){
-                throw new \Exception("Document number duplicate");
+                $li=intval($apactdtl->lineno_)+1;
+            }else{
+                $li=1;
             }
+            
+            $this->check_dotexists($request->document,$apacthdr);
+
+            $this->check_doinvnoexists($request->document,$apacthdr);
+
+            $this->check_dotrandate($request->document,$apacthdr);
+
+            $this->check_duplicatedo($request->document,$apacthdr);
+
+
+            $delordhd = DB::table('material.delordhd')
+                    ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$request->document)
+                    ->first();
 
             ///2. insert detail
             DB::table('finance.apactdtl')
@@ -133,12 +150,12 @@ class InvoiceAPDetailController extends defaultController
                     'source' => 'AP',
                     'trantype' => 'IN',
                     'document' => strtoupper($request->document),
-                    'reference' => strtoupper($request->reference),
-                    'amount' => $request->amount,
-                    'GSTCode' => $request->GSTCode,
-                    'AmtB4GST' => $request->AmtB4GST,
-                    'dorecno' => $request->dorecno,
-                    'grnno' => $request->grnno,
+                    'reference' => strtoupper($delordhd->srcdocno),
+                    'amount' => $delordhd->subamount,
+                    'GSTCode' => $delordhd->taxclaimable,
+                    'AmtB4GST' => $delordhd->TaxAmt,
+                    'dorecno' => $delordhd->recno,
+                    'grnno' => $delordhd->docno,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -160,11 +177,6 @@ class InvoiceAPDetailController extends defaultController
                 ->update([
                     'outamount' => $totalAmount
                 ]);
-
-            
-            $apacthdr = DB::table("finance.apacthdr")
-                        ->where('idno','=',$request->idno)
-                        ->first();
 
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
@@ -252,9 +264,7 @@ class InvoiceAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
-                ->update([
-                    'recstatus' => 'DELETE'
-                ]);
+                ->delete();
 
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
@@ -281,7 +291,11 @@ class InvoiceAPDetailController extends defaultController
 
             DB::commit();
 
-            return response($totalAmount,200);
+
+            $responce = new stdClass();
+            $responce->totalAmount = $totalAmount;
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -341,6 +355,59 @@ class InvoiceAPDetailController extends defaultController
             return response($e->getMessage(), 500);
         }
 
+    }
+
+    public function check_dotrandate($delordno,$apacthdr){
+        $delordhd = DB::table('material.delordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$delordno)
+                    ->where('suppcode','=',$apacthdr->suppcode)
+                    ->first();
+
+        if($delordhd->trandate > $apacthdr->recdate){
+            throw new \Exception("DO date greater than Invoice date");
+        }
+    }
+
+    public function check_dotexists($delordno,$apacthdr){
+        $delordhd = DB::table('material.delordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$delordno)
+                    ->where('suppcode','=',$apacthdr->suppcode);
+
+        if(!$delordhd->exists()){
+            throw new \Exception("Delivery Order Doesnt exists");
+        }
+    }
+
+    public function check_duplicatedo($delordno,$apacthdr){
+        $delordhd = DB::table('finance.apactdtl as d')
+                        ->where('d.compcode','=',session('compcode'))
+                        ->where('d.document','=',$delordno)
+                        ->join('finance.apacthdr as h', function($join) use ($delordno,$apacthdr){
+                            $join = $join->on('h.source', '=', 'd.source');
+                            $join = $join->on('h.trantype', '=', 'd.trantype');
+                            $join = $join->on('h.auditno', '=', 'd.auditno');
+                            $join = $join->where('h.suppcode', '=', $apacthdr->suppcode);
+                            $join = $join->where('h.recstatus', '<>', 'CANCELLED');
+                            $join = $join->on('h.compcode','=','d.compcode');
+                        });
+
+        if($delordhd->exists()){
+            throw new \Exception("Delivery Order Duplicate");
+        }
+    }
+
+    public function check_doinvnoexists($delordno,$apacthdr){
+        $delordhd = DB::table('material.delordhd')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('delordno','=',$delordno)
+                    ->where('suppcode','=',$apacthdr->suppcode)
+                    ->whereNotNull('invoiceno');
+
+        if($delordhd->exists()){
+            throw new \Exception("Delivery Order already have invoice");
+        }
     }
 
 }

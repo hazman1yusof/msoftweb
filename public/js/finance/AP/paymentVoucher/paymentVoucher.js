@@ -256,7 +256,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
-			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true},
+			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
 			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
@@ -1066,7 +1066,7 @@ $(document).ready(function () {
 		unsaved = false;
 		
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
+			saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
 			unsaved = false;
 			errorField.length=0;
 			// $("#dialogForm").dialog('close');
@@ -1553,14 +1553,26 @@ $(document).ready(function () {
 });
 
 function init_jq2(oper,urlParam2){
-	if($('#apacthdr_trantype').val() == 'PV'){
-		$('#save').hide();
-		$('#pvpd_detail').show();
-		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-		refreshGrid("#jqGrid2",urlParam2);
+	if(oper == 'add'){
+		if($('#apacthdr_trantype').val() == 'PV'){
+			$('#save').hide();
+			$('#pvpd_detail').show();
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
+		}else{
+			$('#save').show();
+			$('#pvpd_detail').hide();
+		}
 	}else{
-		$('#save').show();
-		$('#pvpd_detail').hide();
+		if($('#apacthdr_trantype').val() == 'PV'){
+			$('#save').hide();
+			$('#pvpd_detail').show();
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			refreshGrid("#jqGrid2",urlParam2);
+		}else{
+			$('#save').show();
+			$('#pvpd_detail').hide();
+		}
 	}
 }
 
