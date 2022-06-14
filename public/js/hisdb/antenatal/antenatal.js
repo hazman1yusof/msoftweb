@@ -16,11 +16,8 @@ var urlParam_PrevObstetrics = {
 
 /////////////////////parameter for jqGridCurrPregnancy url/////////////////////////////////////////////////
 var urlParam_CurrPregnancy = {
-	action: 'get_table_default',
-	url: 'util/get_table_default',
-	field: '',
-	table_name: 'nursing.pregnancy_episode',
-	table_id: 'idno',
+	action: 'CurrPregnancy',
+	url: 'antenatal/table',
 	filterCol:['mrn','episno'],
 	filterVal:['',''],
 }
@@ -277,13 +274,15 @@ $(document).ready(function () {
 		height: 350,
 		rowNum: 30,
 		pager: "#jqGridPagerPrevObstetrics",
-		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGridPrevObstetrics_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			$('.ui-pg-button').prop('disabled',true);
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+		loadComplete: function(){		
+			$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);	
+			// if(addmore_jqgrid.more == true){$('#jqGridPrevObstetrics_iladd').click();}
+			// else{
+			// 	// $('#jqGridPrevObstetrics').jqGrid ('setSelection', "1");
+			// 	$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);
+			// }
+			// $('.ui-pg-button').prop('disabled',true);
+			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPrevObstetrics_iledit").click();
@@ -517,12 +516,14 @@ $(document).ready(function () {
 					custom_value:galGridCustomValue 	
 				}
 			},
-			{ label: 'Blood Pressure', name: 'bp', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'Blood Pressure', name: 'bp_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:bpCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2 	
 				}
 			},
+			{ label: 'bp_sys1', name: 'bp_sys1', hidden: true },
+			{ label: 'bp_dias2', name: 'bp_dias2', hidden: true },
 			{ label: 'Hb', name: 'hb', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:hbCustomEdit,
@@ -555,12 +556,14 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerCurrPregnancy",
 		loadComplete: function(){
-			if(addmore_jqgrid.more == true){$('#jqGridCurrPregnancy_iladd').click();}
-			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
-			}
-			$('.ui-pg-button').prop('disabled',true);
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			$("#jqGridCurrPregnancy").setSelection($("#jqGridCurrPregnancy").getDataIDs()[0]);
+			// if(addmore_jqgrid.more == true){$('#jqGridCurrPregnancy_iladd').click();}
+			// else{
+			// 	// $('#jqGridCurrPregnancy').jqGrid ('setSelection', "1");
+			// 	$("#jqGridCurrPregnancy").setSelection($("#jqGridCurrPregnancy").getDataIDs()[0]);
+			// }
+			// $('.ui-pg-button').prop('disabled',true);
+			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridCurrPregnancy_iledit").click();
@@ -777,48 +780,157 @@ $(document).ready(function () {
 			{ label: 'CRL', name: 'crl_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:crlCustomEdit,
-					custom_value:galGridCustomValue2 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#crl_w').keyup(function(event) {
+									get_crl();
+								});
+							
+								$('#crl_d').keyup(function(event) {
+									get_crl();
+								});
+							}
+						}
+					]
 				}
 			},
-			{ label: 'crl_d', name: 'crl', hidden: true },
-			{ label: 'crl_d', name: 'crl_d', hidden: true },
+			{ label: 'crl', name: 'crl', hidden: true },
 			{ label: 'crl_w', name: 'crl_w', hidden: true },
-			{ label: 'BPD', name: 'bpd', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'crl_d', name: 'crl_d', hidden: true },
+			{ label: 'BPD', name: 'bpd_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:bpdCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#bpd_w').keyup(function(event) {
+									get_bpd();
+								});
+							
+								$('#bpd_d').keyup(function(event) {
+									get_bpd();
+								});
+							}
+						}
+					] 	
 				}
 			},
-			{ label: 'HC', name: 'hc', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'bpd', name: 'bpd', hidden: true },
+			{ label: 'bpd_w', name: 'bpd_w', hidden: true },
+			{ label: 'bpd_d', name: 'bpd_d', hidden: true },
+			{ label: 'HC', name: 'hc_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:hcCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#hc_w').keyup(function(event) {
+									get_hc();
+								});
+							
+								$('#hc_d').keyup(function(event) {
+									get_hc();
+								});
+							}
+						}
+					]  	
 				}
 			},
-			{ label: 'AC', name: 'ac', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'hc', name: 'hc', hidden: true },
+			{ label: 'hc_w', name: 'hc_w', hidden: true },
+			{ label: 'hc_d', name: 'hc_d', hidden: true },
+			{ label: 'AC', name: 'ac_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:acCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#ac_w').keyup(function(event) {
+									get_ac();
+								});
+							
+								$('#ac_d').keyup(function(event) {
+									get_ac();
+								});
+							}
+						}
+					] 	
 				}
 			},
-			{ label: 'FL', name: 'fl', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'ac', name: 'ac', hidden: true },
+			{ label: 'ac_w', name: 'ac_w', hidden: true },
+			{ label: 'ac_d', name: 'ac_d', hidden: true },
+			{ label: 'FL', name: 'fl_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:flCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#fl_w').keyup(function(event) {
+									get_fl();
+								});
+							
+								$('#fl_d').keyup(function(event) {
+									get_fl();
+								});
+							}
+						}
+					] 	
 				}
 			},
-			{ label: 'ATD', name: 'atd', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'fl', name: 'fl', hidden: true },
+			{ label: 'fl_w', name: 'fl_w', hidden: true },
+			{ label: 'fl_d', name: 'fl_d', hidden: true },
+			{ label: 'ATD', name: 'atd_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:atdCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#atd_w').keyup(function(event) {
+									get_atd();
+								});
+							
+								$('#atd_d').keyup(function(event) {
+									get_atd();
+								});
+							}
+						}
+					] 	
 				}
 			},
-			{ label: 'ALD', name: 'ald', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
+			{ label: 'atd', name: 'atd', hidden: true },
+			{ label: 'atd_w', name: 'atd_w', hidden: true },
+			{ label: 'atd_d', name: 'atd_d', hidden: true },
+			{ label: 'ALD', name: 'ald_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:aldCustomEdit,
-					custom_value:galGridCustomValue 	
+					custom_value:galGridCustomValue2,
+					dataEvents: [
+						{  type: 'change',
+						   fn: function(e) {
+								$('#ald_w').keyup(function(event) {
+									get_ald();
+								});
+							
+								$('#ald_d').keyup(function(event) {
+									get_ald();
+								});
+							}
+						}
+					] 	
 				}
 			},
+			{ label: 'ald', name: 'ald', hidden: true },
+			{ label: 'ald_w', name: 'ald_w', hidden: true },
+			{ label: 'ald_d', name: 'ald_d', hidden: true },
 			{ label: 'EFBW', name: 'efbw', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:efbwCustomEdit,
@@ -856,7 +968,7 @@ $(document).ready(function () {
 			$("#jqGridObstetricsUltrasound").setSelection($("#jqGridObstetricsUltrasound").getDataIDs()[0]);
 			// if(addmore_jqgrid.more == true){$('#jqGridObstetricsUltrasound_iladd').click();}
 			// else{
-			// 	$('#jqGrid2').jqGrid ('setSelection', "1");
+			// 	$('#jqGridObstetricsUltrasound').jqGrid ('setSelection', "1");
 			// }
 			// $('.ui-pg-button').prop('disabled',true);
 			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
@@ -869,7 +981,7 @@ $(document).ready(function () {
 	jQuery("#jqGridObstetricsUltrasound").jqGrid('setGroupHeaders', {
 		useColSpanStyle: true, 
 		groupHeaders:[
-		  {startColumnName: 'crl', numberOfColumns: 7, titleText: 'mm = W + D'}
+		  {startColumnName: 'crl_', numberOfColumns: 28, titleText: 'mm = W + D'}
 		]
 	});
 
@@ -1061,82 +1173,173 @@ $(document).ready(function () {
 
 	// jqGridPrevObstetrics starts
 	function gestationCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="gestation" name="gestation" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
-					<span class="input-group-addon" style='padding:2px;'>weeks</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="gestation" name="gestation" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="gestation" name="gestation" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}
 	}
 
 	function prev_weightCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>kg</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>kg</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>kg</span>
+					</div>`);
+		}
 	}
 	// jqGridPrevObstetrics ends
 
 	// jqGridCurrPregnancy ends
 	function poaORpogCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="poa_pog" name="poa_pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
-					<span class="input-group-addon" style='padding:2px;'>weeks</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="poa_pog" name="poa_pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="poa_pog" name="poa_pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}
 	}
 
 	function uterineSizeCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="uterinesize" name="uterinesize" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>cm</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="uterinesize" name="uterinesize" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>cm</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="uterinesize" name="uterinesize" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>cm</span>
+					</div>`);
+		}
 	}
 
 	function albuminCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="albumin" name="albumin" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>g/dL</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="albumin" name="albumin" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>g/dL</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="albumin" name="albumin" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>g/dL</span>
+					</div>`);
+		}
 	}
 
 	function sugarCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="sugar" name="sugar" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>mg/dL</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="sugar" name="sugar" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>mg/dL</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="sugar" name="sugar" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mg/dL</span>
+					</div>`);
+		}
 	}
 
 	function weightCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>kg</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>kg</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="weight" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>kg</span>
+					</div>`);
+		}
 	}
 
 	function bpCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-		            <input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-		            <input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-		            <span class="input-group-addon" style='padding:2px;'>mm<br>Hg</span>
-		        </div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bp_sys1+`'>
+						<input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bp_dias2+`'>
+						<span class="input-group-addon" style='padding:2px;'>mm<br>Hg</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>mm<br>Hg</span>
+					</div>`);
+		}
 	}
 
 	function hbCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="hb" name="hb" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>gm%</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="hb" name="hb" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>gm%</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="hb" name="hb" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>gm%</span>
+					</div>`);
+		}
 	}
 
 	function fhrCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="fhr" name="fhr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>bpm</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="fhr" name="fhr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>bpm</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="fhr" name="fhr" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>bpm</span>
+					</div>`);
+		}
 	}
 	// jqGridCurrPregnancy ends
 
 	// jqGridObstetricsUltrasound starts
 	function poaCustomEdit(val, opt) {
-
 		var oper = getjqcust_oper(opt);
 
 		if(oper == 'edit'){
@@ -1153,14 +1356,22 @@ $(document).ready(function () {
 	}
 
 	function pogCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="pog" name="pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
-					<span class="input-group-addon" style='padding:2px;'>weeks</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="pog" name="pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="pog" name="pog" type="number" class="form-control input-sm" onkeydown="return event.keyCode !== 69">
+						<span class="input-group-addon" style='padding:2px;'>weeks</span>
+					</div>`);
+		}
 	}
 	  
 	function crlCustomEdit(val, opt) {
-
 		var oper = getjqcust_oper(opt);
 
 		if(oper == 'edit'){
@@ -1203,133 +1414,360 @@ $(document).ready(function () {
 	}
 
 	function bpdCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function hcCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function acCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function flCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function atdCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function aldCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<div class="input-group">
-						<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>mm</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">=</small>
-					<div class="input-group">
-						<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>W</span>
-					</div>
-					<small class="w-100" style="padding-left:60px">+</small>
-					<div class="input-group">
-						<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-						<span class="input-group-addon" style='padding:2px;'>D</span>
-					</div>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald+`'>
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald_w+`'>
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald_d+`'>
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<div class="input-group">
+							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>mm</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">=</small>
+						<div class="input-group">
+							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>W</span>
+						</div>
+						<small class="w-100" style="padding-left:60px">+</small>
+						<div class="input-group">
+							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<span class="input-group-addon" style='padding:2px;'>D</span>
+						</div>
+					</div>`);
+		}
 	}
 
 	function efbwCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="efbw" name="efbw" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>gm</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="efbw" name="efbw" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>gm</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="efbw" name="efbw" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>gm</span>
+					</div>`);
+		}
 	}
 
 	function afiCustomEdit(val, opt) {
-		return $(`<div class="input-group">
-					<input id="afi" name="afi" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
-					<span class="input-group-addon" style='padding:2px;'>cm</span>
-				</div>`);
+		var oper = getjqcust_oper(opt);
+
+		if(oper == 'edit'){
+			return $(`<div class="input-group">
+						<input id="afi" name="afi" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+val+`'>
+						<span class="input-group-addon" style='padding:2px;'>cm</span>
+					</div>`);
+		}else{
+			return $(`<div class="input-group">
+						<input id="afi" name="afi" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<span class="input-group-addon" style='padding:2px;'>cm</span>
+					</div>`);
+		}
 	}
 	// jqGridObstetricsUltrasound ends
+
+	function get_crl() {
+		var crl_w = parseFloat($("#crl_w").val());
+		var crl_d = parseFloat($("#crl_d").val());
+	
+		var crl = crl_w + crl_d;
+	
+		if (isNaN(crl)) crl = 0;
+	
+		$('#crl').val((crl));
+	}
+
+	function get_bpd() {
+		var bpd_w = parseFloat($("#bpd_w").val());
+		var bpd_d = parseFloat($("#bpd_d").val());
+	
+		var bpd = bpd_w + bpd_d;
+	
+		if (isNaN(bpd)) bpd = 0;
+	
+		$('#bpd').val((bpd));
+	}
+
+	function get_hc() {
+		var hc_w = parseFloat($("#hc_w").val());
+		var hc_d = parseFloat($("#hc_d").val());
+	
+		var hc = hc_w + hc_d;
+	
+		if (isNaN(hc)) hc = 0;
+	
+		$('#hc').val((hc));
+	}
+
+	function get_ac() {
+		var ac_w = parseFloat($("#ac_w").val());
+		var ac_d = parseFloat($("#ac_d").val());
+	
+		var ac = ac_w + ac_d;
+	
+		if (isNaN(ac)) ac = 0;
+	
+		$('#ac').val((ac));
+	}
+
+	function get_fl() {
+		var fl_w = parseFloat($("#fl_w").val());
+		var fl_d = parseFloat($("#fl_d").val());
+	
+		var fl = fl_w + fl_d;
+	
+		if (isNaN(fl)) fl = 0;
+	
+		$('#fl').val((fl));
+	}
+
+	function get_atd() {
+		var atd_w = parseFloat($("#atd_w").val());
+		var atd_d = parseFloat($("#atd_d").val());
+	
+		var atd = atd_w + atd_d;
+	
+		if (isNaN(atd)) atd = 0;
+	
+		$('#atd').val((atd));
+	}
+
+	function get_ald() {
+		var ald_w = parseFloat($("#ald_w").val());
+		var ald_d = parseFloat($("#ald_d").val());
+	
+		var ald = ald_w + ald_d;
+	
+		if (isNaN(ald)) ald = 0;
+	
+		$('#ald').val((ald));
+	}
 	//////////////////////////////////////////////custom edits ends//////////////////////////////////////////////
 
 });

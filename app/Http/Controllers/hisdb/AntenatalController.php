@@ -28,6 +28,8 @@ class AntenatalController extends defaultController
     public function table(Request $request)
     {   
         switch($request->action){
+            case 'CurrPregnancy':
+                return $this->CurrPregnancy($request);break;
             case 'ObstetricsUltrasound':
                 return $this->ObstetricsUltrasound($request);break;
             case 'get_table_ultrasound':
@@ -35,6 +37,40 @@ class AntenatalController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function CurrPregnancy(Request $request){
+        // $table = DB::table('nursing.pregnancy_episode')
+        //                     ->where('compcode','=', session('compcode'))
+        //                     ->where('mrn','=', $request->filterVal[0])
+        //                     ->where('episno','=', $request->filterVal[1]);
+
+        $table = DB::table('nursing.pregnancy_episode as pe')
+                            ->select('pe.compcode AS compcode', 'pe.mrn AS mrn', 'pe.episno AS episno', 'pe.idno AS idno', 'p.idno AS pregnan_idno', 'pe.date AS date','pe.report AS report','pe.poa_pog AS poa_pog','pe.uterinesize AS uterinesize','pe.albumin AS albumin','pe.sugar AS sugar','pe.weight AS weight', 'pe.bp_sys1 AS bp_sys1', 'pe.bp_dias2 AS bp_dias2', 'pe.hb AS hb', 'pe.oedema AS oedema', 'pe.lie AS lie', 'pe.pres AS pres', 'pe.fhr AS fhr', 'pe.fm AS fm', 'pe.adddate AS adddate', 'pe.adduser AS adduser')
+                            ->leftJoin('nursing.pregnancy as p', function($join) use ($request){
+                                $join = $join->on('p.mrn', '=', 'pe.mrn');
+                                $join = $join->on('p.episno', '=', 'pe.episno');
+                                $join = $join->on('p.compcode', '=', 'pe.compcode');
+                            })
+                            ->where('pe.compcode','=', session('compcode'))
+                            ->where('pe.mrn','=', $request->filterVal[0])
+                            ->where('pe.episno','=', $request->filterVal[1]);
+
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $value->bp_ = $value->bp_sys1.' / '.$value->bp_dias2;
+        }
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+
     }
 
     public function ObstetricsUltrasound(Request $request){
@@ -45,7 +81,13 @@ class AntenatalController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
-            $value->crl_ = $value->crl.' = '.$value->crl_d.' + '.$value->crl_w;
+            $value->crl_ = $value->crl.' = '.$value->crl_w.' + '.$value->crl_d;
+            $value->bpd_ = $value->bpd.' = '.$value->bpd_w.' + '.$value->bpd_d;
+            $value->hc_ = $value->hc.' = '.$value->hc_w.' + '.$value->hc_d;
+            $value->ac_ = $value->ac.' = '.$value->ac_w.' + '.$value->ac_d;
+            $value->fl_ = $value->fl.' = '.$value->fl_w.' + '.$value->fl_d;
+            $value->atd_ = $value->atd.' = '.$value->atd_w.' + '.$value->atd_d;
+            $value->ald_ = $value->ald.' = '.$value->ald_w.' + '.$value->ald_d;
         }
 
         $responce = new stdClass();
@@ -914,24 +956,24 @@ class AntenatalController extends defaultController
                     'crl' => $request->crl_[0],
                     'crl_w' => $request->crl_[1],
                     'crl_d' => $request->crl_[2],
-                    'bpd' => $request->bpd,
-                    'bpd_w' => $request->bpd_w,
-                    'bpd_d' => $request->bpd_d,
-                    'hc' => $request->hc, 
-                    'hc_w' => $request->hc_w,
-                    'hc_d' => $request->hc_d,
-                    'ac' => $request->ac,
-                    'ac_w' => $request->ac_w,
-                    'ac_d' => $request->ac_d,
-                    'fl' => $request->fl,
-                    'fl_w' => $request->fl_w,
-                    'fl_d' => $request->fl_d,
-                    'atd' => $request->atd,
-                    'atd_w' => $request->atd_w,
-                    'atd_d' => $request->atd_d,
-                    'ald' => $request->ald,
-                    'ald_w' => $request->ald_w,
-                    'ald_d' => $request->ald_d,
+                    'bpd' => $request->bpd_[0],
+                    'bpd_w' => $request->bpd_[1],
+                    'bpd_d' => $request->bpd_[2],
+                    'hc' => $request->hc_[0], 
+                    'hc_w' => $request->hc_[1],
+                    'hc_d' => $request->hc_[2],
+                    'ac' => $request->ac_[0],
+                    'ac_w' => $request->ac_[1],
+                    'ac_d' => $request->ac_[2],
+                    'fl' => $request->fl_[0],
+                    'fl_w' => $request->fl_[1],
+                    'fl_d' => $request->fl_[2],
+                    'atd' => $request->atd_[0],
+                    'atd_w' => $request->atd_[1],
+                    'atd_d' => $request->atd_[2],
+                    'ald' => $request->ald_[0],
+                    'ald_w' => $request->ald_[1],
+                    'ald_d' => $request->ald_[2],
                     'efbw' => $request->efbw,
                     'afi' => $request->afi,
                     'pres' => $request->pres,
@@ -966,24 +1008,24 @@ class AntenatalController extends defaultController
                     'crl' => $request->crl_[0],
                     'crl_w' => $request->crl_[1],
                     'crl_d' => $request->crl_[2],
-                    'bpd' => $request->bpd,
-                    'bpd_w' => $request->bpd_w,
-                    'bpd_d' => $request->bpd_d,
-                    'hc' => $request->hc, 
-                    'hc_w' => $request->hc_w,
-                    'hc_d' => $request->hc_d,
-                    'ac' => $request->ac,
-                    'ac_w' => $request->ac_w,
-                    'ac_d' => $request->ac_d,
-                    'fl' => $request->fl,
-                    'fl_w' => $request->fl_w,
-                    'fl_d' => $request->fl_d,
-                    'atd' => $request->atd,
-                    'atd_w' => $request->atd_w,
-                    'atd_d' => $request->atd_d,
-                    'ald' => $request->ald,
-                    'ald_w' => $request->ald_w,
-                    'ald_d' => $request->ald_d,
+                    'bpd' => $request->bpd_[0],
+                    'bpd_w' => $request->bpd_[1],
+                    'bpd_d' => $request->bpd_[2],
+                    'hc' => $request->hc_[0], 
+                    'hc_w' => $request->hc_[1],
+                    'hc_d' => $request->hc_[2],
+                    'ac' => $request->ac_[0],
+                    'ac_w' => $request->ac_[1],
+                    'ac_d' => $request->ac_[2],
+                    'fl' => $request->fl_[0],
+                    'fl_w' => $request->fl_[1],
+                    'fl_d' => $request->fl_[2],
+                    'atd' => $request->atd_[0],
+                    'atd_w' => $request->atd_[1],
+                    'atd_d' => $request->atd_[2],
+                    'ald' => $request->ald_[0],
+                    'ald_w' => $request->ald_[1],
+                    'ald_d' => $request->ald_[2],
                     'efbw' => $request->efbw,
                     'afi' => $request->afi,
                     'pres' => $request->pres,
@@ -1012,6 +1054,7 @@ class AntenatalController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
+                    'pregnan_idno' => $request->pregnan_idno,
                     'date' => $this->turn_date($request->date),
                     'report' => $request->report,
                     'poa_pog' => $request->poa_pog,
@@ -1019,8 +1062,8 @@ class AntenatalController extends defaultController
                     'albumin' => $request->albumin,
                     'sugar' => $request->sugar,
                     'weight' => $request->weight,
-                    'bp_sys1' => $request->bp_sys1,
-                    'bp_dias2' => $request->bp_dias2,
+                    'bp_sys1' => $request->bp_[0],
+                    'bp_dias2' => $request->bp_[1],
                     'hb' => $request->hb,
                     'oedema' => $request->oedema,
                     'lie' => $request->lie,
@@ -1058,8 +1101,8 @@ class AntenatalController extends defaultController
                     'albumin' => $request->albumin,
                     'sugar' => $request->sugar,
                     'weight' => $request->weight,
-                    'bp_sys1' => $request->bp_sys1,
-                    'bp_dias2' => $request->bp_dias2,
+                    'bp_sys1' => $request->bp_[0],
+                    'bp_dias2' => $request->bp_[1],
                     'hb' => $request->hb,
                     'oedema' => $request->oedema,
                     'lie' => $request->lie,
