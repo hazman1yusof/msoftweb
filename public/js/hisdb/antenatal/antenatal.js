@@ -275,14 +275,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerPrevObstetrics",
 		loadComplete: function(){		
-			$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);	
-			// if(addmore_jqgrid.more == true){$('#jqGridPrevObstetrics_iladd').click();}
-			// else{
-			// 	// $('#jqGridPrevObstetrics').jqGrid ('setSelection', "1");
-			// 	$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);
-			// }
-			// $('.ui-pg-button').prop('disabled',true);
-			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPrevObstetrics_iledit").click();
@@ -557,13 +550,6 @@ $(document).ready(function () {
 		pager: "#jqGridPagerCurrPregnancy",
 		loadComplete: function(){
 			$("#jqGridCurrPregnancy").setSelection($("#jqGridCurrPregnancy").getDataIDs()[0]);
-			// if(addmore_jqgrid.more == true){$('#jqGridCurrPregnancy_iladd').click();}
-			// else{
-			// 	// $('#jqGridCurrPregnancy').jqGrid ('setSelection', "1");
-			// 	$("#jqGridCurrPregnancy").setSelection($("#jqGridCurrPregnancy").getDataIDs()[0]);
-			// }
-			// $('.ui-pg-button').prop('disabled',true);
-			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridCurrPregnancy_iledit").click();
@@ -966,12 +952,6 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			$("#jqGridObstetricsUltrasound").setSelection($("#jqGridObstetricsUltrasound").getDataIDs()[0]);
-			// if(addmore_jqgrid.more == true){$('#jqGridObstetricsUltrasound_iladd').click();}
-			// else{
-			// 	$('#jqGridObstetricsUltrasound').jqGrid ('setSelection', "1");
-			// }
-			// $('.ui-pg-button').prop('disabled',true);
-			// addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridObstetricsUltrasound_iledit").click();

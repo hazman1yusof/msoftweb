@@ -1049,12 +1049,29 @@ class AntenatalController extends defaultController
 
         try {
 
+            // $pregnan_idno = DB::table('nursing.pregnancy as p')
+            //         ->select('p.idno',)
+            //         ->leftJoin('nursing.pregnancy_episode as pe', function($join) use ($request){
+            //             $join = $join->on('pe.mrn', '=', 'p.mrn');
+            //             $join = $join->on('pe.episno', '=', 'p.episno');
+            //             $join = $join->on('pe.compcode', '=', 'p.compcode');
+            //         })
+            //         ->where('p.compcode','=', session('compcode'))
+            //         ->where('p.mrn','=', $request->mrn)
+            //         ->where('p.episno','=', $request->episno);
+
+            $pregnan_idno = DB::table('nursing.pregnancy')
+                    ->where('compcode','=', session('compcode'))
+                    ->where('mrn','=', $request->mrn)
+                    ->where('episno','=', $request->episno)
+                    ->first();
+
             DB::table('nursing.pregnancy_episode')
                 ->insert([  
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'pregnan_idno' => $request->pregnan_idno,
+                    'pregnan_idno' => $pregnan_idno->idno,
                     'date' => $this->turn_date($request->date),
                     'report' => $request->report,
                     'poa_pog' => $request->poa_pog,
