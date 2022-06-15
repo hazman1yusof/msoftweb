@@ -133,7 +133,7 @@ use PDF;
                             'reftrantype' => $apacthdr_IV->trantype,
                             'refauditno' => $apacthdr_IV->auditno,
                             'refamount' => $apacthdr_IV->amount,
-                            'allocdate' => $request->apacthdr_actdate,//blank
+                            // 'allocdate' => $request->apacthdr_actdate,//blank
                             'reference' => $value['reference'],
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,

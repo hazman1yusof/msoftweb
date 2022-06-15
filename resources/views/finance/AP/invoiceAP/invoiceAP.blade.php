@@ -295,9 +295,9 @@ i.fa {
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"  data-validation="required"> 
 		 					</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
+						<label class="col-md-2 control-label" for="apactdtl_outamt">Total Detail Amount</label>  
 					  		<div class="col-md-3">
-								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
+								<input id="apactdtl_outamt" name="apactdtl_outamt" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
 					</div>
 
