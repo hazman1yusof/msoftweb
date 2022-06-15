@@ -171,12 +171,12 @@ class InvoiceAPDetailController extends defaultController
 
        
             ///4. then update to header
-            DB::table('finance.apacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$auditno)
-                ->update([
-                    'outamount' => $totalAmount
-                ]);
+            // DB::table('finance.apacthdr')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$auditno)
+            //     ->update([
+            //         'outamount' => $totalAmount
+            //     ]);
 
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
@@ -235,12 +235,12 @@ class InvoiceAPDetailController extends defaultController
                 ->sum('amount');
 
             ///3. update total amount to header
-            DB::table('finance.apacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->update([
-                    'outamount' => $totalAmount
-                ]);
+            // DB::table('finance.apacthdr')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$request->auditno)
+            //     ->update([
+            //         'outamount' => $totalAmount
+            //     ]);
 
             DB::commit();
             return response($totalAmount,200);
@@ -275,13 +275,13 @@ class InvoiceAPDetailController extends defaultController
 
           
             ///3. update total amount to header
-            DB::table('finance.apacthdr')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->update([
-                    'outamount' => $totalAmount
+            // DB::table('finance.apacthdr')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$request->auditno)
+            //     ->update([
+            //         'outamount' => $totalAmount
                   
-                ]);
+            //     ]);
 
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))

@@ -22,7 +22,83 @@ use Carbon\Carbon;
         return view('finance.AP.invoiceAP.invoiceAP');
     }
 
-    public function table(Request $request){
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'document':
+                return $this->document($request);
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function maintable(Request $request){
+
+        $table = DB::table('finance.apacthdr AS ap')
+                    ->select(
+                        'ap.auditno AS apacthdr_auditno',
+                        'ap.trantype AS apacthdr_trantype',
+                        'ap.doctype AS apacthdr_doctype',
+                        'ap.suppcode AS apacthdr_suppcode',
+                        'su.name AS supplier_name', 
+                        'ap.actdate AS apacthdr_actdate',
+                        'ap.document AS apacthdr_document',
+                        'ap.deptcode AS apacthdr_deptcode',
+                        'ap.amount AS apacthdr_amount',
+                        'ap.outamount AS apacthdr_outamount',
+                        'ap.recstatus AS apacthdr_recstatus',
+                        'ap.payto AS apacthdr_payto',
+                        'ap.recdate AS apacthdr_recdate',
+                        'ap.category AS apacthdr_category',
+                        'ap.remarks AS apacthdr_remarks',
+                        'ap.adduser AS apacthdr_adduser',
+                        'ap.adddate AS apacthdr_adddate',
+                        'ap.upduser AS apacthdr_upduser',
+                        'ap.upddate AS apacthdr_upddate',
+                        'ap.source AS apacthdr_source',
+                        'ap.idno AS apacthdr_idno',
+                        'ap.unit AS apacthdr_unit',
+                    )
+                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.source','=',$request->source)
+                    ->where('ap.trantype','=',$request->trantype)
+                    ->orderBy('ap.idno','DESC');
+
+
+        $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $apactdtl = DB::table('finance.apactdtl')
+                        ->where('source','=',$value->apacthdr_source)
+                        ->where('trantype','=',$value->apacthdr_trantype)
+                        ->where('auditno','=',$value->apacthdr_auditno);
+
+            if($apactdtl->exists()){
+                $value->apactdtl_outamt = $apactdtl->sum('amount');
+            }else{
+                $value->apactdtl_outamt = $value->apacthdr_outamount;
+            }
+        }
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
+    }
+
+    public function document(Request $request){
 
         // DB::insert(
         //     DB::raw("
@@ -169,7 +245,7 @@ use Carbon\Carbon;
             ];
 
             foreach ($field as $key => $value){
-                if($key == 'remarks' || $key == 'document' || $value == 'outamount'){
+                if($key == 'remarks' || $key == 'document'|| $value == 'outamt' || $value == 'outamount'){
                     continue;
                 }
                 $array_insert[$value] = $request[$request->field[$key]];
@@ -217,11 +293,12 @@ use Carbon\Carbon;
             'category' => strtoupper($request->apacthdr_category),
             'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'outamount' => $request->apacthdr_amount,
         ];
 
         foreach ($field as $key => $value) {
-            if($value == 'remarks' || $value == 'document'){
+            if($value == 'remarks' || $value == 'document' || $value == 'outamt' || $value == 'outamount'){
                 continue;
             }
             $array_update[$value] = $request[$request->field[$key]];
@@ -260,11 +337,11 @@ use Carbon\Carbon;
 
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$apacthdr->source)
+                    ->where('trantype','=',$apacthdr->trantype)
                     ->where('auditno','=', $auditno);
 
-                if($apacthdr->amount != $apacthdr->outamount){
-                    throw new \Exception("TOTAL DETAIL AMOUNT NOT EQUAL TO INVOICE AMOUNT");
-                }
+                $this->check_outamt($apacthdr,$apactdtl);
 
                 $this->gltran($auditno);
 
@@ -553,6 +630,20 @@ use Carbon\Carbon;
                 ->first();
 
         return $obj;
+    }
+
+    public function check_outamt($apacthdr,$apactdtl){
+
+        if($apactdtl->exists()){
+            $apactdtl_outamt = $apactdtl->sum('amount');
+
+            if($apacthdr->amount != $apactdtl_outamt){
+                throw new \Exception("TOTAL DETAIL AMOUNT NOT EQUAL TO INVOICE AMOUNT");
+            }
+
+        }
+
+        
     }
 
 }

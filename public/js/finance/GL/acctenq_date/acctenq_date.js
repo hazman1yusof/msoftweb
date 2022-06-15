@@ -129,8 +129,9 @@ $(document).ready(function () {
 		DataTable.clear().draw();
 		if($('#searchform').isValid({requiredFields:''},conf,true)){
 			mymodal.show("#TableGlmasTran_c");
-			getdatadr(false,0,20);
-			getdatacr(false,0,20);
+			getdata();
+			// getdatadr(false,0,20);
+			// getdatacr(false,0,20);
 		}
 		// urlParam.filterCol = ['glmasdtl.glaccount','glmasdtl.year'];
 		// urlParam.filterVal = [$('#glaccount').val(),$('#year').val()];
@@ -219,6 +220,34 @@ $(document).ready(function () {
 			$('#TableGlmasTran_wrapper').children().first().show();
 			$('#TableGlmasTran_wrapper').children().last().show();
 		}
+	}
+
+	function getdata(){
+		var param={
+					action:'getdata',
+					url:'/acctenq_date/table',
+					glaccount:$('#glaccount').val(),
+					fromdate:$('#fromdate').val(),
+					todate:$('#todate').val(),
+				}
+
+		$.get( "/acctenq_date/table?"+$.param(param), function( data ) {
+				
+		},'json').done(function(data) {
+			mymodal.hide();
+			if(!$.isEmptyObject(data.rows)){
+				data.rows.forEach(function(obj){
+					obj.open="<i class='fa fa-folder-open-o' </i>"
+					obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
+					obj.dramount = numeral(obj.dramount).format('0,0.00');
+					obj.cramount = numeral(obj.cramount).format('0,0.00');
+				});
+
+				DataTable.rows.add(data.rows).draw();
+			}else{
+				// moredr=false;
+			}
+		});
 	}
 
 	function getdatadr(fetchall,start,limit){
