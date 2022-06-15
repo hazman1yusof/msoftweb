@@ -1270,7 +1270,7 @@ $(document).ready(function () {
 		var oper = getjqcust_oper(opt);
 
 		if(oper == 'edit'){
-			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
+			var data = $('#jqGridCurrPregnancy').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<input id="bp_sys1" name="bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bp_sys1+`'>
 						<input id="bp_dias2" name="bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bp_dias2+`'>
