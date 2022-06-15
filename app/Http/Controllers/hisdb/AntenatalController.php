@@ -40,21 +40,10 @@ class AntenatalController extends defaultController
     }
 
     public function CurrPregnancy(Request $request){
-        // $table = DB::table('nursing.pregnancy_episode')
-        //                     ->where('compcode','=', session('compcode'))
-        //                     ->where('mrn','=', $request->filterVal[0])
-        //                     ->where('episno','=', $request->filterVal[1]);
-
-        $table = DB::table('nursing.pregnancy_episode as pe')
-                            ->select('pe.compcode AS compcode', 'pe.mrn AS mrn', 'pe.episno AS episno', 'pe.idno AS idno', 'p.idno AS pregnan_idno', 'pe.date AS date','pe.report AS report','pe.poa_pog AS poa_pog','pe.uterinesize AS uterinesize','pe.albumin AS albumin','pe.sugar AS sugar','pe.weight AS weight', 'pe.bp_sys1 AS bp_sys1', 'pe.bp_dias2 AS bp_dias2', 'pe.hb AS hb', 'pe.oedema AS oedema', 'pe.lie AS lie', 'pe.pres AS pres', 'pe.fhr AS fhr', 'pe.fm AS fm', 'pe.adddate AS adddate', 'pe.adduser AS adduser')
-                            ->leftJoin('nursing.pregnancy as p', function($join) use ($request){
-                                $join = $join->on('p.mrn', '=', 'pe.mrn');
-                                $join = $join->on('p.episno', '=', 'pe.episno');
-                                $join = $join->on('p.compcode', '=', 'pe.compcode');
-                            })
-                            ->where('pe.compcode','=', session('compcode'))
-                            ->where('pe.mrn','=', $request->filterVal[0])
-                            ->where('pe.episno','=', $request->filterVal[1]);
+        $table = DB::table('nursing.pregnancy_episode')
+                            ->where('compcode','=', session('compcode'))
+                            ->where('mrn','=', $request->filterVal[0])
+                            ->where('episno','=', $request->filterVal[1]);
 
         $paginate = $table->paginate($request->rows);
 
@@ -1048,17 +1037,6 @@ class AntenatalController extends defaultController
         DB::beginTransaction();
 
         try {
-
-            // $pregnan_idno = DB::table('nursing.pregnancy as p')
-            //         ->select('p.idno',)
-            //         ->leftJoin('nursing.pregnancy_episode as pe', function($join) use ($request){
-            //             $join = $join->on('pe.mrn', '=', 'p.mrn');
-            //             $join = $join->on('pe.episno', '=', 'p.episno');
-            //             $join = $join->on('pe.compcode', '=', 'p.compcode');
-            //         })
-            //         ->where('p.compcode','=', session('compcode'))
-            //         ->where('p.mrn','=', $request->mrn)
-            //         ->where('p.episno','=', $request->episno);
 
             $pregnan_idno = DB::table('nursing.pregnancy')
                     ->where('compcode','=', session('compcode'))
