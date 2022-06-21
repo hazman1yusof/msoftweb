@@ -775,20 +775,7 @@ $(document).ready(function () {
 			{ label: 'BPD', name: 'bpd_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:bpdCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#bpd_w').keyup(function(event) {
-									get_bpd();
-								});
-							
-								$('#bpd_d').keyup(function(event) {
-									get_bpd();
-								});
-							}
-						}
-					] 	
+					custom_value:galGridCustomValue2 	
 				}
 			},
 			{ label: 'bpd', name: 'bpd', hidden: true },
@@ -797,20 +784,7 @@ $(document).ready(function () {
 			{ label: 'HC', name: 'hc_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:hcCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#hc_w').keyup(function(event) {
-									get_hc();
-								});
-							
-								$('#hc_d').keyup(function(event) {
-									get_hc();
-								});
-							}
-						}
-					]  	
+					custom_value:galGridCustomValue2	
 				}
 			},
 			{ label: 'hc', name: 'hc', hidden: true },
@@ -819,20 +793,7 @@ $(document).ready(function () {
 			{ label: 'AC', name: 'ac_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:acCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#ac_w').keyup(function(event) {
-									get_ac();
-								});
-							
-								$('#ac_d').keyup(function(event) {
-									get_ac();
-								});
-							}
-						}
-					] 	
+					custom_value:galGridCustomValue2	
 				}
 			},
 			{ label: 'ac', name: 'ac', hidden: true },
@@ -841,20 +802,7 @@ $(document).ready(function () {
 			{ label: 'FL', name: 'fl_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:flCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#fl_w').keyup(function(event) {
-									get_fl();
-								});
-							
-								$('#fl_d').keyup(function(event) {
-									get_fl();
-								});
-							}
-						}
-					] 	
+					custom_value:galGridCustomValue2	
 				}
 			},
 			{ label: 'fl', name: 'fl', hidden: true },
@@ -863,20 +811,7 @@ $(document).ready(function () {
 			{ label: 'ATD', name: 'atd_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:atdCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#atd_w').keyup(function(event) {
-									get_atd();
-								});
-							
-								$('#atd_d').keyup(function(event) {
-									get_atd();
-								});
-							}
-						}
-					] 	
+					custom_value:galGridCustomValue2
 				}
 			},
 			{ label: 'atd', name: 'atd', hidden: true },
@@ -885,20 +820,7 @@ $(document).ready(function () {
 			{ label: 'ALD', name: 'ald_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:aldCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#ald_w').keyup(function(event) {
-									get_ald();
-								});
-							
-								$('#ald_d').keyup(function(event) {
-									get_ald();
-								});
-							}
-						}
-					] 	
+					custom_value:galGridCustomValue2
 				}
 			},
 			{ label: 'ald', name: 'ald', hidden: true },
@@ -1345,7 +1267,7 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 					<div class="input-group">
-						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.crl+`'>
+						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.crl+`'>
 						<span class="input-group-addon" style='padding:2px;'>mm</span>
 					</div>
 					<small class="w-100" style="padding-left:60px">=</small>
@@ -1362,29 +1284,21 @@ $(document).ready(function () {
 		}else{
 			return $(`<div class="input-group">
 					<div class="input-group">
-						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<input id="crl" name="crl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 						<span class="input-group-addon" style='padding:2px;'>mm</span>
 					</div>
 					<small class="w-100" style="padding-left:60px">=</small>
 					<div class="input-group">
-						<input id="crl_w" name="crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<input id="crl_w" name="crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_crl();">
 						<span class="input-group-addon" style='padding:2px;'>W</span>
 					</div>
 					<small class="w-100" style="padding-left:60px">+</small>
 					<div class="input-group">
-						<input id="crl_d" name="crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+						<input id="crl_d" name="crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_crl();">
 						<span class="input-group-addon" style='padding:2px;'>D</span>
 					</div>
 				</div>`);
 		}
-
-		// $('#crl_w').keyup(function(event) {
-		// 	get_crl();
-		// });
-	
-		// $('#crl_d').keyup(function(event) {
-		// 	get_crl();
-		// });
 		
 	}
 
@@ -1395,34 +1309,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd+`'>
+							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.bpd+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd_w+`'>
+							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_bpd();" value='`+data.bpd_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.bpd_d+`'>
+							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_bpd();" value='`+data.bpd_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="bpd" name="bpd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="bpd_w" name="bpd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_bpd();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="bpd_d" name="bpd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_bpd();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1436,34 +1350,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc+`'>
+							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.hc+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc_w+`'>
+							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_hc();" value='`+data.hc_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.hc_d+`'>
+							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_hc();" value='`+data.hc_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="hc" name="hc" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="hc_w" name="hc_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_hc();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="hc_d" name="hc_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_hc();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1477,34 +1391,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac+`'>
+							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.ac+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac_w+`'>
+							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ac();" value='`+data.ac_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ac_d+`'>
+							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ac();" value='`+data.ac_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ac" name="ac" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ac_w" name="ac_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ac();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ac_d" name="ac_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ac();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1518,34 +1432,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl+`'>
+							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.fl+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl_w+`'>
+							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_fl();" value='`+data.fl_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.fl_d+`'>
+							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_fl();" value='`+data.fl_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="fl" name="fl" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="fl_w" name="fl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_fl();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="fl_d" name="fl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_fl();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1559,34 +1473,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd+`'>
+							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.atd+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd_w+`'>
+							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_atd();" value='`+data.atd_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.atd_d+`'>
+							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_atd();" value='`+data.atd_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="atd" name="atd" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="atd_w" name="atd_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_atd();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="atd_d" name="atd_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_atd();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1600,34 +1514,34 @@ $(document).ready(function () {
 			var data = $('#jqGridObstetricsUltrasound').jqGrid('getRowData', opt.rowId);
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald+`'>
+							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" value='`+data.ald+`'>
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald_w+`'>
+							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ald();" value='`+data.ald_w+`'>
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.ald_d+`'>
+							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ald();" value='`+data.ald_d+`'>
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
 		}else{
 			return $(`<div class="input-group">
 						<div class="input-group">
-							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ald" name="ald" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
 							<span class="input-group-addon" style='padding:2px;'>mm</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">=</small>
 						<div class="input-group">
-							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ald_w" name="ald_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ald();">
 							<span class="input-group-addon" style='padding:2px;'>W</span>
 						</div>
 						<small class="w-100" style="padding-left:60px">+</small>
 						<div class="input-group">
-							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;">
+							<input id="ald_d" name="ald_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_ald();">
 							<span class="input-group-addon" style='padding:2px;'>D</span>
 						</div>
 					</div>`);
@@ -1666,72 +1580,6 @@ $(document).ready(function () {
 		}
 	}
 	// jqGridObstetricsUltrasound ends
-
-	function get_bpd() {
-		var bpd_w = parseFloat($("#bpd_w").val());
-		var bpd_d = parseFloat($("#bpd_d").val());
-	
-		var bpd = bpd_w + bpd_d;
-	
-		if (isNaN(bpd)) bpd = 0;
-	
-		$('#bpd').val((bpd));
-	}
-
-	function get_hc() {
-		var hc_w = parseFloat($("#hc_w").val());
-		var hc_d = parseFloat($("#hc_d").val());
-	
-		var hc = hc_w + hc_d;
-	
-		if (isNaN(hc)) hc = 0;
-	
-		$('#hc').val((hc));
-	}
-
-	function get_ac() {
-		var ac_w = parseFloat($("#ac_w").val());
-		var ac_d = parseFloat($("#ac_d").val());
-	
-		var ac = ac_w + ac_d;
-	
-		if (isNaN(ac)) ac = 0;
-	
-		$('#ac').val((ac));
-	}
-
-	function get_fl() {
-		var fl_w = parseFloat($("#fl_w").val());
-		var fl_d = parseFloat($("#fl_d").val());
-	
-		var fl = fl_w + fl_d;
-	
-		if (isNaN(fl)) fl = 0;
-	
-		$('#fl').val((fl));
-	}
-
-	function get_atd() {
-		var atd_w = parseFloat($("#atd_w").val());
-		var atd_d = parseFloat($("#atd_d").val());
-	
-		var atd = atd_w + atd_d;
-	
-		if (isNaN(atd)) atd = 0;
-	
-		$('#atd').val((atd));
-	}
-
-	function get_ald() {
-		var ald_w = parseFloat($("#ald_w").val());
-		var ald_d = parseFloat($("#ald_d").val());
-	
-		var ald = ald_w + ald_d;
-	
-		if (isNaN(ald)) ald = 0;
-	
-		$('#ald').val((ald));
-	}
 	//////////////////////////////////////////////custom edits ends//////////////////////////////////////////////
 
 });
@@ -2131,8 +1979,6 @@ function saveForm_ultrasound(callback){
     });
 }
 
-
-
 function get_crl() {
 	var crl_w = parseFloat($("#crl_w").val());
 	var crl_d = parseFloat($("#crl_d").val());
@@ -2142,9 +1988,91 @@ function get_crl() {
 	if (isNaN(crl)) crl = 0;
 
 	$('#crl').val((crl));
+	// $('#crl').val((crl).toFixed(2));
+	// $('#crl_w').val((crl_w).toFixed(2));
+	// $('#crl_d').val((crl_d).toFixed(2));
 }
 
+function get_bpd() {
+	var bpd_w = parseFloat($("#bpd_w").val());
+	var bpd_d = parseFloat($("#bpd_d").val());
 
+	var bpd = bpd_w + bpd_d;
 
+	if (isNaN(bpd)) bpd = 0;
 
+	$('#bpd').val((bpd));
+	// $('#bpd').val((bpd).toFixed(2));
+	// $('#bpd_w').val((bpd_w).toFixed(2));
+	// $('#bpd_d').val((bpd_d).toFixed(2));
+}
 
+function get_hc() {
+	var hc_w = parseFloat($("#hc_w").val());
+	var hc_d = parseFloat($("#hc_d").val());
+
+	var hc = hc_w + hc_d;
+
+	if (isNaN(hc)) hc = 0;
+
+	$('#hc').val((hc));
+	// $('#hc').val((hc).toFixed(2));
+	// $('#hc_w').val((hc_w).toFixed(2));
+	// $('#hc_d').val((hc_d).toFixed(2));
+}
+
+function get_ac() {
+	var ac_w = parseFloat($("#ac_w").val());
+	var ac_d = parseFloat($("#ac_d").val());
+
+	var ac = ac_w + ac_d;
+
+	if (isNaN(ac)) ac = 0;
+
+	$('#ac').val((ac));
+	// $('#ac').val((ac).toFixed(2));
+	// $('#ac_w').val((ac_w).toFixed(2));
+	// $('#ac_d').val((ac_d).toFixed(2));
+}
+
+function get_fl() {
+	var fl_w = parseFloat($("#fl_w").val());
+	var fl_d = parseFloat($("#fl_d").val());
+
+	var fl = fl_w + fl_d;
+
+	if (isNaN(fl)) fl = 0;
+
+	$('#fl').val((fl));
+	// $('#fl').val((fl).toFixed(2));
+	// $('#fl_w').val((fl_w).toFixed(2));
+	// $('#fl_d').val((fl_d).toFixed(2));
+}
+
+function get_atd() {
+	var atd_w = parseFloat($("#atd_w").val());
+	var atd_d = parseFloat($("#atd_d").val());
+
+	var atd = atd_w + atd_d;
+
+	if (isNaN(atd)) atd = 0;
+
+	$('#atd').val((atd));
+	// $('#atd').val((atd).toFixed(2));
+	// $('#atd_w').val((atd_w).toFixed(2));
+	// $('#atd_d').val((atd_d).toFixed(2));
+}
+
+function get_ald() {
+	var ald_w = parseFloat($("#ald_w").val());
+	var ald_d = parseFloat($("#ald_d").val());
+
+	var ald = ald_w + ald_d;
+
+	if (isNaN(ald)) ald = 0;
+
+	$('#ald').val((ald));
+	// $('#ald').val((ald).toFixed(2));
+	// $('#ald_w').val((ald_w).toFixed(2));
+	// $('#ald_d').val((ald_d).toFixed(2));
+}
