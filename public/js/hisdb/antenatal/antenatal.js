@@ -766,20 +766,7 @@ $(document).ready(function () {
 			{ label: 'CRL', name: 'crl_', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:crlCustomEdit,
-					custom_value:galGridCustomValue2,
-					dataEvents: [
-						{  type: 'change',
-						   fn: function(e) {
-								$('#crl_w').keyup(function(event) {
-									get_crl();
-								});
-							
-								$('#crl_d').keyup(function(event) {
-									get_crl();
-								});
-							}
-						}
-					]
+					custom_value:galGridCustomValue2
 				}
 			},
 			{ label: 'crl', name: 'crl', hidden: true },
@@ -1363,12 +1350,12 @@ $(document).ready(function () {
 					</div>
 					<small class="w-100" style="padding-left:60px">=</small>
 					<div class="input-group">
-						<input id="crl_w" name="crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false" value='`+data.crl_w+`'>
+						<input id="crl_w" name="crl_w" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_crl();" value='`+data.crl_w+`'>
 						<span class="input-group-addon" style='padding:2px;'>W</span>
 					</div>
 					<small class="w-100" style="padding-left:60px">+</small>
 					<div class="input-group">
-						<input id="crl_d" name="crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value='`+data.crl_d+`'>
+						<input id="crl_d" name="crl_d" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeyup="get_crl();" value='`+data.crl_d+`'>
 						<span class="input-group-addon" style='padding:2px;'>D</span>
 					</div>
 				</div>`);
@@ -1390,6 +1377,14 @@ $(document).ready(function () {
 					</div>
 				</div>`);
 		}
+
+		// $('#crl_w').keyup(function(event) {
+		// 	get_crl();
+		// });
+	
+		// $('#crl_d').keyup(function(event) {
+		// 	get_crl();
+		// });
 		
 	}
 
@@ -1671,17 +1666,6 @@ $(document).ready(function () {
 		}
 	}
 	// jqGridObstetricsUltrasound ends
-
-	function get_crl() {
-		var crl_w = parseFloat($("#crl_w").val());
-		var crl_d = parseFloat($("#crl_d").val());
-	
-		var crl = crl_w + crl_d;
-	
-		if (isNaN(crl)) crl = 0;
-	
-		$('#crl').val((crl));
-	}
 
 	function get_bpd() {
 		var bpd_w = parseFloat($("#bpd_w").val());
@@ -2145,6 +2129,19 @@ function saveForm_ultrasound(callback){
     }).success(function(data){
         callback();
     });
+}
+
+
+
+function get_crl() {
+	var crl_w = parseFloat($("#crl_w").val());
+	var crl_d = parseFloat($("#crl_d").val());
+
+	var crl = crl_w + crl_d;
+
+	if (isNaN(crl)) crl = 0;
+
+	$('#crl').val((crl));
 }
 
 

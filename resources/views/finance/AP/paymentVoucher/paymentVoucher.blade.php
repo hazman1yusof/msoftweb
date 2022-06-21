@@ -256,12 +256,12 @@ i.fa {
 							
 					</div>
 
-					<div class="form-group">
+					<!-- <div class="form-group">
 					<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
 				  			<div class="col-md-2" id="apacthdr_recdate">
 								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
-			   		</div>
+			   		</div> -->
 
 					<hr/>
 

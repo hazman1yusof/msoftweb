@@ -246,7 +246,8 @@ $(document).ready(function () {
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
-			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap'},
+			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
@@ -1164,7 +1165,7 @@ $(document).ready(function () {
 				switch(data.paymode){
 					case 'BD':
 					case 'DRAFT':
-								$('#cheqno_parent').text('Bank No');
+								$('#cheqno_parent').text('BD No');
 								dialog_cheqno.off();
 								break;
 
@@ -1176,6 +1177,13 @@ $(document).ready(function () {
 					case 'CASH':
 								$('#apacthdr_cheqno').prop('readonly',true);
 								dialog_cheqno.off();
+								$('#cheqno_parent').hide();
+								$('#apacthdr_cheqno').hide();
+								$('#cheqno_dh').hide();
+								$('#cheqdate_parent').hide();
+								$('#apacthdr_cheqdate').hide();
+								// $("label[for='cheqdate_parent'], input#cheqdate_parent").hide();
+								//$("label[for='cheqno_parent'], input#cheqno_parent").hide();
 								break;
 
 					case 'TT':
@@ -1556,22 +1564,26 @@ function init_jq2(oper,urlParam2){
 	if(oper == 'add'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
+			$('#apacthdr_amount').prop('readonly',true);
 			$('#pvpd_detail').show();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
 		}else{
 			$('#save').show();
 			$('#pvpd_detail').hide();
+			$('#apacthdr_amount').prop('readonly',false);
 		}
 	}else{
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
+			$('#apacthdr_amount').prop('readonly',true);
 			$('#pvpd_detail').show();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			refreshGrid("#jqGrid2",urlParam2);
 		}else{
 			$('#save').show();
 			$('#pvpd_detail').hide();
+			$('#apacthdr_amount').prop('readonly',false);
 		}
 	}
 }
@@ -1580,12 +1592,36 @@ function init_paymode(oper,dialog_cheqno){
 	let paymode = $('#apacthdr_paymode').val();
 	$('#cheqno_parent').text('Cheque No');
 
-	if(oper=='edit'){
+	if(oper=='add'){
 		$('#apacthdr_cheqno').prop('readonly',false);
 		switch(paymode){
 			case 'BD':
 			case 'DRAFT':
-						$('#cheqno_parent').text('Bank No');
+						$('#cheqno_parent').text('BD No');
+						dialog_cheqno.off();
+						break;
+			case 'CHEQUE':
+						$('#cheqno_parent').text('Cheque No');
+						dialog_cheqno.on();
+						dialog_cheqno.check(errorField);
+						break;
+			case 'CASH':
+						$('#apacthdr_cheqno').prop('readonly',true);
+						dialog_cheqno.off();
+						$("label[for='cheqdate_parent'], input#cheqdate_parent").hide();
+						$("label[for='cheqno_parent'], input#cheqno_parent").hide();
+						break;
+			case 'TT':
+						$('#cheqno_parent').text('TT No');
+						dialog_cheqno.off();
+						break;
+		}
+	}else if(oper=='edit'){
+		$('#apacthdr_cheqno').prop('readonly',false);
+		switch(paymode){
+			case 'BD':
+			case 'DRAFT':
+						$('#cheqno_parent').text('BD No');
 						dialog_cheqno.off();
 						break;
 			case 'CHEQUE':
@@ -1606,7 +1642,7 @@ function init_paymode(oper,dialog_cheqno){
 		switch(paymode){
 			case 'BD':
 			case 'DRAFT':
-						$('#cheqno_parent').text('Bank No');
+						$('#cheqno_parent').text('BD No');
 						break;
 			case 'CHEQUE':
 						$('#cheqno_parent').text('Cheque No');
@@ -1649,8 +1685,20 @@ function empty_form(){
 function click_selection(id){
 	var date_id = 'date_injqgrid_'+$(id).data('idno');
 	var date_idno = $(id).data('idno');
+	var date_now = moment().format('YYYY-MM-DD');
+
+	var rowdata_copy = JSON.parse(JSON.stringify($('#jqGrid').jqGrid('getRowData', date_idno)));
+
+	if(rowdata_copy.apacthdr_recdate != ""){
+		date_now = moment().format(rowdata_copy.apacthdr_recdate);
+	}
+
 	if($(id).is(':checked')){
-		$(id).parent().prev().html( "<input class='form-control input-sm' type='date' id='"+date_id+"' data-idno='"+date_idno+"'>" )
+		$(id).parent().prev().html( `<input class='form-control input-sm' 
+											type='date' 
+											id='`+date_id+`' 
+											value='`+date_now+`'
+											data-idno='`+date_idno+`'>` )
 
 		$('#'+date_id).change(function () {
 			let this_idno = $(this).data('idno');
@@ -1658,6 +1706,10 @@ function click_selection(id){
 		});
 
 	}else{
-		$(id).parent().prev().html( " " )
+		// $("#jqGrid").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
+		// console.log(rowdata_copy);
+		$(id).parent().prev().html("");
+		// $("#jqGrid").jqGrid('restoreRow');
+		
 	}
 }
