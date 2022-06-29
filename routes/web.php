@@ -205,10 +205,16 @@ Route::get('/doctor','setup\DoctorController@show');
 Route::get('/doctor/table','setup\DoctorController@table');
 Route::post('/doctor/form','setup\DoctorController@form');
 
-//// Doctor setup page ///
+//// receipt AR setup page ///
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
+
+//// receipt - report  ///
+Route::get('/receipt_Report','finance\Receipt_ReportController@show');
+Route::get('/receipt_Report/table','finance\Receipt_ReportController@table');
+Route::post('/receipt_Report/form','finance\Receipt_ReportController@form');
+Route::get('/receipt_Report/showExcel','finance\Receipt_ReportController@showExcel');
 
 //// doctor_maintenance setup page ///
 Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
@@ -595,6 +601,12 @@ Route::get('/paymentVoucher/table','finance\PaymentVoucherController@table');
 Route::post('/paymentVoucher/form','finance\PaymentVoucherController@form');
 Route::get('/paymentVoucher/form','finance\PaymentVoucherController@form');
 Route::get('/paymentVoucher/showpdf','finance\PaymentVoucherController@showpdf');
+
+//// payment voucher - report  ///
+Route::get('/paymentVoucher_Report','finance\PaymentVoucher_ReportController@show');
+Route::get('/paymentVoucher_Report/table','finance\PaymentVoucher_ReportController@table');
+Route::post('/paymentVoucher_Report/form','finance\PaymentVoucher_ReportController@form');
+Route::get('/paymentVoucher_Report/showExcel','finance\PaymentVoucher_ReportController@showExcel');
 
 //// Credit Note ///
 Route::get('/creditNote','finance\CreditNoteController@show');
