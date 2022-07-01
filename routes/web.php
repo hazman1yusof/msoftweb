@@ -507,10 +507,22 @@ Route::get('/costcenter','finance\CostcenterController@show');
 Route::get('/costcenter/table','finance\CostcenterController@table');
 Route::post('/costcenter/form','finance\CostcenterController@form');
 
+//// costcenter - report  ///
+Route::get('/costcenter_Report','finance\Costcenter_ReportController@show');
+Route::get('/costcenter_Report/table','finance\Costcenter_ReportController@table');
+Route::post('/costcenter_Report/form','finance\Costcenter_ReportController@form');
+Route::get('/costcenter_Report/showExcel','finance\Costcenter_ReportController@showExcel');
+
 //// GlMaster setup ///
 Route::get('/glmaster','finance\GlmasterController@show');
 Route::get('/glmaster/table','finance\GlmasterController@table');
 Route::post('/glmaster/form','finance\GlmasterController@form');
+
+//// Glmaster - report  ///
+Route::get('/glmaster_Report','finance\Glmaster_ReportController@show');
+Route::get('/glmaster_Report/table','finance\Glmaster_ReportController@table');
+Route::post('/glmaster_Report/form','finance\Glmaster_ReportController@form');
+Route::get('/glmaster_Report/showExcel','finance\Glmaster_ReportController@showExcel');
 
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
