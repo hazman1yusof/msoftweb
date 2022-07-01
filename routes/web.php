@@ -210,11 +210,11 @@ Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
 
-//// receipt - report  ///
-Route::get('/receipt_Report','finance\Receipt_ReportController@show');
-Route::get('/receipt_Report/table','finance\Receipt_ReportController@table');
-Route::post('/receipt_Report/form','finance\Receipt_ReportController@form');
-Route::get('/receipt_Report/showExcel','finance\Receipt_ReportController@showExcel');
+//// Receipt Transaction AR - report sales ///
+Route::get('/ReceiptAR_Report','finance\ReceiptAR_ReportController@show');
+Route::get('/ReceiptAR_Report/table','finance\ReceiptAR_ReportController@table');
+Route::post('/ReceiptAR_Report/form','finance\ReceiptAR_ReportController@form');
+Route::get('/ReceiptAR_Report/showExcel','finance\ReceiptAR_ReportController@showExcel');
 
 //// doctor_maintenance setup page ///
 Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
