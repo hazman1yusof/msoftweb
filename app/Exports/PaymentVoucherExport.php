@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use DateTime;
 use Carbon\Carbon;
 
-class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting,FromQuery
+class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting, FromQuery, FromCollection
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -38,32 +38,32 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
                     ->first();
     }
 
-    // public function collection()
-    // {
-    //     $apacthdr = DB::table('finance.apacthdr')
-    //                     ->select('auditno', 'trantype', 'actdate','suppcode','document')
-    //                     ->where('trantype','=', 'PV')
-    //                     ->whereBetween('actdate',[$this->datefr,$this->dateto])
-    //                     ->get();
+    public function collection()
+    {
+        $apacthdr = DB::table('finance.apacthdr')
+                        ->select('auditno', 'trantype', 'actdate','suppcode','document')
+                        ->whereBetween('actdate',[$this->datefr,$this->dateto])
+                        ->get();
 
-    //     return $apacthdr;
-    // }
+        return $apacthdr;
+    }
 
     public function query()
     {
 
-        $apacthdr = DB::table('finance.apacthdr')
+        $apacthdr_obj = DB::table('finance.apacthdr')
                     ->select('apacthdr.auditno', 'apacthdr.trantype', 'apacthdr.actdate', 'apacthdr.suppcode', 'supplier.Name', 'apacthdr.document')
+                    ->whereBetween('apacthdr.actdate',[$this->datefr,$this->dateto])
                     ->leftJoin('material.supplier', function($join){
                         $join = $join->on('supplier.SuppCode', '=', 'apacthdr.suppcode');
                         $join = $join->on('supplier.compcode', '=', 'apacthdr.compcode');
                     })
                     ->where('apacthdr.compcode','=',session('compcode'))
                     ->where('apacthdr.trantype','=','PV')
-                    //->where('apacthdr.trantype','=','PD')
+                    ->orWhere('apacthdr.trantype','=','PD')
                     ->orderBy('apacthdr.auditno','DESC');
 
-        return $apacthdr;
+        return $apacthdr_obj;
     }
 
 
@@ -81,7 +81,7 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
             'B' => 10,    
             'C' => 15,
             'D' => 15,
-            'E' => 30, 
+            'E' => 40, 
             'D' => 15,
                
         ];
@@ -98,12 +98,8 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
     public function columnFormats(): array
     {
         return [
-            
-            //  'B1' => 'dd-mm-yyyy',
-           // 'F2' => NumberFormat::FORMAT_DATE_DDMMYYYY,
            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
 
-          
         ];
     }
 
@@ -154,15 +150,6 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
                 // assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
-
-                // $drawing = new Drawing();
-                // $drawing->setName('Logo');
-                // $drawing->setDescription('This is my logo');
-                // $drawing->setPath(public_path('/img/logo.jpg'));
-                // $drawing->setHeight(80);
-                // $drawing->setCoordinates('E1');
-                // $drawing->setOffsetX(40);
-                // $drawing->setWorksheet($event->sheet->getDelegate());
 
             },
         ];
