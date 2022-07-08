@@ -412,7 +412,9 @@ class PatmastController extends defaultController
                     ->where('regdept','=','1');
 
                 if(!empty($request->search)){
-                    $data = $data->where('description','=',$request->search)->first();
+                    $data = $data->where('description','=',$request->search)
+                                ->orwhere('deptcode','=', $request->search)
+                                ->first();
                 }else{
                     $data = $data->get();
                 }

@@ -125,6 +125,8 @@
             $('#hid_epis_dept').val($('#userdeptcode').val());
             $('#txt_epis_dept').val($('#userdeptcode').val());
 
+            $('#txt_epis_dept').blur();
+
             get_billtype_default(rowdata.MRN);
         }
     }
@@ -560,9 +562,9 @@
                             
                 },'json').done(function(data) {
                     if(!$.isEmptyObject(data) && data.data!=null){
-                        textfield.removeClass('error myerror').addClass('valid');
+                        myerrorIt_only('#'+id_,false);
                     }else{
-                        textfield.removeClass('valid').addClass('error myerror');
+                        myerrorIt_only('#'+id_,true);
                     }
                 });
             }
@@ -619,19 +621,16 @@
             
             // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
             $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
-                $('#txt_' + type).removeClass('error myerror').addClass('valid');
-                setTimeout(function(type){
-                    $('#txt_' + type).removeClass('error myerror').addClass('valid'); 
-                }, 1000,type);
+                myerrorIt_only('#txt_' + type,false);
                 item = selecter.row( this ).data();
                 
                 $('#hid_' + type).val(item["code"]);
                 $('#txt_' + type).val(item["description"]);            
                 
-                $('#txt_' + type).change(); // <-- to activate onchange event if any
+                // $('#txt_' + type).change(); // <-- to activate onchange event if any
                     
                 $('#mdl_item_selector').modal('hide');
-                } );
+            });
                 
             $("#mdl_item_selector").on('hidden.bs.modal', function () {
                 $('#add_new_adm').hide();

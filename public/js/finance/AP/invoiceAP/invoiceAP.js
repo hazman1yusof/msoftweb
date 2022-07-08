@@ -217,7 +217,7 @@ $(document).ready(function () {
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'Document<br/>Type', name: 'apacthdr_doctype', width: 20, classes: 'wrap text-uppercase', hidden:false},
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: true, checked: true, hidden:true},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden:true},
 			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
@@ -586,6 +586,87 @@ $(document).ready(function () {
 			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
 	}
+
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#actdate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		creditor_search.off();
+		$('#creditor_search,#creditor_search_hb,#actdate_from,#actdate_to').val('');
+		removeValidationClass(['#creditor_search']);
+		if($('#Scol').val()=='apacthdr_actdate'){
+			$("input[name='Stext'], #creditor_text").hide("fast");
+			$("#actdate_text").show("fast");
+		} else if($('#Scol').val() == 'apacthdr_suppcode'){
+			$("input[name='Stext'],#actdate_text").hide("fast");
+			$("#creditor_text").show("fast");
+			creditor_search.on();
+		} else {
+			$("#creditor_text,#actdate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+	}
+
+	function searchDate(){
+		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var creditor_search = new ordialog(
+		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + creditor_search.gridname).suppcode;
+
+				urlParam.searchCol=["delordhd_suppcode"];
+				urlParam.searchVal=[data];
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Creditor",
+			open: function () {
+				creditor_search.urlParam.filterCol = ['recstatus'];
+				creditor_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	creditor_search.makedialog(true);
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={

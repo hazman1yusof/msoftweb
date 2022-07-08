@@ -64,8 +64,26 @@ use Carbon\Carbon;
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.source','=',$request->source)
-                    ->where('ap.trantype','=',$request->trantype)
-                    ->orderBy('ap.idno','DESC');
+                    ->where('ap.trantype','=',$request->trantype);
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+
+        if(!empty($request->filterdate)){
+            $table = $table->where('ap.actdate','>',$request->filterdate[0]);
+            $table = $table->where('ap.actdate','<',$request->filterdate[1]);
+        }
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $this->fixPost2($request->searchCol);
+
+            $table = $table->Where(function ($table) use ($request,$searchCol_array) {
+                        $table->Where('ap.'.$searchCol_array[0],'like',$request->searchVal[0]);
+                    });
+        }
+
+        $table = $table->orderBy('ap.idno','DESC');
 
 
         $paginate = $table->paginate($request->rows);

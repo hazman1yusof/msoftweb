@@ -471,9 +471,9 @@ function removeValidationClass(array){
 	$.each(array,function(i,v){
 		$(v).removeClass( "valid" );
 		$(v).removeClass( "error" );
-		if ( $(v).closest("div").hasClass('has-success') ||  $(v).closest("div").hasClass('has-error') ){
-			$(v).closest("div").removeClass('has-success');
-			$(v).closest("div").removeClass('has-error');
+		if ( $(v).parents("div").hasClass('has-success') ||  $(v).parents("div").hasClass('has-error') ){
+			$(v).parents("div").removeClass('has-success');
+			$(v).parents("div").removeClass('has-error');
 		}
 	});
 }

@@ -61,10 +61,24 @@ i.fa {
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="creditor_text">
+								<div class='input-group'>
+									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH BY DATE</button>
+							</div>
 							
 						</div>
-		            </div>
+		         </div>
 				</div>
 
 				<!-- <div class="col-md-3" style="padding: 10px;">

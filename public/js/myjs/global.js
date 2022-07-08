@@ -158,16 +158,13 @@ var Global = function () {
 		
 		// dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
 		$('#tbl_item_select tbody').on('dblclick', 'tr', function () {	
-			$('#txt_' + type).removeClass('error myerror').addClass('valid');
-            setTimeout(function(type){
-                $('#txt_' + type).removeClass('error myerror').addClass('valid'); 
-            }, 500,type);
-			item = selecter.row( this ).data();				
-			//console.log("type2="+type + " item=" + item["description"]);
+            myerrorIt_only('#txt_' + type,false);
+            item = selecter.row( this ).data();
+            
 			$('#hid_' + type).val(item["code"]);
 			$('#txt_' + type).val(item["description"]);			
 			
-			$('#txt_' + type).change(); // <-- to activate onchange event if any
+			//$('#txt_' + type).change(); // <-- to activate onchange event if any
 			//$('#txt' + type).blur(); // <-- to activate onchange event if any
 				
 			$('#mdl_item_selector').modal('hide');
