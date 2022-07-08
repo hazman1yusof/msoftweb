@@ -68,7 +68,7 @@ i.fa {
 									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-								<span class="help-block"></span>
+								<span id="creditor_search_hb" class="help-block"></span>
 							</div>
 
 							<div id="actdate_text" class="form-inline" style="display:none">
