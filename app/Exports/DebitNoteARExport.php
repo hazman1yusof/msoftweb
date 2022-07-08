@@ -107,6 +107,15 @@ class DebitNoteARExport implements FromCollection, WithEvents, WithHeadings, Wit
                     ]
                 ];
 
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
+                    ]
+                ];
+
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
 
@@ -128,13 +137,17 @@ class DebitNoteARExport implements FromCollection, WithEvents, WithHeadings, Wit
                 $event->sheet->setCellValue('F3',$this->comp->address2);
                 $event->sheet->setCellValue('F4',$this->comp->address3);
                 $event->sheet->setCellValue('F5',$this->comp->address4);
-
+                $event->sheet->setCellValue('A7','COMPCODE');
+                $event->sheet->setCellValue('B7','PAYER CODE');
+                $event->sheet->setCellValue('C7','AMOUNT');
+                $event->sheet->setCellValue('D7','ENTRY DATE');
                 //Date::dateTimeToExcel($invoice->created_at);
 
                 ///// assign cell styles
                 $event->sheet->getStyle('A1:A3')->applyFromArray($style_datetime);
                 $event->sheet->getStyle('C1:C2')->applyFromArray($style_header);
                 $event->sheet->getStyle('F1:F5')->applyFromArray($style_address);
+                $event->sheet->getStyle('A7:I7')->applyFromArray($style_columnheader);
 
                 // $drawing = new Drawing();
                 // $drawing->setName('Logo');

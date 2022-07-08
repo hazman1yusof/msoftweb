@@ -40,7 +40,7 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
     public function collection()
     {
         $payer = DB::table('debtor.dbacthdr')
-                        ->select('compcode','payercode','amount','entrydate')
+                        ->select('compcode','payercode','entrydate','auditno','amount')
                         ->whereBetween('entrydate',[$this->datefr,$this->dateto])
                         ->get();
 
@@ -50,7 +50,7 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
     public function headings(): array
     {
         return [
-            'compcode','payercode','amount','entrydate'
+            'compcode','payercode','entrydate','auditno','amount'
         ];
     }
 
@@ -60,7 +60,8 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
             'A' => 15,
             'B' => 15,    
             'C' => 40,
-            'D' => 15,          
+            'D' => 15,       
+            'E' => 30, 
         ];
     }
 
@@ -68,7 +69,7 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
     {
         return [
 
-           'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,       
+           'C' => NumberFormat::FORMAT_DATE_DDMMYYYY,       
         ];
     }
 
@@ -105,6 +106,15 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
                     ]
                 ];
 
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
+                    ]
+                ];
+
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
 
@@ -126,6 +136,11 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
                 $event->sheet->setCellValue('F3',$this->comp->address2);
                 $event->sheet->setCellValue('F4',$this->comp->address3);
                 $event->sheet->setCellValue('F5',$this->comp->address4);
+                $event->sheet->setCellValue('A7','COMPCODE');
+                $event->sheet->setCellValue('B7','PAYER CODE');
+                $event->sheet->setCellValue('C7','DOCUMENT DATE');
+                $event->sheet->setCellValue('D7','CREDIT NO');
+                $event->sheet->setCellValue('E7','AMOUNT (RM)');
 
                 //Date::dateTimeToExcel($invoice->created_at);
 
@@ -133,6 +148,7 @@ class CreditNoteARExport implements FromCollection, WithEvents, WithHeadings, Wi
                 $event->sheet->getStyle('A1:A3')->applyFromArray($style_datetime);
                 $event->sheet->getStyle('C1:C2')->applyFromArray($style_header);
                 $event->sheet->getStyle('F1:F5')->applyFromArray($style_address);
+                $event->sheet->getStyle('A7:E7')->applyFromArray($style_columnheader);
 
                 // $drawing = new Drawing();
                 // $drawing->setName('Logo');

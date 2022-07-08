@@ -38,18 +38,17 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
     {
         $debtormast = DB::table('debtor.debtormast')
                         ->select([
-                            'compcode','debtorcode','name',
-                            DB::raw('CONCAT_WS("\n",debtormast.address1, debtormast.address2, debtormast.address3, debtormast.address4) AS cust_address')
+                            'compcode','debtorcode','name','debtortype','depamt','actdebccode','actdebglacc','depccode','depglacc'
+                            //DB::raw('CONCAT_WS("\n",debtormast.address1, debtormast.address2, debtormast.address3, debtormast.address4) AS cust_address')
                         ])
                         ->get();
         return $debtormast;
-        
     }
 
     public function headings(): array
     {
         return [
-            'compcode','debtorcode','name','cust_address'
+            'compcode','debtorcode','name','debtortype','depamt','actdebccode','actdebglacc','depccode','depglacc'
         ];
     }
 
@@ -59,11 +58,12 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
             'A' => 15,
             'B' => 15,    
             'C' => 30,
-            'D' => 35,   
-            'E' => 20,
-            'F' => 20,   
-            'G' => 40,         
-            'H' => 40,      
+            'D' => 23,   
+            'E' => 23,
+            'F' => 23,   
+            'G' => 23,         
+            'H' => 23,
+            'I' => 23,       
         ];
     }
 
@@ -124,23 +124,28 @@ class DebtorMasterExport implements FromCollection,WithEvents,WithHeadings,WithC
                 $event->sheet->setCellValue('B3', session('username'));
                 $event->sheet->setCellValue('D1','DEBTOR MASTER REPORT');
                // $event->sheet->setCellValue('D2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                $event->sheet->setCellValue('G1',$this->comp->name);
-                $event->sheet->setCellValue('G2',$this->comp->address1);
-                $event->sheet->setCellValue('G3',$this->comp->address2);
-                $event->sheet->setCellValue('G4',$this->comp->address3);
-                $event->sheet->setCellValue('G5',$this->comp->address4);
+                $event->sheet->setCellValue('I1',$this->comp->name);
+                $event->sheet->setCellValue('I2',$this->comp->address1);
+                $event->sheet->setCellValue('I3',$this->comp->address2);
+                $event->sheet->setCellValue('I4',$this->comp->address3);
+                $event->sheet->setCellValue('I5',$this->comp->address4);
                 $event->sheet->setCellValue('A7','COMPCODE');
                 $event->sheet->setCellValue('B7','DEBTOR CODE');
                 $event->sheet->setCellValue('C7','NAME');
-                $event->sheet->setCellValue('D7','CUSTOMER ADDRESS');
+                $event->sheet->setCellValue('D7','FINANCIAL CLASS');
+                $event->sheet->setCellValue('E7','DEPOSIT AMOUNT (RM)');
+                $event->sheet->setCellValue('F7','ACTUAL COST CENTER');
+                $event->sheet->setCellValue('G7','ACTUAL GL ACCOUNT');
+                $event->sheet->setCellValue('H7','DEPOSIT COST CENTER');
+                $event->sheet->setCellValue('I7','DEPOSIT GL ACCOUNT');
 
                 ///// assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
-                $event->sheet->getStyle('G1:G5')->applyFromArray($style_address_header);
-                $event->sheet->getStyle('A7:G7')->applyFromArray($style_columnheader);
+                $event->sheet->getStyle('I1:I5')->applyFromArray($style_address_header);
+                $event->sheet->getStyle('A7:I7')->applyFromArray($style_columnheader);
 
                 ////// wraptext 
-                $event->sheet->getStyle('D:G')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('I')->getAlignment()->setWrapText(true);
                 $event->sheet->getStyle('C')->getAlignment()->setWrapText(true);
 
                 ////// merge cells for address
