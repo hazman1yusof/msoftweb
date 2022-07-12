@@ -226,7 +226,7 @@ $(document).ready(function () {
 			{ label: 'Outstanding<br/>Amount', name: 'apacthdr_outamount', width: 20 , classes: 'wrap text-uppercase',formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
-			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase',canSearch: true, hidden:true},
 			{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
@@ -598,7 +598,7 @@ $(document).ready(function () {
 		if($('#Scol').val()=='apacthdr_actdate'){
 			$("input[name='Stext'], #creditor_text").hide("fast");
 			$("#actdate_text").show("fast");
-		} else if($('#Scol').val() == 'apacthdr_suppcode'){
+		} else if($('#Scol').val() == 'apacthdr_suppcode' || $('#Scol').val() == 'apacthdr_payto'){
 			$("input[name='Stext'],#actdate_text").hide("fast");
 			$("#creditor_text").show("fast");
 			creditor_search.on();
@@ -645,8 +645,13 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + creditor_search.gridname).suppcode;
 
-				urlParam.searchCol=["delordhd_suppcode"];
-				urlParam.searchVal=[data];
+				if($('#Scol').val() == 'apacthdr_suppcode'){
+					urlParam.searchCol=["ap.suppcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'apacthdr_payto'){
+					urlParam.searchCol=["ap.payto"];
+					urlParam.searchVal=[data];
+				}
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){

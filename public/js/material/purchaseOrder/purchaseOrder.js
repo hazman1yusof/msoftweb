@@ -574,6 +574,7 @@ $(document).ready(function () {
 						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
 					}
 				});
+				searchChange();
 			}
 		});
 	}
@@ -584,6 +585,7 @@ $(document).ready(function () {
 	$('#trandept').on('change', searchChange);
 
 	function whenchangetodate() {
+		supplierkatdepan.off();
 		if ($('#Scol').val() == 'purordhd_purdate') {
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
@@ -593,6 +595,7 @@ $(document).ready(function () {
 		} else if($('#Scol').val() == 'supplier_name'){
 			$("input[name='Stext']").hide("fast");
 			$("#tunjukname").show("fast");
+			supplierkatdepan.on();
 		} else {
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
@@ -611,7 +614,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','A']
+						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
@@ -621,21 +624,21 @@ $(document).ready(function () {
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title: "Select Purchase Department",
 			open: function () {
 				dialog_suppcode.urlParam.filterCol = ['recstatus'];
 				dialog_suppcode.urlParam.filterVal = ['ACTIVE'];
 			}
-		}
+		},'urlParam','radio','tab'
 	);
 	supplierkatdepan.makedialog();
 
@@ -653,7 +656,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		}, { fct: ['purordhd.compcode', 'purordhd.recstatus', 'purordhd.prdept'], fv: [], fc: [] });
+		}, { fct: ['purordhd.compcode', 'purordhd.recstatus', 'purordhd.prdept'], fv:[], fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;

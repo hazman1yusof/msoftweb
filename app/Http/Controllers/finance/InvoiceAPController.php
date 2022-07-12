@@ -76,10 +76,8 @@ use Carbon\Carbon;
         }
 
         if(!empty($request->searchCol)){
-            $searchCol_array = $this->fixPost2($request->searchCol);
-
-            $table = $table->Where(function ($table) use ($request,$searchCol_array) {
-                        $table->Where('ap.'.$searchCol_array[0],'like',$request->searchVal[0]);
+            $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
         }
 
