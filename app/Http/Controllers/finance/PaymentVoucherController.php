@@ -417,9 +417,9 @@ use PDF;
                 $apalloc = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
                     ->where('unit','=',session('unit'))
-                    ->where('source','=', $apacthdr->source)
-                    ->where('trantype','=', $apacthdr->trantype)
-                    ->where('auditno','=', $apacthdr->auditno)
+                    ->where('docsource','=', $apacthdr->source)
+                    ->where('doctrantype','=', $apacthdr->trantype)
+                    ->where('docauditno','=', $apacthdr->auditno)
                     ->update([
                         'allocdate' => $idno_obj['date'],
                         'recstatus' => 'POSTED',

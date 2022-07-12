@@ -217,17 +217,18 @@ $(document).ready(function () {
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'Document<br/>Type', name: 'apacthdr_doctype', width: 20, classes: 'wrap text-uppercase', hidden:false},
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden:true},
-			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 40, classes: 'wrap text-uppercase', checked: true, hidden:true},
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase',canSearch: true, hidden:true},
+			{ label: 'Document<br/>Date', name: 'apacthdr_actdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post<br/>Date', name: 'apacthdr_recdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document No', name: 'apacthdr_document', width: 30, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 20, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
 			{ label: 'outamt', name: 'apactdtl_outamt', width: 25 , classes: 'wrap text-uppercase',hidden:true,},
-			{ label: 'Outstanding<br/>Amount', name: 'apacthdr_outamount', width: 20 , classes: 'wrap text-uppercase',formatter:'currency'},
+			{ label: 'Outstanding<br/>Amount', name: 'apacthdr_outamount', width: 25 , classes: 'wrap text-uppercase',formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
+			{ label: 'Last Payment<br/>Date', name: 'apalloc_allocdate', width: 25, classes: 'wrap text-uppercase',formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
-			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase',canSearch: true, hidden:true},
-			{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -243,8 +244,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'apacthdr_idno',
-		sortorder:'desc',
+		// sortname:'apacthdr_idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -252,11 +253,9 @@ $(document).ready(function () {
 
 		loadComplete: function(){
 			if ($('#apacthdr_trantype').val() == 'DN') {
-				$('#jqGrid3_c').hide();
-				$('#gridDo_c').hide();
+				$('#jqGrid3_c,#gridDo_c,#gridPV_c').hide();
 			} else {
-				$('#jqGrid3_c').show();
-				$('#gridDo_c').show();
+				$('#jqGrid3_c,#gridDo_c,#gridPV_c').show();
 			}
 		},
 		onSelectRow:function(rowid, selected){
@@ -293,11 +292,10 @@ $(document).ready(function () {
 			$('#apacthdr_idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			urlparampv.idno=selrowData("#jqGrid").apacthdr_idno;
 			refreshGrid("#jqGrid3",urlParam2);
+			refreshGrid("#jqgridpv",urlparampv);
 			populate_form(selrowData("#jqGrid"));
-			//empty_form();
-
-			refreshGrid("#jqGrid3",urlParam2);
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -328,7 +326,15 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();
+
+			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
+				$("#creditor_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#creditor_search_hb').text('');
+				removeValidationClass(['#creditor_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
 
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
@@ -593,7 +599,8 @@ $(document).ready(function () {
 
 	function whenchangetodate() {
 		creditor_search.off();
-		$('#creditor_search,#creditor_search_hb,#actdate_from,#actdate_to').val('');
+		$('#creditor_search,#actdate_from,#actdate_to').val('');
+		$('#creditor_search_hb').text('');
 		removeValidationClass(['#creditor_search']);
 		if($('#Scol').val()=='apacthdr_actdate'){
 			$("input[name='Stext'], #creditor_text").hide("fast");
@@ -672,6 +679,16 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	creditor_search.makedialog(true);
+	$('#creditor_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#creditor_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','creditor_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
+	}
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
@@ -1214,6 +1231,47 @@ $(document).ready(function () {
 
 	jqgrid_label_align_right("#jqGrid3");
 
+	////////////////////////////////////////////////jqgridpv//////////////////////////////////////////////
+
+	var urlparampv ={
+		action:'get_pv_detail',
+		url:'./invoiceAP/table',
+		idno:''
+	}
+
+	$("#jqgridpv").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
+			{ label: 'Creditor', name: 'suppcode', width: 60, classes: 'wrap'},
+			{ label: 'Document Date', name: 'actdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
+			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'O/S Amount', name: 'outamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency', hidden:true},
+			{ label: 'PV Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Post Date', name: 'recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		],
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		pager: "#jqGridPagerpv",
+		loadComplete: function(data){
+			setjqgridHeight(data,'jqgridpv');
+		},
+		onSelectRow: function(data, rowid, selected) {
+		},
+
+		gridComplete: function(){
+			// fdl.set_array().reset();
+		},
+	});
+
+	jqgrid_label_align_right("#jqgridpv");
+
 	///////////////////////////////////parameter for grid do///////////////////////////////////////////////////////////////
 	var urlParam_gridDo={
 		action:'get_table_dtl',
@@ -1696,6 +1754,10 @@ $(document).ready(function () {
 
 	$("#gridDo_panel").on("show.bs.collapse", function(){
 		$("#gridDo").jqGrid ('setGridWidth', Math.floor($("#gridDo_c")[0].offsetWidth-$("#gridDo_c")[0].offsetLeft-28));
+	});
+
+	$("#gridPV_panel").on("show.bs.collapse", function(){
+		$("#jqgridpv").jqGrid ('setGridWidth', Math.floor($("#gridPV_c")[0].offsetWidth-$("#gridPV_c")[0].offsetLeft-28));
 	});
 
 	function init_jq2(){

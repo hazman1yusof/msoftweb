@@ -30,6 +30,8 @@ use Carbon\Carbon;
                 return $this->document($request);
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_pv_detail':
+                return $this->get_pv_detail($request);
             default:
                 return 'error happen..';
         }
@@ -60,7 +62,7 @@ use Carbon\Carbon;
                         'ap.upddate AS apacthdr_upddate',
                         'ap.source AS apacthdr_source',
                         'ap.idno AS apacthdr_idno',
-                        'ap.unit AS apacthdr_unit',
+                        'ap.unit AS apacthdr_unit'
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.source','=',$request->source)
@@ -81,7 +83,22 @@ use Carbon\Carbon;
                     });
         }
 
-        $table = $table->orderBy('ap.idno','DESC');
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('ap.idno','DESC');
+        }
 
 
         $paginate = $table->paginate($request->rows);
@@ -96,6 +113,20 @@ use Carbon\Carbon;
                 $value->apactdtl_outamt = $apactdtl->sum('amount');
             }else{
                 $value->apactdtl_outamt = $value->apacthdr_outamount;
+            }
+
+            $apalloc = DB::table('finance.apalloc')
+                        ->select('allocdate')
+                        ->where('refsource','=',$value->apacthdr_source)
+                        ->where('reftrantype','=',$value->apacthdr_trantype)
+                        ->where('refauditno','=',$value->apacthdr_auditno)
+                        ->where('recstatus','!=','CANCELLED')
+                        ->orderBy('idno', 'desc');
+
+            if($apalloc->exists()){
+                $value->apalloc_allocdate = $apalloc->first()->allocdate;
+            }else{
+                $value->apalloc_allocdate = '';
             }
         }
 
@@ -184,6 +215,52 @@ use Carbon\Carbon;
 
         return json_encode($responce);
 
+    }
+
+    public function get_pv_detail(Request $request){
+
+        $invoice = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
+
+        $table = DB::table('finance.apalloc as al')
+                    ->select(
+                        'ap.auditno',
+                        'ap.trantype',
+                        'ap.suppcode',
+                        'ap.actdate',
+                        'ap.document',
+                        'ap.recstatus',
+                        'ap.recdate',
+                        'ap.amount',
+                        'al.allocamount',
+                        'al.outamount',
+                    )
+                    ->join('finance.apacthdr as ap', function($join) use ($request){
+                                $join = $join->on('al.docsource', '=', 'ap.source')
+                                    ->on('al.doctrantype', '=', 'ap.trantype')
+                                    ->on('al.docauditno', '=', 'ap.auditno');
+                    })
+                    ->where('al.compcode','=',session('compcode'))
+                    ->where('al.refsource','=',$invoice->source)
+                    ->where('al.reftrantype','=',$invoice->trantype)
+                    ->where('al.refauditno','=',$invoice->auditno)
+                    ->orderBy('al.idno','DESC');
+
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
     }
 
     public function form(Request $request)

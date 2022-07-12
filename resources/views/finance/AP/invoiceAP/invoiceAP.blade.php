@@ -74,7 +74,7 @@ i.fa {
 							<div id="actdate_text" class="form-inline" style="display:none">
 								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
 								TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH BY DATE</button>
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
 							</div>
 							
 						</div>
@@ -203,7 +203,26 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div>           
+		</div>     
+
+		<div class="panel panel-default" style="position: relative;" id="gridPV_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridPV_panel" id="panel_gridpv">
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>PV Detail</h5>
+				</div>
+			</div>
+			<div id="gridPV_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqgridpv" class="table table-striped"></table>
+						<div id="jqGridPagerpv"></div>
+					</div>
+				</div>
+			</div>	
+		</div>       
     </div>
 	
 	<!-- ***************End Search + table ********************* -->

@@ -659,6 +659,7 @@ function modal(){
 
 function dateFormatter(cellvalue, options, rowObject){
 	if(cellvalue == null) return '';
+	if(cellvalue.trim() == '') return '';
 	return moment(cellvalue).format("DD/MM/YYYY");
 }
 
