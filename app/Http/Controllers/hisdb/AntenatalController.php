@@ -34,6 +34,8 @@ class AntenatalController extends defaultController
                 return $this->ObstetricsUltrasound($request);break;
             case 'get_table_ultrasound':
                 return $this->get_table_ultrasound($request);break;
+            case 'get_table_pregnancy':
+                return $this->get_table_pregnancy($request);break;
             default:
                 return 'error happen..';
         }
@@ -43,7 +45,8 @@ class AntenatalController extends defaultController
         $table = DB::table('nursing.pregnancy_episode')
                             ->where('compcode','=', session('compcode'))
                             ->where('mrn','=', $request->filterVal[0])
-                            ->where('episno','=', $request->filterVal[1]);
+                            ->where('episno','=', $request->filterVal[1])
+                            ->where('pregnan_idno','=', $request->filterVal[2]);
 
         $paginate = $table->paginate($request->rows);
 
@@ -65,7 +68,8 @@ class AntenatalController extends defaultController
     public function ObstetricsUltrasound(Request $request){
         $table = DB::table('nursing.antenatal_ultrasound')
                             ->where('compcode','=', session('compcode'))
-                            ->where('mrn','=', $request->filterVal[0]);
+                            ->where('mrn','=', $request->filterVal[0])
+                            ->where('pregnan_idno','=', $request->filterVal[1]);
 
         $paginate = $table->paginate($request->rows);
 
@@ -100,6 +104,22 @@ class AntenatalController extends defaultController
         $responce->rows = $table->first();
         $responce->sql_query = $this->getQueries($table);
         
+        return json_encode($responce);
+
+    }
+
+    public function get_table_pregnancy(Request $request){
+
+       $pregnancy_obj = DB::table('nursing.pregnancy')
+                    ->where('idno','=',$request->idno);
+
+        $responce = new stdClass();
+
+        if($pregnancy_obj->exists()){
+            $pregnancy_obj = $pregnancy_obj->first();
+            $responce->pregnancy = $pregnancy_obj;
+        }
+
         return json_encode($responce);
 
     }
@@ -372,8 +392,8 @@ class AntenatalController extends defaultController
 
         try {
 
-            DB::table('nursing.pregnancy')
-                    ->insert([
+            $idno = DB::table('nursing.pregnancy')
+                    ->insertGetId([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_pregnancy,
                         'episno' => $request->episno_pregnancy,
@@ -389,8 +409,22 @@ class AntenatalController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+
             
             DB::commit();
+            $responce = new stdClass();
+
+            $pregnancy_page = DB::table('nursing.pregnancy')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn_pregnancy)
+                    ->orderBy('idno', 'ASC');
+
+            if($pregnancy_page->exists()){
+                $responce->pregnancy_page = $pregnancy_page->paginate();
+            }
+
+            $responce->idno = $idno;
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -405,12 +439,16 @@ class AntenatalController extends defaultController
 
         try {
 
+            $idno=null;
+
             $pregnancy = DB::table('nursing.pregnancy')
                 ->where('mrn','=',$request->mrn_pregnancy)
                 ->where('episno','=',$request->episno_pregnancy)
+                ->where('idno','=',$request->pregnan_idno)
                 ->where('compcode','=',session('compcode'));
 
             if($pregnancy->exists()){
+                $idno = $request->pregnan_idno;
                 $pregnancy->update([
                         'gravida' => $request->gravida,
                         'para' => $request->para,
@@ -423,29 +461,39 @@ class AntenatalController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }else{
-                DB::table('nursing.pregnancy')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_pregnancy,
-                        'episno' => $request->episno_pregnancy,
-                        'gravida' => $request->gravida,
-                        'para' => $request->para,
-                        'abortus' => $request->abortus,
-                        'lmp' => $request->lmp,
-                        'edd' => $request->edd,
-                        'corrected_edd' => $request->corrected_edd,
-                        'deliverydate' => $request->deliverydate,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        'lastuser'  => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+                $idno = DB::table('nursing.pregnancy')
+                        ->insertGetId([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn_pregnancy,
+                            'episno' => $request->episno_pregnancy,
+                            'gravida' => $request->gravida,
+                            'para' => $request->para,
+                            'abortus' => $request->abortus,
+                            'lmp' => $request->lmp,
+                            'edd' => $request->edd,
+                            'corrected_edd' => $request->corrected_edd,
+                            'deliverydate' => $request->deliverydate,
+                            'adduser'  => session('username'),
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'lastuser'  => session('username'),
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        ]);
             }
 
-            $queries = DB::getQueryLog();
-            // dump($queries);
-
             DB::commit();
+            $responce = new stdClass();
+
+            $pregnancy_page = DB::table('nursing.pregnancy')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn_pregnancy)
+                    ->orderBy('idno', 'ASC');
+
+            if($pregnancy_page->exists()){
+                $responce->pregnancy_page = $pregnancy_page->paginate();
+            }
+
+            $responce->idno = $idno;
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -830,34 +878,32 @@ class AntenatalController extends defaultController
 
     public function get_table_antenatal(Request $request){
         
+        $pregnancy_page = DB::table('nursing.pregnancy')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->orderBy('idno', 'ASC');
+
         $pregnancy_obj = DB::table('nursing.pregnancy')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
-                    ->where('episno','=',$request->episno);
+                    ->orderBy('idno', 'DESC');
         
         $antenatal_obj = DB::table('nursing.antenatal')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$request->mrn);
-
-        $antenatal_ultrasound_obj = DB::table('nursing.antenatal_ultrasound')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
 
         $responce = new stdClass();
 
         if($pregnancy_obj->exists()){
+            $paginate_preg = $pregnancy_page->paginate();
             $pregnancy_obj = $pregnancy_obj->first();
             $responce->pregnancy = $pregnancy_obj;
+            $responce->pregnancy_page = $paginate_preg;
         }
 
         if($antenatal_obj->exists()){
             $antenatal_obj = $antenatal_obj->first();
             $responce->antenatal = $antenatal_obj;
-        }
-
-        if($antenatal_ultrasound_obj->exists()){
-            $antenatal_ultrasound_obj = $antenatal_ultrasound_obj->first();
-            $responce->antenatal_ultrasound = $antenatal_ultrasound_obj;
         }
 
         return json_encode($responce);
@@ -939,6 +985,7 @@ class AntenatalController extends defaultController
                 ->insert([  
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
+                    'pregnan_idno' => $request->pregnan_idno,
                     'date' => $this->turn_date($request->date),
                     'poa' => $request->poa,
                     'pog' => $request->pog,
@@ -1038,18 +1085,12 @@ class AntenatalController extends defaultController
 
         try {
 
-            $pregnan_idno = DB::table('nursing.pregnancy')
-                    ->where('compcode','=', session('compcode'))
-                    ->where('mrn','=', $request->mrn)
-                    ->where('episno','=', $request->episno)
-                    ->first();
-
             DB::table('nursing.pregnancy_episode')
                 ->insert([  
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'pregnan_idno' => $pregnan_idno->idno,
+                    'pregnan_idno' => $request->pregnan_idno,
                     'date' => $this->turn_date($request->date),
                     'report' => $request->report,
                     'poa_pog' => $request->poa_pog,

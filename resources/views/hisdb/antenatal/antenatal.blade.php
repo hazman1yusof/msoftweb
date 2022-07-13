@@ -473,6 +473,7 @@
 										<form class='form-horizontal' style='width:99%' id='formPregnancy'>
 											<input id="mrn_pregnancy" name="mrn_pregnancy" type="hidden">
 											<input id="episno_pregnancy" name="episno_pregnancy" type="hidden">
+											<input id="pregnan_idno" name="pregnan_idno" type="hidden">
 
 											<div class='col-md-4' style="padding-right: 0px;">
 												<div class="panel panel-info">
@@ -529,20 +530,17 @@
 												</div>
 											</div>
 
-											<nav aria-label="Page navigation">
+
+											<nav aria-label="Page navigation" id="preg_paginate">
 											  <ul class="pagination">
 											    <li>
-											      <a href="#" aria-label="Previous">
+											      <a aria-label="Previous">
 											        <span aria-hidden="true">&laquo;</span>
 											      </a>
 											    </li>
 											    <li><a>1</a></li>
-											    <li><a>2</a></li>
-											    <li><a>3</a></li>
-											    <li><a>4</a></li>
-											    <li><a>5</a></li>
 											    <li>
-											      <a href="#" aria-label="Next">
+											      <a aria-label="Next">
 											        <span aria-hidden="true">&raquo;</span>
 											      </a>
 											    </li>
