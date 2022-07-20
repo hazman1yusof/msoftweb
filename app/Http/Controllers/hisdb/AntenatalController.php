@@ -51,7 +51,9 @@ class AntenatalController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
-            $value->bp_ = $value->bp_sys1.' / '.$value->bp_dias2;
+            if((!empty($value->bp_sys1)) || (!empty($value->bp_dias2))){
+                $value->bp_ = $value->bp_sys1.' / '.$value->bp_dias2;
+            }
         }
 
         $responce = new stdClass();
@@ -74,13 +76,33 @@ class AntenatalController extends defaultController
         $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
-            $value->crl_ = $value->crl.' = '.$value->crl_w.' + '.$value->crl_d;
-            $value->bpd_ = $value->bpd.' = '.$value->bpd_w.' + '.$value->bpd_d;
-            $value->hc_ = $value->hc.' = '.$value->hc_w.' + '.$value->hc_d;
-            $value->ac_ = $value->ac.' = '.$value->ac_w.' + '.$value->ac_d;
-            $value->fl_ = $value->fl.' = '.$value->fl_w.' + '.$value->fl_d;
-            $value->atd_ = $value->atd.' = '.$value->atd_w.' + '.$value->atd_d;
-            $value->ald_ = $value->ald.' = '.$value->ald_w.' + '.$value->ald_d;
+            if((!empty($value->crl_w)) || (!empty($value->crl_d))){
+                $value->crl_ = $value->crl.' = '.$value->crl_w.' + '.$value->crl_d;
+            }
+
+            if((!empty($value->bpd_w)) || (!empty($value->bpd_d))){
+                $value->bpd_ = $value->bpd.' = '.$value->bpd_w.' + '.$value->bpd_d;
+            }
+
+            if((!empty($value->hc_w)) || (!empty($value->hc_d))){
+                $value->hc_ = $value->hc.' = '.$value->hc_w.' + '.$value->hc_d;
+            }
+
+            if((!empty($value->ac_w)) || (!empty($value->ac_d))){
+                $value->ac_ = $value->ac.' = '.$value->ac_w.' + '.$value->ac_d;
+            }
+
+            if((!empty($value->fl_w)) || (!empty($value->fl_d))){
+                $value->fl_ = $value->fl.' = '.$value->fl_w.' + '.$value->fl_d;
+            }
+
+            if((!empty($value->atd_w)) || (!empty($value->atd_d))){
+                $value->atd_ = $value->atd.' = '.$value->atd_w.' + '.$value->atd_d;
+            }
+
+            if((!empty($value->ald_w)) || (!empty($value->ald_d))){
+                $value->ald_ = $value->ald.' = '.$value->ald_w.' + '.$value->ald_d;
+            }
         }
 
         $responce = new stdClass();
@@ -446,6 +468,12 @@ class AntenatalController extends defaultController
                 ->where('episno','=',$request->episno_pregnancy)
                 ->where('idno','=',$request->pregnan_idno)
                 ->where('compcode','=',session('compcode'));
+
+            if (!empty($request->deliverydate)) {
+                $pregnancy->update([
+                        'recstatus' => 'DELIVERED',
+                    ]);
+            }
 
             if($pregnancy->exists()){
                 $idno = $request->pregnan_idno;

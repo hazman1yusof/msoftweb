@@ -43,7 +43,6 @@ $(document).ready(function () {
 		button_state_antenatal('wait_antenatal');
 		enableForm('#formAntenatal');
 		rdonly('#formAntenatal');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -51,7 +50,6 @@ $(document).ready(function () {
 		button_state_antenatal('wait_antenatal');
 		enableForm('#formAntenatal');
 		rdonly('#formAntenatal');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -72,18 +70,16 @@ $(document).ready(function () {
 	$("#cancel_antenatal").click(function(){
 		disableForm('#formAntenatal');
 		button_state_antenatal($(this).data('oper'));
-		// dialog_mrn_edit.off();
 
 	});
 
 	// formPregnancy
 	$("#new_pregnancy").click(function(){
-		emptyFormdata(errorField,"#formPregnancy");
+		emptyFormdata(errorField,"#formPregnancy",except=['#formPregnancy input[name=mrn_pregnancy]','#formPregnancy input[name=episno_pregnancy]']);
 		button_state_antenatal('wait_pregnancy');
 		$("#cancel_pregnancy").data('oper','add_pregnancy');
 		enableForm('#formPregnancy');
 		rdonly('#formPregnancy');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -91,7 +87,6 @@ $(document).ready(function () {
 		button_state_antenatal('wait_pregnancy');
 		enableForm('#formPregnancy');
 		rdonly('#formPregnancy');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -104,7 +99,6 @@ $(document).ready(function () {
 
 				populate_pregnancy(data.idno);
 				preg_paginate(data.pregnancy_page);
-				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formPregnancy');
@@ -116,7 +110,6 @@ $(document).ready(function () {
 	$("#cancel_pregnancy").click(function(){
 		disableForm('#formPregnancy');
 		button_state_antenatal($(this).data('oper'));
-		// dialog_mrn_edit.off();
 
 	});
 
@@ -125,7 +118,6 @@ $(document).ready(function () {
 		button_state_antenatal('wait_ultrasound');
 		enableForm('#formUltrasound');
 		rdonly('#formUltrasound');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -133,7 +125,6 @@ $(document).ready(function () {
 		button_state_antenatal('wait_ultrasound');
 		enableForm('#formUltrasound');
 		rdonly('#formUltrasound');
-		// dialog_mrn_edit.on();
 		
 	});
 
@@ -143,7 +134,6 @@ $(document).ready(function () {
 			saveForm_ultrasound(function(){
 				$("#cancel_ultrasound").data('oper','edit_ultrasound');
 				$("#cancel_ultrasound").click();
-				// $("#jqGridPagerRefresh").click();
 			});
 		}else{
 			enableForm('#formUltrasound');
@@ -155,7 +145,6 @@ $(document).ready(function () {
 	$("#cancel_ultrasound").click(function(){
 		disableForm('#formUltrasound');
 		button_state_antenatal($(this).data('oper'));
-		// dialog_mrn_edit.off();
 
 	});
 
@@ -258,7 +247,6 @@ $(document).ready(function () {
 					value:"M:Male;F:Female;U:Unknown"
 				}
 			},
-			// { label: 'Breast Fed', name: 'breastfed', classes: 'wrap', width: 100, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Breast Fed', name: 'breastfed', width: 100, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 					value:"Yes:Yes;No:No"
@@ -412,37 +400,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_add_PrevObstetrics
 		},
 		editParams: myEditOptions_edit_PrevObstetrics
-	})
-	// .jqGrid('navButtonAdd', "#jqGridPagerPrevObstetrics", {
-	// 	id: "jqGridPagerDelete",
-	// 	caption: "", cursor: "pointer", position: "last",
-	// 	buttonicon: "glyphicon glyphicon-trash",
-	// 	title: "Delete Selected Row",
-	// 	onClickButton: function () {
-	// 		selRowId = $("#jqGridPrevObstetrics").jqGrid('getGridParam', 'selrow');
-	// 		if (!selRowId) {
-	// 			alert('Please select row');
-	// 		} else {
-	// 			var result = confirm("Are you sure you want to delete this row?");
-	// 			if (result == true) {
-	// 				param = {
-	// 					_token: $("#csrf_token").val(),
-	// 					action: 'prevObstetrics_save',
-	// 					idno: selrowData('#jqGridPrevObstetrics').idno,
-	// 				}
-	// 				$.post( "./antenatal/form?"+$.param(param),{oper:'del'}, function( data ){
-	// 				}).fail(function (data) {
-	// 					//////////////////errorText(dialog,data.responseText);
-	// 				}).done(function (data) {
-	// 					refreshGrid("#jqGridPrevObstetrics", urlParam_PrevObstetrics);
-	// 				});
-	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-	// 			}
-	// 		}
-	// 	},
-	// })
-	.jqGrid('navButtonAdd', "#jqGridPagerPrevObstetrics", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerPrevObstetrics", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
@@ -689,37 +647,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_add_CurrPregnancy
 		},
 		editParams: myEditOptions_edit_CurrPregnancy
-	})
-	// .jqGrid('navButtonAdd', "#jqGridPagerCurrPregnancy", {
-	// 	id: "jqGridPagerDelete",
-	// 	caption: "", cursor: "pointer", position: "last",
-	// 	buttonicon: "glyphicon glyphicon-trash",
-	// 	title: "Delete Selected Row",
-	// 	onClickButton: function () {
-	// 		selRowId = $("#jqGridCurrPregnancy").jqGrid('getGridParam', 'selrow');
-	// 		if (!selRowId) {
-	// 			alert('Please select row');
-	// 		} else {
-	// 			var result = confirm("Are you sure you want to delete this row?");
-	// 			if (result == true) {
-	// 				param = {
-	// 					_token: $("#csrf_token").val(),
-	// 					action: 'currPregnancy_save',
-	// 					idno: selrowData('#jqGridCurrPregnancy').idno,
-	// 				}
-	// 				$.post( "./antenatal/form?"+$.param(param),{oper:'del'}, function( data ){
-	// 				}).fail(function (data) {
-	// 					//////////////////errorText(dialog,data.responseText);
-	// 				}).done(function (data) {
-	// 					refreshGrid("#jqGridCurrPregnancy", urlParam_CurrPregnancy);
-	// 				});
-	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-	// 			}
-	// 		}
-	// 	},
-	// })
-	.jqGrid('navButtonAdd', "#jqGridPagerCurrPregnancy", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerCurrPregnancy", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
@@ -1001,37 +929,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_add_ObstetricsUltrasound
 		},
 		editParams: myEditOptions_edit_ObstetricsUltrasound
-	})
-	// .jqGrid('navButtonAdd', "#jqGridPagerObstetricsUltrasound", {
-	// 	id: "jqGridPagerDelete",
-	// 	caption: "", cursor: "pointer", position: "last",
-	// 	buttonicon: "glyphicon glyphicon-trash",
-	// 	title: "Delete Selected Row",
-	// 	onClickButton: function () {
-	// 		selRowId = $("#jqGridObstetricsUltrasound").jqGrid('getGridParam', 'selrow');
-	// 		if (!selRowId) {
-	// 			alert('Please select row');
-	// 		} else {
-	// 			var result = confirm("Are you sure you want to delete this row?");
-	// 			if (result == true) {
-	// 				param = {
-	// 					_token: $("#csrf_token").val(),
-	// 					action: 'obstetricsUltrasound_save',
-	// 					idno: selrowData('#jqGridObstetricsUltrasound').idno,
-	// 				}
-	// 				$.post( "./antenatal/form?"+$.param(param),{oper:'del'}, function( data ){
-	// 				}).fail(function (data) {
-	// 					//////////////////errorText(dialog,data.responseText);
-	// 				}).done(function (data) {
-	// 					refreshGrid("#jqGridObstetricsUltrasound", urlParam_ObstetricsUltrasound);
-	// 				});
-	// 			}else{
-	// 				$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-	// 			}
-	// 		}
-	// 	},
-	// })
-	.jqGrid('navButtonAdd', "#jqGridPagerObstetricsUltrasound", {
+	}).jqGrid('navButtonAdd', "#jqGridPagerObstetricsUltrasound", {
 		id: "jqGridPagerRefresh",
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
@@ -1782,8 +1680,26 @@ function populate_antenatal(obj){
     		}
 
     		if(!$.isEmptyObject(data.pregnancy)){
+				if(!$.isEmptyObject(data.pregnancy.recstatus)){
+					button_state_antenatal('empty_pregnancy');
+					button_state_antenatal('empty_ultrasound');
+	
+					// to hide pager
+					$('#jqGridPagerCurrPregnancy').html('');
+					$('#jqGridPagerObstetricsUltrasound').html('');
+						
+					// $("#jqGridCurrPregnancy_iladd,#jqGridCurrPregnancy_iledit,#jqGridObstetricsUltrasound_iladd,#jqGridObstetricsUltrasound_iledit").addClass('ui-state-disabled');
+				}else{
+					button_state_antenatal('edit_pregnancy');
+
+					// to show pager
+					jQuery("#jqGridCurrPregnancy").jqGrid({pager: "#jqGridPagerCurrPregnancy"});
+					jQuery("#jqGridObstetricsUltrasound").jqGrid({pager: "#jqGridPagerObstetricsUltrasound"});
+						
+					// $("#jqGridCurrPregnancy_iladd,#jqGridCurrPregnancy_iledit,#jqGridObstetricsUltrasound_iladd,#jqGridObstetricsUltrasound_iledit").removeClass('ui-state-disabled');
+				}
+
 				autoinsert_rowdata_antenatal("#formPregnancy",data.pregnancy);
-				button_state_antenatal('edit_pregnancy');
 				preg_paginate(data.pregnancy_page);
 
 				$('#pregnan_idno').val(data.pregnancy.idno);
@@ -1827,8 +1743,12 @@ function populate_ultrasound(obj){
 		
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data.rows)){
+			if(!$.isEmptyObject(data.pregnancy.recstatus)){
+				button_state_antenatal('empty_ultrasound');
+			}else{
+				button_state_antenatal('edit_ultrasound');
+			}
 			autoinsert_rowdata_antenatal("#formUltrasound",data.rows);
-			button_state_antenatal('edit_ultrasound');
 		}
 	});
 }
@@ -1878,8 +1798,26 @@ function populate_pregnancy(idno){
 		
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
+			if(!$.isEmptyObject(data.pregnancy.recstatus)){
+				button_state_antenatal('empty_pregnancy');
+				button_state_antenatal('empty_ultrasound');
+
+				// to hide pager
+				$('#jqGridPagerCurrPregnancy').html('');
+				$('#jqGridPagerObstetricsUltrasound').html('');
+					
+				// $("#jqGridCurrPregnancy_iladd,#jqGridCurrPregnancy_iledit,#jqGridObstetricsUltrasound_iladd,#jqGridObstetricsUltrasound_iledit").addClass('ui-state-disabled');
+			}else{
+				button_state_antenatal('edit_pregnancy');
+
+				// to show pager
+				jQuery("#jqGridCurrPregnancy").jqGrid({pager: "#jqGridPagerCurrPregnancy"});
+				jQuery("#jqGridObstetricsUltrasound").jqGrid({pager: "#jqGridPagerObstetricsUltrasound"});
+					
+				// $("#jqGridCurrPregnancy_iladd,#jqGridCurrPregnancy_iledit,#jqGridObstetricsUltrasound_iladd,#jqGridObstetricsUltrasound_iledit").removeClass('ui-state-disabled');
+			}
+			
 			autoinsert_rowdata_antenatal("#formPregnancy",data.pregnancy);
-			button_state_antenatal('edit_pregnancy');
 
 			$('#pregnan_idno').val(data.pregnancy.idno);
 			urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
