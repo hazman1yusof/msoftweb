@@ -122,9 +122,17 @@ class AntenatalController extends defaultController
                             ->where('mrn','=', $request->mrn)
                             ->where('date','=', $request->date);
 
+        $pregnancy_ultra_obj = DB::table('nursing.pregnancy')
+                            ->where('idno','=',$request->idno);
+
         $responce = new stdClass();
         $responce->rows = $table->first();
         $responce->sql_query = $this->getQueries($table);
+
+        if($pregnancy_ultra_obj->exists()){
+            $pregnancy_ultra_obj = $pregnancy_ultra_obj->first();
+            $responce->pregnancy_ultra = $pregnancy_ultra_obj;
+        }
         
         return json_encode($responce);
 
@@ -132,7 +140,7 @@ class AntenatalController extends defaultController
 
     public function get_table_pregnancy(Request $request){
 
-       $pregnancy_obj = DB::table('nursing.pregnancy')
+        $pregnancy_obj = DB::table('nursing.pregnancy')
                     ->where('idno','=',$request->idno);
 
         $responce = new stdClass();
