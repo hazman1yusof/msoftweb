@@ -788,6 +788,7 @@ $(document).ready(function () {
 			populate_ultrasound(data);
 		},
 		loadComplete: function(){
+			button_state_antenatal('empty_ultrasound');
 			$("#jqGridObstetricsUltrasound").setSelection($("#jqGridObstetricsUltrasound").getDataIDs()[0]);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -1590,8 +1591,8 @@ function button_state_antenatal(state){
 		case 'add_ultrasound':
 			$("#toggle_antenatal").attr('data-toggle','collapse');
 			$('#cancel_ultrasound').data('oper','add_ultrasound');
-			$("#new_ultrasound").attr('disabled',false);
-			$('#save_ultrasound,#cancel_ultrasound,#edit_ultrasound').attr('disabled',true);
+			// $("").attr('disabled',false);
+			$('#save_ultrasound,#cancel_ultrasound,#edit_ultrasound,#new_ultrasound').attr('disabled',true);
 			break;
 		case 'edit_ultrasound':
 			$("#toggle_antenatal").attr('data-toggle','collapse');
@@ -1723,6 +1724,7 @@ function populate_ultrasound(obj){
 		action: 'get_table_ultrasound',
 		url: 'antenatal/table',
 		mrn: obj.mrn,
+		idno: $('#pregnan_idno').val(),
 		date: moment(obj.date,"DD/MM/YYYY").format("YYYY-MM-DD"),
 	}
 
@@ -1736,6 +1738,8 @@ function populate_ultrasound(obj){
 				button_state_antenatal('edit_ultrasound');
 			}
 			autoinsert_rowdata_antenatal("#formUltrasound",data.rows);
+		}else{
+			button_state_antenatal('empty_ultrasound');
 		}
 	});
 }
