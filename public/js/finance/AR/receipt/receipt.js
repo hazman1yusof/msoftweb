@@ -590,8 +590,6 @@ $(document).ready(function () {
 	
 	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
 
-
-
 		var formname = $("a[aria-expanded='true']").attr('form')
 
 		var paymentform =  $( formname ).serializeArray();
@@ -617,7 +615,6 @@ $(document).ready(function () {
 			}
 		});
 	}
-
 
 
 	var butt1=[{
@@ -819,7 +816,7 @@ $(document).ready(function () {
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
 			{label: 'Payer Code', name: 'dbacthdr_payercode',width: 70}, //tunjuk
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap', canSearch:true},//tunjuk
+			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap text-uppercase', canSearch:true},//tunjuk
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap'}, //tunjuk
@@ -958,6 +955,91 @@ $(document).ready(function () {
 		});
 	}
 
+	////////////////////////////populate data for dropdown search By////////////////////////////
+	searchBy();
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
+				}
+			}
+			searchClick2('#jqGrid', '#searchForm', urlParam);
+		});
+	}
+
+	$('#Status').on('change', searchChange);
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var payer_search = new ordialog(
+		'payer_search', 'debtor.debtormast', '#payer_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + payer_search.gridname).debtorcode;
+
+				if($('#Scol').val() == 'db_debtorcode'){
+					urlParam.searchCol=["db.debtorcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'db_payercode'){
+					urlParam.searchCol=["db.payercode"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Payer",
+			open: function () {
+				payer_search.urlParam.filterCol = ['recstatus'];
+				payer_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	payer_search.makedialog(true);
+	$('#payer_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#payer_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','payer_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
+	}
 	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
 
 	////////////////////////////////start allocation part///////////////////////////////////

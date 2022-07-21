@@ -2,8 +2,6 @@
 
 @section('title', 'Receipt Setup')
 
-
-
 @section('style')
 	#gridAllo_c input[type='text'][rowid]{
 		height: 30%;
@@ -28,10 +26,82 @@
 
 @section('body')
 
-	
-
 <!-------------------------------- Search + table ---------------------->
 <div class='row'>
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
+			<fieldset>
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
+
+				<div class='col-md-12' style="padding:0 0 15px 0;">
+					<div class="form-group"> 
+					  	<div class="col-md-2">
+					  		<label class="control-label" for="Scol">Search By : </label>  
+					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+		             	</div>
+
+					  	<div class="col-md-5">
+					  		<label class="control-label"></label>  
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="payer_text">
+								<div class='input-group'>
+									<input id="payer_search" name="payer_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="payer_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>							
+						</div>
+		         	</div>
+				</div>
+
+				<div class="col-md-2">
+				  	<label class="control-label" for="Status">Status</label>  
+					  	<select id="Status" name="Status" class="form-control input-sm">
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      <option value="Posted">POSTED</option>
+					      <option value="Cancelled">CANCELLED</option>
+					    </select>
+	            </div>
+
+			</div>
+
+			<div class="StextClass">
+				<div class=Stext2 id='allocate' style="padding:0 0 0 15px">
+					<a href="#" class="btn-sm allobtn" role="button">Allocate</a>
+				</div>
+			</div>	
+			</fieldset> 
+		</form>
+
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
+    		<div class="panel-body">
+    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+    				<table id="jqGrid_selection" class="table table-striped"></table>
+    				<div id="jqGrid_selectionPager"></div>
+				</div>
+    		</div>
+		</div>
+		 
+		<div class="panel panel-default">
+		    <div class="panel-heading">Receipt Header</div>
+		    	<div class="panel-body">
+		    		<div class='col-md-12' style="padding:0 0 15px 0">
+            			<table id="jqGrid" class="table table-striped"></table>
+            			<div id="jqGridPager"></div>
+        			</div>
+		    	</div>
+		</div> 
+          
+    </div>
+<!-- <div class='row'>
 	<form id="searchForm" class="formclass" style='width:99%'>
 		<fieldset>
 			<div class="ScolClass" style="padding:0 0 0 15px">
@@ -54,7 +124,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-------------------------------- End Search + table ------------------>
 
 <!-------------------------------- Start Add + Login ------------------>

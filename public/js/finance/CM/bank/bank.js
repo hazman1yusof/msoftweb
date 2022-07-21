@@ -219,7 +219,8 @@ $(document).ready(function () {
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},					
-			{ label: 'Open Balance', name: 'openbal', width: 90,  hidden:true},					
+			{ label: 'Open Balance', name: 'openbal', width: 90,  hidden:true},	
+			{ label: 'Last PV No', name: 'lastpvno', width: 30 , classes: 'wrap' },								
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
