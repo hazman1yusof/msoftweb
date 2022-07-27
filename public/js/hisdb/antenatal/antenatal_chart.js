@@ -1,24 +1,51 @@
 
 $(document).ready(function () {
-	var data = [
-		{color: "blue", lines: {show: false}, points: {show:true}, data: [[10, 300], [14, 238], [38, 245], [49, 233]], label: "Blood Pressure", yaxis: 1},
-	];
+	// var data = [
+	// 	{color: "blue", lines: {show: false}, points: {show:true}, data: [[10, 300], [14, 238], [38, 245], [49, 233]], label: "Blood Pressure", yaxis: 1},
+	// ];
 
-	plot = $.plot($("#placeholder"), data , {
-		legend: {show: false},
-		crosshair: {mode: "x"},
-		grid: {
-			hoverable: true,
-			autoHighlight: false
-		},
+	// plot = $.plot($("#placeholder"), data , {
+	// 	legend: {show: false},
+	// 	crosshair: {mode: "x"},
+	// 	grid: {
+	// 		hoverable: true,
+	// 		autoHighlight: false
+	// 	},
+	// 	xaxes: [{
+	// 		min: 10,
+	// 		max: 50,
+	// 		position: 'top'
+	// 	}],
+	// 	yaxes: [{
+	// 				min: 0,
+	// 				max: 400,
+	// 			}],
+	// });
+
+
+	var ave = [[14, 90],[15,99],[16,108],[17,118],[18,128],[19,139],[20,149],[21,161],[22,172],[23,183],[24,195],[25,207],[26,219],[27,231],[28,243],[29,254],[30,266],[31,277],[32,287],[33,297],[34,307],[35,316],[36,324],[37,332],[38,339],[39,345]];
+
+
+	var ave_top = [[14, 90],[15,99],[16,108],[17,118],[18,128],[19,139],[20,149],[21,161],[22,172],[23,183],[24,195],[25,207],[26,219],[27,231],[28,243],[29,254],[30,266],[31,277],[32,287],[33,297],[34,307],[35,316],[36,324],[37,332],[38,339],[39,345]];
+
+
+	var ave_btm = [[14, 90],[15,99],[16,108],[17,118],[18,128],[19,139],[20,149],[21,161],[22,172],[23,183],[24,195],[25,207],[26,219],[27,231],[28,243],[29,254],[30,266],[31,277],[32,287],[33,297],[34,307],[35,316],[36,324],[37,332],[38,339],[39,345]];
+
+	$.plot("#placeholder", [{
+		data: ave,
+		lines: { show: true },
+		label: "Average"
+	}],{
 		xaxes: [{
-			min: 10,
-			max: 50,
-			position: 'top'
+			min: 14,
+			max: 39,
+			ticks: 25,
 		}],
 		yaxes: [{
-					min: 0,
+					min: 50,
 					max: 400,
 				}],
 	});
+
+	console.log(d4);
 });
