@@ -70,7 +70,8 @@ use PDF;
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.source','=',$request->source)
-                    ->where('ap.trantype','=',$request->trantype);
+                    // ->where('ap.trantype','=',$request->trantype);
+                    ->whereIn('ap.trantype',['PD','PV']);
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
