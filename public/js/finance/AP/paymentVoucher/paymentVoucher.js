@@ -172,6 +172,8 @@ $(document).ready(function () {
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
 
 	var urlParam={
+		// action:'maintable',
+		// url:'./paymentVoucher/table',
 		action:'get_table_default',
 		url:'util/get_table_default',
 		field:'',
@@ -236,20 +238,20 @@ $(document).ready(function () {
 		colModel: [
 			//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
-			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
-			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap', canSearch: true, checked: true, hidden: true},
-			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap', canSearch: true},
-			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap', hidden:true},
+			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
+			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
+			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 50, classes: 'wrap text-uppercase'},
+			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
-			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
-
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
-			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap', hidden:true},	
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -260,17 +262,16 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
 			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
-			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap', hidden:true},
-			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap', hidden:true},
-			{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 
 		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'apacthdr_idno',
-		sortorder:'desc',
+		// sortname:'apacthdr_idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -297,7 +298,6 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 			$("#pdfgen1").attr('href','./paymentVoucher/showpdf?auditno='+selrowData("#jqGrid").apacthdr_auditno);
 			if_cancel_hide();
-			//if_trantype();
 
 			populate_form(selrowData("#jqGrid"));
 		},
@@ -319,6 +319,15 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+
+				if($('#jqGrid').data('inputfocus') == 'creditor_search'){
+				$("#creditor_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#creditor_search_hb').text('');
+				removeValidationClass(['#creditor_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
@@ -565,7 +574,7 @@ $(document).ready(function () {
 	function searchBy(){
 		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
 			if(value['canSearch']){
-				if(value['checked']){
+				if(value['selected']){
 					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
 				}else{
 					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
@@ -573,6 +582,104 @@ $(document).ready(function () {
 			}
 			searchClick2('#jqGrid','#searchForm',urlParam);
 		});
+	}
+
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#actdate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		creditor_search.off();
+		$('#creditor_search, #actdate_from, #actdate_to').val('');
+		$('#creditor_search_hb').text('');
+		removeValidationClass(['#creditor_search']);
+		if($('#Scol').val()=='apacthdr_actdate'){
+			$("input[name='Stext'], #creditor_text").hide("fast");
+			$("#actdate_text").show("fast");
+		} else if($('#Scol').val() == 'apacthdr_suppcode' || $('#Scol').val() == 'apacthdr_payto'){
+			$("input[name='Stext'],#actdate_text").hide("fast");
+			$("#creditor_text").show("fast");
+			creditor_search.on();
+		} else {
+			$("#creditor_text,#actdate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+	}
+
+	function searchDate(){
+		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['apacthdr.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var creditor_search = new ordialog(
+		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + creditor_search.gridname).suppcode;
+
+				if($('#Scol').val() == 'apacthdr_suppcode'){
+					urlParam.searchCol=["ap.suppcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'apacthdr_payto'){
+					urlParam.searchCol=["ap.payto"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+	
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Creditor",
+			open: function () {
+				creditor_search.urlParam.filterCol = ['recstatus'];
+				creditor_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	creditor_search.makedialog(true);
+	$('#creditor_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#creditor_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','creditor_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
 	}
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
@@ -722,14 +829,10 @@ $(document).ready(function () {
 			
 		},
 		beforeSubmit: function(postdata, rowid){ 
-			/*dialog_suppcode.check(errorField);
-			dialog_payto.check(errorField);
-			dialog_category.check(errorField);*/
 	 	}
 	});
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
-	// addParamField('#jqGrid2',false,urlParam2,['checkbox','balance','entrydate'])
 	jqgrid_label_align_right("#jqGrid2");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){

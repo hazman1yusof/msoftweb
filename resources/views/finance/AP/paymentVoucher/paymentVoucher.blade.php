@@ -61,15 +61,25 @@ i.fa {
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+									
+								<div id="creditor_text">
+									<div class='input-group'>
+										<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span id="creditor_search_hb" class="help-block"></span>
+								</div>
+
+								<div id="actdate_text" class="form-inline" style="display:none">
+									FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+									TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+									<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+								</div>
 							
 						</div>
 		            </div>
 				</div>
-
-				<!-- <div class="col-md-2" style="padding: 10px;">
-					&nbsp;
-	            </div> -->
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
@@ -110,11 +120,6 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
-
-				<!-- <div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div> -->
 
 			</fieldset> 
 		</form>
@@ -195,7 +200,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
