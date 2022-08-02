@@ -55,4 +55,7 @@
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.navigate.js"></script>
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.crosshair.js"></script>
 	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.symbol.js"></script>
+	<<!-- script language="javascript" type="text/javascript" src="plugins/flot/jquery.canvaswrapper.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.colorhelpers.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.axislabels.js"></script> -->
 @endsection

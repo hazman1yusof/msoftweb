@@ -333,7 +333,7 @@
 															</div>
 															<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
 																<label for="pgh_others">Others</label>
-																<textarea id="pgh_others" name="pgh_others" type="text" class="form-control input-sm" rows="8"></textarea>
+																<textarea id="pgh_others" name="pgh_others" type="text" class="form-control input-sm"></textarea>
 															</div>
 															<!-- </div> -->
 
@@ -363,7 +363,7 @@
 
 															<div class="form-group col-md-10" style="margin-top: 10px;margin-left: 35px">
 																<label for="pmh_others">Others</label>
-																<textarea id="pmh_others" name="pmh_others" type="text" class="form-control input-sm" rows="8"></textarea>
+																<textarea id="pmh_others" name="pmh_others" type="text" class="form-control input-sm"></textarea>
 															</div>
 
 														</div>

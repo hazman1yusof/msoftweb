@@ -34,18 +34,19 @@ $(document).ready(function () {
 	$.plot("#placeholder", [{
 		data: ave,
 		lines: { show: true },
-		label: "Average"
+		label: "Average",
+		
 	}],{
 		xaxes: [{
 			min: 14,
 			max: 39,
-			ticks: 25,
+			ticks: 25
 		}],
 		yaxes: [{
 					min: 50,
 					max: 400,
+					ticks: 35
 				}],
 	});
 
-	console.log(d4);
 });
