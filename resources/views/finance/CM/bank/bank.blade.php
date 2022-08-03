@@ -156,13 +156,18 @@
 				    </div>
 				</div>
 
-				 <div class="form-group">
-					  <label class="col-md-2 control-label" for="recstatus">Record Status</label>  
-					  <div class="col-md-3">
-						<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
-						<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
-					  </div>
-				</div>  
+				<div class="form-group">
+				  	<label class="col-md-2 control-label" for="lastpvno">Last PV No</label>  
+				  		<div class="col-md-3">
+				  			<input id="lastpvno" name="lastpvno" type="text" class="form-control input-sm text-uppercase" rdonly>
+				  	</div>
+				  
+					<label class="col-md-2 control-label" for="recstatus">Record Status</label>  
+					  	<div class="col-md-3">
+							<label class="radio-inline"><input type="radio" name="recstatus" value='ACTIVE' checked>Active</label>
+							<label class="radio-inline"><input type="radio" name="recstatus" value='DEACTIVE' >Deactive</label>
+					  	</div>
+				</div>
 				
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="adduser">Created By</label>  
@@ -170,10 +175,10 @@
 						  	<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
-						<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
-						  	<div class="col-md-3">
-								<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
+					<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
+						<div class="col-md-3">
+							<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+						</div>
 				</div>
 
 				<div class="form-group">
@@ -182,10 +187,10 @@
 						  	<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
-						<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
-						  	<div class="col-md-3">
-								<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
+					<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
+						<div class="col-md-3">
+							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+						</div>
 				</div>  
 
 				<div class="form-group">
@@ -194,11 +199,10 @@
 						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
 						</div>
 
-						<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-3">
 						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
 						</div>
-
 				</div> 
 
 				<div class="form-group">

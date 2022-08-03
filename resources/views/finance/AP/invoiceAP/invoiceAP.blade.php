@@ -73,7 +73,7 @@ i.fa {
 
 							<div id="actdate_text" class="form-inline" style="display:none">
 								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-								TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
 								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
 							</div>
 							

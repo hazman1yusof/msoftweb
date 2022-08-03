@@ -23,6 +23,133 @@ use PDF;
         return view('finance.AP.paymentVoucher.paymentVoucher');
     }
 
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            case 'get_alloc_table':
+                return $this->get_alloc_table($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function maintable(Request $request){
+
+        $table = DB::table('finance.apacthdr AS ap')
+                    ->select(
+                        'ap.auditno AS apacthdr_auditno',
+                        'ap.trantype AS apacthdr_trantype',
+                        'ap.doctype AS apacthdr_doctype',
+                        'ap.suppcode AS apacthdr_suppcode',
+                        'su.name AS supplier_name', 
+                        'ap.actdate AS apacthdr_actdate',
+                        'ap.document AS apacthdr_document',
+                        'ap.cheqno AS apacthdr_cheqno',
+                        'ap.deptcode AS apacthdr_deptcode',
+                        'ap.amount AS apacthdr_amount',
+                        'ap.outamount AS apacthdr_outamount',
+                        'ap.recstatus AS apacthdr_recstatus',
+                        'ap.payto AS apacthdr_payto',
+                        'ap.recdate AS apacthdr_recdate',
+                        'ap.category AS apacthdr_category',
+                        'ap.remarks AS apacthdr_remarks',
+                        'ap.adduser AS apacthdr_adduser',
+                        'ap.adddate AS apacthdr_adddate',
+                        'ap.upduser AS apacthdr_upduser',
+                        'ap.upddate AS apacthdr_upddate',
+                        'ap.source AS apacthdr_source',
+                        'ap.idno AS apacthdr_idno',
+                        'ap.unit AS apacthdr_unit',
+                        'ap.pvno AS apacthdr_pvno',
+                        'ap.paymode AS apacthdr_paymode',
+                        'ap.bankcode AS apacthdr_bankcode'
+                        
+                    )
+                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.source','=',$request->source)
+                    // ->where('ap.trantype','=',$request->trantype);
+                    ->whereIn('ap.trantype',['PD','PV']);
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+
+        if(!empty($request->filterdate)){
+            $table = $table->where('ap.actdate','>',$request->filterdate[0]);
+            $table = $table->where('ap.actdate','<',$request->filterdate[1]);
+        }
+
+        if(!empty($request->searchCol)){
+            $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+        }
+
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('ap.idno','DESC');
+        }
+
+
+       $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $apactdtl = DB::table('finance.apactdtl')
+                        ->where('source','=',$value->apacthdr_source)
+                        ->where('trantype','=',$value->apacthdr_trantype)
+                        ->where('auditno','=',$value->apacthdr_auditno);
+
+            if($apactdtl->exists()){
+                $value->apactdtl_outamt = $apactdtl->sum('amount');
+            }else{
+                $value->apactdtl_outamt = $value->apacthdr_outamount;
+            }
+
+            // $apalloc = DB::table('finance.apalloc')
+            //             ->select('allocdate')
+            //             ->where('refsource','=',$value->apacthdr_source)
+            //             ->where('reftrantype','=',$value->apacthdr_trantype)
+            //             ->where('refauditno','=',$value->apacthdr_auditno)
+            //             ->where('recstatus','!=','CANCELLED')
+            //             ->orderBy('idno', 'desc');
+
+            // if($apalloc->exists()){
+            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
+            // }else{
+            //     $value->apalloc_allocdate = '';
+            // }
+        }
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -42,15 +169,15 @@ use PDF;
         }
     }
 
-    public function table(Request $request)
-    {   
-        switch($request->action){
-            case 'get_alloc_table':
-                return $this->get_alloc_table($request);break;
-            default:
-                return 'error happen..';
-        }
-    }
+    // public function table(Request $request)
+    // {   
+    //     switch($request->action){
+    //         case 'get_alloc_table':
+    //             return $this->get_alloc_table($request);break;
+    //         default:
+    //             return 'error happen..';
+    //     }
+    // }
 
     public function suppgroup($suppcode){
         $query = DB::table('material.supplier')
@@ -207,9 +334,6 @@ use PDF;
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN'
                 ];
-
-                $idno_apacthdr = $table->insertGetId($array_insert);
-
 
                 $responce = new stdClass();
                 $responce->auditno = $auditno;

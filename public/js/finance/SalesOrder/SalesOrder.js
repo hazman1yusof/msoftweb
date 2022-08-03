@@ -187,15 +187,14 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: true },
+			{ label: 'Payer Code', name: 'db_payercode', width: 20, canSearch: false },
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
-			{ label: 'Document Date', name: 'db_entrydate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'db_trantype', hidden: true },
@@ -214,6 +213,7 @@ $(document).ready(function () {
 			{ label: 'PO Date', name: 'db_podate', width: 15, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
 			{ label: 'Department Code', name: 'db_deptcode', width: 18, canSearch: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -454,6 +454,102 @@ $(document).ready(function () {
 			}
 			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+	}
+
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#docuDate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		customer_search.off();
+		$('#customer_search,#customer_search_hb,#docuDate_from,#docuDate_to').val('');
+		removeValidationClass(['#customer_search']);
+		if($('#Scol').val()=='db_entrydate'){
+			$("input[name='Stext'], #customer_text").hide("fast");
+			$("#docuDate_text").show("fast");
+		} else if($('#Scol').val() == 'db_debtorcode'){
+			$("input[name='Stext'],#docuDate_text").hide("fast");
+			$("#customer_text").show("fast");
+			customer_search.on();
+		} else {
+			$("#customer_text,#docuDate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+	}
+
+	function searchDate(){
+		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var customer_search = new ordialog(
+		'customer_search', 'debtor.debtormast', '#customer_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + customer_search.gridname).debtorcode;
+
+				if($('#Scol').val() == 'db_debtorcode'){
+					urlParam.searchCol=["db.debtorcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'db_payercode'){
+					urlParam.searchCol=["db.payercode"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Customer",
+			open: function () {
+				customer_search.urlParam.filterCol = ['recstatus'];
+				customer_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	customer_search.makedialog(true);
+	$('#customer_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#customer_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','customer_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
 	}
 	///////////////////////////////////utk dropdown tran dept/////////////////////////////////////////
 		// trandept();

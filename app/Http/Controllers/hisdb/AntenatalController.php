@@ -20,6 +20,11 @@ class AntenatalController extends defaultController
         // $this->duplicateCode = "chgtype";
     }
 
+    public function chart(Request $request)
+    {   
+        return view('hisdb.antenatal.antenatal_chart');
+    }
+
     public function show(Request $request)
     {   
         return view('hisdb.antenatal.antenatal');

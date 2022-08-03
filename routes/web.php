@@ -731,6 +731,7 @@ Route::post('/nursing/form','hisdb\NursingController@form');
 Route::get('/antenatal','hisdb\AntenatalController@show');
 Route::get('/antenatal/table','hisdb\AntenatalController@table');
 Route::post('/antenatal/form','hisdb\AntenatalController@form');
+Route::get('/antenatal_chart','hisdb\AntenatalController@chart');
 
 //// Paediatric page ///
 Route::get('/paediatric','hisdb\PaediatricController@show');

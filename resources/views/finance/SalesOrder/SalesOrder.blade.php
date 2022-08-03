@@ -48,43 +48,60 @@ i.fa {
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
-
-
 	 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
 	<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
-			<fieldset>
+		<fieldset>
 			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
+						<div class="col-md-2">
+					  		<label class="control-label" for="Scol">Search By : </label>  
 					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-		              </div>
+		              	</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
-							<div  id="tunjukname" style="display:none">
+							<div id="customer_text">
 								<div class='input-group'>
-									<input id="supplierkatdepan" name="supplierkatdepan" type="text" maxlength="12" class="form-control input-sm">
+									<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-								<span class="help-block"></span>
+								<span id="customer_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="docuDate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
 							
 						</div>
 
-
 					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
 					  		<p id="p_error"></p>
 					  	</div>
-
 		             </div>
 				</div>
+
+				<div class="col-md-2">
+				  	<label class="control-label" for="Status">Status</label>  
+					  	<select id="Status" name="Status" class="form-control input-sm">
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+						  <option value="Posted">POSTED</option>
+					      <option value="Request">REQUEST</option>
+					      <option value="Support">SUPPORT</option>
+					      <option value="Incompleted">INCOMPLETED</option>
+						  <option value="Verified">VERIFIED</option>
+						  <option value="Approved">APPROVED</option>
+						  <option value="Cancelled">CANCELLED</option>
+					    </select>
+	            </div>
 
 				<!-- <div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
@@ -176,7 +193,7 @@ i.fa {
 
         <div class="panel panel-default">
 			<div class="panel-heading">Sales Order DataEntry Header
-				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
 			</div>
 			
 			<div class="panel-body">
@@ -255,7 +272,7 @@ i.fa {
 
 							<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
 							<div class="col-md-2">
-								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>">
+								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
 						</div>
 
