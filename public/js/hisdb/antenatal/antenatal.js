@@ -1591,8 +1591,8 @@ function button_state_antenatal(state){
 		case 'add_ultrasound':
 			$("#toggle_antenatal").attr('data-toggle','collapse');
 			$('#cancel_ultrasound').data('oper','add_ultrasound');
-			// $("").attr('disabled',false);
-			$('#save_ultrasound,#cancel_ultrasound,#edit_ultrasound,#new_ultrasound').attr('disabled',true);
+			$("#new_ultrasound").attr('disabled',false);
+			$('#save_ultrasound,#cancel_ultrasound,#edit_ultrasound').attr('disabled',true);
 			break;
 		case 'edit_ultrasound':
 			$("#toggle_antenatal").attr('data-toggle','collapse');

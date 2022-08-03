@@ -78,30 +78,44 @@ class AntenatalController extends defaultController
         foreach ($paginate->items() as $key => $value) {
             if((!empty($value->crl_w)) || (!empty($value->crl_d))){
                 $value->crl_ = $value->crl.' = '.$value->crl_w.' + '.$value->crl_d;
+            }else{
+                $value->crl_ = $value->crl;
             }
 
             if((!empty($value->bpd_w)) || (!empty($value->bpd_d))){
                 $value->bpd_ = $value->bpd.' = '.$value->bpd_w.' + '.$value->bpd_d;
+            }else{
+                $value->bpd_ = $value->bpd;
             }
 
             if((!empty($value->hc_w)) || (!empty($value->hc_d))){
                 $value->hc_ = $value->hc.' = '.$value->hc_w.' + '.$value->hc_d;
+            }else{
+                $value->hc_ = $value->hc;
             }
 
             if((!empty($value->ac_w)) || (!empty($value->ac_d))){
                 $value->ac_ = $value->ac.' = '.$value->ac_w.' + '.$value->ac_d;
+            }else{
+                $value->ac_ = $value->ac;
             }
 
             if((!empty($value->fl_w)) || (!empty($value->fl_d))){
                 $value->fl_ = $value->fl.' = '.$value->fl_w.' + '.$value->fl_d;
+            }else{
+                $value->fl_ = $value->fl;
             }
 
             if((!empty($value->atd_w)) || (!empty($value->atd_d))){
                 $value->atd_ = $value->atd.' = '.$value->atd_w.' + '.$value->atd_d;
+            }else{
+                $value->atd_ = $value->atd;
             }
 
             if((!empty($value->ald_w)) || (!empty($value->ald_d))){
                 $value->ald_ = $value->ald.' = '.$value->ald_w.' + '.$value->ald_d;
+            }else{
+                $value->ald_ = $value->ald;
             }
         }
 
