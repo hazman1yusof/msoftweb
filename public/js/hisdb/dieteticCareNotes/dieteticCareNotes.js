@@ -1,6 +1,13 @@
 
 $(document).ready(function () {
 
+	$('textarea#ncase_medical_his,textarea#ncase_surgical_his,textarea#ncase_fam_medical_his,textarea#ncase_history,textarea#ncase_diagnosis,textarea#ncase_intervention,textarea#fup_progress,textarea#fup_diagnosis,textarea#fup_intervention').each(function () {
+	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	}).on('input', function () {
+	  this.style.height = 'auto';
+	  this.style.height = (this.scrollHeight) + 'px';
+	});
+
 	disableForm('#formDieteticCareNotes');
 	disableForm('#formDieteticCareNotes_fup');
 

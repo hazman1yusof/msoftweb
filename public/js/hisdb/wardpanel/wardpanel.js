@@ -16,6 +16,13 @@ var urlParam_Exam = {
 
 $(document).ready(function () {
 
+	$('textarea#nurs_admreason,textarea#nurs_medicalhistory,textarea#nurs_surgicalhistory,textarea#nurs_familymedicalhist,textarea#nurs_currentmedication,textarea#nurs_diagnosis,textarea#nurs_drugs_remarks,textarea#nurs_plaster_remarks,textarea#nurs_food_remarks,textarea#nurs_environment_remarks,textarea#nurs_others_remarks,textarea#nurs_unknown_remarks,textarea#nurs_none_remarks,textarea#nurs_br_breathingdesc,textarea#nurs_br_coughdesc,textarea#nurs_br_smokedesc,textarea#nurs_ed_eatdrinkdesc,textarea#nurs_eb_bowelmovedesc,textarea#nurs_bl_urinedesc,textarea#nurs_bl_urinefreq,textarea#nurs_pa_notes').each(function () {
+	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	}).on('input', function () {
+	  this.style.height = 'auto';
+	  this.style.height = (this.scrollHeight) + 'px';
+	});
+
 	var fdl = new faster_detail_load();
 
 	disableForm('#formWard');
@@ -63,6 +70,36 @@ $(document).ready(function () {
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
+
+	// to autocheck the checkbox bila fill in textarea
+	$("#nurs_drugs_remarks").on("keyup blur", function () {
+        $("#nurs_allergydrugs").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_plaster_remarks").on("keyup blur", function () {
+        $("#nurs_allergyplaster").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_food_remarks").on("keyup blur", function () {
+        $("#nurs_allergyfood").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_environment_remarks").on("keyup blur", function () {
+        $("#nurs_allergyenvironment").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_others_remarks").on("keyup blur", function () {
+        $("#nurs_allergyothers").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_unknown_remarks").on("keyup blur", function () {
+        $("#nurs_allergyunknown").prop("checked", this.value !== "");
+	});
+
+	$("#nurs_none_remarks").on("keyup blur", function () {
+        $("#nurs_allergynone").prop("checked", this.value !== "");
+	});
+	// to autocheck the checkbox bila fill in textarea ends
 
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}

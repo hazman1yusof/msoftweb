@@ -27,6 +27,13 @@ var urlParam_AddNotesTriage = {
 
 $(document).ready(function () {
 
+	$('textarea#admreason,textarea#medicalhistory,textarea#surgicalhistory,textarea#familymedicalhist,textarea#currentmedication,textarea#diagnosis,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc,textarea#eb_bowelmovedesc,textarea#bl_urinedesc,textarea#bl_urinefreq,textarea#pa_notes').each(function () {
+	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	}).on('input', function () {
+	  this.style.height = 'auto';
+	  this.style.height = (this.scrollHeight) + 'px';
+	});
+
 	var fdl = new faster_detail_load();
 
 	// disableForm('#formTriageInfo, #formActDaily, #formTriPhysical');
@@ -85,7 +92,7 @@ $(document).ready(function () {
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
-	});	
+	});
 
 	// to autocheck the checkbox bila fill in textarea
 	$("#drugs_remarks").on("keyup blur", function () {
@@ -1160,7 +1167,7 @@ function saveForm_patmast(callback){
 
 
 var dialog_tri_col = new ordialog(
-	'tri_col','sysdb.sysparam',"#triagecolor",errorField,
+	'tri_col','sysdb.sysparam',"#formTriageInfo input[name='triagecolor']",errorField,
 	{	colModel:
 		[
 			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},

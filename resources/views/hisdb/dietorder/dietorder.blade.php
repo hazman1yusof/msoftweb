@@ -43,14 +43,11 @@
 	<div id="jqGridDietOrder_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
-				<div id="jqGridPagerTriageInfo"></div> -->
 
 				<form class='form-horizontal' style='width:99%' id='formDietOrder'>
 
 					<div class='col-md-12'>
 						<div class="panel panel-info">
-							<!-- <div class="panel-heading text-center">DIET ORDER</div> -->
 							<div class="panel-body">
 
 								<input id="mrn_dietOrder" name="mrn_dietOrder" type="hidden">
@@ -99,88 +96,88 @@
 												<div class="row">
 													<div class="col-6 col-sm-5">
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="regular_a" id="regular_a" value="1">
+															<input class="form-check-input" type="checkbox" name="regular_a" value="1">
 															<label class="form-check-label" for="regular_a">Regular (A)</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="regular_b" id="regular_b" value="1">
+															<input class="form-check-input" type="checkbox" name="regular_b" value="1">
 															<label class="form-check-label" for="regular_b">Regular (B)</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="soft" id="soft" value="1">
+															<input class="form-check-input" type="checkbox" name="soft" value="1">
 															<label class="form-check-label" for="soft">Soft</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="vegetarian_c" id="vegetarian_c" value="1">
+															<input class="form-check-input" type="checkbox" name="vegetarian_c" value="1">
 															<label class="form-check-label" for="vegetarian_c">Vegetarian (C)</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="western_d" id="western_d" value="1">
+															<input class="form-check-input" type="checkbox" name="western_d" value="1">
 															<label class="form-check-label" for="western_d">Western (D)</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="highprotein" id="highprotein" value="1">
+															<input class="form-check-input" type="checkbox" name="highprotein" value="1">
 															<label class="form-check-label" for="highprotein">High Protein</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="highcalorie" id="highcalorie" value="1">
+															<input class="form-check-input" type="checkbox" name="highcalorie" value="1">
 															<label class="form-check-label" for="highcalorie">High Calorie</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="highfiber" id="highfiber" value="1">
+															<input class="form-check-input" type="checkbox" name="highfiber" value="1">
 															<label class="form-check-label" for="highfiber">High Fiber</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="diabetic" id="diabetic" value="1">
+															<input class="form-check-input" type="checkbox" name="diabetic" value="1">
 															<label class="form-check-label" for="diabetic">Diabetic</label>
 														</div>
 													</div>
 													<div class="col-6 col-sm-5">
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="lowprotein" id="lowprotein" value="1">
+															<input class="form-check-input" type="checkbox" name="lowprotein" value="1">
 															<label class="form-check-label" for="lowprotein">Low Protein</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="lowfat" id="lowfat" value="1">
+															<input class="form-check-input" type="checkbox" name="lowfat" value="1">
 															<label class="form-check-label" for="lowfat">Low Fat</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="red1200kcal" id="red1200kcal" value="1">
+															<input class="form-check-input" type="checkbox" name="red1200kcal" value="1">
 															<label class="form-check-label" for="red1200kcal">Reduction 1200 Kcal</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="red1500kcal" id="red1500kcal" value="1">
+															<input class="form-check-input" type="checkbox" name="red1500kcal" value="1">
 															<label class="form-check-label" for="red1500kcal">Reduction 1500 Kcal</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="paed6to12mth" id="paed6to12mth" value="1">
+															<input class="form-check-input" type="checkbox" name="paed6to12mth" value="1">
 															<label class="form-check-label" for="paed6to12mth">Paediatrics 6-12 Months</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="paed1to3yr" id="paed1to3yr" value="1">
+															<input class="form-check-input" type="checkbox" name="paed1to3yr" value="1">
 															<label class="form-check-label" for="paed1to3yr">Paediatrics 1-3 Years</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="paed4to9yr" id="paed4to9yr" value="1">
+															<input class="form-check-input" type="checkbox" name="paed4to9yr" value="1">
 															<label class="form-check-label" for="paed4to9yr">Paediatrics 4-9 Years</label>
 														</div>
 
 														<div class="form-check" style="margin-left: 50px">
-															<input class="form-check-input" type="checkbox" name="paedgt10yr" id="paedgt10yr" value="1">
+															<input class="form-check-input" type="checkbox" name="paedgt10yr" value="1">
 															<label class="form-check-label" for="paedgt10yr">Paediatrics >10 Years</label>
 														</div>
 													</div>
@@ -202,7 +199,7 @@
 										<div class="radio-inline" id="ifYes" style="display:none">
 											<label class="col-md-5 control-label" for="lodgervalue">No of Lodger</label>
 											<div class="col-md-4">
-												<input id="lodgervalue" name="lodgervalue" type="number" class="form-control input-sm">
+												<input name="lodgervalue" type="number" class="form-control input-sm">
 											</div>
 										</div>
 									</div>
@@ -223,14 +220,14 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="remark">Remark Ward</label>
 									<div class="col-md-6">
-										<textarea id="remark" name="remark" type="text" class="form-control input-sm" rows="6"></textarea>
+										<textarea id="remark" name="remark" type="text" class="form-control input-sm"></textarea>
 									</div>
 								</div>
 
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="remarkkitchen">Remark Kitchen</label>
 									<div class="col-md-6">
-										<textarea id="remarkkitchen" name="remarkkitchen" type="text" class="form-control input-sm" rows="6"></textarea>
+										<textarea id="remarkkitchen" name="remarkkitchen" type="text" class="form-control input-sm"></textarea>
 										<br>
 										<button type="button" class="btn btn-light" style="float: right;">Preview</button>
 									</div>

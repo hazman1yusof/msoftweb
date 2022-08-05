@@ -17,35 +17,11 @@
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#jqGridDieteticCareNotes_panel"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
 			<h5>Dietetic Care Notes</h5>
-		</div>	
-
-		<!-- <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
-			id="btn_grp_edit_dieteticCareNotes"
-			style="position: absolute;
-					padding: 0 0 0 0;
-					right: 40px;
-					top: 25px;" 
-
-		>
-		<button type="button" class="btn btn-default" id="new_dieteticCareNotes">
-			<span class="fa fa-plus-square-o"></span> New
-		</button>
-		<button type="button" class="btn btn-default" id="edit_dieteticCareNotes">
-			<span class="fa fa-edit fa-lg"></span> Edit
-		</button>
-		<button type="button" class="btn btn-default" data-oper='add' id="save_dieteticCareNotes">
-			<span class="fa fa-save fa-lg"></span> Save
-		</button>
-		<button type="button" class="btn btn-default" id="cancel_dieteticCareNotes">
-			<span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
-		</button>
-	</div>			 -->
+		</div>
 	</div>
 	<div id="jqGridDieteticCareNotes_panel" class="panel-collapse collapse">
 		<div class="panel-body">
 			<div class='col-md-12' style="padding:0 0 15px 0">
-				<!-- <table id="jqGridTriageInfo" class="table table-striped"></table>
-				<div id="jqGridPagerTriageInfo"></div> -->
 
 				<form class='form-horizontal' style='width:99%' id='formDieteticCareNotes'>
 
@@ -92,12 +68,12 @@
 															<div class="form-group">
 																<div class="col-md-6">
 																	<label class="control-label" for="ncase_medical_his" style="padding-bottom:5px">Medical History</label>
-																	<textarea id="ncase_medical_his" name="ncase_medical_his" type="text" class="form-control input-sm" rows="6"></textarea>
+																	<textarea id="ncase_medical_his" name="ncase_medical_his" type="text" class="form-control input-sm"></textarea>
 																</div>
 															
 																<div class="col-md-6">
 																	<label class="control-label" for="ncase_surgical_his" style="padding-bottom:5px">Surgical History</label>
-																	<textarea id="ncase_surgical_his" name="ncase_surgical_his" type="text" class="form-control input-sm" rows="6"></textarea>
+																	<textarea id="ncase_surgical_his" name="ncase_surgical_his" type="text" class="form-control input-sm"></textarea>
 																</div>
 															</div>
 														</div>
@@ -106,7 +82,7 @@
 															<div class="form-group">
 																<div class="col-md-6">
 																	<label class="control-label" for="ncase_fam_medical_his" style="padding-bottom:5px">Family Medical History</label>
-																	<textarea id="ncase_fam_medical_his" name="ncase_fam_medical_his" type="text" class="form-control input-sm" rows="6"></textarea>
+																	<textarea id="ncase_fam_medical_his" name="ncase_fam_medical_his" type="text" class="form-control input-sm"></textarea>
 																</div>
 															</div>
 														</div>
@@ -119,19 +95,19 @@
 												<div class="form-group">
 													<div class="col-md-6">
 														<label class="control-label" for="ncase_history" style="padding-bottom:5px">Diet History/Summary</label>
-														<textarea id="ncase_history" name="ncase_history" type="text" class="form-control input-sm" rows="6"></textarea>
+														<textarea id="ncase_history" name="ncase_history" type="text" class="form-control input-sm"></textarea>
 													</div>
 												
 													<div class="col-md-6">
 														<label class="control-label" for="ncase_diagnosis" style="padding-bottom:5px">Nutrition Diagnosis</label>
-														<textarea id="ncase_diagnosis" name="ncase_diagnosis" type="text" class="form-control input-sm" rows="6"></textarea>
+														<textarea id="ncase_diagnosis" name="ncase_diagnosis" type="text" class="form-control input-sm"></textarea>
 													</div>
 												</div>
 
 												<div class="form-group">
 													<div class="col-md-6">
 														<label class="control-label" for="ncase_intervention" style="padding-bottom:5px">Nutrition Intervention/Plan</label>
-														<textarea id="ncase_intervention" name="ncase_intervention" type="text" class="form-control input-sm" rows="6"></textarea>
+														<textarea id="ncase_intervention" name="ncase_intervention" type="text" class="form-control input-sm"></textarea>
 													</div>
 												</div>
 											</div>
@@ -282,12 +258,12 @@
 
 															<div class="col-md-12">
 																<label class="control-label" for="fup_progress" style="padding-bottom:5px;text-align:left;">Comment on Progress (Anthropometry/Biochemical/Clinical/Dietary)</label>
-																<textarea id="fup_progress" name="fup_progress" type="text" class="form-control input-sm" rows="6"></textarea>
+																<textarea id="fup_progress" name="fup_progress" type="text" class="form-control input-sm"></textarea>
 															</div>
 														
 															<div class="col-md-12">
 																<label class="control-label" for="fup_diagnosis" style="padding-bottom:5px">Nutrition Diagnosis</label>
-																<textarea id="fup_diagnosis" name="fup_diagnosis" type="text" class="form-control input-sm" rows="6"></textarea>
+																<textarea id="fup_diagnosis" name="fup_diagnosis" type="text" class="form-control input-sm"></textarea>
 															</div>
 
 														</div>
@@ -298,7 +274,7 @@
 													<div class="form-group">
 														<div class="col-md-12">
 															<label class="control-label" for="fup_intervention" style="padding-bottom:5px">Nutrition Intervention</label>
-															<textarea id="fup_intervention" name="fup_intervention" type="text" class="form-control input-sm" rows="6"></textarea>
+															<textarea id="fup_intervention" name="fup_intervention" type="text" class="form-control input-sm"></textarea>
 														</div>
 													</div>
 												</div>
@@ -315,26 +291,26 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_temperature" style="padding-bottom:5px">Temperature</label>
 													<div class="input-group">
-														<input id="fup_temperature" name="fup_temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input name="fup_temperature" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">°C</span>
 													</div>
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_pulse" style="padding-bottom:5px">Pulse</label>
-													<input id="fup_pulse" name="fup_pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input name="fup_pulse" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_respiration" style="padding-bottom:5px">Respiration</label>
-													<input id="fup_respiration" name="fup_respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+													<input name="fup_respiration" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 												</div>
 
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_bp" style="padding-bottom:5px">Blood Pressure</label>
 													<div class="input-group">
-														<input id="fup_bp_sys1" name="fup_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-														<input id="fup_bp_dias2" name="fup_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input name="fup_bp_sys1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input name="fup_bp_dias2" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">mmHg</span>
 													</div>
 												</div>
@@ -363,7 +339,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_gxt" style="padding-bottom:5px">GXT</label>
 													<div class="input-group">
-														<input id="fup_gxt" name="fup_gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input name="fup_gxt" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">mmOL</span>
 													</div>
 												</div>
@@ -371,7 +347,7 @@
 												<div class="form-group col-md-12">
 													<label class="control-label" for="fup_pain_score" style="padding-bottom:5px">Pain Score</label>
 													<div class="input-group">
-														<input id="fup_pain_score" name="fup_pain_score" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+														<input name="fup_pain_score" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
 														<span class="input-group-addon">/10</span>
 													</div>
 												</div>

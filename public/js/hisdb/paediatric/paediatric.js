@@ -16,6 +16,13 @@ var urlParam_MedicalSurgical = {
 
 $(document).ready(function () {
 
+	$('textarea#address,textarea#antenatalHist,textarea#postnatalPeriod').each(function () {
+	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	}).on('input', function () {
+	  this.style.height = 'auto';
+	  this.style.height = (this.scrollHeight) + 'px';
+	});
+
 	var fdl = new faster_detail_load();
 
 	disableForm('#formPaediatric');

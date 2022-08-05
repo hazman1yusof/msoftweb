@@ -32,7 +32,7 @@ var urlParam_ObstetricsUltrasound = {
 
 $(document).ready(function () {
 
-	$('textarea#pgh_others,textarea#pmh_others').each(function () {
+	$('textarea#drug_allergy,textarea#pgh_others,textarea#pmh_others,textarea#psh_others,textarea#fh_congenital,textarea#sysexam_remark').each(function () {
 	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
 	}).on('input', function () {
 	  this.style.height = 'auto';
