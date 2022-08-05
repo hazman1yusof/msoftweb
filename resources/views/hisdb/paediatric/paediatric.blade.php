@@ -312,7 +312,7 @@
 
                                                     <label class="col-md-2 control-label" for="rhesus">Rhesus</label>
                                                     <div class="col-md-3">
-                                                        <input name="rhesus" type="text" class="form-control input-sm">
+                                                        <input id="rhesus" name="rhesus" type="text" class="form-control input-sm">
                                                     </div>
                                                 </div>
 
@@ -367,10 +367,10 @@
                                                 <div class="form-group">
                                                     <label class="col-md-6 control-label" for="breastFed">Breast Fed</label> 
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="breastFed" value="0">No
+                                                        <input type="radio" id="breastFed" name="breastFed" value="0">No
                                                     </label>
                                                     <label class="radio-inline" style="margin-left:33px;">
-                                                        <input type="radio" name="breastFed" value="1">Yes
+                                                        <input type="radio" id="breastFed" name="breastFed" value="1">Yes
                                                     </label>
                                                 </div>
 
