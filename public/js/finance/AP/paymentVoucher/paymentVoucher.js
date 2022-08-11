@@ -624,7 +624,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['apacthdr.recstatus'],fv:[],fc:[]});
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;

@@ -58,17 +58,27 @@ i.fa {
 					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		             	</div>
 
-					  	<div class="col-md-5">
+						 <div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="creditor_text">
+								<div class='input-group'>
+									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="creditor_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
 							
 						</div>
 		            </div>
 				</div>
-
-				<!-- <div class="col-md-3" style="padding: 10px;">
-					&nbsp;
-	            </div> -->
 
 				<div class="col-md-2">
 				  	<label class="control-label" for="Status">Status</label>  
@@ -182,7 +192,7 @@ i.fa {
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="apacthdr_idno" name="apacthdr_idno" type="hidden">
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="{{$_GET['source']}}">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden" value="{{$_GET['trantype']}}">
+					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
