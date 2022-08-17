@@ -192,13 +192,12 @@ i.fa {
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="apacthdr_idno" name="apacthdr_idno" type="hidden">
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="{{$_GET['source']}}">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
+					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden" value="{{$_GET['trantype']}}">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
 							<div class="col-md-3">
 							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
-							   
 							       <option value="Debit_Note">Debit Note</option>
 							    </select>
 						  	</div>

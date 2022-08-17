@@ -177,7 +177,7 @@ $(document).ready(function () {
 		action:'maintable',
 		url:'./debitNoteAP/table',
 		source:$('#apacthdr_source').val(),
-		//trantype:$('#apacthdr_trantype').val(),
+		trantype:$('#apacthdr_trantype').val(),
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -190,7 +190,7 @@ $(document).ready(function () {
 		table_name:'finance.apacthdr',
 		table_id:'apacthdr_auditno',
 		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), 'DN'],
+		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
 	};
 
 	function padzero(cellvalue, options, rowObject){
@@ -446,15 +446,6 @@ $(document).ready(function () {
 	$('#apacthdr_doctype').on('change', function() {
 		let doctype = $("#apacthdr_doctype option:selected").val();
 	
-		// if(doctype == 'Supplier' || doctype == 'Others') {
-		// 	$("#formdata :input[name='apacthdr_source']").val("AP");
-		// 	$("#formdata :input[name='apacthdr_trantype']").val("IN");
-
-		// }else if(doctype == 'Debit_Note') {
-		// 	$("#formdata :input[name='apacthdr_source']").val("AP");
-		// 	$("#formdata :input[name='apacthdr_trantype']").val("DN");
-		// }
-		
 		if(doctype == 'Supplier') {
 			$('#save').hide();
 			$('#ap_detail').show();

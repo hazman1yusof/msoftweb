@@ -23,6 +23,13 @@ use Carbon\Carbon;
     }
 
     public function table(Request $request){
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
 
         DB::insert(
             DB::raw("
@@ -71,14 +78,6 @@ use Carbon\Carbon;
 
         return json_encode($responce);
         
-        DB::enableQueryLog();
-            switch($request->action){
-                case 'maintable':
-                    return $this->maintable($request);
-                default:
-                    return 'error happen..';
-            }
-
     }
 
     public function maintable(Request $request){
@@ -109,8 +108,8 @@ use Carbon\Carbon;
                         'ap.unit AS apacthdr_unit'
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
-                    ->where('ap.source','=',$request->source)
-                    ->where('ap.trantype','=', 'DN');
+                    ->where('ap.source','=', $request->source)
+                    ->where('ap.trantype','=', $request->trantype);
 
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
