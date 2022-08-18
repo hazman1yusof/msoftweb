@@ -78,9 +78,16 @@ use Carbon\Carbon;
         }
 
         if(!empty($request->searchCol)){
-            $table = $table->Where(function ($table) use ($request) {
+            if($request->searchCol[0] == 'apacthdr_document'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.document','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
+            }
+            
         }
 
         if(!empty($request->sidx)){
