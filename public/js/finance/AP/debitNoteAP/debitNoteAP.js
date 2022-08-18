@@ -159,20 +159,6 @@ $(document).ready(function () {
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
 	
-	// var urlParam={
-	// 	action:'get_table_default',
-	// 	url:'util/get_table_default',
-	// 	field:'',
-	// 	fixPost:'true',
-	// 	table_name:['finance.apacthdr','material.supplier'],
-	// 	table_id:'apacthdr_idno',
-	// 	join_type:['LEFT JOIN'],
-	// 	join_onCol:['supplier.suppcode'],
-	// 	join_onVal:['apacthdr.suppcode'],
-	// 	filterCol: ['source', 'trantype'],
-	// 	filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
-	// }
-	
 	var urlParam={
 		action:'maintable',
 		url:'./debitNoteAP/table',
