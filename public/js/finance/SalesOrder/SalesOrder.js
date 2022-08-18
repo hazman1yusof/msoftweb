@@ -471,15 +471,14 @@ $(document).ready(function () {
 		urlParam.filterdate = null;
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
-			$("input[name='Stext'], #customer_text").hide("fast");
-			$("input[name='Stext'], #department_text").hide("fast");
+			$("input[name='Stext'], #customer_tex, #department_textt").hide("fast");
 			$("#docuDate_text").show("fast");
-		} else if($('#Scol').val() == 'db_debtorcode'){
-			$("input[name='Stext'],#docuDate_text").hide("fast");
+		} else if($('#Scol').val() == 'dm_name'){
+			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
 			$("#customer_text").show("fast");
 			customer_search.on();
-		} else if($('#Scol').val() == 'db_department'){
-			$("input[name='Stext'],#docuDate_text").hide("fast");
+		} else if($('#Scol').val() == 'db_deptcode'){
+			$("input[name='Stext'],#docuDate_text,#customer_text").hide("fast");
 			$("#department_text").show("fast");
 			department_search.on();
 		} else {
@@ -525,9 +524,10 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'db_debtorcode'){
+				if($('#Scol').val() == 'dm_name'){
 					urlParam.searchCol=["db.debtorcode"];
-					urlParam.searchVal=[data];}
+					urlParam.searchVal=[data];
+				}
 				// }else if($('#Scol').val() == 'db_payercode'){
 				// 	urlParam.searchCol=["db.payercode"];
 				// 	urlParam.searchVal=[data];
@@ -595,15 +595,10 @@ $(document).ready(function () {
 	$('#department_search').on('keyup',ifnullsearch);
 	
 	function ifnullsearch(){
-		if($('#customer_search').val() == ''){
+		if($(this).val() == ''){
 			urlParam.searchCol=[];
 			urlParam.searchVal=[];
-			$('#jqGrid').data('inputfocus','customer_search');
-			refreshGrid('#jqGrid', urlParam);
-		}else if($('#department_search').val() == ''){
-			urlParam.searchCol=[];
-			urlParam.searchVal=[];
-			$('#jqGrid').data('inputfocus','department_search');
+			$('#jqGrid').data('inputfocus',$(this).attr('id'));
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}

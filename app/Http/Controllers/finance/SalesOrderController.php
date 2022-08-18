@@ -85,9 +85,16 @@ class SalesOrderController extends defaultController
         }
 
         if(!empty($request->searchCol)){
-            $table = $table->Where(function ($table) use ($request) {
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
                     });
+            }
+            
         }
 
         if(!empty($request->sidx)){

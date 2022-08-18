@@ -74,7 +74,7 @@ i.fa {
 								<span id="customer_search_hb" class="help-block"></span>
 							</div>
 
-							<div id="department_text">
+							<div id="department_text" style="display:none">
 								<div class='input-group'>
 									<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
