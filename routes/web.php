@@ -680,6 +680,12 @@ Route::get('/CreditNoteAR_Report/table','finance\CreditNoteAR_ReportController@t
 Route::post('/CreditNoteAR_Report/form','finance\CreditNoteAR_ReportController@form');
 Route::get('/CreditNoteAR_Report/showExcel','finance\CreditNoteAR_ReportController@showExcel');
 
+//// AP Enquiry
+Route::get('/apenquiry','finance\APEnquiryController@show');
+Route::get('/apenquiry/table','finance\APEnquiryController@table');
+Route::post('/apenquiry/form','finance\APEnquiryController@form');
+Route::get('/apenquiry/form','finance\APEnquiryController@form');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
