@@ -272,9 +272,17 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 
-			if($('#jqGrid').jqGrid('getGridParam', 'reccount') < 1){
-				$('#reqnodepan').text('');//tukar kat depan tu
-				$('#reqdeptdepan').text('');
+			// if($('#jqGrid').jqGrid('getGridParam', 'reccount') < 1){
+			// 	$('#reqnodepan').text('');//tukar kat depan tu
+			// 	$('#reqdeptdepan').text('');
+			// }else 
+			if($('#jqGrid').data('inputfocus') == 'customer_search'){
+				$("#customer_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#customer_search_hb').text('');
+				removeValidationClass(['#creditor_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
 			}
 		},
 

@@ -116,9 +116,6 @@ $(document).ready(function () {
 	}
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus");
-
-	
-	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
@@ -140,7 +137,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
+		action:'maintable',
 		url:'util/get_table_default',
 		field:'',
 		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
@@ -155,6 +152,7 @@ $(document).ready(function () {
 		fixPost: true,
 	}
 
+	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam = {
 		action: 'DebitNote_header_save',
 		url:'./DebitNote/form',
@@ -171,16 +169,17 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
-			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, checked: true, classes: 'wrap' },
-			{ label: 'Document Date', name: 'db_entrydate', width: 15},
-			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
+			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Customer Name', name: 'dm_name', width: 50, canSearch: true,classes: 'wrap text-uppercase', checked: true},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
+			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true},			
 			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 15 },
+			{ label: 'Status', name: 'db_recstatus', width: 15, classes: 'wrap text-uppercase',},
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
@@ -202,7 +201,7 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
-			{ label: 'remarks', name: 'db_remark', width: 10, hidden: true },
+			// { label: 'remarks', name: 'db_remark', width: 10, hidden: true },
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 		],
 		autowidth: true,
@@ -248,7 +247,15 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();
+
+				if($('#jqGrid').data('inputfocus') == 'payer_search'){
+				$("#payer_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#payer_search_hb').text('');
+				removeValidationClass(['#payer_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
@@ -406,7 +413,7 @@ $(document).ready(function () {
 	function searchBy() {
 		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
 			if (value['canSearch']) {
-				if (value['checked']) {
+				if (value['selected']) {
 					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
 				} else {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
@@ -420,10 +427,17 @@ $(document).ready(function () {
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	//$('#trandept').on('change', searchChange);
+	$('#docuDate_search').on('click', searchDate);
 
 	function whenchangetodate() {
-		if ($('#Scol').val() == 'purreqhd_purdate') {
+		payer_search.off();
+		$('#payer_search, #docuDate_from, #docuDate_to').val('');
+		$('#payer_search_hb').text('');
+		removeValidationClass(['#payer_search']);
+		if ($('#Scol').val() == 'purreqhd_purdate'){
 			$("input[name='Stext']").show("fast");
+			$("#docuDate_text").show("fast");
+			$("input[name='Stext'], #payer_text").hide("fast");
 			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
@@ -431,12 +445,68 @@ $(document).ready(function () {
 		} else if($('#Scol').val() == 'supplier_name'){
 			$("input[name='Stext']").hide("fast");
 			$("#tunjukname").show("fast");
+			$("input[name='Stext'],#docuDate_text").hide("fast");
+			$("#payer_text").show("fast");
+			payer_search.on();
 		} else {
+			$("#payer_text,#docuDate_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
 			$("input[name='Stext']").off('change', searchbydate);
+		}
+	}
+
+	var payer_search = new ordialog(
+		'payer_search', 'debtor.debtormast', '#payer_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + payer_search.gridname).debtorcode;
+
+				if($('#Scol').val() == 'db_debtorcode'){
+					urlParam.searchCol=["db.debtorcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'db_payercode'){
+					urlParam.searchCol=["db.payercode"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Customer",
+			open: function () {
+				payer_search.urlParam.filterCol = ['recstatus'];
+				payer_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	payer_search.makedialog(true);
+	$('#payer_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#payer_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','payer_search');
+			refreshGrid('#jqGrid', urlParam);
 		}
 	}
 
@@ -476,6 +546,11 @@ $(document).ready(function () {
 		}
 	);
 	supplierkatdepan.makedialog();
+
+	function searchDate(){
+		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
 
 	function searchbydate() {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);

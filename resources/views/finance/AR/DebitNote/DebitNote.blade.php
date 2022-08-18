@@ -49,7 +49,7 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -58,13 +58,39 @@ i.fa {
 					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		              </div>
 
-					  	<div class="col-md-5">
+					  <div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+							  	<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+									
+								<div id="creditor_text">
+									<div class='input-group'>
+										<input id="payer_search" name="payer_search" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span id="payer_search_hb" class="help-block"></span>
+								</div>
+
+								<div id="docudate_text" class="form-inline" style="display:none">
+									FROM DATE <input id="docudate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+									TO DATE <input id="docudate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+									<button type="button" class="btn btn-primary btn-sm" id="docudate_search">SEARCH</button>
+								</div>
+							
 						</div>
 		            </div>
 				</div>
 
+				<div class="col-md-2">
+				  	<label class="control-label" for="Status">Status</label>  
+					  	<select id="Status" name="Status" class="form-control input-sm">
+					      <option value="All" selected>ALL</option>
+					      <option value="Open">OPEN</option>
+					      <option value="Confirmed">CONFIRMED</option>
+					      <option value="Posted">POSTED</option>
+					      <option value="Cancelled">CANCELLED</option>
+					    </select>
+	            </div>
+				
 				<?php 
 					$scope_use = 'posted';
 
