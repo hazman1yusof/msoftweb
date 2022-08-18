@@ -138,37 +138,26 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				$('#reqnodepan').text("");//tukar kat depan tu
-				$('#reqdeptdepan').text("");
+				// $('#reqnodepan').text("");//tukar kat depan tu
+				// $('#reqdeptdepan').text("");
 				refreshGrid("#jqGrid3",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			$('#reqnodepan').text("");//tukar kat depan tu
-			$('#reqdeptdepan').text("");
+			// $('#reqnodepan').text("");//tukar kat depan tu
+			// $('#reqdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
-	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
-		table_id: 'idno',
-		join_type: ['LEFT JOIN'],
-		join_onCol: ['db.debtorcode'],
-		join_onVal: ['dm.debtorcode'],
-		filterCol: ['db.source','db.trantype'],
-		filterVal: ['PB','IN'],
-		// filterCol: filterCol_urlParam,
-		// filterVal: filterVal_urlParam,
-		// WhereInCol:['purreqhd.recstatus'],
-		// WhereInVal: recstatus_filter,
-		fixPost: true,
+	var urlParam={
+		action:'maintable',
+		url:'./SalesOrder/table',
+		source:$('#db_source').val(),
+		trantype:$('#db_trantype').val(),
 	}
 
 	var saveParam = {
@@ -226,8 +215,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
-		sortname:'db_idno',
-		sortorder:'desc',
+		// sortname:'db_idno',
+		// sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -340,7 +329,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam,['Checkbox']);
-	addParamField('#jqGrid', false, saveParam, ['purreqhd_recno','purreqhd_purordno','purreqhd_adduser', 'purreqhd_adddate', 'db_mrn', 'supplier_name','purreqhd_purreqno','purreqhd_upduser','purreqhd_upddate','purreqhd_deluser', 'purreqhd_recstatus','purreqhd_unit','Checkbox','queuepr_AuthorisedID']);
+	addParamField('#jqGrid', false, saveParam, ['db_idno','db_auditno','db_adduser', 'db_adddate', 'db_mrn', 'dm_name','db_upduser','db_upddate','db_deluser', 'db_recstatus','db_unit','Checkbox','queuepr_AuthorisedID']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
@@ -476,8 +465,11 @@ $(document).ready(function () {
 	function whenchangetodate() {
 		customer_search.off();
 		department_search.off();
-		$('#customer_search,#customer_search_hb,#docuDate_from,#docuDate_to,#department_search,#deparment_search_hb').val('');
-		removeValidationClass(['#customer_search, department_search']);
+		$('#customer_search,#docuDate_from,#docuDate_to,#department_search').val('');
+		$('#customer_search_hb').text('');
+		$('#department_search_hb').text('');
+		urlParam.filterdate = null;
+		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
 			$("input[name='Stext'], #customer_text").hide("fast");
 			$("input[name='Stext'], #department_text").hide("fast");
@@ -485,14 +477,10 @@ $(document).ready(function () {
 		} else if($('#Scol').val() == 'db_debtorcode'){
 			$("input[name='Stext'],#docuDate_text").hide("fast");
 			$("#customer_text").show("fast");
-			//$("#department_text").show("fast");
 			customer_search.on();
-			department_search.off();
 		} else if($('#Scol').val() == 'db_department'){
 			$("input[name='Stext'],#docuDate_text").hide("fast");
-			//$("#customer_text").show("fast");
 			$("#department_text").show("fast");
-			customer_search.off();
 			department_search.on();
 		} else {
 			$("#customer_text,#docuDate_text,#department_text").hide("fast");
@@ -516,7 +504,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['ap.recstatus'],fv:[],fc:[]});
+		},{fct:['db.recstatus'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -539,11 +527,11 @@ $(document).ready(function () {
 
 				if($('#Scol').val() == 'db_debtorcode'){
 					urlParam.searchCol=["db.debtorcode"];
-					urlParam.searchVal=[data];
-				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
-					urlParam.searchVal=[data];
-				}
+					urlParam.searchVal=[data];}
+				// }else if($('#Scol').val() == 'db_payercode'){
+				// 	urlParam.searchCol=["db.payercode"];
+				// 	urlParam.searchVal=[data];
+				// }
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){
