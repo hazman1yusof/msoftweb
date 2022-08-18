@@ -79,7 +79,14 @@ i.fa {
 								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
 								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
-							
+														
+							<div id="department_text">
+								<div class='input-group'>
+									<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="department_search_hb" class="help-block"></span>
+							</div>
 						</div>
 
 					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
