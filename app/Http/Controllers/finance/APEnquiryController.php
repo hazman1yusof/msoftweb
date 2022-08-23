@@ -37,14 +37,14 @@ class APEnquiryController extends defaultController
 
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
-                        'ap.auditno AS apacthdr_auditno',
-                        'ap.trantype AS apacthdr_trantype',
+                        'ap.auditno AS apacthdr_auditno', //search
+                        'ap.trantype AS apacthdr_trantype', //search
                         'ap.doctype AS apacthdr_doctype',
-                        'ap.suppcode AS apacthdr_suppcode',
+                        'ap.suppcode AS apacthdr_suppcode', 
                         'su.name AS supplier_name', 
                         'ap.actdate AS apacthdr_actdate',
-                        'ap.document AS apacthdr_document',
-                        'ap.cheqno AS apacthdr_cheqno',
+                        'ap.document AS apacthdr_document', //search
+                        'ap.cheqno AS apacthdr_cheqno', //search
                         'ap.deptcode AS apacthdr_deptcode',
                         'ap.amount AS apacthdr_amount',
                         'ap.outamount AS apacthdr_outamount',
@@ -60,7 +60,7 @@ class APEnquiryController extends defaultController
                         'ap.source AS apacthdr_source',
                         'ap.idno AS apacthdr_idno',
                         'ap.unit AS apacthdr_unit',
-                        'ap.pvno AS apacthdr_pvno',
+                        'ap.pvno AS apacthdr_pvno', //search
                         'ap.paymode AS apacthdr_paymode',
                         'ap.bankcode AS apacthdr_bankcode'
                         
@@ -81,6 +81,22 @@ class APEnquiryController extends defaultController
             if($request->searchCol[0] == 'apacthdr_document'){
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('ap.document','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'apacthdr_cheqno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.cheqno','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'apacthdr_auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.auditno','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'apacthdr_trantype'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.trantype','like',$request->searchVal[0]);
+                    });
+            }else if($request->searchCol[0] == 'apacthdr_pvno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.pvno','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {

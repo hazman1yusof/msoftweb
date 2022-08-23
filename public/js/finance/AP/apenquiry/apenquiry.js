@@ -51,25 +51,24 @@ $(document).ready(function () {
 	var urlParam={
 		action:'maintable',
 		url:'./apenquiry/table',
-		source:['AP'],
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Creditor Code', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},
-			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase', canSearch: true,},
-			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Supplier Code', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'PV No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true, canSearch: true},
-			{ label: 'Unit', name: 'apacthdr_unit', width: 40, hidden:true},
-			{ label: 'Category Code', name: 'apacthdr_category', width: 60, hidden:false, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Unit', name: 'apacthdr_unit', width: 30, hidden:false},
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},
+			{ label: 'Category Code', name: 'apacthdr_category', width: 40, hidden:false, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},		
+			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25, hidden:false, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Transaction Type', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase', canSearch: true, hidden:true},
 			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
@@ -106,7 +105,7 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 
-			$("#searchForm input[name=Stext]").focus();
+			//$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
 		
@@ -126,19 +125,7 @@ $(document).ready(function () {
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
-	function searchClick2(grid,form,urlParam){
-		$(form+' [name=Stext]').on( "keyup", function() {
-			delay(function(){
-				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				refreshGrid("#jqGrid",null,"kosongkan");
-			}, 500 );
-		});
-
-		$(form+' [name=Scol]').on( "change", function() {
-			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			refreshGrid("#jqGrid",null,"kosongkan");
-		});
-	}
+	searchClick2('#jqGrid','#searchForm',urlParam);
 	////////////////////////////////////////////////////////
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -155,7 +142,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',false,urlParam);
+	addParamField('#jqGrid',true,urlParam);
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
