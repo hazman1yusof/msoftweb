@@ -146,6 +146,8 @@ $(document).ready(function () {
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
 
+		console.log(apptsession)
+
 		td_from.addSessionInterval(interval,apptsession);
 		td_to.addSessionInterval(interval,apptsession);
 		session_field.addSessionInterval(interval,apptsession);

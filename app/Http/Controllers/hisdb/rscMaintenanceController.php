@@ -24,7 +24,7 @@ class rscMaintenanceController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('hisdb.appointment.doctor_maintenance');
+        return view('hisdb.appointment.rsc_maintenance');
     }
 
     public function table(Request $request)

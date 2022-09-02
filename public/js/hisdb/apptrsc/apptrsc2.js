@@ -58,55 +58,79 @@ $(document).ready(function () {
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
         {
             colModel: [
-                { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+                { label: 'Resource Code', name: 'resourcecode', width: 20, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'interval', name: 'interval', hidden:true},
+				{ label: 'start', name: 'start', hidden:true},
+				{ label: 'end', name: 'end', hidden:true},
             ],
             urlParam: {
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','A'],
-				join_type : ['LEFT JOIN'],
-				join_onCol : ['a.resourcecode'],
-				join_onVal : ['d.doctorcode'],
-				join_filterCol : [['a.compcode on =']],
-				join_filterVal : [['d.compcode']],
-				fixPost:'true',
 				filterCol : ['a.TYPE'],
 				filterVal : [$('#Class2').val()],
 
 			},
             onSelectRow: function () {
-				let data = selrowData('#' + dialog_name.gridname);
-
-				var session_param ={
-					action:"get_table_default",
-					url:'util/get_table_default',
-					field:'*',
-					table_name:'hisdb.apptsession',
-					table_id:'idno',
-					filterCol:['doctorcode','status'],
-					filterVal:[data['a_resourcecode'],'True']
-				};
-
-				refreshGrid("#grid_session",session_param);
             },
-            ondblClickRow_off:'off',
+            ondblClickRow: function () {
+				$(dialog_name.textfield).off('blur',onBlur);
+				$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
+				$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
+				$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
+
+				let data = selrowData('#' + dialog_name.gridname);
+				let interval = data['interval'];
+				$('.fc-myCustomButton-button').show();
+
+				td_from.addSessionInterval(interval,apptsession);
+				td_to.addSessionInterval(interval,apptsession);
+				session_field.addSessionInterval(interval,apptsession);
+
+				var event_apptbook = {
+					id: 'apptbook',
+					url: "apptrsc/getEvent",
+					type: 'GET',
+					data: {
+						type: 'apptbook',
+						drrsc: $('#resourcecode').val()
+					}
+				}
+
+				var event_appt_leave = {
+					id: 'appt_leave',
+					url: "apptrsc/getEvent",
+					type: 'GET',
+					data: {
+						type: 'appt_leave',
+						drrsc: $('#resourcecode').val()
+					},
+					color: $('#ALCOLOR').val(),
+		        	rendering: 'background'
+				}
+
+				$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
+				$('#calendar').fullCalendar( 'removeEventSource', 'appt_leave');
+				$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
+				$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
+
+				parent_change_title('Resource Booking of '+data['a_description']);
+
+				$(dialog_name.textfield).focus();
+				$("#"+dialog_name.dialogname).dialog( "close" );
+				$("#"+dialog_name.gridname).jqGrid("clearGridData", true);
+				$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
+			}
         },{
             title: "Select Doctor",
-            width: 10/10 * $(window).width(),
+            width: 8/10 * $(window).width(),
             open: function () {
 
 				$("#"+dialog_name.gridname).jqGrid ('setGridHeight',100);
 
-				$("#grid_session").jqGrid ('setGridWidth', Math.floor($("#grid_session_c")[0].offsetWidth-$("#grid_session_c")[0].offsetLeft));
+				// $("#grid_session").jqGrid ('setGridWidth', Math.floor($("#grid_session_c")[0].offsetWidth-$("#grid_session_c")[0].offsetLeft));
 
                 var type = $('#Class2').val();
-				dialog_name.urlParam.join_type = ['LEFT JOIN'];
-				dialog_name.urlParam.join_onCol = ['a.resourcecode'];
-				dialog_name.urlParam.join_onVal = ['d.doctorcode'];
-				dialog_name.urlParam.join_filterCol = [['a.compcode on =']];
-				dialog_name.urlParam.join_filterVal = [['d.compcode']];
-				dialog_name.urlParam.fixPost='true';
 				dialog_name.urlParam.filterCol = ['a.TYPE'];
 				dialog_name.urlParam.filterVal = [type];
 			},
@@ -116,14 +140,6 @@ $(document).ready(function () {
         }, 'urlParam'
     );
 	dialog_name.makedialog(true);
-
-	$("#"+dialog_name.dialogname+" .panel-body").append(`
-		<button type='button' id='selecting_doctor' class="btn btn-primary" style="margin-top:10px; margin-left:15px">Select This Resource</button>
-		<div id='grid_session_c' class='col-xs-12' align='center' style='padding-top:10px;'>
-			<table id='grid_session' class='table table-striped'></table>
-			<div id='grid_session_pager'></div>
-		</div>
-		`);
 
 	function onBlur(event){
 		var idtopush = $(event.currentTarget).siblings("input[type='text']").end().attr('id');
@@ -185,20 +201,20 @@ $(document).ready(function () {
 		$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
 	});
 
-	$("#grid_session").jqGrid({
-		datatype: "local",
-		colModel: [
-            { label: 'Day', name: 'days', width: 80, classes: 'pointer' },
-            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter},
-            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
-            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
-            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
-        ],
-		autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
-		pager: "#grid_session_pager",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-		},
-	});
+	// $("#grid_session").jqGrid({
+	// 	datatype: "local",
+	// 	colModel: [
+ //            { label: 'Day', name: 'days', width: 80, classes: 'pointer' },
+ //            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter},
+ //            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
+ //            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
+ //            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
+ //        ],
+	// 	autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
+	// 	pager: "#grid_session_pager",
+	// 	ondblClickRow: function(rowid, iRow, iCol, e){
+	// 	},
+	// });
 
 	var dialog_case = new ordialog(
 		'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,

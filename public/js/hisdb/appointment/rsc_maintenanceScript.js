@@ -84,7 +84,7 @@
             var rscbtn=[{
 				text: "Save",click: function() {
 					if( $('#resourceformdata').isValid({requiredFields: ''}, conf, true) ) {
-						 saveFormdata("#jqGrid","#resourceAddform","#resourceformdata",oper,saveParam,urlParam,null);
+						saveFormdata("#jqGrid","#resourceAddform","#resourceformdata",oper,saveParam,urlParam,null);
 					}
 				}
 			},{
@@ -338,7 +338,7 @@
 			var urlParam={
 				action:'get_table_default',
 				url: 'util/get_table_default',
-				field:['resourcecode','description','TYPE'],
+				field:['idno','resourcecode','description','TYPE','interval','start','end'],
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
 				sort_idno:true,
@@ -346,13 +346,10 @@
 				filterVal:[ $('#Type').val()]
 			}
 
-			if(Type =='DOC'){
-				urlParam.url = "doctor_maintenance/table";
-			}
             var saveParam={
 				action:'save_table_default',
 				url:"doctor_maintenance/form",
-				field:['resourcecode','description','TYPE'],
+				field:['resourcecode','description','TYPE','interval','start','end'],
 				oper:oper,
 				table_name:'hisdb.apptresrc',
 				table_id:'resourcecode'
@@ -365,10 +362,12 @@
 				datatype: "local",
 				 colModel: [
                     { label: 'idno', name: 'idno', hidden: true},
-					{ label: 'Code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true},						
-				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true, checked:true},
-				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
-				    { label: 'session', name: 'countsession', width: 40, classes: 'wrap', hidden:true},
+					{ label: 'Code', name: 'resourcecode', width: 30, classes: 'wrap', canSearch: true},						
+				    { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true},
+				    { label: 'Type', name: 'TYPE', width: 20, classes: 'wrap', hidden:true},
+				    { label: 'Interval Time', name: 'interval', width: 30, classes: 'wrap'},
+				    { label: 'Start Time', name: 'start', width: 30, classes: 'wrap'},
+				    { label: 'End Time', name: 'end', width: 30, classes: 'wrap'},
 				],
 				autowidth:true,
                 multiSort: true,

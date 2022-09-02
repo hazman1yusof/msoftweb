@@ -42,40 +42,39 @@
 
 	</div>
     
-	 <div id="TSBox" title="Time Session" style="display:none">
+	<div id="TSBox" title="Time Session" style="display:none">
     	<ul>    
 			<b>RESCOURCE CODE : </b><span name='resourcecode' ></span> <br><br>
 			<b>RESCOURCE NAME: </b><span name='description' ></span>
-           
 		</ul>
          
-				<table class="table table-sm table-bordered">
-				<thead>
-				<tr>
-		        <th colspan="2">Morning Session</th>
-		        <th colspan="2">Evening Session</th>
-		        <th colspan="2"></th>
-                </tr>
+		<table class="table table-sm table-bordered">
+		<thead>
+		<tr>
+        <th colspan="2">Morning Session</th>
+        <th colspan="2">Evening Session</th>
+        <th colspan="2"></th>
+        </tr>
 
-                <tr>
-		        <th>Start Time</th>
-		        <th>End Time</th>
-		        <th>Start Time</th>
-		        <th>End Time</th>
-		        <th rowspan="2"><center><button type="button"  class="btn btn-primary btn-rounded btn-sm my-0" id='allTimeBtn'>Apply to All</center></th>
-	            </tr>
+        <tr>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th rowspan="2"><center><button type="button"  class="btn btn-primary btn-rounded btn-sm my-0" id='allTimeBtn'>Apply to All</center></th>
+        </tr>
 
-	            <tr>
-		        <td><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="08:00"></td>
-		        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="12:00"></td>
-		        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="14:00"></td>
-		        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="17:00"></td>
-	            </tr>
-			
-				</thead>
-				<tbody>
-				</tbody>
-				</table>
+        <tr>
+        <td><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="08:00"></td>
+        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="12:00"></td>
+        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="14:00"></td>
+        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="17:00"></td>
+        </tr>
+	
+		</thead>
+		<tbody>
+		</tbody>
+		</table>
 				
 
 		<div id='gridtime_c' style="padding:15px 0 15px 0">
@@ -142,68 +141,56 @@
 	</div>
 
     <div id="tsdialogForm" title="Transfer Form">
-			
-			<form class='form-horizontal' style='width:89%' >
-			<div class="prevnext btn-group pull-right"></div>
 		
-			</form>
+		<form class='form-horizontal' style='width:89%' >
+			<div class="prevnext btn-group pull-right"></div>
+		</form>
 
-			<form class='form-horizontal' style='width:89%' id='tsformdata'>
+		<form class='form-horizontal' style='width:89%' id='tsformdata'>
 			<input id="resourcecode" name="resourcecode" type="hidden">
 			<input id="RESCOURCEcode" name="RESCOURCEcode" type="hidden">
 			<input id="idno" name="idno"  type="hidden">
 			{{ csrf_field() }}
-				<div class="form-group">
-				<div class="form-group">
-				
-			</div>
-
-				</div>
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="timefr1">Start Time</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input type="time" name="timefr1" id="timefr1" class="form-control input-sm" data-validation="required">
-							
-						</div>
-						
-					</div>
-					<label class="col-md-2 control-label" for="timeto1">End Time</label>
-					<div class="col-md-3">
-						<div class='input-group'>
-							<input type="time" name="timeto1" id="timeto1" class="form-control input-sm" data-validation="required">
-							
-						</div>
-						
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="timefr2">Start Time</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input type="time" name="timefr2" id="timefr2" class="form-control input-sm" data-validation="required">
-							
-						</div>
-						
-					</div>
-					<label class="col-md-2 control-label" for="timeto2">End Time</label>
-					<div class="col-md-3">
-						<div class='input-group'>
-							<input type="time" name="timeto2" id="timeto2" class="form-control input-sm" data-validation="required">
-							
-						</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="timefr1">Start Time</label>
+				<div class="col-md-2">
+					<div class='input-group'>
+						<input type="time" name="timefr1" id="timefr1" class="form-control input-sm" data-validation="required">
 						
 					</div>
 					
 				</div>
-	
-			</form>
-		
+				<label class="col-md-2 control-label" for="timeto1">End Time</label>
+				<div class="col-md-3">
+					<div class='input-group'>
+						<input type="time" name="timeto1" id="timeto1" class="form-control input-sm" data-validation="required">
+						
+					</div>
+					
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="timefr2">Start Time</label>
+				<div class="col-md-2">
+					<div class='input-group'>
+						<input type="time" name="timefr2" id="timefr2" class="form-control input-sm" data-validation="required">
+						
+					</div>
+					
+				</div>
+				<label class="col-md-2 control-label" for="timeto2">End Time</label>
+				<div class="col-md-3">
+					<div class='input-group'>
+						<input type="time" name="timeto2" id="timeto2" class="form-control input-sm" data-validation="required">
+						
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 
             
-      <div id="phdialogForm" title="Transfer Form">
+    <div id="phdialogForm" title="Transfer Form">
 		
 		<!-- 	<hr> -->
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
@@ -307,13 +294,13 @@
 		
 			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
 				{{ csrf_field() }}
-				<input id="idno" name="idno" type="hidden">
+				<input id="idno" name="idno" type="text">
 
 				<input id="TYPE" name="TYPE" type="hidden"  value="RSC">
 
 	            <div class="form-group">
-					<label class="col-md-3 control-label" for="resourcecode">Resource Code</label>
-					<div class="col-md-3">
+					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
+					<div class="col-md-4">
 						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 
@@ -321,22 +308,28 @@
 					<div class="col-md-4">
 						<input type="text" name="description" id="description" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
+				</div>
 
-					<label class="col-md-2 control-label" for="t_interval">Time interval</label>
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="interval">Time interval</label>
 					<div class="col-md-4">
-						<input type="text" name="t_interval" id="t_interval" class="form-control input-sm text-uppercase" data-validation="required">
+						<input type="number" step=".01" name="interval" id="interval" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 
-					<label class="col-md-2 control-label" for="s_time">Start Time</label>
+					<label class="col-md-2 control-label" for="start">Start Time</label>
 					<div class="col-md-4">
-						<input type="text" name="s_time" id="s_time" class="form-control input-sm text-uppercase" data-validation="required">
-					</div>
-
-					<label class="col-md-2 control-label" for="e_time">End Time</label>
-					<div class="col-md-4">
-						<input type="text" name="e_time" id="e_time" class="form-control input-sm text-uppercase" data-validation="required">
+						<input type="time" name="start" id="start" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="end">End Time</label>
+					<div class="col-md-4">
+						<input type="time" name="end" id="end" class="form-control input-sm text-uppercase" data-validation="required">
+					</div>
+				</div>
+
+					
 			</form>
 		</div>
 
@@ -379,7 +372,7 @@
 		});
 	</script>
 
-	<script src="js/hisdb/appointment/RESCOURCE_maintenanceScript.js"></script>
+	<script src="js/hisdb/appointment/rsc_maintenanceScript.js"></script>
 
 	
 @endsection
