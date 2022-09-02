@@ -224,6 +224,14 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
+//// doctor_maintenance setup page ///
+Route::get('/rsc_maintenance','hisdb\rscMaintenanceController@show');
+Route::get('/rsc_maintenance/table','hisdb\rscMaintenanceController@table');
+Route::post('/rsc_maintenance/form','hisdb\rscMaintenanceController@form');
+Route::post('/rsc_maintenance/save_session','hisdb\rscMaintenanceController@save_session');
+Route::post('/rsc_maintenance/save_bgleave','hisdb\rscMaintenanceController@save_bgleave');
+Route::post('/rsc_maintenance/save_colorph','hisdb\rscMaintenanceController@save_colorph');
+
 //// Admission Source setup page ///
 Route::get('/admissrc','setup\AdmisSrcController@show');
 Route::get('/admissrc/table','setup\AdmisSrcController@table');
@@ -461,7 +469,7 @@ Route::get('/product','material\ProductController@show');
 Route::get('/product/table','material\ProductController@table');
 Route::post('/product/form','material\ProductController@form');
 
-/////////// appointment resource setup page ////////////////////////////////////
+/////////// appointment resource - doctor setup page ////////////////////////////////////
 Route::get('/apptrsc','hisdb\AppointmentController@show');
 Route::get('/apptrsc/table','hisdb\AppointmentController@table');
 Route::post('/apptrsc/form','hisdb\AppointmentController@form');
@@ -469,6 +477,16 @@ Route::get('/apptrsc/getEvent','hisdb\AppointmentController@getEvent');
 Route::post('/apptrsc/addEvent','hisdb\AppointmentController@addEvent');
 Route::post('/apptrsc/editEvent','hisdb\AppointmentController@editEvent');
 Route::post('/apptrsc/delEvent','hisdb\AppointmentController@delEvent');
+
+/////////// appointment resource - resource setup page ////////////////////////////////////
+Route::get('/apptrsc_rsc','hisdb\Appointment_rscController@show');
+Route::get('/apptrsc_rsc/table','hisdb\Appointment_rscController@table');
+Route::post('/apptrsc_rsc/form','hisdb\Appointment_rscController@form');
+Route::get('/apptrsc_rsc/getEvent','hisdb\Appointment_rscController@getEvent');
+Route::post('/apptrsc_rsc/addEvent','hisdb\Appointment_rscController@addEvent');
+Route::post('/apptrsc_rsc/editEvent','hisdb\Appointment_rscController@editEvent');
+Route::post('/apptrsc_rsc/delEvent','hisdb\Appointment_rscController@delEvent');
+
 
 //////////////////////////////finance setup///////////////////////////////////////
 
