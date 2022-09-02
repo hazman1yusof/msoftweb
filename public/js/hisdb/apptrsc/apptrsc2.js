@@ -60,7 +60,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'resourcecode', width: 20, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'interval', name: 'interval', hidden:true},
+				{ label: 'interval', name: 'interval', hidden:false},
 				{ label: 'start', name: 'start', hidden:true},
 				{ label: 'end', name: 'end', hidden:true},
             ],
@@ -82,6 +82,16 @@ $(document).ready(function () {
 				let data = selrowData('#' + dialog_name.gridname);
 				let interval = data['interval'];
 				$('.fc-myCustomButton-button').show();
+
+				var apptsession=[
+					{days: 'SUNDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'MONDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'TUESDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'WEDNESDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'THURSDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'FRIDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+					{days: 'SATURDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
+				]
 
 				td_from.addSessionInterval(interval,apptsession);
 				td_to.addSessionInterval(interval,apptsession);

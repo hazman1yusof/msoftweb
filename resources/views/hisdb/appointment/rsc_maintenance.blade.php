@@ -294,7 +294,7 @@
 		
 			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
 				{{ csrf_field() }}
-				<input id="idno" name="idno" type="text">
+				<input id="idno" name="idno" type="hidden">
 
 				<input id="TYPE" name="TYPE" type="hidden"  value="RSC">
 
@@ -313,7 +313,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="interval">Time interval</label>
 					<div class="col-md-4">
-						<input type="number" step=".01" name="interval" id="interval" class="form-control input-sm text-uppercase" data-validation="required">
+						<input type="number" name="interval" id="interval" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 
 					<label class="col-md-2 control-label" for="start">Start Time</label>
