@@ -16,6 +16,15 @@ var urlParam_AddNotes = {
 
 $(document).ready(function () {
 
+	textare_init_doctornote();
+
+	// $('textarea#clinicnote,textarea#pmh,textarea#drugh,textarea#allergyh,textarea#socialh,textarea#fmh,textarea#examination,textarea#diagfinal,textarea#plan_').each(function () {
+	//   this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	// }).on('input', function () {
+	//   this.style.height = 'auto';
+	//   this.style.height = (this.scrollHeight) + 'px';
+	// });
+
 	var fdl = new faster_detail_load();
 
 	disableForm('#formDoctorNote');
@@ -121,6 +130,8 @@ $(document).ready(function () {
 			}
 			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			
+			calc_jq_height_onchange("jqGridAddNotes");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridAddNotes_iledit").click();
@@ -628,7 +639,9 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
-	SmoothScrollTo("#jqGridDoctorNote_panel", 500)	
+	SmoothScrollTo("#jqGridDoctorNote_panel", 500)
+	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));	
+	textare_init_doctornote();
 });
 
 //to reload date table on radio btn click
@@ -702,6 +715,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
+			textare_init_doctornote();
 
 			datable_medication.clear().draw();
 			datable_medication.rows.add(data.transaction.rows).draw();
@@ -751,4 +765,31 @@ function sticky_docnotetbl(on){
 		$(window).off('scroll');
 	}
 	
+}
+
+function textare_init_doctornote(){
+	$('textarea#clinicnote,textarea#pmh,textarea#drugh,textarea#allergyh,textarea#socialh,textarea#fmh,textarea#examination,textarea#diagfinal,textarea#plan_').each(function () {
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function () {
+		if(this.scrollHeight>40){
+	  		this.style.height = 'auto';
+	  		this.style.height = (this.scrollHeight) + 'px';
+		}else{
+	  		this.style.height = (40) + 'px';
+		}
+	});
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

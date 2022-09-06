@@ -218,6 +218,12 @@ $(document).ready(function () {
 	});
 	// to autocheck the checkbox bila fill in textarea ends
 
+    $("#jqGridAntenatal_panel").on("show.bs.collapse", function(){
+		$("#jqGridPrevObstetrics").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+		$("#jqGridCurrPregnancy").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+		$("#jqGridObstetricsUltrasound").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+    });
+
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
 
@@ -271,6 +277,8 @@ $(document).ready(function () {
 		pager: "#jqGridPagerPrevObstetrics",
 		loadComplete: function(){		
 			$("#jqGridPrevObstetrics").setSelection($("#jqGridPrevObstetrics").getDataIDs()[0]);
+			
+			calc_jq_height_onchange("jqGridPrevObstetrics");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPrevObstetrics_iledit").click();
@@ -512,6 +520,8 @@ $(document).ready(function () {
 		pager: "#jqGridPagerCurrPregnancy",
 		loadComplete: function(){
 			$("#jqGridCurrPregnancy").setSelection($("#jqGridCurrPregnancy").getDataIDs()[0]);
+			
+			calc_jq_height_onchange("jqGridCurrPregnancy");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			// $("#jqGridCurrPregnancy_iledit").click();
@@ -793,6 +803,8 @@ $(document).ready(function () {
 		loadComplete: function(){
 			button_state_antenatal('empty_ultrasound');
 			$("#jqGridObstetricsUltrasound").setSelection($("#jqGridObstetricsUltrasound").getDataIDs()[0]);
+			
+			calc_jq_height_onchange("jqGridObstetricsUltrasound");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			// $("#jqGridObstetricsUltrasound_iledit").click();
@@ -2086,4 +2098,14 @@ function get_ald() {
 	// $('#ald').val((ald).toFixed(2));
 	// $('#ald_w').val((ald_w).toFixed(2));
 	// $('#ald_d').val((ald_d).toFixed(2));
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

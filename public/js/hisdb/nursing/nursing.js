@@ -27,12 +27,14 @@ var urlParam_AddNotesTriage = {
 
 $(document).ready(function () {
 
-	$('textarea#admreason,textarea#medicalhistory,textarea#surgicalhistory,textarea#familymedicalhist,textarea#currentmedication,textarea#diagnosis,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc,textarea#eb_bowelmovedesc,textarea#bl_urinedesc,textarea#bl_urinefreq,textarea#pa_notes').each(function () {
-	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
-	}).on('input', function () {
-	  this.style.height = 'auto';
-	  this.style.height = (this.scrollHeight) + 'px';
-	});
+	textare_init_triage();
+
+	// $('textarea#admreason,textarea#medicalhistory,textarea#surgicalhistory,textarea#familymedicalhist,textarea#currentmedication,textarea#diagnosis,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc,textarea#eb_bowelmovedesc,textarea#bl_urinedesc,textarea#bl_urinefreq,textarea#pa_notes').each(function () {
+	//   this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	// }).on('input', function () {
+	//   this.style.height = 'auto';
+	//   this.style.height = (this.scrollHeight) + 'px';
+	// });
 
 	var fdl = new faster_detail_load();
 
@@ -146,6 +148,7 @@ $(document).ready(function () {
 	$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
 		SmoothScrollTo("#jqGridTriageInfo_panel", 500)	
 		sticky_docnotetbl(on=true);
+		textare_init_triage();
 	});
 
 	$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
@@ -197,6 +200,8 @@ $(document).ready(function () {
 			}
 			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			
+			calc_jq_height_onchange("jqGridExamTriage");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridExamTriage_iledit").click();
@@ -392,6 +397,8 @@ $(document).ready(function () {
 			}
 			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			
+			calc_jq_height_onchange("jqGridAddNotesTriage");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridAddNotesTriage_iledit").click();
@@ -654,12 +661,14 @@ $(document).ready(function () {
 				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 				button_state_ti('disableAll');
+				textare_init_triage();
 	        }else{
 				button_state_ti('disableAll');
 				refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 				refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 				examination_nursing.empty();
 				autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+				textare_init_triage();
 	        }
 
 	    });
@@ -781,12 +790,14 @@ function populate_formNursing(obj,rowdata){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse);
 		tri_color_set();
 		button_state_ti('edit');
+		textare_init_triage();
 	}
 
 	if(rowdata.nurse_gen != undefined){
 		autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
 		$('#formTriageInfo span#adduser').text(data.nurse_gen.adduser);
 		button_state_ti('edit');
+		textare_init_triage();
 
 		// autoinsert_rowdata("#formTriageInfo",rowdata.nurse_gen);
 		// button_state_ti('edit');
@@ -862,12 +873,14 @@ function populate_triage(obj,rowdata){
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('disableAll');
+			textare_init_triage();
         }else{
 			button_state_ti('disableAll');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			textare_init_triage();
         }
 
     });
@@ -927,12 +940,14 @@ function populate_triage_currpt(obj){
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('edit');
+			textare_init_triage();
         }else{
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			textare_init_triage();
         }
 
     });
@@ -992,12 +1007,14 @@ function populate_triage_casenote(obj){
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'add_exam');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('disableAll');
+			textare_init_triage();
         }else{
 			button_state_ti('disableAll');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'kosongkan');
 			examination_nursing.empty();
 			autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
+			textare_init_triage();
         }
 
     });
@@ -1373,5 +1390,32 @@ function examination(){
 		`);
 
 	}
+}
+
+function textare_init_triage(){
+	$('textarea#admreason,textarea#medicalhistory,textarea#surgicalhistory,textarea#familymedicalhist,textarea#currentmedication,textarea#diagnosis,textarea#drugs_remarks,textarea#plaster_remarks,textarea#food_remarks,textarea#environment_remarks,textarea#others_remarks,textarea#unknown_remarks,textarea#none_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc,textarea#eb_bowelmovedesc,textarea#bl_urinedesc,textarea#bl_urinefreq,textarea#pa_notes').each(function () {
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function () {
+		if(this.scrollHeight>40){
+	  		this.style.height = 'auto';
+	  		this.style.height = (this.scrollHeight) + 'px';
+		}else{
+	  		this.style.height = (40) + 'px';
+		}
+	});
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }
 

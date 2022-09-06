@@ -151,6 +151,8 @@ $(document).ready(function () {
 			}
 			$('.ui-pg-button').prop('disabled',true);
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			
+			calc_jq_height_onchange("jqGridMedicalSurgical");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridMedicalSurgical_iledit").click();
@@ -545,6 +547,16 @@ function saveForm_paediatric(callback){
     }).success(function(data){
         callback();
     });
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }
 
 

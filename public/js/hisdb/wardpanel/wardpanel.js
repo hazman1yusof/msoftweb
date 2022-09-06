@@ -16,12 +16,14 @@ var urlParam_Exam = {
 
 $(document).ready(function () {
 
-	$('textarea#nurs_admreason,textarea#nurs_medicalhistory,textarea#nurs_surgicalhistory,textarea#nurs_familymedicalhist,textarea#nurs_currentmedication,textarea#nurs_diagnosis,textarea#nurs_drugs_remarks,textarea#nurs_plaster_remarks,textarea#nurs_food_remarks,textarea#nurs_environment_remarks,textarea#nurs_others_remarks,textarea#nurs_unknown_remarks,textarea#nurs_none_remarks,textarea#nurs_br_breathingdesc,textarea#nurs_br_coughdesc,textarea#nurs_br_smokedesc,textarea#nurs_ed_eatdrinkdesc,textarea#nurs_eb_bowelmovedesc,textarea#nurs_bl_urinedesc,textarea#nurs_bl_urinefreq,textarea#nurs_pa_notes').each(function () {
-	  this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
-	}).on('input', function () {
-	  this.style.height = 'auto';
-	  this.style.height = (this.scrollHeight) + 'px';
-	});
+	textare_init_nursAssessment();
+
+	// $('textarea#nurs_admreason,textarea#nurs_medicalhistory,textarea#nurs_surgicalhistory,textarea#nurs_familymedicalhist,textarea#nurs_currentmedication,textarea#nurs_diagnosis,textarea#nurs_drugs_remarks,textarea#nurs_plaster_remarks,textarea#nurs_food_remarks,textarea#nurs_environment_remarks,textarea#nurs_others_remarks,textarea#nurs_unknown_remarks,textarea#nurs_none_remarks,textarea#nurs_br_breathingdesc,textarea#nurs_br_coughdesc,textarea#nurs_br_smokedesc,textarea#nurs_ed_eatdrinkdesc,textarea#nurs_eb_bowelmovedesc,textarea#nurs_bl_urinedesc,textarea#nurs_bl_urinefreq,textarea#nurs_pa_notes').each(function () {
+	//   this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	// }).on('input', function () {
+	//   this.style.height = 'auto';
+	//   this.style.height = (this.scrollHeight) + 'px';
+	// });
 
 	var fdl = new faster_detail_load();
 
@@ -141,6 +143,8 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			
+			calc_jq_height_onchange("jqGridExam");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridExam_iledit").click();
@@ -525,10 +529,12 @@ function populate_nursAssessment(obj,rowdata){
 			}
 			
 			button_state_ward('edit');
+			textare_init_nursAssessment();
         }else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
+			textare_init_nursAssessment();
         }
 
     });
@@ -584,10 +590,12 @@ function populate_nursAssessment_currpt(obj){
 			}
 			
 			button_state_ward('edit');
+			textare_init_nursAssessment();
         }else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
+			textare_init_nursAssessment();
         }
 
     });
@@ -880,5 +888,32 @@ function examination(){
 		`);
 
 	}
+}
+
+function textare_init_nursAssessment(){
+	$('textarea#nurs_admreason,textarea#nurs_medicalhistory,textarea#nurs_surgicalhistory,textarea#nurs_familymedicalhist,textarea#nurs_currentmedication,textarea#nurs_diagnosis,textarea#nurs_drugs_remarks,textarea#nurs_plaster_remarks,textarea#nurs_food_remarks,textarea#nurs_environment_remarks,textarea#nurs_others_remarks,textarea#nurs_unknown_remarks,textarea#nurs_none_remarks,textarea#nurs_br_breathingdesc,textarea#nurs_br_coughdesc,textarea#nurs_br_smokedesc,textarea#nurs_ed_eatdrinkdesc,textarea#nurs_eb_bowelmovedesc,textarea#nurs_bl_urinedesc,textarea#nurs_bl_urinefreq,textarea#nurs_pa_notes').each(function () {
+		if(this.value.trim() == ''){
+			this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}else{
+			this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
+		}
+	}).off().on('input', function () {
+		if(this.scrollHeight>40){
+	  		this.style.height = 'auto';
+	  		this.style.height = (this.scrollHeight) + 'px';
+		}else{
+	  		this.style.height = (40) + 'px';
+		}
+	});
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }
 
