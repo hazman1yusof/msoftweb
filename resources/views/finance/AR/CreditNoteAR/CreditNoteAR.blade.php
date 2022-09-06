@@ -48,27 +48,46 @@ i.fa {
 	@else
 		<input id="recstatus_use" name="recstatus_use" type="hidden" value="{{Request::get('scope')}}">
 	@endif
-
-
-	 
+ 
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="<?php echo date("Y") ?>">
+			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm"></select>
-		              </div>
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>
+								<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+						</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase"  tabindex="1">
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+								<div id="creditor_text">
+									<div class='input-group'>
+										<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span id="creditor_search_hb" class="help-block"></span>
+								</div>
+
+								<div id="actdate_text" class="form-inline" style="display:none">
+									FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+									TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+									<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+								</div>	
+								
+								<div id="department_text">
+									<div class='input-group'>
+										<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span id="department_search_hb" class="help-block"></span>
+								</div>
 						</div>
-		            </div>
+					</div>
 				</div>
 
 				<?php 
@@ -119,7 +138,8 @@ i.fa {
 
 			 </fieldset> 
 		</form>
-
+	</div>
+	
 		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
     		<div class="panel-heading heading_panel_">List Of Selected Item</div>
     		<div class="panel-body">

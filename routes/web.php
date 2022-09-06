@@ -704,6 +704,12 @@ Route::get('/apenquiry/table','finance\APEnquiryController@table');
 Route::post('/apenquiry/form','finance\APEnquiryController@form');
 Route::get('/apenquiry/form','finance\APEnquiryController@form');
 
+//// AR Enquiry
+Route::get('/arenquiry','finance\arenquiryController@show');
+Route::get('/arenquiry/table','finance\arenquiryController@table');
+Route::post('/arenquiry/form','finance\arenquiryController@form');
+Route::get('/arenquiry/form','finance\arenquiryController@form');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
