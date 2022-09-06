@@ -798,7 +798,8 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid2');
 
-			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //rese
+			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1366,6 +1367,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid3');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
@@ -2180,8 +2182,8 @@ $(document).ready(function () {
 			console.log(rowid);
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");

@@ -872,6 +872,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1641,7 +1642,9 @@ $(document).ready(function () {
 		gridComplete:function(){
 			fdl.set_array().reset();
 		},
-		
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid3");
+		},
 	});
 	
 	jqgrid_label_align_right("#jqGrid3");
@@ -2189,8 +2192,8 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
