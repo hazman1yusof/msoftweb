@@ -258,6 +258,7 @@ $(document).ready(function () {
 				$('#jqGrid3_c').show();
 				$('#gridDo_c').show();
 			}
+			calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
 
@@ -790,6 +791,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1203,6 +1205,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 		onSelectRow: function(data, rowid, selected) {
 
@@ -1435,6 +1438,7 @@ $(document).ready(function () {
 			});
 			//setjqgridHeight(data,'jqGrid3');
         	//showeditfunc.off().on();
+			calc_jq_height_onchange("gridDo");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1653,8 +1657,8 @@ $(document).ready(function () {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 			console.log(rowdata);
 		},
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
@@ -1725,4 +1729,14 @@ function empty_form(){
 	$('#document_show').text('');
 	$('#suppcode_show').text('');
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

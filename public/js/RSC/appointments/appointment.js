@@ -954,10 +954,6 @@ $(document).ready(function () {
 		let convfactor_pouom = parseFloat($("#convfactor_pouom").val());
 
 		let qtyrequest = parseFloat($("#jqGrid2 input[name='qtyrequest']").val());
-
-		console.log(convfactor_uom);
-		console.log(convfactor_pouom);
-
 		var balconv = convfactor_pouom*qtyrequest%convfactor_uom;
 
 		if (balconv  == 0) {

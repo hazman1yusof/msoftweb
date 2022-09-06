@@ -160,6 +160,9 @@ $(document).ready(function () {
 			}
 			$("#searchForm input[name=Stext]").focus();
 		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 
 	});
 	
@@ -251,7 +254,10 @@ $(document).ready(function () {
 			$('#deptcodedtl_').html(selrowData("#detail").d_description);
 
 			refreshGrid('#itemExpiry',urlParam3);
-		}
+		},
+		loadComplete: function(){
+			calc_jq_height_onchange("detail");
+		},
 	});
      
 
@@ -325,6 +331,9 @@ $(document).ready(function () {
 			var jg=$("#itemExpiry").jqGrid('getRowData',rowid);
 			var itemcodedtl = $('#itemcode').val();
 
+		},
+		loadComplete: function(){
+			calc_jq_height_onchange("itemExpiry");
 		},
 	});
 
@@ -640,3 +649,13 @@ $(document).ready(function () {
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
 });
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}

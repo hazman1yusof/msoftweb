@@ -279,6 +279,9 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 			//empty_form();
 		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 		
 	});
 
@@ -869,6 +872,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1638,7 +1642,9 @@ $(document).ready(function () {
 		gridComplete:function(){
 			fdl.set_array().reset();
 		},
-		
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid3");
+		},
 	});
 	
 	jqgrid_label_align_right("#jqGrid3");
@@ -2186,8 +2192,8 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
@@ -2246,7 +2252,6 @@ $(document).ready(function () {
 });
 
 function populate_form(obj){
-
 	//panel header
 	$('#txndept_show').text(obj.txndept);
 	$('#trantype_show').text(obj.trantype);
@@ -2255,10 +2260,19 @@ function populate_form(obj){
 }
 
 function empty_form(){
-
 	$('#txndept_show').text('');
 	$('#trantype_show').text('');
 	$('#docno_show').text('');
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }
 

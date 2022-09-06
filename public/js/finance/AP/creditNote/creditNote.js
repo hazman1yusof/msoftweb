@@ -169,25 +169,10 @@ $(document).ready(function () {
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
 
-	// var urlParam={
-	// 	action:'get_table_default',
-	// 	url:'util/get_table_default',
-	// 	field:'',
-	// 	fixPost:'true',
-	// 	table_name:['finance.apacthdr','material.supplier'],
-	// 	table_id:'apacthdr_idno',
-	// 	join_type:['LEFT JOIN'],
-	// 	join_onCol:['supplier.suppcode'],
-	// 	join_onVal:['apacthdr.suppcode'],
-	// 	filterCol: ['source', 'trantype'],
-	// 	filterVal: [$('#apacthdr_source').val(),'CN']
-	// }
-
 	var urlParam={
 		action:'maintable',
 		url:'./creditNote/table',
 		source:$('#apacthdr_source').val(),
-		//trantype:$('#apacthdr_trantype').val(),
 	}
 
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
@@ -220,14 +205,12 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				// $('#auditno').text("");//tukar kat depan tu
 				refreshGrid("#jqGrid3",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			// $('#auditno').text("");//tukar kat depan tu
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
@@ -272,8 +255,6 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		// sortname:'apacthdr_idno',
-		// sortorder:'desc',
 		width: 900,
 		height: 200,
 		rowNum: 30,
@@ -337,6 +318,9 @@ $(document).ready(function () {
 
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
@@ -784,6 +768,7 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = true;
 			addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 
 		gridComplete: function(){
@@ -1103,6 +1088,7 @@ $(document).ready(function () {
 		loadComplete: function(data){
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			
@@ -1334,8 +1320,8 @@ $(document).ready(function () {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 			console.log(rowdata);
 		},
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
@@ -1404,4 +1390,14 @@ function empty_form(){
 	$('#document_show').text('');
 	$('#suppcode_show').text('');
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

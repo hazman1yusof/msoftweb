@@ -382,7 +382,9 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 			errorField.length = 0;
 		},
-
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 
 	});
 
@@ -937,6 +939,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1770,6 +1773,7 @@ $(document).ready(function () {
 			});
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
@@ -2670,9 +2674,8 @@ $(document).ready(function () {
 		onSelectRow: function (rowid, selected) {
 			let rowdata = $('#jqGrid_selection').jqGrid ('getRowData');
 		},
-
-		gridComplete: function(){
-			
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid_selection");
 		},
 	})
 	jqgrid_label_align_right("#jqGrid_selection");
@@ -2788,19 +2791,27 @@ $(document).ready(function () {
 	}
 });
 
-function populate_form(obj){
+	function populate_form(obj){
+		//panel header
+		$('#prdept_show').text(obj.purordhd_prdept);
+		$('#purordno_show').text(padzero(obj.purordhd_purordno));
+		$('#suppcode_show').text(obj.supplier_name);
+		
+	}
 
-	//panel header
-	$('#prdept_show').text(obj.purordhd_prdept);
-	$('#purordno_show').text(padzero(obj.purordhd_purordno));
-	$('#suppcode_show').text(obj.supplier_name);
-	
-}
+	function empty_form(){
+		$('#prdept_show').text('');
+		$('#purordno_show').text('');
+		$('#suppcode_show').text('');
 
-function empty_form(){
+	}
 
-	$('#prdept_show').text('');
-	$('#purordno_show').text('');
-	$('#suppcode_show').text('');
-
-}
+	function calc_jq_height_onchange(jqgrid){
+		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+		if(scrollHeight<50){
+			scrollHeight = 50;
+		}else if(scrollHeight>300){
+			scrollHeight = 300;
+		}
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	}
