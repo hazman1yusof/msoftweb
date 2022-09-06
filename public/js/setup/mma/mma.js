@@ -94,6 +94,7 @@ $(document).ready(function () {
 			if(err_reroll.error == true){
 				err_reroll.reroll();
 			}
+			calc_jq_height_onchange("jqGrid");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
@@ -413,7 +414,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 
@@ -424,7 +425,6 @@ $(document).ready(function () {
 			// }
 		}
 	});
-	// var hide_init=0;
 
 	//////////////////////////////////////////myEditOptions2/////////////////////////////////////////////
 
@@ -658,4 +658,14 @@ function empty_formMMA(){
 	// disableForm('#formMMA');
 	// emptyFormdata(errorField_MMA,'#formMMA')
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

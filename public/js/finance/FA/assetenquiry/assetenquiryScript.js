@@ -417,6 +417,7 @@ $(document).ready(function () {
 			});
 			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 			fdl.set_array().reset();
+			calc_jq_height_onchange("jqGrid");
 		}
 	});
 
@@ -791,6 +792,7 @@ $(document).ready(function () {
 		},
 		loadComplete: function(data){
 			setjqgridHeight(data,'jqGrid2');
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 		/*	$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -948,6 +950,7 @@ $(document).ready(function () {
 			addmore_jqgrid3.edit = addmore_jqgrid3.more = false;*/ //reset
 			setjqgridHeight(data,'jqGrid3');
         	showeditfunc.off().on();
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1207,6 +1210,14 @@ $(document).ready(function () {
 			});
 		}
 	}
-
-	
 });
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}

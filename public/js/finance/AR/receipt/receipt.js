@@ -845,7 +845,7 @@ $(document).ready(function () {
 		loadonce:false,
 		sortorder:'desc',
 		width: 900,
-		height: 350,
+		height: 300,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -863,6 +863,9 @@ $(document).ready(function () {
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 		},
+		loadComplete:function(data){
+			calc_jq_height_onchange("jqGrid");
+		}
 		
 	});
 
@@ -1333,4 +1336,13 @@ $(document).ready(function () {
 	////////////////////////////////end allocation part/////////////////////////////////////
 
 });
-		
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}	

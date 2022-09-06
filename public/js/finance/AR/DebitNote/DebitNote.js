@@ -211,7 +211,7 @@ $(document).ready(function () {
 		sortname:'db_idno',
 		sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 300,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
@@ -264,7 +264,9 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 		},
-
+		loadComplete:function(data){
+			calc_jq_height_onchange("jqGrid");
+		}
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
@@ -760,13 +762,12 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid2');			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-		},
-		
-		gridComplete: function(){
+			calc_jq_height_onchange("jqGrid2");
 
+		},		
+		gridComplete: function(){
 			fdl.set_array().reset();
 			//fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-
 		},
 		beforeSubmit: function (postdata, rowid) {
 			dialog_billtypeSO.check(errorField);
@@ -1336,6 +1337,7 @@ $(document).ready(function () {
 			});
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 	
 		gridComplete: function(){
@@ -1682,4 +1684,14 @@ function get_billtype(){
 				$("#jqGrid2 input[name='amtbilltype']").val(data_.amount);
 			}
 		});
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

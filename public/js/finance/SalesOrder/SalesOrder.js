@@ -218,7 +218,7 @@ $(document).ready(function () {
 		// sortname:'db_idno',
 		// sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 300,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
@@ -279,6 +279,9 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 		},
+		loadComplete:function(data){
+			calc_jq_height_onchange("jqGrid");
+		}
 
 	});
 
@@ -798,6 +801,9 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			
+			calc_jq_height_onchange("jqGrid2");
+
 		},
 		
 		gridComplete: function(){
@@ -1456,6 +1462,7 @@ $(document).ready(function () {
 			});
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 	
 		gridComplete: function(){
@@ -1943,4 +1950,14 @@ function get_billtype(mycurrency2){
 				mycurrency2.formatOn();
 			}
 		});
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

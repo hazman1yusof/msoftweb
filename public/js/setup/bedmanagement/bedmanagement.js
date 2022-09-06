@@ -240,6 +240,7 @@ $(document).ready(function () {
 			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
 
 			button_state_ti('disableAll');
+			calc_jq_height_onchange("jqGrid");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			if (rowid != null) {
@@ -941,6 +942,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid_trf");
 			
 		},
 		gridComplete: function(){
@@ -1329,5 +1331,14 @@ $(document).ready(function () {
             accomodation_table.destroy();
         });
     }
-
 });
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}

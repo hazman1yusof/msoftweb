@@ -287,7 +287,9 @@ $(document).ready(function () {
 				$('#jqGrid_ordcom').jqGrid ('setSelection', "1");
 			}
 
-			addmore_jqGrid_ordcom.edit = addmore_jqGrid_ordcom.more = false; //reset			
+			addmore_jqGrid_ordcom.edit = addmore_jqGrid_ordcom.more = false; //reset
+			calc_jq_height_onchange("jqGrid_ordcom");
+		
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){			
 			$("#jqGrid_iledit").click();
