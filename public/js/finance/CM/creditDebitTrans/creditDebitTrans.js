@@ -215,6 +215,9 @@ $(document).ready(function () {
 						$("#jqGridplus2").show();
 					}	*/
 		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 			
 	});
 	
@@ -515,6 +518,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 		
@@ -890,6 +894,7 @@ $(document).ready(function () {
 		loadComplete: function(data){
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			
@@ -1098,4 +1103,14 @@ function empty_formCDT(){
 	// disableForm('#formCDT');
 	// emptyFormdata(errorField_MMA,'#formCDT')
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

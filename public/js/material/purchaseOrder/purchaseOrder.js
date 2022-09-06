@@ -382,7 +382,9 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 			errorField.length = 0;
 		},
-
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 
 	});
 
@@ -2788,19 +2790,27 @@ $(document).ready(function () {
 	}
 });
 
-function populate_form(obj){
+	function populate_form(obj){
+		//panel header
+		$('#prdept_show').text(obj.purordhd_prdept);
+		$('#purordno_show').text(padzero(obj.purordhd_purordno));
+		$('#suppcode_show').text(obj.supplier_name);
+		
+	}
 
-	//panel header
-	$('#prdept_show').text(obj.purordhd_prdept);
-	$('#purordno_show').text(padzero(obj.purordhd_purordno));
-	$('#suppcode_show').text(obj.supplier_name);
-	
-}
+	function empty_form(){
+		$('#prdept_show').text('');
+		$('#purordno_show').text('');
+		$('#suppcode_show').text('');
 
-function empty_form(){
+	}
 
-	$('#prdept_show').text('');
-	$('#purordno_show').text('');
-	$('#suppcode_show').text('');
-
-}
+	function calc_jq_height_onchange(jqgrid){
+		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+		if(scrollHeight<50){
+			scrollHeight = 50;
+		}else if(scrollHeight>300){
+			scrollHeight = 300;
+		}
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	}

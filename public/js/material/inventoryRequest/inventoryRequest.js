@@ -268,9 +268,10 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
-			fdl.set_array().reset();
-
-			
+			fdl.set_array().reset();	
+		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
 		},
 
 	});
@@ -771,6 +772,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			
 		},
 		
 		gridComplete: function(){
@@ -795,50 +797,50 @@ $(document).ready(function () {
 		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
     });
-	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
-	$("#jqGrid2").jqGrid('bindKeys');
-		var updwnkey_fld;
-		function updwnkey_func(event){
-			var optid = event.currentTarget.id;
-			var fieldname = optid.substring(optid.search("_"));
-			updwnkey_fld = fieldname;
-		}
+		$("#jqGrid2").jqGrid('bindKeys');
+			var updwnkey_fld;
+			function updwnkey_func(event){
+				var optid = event.currentTarget.id;
+				var fieldname = optid.substring(optid.search("_"));
+				updwnkey_fld = fieldname;
+			}
 
-		$("#jqGrid2").keydown(function(e) {
-	      switch (e.which) {
-	        case 40: // down
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
+			$("#jqGrid2").keydown(function(e) {
+			switch (e.which) {
+				case 40: // down
+				var $grid = $(this);
+				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+				$("#"+selectedRowId+updwnkey_fld).focus();
 
-	          e.preventDefault();
-	          break;
+				e.preventDefault();
+				break;
 
-	        case 38: // up
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
+				case 38: // up
+				var $grid = $(this);
+				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+				$("#"+selectedRowId+updwnkey_fld).focus();
 
-	          e.preventDefault();
-	          break;
+				e.preventDefault();
+				break;
 
-	        default:
-	          return;
-	      }
-	    });
+				default:
+				return;
+			}
+			});
 
 
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-  	useColSpanStyle: false, 
-	  groupHeaders:[
-		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-	  ]
-	});
+		$("#jqGrid2").jqGrid('setGroupHeaders', {
+		useColSpanStyle: false, 
+		groupHeaders:[
+			{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+			{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+		]
+		});
 
-	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+		////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
+		jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////all function for remarks/////////////////////////////////////////////////
 
@@ -1698,17 +1700,27 @@ $(document).ready(function () {
 
 });
 
-function populate_form(obj){
-	//panel header
-	$('#ivreqno_show').text(obj.ivreqno);
-	$('#suppcode_show').text(obj.supplier_name);
-}
+	function populate_form(obj){
+		//panel header
+		$('#ivreqno_show').text(obj.ivreqno);
+		$('#suppcode_show').text(obj.supplier_name);
+	}
 
-function empty_form(){
-	$('#ivreqno_show').text('');
-	$('#suppcode_show').text('');
-}
+	function empty_form(){
+		$('#ivreqno_show').text('');
+		$('#suppcode_show').text('');
+	}
 
-function reset_all_error(){
+	function reset_all_error(){
 
-}
+	}
+
+	function calc_jq_height_onchange(jqgrid){
+		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+		if(scrollHeight<50){
+			scrollHeight = 50;
+		}else if(scrollHeight>300){
+			scrollHeight = 300;
+		}
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	}

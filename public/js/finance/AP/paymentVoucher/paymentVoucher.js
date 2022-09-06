@@ -328,6 +328,9 @@ $(document).ready(function () {
 			});
 			cbselect.refresh_seltbl();
 		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 		
 	});
 
@@ -782,6 +785,9 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = true;
 			addmore_jqgrid2.more = false; //reset
+		
+			calc_jq_height_onchange("jqGrid2");
+			
 		},
 
 		gridComplete: function(){
@@ -1230,6 +1236,8 @@ $(document).ready(function () {
 		loadComplete: function(data){
 
 			setjqgridHeight(data,'jqGrid3');
+			calc_jq_height_onchange("jqGrid3");
+			
 		},
 		gridComplete: function(){
 			
@@ -1636,16 +1644,6 @@ $(document).ready(function () {
 		}
 	}
 
-	// function if_trantype(){
-	// 	if(selrowData('#jqGrid').apacthdr_trantype == 'PD'){
-	// 		$('#jqGrid3_panel').collapse('hide');
-		
-	// 	}else{
-	// 		$('#jqGrid3_panel').collapse('show');
-		
-	// 	}
-	// }
-
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
@@ -1762,8 +1760,6 @@ function populate_form(obj){
 	}else{
 		$('td#glyphicon-plus,td#glyphicon-edit').show();
 	}
-
-	
 }
 
 function empty_form(){
@@ -1804,4 +1800,14 @@ function click_selection(id){
 		// $("#jqGrid").jqGrid('restoreRow');
 		
 	}
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }

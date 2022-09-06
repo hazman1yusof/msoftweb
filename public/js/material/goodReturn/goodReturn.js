@@ -360,7 +360,9 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 
 		},
-		
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
+		},
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
@@ -2205,21 +2207,26 @@ $(document).ready(function () {
 
 });
 
-function populate_form(obj){
+	function populate_form(obj){
+		//panel header
+		$('#prdept_show').text(obj.delordhd_prdept);
+		$('#grtno_show').text(padzero(obj.delordhd_docno));
+		$('#suppcode_show').text(obj.supplier_name);
+	}
 
-	//panel header
-	$('#prdept_show').text(obj.delordhd_prdept);
-	$('#grtno_show').text(padzero(obj.delordhd_docno));
-	$('#suppcode_show').text(obj.supplier_name);
-	
-	
-}
+	function empty_form(){
+		$('#prdept_show').text('');
+		$('#grtno_show').text('');
+		$('#suppcode_show').text('');
+		
+	}
 
-function empty_form(){
-
-	$('#prdept_show').text('');
-	$('#grtno_show').text('');
-	$('#suppcode_show').text('');
-	
-
-}
+	function calc_jq_height_onchange(jqgrid){
+		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+		if(scrollHeight<50){
+			scrollHeight = 50;
+		}else if(scrollHeight>300){
+			scrollHeight = 300;
+		}
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	}

@@ -263,12 +263,6 @@ $(document).ready(function () {
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'delordhd_recstatus', width: 200},
 			{ label: ' ', name: 'Refresh', width: 120,formatter: formatterRefresh,unformat: unformatRemarks},
-			/*{ label: ' ', name: 'Checkbox', width: 80,align: "center",
-					        editoptions: { value: "True:False" },
-					        editrules: { required: true },
-					        formatter: formatterCheckbox,
-					        formatoptions: { disabled: false },
-					        editable: true  },*/
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 120,align: "center", formatter: formatterCheckbox },		        
 			{ label: 'Sub Amount', name: 'delordhd_subamount', width: 50, classes: 'wrap', hidden:true, align: 'right', formatter: 'currency' },
 			{ label: 'Amount Discount', name: 'delordhd_amtdisc', width: 250, classes: 'wrap', hidden:true},
@@ -299,7 +293,6 @@ $(document).ready(function () {
 			{ label: 'reopenby', name: 'delordhd_reopenby', width: 40, hidden:true},
 			{ label: 'reopendate', name: 'delordhd_reopendate', width: 40, hidden:true},
 			{ label: 'unit', name: 'delordhd_unit', width: 40, hidden:true},
-
 
 		],
 /*		multiselect:true,*/
@@ -392,6 +385,9 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 			errorField.length = 0;
+		},
+		loadComplete: function(){
+			calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
@@ -2650,23 +2646,33 @@ $(document).ready(function () {
 
 });
 
-function populate_form(obj){
-	//panel header
-	$('#prdept_show').text(obj.delordhd_prdept);
-	$('#grnno_show').text(padzero(obj.delordhd_docno));
-	$('#suppcode_show').text(obj.supplier_name);
-	
-	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
-		$('td#glyphicon-plus,td#glyphicon-edit').hide();
-	}else{
-		$('td#glyphicon-plus,td#glyphicon-edit').show();
+	function populate_form(obj){
+		//panel header
+		$('#prdept_show').text(obj.delordhd_prdept);
+		$('#grnno_show').text(padzero(obj.delordhd_docno));
+		$('#suppcode_show').text(obj.supplier_name);
+		
+		if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+			$('td#glyphicon-plus,td#glyphicon-edit').hide();
+		}else{
+			$('td#glyphicon-plus,td#glyphicon-edit').show();
+		}
 	}
-}
 
-function empty_form(){
+	function empty_form(){
 
-	$('#prdept_show').text('');
-	$('#grnno_show').text('');
-	$('#suppcode_show').text('');
+		$('#prdept_show').text('');
+		$('#grnno_show').text('');
+		$('#suppcode_show').text('');
 
-}
+	}
+
+	function calc_jq_height_onchange(jqgrid){
+		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+		if(scrollHeight<50){
+			scrollHeight = 50;
+		}else if(scrollHeight>300){
+			scrollHeight = 300;
+		}
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	}
