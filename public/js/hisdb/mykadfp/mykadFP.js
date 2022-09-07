@@ -51,6 +51,7 @@ $(document).ready(function () {
 		    hideDuration : 200,}
 		}).modal('show');
 
+		$.ajaxSetup({async: false,crossDomain:true});
 		$.get( "http://mycard.test/read_mykad", function( data ) {
 			
 		},'json')
