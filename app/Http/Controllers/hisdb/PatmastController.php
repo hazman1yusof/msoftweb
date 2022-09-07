@@ -38,7 +38,6 @@ class PatmastController extends defaultController
     }
 
     public function save_patient(Request $request){
-        DB::connection()->enableQueryLog();
         switch ($request->oper) {
             case 'add':
                 $this->_add($request);
@@ -665,50 +664,50 @@ class PatmastController extends defaultController
     public function _add(Request $request){
         DB::beginTransaction();
 
-        $table = DB::table('hisdb.pat_mast');
-
-        if(!empty($request->Email_official)){
-            $loginid = $request->Email_official;
-        }else{
-            $loginid = $request->Newic;
-        }
-
-        if(!empty($request->PatientImage)){
-            $PatientImage = $request->PatientImage;
-        }else{
-            $PatientImage = null;
-        }
-
-        $array_insert = [
-            'loginid' => $loginid,
-            'compcode' => session('compcode'),
-            'adduser' => session('username'),
-            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'recstatus' => 'A',
-            'Active' => 1,
-            'PatientImage' => $PatientImage,
-        ];
-
-        $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
-        $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
-
-        foreach ($request->field as $key => $value) {
-            if(empty($request[$request->field[$key]]))continue;
-            // dump($request[$request->field[$key]]);
-            $array_insert[$value] = strtoupper($request[$request->field[$key]]);
-        }
-
         try {
 
-            $mrn = $this->defaultSysparam($request->sysparam['source'],$request->sysparam['trantype']);
+            $table = DB::table('hisdb.pat_mast');
+
+            if(!empty($request->Email_official)){
+                $loginid = $request->Email_official;
+            }else{
+                $loginid = $request->Newic;
+            }
+
+            if(!empty($request->PatientImage)){
+                $PatientImage = $request->PatientImage;
+            }else{
+                $PatientImage = null;
+            }
+
+            $array_insert = [
+                'loginid' => $loginid,
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'A',
+                'Active' => 1,
+                'PatientImage' => $PatientImage,
+            ];
+
+            $request['first_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
+            $request['last_visit_date'] = Carbon::now("Asia/Kuala_Lumpur");
+
+            foreach ($request->field as $key => $value) {
+                if(empty($request[$request->field[$key]]))continue;
+                // dump($request[$request->field[$key]]);
+                $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+            }
+
+            $mrn = $this->defaultSysparam('HIS','MRN');
             $array_insert['MRN'] = $mrn;
             $lastidno = $table->insertGetId($array_insert);
 
-            if(!empty($request->func_after)){
-                if($request->func_after == 'save_preepis'){
-                    $this->save_preepis($request,$mrn);
-                }
-            }
+            // if(!empty($request->func_after)){
+            //     if($request->func_after == 'save_preepis'){
+            //         $this->save_preepis($request,$mrn);
+            //     }
+            // }
 
             $responce = new stdClass();
             $responce->lastMrn = $mrn;

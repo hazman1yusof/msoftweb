@@ -184,7 +184,6 @@
     function save_patient(oper,idno,mrn="nothing"){
         var saveParam={
             action:'save_patient',
-            field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn'],
             oper:oper,
             table_name:'hisdb.pat_mast',
             table_id:'idno',
@@ -199,9 +198,11 @@
                     {_token:_token,func_after_pat:$('#func_after_pat').val(),idno:idno};
                     //kalu ada mrn, maksudnya dia dari merging duplicate
 
-        var image = ($("img#photobase64").attr('src').startsWith('data'))?
-                    {PatientImage:$("img#photobase64").attr('src')}:
-                    {PatientImage:null}
+        // var image = ($("img#photobase64").attr('src').startsWith('data'))?
+        //             {PatientImage:$("img#photobase64").attr('src')}:
+        //             {PatientImage:null}
+
+        var image = {PatientImage:null,field:['Name','MRN','Newic','Oldic','ID_Type','idnumber','DOB','telh','telhp','Email','AreaCode','Sex','Citizencode','RaceCode','TitleCode','Religion','MaritalCode','LanguageCode','Remarks','RelateCode','CorpComp','Staffid','OccupCode','Email_official','Childno','Address1','Address2','Address3','Offadd1','Offadd2','Offadd3','pAdd1','pAdd2','pAdd3','Postcode','OffPostcode','pPostCode','Active','Confidential','MRFolder','PatientCat','NewMrn','bloodgrp','Episno','first_visit_date','last_visit_date','loginid','pat_category','MRFolder','bloodgrp','NewMrn'],};
 
         $.post( "./pat_mast/save_patient?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj)+'&'+$.param(image) , function( data ) {
             

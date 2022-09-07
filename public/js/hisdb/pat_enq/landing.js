@@ -198,45 +198,67 @@ $(document).ready(function() {
     });
 
     $( "#patientBox").click(function() { // register new patient
+        // $('#mdl_patient_info').modal({backdrop: "static"});
+        // $("#btn_register_patient").data("oper","add");
+        // var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
+        // $('#first_visit_date').val(first_visit_val);
+        // var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
+        // $('#last_visit_date').val(last_visit_val);
+        // $('#episno').val('1');
+
+        let gotpat = $("#patientBox").data('gotpat');
+        let oper_mykad = $("#btn_register_patient").data("oper_mykad");
+
+        if(gotpat == true){
+            $("#patientBox").data('gotpat',false);
+        }
+
+        if(oper_mykad == 'edit'){
+            $("#toggle_tabNok_emr,#toggle_tabNok_pat").parent().show();
+            $("#btn_register_patient").data("oper","edit");
+        }else{
+            // empty_nok_jq();
+            $("#toggle_tabNok_emr").parent().hide();
+            $("#btn_register_patient").data("oper","add");
+            $('#episno').val('1');
+        }
+
         $('#mdl_patient_info').modal({backdrop: "static"});
-        $("#btn_register_patient").data("oper","add");
-        var first_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#first_visit_date').val(first_visit_val);
-        var last_visit_val =moment(new Date()).format('DD/MM/YYYY');
-        $('#last_visit_date').val(last_visit_val);
-        $('#episno').val('1');
+        $('#PatClass').val(getUrlParameter('PatClass'));
     });
 
     /////////////////mykad///////////////
 
     $('#btn_mykad').click(function(){
-       $('#mdl_mykad').modal('show');
+        $("#patientBox").data('scantype','mykad');
+        $("#mykadFPiframe").get(0).contentWindow.setscantype('mykad');
+        $('#mdl_biometric').modal('show');
     });
 
-    $('#read_mykad').click(function(){
-        $.getJSON('http://127.0.0.1:4000', function(data){
-            if(data.response != "success"){
-                $("#mykad_reponse").text(data.response);
-            }else{
-                $("#mykad_reponse").text("");
-                $("#mykad_newic").val(data.mykad_newic);
-                $("#mykad_DOB").val(data.mykad_DOB);
-                $("#mykad_birthPlace").val(data.mykad_birthPlace);
-                $("#mykad_pat_name").val(data.mykad_pat_name);
-                $("#mykad_oldic").val(data.mykad_oldic);
-                $("#mykad_religion").val(data.mykad_religion);
-                $("#mykad_gender").val(data.mykad_gender);
-                $("#mykad_race").val(data.mykad_race);
-                $("#mykad_address1").val(data.mykad_address1);
-                $("#mykad_address2").val(data.mykad_address2);
-                $("#mykad_address3").val(data.mykad_address3);
-                $("#mykad_city").val(data.mykad_city);
-                $("#mykad_state").val(data.mykad_state);
-                $("#mykad_postcode").val(data.mykad_postcode);
-                $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.mykad_photo);
-            }
-        });
-    });
+    // $('#read_mykad').click(function(){
+    //     $.getJSON('http://127.0.0.1:4000', function(data){
+    //         if(data.response != "success"){
+    //             $("#mykad_reponse").text(data.response);
+    //         }else{
+    //             $("#mykad_reponse").text("");
+    //             $("#mykad_newic").val(data.mykad_newic);
+    //             $("#mykad_DOB").val(data.mykad_DOB);
+    //             $("#mykad_birthPlace").val(data.mykad_birthPlace);
+    //             $("#mykad_pat_name").val(data.mykad_pat_name);
+    //             $("#mykad_oldic").val(data.mykad_oldic);
+    //             $("#mykad_religion").val(data.mykad_religion);
+    //             $("#mykad_gender").val(data.mykad_gender);
+    //             $("#mykad_race").val(data.mykad_race);
+    //             $("#mykad_address1").val(data.mykad_address1);
+    //             $("#mykad_address2").val(data.mykad_address2);
+    //             $("#mykad_address3").val(data.mykad_address3);
+    //             $("#mykad_city").val(data.mykad_city);
+    //             $("#mykad_state").val(data.mykad_state);
+    //             $("#mykad_postcode").val(data.mykad_postcode);
+    //             $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.mykad_photo);
+    //         }
+    //     });
+    // });
 
     ////////////////habis mykad///////
 

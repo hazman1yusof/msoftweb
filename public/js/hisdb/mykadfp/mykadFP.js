@@ -51,7 +51,7 @@ $(document).ready(function () {
 		    hideDuration : 200,}
 		}).modal('show');
 
-		$.get( "http://127.0.0.1/mycard/public/read_mykad", function( data ) {
+		$.get( "http://mycard.test/mycard/public/read_mykad", function( data ) {
 			
 		},'json')
 		  .done(function( data ) {
@@ -69,7 +69,7 @@ $(document).ready(function () {
 			    $("input[name='dob']").val(data.dob);
 			    $("input[name='birthplace']").val(data.birthplace);
 			    $("input[name='race']").val(data.race);
-			    // $("input[name='citizenship']").val(ret.Citizenship);
+			    $("input[name='citizenship']").val(data.citizenship);
 			    $("input[name='religion']").val(data.religion);
 			    $("input[name='address1']").val(data.addr1);
 			    $("input[name='address2']").val(data.addr2);
@@ -88,7 +88,7 @@ $(document).ready(function () {
 	                'dob' : data.dob,
 	                'birthplace' : data.birthplace,
 	                'race' : data.race,
-	                // 'citizenship' : ret.Citizenship,
+	                'citizenship' : data.citizenship,
 	                'religion' : data.religion,
 	                'address1' : data.addr1,
 	                'address2' : data.addr2,
@@ -132,7 +132,7 @@ $(document).ready(function () {
 		    hideDuration : 200,}
 		}).modal('show');
 
-		$.get( "http://127.0.0.1/mycard/public/read_mykid", function( data ) {
+		$.get( "http://mycard.test/mycard/public/read_mykid", function( data ) {
 			
 		},'json')
 		  .done(function( data ) {
@@ -150,7 +150,7 @@ $(document).ready(function () {
 			    $("input[name='dob']").val(data.dob);
 			    $("input[name='birthplace']").val(data.birthplace);
 			    $("input[name='race']").val(data.race);
-			    // $("input[name='citizenship']").val(ret.Citizenship);
+			    $("input[name='citizenship']").val(data.citizenship);
 			    $("input[name='religion']").val(data.religion);
 			    $("input[name='address1']").val(data.addr1);
 			    $("input[name='address2']").val(data.addr2);
@@ -168,7 +168,7 @@ $(document).ready(function () {
 	                'dob' : data.dob,
 	                'birthplace' : data.birthplace,
 	                'race' : data.race,
-	                // 'citizenship' : ret.Citizenship,
+	                'citizenship' : data.citizenship,
 	                'religion' : data.religion,
 	                'address1' : data.addr1,
 	                'address2' : data.addr2,

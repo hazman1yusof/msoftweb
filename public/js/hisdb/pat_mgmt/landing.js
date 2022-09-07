@@ -398,7 +398,9 @@ $(document).ready(function() {
     // });
 
     $('#btn_biometric').click(function(){
-       $('#mdl_biometric').modal('show');
+        $("#patientBox").data('scantype','biometric');
+        $("#mykadFPiframe").get(0).contentWindow.setscantype('biometric');
+        $('#mdl_biometric').modal('show');
     });
 
     // $('#btn_mykad_proceed').click(function(){
