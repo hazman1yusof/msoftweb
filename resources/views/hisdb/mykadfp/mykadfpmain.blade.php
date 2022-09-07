@@ -2,21 +2,21 @@
 
 <html lang="en">
 <head>
-	
+  
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
 
-		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
-		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.css"/>
  
-		<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
-		<script src="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <script src="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.js"></script>
 
-	@yield('css')
-	
+  @yield('css')
+  
     <style>
       body{
           background: #e7fffe78 !important;
@@ -27,8 +27,11 @@
       .sidemenu a{
           padding: 10px 20px !important;
       }
-      .ui.menu div.header  {
-          background-color: #00B5AD !important;
+      .ui.menu a.header  {
+          /*background-color:;*/
+      }
+      .ui.menu a.header:hover  {
+          background-color: rgba(181, 181, 181, 1) !important;
       }
       .sidemenu a.active{
           background: rgba(0,0,0, 0.5) !important;
@@ -121,7 +124,7 @@
         font-size: 25px;
         color: #f7fdff;
       }
-    	.preloader {
+      .preloader {
             width: 100%;
             height: 100%;
             top: 0;
@@ -165,17 +168,17 @@
       @-moz-keyframes cssload-spin {
         100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
       }
-			@yield('style')
- 		</style>	
+      @yield('style')
+    </style>  
   <title>@yield('title')</title>
 
-	<script type="text/javascript">
+  <script type="text/javascript">
       $( document ).ready(function() {
           $(".preloader").fadeOut();
       });
   </script>
 
-	@yield('js')
+  @yield('js')
 </head>
 <body>
     <div class="preloader">
@@ -188,5 +191,5 @@
 
 </body>
 
-	@yield('scripts')
+  @yield('scripts')
 </html>

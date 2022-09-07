@@ -164,7 +164,7 @@ var Global = function () {
 			$('#hid_' + type).val(item["code"]);
 			$('#txt_' + type).val(item["description"]);			
 			
-			//$('#txt_' + type).change(); // <-- to activate onchange event if any
+			$('#txt_' + type).change(); // <-- to activate onchange event if any
 			//$('#txt' + type).blur(); // <-- to activate onchange event if any
 				
 			$('#mdl_item_selector').modal('hide');

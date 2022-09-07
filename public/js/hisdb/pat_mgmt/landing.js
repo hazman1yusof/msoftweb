@@ -49,7 +49,7 @@ $(document).ready(function() {
             let lastidno = null;
 
             if($("#load_from_addupd").data('info') == "true" && $("#load_from_addupd").data('oper') == "add"){
-                _page = $("#grid-command-buttons").bootgrid("getTotalPageCount");
+                _page = 1;
                 lastMrn = $("#lastMrn").val();
                 lastidno = $("#lastidno").val();
             }
@@ -218,7 +218,7 @@ $(document).ready(function() {
 
         if($("#load_from_addupd").data('info') == "true"){
             if($("#load_from_addupd").data('oper') == "add"){
-                $("#grid-command-buttons tbody tr:nth-last-child(1)").click();
+                $("table#grid-command-buttons tr[data-row-id=0]").click();
             }else{
                 $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
             }
@@ -306,104 +306,106 @@ $(document).ready(function() {
     /////////////////mykad///////////////
 
     $('#btn_mykad').click(function(){
-       $('#mdl_mykad').modal('show');
+        $("#patientBox").data('scantype','mykad');
+        $("#mykadFPiframe").get(0).contentWindow.setscantype('mykad');
+        $('#mdl_biometric').modal('show');
     });
 
-    $('#mdl_mykad').on('hidden.bs.modal', function (e) {
-       if($("#patientBox").data('gotpat') == true){
-            $("#patientBox").click();
-       }
-    });
+    // $('#mdl_mykad').on('hidden.bs.modal', function (e) {
+    //    if($("#patientBox").data('gotpat') == true){
+    //         $("#patientBox").click();
+    //    }
+    // });
 
-    $('#read_mykad').click(function(){
-        $.getJSON('http://mycard.test:8080/mycard_read', function(data){
-            if(data.status == 'failed'){
-                alert("Error reading Mycard");
-            }else{
-                var olddob = data.dob;
-                newdob = [olddob.slice(6), '-', olddob.slice(3,5), '-', olddob.slice(0,2)].join('');
+    // $('#read_mykad').click(function(){
+    //     $.getJSON('http://mycard.test:8080/mycard_read', function(data){
+    //         if(data.status == 'failed'){
+    //             alert("Error reading Mycard");
+    //         }else{
+    //             var olddob = data.dob;
+    //             newdob = [olddob.slice(6), '-', olddob.slice(3,5), '-', olddob.slice(0,2)].join('');
 
-                $("#patientBox").data('gotpat',true);
-                $("#mykad_reponse").text("");
-                $("#mykad_newic").val(data.ic);
-                $("#mykad_DOB").val(newdob);
-                $("#mykad_birthPlace").val(data.birthplace);
-                $("#mykad_pat_name").val(data.name);
-                $("#mykad_oldic").val(data.oldic);
-                $("#mykad_religion").val(data.religion);
-                $("#mykad_gender").val(data.sex);
-                $("#mykad_race").val(data.race);
-                $("#mykad_address1").val(data.addr1);
-                $("#mykad_address2").val(data.addr2);
-                $("#mykad_address3").val(data.addr3);
-                $("#mykad_city").val(data.city);
-                $("#mykad_state").val(data.state);
-                $("#mykad_postcode").val(data.postcode);
-                $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.photo);
+    //             $("#patientBox").data('gotpat',true);
+    //             $("#mykad_reponse").text("");
+    //             $("#mykad_newic").val(data.ic);
+    //             $("#mykad_DOB").val(newdob);
+    //             $("#mykad_birthPlace").val(data.birthplace);
+    //             $("#mykad_pat_name").val(data.name);
+    //             $("#mykad_oldic").val(data.oldic);
+    //             $("#mykad_religion").val(data.religion);
+    //             $("#mykad_gender").val(data.sex);
+    //             $("#mykad_race").val(data.race);
+    //             $("#mykad_address1").val(data.addr1);
+    //             $("#mykad_address2").val(data.addr2);
+    //             $("#mykad_address3").val(data.addr3);
+    //             $("#mykad_city").val(data.city);
+    //             $("#mykad_state").val(data.state);
+    //             $("#mykad_postcode").val(data.postcode);
+    //             $("#mykad_photo").attr('src', 'data:image/png;base64,'+data.photo);
 
-                $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
-                $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
+    //             $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
+    //             $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
 
-                $('#txt_pat_name').val(data.name);
-                $('#txt_pat_newic').val(data.ic);
-                if(data.sex == 'P' || data.sex == 'FEMALE'){
-                    $('#cmb_pat_sex').val('F');
-                }else if(data.sex == 'L' || data.sex == 'MALE'){
-                    $('#cmb_pat_sex').val('M');
-                }
-                $('#txt_ID_Type').val("O");
+    //             $('#txt_pat_name').val(data.name);
+    //             $('#txt_pat_newic').val(data.ic);
+    //             if(data.sex == 'P' || data.sex == 'FEMALE'){
+    //                 $('#cmb_pat_sex').val('F');
+    //             }else if(data.sex == 'L' || data.sex == 'MALE'){
+    //                 $('#cmb_pat_sex').val('M');
+    //             }
+    //             $('#txt_ID_Type').val("O");
 
-                //"19950927"
+    //             //"19950927"
 
-                $('#txt_pat_dob').val(newdob);
-                $('#txt_pat_age').val(gettheage(newdob));
-                $('#hid_RaceCode').val(data.race);
-                $('#hid_Religion').val(data.religion);
-                // $('#cmb_pat_category').val(data.pat_category);
-                // $('#hid_pat_citizen').val(obj.citizenship);
+    //             $('#txt_pat_dob').val(newdob);
+    //             $('#txt_pat_age').val(gettheage(newdob));
+    //             $('#hid_RaceCode').val(data.race);
+    //             $('#hid_Religion').val(data.religion);
+    //             // $('#cmb_pat_category').val(data.pat_category);
+    //             // $('#hid_pat_citizen').val(obj.citizenship);
 
-                mykad_check_existing_patient(); 
+    //             mykad_check_existing_patient(); 
 
-                auto_save('race',{
-                    _token : $('#csrf_token').val(),
-                    table_name: 'hisdb.racecode',
-                    code_name: 'Code',
-                    desc_name: 'Description',
-                    Code: data.race,
-                    Description: data.race,
-                },
-                desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
+    //             auto_save('race',{
+    //                 _token : $('#csrf_token').val(),
+    //                 table_name: 'hisdb.racecode',
+    //                 code_name: 'Code',
+    //                 desc_name: 'Description',
+    //                 Code: data.race,
+    //                 Description: data.race,
+    //             },
+    //             desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
 
-                auto_save('religioncode',{
-                    _token : $('#csrf_token').val(),
-                    table_name: 'hisdb.religion',
-                    code_name: 'Code',
-                    desc_name: 'Description',
-                    Code: data.religion,
-                    Description: data.religion,
-                },
-                desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
+    //             auto_save('religioncode',{
+    //                 _token : $('#csrf_token').val(),
+    //                 table_name: 'hisdb.religion',
+    //                 code_name: 'Code',
+    //                 desc_name: 'Description',
+    //                 Code: data.religion,
+    //                 Description: data.religion,
+    //             },
+    //             desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
 
-                $('#txt_pat_curradd1').val(data.addr1);
-                $('#txt_pat_curradd2').val(data.addr2);
-                $('#txt_pat_curradd3').val(data.addr3);
-                $('#txt_pat_currpostcode').val(data.postcode);
-                $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
+    //             $('#txt_pat_curradd1').val(data.addr1);
+    //             $('#txt_pat_curradd2').val(data.addr2);
+    //             $('#txt_pat_curradd3').val(data.addr3);
+    //             $('#txt_pat_currpostcode').val(data.postcode);
+    //             $("img#photobase64").attr('src','data:image/png;base64,'+data.photo);
 
-                desc_show.write_desc();
-            }
-        });
-    });
+    //             desc_show.write_desc();
+    //         }
+    //     });
+    // });
 
     $('#btn_biometric').click(function(){
        $('#mdl_biometric').modal('show');
     });
 
-    $('#btn_mykad_proceed').click(function(){
-        emptyFormdata([],"form#frm_mykad_info");
-        $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
-        $('#mdl_mykad').modal('hide');
-    });
+    // $('#btn_mykad_proceed').click(function(){
+    //     emptyFormdata([],"form#frm_mykad_info");
+    //     $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
+    //     $('#mdl_mykad').modal('hide');
+    // });
 
     ////////////////habis mykad///////
 
@@ -430,7 +432,7 @@ $(document).ready(function() {
                     join_onCol : ['pe.mrn'],
                     join_onVal : ['p.mrn'],
                     fixPost:'true',
-                    filterCol:['pe.compcode','pe.apptdate','pe.episno'],
+                    filterCol:['pe.compcode','pe.apptdate','pe.episactive'],
                     filterVal:['session.compcode','raw.CURDATE()',0],
                 }
 
@@ -543,6 +545,9 @@ $(document).ready(function() {
                 var mrn = button.data('mrn');
                 var episno = button.data('episno');
                 var apptidno = button.data('apptidno');
+                var idno = button.data('idno');
+
+                $("#preepisidno_epis").val(idno);
                 $("#apptidno_epis").val(apptidno);
                 $("#episode_oper").val('add');
 
@@ -571,9 +576,14 @@ $(document).ready(function() {
                         $('#txt_epis_name').text(episdata.Name);
                         $('#txt_epis_mrn').text(('0000000' + episdata.MRN).slice(-7));
 
+                        $('#txt_epis_dept').val($('#userdeptdesc').val());
+                        $('#hid_epis_dept').val($('#userdeptcode').val());
+                        $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+                        $('#hid_epis_bill_type').val($('#billtype_def_code').val());
+
                         $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
                         $('#txt_epis_time').val(moment().format('hh:mm:ss'));
-                        $('#txt_epis_no').val(episdata.episno);
+                        $('#txt_epis_no').val(episdata.episno + 1);
                         $('#txt_epis_type').val($("#epistycode").val());
                         $('#btn_epis_payer').data('mrn',episdata.MRN);
                         if(episdata.Sex == "M"){

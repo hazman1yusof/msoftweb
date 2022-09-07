@@ -25,14 +25,14 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="username">Username</label>  
 				  <div class="col-md-4">
-				  	<input id="username" name="username" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+				  	<input id="username" name="username" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
 				  </div>
                 </div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="name">Name</label>  
 				  <div class="col-md-10">
-				  	<input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  	<input id="name" name="name" type="text" class="form-control input-sm" data-validation="required">
 				  </div>
                 </div>
 				

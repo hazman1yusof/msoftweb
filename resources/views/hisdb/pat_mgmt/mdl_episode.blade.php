@@ -6,6 +6,7 @@
         <input type="hidden" name="mrn_episode" id="mrn_episode">
         <input type="hidden" name="episode_oper" id="episode_oper" value="add">
         <input  type="hidden" name="apptidno" id="apptidno_epis">
+        <input  type="hidden" name="preepisidno_epis" id="preepisidno_epis">
         <div class="modal-content">
             <div class="modal-header label-info form-horizontal" style="position: sticky;top: 0px;z-index: 3;"><form id="epis_header">
                 <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;

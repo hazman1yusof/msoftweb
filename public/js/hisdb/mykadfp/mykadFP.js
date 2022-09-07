@@ -20,7 +20,7 @@ $(document).ready(function () {
 		}
 	}
 
-	$('#closemodalfp').click(function(){
+	$('a[name="closemodalfp"]').click(function(){
 		emptyFormdata([],"form#myform");
         $("img#image").attr('src',$("img#image").attr("defaultsrc"));
         $("img#fingerprint").attr('src',$("img#fingerprint").attr("defaultsrc"));
@@ -30,6 +30,178 @@ $(document).ready(function () {
 	});
 
 	$('#readmykad').click(function(){
+		scan_mykad();
+	});
+
+	$('#readmykid').click(function(){
+		scan_mykid();
+	});
+
+	$('#readbiometric').click(function(){
+		scan_biometric();
+	});
+
+	function scan_mykad(){
+		chg_msg('read','Processing.. Please Wait..');
+
+		$('.ui.basic.modal#read').modal({closable: false,transition:{
+		    showMethod   : 'fade',
+		    showDuration : 200,
+		    hideMethod   : 'fade',
+		    hideDuration : 200,}
+		}).modal('show');
+
+		$.get( "http://127.0.0.1/mycard/public/read_mykad", function( data ) {
+			
+		},'json')
+		  .done(function( data ) {
+		  	if(data.status == 'failed'){
+		  		chg_msg('fail',"Error reading Mycard");
+
+				delay(function(){
+		  			$('.ui.basic.modal#read').modal('hide');
+				}, 1000 );
+		  	}else{
+		  		
+			    $("input[name='name']").val(data.name);
+			    $("input[name='icnum']").val(data.ic);
+			    $("input[name='gender']").val(data.sex);
+			    $("input[name='dob']").val(data.dob);
+			    $("input[name='birthplace']").val(data.birthplace);
+			    $("input[name='race']").val(data.race);
+			    // $("input[name='citizenship']").val(ret.Citizenship);
+			    $("input[name='religion']").val(data.religion);
+			    $("input[name='address1']").val(data.addr1);
+			    $("input[name='address2']").val(data.addr2);
+			    $("input[name='address3']").val(data.addr3);
+			    $("input[name='city']").val(data.city);
+			    $("input[name='state']").val(data.state);
+			    $("input[name='postcode']").val(data.postcode);
+			    $("img#image").attr('src','data:image/png;base64,'+data.photo);
+
+				var objdata = {
+					'type' : 'mykad',
+					'_token': $("input#_token").val(),
+	                'name' : data.name,
+	                'icnum' : data.ic,
+	                'gender' : data.sex,
+	                'dob' : data.dob,
+	                'birthplace' : data.birthplace,
+	                'race' : data.race,
+	                // 'citizenship' : ret.Citizenship,
+	                'religion' : data.religion,
+	                'address1' : data.addr1,
+	                'address2' : data.addr2,
+	                'address3' : data.addr3,
+	                'city' : data.city,
+	                'state' : data.state,
+	                'postcode' : data.postcode,
+	                'base64' : data.photo
+	            }
+
+				if (window.frameElement) {
+	            	parent.populatefromfp(objdata);
+				}
+				save_mykad_to_local(objdata);
+
+	           	chg_msg('success',"Success");
+
+				delay(function(){
+		  			$('.ui.basic.modal#read').modal('hide');
+				}, 1000 );
+		  	}
+		  	
+
+		}).fail(function() {
+	  		chg_msg('fail', "Service not installed");
+	  		
+			delay(function(){
+	  			$('.ui.basic.modal#read').modal('hide');
+			}, 1000 );
+
+  		});
+	}
+
+	function scan_mykid(){
+		chg_msg('read','Processing.. Please Wait..');
+
+		$('.ui.basic.modal#read').modal({closable: false,transition:{
+		    showMethod   : 'fade',
+		    showDuration : 200,
+		    hideMethod   : 'fade',
+		    hideDuration : 200,}
+		}).modal('show');
+
+		$.get( "http://127.0.0.1/mycard/public/read_mykid", function( data ) {
+			
+		},'json')
+		  .done(function( data ) {
+		  	if(data.status == 'failed'){
+		  		chg_msg('fail',"Error reading Mycard");
+
+				delay(function(){
+		  			$('.ui.basic.modal#read').modal('hide');
+				}, 1000 );
+		  	}else{
+		  		
+			    $("input[name='name']").val(data.name);
+			    $("input[name='icnum']").val(data.ic);
+			    $("input[name='gender']").val(data.sex);
+			    $("input[name='dob']").val(data.dob);
+			    $("input[name='birthplace']").val(data.birthplace);
+			    $("input[name='race']").val(data.race);
+			    // $("input[name='citizenship']").val(ret.Citizenship);
+			    $("input[name='religion']").val(data.religion);
+			    $("input[name='address1']").val(data.addr1);
+			    $("input[name='address2']").val(data.addr2);
+			    $("input[name='address3']").val(data.addr3);
+			    $("input[name='city']").val(data.city);
+			    $("input[name='state']").val(data.state);
+			    $("input[name='postcode']").val(data.postcode);
+
+				var objdata = {
+					'type' : 'mykad',
+					'_token': $("input#_token").val(),
+	                'name' : data.name,
+	                'icnum' : data.ic,
+	                'gender' : data.sex,
+	                'dob' : data.dob,
+	                'birthplace' : data.birthplace,
+	                'race' : data.race,
+	                // 'citizenship' : ret.Citizenship,
+	                'religion' : data.religion,
+	                'address1' : data.addr1,
+	                'address2' : data.addr2,
+	                'address3' : data.addr3,
+	                'city' : data.city,
+	                'state' : data.state,
+	                'postcode' : data.postcode,
+	            }
+
+				if (window.frameElement) {
+	            	parent.populatefromfp(objdata);
+				}
+				save_mykad_to_local(objdata);
+
+	           	chg_msg('success',"Success");
+
+				delay(function(){
+		  			$('.ui.basic.modal#read').modal('hide');
+				}, 1000 );
+		  	}
+		  	
+
+		}).fail(function() {
+	  		chg_msg('fail', "Service not installed");
+	  		
+			delay(function(){
+	  			$('.ui.basic.modal#read').modal('hide');
+			}, 1000 );
+
+  		});
+	}
+
+	function scan_biometric(){
 		chg_msg('read','Processing.. Please Wait..');
 
 		$('.ui.basic.modal#read').modal({closable: false,transition:{
@@ -110,7 +282,7 @@ $(document).ready(function () {
 			}, 1000 );
 
   		});
-	});
+	}
 
 	function scanthumb(){
 		chg_msg('fp',"Put thumbprint <br> into biometric scanner");
@@ -146,6 +318,13 @@ $(document).ready(function () {
 
 	}
 
+    function save_mykad_to_local(objdata){
+        $.post( "./mykadfp_store",objdata, function( data ) {
+            // $('#overlay').fadeOut();
+        });	
+    }
+    
+
 	function PrintElem(elem){
 	    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
@@ -164,7 +343,7 @@ $(document).ready(function () {
 	    return true;
 	}
 
-	$('#download').click(function(){
+	$('a[name="download"]').click(function(){
 		$("form#myform").printThis();
 	})
 

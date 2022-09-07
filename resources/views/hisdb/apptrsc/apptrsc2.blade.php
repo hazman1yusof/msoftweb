@@ -164,7 +164,7 @@ i.fa {
 
 			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
-					<span class='fa fa-user-md fa-lg'></span> Transfer Resource
+					<span class='fa fa-exchange fa-lg'></span> Transfer Resource
 				</button>
 				<button type="button" class="btn btn-default" id='transfer_date_but'>
 					<span class='fa fa-calendar fa-lg'></span> Transfer Date
@@ -217,7 +217,7 @@ i.fa {
 					<input type="hidden" name="idno" id="idno">
 						<div class="panel-body" style="position: relative;" >
 							<div class="form-group">
-								<label for="Doctor" class="col-md-2 control-label">Doctor</label>
+								<label for="Doctor" class="col-md-2 control-label">Resource</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" placeholder="Doctor" id="doctor" name="doctor" maxlength="12" data-validation="required" readonly>
 								</div>
@@ -238,7 +238,7 @@ i.fa {
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">I/C No.</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12" data-validation="required" readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
+									<input type="text" class="form-control input-sm" placeholder="I/C No." id="icnum" name="icnum" maxlength="12"  readonly value="@if(!empty($pat_info)){{$pat_info->newic}} @endif">
 								</div>
 							</div>
 							<div class="form-group">
@@ -260,7 +260,7 @@ i.fa {
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone No" id="telh" name="telh" data-validation-optional-if-answered="telhp" data-validation="required" value="@if(!empty($pat_info)){{$pat_info->telh}} @endif">	
+									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone No" id="telh" name="telh" value="@if(!empty($pat_info)){{$pat_info->telh}} @endif">	
 								</div>
 								<label for="status" class="col-md-2 control-label">Status</label>
 								<div class="col-md-3">
@@ -273,16 +273,16 @@ i.fa {
 							<div class="form-group">
 								<label for="telhp" class="col-md-2 control-label">Tel Hp</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone Hp" id="telhp" name="telhp" data-validation="required" data-validation-optional-if-answered="telh" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
+									<input type="text" class="form-control input-sm phone-group" placeholder="Telephone Hp" id="telhp" name="telhp" value="@if(!empty($pat_info)){{$pat_info->telhp}} @endif">	
 								</div>
-								<label for="Doctor" class="col-md-2 control-label">Case</label>
+								<!-- <label for="Doctor" class="col-md-2 control-label">Case</label>
 								<div class="col-md-3">
 									<div class="input-group">
 										<input type="text" class="form-control input-sm" placeholder="Case" id="case" name="case" maxlength="12" data-validation="required">	
 										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class='help-block'></span>
-								</div>							
+								</div>		 -->					
 							</div>
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="remarks">Remarks</label>   
@@ -316,7 +316,6 @@ i.fa {
 						<div class="panel-footer">
 							<button type="button" class="btn btn-primary" id="submit">Save changes</button>
 							<button type="button" class="btn btn-danger" id="delete_but" style="display: none;">Delete Booking</button>
-							<button type="button" class="btn btn-primary" id="new_episode" style="display: none;">New Episode</button>
 						</div>
 					</form>
 			</div>

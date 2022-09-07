@@ -870,6 +870,6 @@
 
 
 <div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;">
-    <iframe src="mykadFP" style="display:block; border:none; height:100vh; width:100%;">
+    <iframe src="mykadFP" style="display:block; border:none; height:100vh; width:100%;" id="mykadFPiframe">
     </iframe>
 </div>

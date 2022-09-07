@@ -23,10 +23,17 @@ class PatmastController extends defaultController
     {       
         $user = DB::table('sysdb.users')->where('username','=',session('username'))->first();
         $dept = DB::table('sysdb.department')->where('deptcode','=',$user->deptcode)->first();
+        $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->first();
+
+
+        $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
+
         return view('hisdb.pat_mgmt.landing',
             [
                 'userdeptcode' => $dept->deptcode,
-                'userdeptdesc' => $dept->description
+                'userdeptdesc' => $dept->description,
+                'billtype_def_code' => $btype_->billtype,
+                'billtype_def_desc' => $btype_->description
             ]);
     }
 
@@ -119,6 +126,14 @@ class PatmastController extends defaultController
                 $table_patm = $table_patm->where($request->searchCol[0],'like',$request->searchVal[0]);
             }
 
+           if(!empty($request->sort)){
+                foreach ($request->sort as $key => $value) {
+                    $table_patm = $table_patm->orderBy($key, $value);
+                }
+            }else{
+                $table_patm = $table_patm->orderBy('queue.idno', 'DESC');
+            }
+
             $paginate_patm = $table_patm->paginate($request->rows);
 
 
@@ -207,6 +222,8 @@ class PatmastController extends defaultController
                 foreach ($request->sort as $key => $value) {
                     $table_patm = $table_patm->orderBy($key, $value);
                 }
+            }else{
+                $table_patm = $table_patm->orderBy('idno', 'DESC');
             }
 
             $request->page = $request->current;
@@ -878,6 +895,7 @@ class PatmastController extends defaultController
         $epis_fee = $request->epis_fee;
         $epis_bednum = $request->epis_bed;
         $epis_apptidno = $request->apptidno;
+        $epis_preepisidno = $request->preepisidno;
 
         $epis_typeepis;
         if ($epis_maturity == "1"){
@@ -1266,11 +1284,20 @@ class PatmastController extends defaultController
                     ]);
             }
 
-            if(!empty($epis_apptidno)){
+            // if(!empty($epis_apptidno)){
+            //     DB::table('hisdb.pre_episode')
+            //             ->where('apptidno','=',$epis_apptidno)
+            //             ->update([
+            //                 'episno' => $epis_no
+            //             ]);
+            // }
+
+            if(!empty($epis_preepisidno)){
                 DB::table('hisdb.pre_episode')
-                        ->where('apptidno','=',$epis_apptidno)
+                        ->where('idno','=',$epis_preepisidno)
                         ->update([
-                            'episno' => $epis_no
+                            'episno' => $epis_no,
+                            'episactive' => 1,
                         ]);
             }
 

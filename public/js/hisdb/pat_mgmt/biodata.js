@@ -543,7 +543,7 @@
 
     }
 
-    function mykad_check_existing_patient(){
+    function mykad_check_existing_patient(callback){
         $("#btn_register_patient").data("oper_mykad","add");
 
         var patnewic = $("#txt_pat_newic").val();
@@ -561,9 +561,9 @@
             if(data.rows.length > 0){
                 var form = '#frm_patient_info';
                 $("#btn_register_patient").data("oper_mykad","edit");
-                $("#btn_register_patient").data('idno',data.rows.idno);
-                $("#pat_mrn").val(data.rows.MRN);
-                $("#txt_pat_idno").val(data.rows.idno);
+                $("#btn_register_patient").data('idno',data.rows[0].idno);
+                $("#pat_mrn").val(data.rows[0].MRN);
+                $("#txt_pat_idno").val(data.rows[0].idno);
                 
                 
                 $.each(data.rows[0], function( index, value ) {
@@ -578,6 +578,10 @@
                     }
                 });
                 desc_show.write_desc();
+
+                if (callback !== undefined) {
+                    callback(data.rows[0]);
+                }
 
             }
 

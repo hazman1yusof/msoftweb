@@ -60,7 +60,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'resourcecode', width: 20, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'interval', name: 'interval', hidden:false},
+				{ label: 'interval', name: 'interval', hidden:true},
 				{ label: 'start', name: 'start', hidden:true},
 				{ label: 'end', name: 'end', hidden:true},
             ],
@@ -124,7 +124,7 @@ $(document).ready(function () {
 				$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
 				$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
 
-				parent_change_title('Resource Booking of '+data['a_description']);
+				parent_change_title('Reserve of '+data['a_description']);
 
 				$(dialog_name.textfield).focus();
 				$("#"+dialog_name.dialogname).dialog( "close" );
@@ -132,7 +132,7 @@ $(document).ready(function () {
 				$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
 			}
         },{
-            title: "Select Doctor",
+            title: "Select Resource",
             width: 8/10 * $(window).width(),
             open: function () {
 
@@ -203,7 +203,7 @@ $(document).ready(function () {
 		$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
 		$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
 
-		parent_change_title('Doctor Appointment of '+data['a_description']);
+		parent_change_title('Reserve of '+data['a_description']);
 
 		$(dialog_name.textfield).focus();
 		$("#"+dialog_name.dialogname).dialog( "close" );
@@ -226,29 +226,29 @@ $(document).ready(function () {
 	// 	},
 	// });
 
-	var dialog_case = new ordialog(
-		'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,
-		{
-			colModel: [
-				{ label: 'Case Code', name: 'case_code', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-			],
-			urlParam: {
-				filterCol : ['grpcasetype','compcode'],
-				filterVal : ['REGISTER','session.compcode'],
+	// var dialog_case = new ordialog(
+	// 	'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Case Code', name: 'case_code', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+	// 			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
+	// 		],
+	// 		urlParam: {
+	// 			filterCol : ['grpcasetype','compcode'],
+	// 			filterVal : ['REGISTER','session.compcode'],
 
-			},
-		},
-		{
-			title: "Select Case",
-            width: 10/10 * $(window).width(),
-			open: function () {
-				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
-				dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
-			},
-		}, 'urlParam'
-	);
-	dialog_case.makedialog(true);
+	// 		},
+	// 	},
+	// 	{
+	// 		title: "Select Case",
+ //            width: 10/10 * $(window).width(),
+	// 		open: function () {
+	// 			dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
+	// 			dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
+	// 		},
+	// 	}, 'urlParam'
+	// );
+	// dialog_case.makedialog(true);
 
 	var dialog_mrn = new ordialog(
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
@@ -327,7 +327,7 @@ $(document).ready(function () {
 				};
 			}
         },{
-            title: "Select Doctor",
+            title: "Select Resource",
             open: function () {
                 var type = $('#Class2').val();
 				dialog_doctor.urlParam.join_type = ['LEFT JOIN'];
@@ -365,7 +365,7 @@ $(document).ready(function () {
 	$("#start_time_dialog").dialog({
     	autoOpen : false, 
     	modal : true,
-		width: 10/10 * $(window).width(),
+		width: 8/10 * $(window).width(),
 		open: function(){
 			$("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
 		},
@@ -382,7 +382,7 @@ $(document).ready(function () {
 		colModel: [
             { label: 'timehidden', name: 'timehidden', width: 80, hidden: true },
             { label: 'Pick time', name: 'time', width: 80, classes: 'pointer' },
-            { label: 'Patient Name', name: 'pat_name', width: 200, classes: 'pointer' },
+            { label: 'Name', name: 'pat_name', width: 200, classes: 'pointer' },
             { label: 'Remarks', name: 'remarks', width: 200, classes: 'pointer' },
         ],
 		autowidth:true,viewrecords:true,loadonce:false,width:200,height:400,owNum:30,
@@ -519,7 +519,7 @@ $(document).ready(function () {
 		},
 		customButtons: {
 	        myCustomButton: {
-	            text: 'Make Appointment',
+	            text: 'Reserve',
 	            click: function() {
 	            	oper='add';
 
@@ -654,7 +654,7 @@ $(document).ready(function () {
 			$("table tr td.fc-day-top span.ui.mini.teal.ribbon.label").remove();
 
 			date_obj.forEach(function(e,i){
-				$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+				$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" Reserved </span>");
 			});
 		},
 		timeFormat: 'h(:mm)a',
@@ -717,7 +717,7 @@ $(document).ready(function () {
 	
 	var oper = 'add';
 	$('#submit').click(function(){
-		var url = (oper == 'add')?"apptrsc/addEvent":"apptrsc/editEvent";
+		var url = (oper == 'add')?"apptrsc_rsc/addEvent":"apptrsc_rsc/editEvent";
 
 		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
 			$.post(url, $("#addForm").serialize(), function (data) {

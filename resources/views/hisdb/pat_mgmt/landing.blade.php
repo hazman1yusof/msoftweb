@@ -323,6 +323,10 @@
 <script type="text/javascript">
     var desc_show = null;
 
+    function mykadscantype(){
+    	return $("#patientBox").data('scantype');
+    }
+
     function closemodalfp(){
        $('#mdl_biometric').modal('hide');
        if($("#patientBox").data('gotpat') == true){
@@ -344,8 +348,6 @@
         }
         $('#txt_ID_Type').val("O");
 
-        //"19950927"
-
         var olddob = obj.dob;
 		newdob = [olddob.slice(0, 4), '-', olddob.slice(4,6), '-', olddob.slice(6)].join('');
 
@@ -363,7 +365,12 @@
         $('#txt_pat_currpostcode').val(obj.postcode);
         $("img#photobase64").attr('src','data:image/png;base64,'+obj.base64);
 
-        mykad_check_existing_patient();
+        mykad_check_existing_patient(function(obj){
+        	$('.search-field').val(obj.MRN);
+        	$('#btn_register_episode').data('mrn',obj.MRN);
+        	$('#Scol').val('MRN');
+            $("#grid-command-buttons").bootgrid('reload');
+        });
 
         auto_save('race',{
             _token : $('#csrf_token').val(),
@@ -372,8 +379,7 @@
         	desc_name: 'Description',
         	Code: obj.race,
         	Description: obj.race,
-        },
-        desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race'));
+        },function(){desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race')});
 
         auto_save('religioncode',{
             _token : $('#csrf_token').val(),
@@ -382,8 +388,7 @@
         	desc_name: 'Description',
         	Code: obj.religion,
         	Description: obj.religion,
-        },
-        desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode'));
+        },function(){desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode')});
 
         auto_save('citizencode',{
             _token : $('#csrf_token').val(),
@@ -392,7 +397,7 @@
         	desc_name: 'Description',
         	Code: obj.citizenship,
         	Description: obj.citizenship,
-        },desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen'));
+        },function(){desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen')});
 
         desc_show.write_desc();
     }
@@ -414,6 +419,7 @@
         <div class="cssload-speeding-wheel"></div>
     </div>
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">
         <input name="epistycode" id="epistycode" type="hidden" value="{{request()->get('epistycode')}}">
@@ -426,6 +432,8 @@
         <input name="lastrowid" id="lastrowid" type="hidden" value="0">
         <input name="userdeptcode" id="userdeptcode" type="hidden" value="{{$userdeptcode ?? ''}}">
         <input name="userdeptdesc" id="userdeptdesc" type="hidden" value="{{$userdeptdesc ?? ''}}">
+		<input type="hidden" name="billtype_def_code" id="billtype_def_code" value="{{$billtype_def_code ?? ''}}">
+		<input type="hidden" name="billtype_def_desc" id="billtype_def_desc" value="{{$billtype_def_desc ?? ''}}">
         <input name="lastMrn" id="lastMrn" type="hidden" >
         <input name="lastidno" id="lastidno" type="hidden" >
 

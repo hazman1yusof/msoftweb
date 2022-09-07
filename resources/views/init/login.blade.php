@@ -13,9 +13,20 @@
   <link rel="stylesheet" href="plugins/bootstrap-3.3.5-dist/css/bootstrap.min.css"> 
   <!-- Custom styles for this template -->
   <link href="css/login.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      background-image:url( {{ asset('img/page-hospital.jpg') }} ) !important;
+      background-repeat: no-repeat !important;
+      background-size: cover !important;
+      background-position: bottom !important;
+      height: 100vh;
+      width: 100vw;
+    }
+    
+  </style>
 </head>
 
-<body style="background: #eeeeee">
+<body>
   <div class="container">
 
     <form class="form-signin" name="login" method="POST" action="./login">
