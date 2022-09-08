@@ -1302,7 +1302,7 @@ class PatmastController extends defaultController
 
             $queries = DB::getQueryLog();
 
-            dump($queries);
+            // dump($queries);
 
             DB::commit();
 

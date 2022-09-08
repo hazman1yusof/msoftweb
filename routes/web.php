@@ -733,6 +733,8 @@ Route::post('/episode/save_nok','hisdb\PatmastController@save_nok');
 Route::post('/episode/save_emr','hisdb\PatmastController@save_emr');
 Route::get('/episode/get_episode_by_mrn','hisdb\PatmastController@get_episode_by_mrn');
 Route::get('/get_preepis_data','hisdb\PatmastController@get_preepis_data');
+Route::get('/preregister','hisdb\PreregisterController@show');
+Route::post('/prereg','hisdb\PreregisterController@prereg');
 
 
 

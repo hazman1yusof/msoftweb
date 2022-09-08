@@ -365,6 +365,7 @@
             $("#load_from_addupd").data('info','true');
             $("#load_from_addupd").data('oper','edit');
             $("#grid-command-buttons").bootgrid('reload');
+            $("#tabpreepis").collapse("hide");
         });
     }
 
