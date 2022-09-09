@@ -50,7 +50,7 @@
                     <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                     <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
                     <input id="recorddate_doctorNote" name="recorddate_doctorNote" type="hidden">
-                    <div class="col-md-4" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
+                    <div class="col-md-2" id="docnote_date_tbl_sticky" style="padding:0 0 0 0">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -70,7 +70,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8" style="padding:0 0 0 5px; float: right;">
+                    <div class="col-md-10" style="padding:0 0 0 5px; float: right;">
                         <div class="panel panel-info">
                             <div class="panel-body">
 
@@ -322,8 +322,10 @@
                                 <div class="col-md-12">
                                     <div class="panel panel-info">
                                         <div class="panel-heading text-center">MEDICATION</div>
-                                        <div class="panel-body" style="height: 250px;overflow: auto;padding: 0px;">
-                                            <table id="medication_tbl" class="ui selectable celled table" style="width: 100%;">
+                                        <div class="panel-body" style="overflow: auto;padding: 0px;" id="jqGrid_trans_doctornote_c">
+                                            <table id="jqGrid_trans_doctornote" class="table table-striped"></table>
+                                            <div id="jqGrid_trans_doctornotePager"></div>
+                                            <!-- <table id="medication_tbl" class="ui selectable celled table" style="width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th>Items</th>
@@ -335,7 +337,7 @@
                                                         <th>Indicator</th>
                                                     </tr>
                                                 </thead>
-                                            </table>
+                                            </table> -->
                                         </div>
                                     </div>
                                 </div>

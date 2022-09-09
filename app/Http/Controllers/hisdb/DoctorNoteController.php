@@ -76,6 +76,9 @@ class DoctorNoteController extends defaultController
             case 'doctornote_save':
                 return $this->add_notes($request);
 
+            case 'doctornote_transaction_save':
+                return $this->doctornote_transaction_save($request);
+
             default:
                 return 'error happen..';
         }
@@ -407,11 +410,32 @@ class DoctorNoteController extends defaultController
                             ->where('trx.mrn' ,'=', $request->mrn)
                             ->where('trx.episno' ,'=', $request->episno)
                             ->where('trx.compcode','=',session('compcode'))
-                            ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
-                            ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
-                            ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
-                            ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
-                            ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator');
+
+                            ->leftJoin('hisdb.chgmast', function($join) use ($request){
+                                $join = $join->on('chgmast.chgcode', '=', 'trx.chgcode')
+                                                ->where('chgmast.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.instruction', function($join) use ($request){
+                                $join = $join->on('instruction.inscode', '=', 'trx.instruction')
+                                                ->where('instruction.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.freq', function($join) use ($request){
+                                $join = $join->on('freq.freqcode', '=', 'trx.frequency')
+                                                ->where('freq.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.dose', function($join) use ($request){
+                                $join = $join->on('dose.dosecode', '=', 'trx.doscode')
+                                                ->where('dose.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.drugindicator', function($join) use ($request){
+                                $join = $join->on('drugindicator.drugindcode', '=', 'trx.drugindicator')
+                                                ->where('drugindicator.compcode','=',session('compcode'));
+                            });
+                            // ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
+                            // ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
+                            // ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
+                            // ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
+                            // ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator');
 
         //////////paginate/////////
         $paginate = $table_chgtrx->paginate($request->rows);
@@ -783,6 +807,91 @@ class DoctorNoteController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
                     
                 ]);
+
+             DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function doctornote_transaction_save(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            $table = DB::table('hisdb.chargetrx');
+
+            $chgmast = DB::table('hisdb.chgmast')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode','=',$request->chg_desc)
+                        ->first();
+
+            $episode = DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->first();
+                        
+            $isudept = $episode->regdept;
+
+            if($request->oper == 'edit'){
+                $table->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('id','=',$request->id);
+
+                $array_edit = [
+                    'chgcode' => $request->chg_desc,
+                    'chggroup' =>  $chgmast->chggroup,
+                    'chgtype' =>  $chgmast->chgtype,
+                    'quantity' => $request->quantity,
+                    'instruction' => $request->ins_desc,
+                    'doscode' => $request->dos_desc,
+                    'frequency' => $request->fre_desc,
+                    'drugindicator' => $request->dru_desc,
+                    'remarks' => $request->remarks,
+                    'lastuser' => Auth::user()->username,
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ];
+
+                $table->update($array_edit);
+            }else if($request->oper == 'add'){
+                $array_insert = [
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'trxtype' => 'OE',
+                    'trxdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'chgcode' => $request->chg_desc,
+                    'chggroup' =>  $chgmast->chggroup,
+                    'chgtype' =>  $chgmast->chgtype,
+                    'instruction' => $request->ins_desc,
+                    'doscode' => $request->dos_desc,
+                    'frequency' => $request->fre_desc,
+                    'drugindicator' => $request->dru_desc,
+                    'remarks' => $request->remarks,
+                    'billflag' => '0',
+                    'quantity' => $request->quantity,
+                    'isudept' => $isudept,
+                    'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                ];
+
+                $table->insert($array_insert);
+            }else if($request->oper == 'del'){
+                $table->where('mrn','=',$request->mrn)
+                        ->where('episno','=',$request->episno)
+                        ->where('id','=',$request->id)->delete();
+            }
+
+            
+
+            $responce = new stdClass();
+            $responce->success = 'success';
+            echo json_encode($responce);
 
              DB::commit();
 

@@ -155,7 +155,7 @@
 			url:'util/get_table_default',
 			field:'',
 			fixPost:'true',
-			table_name:['hisdb.chgmast AS CM', 'hisdb.chgclass AS CC', 'hisdb.chggroup AS CG', 'hisdb.chgtype AS CT'],
+			table_name:['hisdb.chgmast AS cm', 'hisdb.chgclass AS cc', 'hisdb.chggroup AS cg', 'hisdb.chgtype AS ct'],
 			table_id:'cm_chgcode',
 			join_type:['LEFT JOIN', 'LEFT JOIN', 'LEFT JOIN'],
 			join_onCol:['cm.chgclass', 'cm.chggroup', 'cm.chgtype'],

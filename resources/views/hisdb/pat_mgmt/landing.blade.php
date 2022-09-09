@@ -653,6 +653,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
+				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
@@ -669,6 +670,7 @@
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
+				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)

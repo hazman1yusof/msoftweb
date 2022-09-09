@@ -36,7 +36,7 @@ $(document).ready(function () {
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
     	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
-		// dialog_mrn_edit.on();
+		hide_tran_button(false);
 		
 	});
 
@@ -511,7 +511,7 @@ function on_toggling_curr_past(obj = curr_obj){
 		addnotes.style.display = "none";
 		enableFields();
 		button_state_doctorNote('add'); //enable balik button
-		datable_medication.clear().draw();
+		// datable_medication.clear().draw();
 	}else if(document.getElementById("past").checked){
 		dateParam_docnote={
 			action:'get_table_date_past',
@@ -616,21 +616,21 @@ var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
     }
 });
 
-var datable_medication = $('#medication_tbl').DataTable({
-	"ajax": "",
-	"sDom": "",
-    "responsive": true,
-	"paging":false,
-    "columns": [
-        {data: 'chg_desc', 'width': '30%'},
-        {data: 'quantity'},
-        {data: 'remarks'},
-        {data: 'dos_code'},
-        {data: 'fre_code'},
-        {data: 'ins_code'},
-        {data: 'dru_code'},
-    ]
-});
+// var datable_medication = $('#medication_tbl').DataTable({
+// 	"ajax": "",
+// 	"sDom": "",
+//     "responsive": true,
+// 	"paging":false,
+//     "columns": [
+//         {data: 'chg_desc', 'width': '30%'},
+//         {data: 'quantity'},
+//         {data: 'remarks'},
+//         {data: 'dos_code'},
+//         {data: 'fre_code'},
+//         {data: 'ins_code'},
+//         {data: 'dru_code'},
+//     ]
+// });
 
 var ajaxurl;
 $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
@@ -640,8 +640,13 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
 	SmoothScrollTo("#jqGridDoctorNote_panel", 500)
-	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft));	
+	$("#jqGrid_trans_doctornote").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_c")[0].offsetLeft));	
 	textare_init_doctornote();
+	urlParam_trans.mrn=$('#mrn_doctorNote').val();
+	urlParam_trans.episno=$('#episno_doctorNote').val();
+	curpage_tran = null;
+	refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
+
 });
 
 //to reload date table on radio btn click
@@ -717,8 +722,8 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 			getBMI();
 			textare_init_doctornote();
 
-			datable_medication.clear().draw();
-			datable_medication.rows.add(data.transaction.rows).draw();
+			// datable_medication.clear().draw();
+			// datable_medication.rows.add(data.transaction.rows).draw();
 		}
 	});
 

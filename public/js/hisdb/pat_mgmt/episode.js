@@ -20,6 +20,54 @@
         parent_close_disabled(false);
     });
 
+    function get_default_value(mrn){
+        let obj_param = {
+               action:'get_default_value',
+               mrn:mrn,
+               userdeptcode:$('#userdeptcode').val()
+           };
+
+        $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+            
+        },'json').done(function(data) {
+            if(!$.isEmptyObject(data)){
+                if(data.data != 'nothing'){
+
+                    if(data.data.newcaseP == 1){
+                        $('#cmb_epis_case_maturity').val(1);
+                        $('#cmb_epis_pregnancy').val("Pregnant");
+                    }else if(data.data.newcaseNP == 1){
+                        $('#cmb_epis_case_maturity').val(1);
+                        $('#cmb_epis_pregnancy').val("Non-Pregnant");
+                    }else if(data.data.followupP == 1){
+                        $('#cmb_epis_case_maturity').val(2);
+                        $('#cmb_epis_pregnancy').val("Pregnant");
+                    }else if(data.data.followupP == 1){
+                        $('#cmb_epis_case_maturity').val(2);
+                        $('#cmb_epis_pregnancy').val("Non-Pregnant");
+                    }
+                    
+                    $("#txt_epis_source").val(data.data.adm_desc);
+                    $("#hid_epis_source").val(data.data.admsrccode);
+                    $("#txt_epis_case").val(data.data.cas_desc);
+                    $("#hid_epis_case").val(data.data.case_code);
+                    $("#txt_admdoctor").val(data.data.admdoctor_desc);
+                    $("#hid_admdoctor").val(data.data.admdoctor);
+                    $("#txt_attndoctor").val(data.data.attndoctor_desc);
+                    $("#hid_attndoctor").val(data.data.attndoctor);
+                    $("#hid_epis_fin").val(data.data.pay_type);
+                    $("#txt_epis_fin").val(data.data.dbty_desc).change();
+                    $("#cmb_epis_pay_mode").val(data.data.pyrmode);
+                    $("#txt_epis_payer").val(data.data.dbms_name);
+                    $("#hid_epis_payer").val(data.data.payer);
+                    $("#txt_epis_bill_type").val(data.data.bmst_desc);
+                    $("#hid_epis_bill_type").val(data.data.billtype);
+
+                }
+            }
+        });
+    }
+
     function check_debtormast_exists(rowid,kosong){
 
         if(!kosong){
@@ -135,7 +183,8 @@
 
             $('#txt_epis_dept').blur();
 
-            get_billtype_default(rowdata.MRN);
+            // get_billtype_default(rowdata.MRN);
+            // get_default_value(rowdata.MRN);
         }
     }
 
@@ -167,11 +216,17 @@
                 $('#txt_epis_payer').prop('disabled',true);
                 pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
                 check_debtormast_exists($('#epis_rowid').val(),false);
+                $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+                $('#hid_epis_bill_type').val($('#billtype_def_code').val());
             }else if(iregin == 'PR'){
                 pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
                 check_debtormast_exists($('#epis_rowid').val(),false);
+                $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+                $('#hid_epis_bill_type').val($('#billtype_def_code').val());
             }else{
                 pay_mode_arr = ['PANEL', 'GUARANTEE LETTER', 'WAITING GL'];
+                $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+                $('#hid_epis_bill_type').val($('#billtype_def_code').val());
             }
 
             $.each(pay_mode_arr, function(i,val)
@@ -201,9 +256,11 @@
         } );
 
     function epis_payer_onclick(){
+        $('#btngurantor').hide();
         $('#mdl_epis_pay_mode').modal('show');
 
         if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
+            $('#btngurantor').show();
             debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1' ).load();
         }else{
             debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2' ).load();
@@ -407,10 +464,16 @@
                 $('#txt_epis_no').val(episdata.episno);
                 $('#txt_epis_type').val(episdata.epistycode);
 
+
+                $('#txt_epis_dept').val(episdata.adm_desc);
                 $('#hid_epis_dept').val(episdata.regdept);
+                $('#txt_epis_source').val(episdata.adm_desc);
                 $('#hid_epis_source').val(episdata.admsrccode);
+                $('#txt_epis_case').val(episdata.cas_desc);
                 $('#hid_epis_case').val(episdata.case_code);
+                $('#txt_epis_doctor').val(episdata.doc_desc);
                 $('#hid_epis_doctor').val(episdata.admdoctor);
+                $('#txt_epis_fin').val(episdata.dbty_desc);
                 $('#hid_epis_fin').val(episdata.pay_type);
                 if($('#epistycode').val() == 'IP'){
                     $("#txt_epis_bed").val(bed.ward);
@@ -420,16 +483,17 @@
                 }
                 $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
                 $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
-                $('#txt_epis_payer').val(debtormast.name);
-                $('#hid_epis_payer').val(debtormast.debtorcode);
+                $('#txt_epis_payer').val(episdata.dbms_name);
+                $('#hid_epis_payer').val(episdata.payer);
+                $('#txt_epis_bill_type').val(episdata.bmst_desc);
                 $('#hid_epis_bill_type').val(episdata.billtype);
                 $('#txt_epis_refno').val(data.txt_epis_refno);
                 $('#txt_epis_our_refno').val(data.txt_epis_our_refno);
                 $('#txt_epis_queno').val();
 
-                $('#txt_epis_fin').change();
+                // $('#txt_epis_fin').change();
 
-                epis_desc_show.write_desc();
+                // epis_desc_show.write_desc();
             }else{
                 alert('MRN not found')
             }

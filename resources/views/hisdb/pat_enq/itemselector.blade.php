@@ -5,7 +5,7 @@
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button type="button" class="close" data-dismiss="mdl_item_selector">&times;</button>
 					<h4 class="modal-title">Item Selector</h4>
 				</div>
 				<div class="modal-body">
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn-u btn-u-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn-u btn-u-default" data-dismiss="mdl_item_selector">Cancel</button>
 				</div>
 			</div>
 			
