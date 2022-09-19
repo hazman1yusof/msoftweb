@@ -474,7 +474,7 @@ $(document).ready(function () {
 		urlParam.filterdate = null;
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
-			$("input[name='Stext'], #customer_tex, #department_textt").hide("fast");
+			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
 			$("#docuDate_text").show("fast");
 		} else if($('#Scol').val() == 'dm_name'){
 			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
