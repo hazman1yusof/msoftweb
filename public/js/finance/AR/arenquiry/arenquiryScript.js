@@ -94,18 +94,19 @@ $(document).ready(function () {
 		{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
 		{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 		{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
+		{ label: 'Invoice No', name: 'db_invno', width: 10},
 		{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true},
 		{ label: 'Amount', name: 'db_amount', width: 15, classes: 'wrap', align: 'right', formatter:'currency'},
 		{ label: 'Outamount', name: 'db_outamount', width: 15, classes: 'wrap', align: 'right', formatter:'currency'},
 		{ label: 'Status', name: 'db_recstatus', width: 15 },
 		{ label: 'source', name: 'db_source', width: 10, hidden: true },
-		{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
+		{ label: 'Trantype', name: 'db_trantype', width: 20, canSearch: true, },
 		{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 		{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 		{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 		{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 		{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-		{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
+		{ label: 'MRN', name: 'db_mrn', width: 10, canSearch: true,},
 		{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 		{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 		{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -138,7 +139,12 @@ $(document).ready(function () {
 				$("#customer_search").focus();
 				$('#jqGrid').data('inputfocus','');
 				$('#customer_search_hb').text('');
-				removeValidationClass(['#customer_search']);
+				removeValidationClass(['#creditor_search']);
+			}else if($('#jqGrid').data('inputfocus') == 'department_search'){
+				$("#department_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#department_search_hb').text('');
+				removeValidationClass(['#department_search']);
 			}else{
 				$("#searchForm input[name=Stext]").focus();
 			}
@@ -173,7 +179,7 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
+			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -184,7 +190,7 @@ $(document).ready(function () {
 	}
 
 	////////////////////////////populate data for dropdown search By////////////////////////////
-	searchBy();
+		searchBy();
 	function searchBy() {
 		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
 			if (value['canSearch']) {
@@ -200,30 +206,36 @@ $(document).ready(function () {
 
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
-	$('#actdate_search').on('click', searchDate);
+	$('#docuDate_search').on('click', searchDate);
 
 	function whenchangetodate() {
 		customer_search.off();
-		$('#customer_search,#actdate_from,#actdate_to').val('');
+		department_search.off();
+		$('#customer_search,#docuDate_from,#docuDate_to,#department_search').val('');
 		$('#customer_search_hb').text('');
+		$('#department_search_hb').text('');
 		urlParam.filterdate = null;
-		removeValidationClass(['#customer_search']);
-		if($('#Scol').val()=='apacthdr_actdate'){
-			$("input[name='Stext'], #customer_text").hide("fast");
-			$("#actdate_text").show("fast");
-		} else if($('#Scol').val() == 'apacthdr_suppcode'){
-			$("input[name='Stext'],#actdate_text").hide("fast");
+		removeValidationClass(['#customer_search,#department_search']);
+		if($('#Scol').val()=='db_entrydate'){
+			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
+			$("#docuDate_text").show("fast");
+		} else if($('#Scol').val() == 'dm_name'){
+			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
 			$("#customer_text").show("fast");
 			customer_search.on();
+		} else if($('#Scol').val() == 'db_deptcode'){
+			$("input[name='Stext'],#docuDate_text,#customer_text").hide("fast");
+			$("#department_text").show("fast");
+			department_search.on();
 		} else {
-			$("#customer_text,#actdate_text").hide("fast");
+			$("#customer_text,#docuDate_text,#department_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
 	}
 
 	function searchDate(){
-		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -237,7 +249,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		},{fct:['ap.recstatus'],fv:[],fc:[]});
+		},{fct:['db.recstatus'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -248,7 +260,7 @@ $(document).ready(function () {
 		'customer_search', 'debtor.debtormast', '#customer_search', 'errorField',
 		{
 			colModel: [
-				{ label: 'Payer Code', name: 'payercode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
@@ -258,11 +270,52 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'db_debtorcode'){
-					urlParam.searchCol=["db.suppcode"];
+				if($('#Scol').val() == 'dm_name'){
+					urlParam.searchCol=["db.debtorcode"];
 					urlParam.searchVal=[data];
-				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
+				}
+				// }else if($('#Scol').val() == 'db_payercode'){
+				// 	urlParam.searchCol=["db.payercode"];
+				// 	urlParam.searchVal=[data];
+				// }
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Customer",
+			open: function () {
+				customer_search.urlParam.filterCol = ['recstatus'];
+				customer_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	customer_search.makedialog(true);
+	$('#customer_search').on('keyup',ifnullsearch);
+
+	var department_search = new ordialog(
+		'department_search', 'sysdb.department', '#department_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Department Code', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + department_search.gridname).deptcode;
+
+				if($('#Scol').val() == 'db_deptcode'){
+					urlParam.searchCol=["db.deptcode"];
 					urlParam.searchVal=[data];
 				}
 				refreshGrid('#jqGrid', urlParam);
@@ -279,21 +332,20 @@ $(document).ready(function () {
 		},{
 			title: "Select Creditor",
 			open: function () {
-				customer_search.urlParam.filterCol = ['recstatus'];
-				customer_search.urlParam.filterVal = ['ACTIVE'];
+				department_search.urlParam.filterCol = ['recstatus'];
+				department_search.urlParam.filterVal = ['ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
-	customer_search.makedialog(true);
-	$('#customer_search').on('keyup',ifnullsearch);
+	department_search.makedialog(true);
+	$('#department_search').on('keyup',ifnullsearch);
 	
 	function ifnullsearch(){
-		if($('#customer_search').val() == ''){
+		if($(this).val() == ''){
 			urlParam.searchCol=[];
 			urlParam.searchVal=[];
-			$('#jqGrid').data('inputfocus','customer_search');
+			$('#jqGrid').data('inputfocus',$(this).attr('id'));
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}
-
 });

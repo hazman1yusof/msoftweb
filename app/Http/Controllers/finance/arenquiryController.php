@@ -41,8 +41,8 @@ class arenquiryController extends defaultController
                         'db.payercode AS db_payercode',
                         'dm.name AS dm_name', 
                         'db.entrydate AS db_entrydate',
-                        'db.auditno AS db_auditno',
-                        'db.invno AS db_invno',
+                        'db.auditno AS db_auditno', //search
+                        'db.invno AS db_invno', //search
                         'db.ponum AS db_ponum',
                         'db.amount AS db_amount',
                         'db.remark AS db_remark',
@@ -52,7 +52,7 @@ class arenquiryController extends defaultController
                         'db.debtortype AS db_debtortype',
                         'db.billdebtor AS db_billdebtor',
                         'db.approvedby AS db_approvedby',
-                        'db.mrn AS db_mrn',
+                        'db.mrn AS db_mrn', //search
                         'db.unit AS db_unit',
                         'db.source AS db_source',
                         'db.trantype AS db_trantype',
@@ -87,33 +87,17 @@ class arenquiryController extends defaultController
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('db.invno','like',$request->searchVal[0]);
                     });
-            }else{
+            }else if($request->searchCol[0] == 'db_mrn'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                        $table->Where('db.mrn','like',$request->searchVal[0]);
                     });
-            }            
-        }
-////////////////////////////
-        if(!empty($request->searchCol)){
-            if($request->searchCol[0] == 'apacthdr_document'){
+            }else if($request->searchCol[0] == 'db_auditno'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.document','like',$request->searchVal[0]);
+                        $table->Where('db.auditno','like',$request->searchVal[0]);
                     });
-            }else if($request->searchCol[0] == 'apacthdr_cheqno'){
+            }else if($request->searchCol[0] == 'db_trantype'){
                 $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.cheqno','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'apacthdr_auditno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.auditno','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'apacthdr_trantype'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.trantype','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'apacthdr_pvno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.pvno','like',$request->searchVal[0]);
+                        $table->Where('db.trantype','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
@@ -121,7 +105,6 @@ class arenquiryController extends defaultController
                     });
             }          
         }
-///////////////////////
 
         if(!empty($request->sidx)){
 

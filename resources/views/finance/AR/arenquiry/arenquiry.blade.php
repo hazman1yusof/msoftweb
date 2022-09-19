@@ -40,18 +40,26 @@
 					  		<label class="control-label"></label>  
 							<input style="display:none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
 
-							<div id="creditor_text">
+							<div id="customer_text">
 								<div class='input-group'>
-									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+									<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
-								<span id="creditor_search_hb" class="help-block"></span>
+								<span id="customer_search_hb" class="help-block"></span>
 							</div>
 
-							<div id="actdate_text" class="form-inline" style="display:none">
-								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							<div id="department_text" style="display:none">
+								<div class='input-group'>
+									<input id="department_search" name="department_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="department_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="docuDate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
 							
 						</div>
