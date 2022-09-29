@@ -21,9 +21,9 @@ class PatmastController extends defaultController
 
     public function show(Request $request)
     {       
-        $user = DB::table('sysdb.users')->where('username','=',session('username'))->first();
-        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->first();
-        $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->first();
+        $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
+        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode',session('compcode'))->first();
+        $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
 
 
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
