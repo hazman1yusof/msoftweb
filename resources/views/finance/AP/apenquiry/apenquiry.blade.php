@@ -71,105 +71,141 @@
                     </div>
             </div>
 		</div>
-
-		<!-- <div class='panel panel-default'>
-		<div class='panel-body'>
-			<div class='col-xs-2'>
-				<table class="table table-hover" id='TableGlmasdtl'>
-				<thead>
-					<tr>
-						<th>Month</th>
-						<th>Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class='num'>1</td>
-						<td id='glmasdtl_actamount1' period='1'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>2</td>
-						<td id='glmasdtl_actamount2' period='2'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>3</td>
-						<td id='glmasdtl_actamount3' period='3'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>4</td>
-						<td id='glmasdtl_actamount4' period='4'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>5</td>
-						<td id='glmasdtl_actamount5' period='5'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>6</td>
-						<td id='glmasdtl_actamount6' period='6'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>7</td>
-						<td id='glmasdtl_actamount7' period='7'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>8</td>
-						<td id='glmasdtl_actamount8' period='8'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>9</td>
-						<td id='glmasdtl_actamount9' period='9'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>10</td>
-						<td id='glmasdtl_actamount10' period='10'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>11</td>
-						<td id='glmasdtl_actamount11' period='11'><span></span></td>
-					</tr>
-					<tr>
-						<td class='num'>12</td>
-						<td id='glmasdtl_actamount12' period='12'><span></span></td>
-					</tr>
-
-					<tr>
-						<th>Total:</th>
-						<td id='fd_total'></td>
-					</tr>
-
-					<tr>
-						<th>Balance:</th>
-						<td id='fd_balance'></td>
-					</tr>
-				</tbody>
-				</table>
-			</div>
-			<div id='TableGlmasTran_c' class='col-xs-10 modalx'>
-				<table class="table table-hover  table-bordered" id='TableGlmasTran'>
-				<thead>
-					<tr>
-						<th> </th>
-						<th>Src</th>
-						<th>TT</th>
-						<th>No</th>
-						<th>Post Date</th>
-						<th>Description</th>
-						<th>Reference</th>
-						<th>Account Code</th>
-						<th>DR Amount</th>
-						<th>CR Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-				</table>
-			</div>
-		</div>
-		</div> -->
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
-	<div id="dialogForm" title="Viewing Detail"></div>
+	<div id="dialogForm" title="Viewing Detail" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">AP Enquiry Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+				
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
+				  			<div class="col-md-2" id="apacthdr_actdate">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-2">
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  			</div>	
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
+							<div class="col-md-2">
+							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
+							       <option value="PV">Payment Voucher</option>
+							       <option value="PD">Payment Deposit</option>
+							    </select>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+				  			</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block" ></span>
+						</div>	  	
+
+						<label class="col-md-2 control-label" for="apacthdr_cheqno" id="cheqno_parent">Cheque No</label>	  
+				  			<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="cheqno_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_cheqdate" id="cheqdate_parent">Cheque Date</label>  
+				  			<div class="col-md-2" id="apacthdr_cheqdate">
+								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+							
+					</div>
+
+					<hr/>
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Pay To (In Invoice)</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>		  	
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" data-validation="required"> 
+		 					</div>
+					</div>
+				</form>
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
+			</div>
+		</div>
+			
+
+		<div class='panel panel-info' id="ap_enquirydetail">
+			<div class="panel-heading">AP Enquiry Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+						        <div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
+
+		</div>
+	</div>	
 
 	@endsection
 
