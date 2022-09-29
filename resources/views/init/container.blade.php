@@ -46,7 +46,7 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 
-			@if(Auth::user()->deptcode == '')
+			@if(Auth::user()->dept == '')
 			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
 				<li><h4 style="font-size: 15px">&nbsp;Unit :&nbsp;</h4></li>
