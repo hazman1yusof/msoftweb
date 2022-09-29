@@ -56,10 +56,10 @@
                 </div>
 
                 <div class="form-group ">
-                    <div class="col-md-offset-4 col-md-3">
+                    <div class="col-md-offset-1 col-md-8">
                        NAME:  <b><big id="txt_epis_name"></big></b>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                        MRN:  <b><big id="txt_epis_mrn"></big></b>
                     </div>
                 </div>
