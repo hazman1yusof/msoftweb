@@ -179,9 +179,9 @@
             $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
 
             $('#hid_epis_dept').val($('#userdeptcode').val());
-            $('#txt_epis_dept').val($('#userdeptcode').val());
+            $('#txt_epis_dept').val($('#userdeptdesc').val());
 
-            $('#txt_epis_dept').blur();
+            // $('#txt_epis_dept').blur();
 
             // get_billtype_default(rowdata.MRN);
             // get_default_value(rowdata.MRN);
