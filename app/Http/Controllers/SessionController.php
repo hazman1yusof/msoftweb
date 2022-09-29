@@ -37,7 +37,7 @@ class SessionController extends Controller
     		Auth::login($user);
             $request->session()->put('compcode', request('cmb_companies'));
             $request->session()->put('username', request('username'));
-            $request->session()->put('deptcode', $user->deptcode);
+            $request->session()->put('deptcode', $user->dept);
 
             $doctor = DB::table('hisdb.doctor')->where('loginid','=',$user->username);
 
@@ -45,10 +45,10 @@ class SessionController extends Controller
                 $request->session()->put('isdoctor', $user->username);
             }
 
-            if($user->deptcode != ''){
+            if($user->dept != ''){
                 $units = DB::table('sysdb.department')
                     ->select('sector')
-                    ->where('deptcode','=',$user->deptcode)
+                    ->where('deptcode','=',$user->dept)
                     ->where('compcode','=',request('cmb_companies'))
                     ->first();
                 $request->session()->put('unit', $units->sector);
