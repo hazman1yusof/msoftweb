@@ -74,11 +74,11 @@
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
-	<div id="dialogForm" title="Viewing Detail" >
+	<div id="dialogForm_pv" title="Viewing Detail" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">AP Enquiry Header</div>
 			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
+				<form class='form-horizontal' style='width:99%' id='formdata_pv'>
 				
 
 					<div class="form-group">
@@ -197,15 +197,148 @@
 			<div class="panel-heading">AP Enquiry Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
-						<div id="jqGrid2_c" class='col-md-12'>
-							<table id="jqGrid2" class="table table-striped"></table>
-						        <div id="jqGridPager2"></div>
+						<div id="jqGrid2_pv_c" class='col-md-12'>
+							<table id="jqGrid2_pv" class="table table-striped"></table>
+						        <div id="jqGridPager2_pv"></div>
 						</div>
 					</form>
 				</div>
 
 		</div>
 	</div>	
+
+	<div id="dialogForm_in" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Invoice AP Header
+				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
+			</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata_in'>
+					{{ csrf_field() }}
+					
+					<input id="auditno" name="auditno" type="hidden">
+					<input id="apacthdr_idno" name="apacthdr_idno" type="hidden">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
+							<div class="col-md-3">
+							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
+							       <option value="Supplier">Supplier</option>
+							       <option value="Others">Others</option>
+							    </select>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-3">
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  		</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Creditor</label>	 
+						 	<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Document Date</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
+				  			<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						 	 </div>
+					</div>
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"  data-validation="required"> 
+		 					</div>
+
+						<label class="col-md-2 control-label" for="apactdtl_outamt">Total Detail Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apactdtl_outamt" name="apactdtl_outamt" maxlength="12" class="form-control input-sm" rdonly> 
+		 					</div>
+					</div>
+
+					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+
+				</form>
+				<div class="panel-body">
+				<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
+			</div>
+			</div>
+		</div>
+			
+
+		<div class='panel panel-info' id="ap_detail">
+			<div class="panel-heading">Invoice AP  Detail</div>
+				<div class="panel-body">
+					<form id='formdata2_in' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_in_c" class='col-md-12'>
+							<table id="jqGrid2_in" class="table table-striped"></table>
+						        <div id="jqGridPager2_in"></div>
+						</div>
+					</form>
+				</div>
+
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
+			</div>
+		</div>	
+	</div>
 
 	@endsection
 

@@ -344,22 +344,22 @@ i.fa {
 		</div>
 			
 
-	<div class='panel panel-info' id="ap_detail">
-		<div class="panel-heading">Invoice AP  Detail</div>
-			<div class="panel-body">
-				<form id='formdata2' class='form-vertical' style='width:99%'>
-					<div id="jqGrid2_c" class='col-md-12'>
-						<table id="jqGrid2" class="table table-striped"></table>
-					        <div id="jqGridPager2"></div>
-					</div>
-				</form>
-			</div>
+		<div class='panel panel-info' id="ap_detail">
+			<div class="panel-heading">Invoice AP  Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+						        <div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
 
-			<div class="panel-body">
-				<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
 			</div>
-		</div>
-	</div>			
+		</div>			
 			
 	</div>
 @endsection

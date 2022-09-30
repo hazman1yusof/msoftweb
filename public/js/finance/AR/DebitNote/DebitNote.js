@@ -170,7 +170,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true},
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Customer Name', name: 'dm_name', width: 50, canSearch: true,classes: 'wrap text-uppercase', checked: true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
@@ -1134,13 +1134,13 @@ $(document).ready(function () {
 		var field,table, case_;
 		switch(options.colModel.name){
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
-           // case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			//case 'category':field=['catcode','description'];table="material.category";break;
-			//case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
+            case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
+			case 'category':field=['catcode','description'];table="material.category";break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
-			//case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
-			//case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
-			//case 'db_payercode':field=['debtormast','name'];table="debtor.debtormast";case_='db_payercode';break;
+			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
+			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			// case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
 			
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};

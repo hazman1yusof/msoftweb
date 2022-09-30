@@ -81,11 +81,11 @@
 	<!-- ***************End Search + table ********************* -->
 
 		<!-- *************** View Form for Credit/Debit ********************* -->
-	<div id="dialogForm" title="Viewing Detail" >
+	<div id="dialogForm_cn" title="Viewing Detail" >
 		<div class='panel panel-info'>
 			<div class="panel-heading"> Header Detail</div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
+					<form class='form-horizontal' style='width:99%' id='formdata_cn'>
 						{{ csrf_field() }}
 						<input id="db_idno" name="db_idno" type="hidden">
 						<input id="db_source" name="db_source" type="hidden">
@@ -159,12 +159,12 @@
 			<div class='panel panel-info'>
 				<div class="panel-heading"> Detail </div>
 					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
+						<form id='formdata2_cn' class='form-vertical' style='width:99%'>
 							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
+							<div id="jqGrid2_cn_c" class='col-md-12'>
+								<table id="jqGrid2_cn" class="table table-striped"></table>
+					            <div id="jqGridPager2_cn"></div>
 							</div>
 						</form>
 					</div>
