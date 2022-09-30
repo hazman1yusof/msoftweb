@@ -265,8 +265,6 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-
-
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
 		beforeRefresh: function () {

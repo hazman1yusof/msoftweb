@@ -14,7 +14,6 @@
 		display:block;
 	}
 	
-
 	input.uppercase {
   		text-transform: uppercase;
 	}
@@ -81,8 +80,111 @@
     </div>
 	<!-- ***************End Search + table ********************* -->
 
-	<div id="dialogForm" title="Viewing Detail"></div>
-		
+		<!-- *************** View Form for Credit/Debit ********************* -->
+	<div id="dialogForm" title="Viewing Detail" >
+		<div class='panel panel-info'>
+			<div class="panel-heading"> Header Detail</div>
+				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+					<form class='form-horizontal' style='width:99%' id='formdata'>
+						{{ csrf_field() }}
+						<input id="db_idno" name="db_idno" type="hidden">
+						<input id="db_source" name="db_source" type="hidden">
+						<input id="db_trantype" name="db_trantype" type="hidden">
+
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
+							<div class="col-md-3">
+								<div class='input-group'>
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+
+							<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
+								<div class="col-md-2">
+								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_auditno">Credit/Debit No</label>  
+							<div class="col-md-2"> 
+								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
+							</div>
+							
+							<label class="col-md-3 control-label" for="db_entrydate">Document Date</label>  
+							<div class="col-md-2">
+								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+									max="<?php echo date('Y-m-d');?>">
+							</div>
+						</div>
+							
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
+							<div class="col-md-2">
+								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
+							</div>
+
+							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
+							<div class="col-md-2">
+									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
+							<div class="col-md-2"> 
+							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+									max="<?php echo date('Y-m-d');?>">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
+							<div class="col-md-7"> 
+							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
+							</div>
+						</div>
+
+					<hr/>
+
+					</form>
+				</div>
+			</div>
+			
+			<div class='panel panel-info'>
+				<div class="panel-heading"> Detail </div>
+					<div class="panel-body">
+						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
+							<div id="jqGrid2_c" class='col-md-12'>
+								<table id="jqGrid2" class="table table-striped"></table>
+					            <div id="jqGridPager2"></div>
+							</div>
+						</form>
+					</div>
+
+					<div class="panel-body">
+						<div class="noti" style="color:red"></div>
+					</div>
+			</div>
+				
+			<!-- <div id="dialog_remarks" title="Remarks">
+			  	<div class="panel panel-default">
+			    	<div class="panel-body">
+			    		<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    	</div>
+			  	</div>
+			</div> -->
+		</div>
+	</div>
+		<!-- ***************End View Form for Credit/Debit ********************* -->
+
 @endsection
 
 @section('scripts')

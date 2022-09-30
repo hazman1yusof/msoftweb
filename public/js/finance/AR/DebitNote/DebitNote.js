@@ -23,7 +23,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#amount']);
+	var mycurrency = new currencymode(['#db_outamount', '#db_amount']);
 	var fdl = new faster_detail_load();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -1133,17 +1133,18 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
-            case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'category':field=['catcode','description'];table="material.category";break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
+			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+           // case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
+			//case 'category':field=['catcode','description'];table="material.category";break;
+			//case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
-			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
-			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			//case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
+			//case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 			//case 'db_payercode':field=['debtormast','name'];table="debtor.debtormast";case_='db_payercode';break;
 			
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-	
+
 		fdl.get_array('DebitNote',options,param,case_,cellvalue);
 		
 		if(cellvalue == null)cellvalue = " ";
