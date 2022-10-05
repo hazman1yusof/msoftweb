@@ -302,9 +302,6 @@ i.fa {
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" data-validation="required"> 
 		 					</div>
-
-							 
-
 					</div>
 
 					<!-- <hr/>

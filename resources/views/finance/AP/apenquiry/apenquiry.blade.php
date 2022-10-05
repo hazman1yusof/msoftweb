@@ -74,6 +74,8 @@
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
+	<!--- PAYMENT VOUCHER -->
+
 	<div id="dialogForm_pv" title="Viewing Detail" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">AP Enquiry Header</div>
@@ -205,8 +207,129 @@
 				</div>
 
 		</div>
-	</div>	
+	</div>
 
+	<!-- PAYMENT DEPOSIT -->
+	<div id="dialogForm_pd" title="Viewing Detail" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">AP Enquiry Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata_pd'>
+				
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
+				  			<div class="col-md-2" id="apacthdr_actdate">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-2">
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  			</div>	
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
+							<div class="col-md-2">
+							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
+							       <option value="PV">Payment Voucher</option>
+							       <option value="PD">Payment Deposit</option>
+							    </select>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+				  			</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+					</div>
+
+					<div class="form-group">
+
+						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_bankcode" name="apacthdr_bankcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="bankcode_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block" ></span>
+						</div>	  	
+
+						<label class="col-md-2 control-label" for="apacthdr_cheqno" id="cheqno_parent">Cheque No</label>	  
+				  			<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_cheqno" name="apacthdr_cheqno" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
+									<a class='input-group-addon btn btn-primary' id="cheqno_dh"><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_cheqdate" id="cheqdate_parent">Cheque Date</label>  
+				  			<div class="col-md-2" id="apacthdr_cheqdate">
+								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+							
+					</div>
+
+					<hr/>
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Pay To (In Invoice)</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>		  	
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" data-validation="required"> 
+		 					</div>
+					</div>
+				</form>
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- INVOICE AP NOTE -->
 	<div id="dialogForm_in" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Invoice AP Header
@@ -339,10 +462,345 @@
 			</div>
 		</div>	
 	</div>
+	
+	<!-- CREDIT NOTE -->
+	<div id="dialogForm_cn" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Note Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata_cn'>
+					{{ csrf_field() }}
+					<input id="auditno" name="auditno" type="hidden">
+					<input id="idno" name="idno" type="hidden">
 
-	@endsection
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
+				  			<div class="col-md-2" id="apacthdr_actdate">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-2"> 
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  			</div>	
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_trantype2">Transaction Type</label> 
+							<div class="col-md-2">
+							  	<select id="apacthdr_trantype2" name=apacthdr_trantype2 class="form-control" data-validation="required">
+							       <option value = "Credit Note">Credit Note</option>
+							       <option value = "Credit Note Unallocated">Credit Note Unallocated</option>
+							    </select>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+				  			</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>		
+					</div>
+
+					<hr/>
 
 
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Pay To (In Invoice)</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>		  	
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
+		 					</div>
+
+					</div>
+				</form>
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
+			</div>
+		</div>
+			
+
+		<div class='panel panel-info' id="cn_detail">
+			<div class="panel-heading">Credit Note Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_in_c" class='col-md-12'>
+							<table id="jqGrid2_in" class="table table-striped"></table>
+						        <div id="jqGridPager2_in"></div>
+						</div>
+					</form>
+				</div>
+		</div>
+	</div>
+
+	<!-- CREDIT NOTE UNALLOCATED-->
+	<div id="dialogForm_cna" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Note Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata_cna'>
+					{{ csrf_field() }}
+					<input id="auditno" name="auditno" type="hidden">
+					<input id="idno" name="idno" type="hidden">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
+				  			<div class="col-md-2" id="apacthdr_actdate">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-2"> 
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  			</div>	
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_trantype2">Transaction Type</label> 
+							<div class="col-md-2">
+							  	<select id="apacthdr_trantype2" name=apacthdr_trantype2 class="form-control" data-validation="required">
+							       <option value = "Credit Note">Credit Note</option>
+							       <option value = "Credit Note Unallocated">Credit Note Unallocated</option>
+							    </select>
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-2">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+				  			</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
+						 	<div class="col-md-2">
+							  	<div class='input-group'>
+									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>		
+					</div>
+
+					<hr/>
+
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Pay To (In Invoice)</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>		  	
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Total Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
+		 					</div>
+
+					</div>
+				</form>
+				<div class="panel-body">
+					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- DEBIT NOTE -->
+	<div id="dialogForm_dn" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Debit Note AP Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:99%' id='formdata_dn'>
+					{{ csrf_field() }}
+					
+					<input id="auditno" name="auditno" type="hidden">
+					<input id="apacthdr_idno" name="apacthdr_idno" type="hidden">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
+							<div class="col-md-3">
+							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
+							       <option value="Debit_Note">Debit Note</option>
+							    </select>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
+				  			<div class="col-md-3">
+				  				<input id="apacthdr_auditno" name="apacthdr_auditno" type="text" class="form-control input-sm" rdonly>
+				  		</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_suppcode">Creditor</label>	 
+						 	<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+				  			</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+				  			</div>
+
+				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
+				  			<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						  	</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
+							<div class="col-md-3">
+							  	<div class='input-group'>
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							  	</div>
+							  	<span class="help-block"></span>
+						 	 </div>
+					</div>
+
+					<div class="form-group">
+			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
+			    			<div class="col-md-8"> 
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    			</div>
+			   		</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" > 
+		 					</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
+		 					</div>
+					</div>
+				</form>
+				<div class="panel-body">
+				    <div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+			    </div>
+			</div>
+		</div>	
+	</div>
+
+@endsection
 
 @section('scripts')
 <script type="text/javascript">
@@ -381,6 +839,5 @@
 	</script>
 
 	<script src="js/finance/AP/apenquiry/apenquiry.js"></script>
-	<!-- <script src="plugins/datatables/js/jquery.datatables.min.js"></script> -->
 	
 @endsection

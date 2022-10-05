@@ -58,6 +58,29 @@ $(document).ready(function () {
 			},
 		});
 
+	$("#dialogForm_pd")
+		.dialog({
+			width: 9 / 10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui) {
+				parent_close_disabled(true);
+				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
+				disableForm('#formdata_pd');
+				$("#pg_jqGridPager2 table").hide();
+			},
+			close: function( event, ui ) {
+				//reset balik
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_pd');
+				$('.my-alert').detach();
+				$("#formdata_pd a").off();
+				$(".noti, .noti2 ol").empty();
+				errorField.length=0;
+			},
+		});
+
 	$("#dialogForm_in")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
@@ -83,6 +106,81 @@ $(document).ready(function () {
 				errorField.length=0;
 			},
 	});
+
+	$("#dialogForm_cn")
+		.dialog({
+			width: 9 / 10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui) {
+				parent_close_disabled(true);
+				unsaved = false;
+				errorField.length=0;
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft));
+				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
+				disableForm('#formdata_cn');
+				refreshGrid("#jqGrid2_cn",urlParam2_cn);
+				$("#pg_jqGridPager2_cn table").hide();
+				init_jq2_cn(oper);
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_cn');
+				$('.my-alert').detach();
+				$("#formdata_cn a").off();
+				$(".noti").empty();
+				refreshGrid("#jqGrid2_cn",null,"kosongkan");
+				errorField.length=0;
+			},
+	});
+
+	$("#dialogForm_cna")
+		.dialog({
+			width: 9 / 10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui) {
+				parent_close_disabled(true);
+				unsaved = false;
+				errorField.length=0;
+				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
+				disableForm('#formdata_cna');
+				$("#pg_jqGridPager2_cn table").hide();
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_cna');
+				$('.my-alert').detach();
+				$("#formdata_cna a").off();
+				$(".noti").empty();
+				errorField.length=0;
+			},
+	});
+
+	$("#dialogForm_dn")
+	.dialog({
+		width: 9 / 10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function (event, ui) {
+			unsaved = false
+			counter_save=0;
+			parent_close_disabled(true);
+			mycurrency.formatOnBlur();
+			disableForm('#formdata_dn');
+		
+		},
+		close: function( event, ui ) {
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata_dn');
+			$('.my-alert').detach();
+			$("#formdata_dn a").off();
+			$(".noti").empty();
+			errorField.length=0;
+		},
+});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -121,6 +219,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'trantype2', name: 'apacthdr_trantype2', width: 50, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -135,30 +234,13 @@ $(document).ready(function () {
 				urlParam2_pv.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				urlParam2_in.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
+				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			$("#jqGridPager td[title='View Selected Row']").click();
-			
-			// if(stat=='POSTED'){
-			// 	$("#jqGridPager td[title='View Selected Row']").click();
-			
-			// }else if (stat == 'OPEN'){
-			// 	$("#jqGridPager td[title='Edit Selected Row']").click();
-
-			// 	if (rowid != null) {
-			// 		rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-	
-			// 		// if (rowData['apacthdr_doctype'] == 'Supplier') {
-			// 		// 	$('#save').hide();
-			// 		// 	$('#ap_detail').show();
-			// 		// } else {
-			// 		// 	$('#save').show();
-			// 		// 	$('#ap_detail').hide();
-			// 		// }
-			// 	}
-			// }
 		},
 		gridComplete: function(){
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
@@ -169,8 +251,6 @@ $(document).ready(function () {
 			}else{
 				$("#searchForm input[name=Stext]").focus();
 			}
-
-			//$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
 		loadComplete: function(){
@@ -212,9 +292,18 @@ $(document).ready(function () {
 			if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
 				populateFormdata("#jqGrid", "#dialogForm_pv", "#formdata_pv", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_pv",urlParam2_pv,'add');
+			}else if(selrowData("#jqGrid").apacthdr_trantype=='PD'){
+					populateFormdata("#jqGrid", "#dialogForm_pd", "#formdata_pd", selRowId, 'view', '');
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_in",urlParam2_in,'add');
+			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
+				populateFormdata("#jqGrid", "#dialogForm_cn", "#formdata_cn", selRowId, 'view', '');
+				refreshGrid("#jqGrid2_cn",urlParam2_cn,'add');
+			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note Unallocated'){
+				populateFormdata("#jqGrid", "#dialogForm_cna", "#formdata_cna", selRowId, 'view', '');
+			}else if(selrowData("#jqGrid").apacthdr_trantype=='DN'){
+				populateFormdata("#jqGrid", "#dialogForm_dn", "#formdata_dn", selRowId, 'view', '');
 			}
 		},
 	});
@@ -367,27 +456,12 @@ $(document).ready(function () {
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15,},
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap'},
-			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
-			},
+			{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
-			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-				align: "right",
-			},
-			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
-				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editrules:{required: false},editoptions:{readonly: "readonly"},
-			},
-			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', 
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-			},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-			},
+			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}},
+			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false},
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false},
 			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
@@ -440,27 +514,13 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false, key:true}, //canSearch: true, checked: true},
-			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: false,
-			},
-	
-			{ label: 'Purchase Order Number', name: 'reference', width: 200, classes: 'wrap', editable: false
-			},
-			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-				align: "right"
-			},
-			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', hidden:true, classes: 'wrap',  
-				editable:false,
-			},
-			{ label: 'Tax Amount', name: 'AmtB4GST', width: 100, classes: 'wrap', hidden:true, 
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-			},
-			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: false
-			},
-			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: false
-			},
+			{ label: 'Delivery Order Number', name: 'document', width: 200, classes: 'wrap', canSearch: true, editable: false},
+			{ label: 'Purchase Order Number', name: 'reference', width: 200, classes: 'wrap', editable: false},
+			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false, align: "right"},
+			{ label: 'Tax Claim', name: 'GSTCode', width: 200, edittype:'text', hidden:true, classes: 'wrap', editable:false,},
+			{ label: 'Tax Amount', name: 'AmtB4GST', width: 100, classes: 'wrap', hidden:true, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false},
+			{ label: 'Record No', name: 'dorecno', width: 100, classes: 'wrap', editable: false},
+			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: false},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -485,6 +545,62 @@ $(document).ready(function () {
 
 });
 
+//CN
+var urlParam2_cn={
+	action:'get_table_default',
+	url:'util/get_table_default',
+	field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+	table_name:['finance.apalloc AS apdt'],
+	table_id:'lineno_',
+	filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
+	filterVal:['session.compcode', '', 'AP','CN']
+};
+$("#jqGrid2_cn").jqGrid({
+	datatype: "local",
+	editurl: "./creditNoteDetail/form",
+	colModel: [
+		//{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
+		{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', },//formatter: showdetail,unformat:un_showdetail
+		{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+		{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
+		{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
+		{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
+		{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false,align: "right"},
+		{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
+		{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
+		{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
+	
+	],
+	autowidth: true,
+	shrinkToFit: true,
+	multiSort: true,
+	viewrecords: true,
+	loadonce:false,
+	width: 1150,
+	height: 200,
+	rowNum: 30,
+	sortname: 'lineno_',
+	sortorder: "desc",
+	pager: "#jqGridPager2",
+	loadComplete: function(data){
+		calc_jq_height_onchange("jqGrid2_cn");
+	},
+	gridComplete: function(){	
+	},
+	beforeSubmit: function(postdata, rowid){ 
+	}
+});
+
 function calc_jq_height_onchange(jqgrid){
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<50){
@@ -507,4 +623,17 @@ function init_jq2(){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft-28));
 		$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();
 	}
+}
+
+function init_jq2_cn(oper){
+
+	if(($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note')) {
+		$('#save').hide();
+		$('#cn_detail').show();
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
+	} else if (($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+		$('#save').show();
+		$('#cn_detail').hide();
+	}
+	
 }

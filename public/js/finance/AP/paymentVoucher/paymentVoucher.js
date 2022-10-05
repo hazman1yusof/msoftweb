@@ -54,7 +54,6 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
-					
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -78,7 +77,6 @@ $(document).ready(function () {
 				if(oper!='add'){
 					dialog_bankcode.check(errorField);
 					dialog_paymode.check(errorField);
-					// dialog_cheqno.check(errorField);
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
@@ -114,7 +112,6 @@ $(document).ready(function () {
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
-				//radbuts.reset();
 				errorField.length=0;
 			},
 	});
@@ -208,14 +205,12 @@ $(document).ready(function () {
 		$(form+' [name=Stext]').on( "keyup", function() {
 			delay(function(){
 				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-				// $('#auditno').text("");//tukar kat depan tu
 				refreshGrid("#jqGrid3",null,"kosongkan");
 			}, 500 );
 		});
 
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			// $('#auditno').text("");//tukar kat depan tu
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
@@ -402,8 +397,7 @@ $(document).ready(function () {
 
 	$('#apacthdr_trantype').on('change', function() {
 		let trantype = $("#apacthdr_trantype option:selected").val();
-		init_jq2(oper);
-		
+		init_jq2(oper, urlParam2);
 	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -1272,6 +1266,11 @@ $(document).ready(function () {
 					case 'CHEQUE':
 								$('#cheqno_parent').text('Cheque No');
 								dialog_cheqno.on();
+								$('#cheqno_parent').show();
+								$('#apacthdr_cheqno').show();
+								$('#cheqno_dh').show();
+								$('#cheqdate_parent').show();
+								$('#apacthdr_cheqdate').show();
 								break;
 
 					case 'CASH':
@@ -1651,6 +1650,7 @@ $(document).ready(function () {
 });
 
 function init_jq2(oper,urlParam2){
+
 	if(oper == 'add'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
@@ -1658,19 +1658,21 @@ function init_jq2(oper,urlParam2){
 			$('#pvpd_detail').show();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
-		}else{
+		}else if($('#apacthdr_trantype').val() == 'PD') {
 			$('#save').show();
 			$('#pvpd_detail').hide();
 			$('#apacthdr_amount').prop('readonly',false);
 		}
-	}else{
+	} 
+	
+	if (oper == 'edit'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
 			$('#apacthdr_amount').prop('readonly',true);
 			$('#pvpd_detail').show();
 			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 			refreshGrid("#jqGrid2",urlParam2);
-		}else{
+		}else if($('#apacthdr_trantype').val() == 'PD') {
 			$('#save').show();
 			$('#pvpd_detail').hide();
 			$('#apacthdr_amount').prop('readonly',false);
@@ -1694,6 +1696,8 @@ function init_paymode(oper,dialog_cheqno){
 						$('#cheqno_parent').text('Cheque No');
 						dialog_cheqno.on();
 						dialog_cheqno.check(errorField);
+						$("label[for='cheqdate_parent'], input#cheqdate_parent").show();
+						$("label[for='cheqno_parent'], input#cheqno_parent").show();
 						break;
 			case 'CASH':
 						$('#apacthdr_cheqno').prop('readonly',true);

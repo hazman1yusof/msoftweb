@@ -39,6 +39,7 @@ class APEnquiryController extends defaultController
                     ->select(
                         'ap.auditno AS apacthdr_auditno', //search
                         'ap.trantype AS apacthdr_trantype', //search
+                        'ap.trantype2 AS apacthdr_trantype2', 
                         'ap.doctype AS apacthdr_doctype',
                         'ap.suppcode AS apacthdr_suppcode', 
                         'su.name AS supplier_name', 

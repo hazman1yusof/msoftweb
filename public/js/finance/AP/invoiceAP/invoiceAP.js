@@ -430,18 +430,18 @@ $(document).ready(function () {
 	$('#apacthdr_doctype').on('change', function() {
 		let doctype = $("#apacthdr_doctype option:selected").val();
 		
-		if(doctype == 'Supplier') {
-			$('#save').hide();
-			$('#ap_detail').show();
-			$('#apactdtl_outamt').prop('readonly',true);
-			$("label[for='apactdtl_outamt'], input#apactdtl_outamt").show();
-		}else if (doctype == 'Others') {
-			$('#save').show();
-			$('#ap_detail').hide();
-			$('#apacthdr_amount,#apactdtl_outamt').prop('readonly',false);
-			$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();
-		}
-		
+		// if(doctype == 'Supplier') {
+		// 	$('#save').hide();
+		// 	$('#ap_detail').show();
+		// 	$('#apactdtl_outamt').prop('readonly',true);
+		// 	$("label[for='apactdtl_outamt'], input#apactdtl_outamt").show();
+		// }else if (doctype == 'Others') {
+		// 	$('#save').show();
+		// 	$('#ap_detail').hide();
+		// 	$('#apacthdr_amount,#apactdtl_outamt').prop('readonly',false);
+		// 	$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();
+		// }
+		init_jq2();
 	});
 
 	
