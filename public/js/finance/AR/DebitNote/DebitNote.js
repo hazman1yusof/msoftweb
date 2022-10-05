@@ -182,7 +182,7 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'db_recstatus', width: 15, classes: 'wrap text-uppercase',},
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'trantype', name: 'db_trantype', width: 20, hidden: true },
+			{ label: 'Trantype', name: 'db_trantype', width: 10 },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },

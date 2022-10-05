@@ -796,8 +796,6 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'trantype', name: 'dbacthdr_trantype', width: 90, hidden: true },
 			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
 			{label: 'outamount', name: 'dbacthdr_outamount', hidden: true},
@@ -827,6 +825,8 @@ $(document).ready(function () {
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
 			{label: 'Amount', name: 'dbacthdr_amount',width: 70,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
+			{label: 'Trantype', name: 'dbacthdr_trantype', width: 40},
 			{label: 'Status', name: 'dbacthdr_recstatus',width: 70}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
