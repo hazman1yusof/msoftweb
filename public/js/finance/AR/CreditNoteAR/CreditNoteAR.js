@@ -172,8 +172,8 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true},
-			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, checked: true, classes: 'wrap' },
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true, classes: 'wrap'},
+			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true},
 			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
@@ -182,7 +182,7 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'Trantype', name: 'db_trantype', width: 10 },
+			{ label: 'Trantype', name: 'db_trantype', width: 10, canSearch: true},
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
@@ -194,8 +194,8 @@ $(document).ready(function () {
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
-			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true, hidden: true },
+			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true},
+			{ label: 'Department Code', name: 'db_deptcode', width: 15},
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -247,7 +247,15 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			$("#searchForm input[name=Stext]").focus();
+
+				if($('#jqGrid').data('inputfocus') == 'customer_search'){
+				$("#customer_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#customer_search_hb').text('');
+				removeValidationClass(['#customer_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
 			empty_form();
 
 			populate_form(selrowData("#jqGrid"));
@@ -405,7 +413,7 @@ $(document).ready(function () {
 	function searchBy() {
 		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
 			if (value['canSearch']) {
-				if (value['checked']) {
+				if (value['selected']) {
 					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
 				} else {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
@@ -415,90 +423,53 @@ $(document).ready(function () {
 		});
 	}
 
-	// ////////////////////////////changing status and trandept trigger search/////////////////////////
-	// $('#Scol').on('change', whenchangetodate);
-	// $('#Status').on('change', searchChange);
-	// //$('#trandept').on('change', searchChange);
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#docuDate_search').on('click', searchDate);
 
-	// function whenchangetodate() {
-	// 	if ($('#Scol').val() == 'purreqhd_purdate') {
-	// 		$("input[name='Stext']").show("fast");
-	// 		$("#tunjukname").hide("fast");
-	// 		$("input[name='Stext']").attr('type', 'date');
-	// 		$("input[name='Stext']").velocity({ width: "250px" });
-	// 		$("input[name='Stext']").on('change', searchbydate);
-	// 	} else if($('#Scol').val() == 'supplier_name'){
-	// 		$("input[name='Stext']").hide("fast");
-	// 		$("#tunjukname").show("fast");
-	// 	} else {
-	// 		$("input[name='Stext']").show("fast");
-	// 		$("#tunjukname").hide("fast");
-	// 		$("input[name='Stext']").attr('type', 'text');
-	// 		$("input[name='Stext']").velocity({ width: "100%" });
-	// 		$("input[name='Stext']").off('change', searchbydate);
-	// 	}
-	// }
-
-	// var supplierkatdepan = new ordialog(
-	// 	'supplierkatdepan', 'material.supplier', '#supplierkatdepan', 'errorField',
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-	// 			{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol:['compcode','recstatus'],
-	// 			filterVal:['session.compcode','ACTIVE']
-	// 		},
-	// 		ondblClickRow: function () {
-	// 			let data = selrowData('#' + supplierkatdepan.gridname).suppcode;
-
-	// 			urlParam.searchCol=["purreqhd_suppcode"];
-	// 			urlParam.searchVal=[data];
-	// 			refreshGrid('#jqGrid', urlParam);
-	// 		},
-	// 		gridComplete: function(obj){
-	// 			var gridname = '#'+obj.gridname;
-	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 				$(gridname+' tr#1').click();
-	// 				$(gridname+' tr#1').dblclick();
-	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 				$('#'+obj.dialogname).dialog('close');
-	// 			}
-	// 		}
-	// 	},{
-	// 		title: "Select Purchase Department",
-	// 		open: function () {
-	// 			dialog_suppcode.urlParam.filterCol = ['compcode','recstatus'];
-	// 			dialog_suppcode.urlParam.filterVal = ['session.compcode','ACTIVE'];
-	// 		}
-	// 	}
-	// );
-	// supplierkatdepan.makedialog();
-
-	function searchbydate() {
-		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
+	function whenchangetodate() {
+		customer_search.off();
+		$('#customer_search,#docuDate_from,#docuDate_to').val('');
+		$('#customer_search_hb').text('');
+		urlParam.filterdate = null;
+		removeValidationClass(['#customer_search']);
+		if($('#Scol').val()=='db_entrydate'){
+			$("input[name='Stext'], #customer_text").hide("fast");
+			$("#docuDate_text").show("fast");
+		} else if($('#Scol').val() == 'dm_name'){
+			$("input[name='Stext'],#docuDate_text").hide("fast");
+			$("#customer_text").show("fast");
+			customer_search.on();
+		} else {
+			$("#customer_text,#docuDate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
 	}
 
-	function searchChange() {
-		cbselect.empty_sel_tbl();
-		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];  //ni apeni trandept guna tak///
+	function searchDate(){
+		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
 
-		var filter = arrtemp.reduce(function (a, b, c) {
-			if (b.toUpperCase() == 'ALL') {
+	function searchChange(){
+		cbselect.empty_sel_tbl();
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
 				return a;
-			} else {
+			}else{
 				a.fc = a.fc.concat(a.fct[c]);
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		}, { fct: ['purreqhd.compcode', 'purreqhd.recstatus', 'purreqhd.prdept'], fv: [], fc: [] });
+		},{fct:['db.recstatus'],fv:[],fc:[]});
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
 		urlParam.WhereInCol = null;
 		urlParam.WhereInVal = null;
-		refreshGrid('#jqGrid', urlParam);
+		refreshGrid('#jqGrid',urlParam);
 	}
 
 	var customer_search = new ordialog(
@@ -515,13 +486,14 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'db_debtorcode'){
+				if($('#Scol').val() == 'dm_name'){
 					urlParam.searchCol=["db.debtorcode"];
 					urlParam.searchVal=[data];
-				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
-					urlParam.searchVal=[data];
 				}
+				// }else if($('#Scol').val() == 'db_payercode'){
+				// 	urlParam.searchCol=["db.payercode"];
+				// 	urlParam.searchVal=[data];
+				// }
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){
@@ -543,57 +515,12 @@ $(document).ready(function () {
 	);
 	customer_search.makedialog(true);
 	$('#customer_search').on('keyup',ifnullsearch);
-
-	var department_search = new ordialog(
-		'department_search', 'sysdb.department', '#department_search', 'errorField',
-		{
-			colModel: [
-				{ label: 'Department Code', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-			],
-			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
-			ondblClickRow: function () {
-				let data = selrowData('#' + department_search.gridname).deptcode;
-
-				if($('#Scol').val() == 'db_deptcode'){
-					urlParam.searchCol=["db.deptcode"];
-					urlParam.searchVal=[data];
-				}
-				refreshGrid('#jqGrid', urlParam);
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					// $('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title: "Select Creditor",
-			open: function () {
-				department_search.urlParam.filterCol = ['recstatus'];
-				department_search.urlParam.filterVal = ['ACTIVE'];
-			}
-		},'urlParam','radio','tab'
-	);
-	department_search.makedialog(true);
-	$('#department_search').on('keyup',ifnullsearch);
 	
 	function ifnullsearch(){
 		if($('#customer_search').val() == ''){
 			urlParam.searchCol=[];
 			urlParam.searchVal=[];
 			$('#jqGrid').data('inputfocus','customer_search');
-			refreshGrid('#jqGrid', urlParam);
-		}else if($('#department_search').val() == ''){
-			urlParam.searchCol=[];
-			urlParam.searchVal=[];
-			$('#jqGrid').data('inputfocus','department_search');
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}
