@@ -324,14 +324,14 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 
-		$(form+' [name=Scol]').on( "change", function() {
-			if($(form+' [name=Scol] option:selected').val() == 'cm_description'){
-				search2(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam,'cm_brandname');
-			}else{
-				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-			}
-			refreshGrid("#jqGrid3",null,"kosongkan");
-		});
+		// $(form+' [name=Scol]').on( "change", function() {
+		// 	if($(form+' [name=Scol] option:selected').val() == 'cm_description'){
+		// 		search2(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam,'cm_brandname');
+		// 	}else{
+		// 		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+		// 	}
+		// 	refreshGrid("#jqGrid3",null,"kosongkan");
+		// });
 	}
 
 	$('#searchForm [name=Stext]').on( "keyup", function() {
