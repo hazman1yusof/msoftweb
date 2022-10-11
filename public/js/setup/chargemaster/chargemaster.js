@@ -246,7 +246,6 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
-			urlParam2.filterVal[2]=selrowData("#jqGrid").cm_uom;
 			refreshGrid("#jqGrid3",urlParam2);
 
 			$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
@@ -461,7 +460,6 @@ $(document).ready(function () {
 				$('#idno').val(data.idno);
 				
 				urlParam2.filterVal[1]=$('#cm_chgcode').val();
-				urlParam2.filterVal[2]=selrowData("#jqGrid").cm_uom;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -490,10 +488,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['cp.chgcode'],
 		join_onVal:['cm.chgcode'],
-		join_filterCol : [['cm.uom on =']],
-		join_filterVal : [['cp.uom']],
-		filterCol:['cp.compcode','cp.chgcode','cp.uom'],
-		filterVal:['session.compcode','','']
+		filterCol:['cp.compcode','cp.chgcode'],
+		filterVal:['session.compcode','']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
