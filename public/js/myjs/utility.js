@@ -1089,7 +1089,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 			$(this.textfield+" ~ a").on('click',{data:this},onClick);
 			$("#Dtext_"+unique).on('keyup',{data:this},onChange);
-			$("#Dcol_"+unique).on('change',{data:this},onChange);
+			// $("#Dcol_"+unique).on('change',{data:this},onChange);
 			$(this.textfield).on('blur',{data:this,errorField:errorField},onBlur);
 			$("#Dtext_"+unique).on('keydown',{data:this},onTabSearchfield);
 		}
