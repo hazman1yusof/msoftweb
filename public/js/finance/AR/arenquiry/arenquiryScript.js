@@ -195,7 +195,7 @@ $(document).ready(function () {
 				$("#customer_search").focus();
 				$('#jqGrid').data('inputfocus','');
 				$('#customer_search_hb').text('');
-				removeValidationClass(['#creditor_search']);
+				removeValidationClass(['#customer_search']);
 			}else if($('#jqGrid').data('inputfocus') == 'department_search'){
 				$("#department_search").focus();
 				$('#jqGrid').data('inputfocus','');
