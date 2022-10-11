@@ -1259,6 +1259,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		renull_search(event.data.data);
 		let obj = event.data.data;
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
+		if(Dtext.length <= 1){
+			return false;
+		}
 		if(obj.dcolrType == 'radio'){
 			var Dcol=$("#Dcol_"+obj.unique+" input:radio[name=dcolr]:checked").val();
 		}else{
