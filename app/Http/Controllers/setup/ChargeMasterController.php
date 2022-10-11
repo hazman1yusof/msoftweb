@@ -284,7 +284,7 @@ class ChargeMasterController extends defaultController
             $chgprice = DB::table('hisdb.chgprice')
                         ->where('compcode','=',session('compcode'))
                         ->where('chgcode','=',$value->chgcode)
-                        ->whereDate('effdate', '<', Carbon::now())
+                        ->whereDate('effdate', '<=', Carbon::now())
                         ->orderBy('effdate', 'DESC');
 
             if($chgprice->exists()){

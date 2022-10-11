@@ -2869,9 +2869,9 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'chgprice_amt1',name:'chgprice_amt1', hidden:true},
-				{label:'chgprice_amt2',name:'chgprice_amt2', hidden:true},
-				{label:'chgprice_amt3',name:'chgprice_amt3', hidden:true},
+				{label:'chgprice_amt1',name:'chgprice_amt1', hidden:false},
+				{label:'chgprice_amt2',name:'chgprice_amt2', hidden:false},
+				{label:'chgprice_amt3',name:'chgprice_amt3', hidden:false},
 			],
 			urlParam: {
 				url:'./chargemaster/chgpricelatest',
@@ -2898,6 +2898,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_dtlchgcode.gridname);
 
 				// $("#jqGrid4 [name='quantity']");
+				console.log(data.chgprice_amt1);
 
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice1:data.chgprice_amt1});
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice2:data.chgprice_amt2});
