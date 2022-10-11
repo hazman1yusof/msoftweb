@@ -32,7 +32,15 @@
 			var butt1=[{
 				text: "Save",click: function() {
 					if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-						saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+						if($("form#formdata [name='appointment'][value='1']").is(":checked")){
+							if($('#intervaltime').val().trim() == ''){
+								alert('interval time required if appointment is true');
+							}else{
+								saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+							}
+						}else{
+							saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+						}
 					}
 				}
 			},{
@@ -60,7 +68,7 @@
 						case state = 'add':
 							$( this ).dialog( "option", "title", "Add" );
 							enableForm('#formdata');
-							$('#intervaltime').val(20);
+							$('#intervaltime').val(60);
 							rdonly("#formdata");
 							hideOne("#formdata");
 							break;

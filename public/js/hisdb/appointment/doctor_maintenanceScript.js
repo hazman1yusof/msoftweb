@@ -367,6 +367,7 @@
                     { label: 'idno', name: 'idno', hidden: true},
 					{ label: 'Code', name: 'resourcecode', width: 40, classes: 'wrap', canSearch: true},						
 				    { label: 'Description', name: 'description', width: 40, classes: 'wrap', canSearch: true, checked:true},
+				    { label: 'Interval Time (minute)', name: 'intervaltime', width: 20, classes: 'wrap'},
 				    { label: 'Type', name: 'TYPE', width: 40, classes: 'wrap', hidden:true},
 				    { label: 'session', name: 'countsession', width: 40, classes: 'wrap', hidden:true},
 				],
@@ -383,6 +384,7 @@
 					 // $('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					// $('#description').val(selrowData('#jqGrid').description);
 
+					$('#intervaltime').text(selrowData('#jqGrid').intervaltime);
 					$('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					urlParamtime.filterVal[0] = selrowData('#jqGrid').resourcecode;
 					urlParamleave.filterVal[0] = selrowData('#jqGrid').resourcecode;

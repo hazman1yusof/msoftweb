@@ -492,8 +492,8 @@ $(document).ready(function () {
 		join_onVal:['cm.chgcode'],
 		join_filterCol : [['cm.uom on =']],
 		join_filterVal : [['cp.uom']],
-		filterCol:['cp.compcode','cp.unit','cp.chgcode','cp.uom'],
-		filterVal:['session.compcode','session.unit','','']
+		filterCol:['cp.compcode','cp.chgcode','cp.uom'],
+		filterVal:['session.compcode','','']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu

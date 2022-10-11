@@ -338,7 +338,7 @@
 			var urlParam={
 				action:'get_table_default',
 				url: 'util/get_table_default',
-				field:['idno','resourcecode','description','TYPE','interval','start','end'],
+				field:['idno','resourcecode','description','TYPE','intervaltime','start','end'],
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
 				sort_idno:true,
@@ -349,7 +349,7 @@
             var saveParam={
 				action:'save_table_default',
 				url:"doctor_maintenance/form",
-				field:['resourcecode','description','TYPE','interval','start','end'],
+				field:['resourcecode','description','TYPE','intervaltime','start','end'],
 				oper:oper,
 				table_name:'hisdb.apptresrc',
 				table_id:'resourcecode'
@@ -365,7 +365,7 @@
 					{ label: 'Code', name: 'resourcecode', width: 30, classes: 'wrap', canSearch: true},						
 				    { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true},
 				    { label: 'Type', name: 'TYPE', width: 20, classes: 'wrap', hidden:true},
-				    { label: 'Interval Time', name: 'interval', width: 30, classes: 'wrap'},
+				    { label: 'Interval Time (minute)', name: 'intervaltime', width: 30, classes: 'wrap'},
 				    { label: 'Start Time', name: 'start', width: 30, classes: 'wrap'},
 				    { label: 'End Time', name: 'end', width: 30, classes: 'wrap'},
 				],

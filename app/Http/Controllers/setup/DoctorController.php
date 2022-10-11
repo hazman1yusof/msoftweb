@@ -35,13 +35,13 @@ class DoctorController extends defaultController
                         'description' => $request->doctorname,
                         'TYPE' => 'DOC',
                         'recstatus' => 'ACTIVE',
+                        'intervaltime' => $request->intervaltime,
                         'adduser' => session('username'),
-                        'adddate' => now()
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur')
                     ]);
                 }
                 return $this->defaultAdd($request);
             case 'edit':
-
                 $got = DB::table('hisdb.apptresrc')->where('resourcecode','=',$request->doctorcode)->exists();
                 
                 if($request->appointment == '1' && !$got){
@@ -51,8 +51,9 @@ class DoctorController extends defaultController
                         'description' => $request->doctorname,
                         'TYPE' => 'DOC',
                         'recstatus' => 'ACTIVE',
+                        'intervaltime' => $request->intervaltime,
                         'adduser' => session('username'),
-                        'adddate' => now()
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur')
                     ]);
                 }else if($request->appointment == '1' && $got){
                     DB::table('hisdb.apptresrc')
@@ -60,8 +61,9 @@ class DoctorController extends defaultController
                             ->update([
                             'description' => $request->doctorname,
                             'recstatus' => 'ACTIVE',
+                            'intervaltime' => $request->intervaltime,
                             'upduser' => session('username'),
-                            'upddate' => now()
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur')
                         ]);
                 }
 

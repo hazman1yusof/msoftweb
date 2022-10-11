@@ -30,7 +30,7 @@ class DoctorMaintenanceController extends defaultController
     public function table(Request $request)
     {   
         $paginate = DB::table('hisdb.apptresrc')
-        			->select('resourcecode','description','TYPE')
+        			->select('resourcecode','description','TYPE','intervaltime')
         			->where('TYPE','=',$request->filterVal[0]);
 
         if(!empty($request->searchCol)){

@@ -62,7 +62,7 @@
 		        <th>End Time</th>
 		        <th>Start Time</th>
 		        <th>End Time</th>
-		        <th rowspan="2"><center><button type="button"  class="btn btn-primary btn-rounded btn-sm my-0" id='allTimeBtn'>Apply to All</center></th>
+		        <th>Interval Time: <span id="intervaltime"></span> minutes</th>
 	            </tr>
 
 	            <tr>
@@ -70,6 +70,7 @@
 		        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="12:00"></td>
 		        <td><input type="time" name="timefr2" id="time3" class="form-control input-sm" data-validation="required" value="14:00"></td>
 		        <td><input type="time" name="timeto2" id="time4" class="form-control input-sm" data-validation="required" value="17:00"></td>
+		        <td><center><button type="button"  class="btn btn-primary btn-rounded btn-sm my-0" id='allTimeBtn'>Apply to All</center></td>
 	            </tr>
 			
 				</thead>

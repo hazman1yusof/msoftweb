@@ -166,12 +166,12 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="mmcid">Malaysian Medical Council (MMC) ID</label>  
 							<div class="col-md-4">
-								<input id="mmcid" name="mmcid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="mmcid" name="mmcid" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 							</div>
 
 						<label class="col-md-2 control-label" for="apcid">Advanced Practice Clinician (APC) ID</label>  
 							<div class="col-md-4">
-								<input id="apcid" name="apcid" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="apcid" name="apcid" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 							</div> 
 					</div>
 
@@ -318,12 +318,12 @@
 		<div class="form-group">
 			<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
+					<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit rdonly>
 				</div>
 
 				<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
 					<div class="col-md-3">
-						<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit rdonly>
+						<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
 					</div>
 		</div>    
 	</form>
