@@ -245,8 +245,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			urlParam2.filterVal[2]=selrowData("#jqGrid").cm_chgcode;
-			urlParam2.filterVal[3]=selrowData("#jqGrid").cm_uom;
+			urlParam2.filterVal[1]=selrowData("#jqGrid").cm_chgcode;
+			urlParam2.filterVal[2]=selrowData("#jqGrid").cm_uom;
 			refreshGrid("#jqGrid3",urlParam2);
 
 			$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
@@ -460,8 +460,8 @@ $(document).ready(function () {
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				$('#idno').val(data.idno);
 				
-				urlParam2.filterVal[2]=$('#cm_chgcode').val();
-				urlParam2.filterVal[3]=selrowData("#jqGrid").cm_uom;
+				urlParam2.filterVal[1]=$('#cm_chgcode').val();
+				urlParam2.filterVal[2]=selrowData("#jqGrid").cm_uom;
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
