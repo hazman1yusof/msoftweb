@@ -78,7 +78,7 @@
 
 	<div id="dialogForm_pv" title="Viewing Detail" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">AP Enquiry Header</div>
+			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata_pv'>
 				
@@ -196,7 +196,7 @@
 			
 
 		<div class='panel panel-info' id="ap_enquirydetail">
-			<div class="panel-heading">AP Enquiry Detail</div>
+			<div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_pv_c" class='col-md-12'>
@@ -212,7 +212,7 @@
 	<!-- PAYMENT DEPOSIT -->
 	<div id="dialogForm_pd" title="Viewing Detail" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">AP Enquiry Header</div>
+			<div class="panel-heading">Payment Deposit Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata_pd'>
 				
@@ -460,7 +460,22 @@
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
+
+			<div class='panel panel-info' id="pv_detail">
+			<div class="panel-heading">Payment Voucher Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_pv_c" class='col-md-12'>
+							<table id="jqGrid2_pv" class="table table-striped"></table>
+						        <div id="jqGridPager2_pv"></div>
+						</div>
+					</form>
+				</div>
+
+		</div>
 		</div>	
+
+		
 	</div>
 	
 	<!-- CREDIT NOTE -->
@@ -574,9 +589,9 @@
 			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
-						<div id="jqGrid2_in_c" class='col-md-12'>
-							<table id="jqGrid2_in" class="table table-striped"></table>
-						        <div id="jqGridPager2_in"></div>
+						<div id="jqGrid2_cn_c" class='col-md-12'>
+							<table id="jqGrid2_cn" class="table table-striped"></table>
+						        <div id="jqGridPager2_cn"></div>
 						</div>
 					</form>
 				</div>

@@ -80,7 +80,7 @@ $(document).ready(function () {
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
-				init_jq2(oper,urlParam2);
+				init_jq2(oper, urlParam2);
 				init_paymode(oper,dialog_cheqno);
 			},
 			beforeClose: function(event, ui){
@@ -131,7 +131,7 @@ $(document).ready(function () {
 			field: ['*'],
 			table_name:'material.sequence',
 			table_id:'idno',
-			filterCol:['trantype'],
+			filterCol:['trantype', 'trantype'],
 			filterVal:['PV', 'PD'],
 		}
 
@@ -397,7 +397,7 @@ $(document).ready(function () {
 
 	$('#apacthdr_trantype').on('change', function() {
 		let trantype = $("#apacthdr_trantype option:selected").val();
-		init_jq2(oper, urlParam2);
+		init_jq2(oper);
 	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -1664,20 +1664,6 @@ function init_jq2(oper,urlParam2){
 			$('#apacthdr_amount').prop('readonly',false);
 		}
 	} 
-	
-	if (oper == 'edit'){
-		if($('#apacthdr_trantype').val() == 'PV'){
-			$('#save').hide();
-			$('#apacthdr_amount').prop('readonly',true);
-			$('#pvpd_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-			refreshGrid("#jqGrid2",urlParam2);
-		}else if($('#apacthdr_trantype').val() == 'PD') {
-			$('#save').show();
-			$('#pvpd_detail').hide();
-			$('#apacthdr_amount').prop('readonly',false);
-		}
-	}
 }
 
 function init_paymode(oper,dialog_cheqno){

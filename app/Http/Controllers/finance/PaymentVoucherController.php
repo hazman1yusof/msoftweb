@@ -70,7 +70,6 @@ use PDF;
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.source','=',$request->source)
-                    // ->where('ap.trantype','=',$request->trantype);
                     ->whereIn('ap.trantype',['PD','PV']);
 
         if(!empty($request->filterCol)){
@@ -175,16 +174,6 @@ use PDF;
                 return 'error happen..';
         }
     }
-
-    // public function table(Request $request)
-    // {   
-    //     switch($request->action){
-    //         case 'get_alloc_table':
-    //             return $this->get_alloc_table($request);break;
-    //         default:
-    //             return 'error happen..';
-    //     }
-    // }
 
     public function suppgroup($suppcode){
         $query = DB::table('material.supplier')
@@ -314,7 +303,7 @@ use PDF;
 
                 echo json_encode($responce);
             
-            } else {
+            } else if ($request->apacthdr_trantype == 'PD'){
                 $table = DB::table("finance.apacthdr");
             
                 $array_insert = [
@@ -347,7 +336,6 @@ use PDF;
                 $responce->idno = $idno_apacthdr;
 
                 echo json_encode($responce);
-                
             }
 
             DB::commit();  

@@ -183,7 +183,7 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Payment Voucher Header</div>
+			<div class="panel-heading">Payment Voucher/Deposit Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
@@ -348,7 +348,7 @@ i.fa {
 			
 
 		<div class='panel panel-info' id="pvpd_detail">
-			<div class="panel-heading">Payment Voucher Detail</div>
+			<div class="panel-heading">Payment Voucher/Deposit Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_c" class='col-md-12'>
@@ -357,15 +357,9 @@ i.fa {
 						</div>
 					</form>
 				</div>
-
-				<!-- <div class="panel-body">
-				<button type="button" class="btn btn-primary pull-right" id="savepv"> Save Payment Voucher</button>
-					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
-				</div> -->
 		</div>
-	</div>			
-			
-	</div>
+	</div>						
+</div>
 @endsection
 
 

@@ -89,10 +89,12 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				parent_close_disabled(true);
 				$("#jqGrid2_in").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft));
+				$("#jqGrid2_pv").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_pv_c")[0].offsetWidth-$("#jqGrid2_pv_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				disableForm('#formdata_in');
 				refreshGrid("#jqGrid2_in",urlParam2_in);
+				refreshGrid("#jqGrid2_pv",urlParam2_pv);
 				$("#pg_jqGridPager2_in table").hide();
 				init_jq2();
 			},
@@ -103,6 +105,7 @@ $(document).ready(function () {
 				$("#formdata_in a").off();
 				$(".noti, .noti2 ol").empty();
 				refreshGrid("#jqGrid2_in",null,"kosongkan");
+				refreshGrid("#jqGrid2_pv",null,"kosongkan");
 				errorField.length=0;
 			},
 	});
@@ -234,6 +237,7 @@ $(document).ready(function () {
 				urlParam2_pv.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				urlParam2_in.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+				urlParam2_pv.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
 				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			}
@@ -293,10 +297,11 @@ $(document).ready(function () {
 				populateFormdata("#jqGrid", "#dialogForm_pv", "#formdata_pv", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_pv",urlParam2_pv,'add');
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='PD'){
-					populateFormdata("#jqGrid", "#dialogForm_pd", "#formdata_pd", selRowId, 'view', '');
+				populateFormdata("#jqGrid", "#dialogForm_pd", "#formdata_pd", selRowId, 'view', '');
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_in",urlParam2_in,'add');
+				refreshGrid("#jqGrid2_pv",urlParam2_pv,'add');
 			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
 				populateFormdata("#jqGrid", "#dialogForm_cn", "#formdata_cn", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_cn",urlParam2_cn,'add');
@@ -535,6 +540,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid2_in");
+			urlParam2_pv.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 		},
 		gridComplete: function(){
 			
@@ -559,7 +565,6 @@ $("#jqGrid2_cn").jqGrid({
 	datatype: "local",
 	editurl: "./creditNoteDetail/form",
 	colModel: [
-		//{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqg2},
 		{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', },//formatter: showdetail,unformat:un_showdetail
 		{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 		{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
@@ -615,11 +620,14 @@ function init_jq2(){
 	if($('#apacthdr_doctype').val() == 'Supplier'){
 		$('#save').hide();
 		$('#ap_detail').show();
+		$('#pv_detail').show();
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft-28));
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_pv_c")[0].offsetWidth-$("#jqGrid2_pv_c")[0].offsetLeft-28));
 		$("label[for='apactdtl_outamt'], input#apactdtl_outamt").show();
 	}else{
 		$('#save').hide();
 		$('#ap_detail').hide();
+		$('#pv_detail').hide();
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft-28));
 		$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();
 	}
