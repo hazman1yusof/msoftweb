@@ -447,6 +447,10 @@
 		</div>
 	</div>
 	<!-- ***************End View Form for Sales Order ********************* -->
+
+	<!-- *************** View Form for Receipt ********************* -->
+	
+	<!-- ***************End View Form for Receipt ********************* -->
 @endsection
 
 @section('scripts')

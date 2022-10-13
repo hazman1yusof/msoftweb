@@ -47,6 +47,31 @@ $(document).ready(function () {
 			}
 		});
 
+	$("#dialogForm_DN")
+		.dialog({
+			width: 9 / 10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function (event, ui) {
+				parent_close_disabled(true);
+				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_DN_c")[0].offsetWidth-$("#jqGrid2_DN_c")[0].offsetLeft));
+				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
+				disableForm('#formdata_DN');
+				refreshGrid("#jqGrid2_DN",urlParam2_DN);
+				$("#pg_jqGridPager2_DN table").hide();
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_DN');
+				$('.my-alert').detach();
+				$("#formdata_DN a").off();
+				$(".noti, .noti2 ol").empty();
+				refreshGrid("#jqGrid2_DN",null,"kosongkan");
+				errorField.length=0;
+			},
+		});	
+
 	$("#dialogForm_IN")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
@@ -70,32 +95,8 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid2_IN",null,"kosongkan");
 				errorField.length=0;
 			},
-	});
+		});
 
-	$("#dialogForm_DN")
-	.dialog({
-		width: 9 / 10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function (event, ui) {
-			parent_close_disabled(true);
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_DN_c")[0].offsetWidth-$("#jqGrid2_DN_c")[0].offsetLeft));
-			mycurrency.formatOnBlur();
-			mycurrency.formatOn();
-			disableForm('#formdata_DN');
-			refreshGrid("#jqGrid2_DN",urlParam2_DN);
-			$("#pg_jqGridPager2_DN table").hide();
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata_DN');
-			$('.my-alert').detach();
-			$("#formdata_DN a").off();
-			$(".noti, .noti2 ol").empty();
-			refreshGrid("#jqGrid2_DN",null,"kosongkan");
-			errorField.length=0;
-		},
-	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -169,22 +170,21 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			if(selrowData("#jqGrid").db_trantype=='CN'){
+			if(selrowData("#jqGrid").db_trantype=='CN'){    //CN
 				urlParam2_CN.source = selrowData("#jqGrid").db_source;
 				urlParam2_CN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_CN.auditno = selrowData("#jqGrid").db_auditno;
 				urlParam2_CN.filterVal[1]=selrowData("#jqGrid").db_auditno;
-			}else if(selrowData("#jqGrid").db_trantype=='IN'){
-				urlParam2_IN.source = selrowData("#jqGrid").db_source;
-				urlParam2_IN.trantype = selrowData("#jqGrid").db_trantype;
-				urlParam2_IN.billno = selrowData("#jqGrid").db_auditno;
-				urlParam2_IN.deptcode = selrowData("#jqGrid").db_deptcode;
-				urlParam2_IN.filterVal[1]=selrowData("#jqGrid").db_auditno;
-			}else if(selrowData("#jqGrid").db_trantype=='DN'){
+			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
 				urlParam2_DN.source = selrowData("#jqGrid").db_source;
 				urlParam2_DN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_DN.auditno = selrowData("#jqGrid").db_auditno;
 				urlParam2_DN.filterVal[1]=selrowData("#jqGrid").db_auditno;
+			}else if(selrowData("#jqGrid").db_trantype=='IN'){ //IN
+				urlParam2_IN.source = selrowData("#jqGrid").db_source;
+				urlParam2_IN.trantype = selrowData("#jqGrid").db_trantype;
+				urlParam2_IN.billno = selrowData("#jqGrid").db_auditno;
+				urlParam2_IN.deptcode = selrowData("#jqGrid").db_deptcode;
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -228,15 +228,15 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			if(selrowData("#jqGrid").db_trantype=='CN'){
+			if(selrowData("#jqGrid").db_trantype=='CN'){ //CN
 				populateFormdata("#jqGrid","#dialogForm_CN","#formdata_CN",selRowId,'view');
 				refreshGrid("#jqGrid2_CN", urlParam2_CN);
-			}else if(selrowData("#jqGrid").db_trantype=='IN'){
-				populateFormdata("#jqGrid", "#dialogForm_IN", "#formdata_IN", selRowId, 'view', '');
-				refreshGrid("#jqGrid2_IN",urlParam2_IN,'add');
-			}else if(selrowData("#jqGrid").db_trantype=='DN'){
+			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
 				populateFormdata("#jqGrid", "#dialogForm_DN", "#formdata_DN", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_DN",urlParam2_DN,'add');
+			}else if(selrowData("#jqGrid").db_trantype=='IN'){ //IN
+				populateFormdata("#jqGrid", "#dialogForm_IN", "#formdata_IN", selRowId, 'view', '');
+				refreshGrid("#jqGrid2_IN",urlParam2_IN,'add');
 			}
 		},
 	});
@@ -268,25 +268,26 @@ $(document).ready(function () {
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
-			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false
+			{ label: 'Department', name: 'deptcode', width: 250, classes: 'wrap', canSearch: true, editable: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{  
+						custom_element:deptcodeCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
 			},
-			{ label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: false,
-			},
-			{ label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: false
-			},
-			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false
-			},
-			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+			//{ label: 'Department', name: 'deptcode', width: 350, classes: 'wrap', canSearch: true, editable: false},
+			{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false,},
+			{ label: 'Document', name: 'document', width: 250, classes: 'wrap', editable: false},
+			{ label: 'GST Code', name: 'GSTCode', width: 150, classes: 'wrap', editable: false},
+			{ label: 'Amount', name: 'amount', width: 150, classes: 'wrap', editable: false, align: "right",
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-				align: "right",
 			},
-			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 150, classes: 'wrap',	editable: false, align: "right",
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-				align: "right",
 			},
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false},
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 150, align: 'right', classes: 'wrap', editable:false},
 			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
@@ -312,96 +313,6 @@ $(document).ready(function () {
 		}
 	});
 
-	///IN
-	var urlParam2_IN={
-		action: 'get_table_dtl',
-		url:'SalesOrderDetail/table',
-		source:'',
-		trantype:'',
-		auditno:'',
-		deptcode:''
-	};
-
-	$("#jqGrid2_IN").jqGrid({
-		datatype: "local",
-		editurl: "SalesOrderDetail/form",
-		colModel: [
-			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
-			{
-				label: 'Item Code', name: 'chggroup', width: 200, classes: 'wrap', editable: false,
-			},
-			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, hidden:true },
-			{
-				label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap', editable: false,
-			},{
-				label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap', editable: false,
-			},
-			{
-				label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap txnum', align: 'right',
-				editable: false,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-			},
-			{
-				label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: false,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-			},
-			{
-				label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: false,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
-			},
-			{
-				label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: false,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-			},
-			{
-				label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', editable: false,
-				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
-			},
-			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:false,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-			},
-			{
-				label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
-				editable: false,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-			},
-			{ label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:false,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-			},
-			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
-			{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
-		],
-		autowidth: true,
-		shrinkToFit: true,
-		multiSort: true,
-		viewrecords: true,
-		loadonce: false,
-		width: 1150,
-		height: 200,
-		rowNum: 10,
-		sortname: 'id',
-		sortorder: "desc",
-		pager: "#jqGridPager2",
-		loadComplete: function(data){
-			setjqgridHeight(data,'jqGrid2_IN');					
-			calc_jq_height_onchange("jqGrid2_IN");
-		},
-		
-		gridComplete: function(){
-
-		},
-		afterShowForm: function (rowid) {
-
-		},
-		beforeSubmit: function (postdata, rowid) {
-
-		}
-    });
-
 	//////// DN
 	var urlParam2_DN = {
 		action: 'get_table_dtl',
@@ -422,25 +333,21 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
-            { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false},
-            { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
-            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false },
-            { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: false},
-            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: false },
-            { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false},
-			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
+			{ label: 'Department', name: 'deptcode', width: 250, classes: 'wrap', canSearch: true, editable: false },
+			{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false},
+			{ label: 'Document', name: 'document', width: 250, classes: 'wrap', editable: false },
+			{ label: 'GST Code', name: 'GSTCode', width: 200, classes: 'wrap', editable: false},
+			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap', editable: false, align: "right",
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: false,
-				align: "right",
 			},
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
-                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-                editable: false,
-                align: "right",
-            },
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false,
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 150, classes: 'wrap', editable: false, align: "right",
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+			},
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 150, align: 'right', classes: 'wrap', editable:false,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
-            { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', hidden: true },
@@ -466,9 +373,90 @@ $(document).ready(function () {
 		}
 
 		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
+		fixPositionsOfFrozenDivs.call(this);
+	});
+		
+	///IN
+	var urlParam2_IN={
+		action: 'get_table_dtl',
+		url:'SalesOrderDetail/table',
+		source:'',
+		trantype:'',
+		auditno:'',
+		deptcode:''
+	};
+
+	$("#jqGrid2_IN").jqGrid({
+		datatype: "local",
+		editurl: "SalesOrderDetail/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
+			//{ label: 'Item Code', name: 'chggroup', width: 100, classes: 'wrap', editable: false},
+			{ label: 'Item Code', name: 'chggroup', width: 250, classes: 'wrap', editable: true,
+				editrules: { required: true, custom: true, custom_func: cust_rules },
+				formatter: showdetail,
+				edittype: 'custom', editoptions:
+				{
+					custom_element: itemcodeCustomEdit,
+					custom_value: galGridCustomValue
+				},
+			},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
+			{ label: 'UOM Code', name: 'uom', width: 250, classes: 'wrap', editable: false},
+			{ label: 'Tax', name: 'taxcode', width: 150, classes: 'wrap', editable: false},
+			{ label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap txnum', align: 'right', editable: false,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
+			},
+			{ label: 'Quantity', name: 'quantity', width: 80, align: 'right', classes: 'wrap txnum', editable: false,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+			},
+			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 80, align: 'right', classes: 'wrap txnum', editable: false,
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+			},
+			{ label: 'Bill Type <br>%', name: 'billtypeperct', width: 80, align: 'right', classes: 'wrap txnum', editable: false,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
+			},
+			{ label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', editable: false,
+				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
+			},
+			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:false,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+			},
+			{ label: 'Tax Amount', name: 'taxamt', width: 80, align: 'right', classes: 'wrap txnum', editable: false,
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
+			},
+			{ label: 'Total Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:false,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+			},
+			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
+			{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce: false,
+		width: 1150,
+		height: 200,
+		rowNum: 10,
+		sortname: 'id',
+		sortorder: "desc",
+		pager: "#jqGridPager2",
+		loadComplete: function(data){
+			setjqgridHeight(data,'jqGrid2_IN');					
+			calc_jq_height_onchange("jqGrid2_IN");
+		},		
+		gridComplete: function(){
+		},
+		afterShowForm: function (rowid) {
+		},
+		beforeSubmit: function (postdata, rowid) {
+		}
     });
 
+	//////// RC
+	
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////
 	populateSelect('#jqGrid','#searchForm');
 
@@ -479,8 +467,18 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
+			//CN
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+
+			//DN
+
+			//IN
+			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break; //itemcode for IN
+
+			//RC
+
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -493,10 +491,19 @@ $(document).ready(function () {
 	function cust_rules(value, name) {
 		var temp=null;
 		switch (name) {
-			case 'Department':temp=$('#deptcode');break;
+			//CN
+			case 'Department': temp = $("#jqGrid2_CN input[name='deptcode']"); break;
+
+			//DN
+
+			//IN
+			case 'Item Code': temp = $("#jqGrid2_IN input[name='chggroup']"); break;
+
+			//RC
+
+			//case 'Department':temp=$('#deptcode');break;
 			case 'Category':temp=$('#category');break;
 
-			case 'Item Code': temp = $("#jqGrid2 input[name='chggroup']"); break;
 			case 'UOM Code': temp = $("#jqGrid2 input[name='uom']"); break;
 			case 'GSTCode': temp = $("#jqGrid2 input[name='GSTCode']"); break;
 			case 'PO UOM': temp = $("#jqGrid2 input[name='pouom']"); 
@@ -504,7 +511,6 @@ $(document).ready(function () {
 				if(text == 'Invalid Code'){
 					return [false,"Please enter valid "+name+" value"];
 				}
-
 				break;
 			case 'Price Code': temp = $("#jqGrid2 input[name='pricecode']"); break;
 			case 'Tax Code': temp = $("#jqGrid2 input[name='taxcode']"); break;
@@ -516,15 +522,24 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
+	//CN
+	function deptcodeCustomEdit(val, opt) {
+		val = getEditVal(val);
+		return $('<div class="input-group"><input jqgrid="jqGrid2_CN" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	//DN
+	function itemcodeCustomEdit(val, opt) {
+		val = getEditVal(val);
+		return $('<div class="input-group"><input jqgrid="jqGrid2_IN" optid="'+opt.id+'" id="'+opt.id+'" name="chggroup" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	//IN
 	function uomcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
-	}
-	function deptcodeCustomEdit(val, opt) {
-		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	function categoryCustomEdit(val, opt) {
 		val = getEditVal(val);
