@@ -682,8 +682,7 @@ $(document).ready(function () {
 					}
 				},
 			},
-            { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true
-            },
+            { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', hidden: true },
