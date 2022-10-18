@@ -87,7 +87,9 @@ var Menu = function () {
 		
 		var last;
 		$("#myNavmenu a.clickable").click(function(){
-			if(cntrlIsPressed){
+			if($(this).is("[newtab]")){
+				window.open($(this).attr('targetURL'));
+			}else if(cntrlIsPressed){
 				cntrlIsPressed=false;
 				window.open($(this).attr('targetURL'));
 			}else{
