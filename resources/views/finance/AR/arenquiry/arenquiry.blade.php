@@ -83,7 +83,7 @@
 		<!-- *************** View Form for Credit ********************* -->
 	<div id="dialogForm_CN" title="Viewing Detail" >
 		<div class='panel panel-info'>
-			<div class="panel-heading"> Header Detail</div>
+			<div class="panel-heading"> Credit Header </div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata_CN'>
 						{{ csrf_field() }}
@@ -157,7 +157,7 @@
 			</div>
 			
 			<div class='panel panel-info'>
-				<div class="panel-heading"> Detail </div>
+				<div class="panel-heading"> Credit Note Detail </div>
 					<div class="panel-body">
 						<form id='formdata2_CN' class='form-vertical' style='width:99%'>
 							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
@@ -180,7 +180,7 @@
 		<!-- *************** View Form for Debit ********************* -->
 		<div id="dialogForm_DN" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Debit Note Header</div>
+			<div class="panel-heading">Debit Header</div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata_DN'>
 						{{ csrf_field() }}
