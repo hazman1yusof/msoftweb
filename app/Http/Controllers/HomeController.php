@@ -33,6 +33,24 @@ class HomeController extends Controller
         return view('init.container',compact('menu','units','unit_user'));
     }
 
+    public function ptcare(){
+        $user = Auth::user();
+        $menu = $this->create_ptcare_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        return view('init.container2',compact('menu','units','unit_user'));
+    }
+
+
     public function create_main_menu(){
         $user = Auth::user();
         $groupid = $user->groupid;
@@ -53,6 +71,30 @@ class HomeController extends Controller
         }
 
         return $this->_menu_str;
+    }
+
+    public function create_ptcare_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        // $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' ><span class='fa plus-minus left-floated' style='float: left;padding: 2px 10px;'></span>Patient List</a></li>";
+
+        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Dashboard' class='clickable' programid='dashboard' targetURL='dashboard' >Dashboard</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='docupload' >Document Upload</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='casenote' >Dashboard</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='estats' >Episode Statistics</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='rstats' >Revenue Statistics</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Prescription' class='clickable' programid='prescription' targetURL='prescription' >Prescription</a></li>";
+
+        return $menu;
     }
 
     public function create_sub_menu($rowX,$x,$class){

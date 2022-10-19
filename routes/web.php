@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('home');
+Route::get('/ptcare','HomeController@ptcare')->name('ptcare');
 Route::get('/home','HomeController@index')->name('home_ofis');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
@@ -921,3 +922,8 @@ Route::post('/barcode/print','util\BarcodeController@print');
 
 Route::get('/num2words','util\num2wordsController@show');
 Route::post('/num2words/form','util\num2wordsController@form');
+
+
+//dari ptcare
+
+Route::get('/dashboard','patientcare\eisController@dashboard');

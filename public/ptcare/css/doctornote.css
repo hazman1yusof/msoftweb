@@ -1,0 +1,198 @@
+.wrap{
+    word-wrap: break-word;
+    white-space: pre-line !important;
+    vertical-align: top !important;
+}
+    
+.fc-toolbar .fc-center h2{
+    color:#f2711c;
+    margin-top:15px;
+}
+
+.fc-toolbar .fc-right {
+    float: right;
+}
+
+.fc-unthemed td.fc-today {
+    background: rgb(251 189 8 / 0.2);
+}
+
+.selected_day {
+    background: rgb(251 189 8 / 1) !important;
+}
+
+.h2 {
+    text-align: center;
+    color: #00b5ad !important;
+    font-size: large !important;
+}
+
+.ui-jqgrid .inline-edit-cell {
+    height: 46 px;
+    padding: 10 px 16 px;
+    font-size: 13px;
+    line-height: 1.3333333;
+    border-radius: 6 px;
+}
+.fc-event {
+    position: relative;
+    display: block;
+    font-size: .85em;
+    line-height: 1!important;
+    border-radius: 50px !important;
+    text-align: center !important;
+    border: 1px solid #3a87ad;
+    width: 10px;
+}
+
+.fc-listMonth-button:before{
+    font-family: "FontAwesome";  
+    content: "\f03a";
+    padding-right: 5px;
+}
+
+.fc-month-button:before{
+    font-family: "FontAwesome";
+    content: "\f073";
+    padding-right: 5px;
+}
+
+.fc-button{
+    height: 2.8em !important;
+}
+
+.myb{
+    font-size: large;
+}
+
+.mysmall{
+    font-weight: 900;
+    color:#f2711c;
+}
+
+.angle.down.icon.large,.angle.up.icon.large{
+    float:right;
+}
+
+.ui.secondary.segment.collapsed .angle.up.icon.large,
+.ui.secondary.segment .angle.down.icon.large {
+    display: none;
+}
+
+.ui.secondary.segment.collapsed .angle.down.icon.large,
+.ui.secondary.segment .angle.up.icon.large {
+    display: inline-block;
+}
+
+.glyphicon-chevron-up,.glyphicon-chevron-down{
+    float:right;
+}
+
+.panel-heading.collapsed .glyphicon-chevron-up,
+.panel-heading .glyphicon-chevron-down {
+    display: none;
+}
+
+.panel-heading.collapsed .glyphicon-chevron-down,
+.panel-heading .glyphicon-chevron-up {
+    display: inline-block;
+}
+
+.table.diatbl{
+    font-size: 11px;
+    width: 85% !important;
+    margin: auto;
+}
+
+.table.diatbl td{
+    padding: 4px !important;
+}
+
+.ui.form.diaform {
+    font-size: smaller;
+    width: 85% !important;
+    margin: auto;
+}
+
+.ui.form.diaform div.field{
+    padding: 0px 8px !important;
+}
+
+.panel-heading#toggle_doctornote, .panel-heading#toggle_nursing, .panel-heading#toggle_trans, .panel-heading#toggle_diet, .panel-heading#toggle_userfile{
+    position: sticky;
+    top: 40px;
+    z-index: 3;
+}
+
+#showSidebar{
+    background: rgb(255 255 255 / 0%) !mportant;
+}
+
+.metal{
+    font-size: 0.8em;
+    color: rgba(0,0,0,.4);
+}
+table#jqGrid, table#jqGrid_trans{
+    font-size: 11px;
+}
+.help-block {
+    display: block;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    color: #737373;
+}
+.ui.checkbox.completed{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.sticky_div{
+    position: fixed !important;
+    top: 130px;
+    left: 19px;
+}
+
+table#medication_tbl tbody td {
+    font-size:12px;
+}
+
+table#medication_tbl {
+  position: relative;
+}
+
+table#medication_tbl th {
+  background: white;
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
+.form-control[disabled] {
+    background-color: #fff !important;
+    color: #1a1a1a;
+}
+
+.input-group-addon{
+    padding: 2px !important;
+}
+
+.paneldiv{
+    padding-top: 0px !important;
+    overflow-y: auto;
+    height: calc(100vh - 125px);
+}
+
+.input-sm{
+    font-size: 13px !important;
+}
+
+.bluecloudsegment{
+    position:sticky !important; 
+    z-index: 2 !important; 
+    background: #deedf7 !important;
+}
+
+.normal_label{
+    font-weight: 100 !important;
+}

@@ -88,13 +88,13 @@ var Menu = function () {
 		var last;
 		$("#myNavmenu a.clickable").click(function(){
 			if($(this).is("[newtab]")){
-				window.open($(this).attr('targetURL'));
+				window.open($(this).attr('targetURL'),"_self");
 			}else if(cntrlIsPressed){
 				cntrlIsPressed=false;
 				window.open($(this).attr('targetURL'));
 			}else{
 				$( ".lilabel" ).hide();
-				$( "#myNavmenu" ).animate({ width:"7%" }, "fast");
+				$( "#myNavmenu" ).animate({ width:"8%" }, "fast");
 				window.scrollTo(0,0);
 				$(this).append( "<i class='fa fa-caret-right fa-lg'></i>" );
 				if(typeof last !== 'undefined' && $(this).attr('programid') != last.attr('programid')){
