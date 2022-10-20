@@ -38,7 +38,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				errorField.length=0;
-				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth - $("#jqGrid2_CN_c")[0].offsetLeft));
+				$("#jqGrid2_CN").jqGrid('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth - $("#jqGrid2_CN_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				disableForm('#formdata_CN');
 				$("#pg_jqGridPager2 table").hide();
@@ -55,7 +55,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				parent_close_disabled(true);
-				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_DN_c")[0].offsetWidth-$("#jqGrid2_DN_c")[0].offsetLeft));
+				$("#jqGrid2_DN").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_DN_c")[0].offsetWidth-$("#jqGrid2_DN_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				disableForm('#formdata_DN');
@@ -81,7 +81,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				parent_close_disabled(true);
-				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_IN_c")[0].offsetWidth-$("#jqGrid2_IN_c")[0].offsetLeft));
+				$("#jqGrid2_IN").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_IN_c")[0].offsetWidth-$("#jqGrid2_IN_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				disableForm('#formdata_IN');
@@ -674,30 +674,30 @@ $(document).ready(function () {
 		}
 	}
 	//////////////////Showdetail Header Dialog///////////////
-	var dialog_CustomerCN = new ordialog(
-		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
-		{
-			colModel: [
-				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-		}, {
-			title: "Select Customer",
-			open: function(){
-				dialog_CustomerCN.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_CustomerCN.urlParam.filterVal=['ACTIVE', 'session.compcode'];
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_CustomerCN.makedialog();
+	// var dialog_Customer = new ordialog(
+	// 	'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+	// 			{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus'],
+	// 			filterVal:['session.compcode','ACTIVE']
+	// 		},
+	// 	}, {
+	// 		title: "Select Customer",
+	// 		open: function(){
+	// 			dialog_Customer.urlParam.filterCol=['recstatus', 'compcode'];
+	// 			dialog_Customer.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_Customer.makedialog();
 
 		//CN
 		var dialog_CustomerCN = new ordialog(
-			'db_debtorcodeCN', 'debtor.debtormast', '#db_debtorcode', errorField,
+			'db_debtorcodeCN', 'debtor.debtormast', '#formdata_CN input[name=db_debtorcode]', errorField,
 			{
 				colModel: [
 					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -719,7 +719,7 @@ $(document).ready(function () {
 	
 		//DN
 		var dialog_CustomerDN = new ordialog(
-			'db_debtorcodeDN', 'debtor.debtormast', '#db_debtorcode', errorField,
+			'db_debtorcodeDN', 'debtor.debtormast', '#formdata_DN input[name=db_debtorcode]', errorField,
 			{
 				colModel: [
 					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -762,7 +762,7 @@ $(document).ready(function () {
 		dialog_deptcode.makedialog(false);
 	
 		var dialog_CustomerSO = new ordialog(
-			'db_debtorcodeSO', 'debtor.debtormast', '#db_debtorcode', errorField,
+			'db_debtorcodeSO', 'debtor.debtormast', 'formdata_IN input[name=db_debtorcode', errorField,
 			{
 				colModel: [
 					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },

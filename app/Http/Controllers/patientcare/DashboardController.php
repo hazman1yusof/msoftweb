@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\patientcare;
 
 use Illuminate\Http\Request;
 use App\ticket;

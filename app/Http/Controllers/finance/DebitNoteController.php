@@ -225,9 +225,11 @@ class DebitNoteController extends defaultController
 
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
-            $table->insert($array_insert);
+            $idno = $table->insertGetId($array_insert);
 
             $responce = new stdClass();
+            $responce->db_auditno = $auditno;
+            $responce->idno = $idno;
             // $responce->totalAmount = $request->purreqhd_totamount;
             echo json_encode($responce);
 

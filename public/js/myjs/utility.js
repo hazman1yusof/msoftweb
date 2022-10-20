@@ -1420,7 +1420,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			renull_search(this);
 			before_check(self);
 		}
-
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
 			var idtopush = idtopush,id;
 			if(jqgrid==null){

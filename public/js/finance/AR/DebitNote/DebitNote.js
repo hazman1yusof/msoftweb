@@ -389,12 +389,9 @@ $(document).ready(function () {
 
 			if (selfoper == 'add') {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
-				$('#purreqhd_recno').val(data.recno);
-				$('#purreqhd_purreqno').val(data.purreqno);
+				$('#db_auditno').val(data.db_auditno);
 				$('#idno').val(data.idno);//just save idno for edit later
-				$('#purreqhd_totamount').val(data.totalAmount);
-
-				urlParam2.filterVal[0] = data.recno;
+				urlParam2.auditno = data.db_auditno;
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}

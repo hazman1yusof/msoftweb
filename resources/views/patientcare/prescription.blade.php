@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('patientcare.layouts.main')
 
 @section('title')
 Dashboard &raquo; Document Prescription | Apps Prescription
@@ -58,7 +58,7 @@ Dashboard &raquo; Document Prescription | Apps Prescription
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/prescription.js') }}"></script>
+    <script src="{{ asset('patientcare/js/prescription.js') }}"></script>
 @endsection
 
 @section('css')

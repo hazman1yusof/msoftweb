@@ -926,6 +926,11 @@ Route::post('/num2words/form','util\num2wordsController@form');
 
 //dari ptcare
 
+Route::get('/ptcare_prescription', "patientcare\PrescriptionController@index");
+Route::get('/ptcare_prescription/{id}', "patientcare\PrescriptionController@detail");
+
+Route::get('/ptcare_emergency','patientcare\EmergencyController@index');
+
 Route::get('/ptcare_dashboard','patientcare\eisController@dashboard');
 Route::get('/ptcare_eis','patientcare\eisController@show')->name('eis');
 Route::get('/ptcare_reveis','patientcare\eisController@reveis')->name('reveis');
