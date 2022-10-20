@@ -86,11 +86,11 @@ class HomeController extends Controller
 
         $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='docupload' >Document Upload</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='casenote' >Dashboard</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='estats' >Episode Statistics</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='ptcare_eis' >Episode Statistics</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='rstats' >Revenue Statistics</a></li>";
+        $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='ptcare_reveis' >Revenue Statistics</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Prescription' class='clickable' programid='prescription' targetURL='prescription' >Prescription</a></li>";
 

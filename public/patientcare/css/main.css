@@ -1,0 +1,96 @@
+.sidemenu{
+    background-color: #284255 !important;
+}
+.sidemenu a{
+    padding: 25px !important;
+}
+.sidemenu a:hover {
+    background-color: #00B5AD !important;
+}
+.sidemenu a.active {
+    background: rgba(0,0,0, 0.5) !important;
+}
+.container_sem {
+    padding-right:15px; 
+    padding-top:15px;
+    padding-bottom:15px;
+    padding-left: 95px;
+}
+.ui.sidebar.inverted.vertical.menu {
+    padding-top:90px;
+}
+.ui.left.fixed.vertical.icon.menu {
+        display: none;
+}
+.container_sem {
+    padding-left: 15px;
+    padding-top: 50px;
+}
+/*@media (max-width: 768px) {
+    .ui.left.fixed.vertical.icon.menu {
+        display: none;
+    }
+    .container {
+        padding-left: 15px;
+        padding-top: 95px;
+    }
+}
+@media (min-width: 769px) {
+    .ui.fixed.top.menu{
+        display: none;
+    }
+    .container {
+    }
+}*/
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background-color: azure;
+    text-align: center;
+    border-radius: 50%;
+    -webkit-border-radius: 10%;
+    -moz-border-radius: 10%;
+    border: solid thin #d4d4d5;
+}
+.initials {
+    position: relative;
+    top: 10px; /* 25% of parent */
+    font-size: 20px; /* 50% of parent */
+    line-height: 20px; /* 50% of parent */
+    color: white;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+}
+.admin_color{
+    background-color: rgb(242, 113, 28);
+}
+.user_color{
+    background-color: rgb(0, 181, 173);
+}
+
+a.disabled {
+    pointer-events: none !important;
+    cursor: default;
+}
+
+div [class*="left floated"] {
+  float: left;
+  margin-left: 0.25em;
+}
+
+div [class*="right floated"] {
+  float: right;
+   margin-right: 0.25em;
+}
+#toTop {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 101;
+  background-color: #284255;
+}
+#toTop i {
+  font-size: 25px;
+  color: #f7fdff;
+}

@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('home');
-Route::get('/ptcare','HomeController@ptcare')->name('ptcare');
-Route::get('/home','HomeController@index')->name('home_ofis');
+Route::get('/home','HomeController@ptcare');
+Route::get('/ptcare','HomeController@index')->name('home_ofis');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
@@ -926,4 +926,12 @@ Route::post('/num2words/form','util\num2wordsController@form');
 
 //dari ptcare
 
-Route::get('/dashboard','patientcare\eisController@dashboard');
+Route::get('/ptcare_dashboard','patientcare\eisController@dashboard');
+Route::get('/ptcare_eis','patientcare\eisController@show')->name('eis');
+Route::get('/ptcare_reveis','patientcare\eisController@reveis')->name('reveis');
+Route::get('/ptcare_pivot_get', "patientcare\eisController@table");
+
+Route::get('/ptcare_doctornote','patientcare\DoctornoteController@index');
+Route::get('/ptcare_doctornote/table','patientcare\DoctornoteController@table')->name('doctornote_route');
+Route::post('/ptcare_doctornote/form','patientcare\DoctornoteController@form');
+Route::post('/ptcare_doctornote_transaction_save', "patientcare\DoctornoteController@transaction_save");

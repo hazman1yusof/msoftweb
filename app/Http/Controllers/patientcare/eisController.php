@@ -20,12 +20,12 @@ class eisController extends defaultController
 
     public function show(Request $request)
     {
-        return view('eis.eis');
+        return view('patientcare.eis.eis');
     }
 
 	public function reveis(Request $request)
     {
-        return view('eis.reveis');
+        return view('patientcare.eis.reveis');
     }
 
     public function table(Request $request){
@@ -225,7 +225,7 @@ class eisController extends defaultController
             array_push($groupdesc_val,$value->totalsum);
         }
 
-        return view('eis.dashboard',compact('ip_month','op_month','ip_month_epis','op_month_epis','groupdesc','groupdesc_val_op','groupdesc_val_ip','groupdesc_cnt_op','groupdesc_cnt_ip','groupdesc_val'));
+        return view('patientcare.eis.dashboard',compact('ip_month','op_month','ip_month_epis','op_month_epis','groupdesc','groupdesc_val_op','groupdesc_val_ip','groupdesc_cnt_op','groupdesc_cnt_ip','groupdesc_val'));
     }
 
     public static function getQueries($builder){

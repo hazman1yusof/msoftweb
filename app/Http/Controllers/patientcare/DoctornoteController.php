@@ -101,7 +101,7 @@ class DoctornoteController extends defaultController
         //         Auth::login($user->first());
         //     }
         // }
-        return view('doctornote');
+        return view('patientcare.doctornote');
     }
 
     public function get_table_doctornote($request){
