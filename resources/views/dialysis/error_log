@@ -1,0 +1,8 @@
+[31-May-2021 02:54:20 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home/medicsof/public_html/patientcare/resources/views/print_detail.php on line 33
+[31-May-2021 02:54:20 UTC] PHP Stack trace:
+[31-May-2021 02:54:20 UTC] PHP   1. {main}() /home/medicsof/public_html/patientcare/resources/views/print_detail.php:0
+[31-May-2021 02:54:20 UTC] PHP   2. mysqli_fetch_array() /home/medicsof/public_html/patientcare/resources/views/print_detail.php:33
+[31-May-2021 02:54:51 UTC] PHP Warning:  mysqli_fetch_array() expects parameter 1 to be mysqli_result, bool given in /home/medicsof/public_html/patientcare/resources/views/print_detail.php on line 33
+[31-May-2021 02:54:51 UTC] PHP Stack trace:
+[31-May-2021 02:54:51 UTC] PHP   1. {main}() /home/medicsof/public_html/patientcare/resources/views/print_detail.php:0
+[31-May-2021 02:54:51 UTC] PHP   2. mysqli_fetch_array() /home/medicsof/public_html/patientcare/resources/views/print_detail.php:33

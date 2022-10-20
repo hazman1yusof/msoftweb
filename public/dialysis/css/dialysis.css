@@ -1,0 +1,221 @@
+body{
+    background-color: #f3fff0 !important;
+}
+
+.main_table_panel{
+    background-color: #fff6fc !important;
+}
+
+.main_table_panel .table-striped > tbody > tr:nth-of-type(odd){
+    background-color: #ffffff !important;
+}
+
+.main_table_panel .table-striped > tbody > tr:nth-of-type(even){
+    background-color: #fffaff !important;
+}
+
+.main_table_panel tr.ui-jqgrid-labels{
+    background-color: #ffeaf8 !important;
+}
+
+div#toggle_trans,div#toggle_daily,div#toggle_weekly,div#toggle_monthly{
+    background-image: linear-gradient(to bottom,#f5f5f5 0,#fff6fc 100%) !important;
+}
+
+div.diaform input.smallinputpad{
+    padding-right:2px !important;
+}
+
+.mylabel{
+    padding-right: 6px !important;
+    padding-left: 6px !important;
+}
+
+.color_1sthour_b{
+    background-color:#a4dbdb;
+}
+.color_1sthour{
+    background-color:#f3ffff;
+}
+.color_2ndthour_b{
+    background-color:#acddac;
+}
+.color_2ndthour{
+    background-color:#e4ffe4;
+}
+.color_3rdhour_b{
+    background-color:#e5a8a8;
+}
+.color_3rdhour{
+    background-color:#ffe7e7;
+}
+.color_4thhour_b{
+    background-color:#dddd5c;
+}
+.color_4thhour{
+    background-color:#ffffc9;
+}
+.color_5thhour_b{
+    background-color:#e9c08b;
+}
+.color_5thhour{
+    background-color:#fff5e8;
+}
+
+.stop-scrolling {
+    padding-right: 16px;
+    overflow: hidden;
+}
+
+form#daily_form .error,form#daily_form_completed .error,form#verify_form .error{
+    border-color: #df7676;
+}
+
+span.error,label.error{
+    color: darkred;
+}
+
+.purplebg{
+    background: #e0e8f5 !important;
+}
+
+.paneldiv{
+    padding-top: 0px !important;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+}
+
+.bluecloudsegment{
+    position:sticky !important; 
+    z-index: 2 !important; 
+    background: #deedf7 !important;
+}
+    
+.fc-toolbar .fc-center h2{
+    color:#f2711c;
+    margin-top:15px;
+}
+
+.fc-toolbar .fc-right {
+    float: right;
+}
+
+.fc-unthemed td.fc-today {
+    background: rgb(251 189 8 / 0.2);
+}
+
+.selected_day {
+    background: rgb(251 189 8 / 1) !important;
+}
+
+.h2 {
+    text-align: center;
+    color: #00b5ad !important;
+    font-size: large !important;
+}
+
+.fc-event {
+    position: relative;
+    display: block;
+    font-size: .85em;
+    line-height: 1!important;
+    border-radius: 50px !important;
+    text-align: center !important;
+    border: 1px solid #3a87ad;
+    width: 10px;
+}
+
+.fc-listMonth-button:before{
+    font-family: "FontAwesome";  
+    content: "\f03a";
+    padding-right: 5px;
+}
+
+.fc-month-button:before{
+    font-family: "FontAwesome";
+    content: "\f073";
+    padding-right: 5px;
+}
+
+.fc-button{
+    height: 2.8em !important;
+}
+
+.myb{
+    font-size: large;
+}
+
+.mysmall{
+    font-weight: 900;
+    color:#f2711c;
+}
+
+.glyphicon-chevron-up,.glyphicon-chevron-down{
+    float:right;
+}
+
+.panel-heading.collapsed .glyphicon-chevron-up,
+.panel-heading .glyphicon-chevron-down {
+    display: none;
+}
+
+.panel-heading.collapsed .glyphicon-chevron-down,
+.panel-heading .glyphicon-chevron-up {
+    display: inline-block;
+}
+
+.table.diatbl{
+    font-size: 11px;
+    width: 85% !important;
+    margin: auto;
+}
+
+.table.diatbl td{
+    padding: 4px !important;
+}
+
+.ui.form.diaform {
+    font-size: smaller;
+    width: 85% !important;
+    margin: auto;
+}
+
+.ui.form.diaform div.field{
+    padding: 0px 8px !important;
+}
+
+.panel-heading#toggle_monthly, .panel-heading#toggle_weekly, .panel-heading#toggle_daily, .panel-heading#toggle_trans{
+    position: sticky;
+    top: 40px;
+    z-index: 3;
+}
+
+#showSidebar{
+    background: rgb(255 255 255 / 0%) !mportant;
+}
+
+.metal{
+    font-size: 0.8em;
+    color: rgba(0,0,0,.4);
+}
+table#jqGrid, table#jqGrid_trans{
+    font-size: 11px;
+}
+.help-block {
+    display: block;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    color: #737373;
+}
+.ui.checkbox.completed{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+.myslider{
+    padding-left: 20px  !important;
+    font-size: 0.8em  !important;
+}
+table#dia_monthly ol,table#dia_weekly ol,,table#dia_yearly ol{
+    padding-left: 20px !important;
+}
