@@ -60,9 +60,9 @@ $(document).ready(function () {
 						$("#pg_jqGridPager2 table").hide();
 						break;
 				}if (oper != 'add') {
-					dialog_CustomerSO.check(errorField);
+					dialog_CustomerDN.check(errorField);
 				} if (oper != 'view') {
-					dialog_CustomerSO.on();
+					dialog_CustomerDN.on();
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -85,7 +85,7 @@ $(document).ready(function () {
 				emptyFormdata(errorField, '#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
-				dialog_CustomerSO.off();
+				dialog_CustomerDN.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
@@ -772,7 +772,7 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 			dialog_billtypeSO.check(errorField);
 			//dialog_mrn.check(errorField);
-			dialog_CustomerSO.check(errorField);
+			dialog_CustomerDN.check(errorField);
 			dialog_approvedbySO.check(errorField);
 		}
 
@@ -1222,7 +1222,7 @@ $(document).ready(function () {
 			unsaved = false;
 		} else {
 			mycurrency.formatOn();
-			dialog_CustomerSO.on();
+			dialog_CustomerDN.on();
 			//dialog_mrn.on();
 		}
 	});
@@ -1231,7 +1231,7 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function () {
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
-		dialog_CustomerSO.on();
+		dialog_CustomerDN.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1489,59 +1489,7 @@ $(document).ready(function () {
 	);
 	dialog_GSTCode.makedialog(false);
 
-	// var dialog_GSTCode = new ordialog(
-	// 'GSTCode','hisdb.taxmast',"#jqGrid2 input[name='GSTCode']",errorField,
-	// {	colModel:[
-	// 		{label:'Taxcode',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-	// 		{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-	// 		{label:'Tax Type',name:'taxtype',width:200,classes:'pointer', hidden:true},
-	// 		{label:'Rate',name:'rate',width:200,classes:'pointer'},
-	// 	],
-	// 	urlParam: {
-	// 		filterCol:['recstatus','compcode','taxtype'],
-	// 		filterVal:['ACTIVE', 'session.compcode','OUTPUT']
-	// 			},
-	// 	ondblClickRow:function(event){
-	// 		if(event.type == 'keydown'){
-
-	// 			var optid = $(event.currentTarget).get(0).getAttribute("optid");
-	// 			var id_optid = optid.substring(0,optid.search("_"));
-
-	// 			$(event.currentTarget).parent().next().html('');
-	// 		}else{
-
-	// 			var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-	// 			var id_optid = optid.substring(0,optid.search("_"));
-
-	// 			$(event.currentTarget).parent().next().html('');
-	// 		}
-	// 		console.log(optid)
-	// 		let data=selrowData('#'+dialog_GSTCode.gridname);
-
-	// 		$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
-	// 		$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
-	// 	},
-	// 	gridComplete: function(obj){
-	// 				var gridname = '#'+obj.gridname;
-	// 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-	// 					$(gridname+' tr#1').click();
-	// 					$(gridname+' tr#1').dblclick();
-	// 					$("#jqGrid2 input[name='AmtB4GST']").focus();
-	// 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-	// 					$('#'+obj.dialogname).dialog('close');
-	// 				}
-	// 			}
-	// 	},{
-	// 		title:"Select Tax Code For Item",
-	// 		open: function(){
-	// 			dialog_iptax.urlParam.filterCol = ['recstatus','compcode','taxtype'];
-	// 			dialog_iptax.urlParam.filterVal = ['ACTIVE', 'session.compcode','OUTPUT'];
-	// 		}
-	// 	},'urlParam','radio','tab'
-	// );
-	// dialog_GSTCode.makedialog();
-
-	var dialog_CustomerSO = new ordialog(
+	var dialog_CustomerDN = new ordialog(
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
 		{
 			colModel: [
@@ -1568,12 +1516,12 @@ $(document).ready(function () {
 		}, {
 			title: "Select Customer",
 			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_CustomerDN.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_CustomerDN.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_CustomerSO.makedialog();
+	dialog_CustomerDN.makedialog();
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);

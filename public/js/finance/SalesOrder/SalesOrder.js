@@ -269,7 +269,7 @@ $(document).ready(function () {
 				$("#customer_search").focus();
 				$('#jqGrid').data('inputfocus','');
 				$('#customer_search_hb').text('');
-				removeValidationClass(['#creditor_search']);
+				removeValidationClass(['#customer_search']);
 			}else if($('#jqGrid').data('inputfocus') == 'department_search'){
 				$("#department_search").focus();
 				$('#jqGrid').data('inputfocus','');
@@ -1615,8 +1615,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select MRN",
 			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'ACTIVE'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', '1'];
+				dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
+				dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
 			}
 		},'none','radio','tab'
 	);

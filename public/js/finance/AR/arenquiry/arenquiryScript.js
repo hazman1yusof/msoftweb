@@ -42,7 +42,7 @@ $(document).ready(function () {
 				mycurrency.formatOnBlur();
 				disableForm('#formdata_CN');
 				$("#pg_jqGridPager2 table").hide();
-				dialog_CustomerSO.check(errorField);
+				dialog_CustomerCN.check(errorField);
 			},
 			close: function( event, ui ) {
 			}
@@ -61,6 +61,7 @@ $(document).ready(function () {
 				disableForm('#formdata_DN');
 				refreshGrid("#jqGrid2_DN",urlParam2_DN);
 				$("#pg_jqGridPager2_DN table").hide();
+				dialog_CustomerDN.check(errorField);
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -86,6 +87,10 @@ $(document).ready(function () {
 				disableForm('#formdata_IN');
 				refreshGrid("#jqGrid2_IN",urlParam2_IN);
 				$("#pg_jqGridPager2_IN table").hide();
+				dialog_CustomerSO.check(errorField);
+				dialog_deptcode.check(errorField);
+				dialog_billtypeSO.check(errorField);
+				dialog_mrn.check(errorField);
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -669,7 +674,7 @@ $(document).ready(function () {
 		}
 	}
 	//////////////////Showdetail Header Dialog///////////////
-	var dialog_CustomerSO = new ordialog(
+	var dialog_CustomerCN = new ordialog(
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
 		{
 			colModel: [
@@ -683,13 +688,143 @@ $(document).ready(function () {
 		}, {
 			title: "Select Customer",
 			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_CustomerCN.urlParam.filterCol=['recstatus', 'compcode'];
+				dialog_CustomerCN.urlParam.filterVal=['ACTIVE', 'session.compcode'];
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_CustomerSO.makedialog();
-	////////////SerarchBy/////////////////
+	dialog_CustomerCN.makedialog();
+
+		//CN
+		var dialog_CustomerCN = new ordialog(
+			'db_debtorcodeCN', 'debtor.debtormast', '#db_debtorcode', errorField,
+			{
+				colModel: [
+					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			}, {
+				title: "Select Customer",
+				open: function(){
+					dialog_CustomerCN.urlParam.filterCol=['recstatus', 'compcode'];
+					dialog_CustomerCN.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_CustomerCN.makedialog(false);
+	
+		//DN
+		var dialog_CustomerDN = new ordialog(
+			'db_debtorcodeDN', 'debtor.debtormast', '#db_debtorcode', errorField,
+			{
+				colModel: [
+					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			}, {
+				title: "Select Customer",
+				open: function(){
+					dialog_CustomerDN.urlParam.filterCol=['recstatus', 'compcode'];
+					dialog_CustomerDN.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_CustomerDN.makedialog(false);
+	
+		//IN-SalesOrder
+		var dialog_deptcode = new ordialog(
+			'db_deptcode', 'sysdb.department', '#db_deptcode', errorField,
+			{
+				colModel: [
+					{ label: 'SectorCode', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus','chgdept','storedept'],
+					filterVal:['session.compcode','ACTIVE','1','1']
+				},
+			}, {
+				title: "Select Unit",
+				open: function(){
+					dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept','storedept'];
+					dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_deptcode.makedialog(false);
+	
+		var dialog_CustomerSO = new ordialog(
+			'db_debtorcodeSO', 'debtor.debtormast', '#db_debtorcode', errorField,
+			{
+				colModel: [
+					{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			}, {
+				title: "Select Customer",
+				open: function(){
+					dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
+					dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_CustomerSO.makedialog(false);
+	
+		var dialog_billtypeSO = new ordialog(
+			'billtype', 'hisdb.billtymst', '#db_hdrtype', errorField,
+			{
+				colModel: [
+					{ label: 'Billtype', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+					{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus','opprice'],
+					filterVal:['session.compcode','ACTIVE','1']
+				},
+			}, {
+				title: "Select Billtype",
+				open: function(){
+					dialog_billtypeSO.urlParam.filterCol=['recstatus', 'compcode','opprice'];
+					dialog_billtypeSO.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_billtypeSO.makedialog(false);
+	
+		var dialog_mrn = new ordialog(
+			'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
+			{
+				colModel: [
+					{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+					{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				],
+				urlParam: {
+					filterCol:['compcode','ACTIVE'],
+					filterVal:['session.compcode','1']
+				},
+			}, {
+				title: "Select MRN",
+				open: function(){
+					dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
+					dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
+				}
+			},'none','radio','tab'
+		);
+		dialog_mrn.makedialog(false);
+		////////////SearchBy/////////////////
+
 	function searchDate(){
 		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
 		refreshGrid('#jqGrid',urlParam);
@@ -744,7 +879,7 @@ $(document).ready(function () {
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					// $('#'+obj.dialogname).dialog('close');
 				}
-				$('#db_debtorcode').val(data['debtorcode']);
+				//$('#db_debtorcode').val(data['debtorcode']);
 			}
 		},{
 			title: "Select Customer",
