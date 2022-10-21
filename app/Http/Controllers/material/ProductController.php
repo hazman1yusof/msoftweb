@@ -105,29 +105,40 @@ class ProductController extends defaultController
                              'p.computerid as computerid',
                              'p.ipaddress as ipaddress',
                              'p.lastcomputerid as lastcomputerid',
-                             'p.lastipaddress as lastipaddress',
-                             'cm.chgclass as cm_chgclass',
-                             'cm.chggroup as cm_chggroup',
-                             'cm.chgtype as cm_chgtype',
-                             'cm.packqty as cm_packqty',
-                             'cm.druggrcode as cm_druggrcode',
-                             'cm.subgroup as cm_subgroup',
-                             'cm.stockcode as cm_stockcode',
-                             'cm.invgroup as cm_invgroup',
-                             'cm.dosecode as cm_dosecode',
-                             'cm.freqcode as cm_freqcode',
-                             'cm.instruction as cm_instruction')
+                             'p.lastipaddress as lastipaddress')
+                             // 'cm.chgclass as cm_chgclass',
+                             // 'cm.chggroup as cm_chggroup',
+                             // 'cm.chgtype as cm_chgtype',
+                             // 'cm.packqty as cm_packqty',
+                             // 'cm.druggrcode as cm_druggrcode',
+                             // 'cm.subgroup as cm_subgroup',
+                             // 'cm.stockcode as cm_stockcode',
+                             // 'cm.invgroup as cm_invgroup',
+                             // 'cm.dosecode as cm_dosecode',
+                             // 'cm.freqcode as cm_freqcode',
+                             // 'cm.instruction as cm_instruction')
                     ->where('p.compcode','=',session('compcode'))
                     ->where('p.unit','=',session('unit'))
                     ->where('p.Class','=',$Class)
                     ->where('p.groupcode','=',$groupcode);
 
-        $table = $table->leftjoin('hisdb.chgmast as cm', function($join){
-                            $join = $join->where('cm.compcode', '=', session('compcode'));
-                            $join = $join->where('cm.unit','=',session('unit'));
-                            $join = $join->on('cm.chgcode', '=', 'p.itemcode');
-                            $join = $join->on('cm.uom', '=', 'p.uomcode');
-                        });
+        // $table = $table->leftjoin('hisdb.chgmast as cm', function($join){
+        //                     $join = $join->where('cm.compcode', '=', session('compcode'));
+        //                     $join = $join->where('cm.unit','=',session('unit'));
+        //                     $join = $join->on('cm.chgcode', '=', 'p.itemcode');
+        //                     $join = $join->on('cm.uom', '=', 'p.uomcode');
+        //                 });
+
+        foreach ($table->get() as $key => $value) {
+            $chgmast = DB::table('hisdb.chgmast')
+                            ->where('compcode',session('compcode'))
+                            ->where('chgcode',$value->itemcode);
+
+
+            if($chgmast->exists()){
+                $table->get()->put('cm_chgclass', 'class');
+            }
+        }
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
