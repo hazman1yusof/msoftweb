@@ -807,7 +807,7 @@ $(document).ready(function () {
 			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
 			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
 			{label: 'debtorcode', name: 'dbacthdr_debtorcode', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50}, //tunjuk
+			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
 			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
 			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 100, canSearch:true}, //tunjuk
 			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
@@ -824,10 +824,10 @@ $(document).ready(function () {
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount',width: 70,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'Amount', name: 'dbacthdr_amount',width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 40},
-			{label: 'Status', name: 'dbacthdr_recstatus',width: 70}, //tunjuk
+			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45},
+			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
