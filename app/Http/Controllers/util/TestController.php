@@ -23,8 +23,20 @@ class TestController extends defaultController
 
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        // $this->middleware('auth');
+        // $this->duplicateCode = "bloodcode";
+    }
+
+    public function test(Request $request){
+        $product = DB::table('material.product')
+                        ->where('compcode','9A')
+                        ->where('itemcode','LIKE','25%')
+                        ->get();
+
+
+        if($product->exists()){
+            dd('got');
+        }
     }
 
     public function show(Request $request)
