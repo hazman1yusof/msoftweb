@@ -23,8 +23,8 @@ class TestController extends defaultController
 
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->duplicateCode = "bloodcode";
+        // $this->middleware('auth');
+        // $this->duplicateCode = "bloodcode";
     }
 
     public function show(Request $request)
@@ -33,6 +33,33 @@ class TestController extends defaultController
 
     }
 
+    public function test(Request $request){
+        $product = DB::table('material.product')
+                        ->where('compcode','9A')
+                        ->where('itemcode','LIKE','25%');
+
+
+        if($product->exists()){
+            $product = $product->get();
+
+            foreach ($product as $key => $value) {
+                DB::table('material.stockloc')
+                    ->insert([
+                        'compcode' => '9A',
+                        'unit' => 'NORTHA',
+                        'deptcode' => 'STORE',
+                        'itemcode' => $value->itemcode,
+                        'uomcode' => "1'S",
+                        'year' => '2022',
+                        'stocktxntype' => 'TR',
+                        'disptype' =>'DS1',
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            
+        }
+    }
 
     public function excel(Request $request)
     {   
