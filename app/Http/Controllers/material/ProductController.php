@@ -105,7 +105,7 @@ class ProductController extends defaultController
                              'p.computerid as computerid',
                              'p.ipaddress as ipaddress',
                              'p.lastcomputerid as lastcomputerid',
-                             'p.lastipaddress as lastipaddress')
+                             'p.lastipaddress as lastipaddress',
                              'cm.chgclass as cm_chgclass',
                              'cm.chggroup as cm_chggroup',
                              'cm.chgtype as cm_chgtype',
