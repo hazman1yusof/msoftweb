@@ -28,6 +28,8 @@ class APEnquiryController extends defaultController
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_in_detail':
+                    return $this->get_in_detail($request);
             default:
                 return 'error happen..';
         }
@@ -167,6 +169,108 @@ class APEnquiryController extends defaultController
 
         return json_encode($responce);
 
+    }
+
+    public function get_in_detail(Request $request){
+
+        //trantype (PV, CN, PD)
+        if(($request->apacthdr_trantype == 'PV' || 'PD') && ($request->apacthdr_trantype2 == 'Credit Note')) {
+
+            $invoice = DB::table('finance.apacthdr')
+                            ->where('idno','=',$request->idno)
+                            ->first();
+
+            $table = DB::table('finance.apalloc as al')
+                        ->select(
+                            'ap.auditno',
+                            'ap.trantype',
+                            'ap.suppcode',
+                            'ap.actdate',
+                            'ap.document',
+                            'ap.recstatus',
+                            'ap.recdate',
+                            'ap.amount',
+                            'al.allocamount',
+                            'al.outamount',
+                            'al.recstatus',
+                        )
+                        ->join('finance.apacthdr as ap', function($join) use ($request){
+                                    $join = $join->on('al.docsource', '=', 'ap.source')
+                                        ->on('al.doctrantype', '=', 'ap.trantype')
+                                        ->on('al.docauditno', '=', 'ap.auditno');
+                        })
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.refsource','=',$invoice->source)
+                        ->where('al.reftrantype','=',$invoice->trantype)
+                        ->where('al.refauditno','=',$invoice->auditno)
+                        ->where('al.recstatus','=','POSTED')
+                        ->orderBy('al.idno','DESC');
+
+
+            //////////paginate/////////
+            $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+
+            return json_encode($responce);
+
+        } //trantype (IN, DN)
+        
+            else if ($request->apacthdr_trantype == 'DN' && 'IN') {
+
+            $invoice = DB::table('finance.apacthdr')
+                ->where('idno','=',$request->idno)
+                ->first();
+
+            $table = DB::table('finance.apalloc as al')
+                        ->select(
+                            'ap.auditno',
+                            'ap.trantype',
+                            'ap.suppcode',
+                            'ap.actdate',
+                            'ap.document',
+                            'ap.recstatus',
+                            'ap.recdate',
+                            'ap.amount',
+                            'al.allocamount',
+                            'al.outamount',
+                            'al.recstatus',
+                        )
+                        ->join('finance.apacthdr as ap', function($join) use ($request){
+                                    $join = $join->on('al.refsource', '=', 'ap.source')
+                                        ->on('al.reftrantype', '=', 'ap.trantype')
+                                        ->on('al.refauditno', '=', 'ap.auditno');
+                        })
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.refsource','=',$invoice->source)
+                        ->where('al.reftrantype','=',$invoice->trantype)
+                        ->where('al.refauditno','=',$invoice->auditno)
+                        ->where('al.recstatus','=','POSTED')
+                        ->orderBy('al.idno','DESC');
+
+
+            //////////paginate/////////
+            $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+
+            return json_encode($responce);
+
+        }
     }
 
     public function form(Request $request)
