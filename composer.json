@@ -13,10 +13,13 @@
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "hwi/oauth-bundle": "^1.4",
         "intervention/image": "dev-master",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "maatwebsite/excel": "^3.1",
+        "php-http/guzzle6-adapter": "^2.0",
+        "php-http/httplug-bundle": "^1.27",
         "phpoffice/phpspreadsheet": "^1.22"
     },
     "require-dev": {
