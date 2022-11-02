@@ -30,7 +30,6 @@ $(document).ready(function () {
 	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var oper=null;
-	var unsaved = false,counter_save=0;
 
 	$("#dialogForm_cna")
 		.dialog({
@@ -195,12 +194,12 @@ $(document).ready(function () {
 				counter_save=0;
 				parent_close_disabled(true);
 				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
 				disableForm('#formdata_dn');
 				dialog_departmentDN.check(errorField);
 				dialog_categoryDN.check(errorField);
 				dialog_suppcodeDN.check(errorField);
 				dialog_paytoDN.check(errorField);
-			
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -424,8 +423,6 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 	
-	
-
 	var creditor_search = new ordialog(
 		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
 		{
@@ -685,8 +682,8 @@ $(document).ready(function () {
 	var dialog_paymodePV = new ordialog(
 		'paymode','debtor.paymode',"#formdata_pv :input[name='apacthdr_paymode']", errorField,
 		{colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
@@ -708,8 +705,8 @@ $(document).ready(function () {
 	var dialog_bankcodePV = new ordialog(
 		'bankcode','finance.bank',"#formdata_pv :input[name='apacthdr_bankcode']", errorField,
 		{colModel:[
-				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer'},
+				{label:'Description',name:'bankname',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -726,10 +723,10 @@ $(document).ready(function () {
 	dialog_bankcodePV.makedialog(false);
 
 	var dialog_suppcodePV = new ordialog(
-		'suppcode','material.supplier',"#formdata_pv :input[name='apacthdr_suppcode']",errorField,
+		'suppcode','material.supplier',"#formdata_pv :input[name='apacthdr_suppcode']", errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -748,8 +745,8 @@ $(document).ready(function () {
 	var dialog_paytoPV = new ordialog(
 		'payto','material.supplier',"#formdata_pv :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -770,8 +767,8 @@ $(document).ready(function () {
 	var dialog_paymodePD = new ordialog(
 		'paymode','debtor.paymode',"#formdata_pd :input[name='apacthdr_paymode']", errorField,
 		{colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
@@ -793,8 +790,8 @@ $(document).ready(function () {
 	var dialog_bankcodePD = new ordialog(
 		'bankcode','finance.bank',"#formdata_pd :input[name='apacthdr_bankcode']",errorField,
 		{colModel:[
-				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer'},
+				{label:'Description',name:'bankname',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -813,8 +810,8 @@ $(document).ready(function () {
 	var dialog_suppcodePD = new ordialog(
 		'suppcode','material.supplier',"#formdata_pd :input[name='apacthdr_suppcode']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -833,8 +830,8 @@ $(document).ready(function () {
 	var dialog_paytoPD = new ordialog(
 		'payto','material.supplier',"#formdata_pd :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -854,8 +851,8 @@ $(document).ready(function () {
 	var dialog_suppcodeIN = new ordialog(
 		'suppcode','material.supplier',"#formdata_in :input[name='apacthdr_suppcode']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -874,8 +871,8 @@ $(document).ready(function () {
 	var dialog_paytoIN = new ordialog(
 		'payto','material.supplier',"#formdata_in :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -894,8 +891,8 @@ $(document).ready(function () {
 	var dialog_categoryIN = new ordialog(
 		'category','material.category',"#formdata_in :input[name='apacthdr_category']",errorField,
 		{colModel:[
-			{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Category Code',name:'catcode',width:200,classes:'pointer'},
+			{label:'Description',name:'description',width:400,classes:'pointer'},
 			{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 			{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 		],
@@ -921,8 +918,8 @@ $(document).ready(function () {
 	var dialog_departmentIN = new ordialog(
 		'Department','sysdb.department',"#formdata_in :input[name='apacthdr_deptcode']",errorField,
 		{colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Department Code',name:'deptcode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -942,8 +939,8 @@ $(document).ready(function () {
 	var dialog_suppcodeDN = new ordialog(
 		'suppcode','material.supplier',"#formdata_dn :input[name='apacthdr_suppcode']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -962,8 +959,8 @@ $(document).ready(function () {
 	var dialog_paytoDN = new ordialog(
 		'payto','material.supplier',"#formdata_dn :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -982,8 +979,8 @@ $(document).ready(function () {
 	var dialog_categoryDN = new ordialog(
 		'category','material.category',"#formdata_dn :input[name='apacthdr_category']",errorField,
 		{colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Category Code',name:'catcode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
@@ -1009,8 +1006,8 @@ $(document).ready(function () {
 	var dialog_departmentDN = new ordialog(
 		'Department','sysdb.department',"#formdata_dn :input[name='apacthdr_deptcode']",errorField,
 		{colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Department Code',name:'deptcode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1030,8 +1027,8 @@ $(document).ready(function () {
 	var dialog_suppcodeCN = new ordialog(
 		'suppcode','material.supplier',"#formdata_cn :input[name='apacthdr_suppcode']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1050,8 +1047,8 @@ $(document).ready(function () {
 	var dialog_paytoCN = new ordialog(
 		'payto','material.supplier',"#formdata_cn :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1070,8 +1067,8 @@ $(document).ready(function () {
 	var dialog_paymodeCN = new ordialog(
 		'paymode','debtor.paymode',"#formdata_cn :input[name='apacthdr_paymode']", errorField,
 		{colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
@@ -1094,8 +1091,8 @@ $(document).ready(function () {
 	var dialog_suppcodeCNA = new ordialog(
 		'suppcode','material.supplier',"#formdata_cna :input[name='apacthdr_suppcode']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1114,8 +1111,8 @@ $(document).ready(function () {
 	var dialog_paytoCNA = new ordialog(
 		'payto','material.supplier',"#formdata_cna :input[name='apacthdr_payto']",errorField,
 		{colModel:[
-				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer'},
+				{label:'Description',name:'Name',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1134,8 +1131,8 @@ $(document).ready(function () {
 	var dialog_paymodeCNA = new ordialog(
 		'paymode','debtor.paymode',"#formdata_cna :input[name='apacthdr_paymode']", errorField,
 		{colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer'},
+				{label:'Description',name:'description',width:400,classes:'pointer'},
 				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
@@ -1155,10 +1152,10 @@ $(document).ready(function () {
 	dialog_paymodeCNA.makedialog(false);
 
 	var dialog_departmentCNA = new ordialog(
-		'Department','sysdb.department',"#formdata_cna :input[name='apacthdr_deptcode']",errorField,
+		'department','sysdb.department',"#formdata_cna :input[name='apacthdr_deptcode']",errorField,
 		{colModel:[
-			{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Department Code',name:'deptcode',width:200,classes:'pointer'},
+			{label:'Description',name:'description',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],

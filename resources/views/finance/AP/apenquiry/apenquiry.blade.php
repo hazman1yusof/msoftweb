@@ -55,9 +55,9 @@
 							</div>
 							
 						</div>
-		         </div>
+		         	</div>
 				</div>
-                </fieldset> 
+            </fieldset> 
 		</form>    
 
             <div class="panel panel-default">
@@ -75,7 +75,7 @@
 
 	<!--- PAYMENT VOUCHER -->
 
-	<div id="dialogForm_pv" title="Payment Voucher" >
+	<div id="dialogForm_pv" title="Payment Voucher">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
