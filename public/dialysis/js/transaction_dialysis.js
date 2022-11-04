@@ -22,7 +22,7 @@ $(document).ready(function () {
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans").jqGrid({
 		datatype: "local",
-		editurl: "./dialysis_transaction_save",
+		editurl: "./dialysis_dialysis_transaction_save",
 		colModel: [
 			{ label: 'id', name: 'id', hidden: true,key:true },
 			{ label: 'chg_code', name: 'chg_code', hidden: true },
@@ -351,7 +351,7 @@ $(document).ready(function () {
 				packagecode: $('#medicationtype').val()
 			}
 
-			$.post( "./dialysis/form",param, function( data ){
+			$.post( "./dialysis_dialysis/form",param, function( data ){
 			},'json').fail(function(data) {
 	            alert(data.responseText);
 	            loader_transaction(false);
@@ -367,7 +367,7 @@ $(document).ready(function () {
 
 var addmore_onadd = false;
 var urlParam_trans = {
-	url:'./dialysis/table',
+	url:'./dialysis_dialysis/table',
 	isudept:'CLINIC',
 	action: 'get_transaction_table',
 	mrn:'',
@@ -577,7 +577,7 @@ function verifyuser_delete(){
 		password:$('#password_verify').val(),
     };
 
-    $.get( "./verifyuser_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_verifyuser_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	if(data.success == 'fail'){
@@ -603,7 +603,7 @@ function deleting(){
 		oper: 'del'
 	}
 
-	$.post( "./dialysis_transaction_save",param, function( data ){
+	$.post( "./dialysis_dialysis_transaction_save",param, function( data ){
 		curpage_tran = null;
 		addmore_onadd = false;
 		refreshGrid("#jqGrid_trans", urlParam_trans);

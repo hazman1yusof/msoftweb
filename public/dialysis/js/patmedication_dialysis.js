@@ -227,7 +227,7 @@ var patmedication_tbl = $('#patmedication_tbl').DataTable({
 								obj.chgcode = $('#patmedication_chgcode').val();
 							}
 
-							$.post( "./dialysis/form?"+$.param(param),obj, function( data ){
+							$.post( "./dialysis_dialysis/form?"+$.param(param),obj, function( data ){
 								if(data.success == 'success'){
 									load_patmedication($("#mrn").val(),$("#episno").val(),$("#visit_date").val());
 									load_patmedication_trx($("#mrn").val(),$("#episno").val(),$("#visit_date").val());
@@ -276,7 +276,7 @@ function delete_ownmed(idno){
 							idno: idno
 						}
 
-						$.post( "./dialysis/form",param, function( data ){
+						$.post( "./dialysis_dialysis/form",param, function( data ){
 						},'json').fail(function(data) {
 				            alert(data.responseText);
 				        }).done(function(data){
@@ -308,7 +308,7 @@ function load_patmedication_trx(mrn,episno,date){
 
 	$('#patmedication_tbl').data('addmode',false);
 	patmedication_trx_tbl.ajax.async = false;
-	patmedication_trx_tbl.ajax.url( "./dialysis/table?"+$.param(patmedicationParam) ).load(function(data){
+	patmedication_trx_tbl.ajax.url( "./dialysis_dialysis/table?"+$.param(patmedicationParam) ).load(function(data){
 		if(patmedication_trx_tbl.rows().count() > 0 && !$('#save_dialysis').is("[disabled]")){
 			$('#complete_dialysis').prop('disabled',true);
 		}else if(!$('#save_dialysis').is("[disabled]")){
@@ -326,7 +326,7 @@ function load_patmedication(mrn,episno,date){
 	}
 
 	patmedication_tbl.ajax.async = false;
-	patmedication_tbl.ajax.url( "./dialysis/table?"+$.param(patmedicationParam) ).load();
+	patmedication_tbl.ajax.url( "./dialysis_dialysis/table?"+$.param(patmedicationParam) ).load();
 } 
 
 function verifyuser_medication(){
@@ -336,7 +336,7 @@ function verifyuser_medication(){
 		password:$('#password_verify').val(),
     };
 
-    $.get( "./verifyuser_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_verifyuser_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	if(data.success == 'fail'){

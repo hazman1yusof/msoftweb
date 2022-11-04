@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\patientcare;
 
 use Illuminate\Http\Request;
 use stdClass;
@@ -18,7 +18,7 @@ class physioController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('hisdb.phys.phys');
+        return view('patientcare.hisdb.phys.phys');
     }
 
     public function table(Request $request)

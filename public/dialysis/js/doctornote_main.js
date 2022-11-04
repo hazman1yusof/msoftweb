@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'patmast_current_patient',
-		url: './pat_mast/post_entry',
+		url: './dialysis_pat_mast/post_entry',
 		curpat: 'true',
 		showall:false,
 		showcomplete:false,

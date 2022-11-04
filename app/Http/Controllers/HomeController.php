@@ -40,6 +40,7 @@ class HomeController extends Controller
                 ->where('compcode','=',$user->compcode)
                 ->get();
         $unit_user = '';
+        $title="Patient Care";
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
                 ->where('compcode','=',$user->compcode)
@@ -47,7 +48,25 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        return view('init.container2',compact('menu','units','unit_user'));
+        return view('init.container_ptcare',compact('menu','units','unit_user','title'));
+    }
+
+    public function dialysis(){
+        $user = Auth::user();
+        $menu = $this->create_dialysis_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        $title="Dialysis";
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        return view('init.container_ptcare',compact('menu','units','unit_user','title'));
     }
 
 
@@ -93,6 +112,26 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='ptcare_reveis' >Revenue Statistics</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Prescription' class='clickable' programid='prescription' targetURL='ptcare_prescription' >Prescription</a></li>";
+
+        return $menu;
+    }
+
+    public function create_dialysis_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        // $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' ><span class='fa plus-minus left-floated' style='float: left;padding: 2px 10px;'></span>Patient List</a></li>";
+
+        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='ptcare_emergency' >Document Upload</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='dialysis_doctornote' >Case Note</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='dialysis' targetURL='dialysis_dialysis' >Dialysis</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Enquiry' class='clickable' programid='enquiry' targetURL='dialysis_enquiry' >Enquiry</a></li>";
 
         return $menu;
     }

@@ -32,6 +32,12 @@
 
   <body>	
 	<div class="navbar navbar-fixed-top">
+	<a type="button" class="btn btn-default btn-lg" aria-label="Left Align" style="border-radius: 50%;border-color: white;color: #00608f;float: left;margin: 3px 20px;background: rgb(0 0 0 / 4%);" href="./">
+	  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+	</a>
+	<a class="navbar-brand" href="#" style="padding: 0px 50px 0px 0px;float: right;">
+		<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
+	</a>
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -40,12 +46,10 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#" style="padding-top: 0">
-				<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
-			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 
+			<h4 style="margin: 20px 0px 0px 0px;float: left;color: #565656;">{{$title}}</h4>
 			@if(Auth::user()->dept == '')
 			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">

@@ -6,7 +6,6 @@
 @section('content')
 
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">
-    <input type="hidden" id="doctornote_route" value="{{route('doctornote_route')}}">
     <input type="hidden" id="user_groupid" value="{{Auth::user()->groupid}}">
 
     <div class="ui stackable two column grid">

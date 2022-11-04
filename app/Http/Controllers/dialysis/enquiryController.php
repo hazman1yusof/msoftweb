@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\dialysis;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use App\Http\Controllers\dialysis\defaultController;
 
 class enquiryController extends defaultController
 {
@@ -30,7 +30,7 @@ class enquiryController extends defaultController
             }
         }
 
-        return view('enquiry',compact('centers'));
+        return view('dialysis.enquiry',compact('centers'));
     }
 
     public function table(Request $request){   

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('dialysis.layouts.main')
 
 @section('title', 'Case Note')
 
@@ -8,7 +8,6 @@
 @section('content')
 
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">
-    <input type="hidden" id="doctornote_route" value="{{route('doctornote_route')}}">
     <input type="hidden" id="user_groupid" value="{{Auth::user()->groupid}}">
 
     <div class="ui grid">
@@ -144,7 +143,7 @@
 
         <div id="tab_doctornote" class="panel-collapse collapse mainpanel">
             <div class="panel-body paneldiv" id="tab_doctornote_sticky">
-                @include('doctornote_div')
+                @include('dialysis.doctornote_div')
             </div>
         </div>
     </div>
@@ -189,7 +188,7 @@
 
         <div id="tab_triage" class="panel-collapse collapse mainpanel">
             <div class="panel-body paneldiv">
-                @include('nursing')
+                @include('dialysis.nursing')
             </div>
         </div>
     </div>
@@ -231,20 +230,20 @@
 
         <div id="tab_userfile" class="panel-collapse collapse mainpanel">
             <div class="panel-body paneldiv">
-                @include('userfile_div')
+                @include('dialysis.userfile_div')
             </div>
         </div>
     </div>
 
-@include('itemselector')
+@include('dialysis.itemselector')
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{asset('css/doctornote.css') }}">
+    <link rel="stylesheet" href="{{asset('dialysis/css/doctornote.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -258,20 +257,20 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/trirand/i18n/grid.locale-en.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/trirand/jquery.jqGrid.min.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/i18n/grid.locale-en.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/jquery.jqGrid.min.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/fullcalendar-3.7.0/fullcalendar.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/se/dt-1.11.3/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/form-validator/jquery.form-validator.min.js') }}/"></script>
-    <script type="text/javascript" src="{{ asset('js/userfile.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/transaction.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/doctornote.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/nursing.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/doctornote_main.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/userfile.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/transaction.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/doctornote.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/nursing.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/doctornote_main.js') }}"></script>
 @endsection
 
 

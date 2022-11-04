@@ -128,7 +128,7 @@ $(document).ready(function () {
 
 			var daily_form = $("form#daily_form").serializeArray();
 
-			$.post( "./save_dialysis?"+$.param(param),$.param(daily_form), function( data ){
+			$.post( "./dialysis_save_dialysis?"+$.param(param),$.param(daily_form), function( data ){
 				
 			},'json').fail(function(data) {
 	            alert(data.responseText);
@@ -170,7 +170,7 @@ $(document).ready(function () {
 			var daily_form = $("form#daily_form").serializeArray();
 			var daily_form_completed = $("form#daily_form_completed").serializeArray();
 
-			$.post( "./save_dialysis_completed?"+$.param(param),$.param(daily_form)+'&'+$.param(daily_form_completed), function( data ){
+			$.post( "./dialysis_save_dialysis_completed?"+$.param(param),$.param(daily_form)+'&'+$.param(daily_form_completed), function( data ){
 				
 			},'json').fail(function(data) {
 	            alert(data.responseText);
@@ -266,7 +266,7 @@ $(document).ready(function () {
 			episno:$("#episno").val()
 		}
 
-		$.get("./get_data_dialysis?"+$.param(param), function(data) {
+		$.get("./dialysis_get_data_dialysis?"+$.param(param), function(data) {
 			populate_data('monthly',data.data);
 		},'json');
 
@@ -295,7 +295,7 @@ $(document).ready(function () {
 			episno:$("#episno").val()
 		}
 
-		$.get("./get_data_dialysis?"+$.param(param), function(data) {
+		$.get("./dialysis_get_data_dialysis?"+$.param(param), function(data) {
 			populate_data('weekly',data.data);
 		},'json');
 
@@ -333,7 +333,7 @@ $(document).ready(function () {
 
   	$("#jqGridAddNotesDialysis").jqGrid({
 		datatype: "local",
-		editurl: "./dialysis/form",
+		editurl: "./dialysis_dialysis/form",
 		colModel: [
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden: true },
@@ -441,7 +441,7 @@ $(document).ready(function () {
 });
 var urlParam_AddNotesDialysis = {
 	action: 'get_table_addnotes',
-	url: './dialysis/table'
+	url: './dialysis_dialysis/table'
 }
 
 function populate_data(type,data){
@@ -737,7 +737,7 @@ function check_pt_mode(){
     };
 
 	$.ajaxSetup({async: false});
-    $.get( "./check_pt_mode?"+$.param(param), function( data ) {
+    $.get( "./dialysis_check_pt_mode?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
 
@@ -1082,7 +1082,7 @@ function get_dialysis_daily(idno){
 		action:'get_dia_daily'
     };
 
-    $.get( "./get_data_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_get_data_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
 		loader_daily(false);
@@ -1103,7 +1103,7 @@ function verifyuser(){
 		password:$('#password_verify').val(),
     };
 
-    $.get( "./verifyuser_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_verifyuser_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	if(data.success == 'fail'){
@@ -1125,7 +1125,7 @@ function verifyuser_permission(){
 		password:$('#password_verify').val(),
     };
 
-    $.get( "./verifyuser_admin_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_verifyuser_admin_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	if(data.success == 'fail'){
