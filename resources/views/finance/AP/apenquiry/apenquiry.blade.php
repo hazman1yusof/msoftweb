@@ -13,7 +13,6 @@
 	.bg-primary .mybtn{
 		display:block;
 	}
-	
 
 	input.uppercase {
   		text-transform: uppercase;
@@ -56,9 +55,9 @@
 							</div>
 							
 						</div>
-		         </div>
+		         	</div>
 				</div>
-                </fieldset> 
+            </fieldset> 
 		</form>    
 
             <div class="panel panel-default">
@@ -76,13 +75,12 @@
 
 	<!--- PAYMENT VOUCHER -->
 
-	<div id="dialogForm_pv" title="Viewing Detail" >
+	<div id="dialogForm_pv" title="Payment Voucher">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Payment Voucher Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata_pv'>
 				
-
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
 				  			<div class="col-md-2" id="apacthdr_actdate">
@@ -210,13 +208,12 @@
 	</div>
 
 	<!-- PAYMENT DEPOSIT -->
-	<div id="dialogForm_pd" title="Viewing Detail" >
+	<div id="dialogForm_pd" title="Payment Deposit" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Payment Deposit Header</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata_pd'>
 				
-
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
 				  			<div class="col-md-2" id="apacthdr_actdate">
@@ -256,7 +253,6 @@
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
-					
 					</div>
 
 					<div class="form-group">
@@ -330,7 +326,7 @@
 	</div>
 
 	<!-- INVOICE AP NOTE -->
-	<div id="dialogForm_in" title="Add Form" >
+	<div id="dialogForm_in" title="Invoice" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Invoice AP Header
 				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
@@ -465,12 +461,24 @@
 			<div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
-						<div id="jqGrid2_pv_c" class='col-md-12'>
-							<table id="jqGrid2_pv" class="table table-striped"></table>
-						        <div id="jqGridPager2_pv"></div>
+						<div id="jqGrid2_indetail_c" class='col-md-12'>
+							<table id="jqGrid2_in_detail" class="table table-striped"></table>
+						        <div id="jqGridPager2_indetail"></div>
 						</div>
 					</form>
 				</div>
+
+			<!-- <div class='panel panel-info' id="cn_in_detail">
+				<div class="panel-heading">Credit Note Detail</div>
+					<div class="panel-body">
+						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<div id="jqGrid2_cnin_c" class='col-md-12'>
+								<table id="jqGrid2_cnin" class="table table-striped"></table>
+									<div id="jqGridPager2_cnin"></div>
+							</div>
+						</form>
+					</div>
+			</div> -->
 
 		</div>
 		</div>	
@@ -479,7 +487,7 @@
 	</div>
 	
 	<!-- CREDIT NOTE -->
-	<div id="dialogForm_cn" title="Add Form" >
+	<div id="dialogForm_cn" title="Credit Note" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Credit Note Header</div>
 			<div class="panel-body" style="position: relative;">
@@ -599,7 +607,7 @@
 	</div>
 
 	<!-- CREDIT NOTE UNALLOCATED-->
-	<div id="dialogForm_cna" title="Add Form" >
+	<div id="dialogForm_cna" title="Credit Note Unallocated" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Credit Note Header</div>
 			<div class="panel-body" style="position: relative;">
@@ -706,7 +714,7 @@
 	</div>
 
 	<!-- DEBIT NOTE -->
-	<div id="dialogForm_dn" title="Add Form" >
+	<div id="dialogForm_dn" title="Debit Note" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Debit Note AP Header</div>
 			<div class="panel-body" style="position: relative;">

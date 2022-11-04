@@ -654,8 +654,6 @@ use PDF;
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
             }
-
-            
                
             DB::commit();
         } catch (\Exception $e) {

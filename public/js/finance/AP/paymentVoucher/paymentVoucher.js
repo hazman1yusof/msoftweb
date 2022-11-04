@@ -397,7 +397,7 @@ $(document).ready(function () {
 
 	$('#apacthdr_trantype').on('change', function() {
 		let trantype = $("#apacthdr_trantype option:selected").val();
-		init_jq2(oper);
+		init_jq2(oper,urlParam2);
 	});
 	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -1650,8 +1650,19 @@ $(document).ready(function () {
 });
 
 function init_jq2(oper,urlParam2){
-
 	if(oper == 'add'){
+		if($('#apacthdr_trantype').val() == 'PV'){
+			$('#save').hide();
+			$('#apacthdr_amount').prop('readonly',true);
+			$('#pvpd_detail').show();
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
+		}else if($('#apacthdr_trantype').val() == 'PD') {
+			$('#save').show();
+			$('#pvpd_detail').hide();
+			$('#apacthdr_amount').prop('readonly',false);
+		}
+	} else if(oper == 'edit'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
 			$('#apacthdr_amount').prop('readonly',true);
