@@ -48,7 +48,14 @@ class TestController extends defaultController
 
 
                 if($chgmast->exists()){
-                    DB::table('hisdb.chgmast')
+                    // DB::table('hisdb.chgmast')
+                    //     ->where('compcode','9A')
+                    //     ->where('chgcode',$value->itemcode)
+                    //     ->update([
+                    //         'uom' => $value->uomcode
+                    //     ]);
+
+                    DB::table('hisdb.chgprice')
                         ->where('compcode','9A')
                         ->where('chgcode',$value->itemcode)
                         ->update([
