@@ -42,53 +42,19 @@ class TestController extends defaultController
             $product = $product->get();
 
             foreach ($product as $key => $value) {
-                $stockloc_store = DB::table('material.stockloc')
+                $chgmast = DB::table('hisdb.chgmast')
                                     ->where('compcode','9A')
-                                    ->where('itemcode',$value->itemcode)
-                                    ->where('uomcode',$value->uomcode)
-                                    ->where('unit','NORTHA')
-                                    ->where('deptcode','STORE')
-                                    ->where('year','2022');
+                                    ->where('chgcode',$value->itemcode);
 
 
-                $stockloc_PHAR = DB::table('material.stockloc')
-                                    ->where('compcode','9A')
-                                    ->where('itemcode',$value->itemcode)
-                                    ->where('uomcode',$value->uomcode)
-                                    ->where('unit','NORTHA')
-                                    ->where('deptcode','PHAR')
-                                    ->where('year','2022');
-
-
-                if(!$stockloc_store->exists()){
-                    DB::table('material.stockloc')
-                        ->insert([
-                            'compcode' => '9A',
-                            'unit' => 'NORTHA',
-                            'deptcode' => 'STORE',
-                            'itemcode' => $value->itemcode,
-                            'uomcode' => $value->uomcode,
-                            'year' => '2022',
-                            'stocktxntype' => 'TR',
-                            'disptype' =>'DS1',
-                            'recstatus' => 'ACTIVE'
+                if($chgmast->exists()){
+                    DB::table('hisdb.chgmast')
+                        ->where('compcode','9A')
+                        ->where('chgcode',$value->itemcode)
+                        ->update([
+                            'uom' => $value->uomcode
                         ]);
-                }
-
-                if(!$stockloc_PHAR->exists()){
-                    DB::table('material.stockloc')
-                        ->insert([
-                            'compcode' => '9A',
-                            'unit' => 'NORTHA',
-                            'deptcode' => 'PHAR',
-                            'itemcode' => $value->itemcode,
-                            'uomcode' => $value->uomcode,
-                            'year' => '2022',
-                            'stocktxntype' => 'TR',
-                            'disptype' =>'DS1',
-                            'recstatus' => 'ACTIVE'
-                        ]);
-                }                
+                }             
             }
         }
     }
