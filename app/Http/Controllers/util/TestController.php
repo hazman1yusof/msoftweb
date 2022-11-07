@@ -42,9 +42,9 @@ class TestController extends defaultController
             $product = $product->get();
 
             foreach ($product as $key => $value) {
-                $chgmast = DB::table('hisdb.chgmast')
+                $chgmast = DB::table('material.stockexp')
                                     ->where('compcode','9A')
-                                    ->where('chgcode',$value->itemcode);
+                                    ->where('ItemCode',$value->itemcode);
 
 
                 if($chgmast->exists()){
@@ -55,11 +55,11 @@ class TestController extends defaultController
                     //         'uom' => $value->uomcode
                     //     ]);
 
-                    DB::table('hisdb.chgprice')
+                    DB::table('material.stockexp')
                         ->where('compcode','9A')
-                        ->where('chgcode',$value->itemcode)
+                        ->where('ItemCode',$value->itemcode)
                         ->update([
-                            'uom' => $value->uomcode
+                            'UomCode' => $value->uomcode
                         ]);
                 }             
             }
