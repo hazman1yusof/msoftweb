@@ -53,7 +53,7 @@ class SalesOrderDetailController extends defaultController
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
                     ->select('bs.compcode','bs.lineno_','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.recstatus','st.qtyonhand')
-                    ->join('material.stockloc as st', function($join) use ($request){
+                    ->leftjoin('material.stockloc as st', function($join) use ($request){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->on('st.itemcode', '=', 'bs.chggroup');
