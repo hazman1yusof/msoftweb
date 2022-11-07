@@ -36,28 +36,60 @@ class TestController extends defaultController
     public function test(Request $request){
         $product = DB::table('material.product')
                         ->where('compcode','9A')
-                        ->where('itemcode','LIKE','25%');
-
+                        ->where('itemcode','LIKE','65%');
 
         if($product->exists()){
             $product = $product->get();
 
             foreach ($product as $key => $value) {
-                DB::table('material.stockloc')
-                    ->insert([
-                        'compcode' => '9A',
-                        'unit' => 'NORTHA',
-                        'deptcode' => 'STORE',
-                        'itemcode' => $value->itemcode,
-                        'uomcode' => "1'S",
-                        'year' => '2022',
-                        'stocktxntype' => 'TR',
-                        'disptype' =>'DS1',
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
+                $stockloc_store = DB::table('material.stockloc')
+                                    ->where('compcode','9A')
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('uomcode',$value->uomcode)
+                                    ->where('unit','NORTHA')
+                                    ->where('deptcode','STORE')
+                                    ->where('year','2022');
 
-            
+
+                $stockloc_PHAR = DB::table('material.stockloc')
+                                    ->where('compcode','9A')
+                                    ->where('itemcode',$value->itemcode)
+                                    ->where('uomcode',$value->uomcode)
+                                    ->where('unit','NORTHA')
+                                    ->where('deptcode','PHAR')
+                                    ->where('year','2022');
+
+
+                if(!$stockloc_store->exists()){
+                    DB::table('material.stockloc')
+                        ->insert([
+                            'compcode' => '9A',
+                            'unit' => 'NORTHA',
+                            'deptcode' => 'STORE',
+                            'itemcode' => $value->itemcode,
+                            'uomcode' => $value->uomcode,
+                            'year' => '2022',
+                            'stocktxntype' => 'TR',
+                            'disptype' =>'DS1',
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                if(!$stockloc_PHAR->exists()){
+                    DB::table('material.stockloc')
+                        ->insert([
+                            'compcode' => '9A',
+                            'unit' => 'NORTHA',
+                            'deptcode' => 'PHAR',
+                            'itemcode' => $value->itemcode,
+                            'uomcode' => $value->uomcode,
+                            'year' => '2022',
+                            'stocktxntype' => 'TR',
+                            'disptype' =>'DS1',
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }                
+            }
         }
     }
 
