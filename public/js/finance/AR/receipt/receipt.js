@@ -327,8 +327,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'sysdb.sysparam',
 		table_id:'trantype',
-		filterCol:['source','trantype'],
-		filterVal:['PB','RC']
+		filterCol:['source','trantype','compcode'],
+		filterVal:['PB','RC','session.compcode']
 	}
 
 	$("#sysparam").jqGrid({
