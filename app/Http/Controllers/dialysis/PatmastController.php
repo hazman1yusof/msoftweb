@@ -1531,11 +1531,13 @@ class PatmastController extends defaultController
                     $mcrstat = $dialysis_epis_latest->first()->mcrstat;
                     $hdstat = $dialysis_epis_latest->first()->hdstat;
                     $packagecode = $dialysis_epis_latest->first()->packagecode;
+                    $mcrtype = $dialysis_epis_latest->first()->mcrtype;
                 }else{
                     $lineno_ = 1;
                     $mcrstat = 0;
                     $hdstat = 0;
                     $packagecode = 'EPO';
+                    $mcrtype = null;
                 }
 
                 $array_insert = [
@@ -1549,7 +1551,8 @@ class PatmastController extends defaultController
                     'arrival_time'=>Carbon::now("Asia/Kuala_Lumpur"),
                     'packagecode'=>$packagecode,
                     'order'=>0,
-                    'complete'=>0
+                    'complete'=>0,
+                    'mcrtype'=>$mcrtype
                 ];
         
                 $latest_idno = DB::table('hisdb.dialysis_episode')->insertGetId($array_insert);

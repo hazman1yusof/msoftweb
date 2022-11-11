@@ -298,9 +298,9 @@ $(document).ready(function () {
 			$( "#divMrnEpisode" ).hide();
 			urlParam_sys.table_name='sysdb.sysparam';
 			urlParam_sys.table_id='trantype';
-			urlParam_sys.field=['source','trantype','description','compcode'];
-			urlParam_sys.filterCol=['source','trantype','session.compcode'];
-			urlParam_sys.filterVal=['PB','RC'];
+			urlParam_sys.field=['source','trantype','description'];
+			urlParam_sys.filterCol=['source','trantype','compcode'];
+			urlParam_sys.filterVal=['PB','RC','session.compcode'];
 			refreshGrid('#sysparam',urlParam_sys);
 			$('#dbacthdr_trantype').val('');
 			$('#dbacthdr_PymtDescription').val('');
