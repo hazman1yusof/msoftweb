@@ -25,7 +25,7 @@ $(document).ready(function () {
 	};
 
 	var fdl = new faster_detail_load();
-	var err_reroll = new err_reroll('#jqGrid',['chgtype', 'description']);
+	// var err_reroll = new err_reroll('#jqGrid',['chgtype', 'description']);
 		
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var butt1=[{

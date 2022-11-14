@@ -5,7 +5,7 @@ $(document).ready(function () {
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans").jqGrid({
 		datatype: "local",
-		editurl: "./doctornote_transaction_save",
+		editurl: "./dialysis_doctornote_transaction_save",
 		colModel: [
 			{ label: 'id', name: 'id', hidden: true,key:true },
 			{ label: 'chg_code', name: 'chg_code', hidden: true },
@@ -174,7 +174,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./doctornote_transaction_save?"+
+			let editurl = "./dialysis_doctornote_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -222,7 +222,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./doctornote_transaction_save?"+
+			let editurl = "./dialysis_doctornote_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -277,7 +277,7 @@ $(document).ready(function () {
 						    		oper: 'del'
 								}
 
-								$.post( "./doctornote_transaction_save",param, function( data ){
+								$.post( "./dialysis_doctornote_transaction_save",param, function( data ){
 									refreshGrid("#jqGrid_trans", urlParam_trans);
 								},'json');
 					         }
@@ -365,7 +365,7 @@ $(document).ready(function () {
 
 var addmore_onadd = false;
 var urlParam_trans = {
-	url:'./doctornote/table',
+	url:'./dialysis_doctornote/table',
 	isudept:'CLINIC',
 	action: 'get_transaction_table',
 }
@@ -437,7 +437,7 @@ function pop_item_select(type,id,rowid,ontab=false){
 	$('body,#mdl_item_selector').addClass('scrolling');
     
     selecter = $('#tbl_item_select').DataTable( {
-            "ajax": "./doctornote/table?action=" + act,
+            "ajax": "./dialysis_doctornote/table?action=" + act,
             "ordering": false,
             "lengthChange": false,
             "info": true,

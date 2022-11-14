@@ -32,6 +32,9 @@
 
   <body>	
 	<div class="navbar navbar-fixed-top">
+		<a class="navbar-brand" href="#" style="padding: 0px 50px 0px 0px;float: right;">
+			<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
+		</a>
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -40,9 +43,6 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#" style="padding-top: 0">
-				<img src="img/logo.jpg" alt="logo" height="50px" width="auto">
-			</a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 

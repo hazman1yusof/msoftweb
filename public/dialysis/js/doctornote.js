@@ -50,7 +50,7 @@ $(document).ready(function () {
 			saveForm_doctorNote(function(data){
 				emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 				disableForm('#formDoctorNote',['toggle_type']);
-    			docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
+    			docnote_date_tbl.ajax.url( "./dialysis_doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
 
     			});
 			});
@@ -99,7 +99,7 @@ $(document).ready(function () {
 	///////////////////////////////////jqGridAddNotes///////////////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
-		editurl: "/doctornote/form",
+		editurl: "/dialysis_doctornote/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -172,7 +172,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGridAddNotes').jqGrid ('getRowData', rowid);
 
-			let editurl = "/doctornote/form?"+
+			let editurl = "/dialysis_doctornote/form?"+
 				$.param({
     				_token : $('#_token').val(),
 					episno:$('#episno_doctorNote_past').val(),
@@ -287,7 +287,7 @@ var dialog_icd = new ordialog(
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 		],
 		urlParam: {
-			url : "doctornote/table",
+			url : "dialysis_doctornote/table",
 			filterCol:['sp.compcode'],
 			filterVal:['session.compcode'],
 		},
@@ -310,7 +310,7 @@ var dialog_icd = new ordialog(
 	},{
 		title:"Select ICD",
 		open: function(){
-			dialog_icd.urlParam.url = "doctornote/table";
+			dialog_icd.urlParam.url = "dialysis_doctornote/table";
 			dialog_icd.urlParam.action = "dialog_icd";
 			dialog_icd.urlParam.table_name = ['hisdb.diagtab AS dt','sysdb.sysparam AS sp'];
 			dialog_icd.urlParam.join_type = ['LEFT JOIN'];
@@ -428,7 +428,7 @@ function populate_currDoctorNote(obj){
 
     button_state_doctorNote('add');
 
-    docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+    docnote_date_tbl.ajax.url( "./dialysis_doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		// $('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -539,7 +539,7 @@ function saveForm_doctorNote(callback){
         }).get()
 	);
 
-    $.post( "./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./dialysis_doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').done(function(data) {
     	loader_doctornote(false);
@@ -588,7 +588,7 @@ $('#tab_doctornote').on('hide.bs.collapse', function () {
 $("input[name=toggle_type]").on('change', function () {
 	event.stopPropagation();
 	on_toggling_curr_past(curr_obj);
-	docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+	docnote_date_tbl.ajax.url( "./dialysis_doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote']);
 		// $('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -617,7 +617,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
     $('#arrival_date').val(data.date);
 
     loader_doctornote(true);
-    $.get( "./doctornote/table?"+$.param(doctornote_docnote), function( data ) {
+    $.get( "./dialysis_doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
 	},'json').done(function(data) {
     	loader_doctornote(false);
@@ -642,7 +642,7 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	});
 
 	var urlParam_trans = {
-		url:'./doctornote/table',
+		url:'./dialysis_doctornote/table',
 		isudept:'CLINIC',
 		action: 'get_transaction_table',
 		mrn: data.mrn,

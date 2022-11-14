@@ -50,7 +50,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_doctornote',
-		url: $('#doctornote_route').val(),
+		url: './ptcare_doctornote/table',
 		filterVal : [moment().format("YYYY-MM-DD")]
 	}
 

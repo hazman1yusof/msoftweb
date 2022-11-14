@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/','HomeController@index')->name('home');
-Route::get('/home','HomeController@ptcare');
-Route::get('/ptcare','HomeController@index')->name('home_ofis');
+Route::get('/ptcare','HomeController@ptcare');
+Route::get('/home','HomeController@dialysis');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
@@ -936,9 +936,63 @@ Route::get('/ptcare_emergency','patientcare\EmergencyController@index');
 Route::get('/ptcare_dashboard','patientcare\eisController@dashboard');
 Route::get('/ptcare_eis','patientcare\eisController@show')->name('eis');
 Route::get('/ptcare_reveis','patientcare\eisController@reveis')->name('reveis');
-Route::get('/ptcare_pivot_get', "patientcare\eisController@table");
+Route::get('/ptcare_pivot_get', 'patientcare\eisController@table');
 
 Route::get('/ptcare_doctornote','patientcare\DoctornoteController@index');
-Route::get('/ptcare_doctornote/table','patientcare\DoctornoteController@table')->name('doctornote_route');
+Route::get('/ptcare_doctornote/table','patientcare\DoctornoteController@table');
 Route::post('/ptcare_doctornote/form','patientcare\DoctornoteController@form');
 Route::post('/ptcare_doctornote_transaction_save', "patientcare\DoctornoteController@transaction_save");
+
+Route::get('/ptcare_dieteticCareNotes','patientcare\DieteticCareNotesController@show');
+Route::get('/ptcare_dieteticCareNotes/table','patientcare\DieteticCareNotesController@table');
+Route::post('/ptcare_dieteticCareNotes/form','patientcare\DieteticCareNotesController@form');
+
+Route::get('/ptcare_phys','patientcare\physioController@show');
+Route::get('/ptcare_phys/table','patientcare\physioController@table');
+Route::post('/ptcare_phys/form','patientcare\physioController@form');
+
+Route::get('/ptcare_nursing','patientcare\NursingController@show');
+Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
+Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
+
+//dari dialysis
+
+Route::get('/dialysis_pat_mast','dialysis\PatmastController@show');
+Route::get('/dialysis_pat_mast/get_entry','dialysis\PatmastController@get_entry');
+Route::get('/dialysis_pat_mast/post_entry','dialysis\PatmastController@post_entry');
+Route::post('/dialysis_pat_mast/post_entry','dialysis\PatmastController@post_entry');
+Route::post('/dialysis_pat_mast/save_patient','dialysis\PatmastController@save_patient');
+Route::post('/dialysis_pat_mast/save_episode','dialysis\PatmastController@save_episode');
+Route::post('/dialysis_pat_mast/save_adm','dialysis\PatmastController@save_adm');
+Route::post('/dialysis_pat_mast/save_gl','dialysis\PatmastController@save_gl');
+Route::post('/dialysis_pat_mast/new_occup_form','dialysis\PatmastController@new_occup_form');
+Route::post('/dialysis_pat_mast/new_title_form','dialysis\PatmastController@new_title_form');
+Route::post('/dialysis_pat_mast/new_areacode_form','dialysis\PatmastController@new_areacode_form');
+Route::post('/dialysis_pat_mast/new_relationship_form','dialysis\PatmastController@new_relationship_form');
+Route::post('/dialysis_pat_mast/auto_save','dialysis\PatmastController@auto_save');
+
+Route::get('/dialysis_nursing','dialysis\NursingController@show');
+Route::get('/dialysis_nursing/table','dialysis\NursingController@table');
+Route::post('/dialysis_nursing/form','dialysis\NursingController@form');
+
+Route::get('/dialysis_doctornote','dialysis\DoctornoteController@index');
+Route::get('/dialysis_doctornote/table','dialysis\DoctornoteController@table');
+Route::post('/dialysis_doctornote/form','dialysis\DoctornoteController@form');
+Route::post('/dialysis_doctornote_transaction_save', "dialysis\DoctornoteController@transaction_save");
+
+Route::get('/dialysis_dialysis','dialysis\DialysisController@index');
+Route::get('/dialysis_dialysis/table','dialysis\DialysisController@table');
+Route::post('/dialysis_dialysis/form','dialysis\DialysisController@form');
+Route::get('/dialysis_dialysis_event','dialysis\DialysisController@dialysis_event');
+Route::post('/dialysis_change_status', "dialysis\DialysisController@change_status");
+Route::post('/dialysis_save_dialysis', "dialysis\DialysisController@save_dialysis");
+Route::post('/dialysis_save_dialysis_completed', "dialysis\DialysisController@save_dialysis_completed");
+Route::post('/dialysis_save_epis_dialysis', "dialysis\DialysisController@save_epis_dialysis");
+Route::get('/dialysis_get_data_dialysis', "dialysis\DialysisController@get_data_dialysis");
+Route::post('/dialysis_dialysis_transaction_save', "dialysis\DialysisController@dialysis_transaction_save");
+Route::get('/dialysis_check_pt_mode', "dialysis\DialysisController@check_pt_mode");
+Route::get('/dialysis_verifyuser_dialysis', "dialysis\DialysisController@verifyuser_dialysis");
+Route::get('/dialysis_verifyuser_admin_dialysis', "dialysis\DialysisController@verifyuser_admin_dialysis");
+
+Route::get('/dialysis_enquiry','dialysis\enquiryController@show');
+Route::get('/dialysis_enquiry/table','dialysis\enquiryController@table');

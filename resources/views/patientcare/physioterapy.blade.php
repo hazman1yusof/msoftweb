@@ -279,22 +279,22 @@
 								<div class="ui four cards" >
 									<a class="ui card bodydia" data-type='BF'>
 										<div class="image">
-									      <img src="{{ asset('img/bodydia1.png') }}" >
+									      <img src="{{ asset('patientcare/img/bodydia1.png') }}" >
 									    </div>
 									</a>
 									<a class="ui card bodydia" data-type='BR'>
 										<div class="image">
-									      <img src="{{ asset('img/bodydia2.png') }}">
+									      <img src="{{ asset('patientcare/img/bodydia2.png') }}">
 									    </div>
 									</a>
 									<a class="ui card bodydia" data-type='BL'>
 										<div class="image">
-									      <img src="{{ asset('img/bodydia3.png') }}">
+									      <img src="{{ asset('patientcare/img/bodydia3.png') }}">
 									    </div>
 									</a>
 									<a class="ui card bodydia" data-type='BB'>
 										<div class="image">
-									      <img src="{{ asset('img/bodydia4.png') }}">
+									      <img src="{{ asset('patientcare/img/bodydia4.png') }}">
 									    </div>
 									</a>
 								</div>

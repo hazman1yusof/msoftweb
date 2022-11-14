@@ -83,7 +83,7 @@ $(document).ready(function () {
 			saveForm_dieteticCareNotes_fup(function(){
 				$("#cancel_dieteticCareNotes_fup").data('oper','edit_fup');
 				$("#cancel_dieteticCareNotes_fup").click();
-				dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
+				dietetic_date_tbl.ajax.url( "./ptcare_dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
 					emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
 					// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
 			    });
@@ -185,7 +185,7 @@ $(document).ready(function () {
 	    	date:data.date
 	    };
 
-	    $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	    $.post( "./ptcare_dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj), function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        alert('there is an error');
@@ -385,7 +385,7 @@ function populate_dieteticCareNotes_currpt(obj){
     	episno:obj.Episno
     };
 
-    $.post( "./dieteticCareNotes/form?"+$.param(urlParam), $.param(postobj), function( data ) {
+    $.post( "./ptcare_dieteticCareNotes/form?"+$.param(urlParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -406,7 +406,7 @@ function populate_dieteticCareNotes_currpt(obj){
 		episno:$("#episno_dieteticCareNotes_fup").val(),
 	}
 
-    dietetic_date_tbl.ajax.url( "./dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
+    dietetic_date_tbl.ajax.url( "./ptcare_dieteticCareNotes/table?"+$.param(urlparam_dietetic_date_tbl) ).load(function(data){
 		emptyFormdata_div("#formDieteticCareNotes_fup",['#mrn_dieteticCareNotes_fup','#episno_dieteticCareNotes_fup']);
 		// $('#dietetic_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
@@ -470,7 +470,7 @@ function saveForm_dieteticCareNotes(callback){
         }).get()
 	);
 
-    $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./ptcare_dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -522,7 +522,7 @@ function saveForm_dieteticCareNotes_fup(callback){
         }).get()
 	);
 
-    $.post( "./dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./ptcare_dieteticCareNotes/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

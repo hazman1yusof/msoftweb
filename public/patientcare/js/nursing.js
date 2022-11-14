@@ -335,7 +335,7 @@ $(document).ready(function () {
 						action: 'nursing_save',
 						idno: selrowData('#jqGridExamTriage').idno,
 					}
-					$.post( "./nursing/form?"+$.param(param),{oper:'del'}, function( data ){
+					$.post( "./ptcare_nursing/form?"+$.param(param),{oper:'del'}, function( data ){
 					}).fail(function (data) {
 						//////////////////errorText(dialog,data.responseText);
 					}).done(function (data) {
@@ -589,7 +589,7 @@ $(document).ready(function () {
 			    	description : $('#descriptions').val(),
 			    };
 
-				$.post( './nursing/form?'+$.param(saveParam), postobj , function( data ) {
+				$.post( './ptcare_nursing/form?'+$.param(saveParam), postobj , function( data ) {
 		
 				}).fail(function(data) {
 				}).done(function(data){
@@ -637,7 +637,7 @@ $(document).ready(function () {
 	    	episno:data.episno
 	    };
 
-	    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	    $.post( "./ptcare_nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        alert('there is an error');
@@ -779,7 +779,7 @@ function populate_triage_currpt(obj){
     	episno:obj.Episno
     };
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./ptcare_nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -888,7 +888,7 @@ function saveForm_ti(callback){
     //     }).get()
     // );
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./ptcare_nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -947,7 +947,7 @@ function saveForm_patmast(callback){
     //     }).get()
     // );
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./ptcare_nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

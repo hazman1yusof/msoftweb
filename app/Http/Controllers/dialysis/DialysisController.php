@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\dialysis;
 
 use Illuminate\Http\Request;
 use stdClass;
@@ -9,6 +9,7 @@ use DB;
 use Carbon\Carbon;
 use Auth;
 use Session;
+use App\Http\Controllers\dialysis\Controller;
 
 class DialysisController extends Controller
 {
@@ -33,7 +34,7 @@ class DialysisController extends Controller
             }
         }
 
-        return view('dialysis',compact('centers'));
+        return view('dialysis.dialysis',compact('centers'));
     }
 
     public function table(Request $request)

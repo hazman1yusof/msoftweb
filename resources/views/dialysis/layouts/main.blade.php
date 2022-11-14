@@ -6,7 +6,7 @@
 
         <title>@yield('title')</title>
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/css/main.css') }}">
         @yield('stylesheet')
 
         <style type="text/css">
@@ -18,7 +18,7 @@
 
             @if (Request::is('login'))
                 body{
-                  background-image:url( {{ asset('img/picombg.webp') }} ) !important;
+                  background-image:url( {{ asset('dialysis/img/picombg.webp') }} ) !important;
                   background-repeat: no-repeat !important;
                   background-size: cover !important;
                   background-position: center !important;
@@ -107,28 +107,17 @@
         <div class="preloader">
             <div class="cssload-speeding-wheel"></div>
         </div>
-        <input type="hidden" id="util_val" value="{{route('util_val')}}">
-        <input type="hidden" id="util_tab" value="{{route('util_tab')}}">
-        <input type="hidden" id="navbar_hide" value="{{Session::get('navbar')}}">
-
-        @if(!Request::is('login'))
-            @if(!Request::is('upload'))
-                @include('layouts.navs')
-            @endif
-        @endif
         <div class="pusher container_sem" id="content">
             @yield('content')
         </div>
     </body>
-
-
     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="{{ asset('assets/moment.js') }}"></script>
+    <script src="{{ asset('dialysis/assets/moment.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
-    <script src="{{ asset('js/utility.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('dialysis/js/utility.js') }}"></script>
+    <script src="{{ asset('dialysis/js/main.js') }}"></script>
 
     <script type="text/javascript">
         $( document ).ready(function() {

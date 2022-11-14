@@ -13,8 +13,8 @@ $(document).ready(function () {
 			url: 'util/get_value_default',
 			table_name:'debtor.paymode',
 			table_id:'paymode',
-			filterCol:['paytype','source'],
-			filterVal:[paytype,'AR'],
+			filterCol:['paytype','source','compcode'],
+			filterVal:[paytype,'AR','session.compcode'],
 		}
 
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -299,8 +299,8 @@ $(document).ready(function () {
 			urlParam_sys.table_name='sysdb.sysparam';
 			urlParam_sys.table_id='trantype';
 			urlParam_sys.field=['source','trantype','description'];
-			urlParam_sys.filterCol=['source','trantype'];
-			urlParam_sys.filterVal=['PB','RC'];
+			urlParam_sys.filterCol=['source','trantype','compcode'];
+			urlParam_sys.filterVal=['PB','RC','session.compcode'];
 			refreshGrid('#sysparam',urlParam_sys);
 			$('#dbacthdr_trantype').val('');
 			$('#dbacthdr_PymtDescription').val('');
@@ -311,8 +311,8 @@ $(document).ready(function () {
 			urlParam_sys.table_name='debtor.hdrtypmst';
 			urlParam_sys.table_id='hdrtype';
 			urlParam_sys.field=['source','trantype','description','hdrtype','updpayername','depccode','depglacc','updepisode'];
-			urlParam_sys.filterCol=null;
-			urlParam_sys.filterVal=null;
+			urlParam_sys.filterCol=['compcode'];
+			urlParam_sys.filterVal=['session.compcode'];
 			refreshGrid('#sysparam',urlParam_sys);
 			$('#dbacthdr_trantype').val('');
 			$('#dbacthdr_PymtDescription').val('');
@@ -327,8 +327,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'sysdb.sysparam',
 		table_id:'trantype',
-		filterCol:['source','trantype'],
-		filterVal:['PB','RC']
+		filterCol:['source','trantype','compcode'],
+		filterVal:['PB','RC','session.compcode']
 	}
 
 	$("#sysparam").jqGrid({
@@ -399,8 +399,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
-		filterCol:['source','paytype'],
-		filterVal:['AR','BANK'],
+		filterCol:['source','paytype','compcode'],
+		filterVal:['AR','BANK','session.compcode'],
 	}
 	$("#g_paymodebank").jqGrid({
 		datatype: "local",
@@ -443,8 +443,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
-		filterCol:['source','paytype'],
-		filterVal:['AR','CARD'],
+		filterCol:['source','paytype','compcode'],
+		filterVal:['AR','CARD','session.compcode'],
 	}
 	$("#g_paymodecard").jqGrid({
 		datatype: "local",
@@ -598,7 +598,6 @@ $(document).ready(function () {
 		saveParam.oper=oper;
 
 		let serializedForm = trimmall(form,uppercase);
-
 		$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(paymentform) , function( data ) {
 			
 		}).fail(function(data) {
@@ -903,14 +902,15 @@ $(document).ready(function () {
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
+			$("#dialogForm").dialog( "open" );
 			if(selform!=''){
-				$(".nav-tabs a[form='"+selform+"']").tab('show');
-				disabledPill();
-				populateFormdata("#jqGrid",'',selform,selRowId,'view');
+				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
+				// disabledPill();
+				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view');
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  

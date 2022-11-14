@@ -289,7 +289,7 @@
                     <div class="ui segments">
                         <div class="ui secondary segment">ACTIVITIES OF DAILY LIVING</div>
                         <div class="ui segment">
-                            @include('nursing_aodl')
+                            @include('dialysis.nursing_aodl')
                         </div>
                     </div>
                 </div>

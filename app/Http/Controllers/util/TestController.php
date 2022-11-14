@@ -36,28 +36,33 @@ class TestController extends defaultController
     public function test(Request $request){
         $product = DB::table('material.product')
                         ->where('compcode','9A')
-                        ->where('itemcode','LIKE','25%');
-
+                        ->where('itemcode','LIKE','65%');
 
         if($product->exists()){
             $product = $product->get();
 
             foreach ($product as $key => $value) {
-                DB::table('material.stockloc')
-                    ->insert([
-                        'compcode' => '9A',
-                        'unit' => 'NORTHA',
-                        'deptcode' => 'STORE',
-                        'itemcode' => $value->itemcode,
-                        'uomcode' => "1'S",
-                        'year' => '2022',
-                        'stocktxntype' => 'TR',
-                        'disptype' =>'DS1',
-                        'recstatus' => 'ACTIVE'
-                    ]);
-            }
+                $chgmast = DB::table('material.stockexp')
+                                    ->where('compcode','9A')
+                                    ->where('ItemCode',$value->itemcode);
 
-            
+
+                if($chgmast->exists()){
+                    // DB::table('hisdb.chgmast')
+                    //     ->where('compcode','9A')
+                    //     ->where('chgcode',$value->itemcode)
+                    //     ->update([
+                    //         'uom' => $value->uomcode
+                    //     ]);
+
+                    DB::table('material.stockexp')
+                        ->where('compcode','9A')
+                        ->where('ItemCode',$value->itemcode)
+                        ->update([
+                            'UomCode' => $value->uomcode
+                        ]);
+                }             
+            }
         }
     }
 

@@ -53,7 +53,7 @@ class SalesOrderDetailController extends defaultController
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
                     ->select('bs.compcode','bs.lineno_','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.recstatus','st.qtyonhand')
-                    ->join('material.stockloc as st', function($join) use ($request){
+                    ->leftjoin('material.stockloc as st', function($join) use ($request){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->on('st.itemcode', '=', 'bs.chggroup');
@@ -114,7 +114,7 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'));
                         });
 
-        $table = $table->join('material.stockloc as st', function($join) use ($deptcode){
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
@@ -123,7 +123,7 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
                         });
 
-        $table = $table->join('hisdb.taxmast as tm', function($join){
+        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.optax', '=', 'tm.taxcode');
                         });
@@ -136,7 +136,7 @@ class SalesOrderDetailController extends defaultController
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
 
-                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
                         if($found !== false){

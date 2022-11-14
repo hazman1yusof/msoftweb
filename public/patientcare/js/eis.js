@@ -108,7 +108,7 @@ $(document).ready(function() {
         // $.getJSON("pivot_get?action=get_json_pivot_epis&datetype="+type+"&dbtosearch="+dbtosearch, function(mps) {
         //     loadDB(db,mps.data,dbtosearch,dbnottosearch);
         // });
-        $.get( "ptcare_pivot_get?action=get_json_pivot_epis&datetype="+type+"&dbtosearch="+dbtosearch, function() {
+        $.get( "./ptcare_pivot_get?action=get_json_pivot_epis&datetype="+type+"&dbtosearch="+dbtosearch, function() {
           
         },"json").done(function(mps){
             loadDB(db,mps.data,dbtosearch,dbnottosearch);

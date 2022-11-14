@@ -50,7 +50,7 @@ $(document).ready(function () {
 					episno:$("#episno_phys").val(),
 				}
 
-			    phys_date_tbl.ajax.url( "./phys/table?"+$.param(dateParam_phys) ).load(function(data){
+			    phys_date_tbl.ajax.url( "./ptcare_phys/table?"+$.param(dateParam_phys) ).load(function(data){
 					// emptyFormdata_div("#formphys",['#mrn_phys','#episno_phys']);
 					// $('#phys_date_tbl tbody tr:eq(0)').click();	//to select first row
 			    });
@@ -125,7 +125,7 @@ function saveForm_phys_ncase(callback){
         }).get()
     );
 
-    $.post( "./phys/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values)+'&'+$.param(values2) , function( data ) {
+    $.post( "./ptcare_phys/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values)+'&'+$.param(values2) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -220,7 +220,7 @@ function populate_phys_ncase(obj){
 		mrn:obj.MRN,
     };
 
-	$.post( "./phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function( data ) {
+	$.post( "./ptcare_phys/form?"+$.param(phys_ncase_urlparam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');

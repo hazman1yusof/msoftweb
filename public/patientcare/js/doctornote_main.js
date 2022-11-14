@@ -47,7 +47,7 @@ $(document).ready(function () {
 		eventSources: [
 			{	
 				id: 'doctornote_event',
-				url: './doctornote/table',
+				url: './ptcare_doctornote/table',
 				type: 'GET',
 				data: {
 					type: 'apptbook',
@@ -61,7 +61,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_doctornote',
-		url: $('#doctornote_route').val(),
+		url: './ptcare_doctornote/table',
 		filterVal : [moment().format("YYYY-MM-DD")]
 	}
 
@@ -431,7 +431,7 @@ $(document).ready(function () {
 									episno: rowdata.episno,
 								}
 
-								$.post( "./change_status?"+$.param(param),{}, function( data ){
+								$.post( "./ptcare_change_status?"+$.param(param),{}, function( data ){
 									if(data.success == 'success'){
 										toastr.success('Patient status completed',{timeOut: 1000})
 										refreshGrid("#jqGrid", urlParam);

@@ -72,6 +72,7 @@ class SalesOrderController extends defaultController
                         'db.upddate AS db_upddate'
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
+                    ->where('db.compcode','=',session('compcode'))
                     ->where('db.source','=','PB')
                     ->where('db.trantype','=','IN');
 

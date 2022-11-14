@@ -116,7 +116,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqGridAddNotesTriage ///////////////////////////////////////////////////
 	$("#jqGridAddNotesTriage").jqGrid({
 		datatype: "local",
-		editurl: "./nursing/form",
+		editurl: "./dialysis_nursing/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -189,7 +189,7 @@ $(document).ready(function () {
 			let data = $('#jqGridAddNotesTriage').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			let editurl = "./nursing/form?"+
+			let editurl = "./dialysis_nursing/form?"+
 				$.param({
 					episno:$('#episno_ti').val(),
 					mrn:$('#mrn_ti').val(),
@@ -350,7 +350,7 @@ $(document).ready(function () {
 			    	description : $('#descriptions').val(),
 			    };
 
-				$.post( './nursing/form?'+$.param(saveParam), postobj , function( data ) {
+				$.post( './dialysis_nursing/form?'+$.param(saveParam), postobj , function( data ) {
 		
 				}).fail(function(data) {
 				}).done(function(data){
@@ -400,7 +400,7 @@ $(document).ready(function () {
 	    };
 
 	    loader_nursing(true);
-	    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+	    $.post( "./dialysis_nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        alert('there is an error');
@@ -465,7 +465,7 @@ var nursing_date_tbl = $('#nursing_date_tbl').DataTable({
 $("input[name=toggle_type_nurse]").on('change', function () {
 	event.stopPropagation();
 	on_toggling_curr_past_nurse();
-	nursing_date_tbl.ajax.url( "./nursing/table?"+$.param(dateParam_nurse) ).load(function(data){
+	nursing_date_tbl.ajax.url( "./dialysis_nursing/table?"+$.param(dateParam_nurse) ).load(function(data){
 		emptyFormdata(errorField,"#formTriageInfo",['#mrn_ti','#episno_ti']);
     });
 	$("#jqGridAddNotes").jqGrid('setGridWidth', Math.floor($("#jqGridAddNotes_c")[0].offsetWidth-$("#jqGridAddNotes_c")[0].offsetLeft-25));
@@ -568,7 +568,7 @@ function populate_triage_currpt(obj){
     button_state_ti('add');
     on_toggling_curr_past_nurse();
 
-    nursing_date_tbl.ajax.url( "./nursing/table?"+$.param(dateParam_nurse) ).load(function(data){
+    nursing_date_tbl.ajax.url( "./dialysis_nursing/table?"+$.param(dateParam_nurse) ).load(function(data){
 		emptyFormdata(errorField,"#formTriageInfo",['#mrn_ti','#episno_ti']);
     });
 	
@@ -659,7 +659,7 @@ function saveForm_ti(callback){
     //     }).get()
     // );
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./dialysis_nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');
@@ -720,7 +720,7 @@ function saveForm_patmast(callback){
     //     }).get()
     // );
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./dialysis_nursing/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

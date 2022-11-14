@@ -3,7 +3,7 @@ $(document).ready(function () {
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans").jqGrid({
 		datatype: "local",
-		editurl: "./doctornote_transaction_save",
+		editurl: "./ptcare_doctornote_transaction_save",
 		colModel: [
 			{ label: 'id', name: 'id', hidden: true,key:true },
 			{ label: 'chg_code', name: 'chg_code', hidden: true },
@@ -265,7 +265,7 @@ $(document).ready(function () {
 						    		oper: 'del'
 								}
 
-								$.post( "./doctornote_transaction_save",param, function( data ){
+								$.post( "./ptcare_doctornote_transaction_save",param, function( data ){
 									refreshGrid("#jqGrid_trans", urlParam_trans);
 								},'json');
 					         }

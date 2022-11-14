@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\dialysis;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use stdClass;
@@ -13,15 +13,6 @@ class defaultController extends Controller{
 
     public function __construct(){
         
-    }
-    
-
-    public function get_maiwp_center_dept(){
-        $centers = DB::table('sysdb.department')
-                        ->select('deptcode','description')
-                        ->where('compcode','=',session('compcode'))
-                        ->get();
-        return $centers;
     }
 
     public function default_duplicate($table,$duplicateCode,$duplicateValue){//guna table id, tak fixpost

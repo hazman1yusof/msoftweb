@@ -132,6 +132,7 @@ class ReceiptController extends defaultController
 
     public function get_debtorcode_outamount(Request $request){
         $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
                         ->where('payercode',$request->payercode)
                         ->where('source','PB')
                         ->where('recstatus','POSTED')

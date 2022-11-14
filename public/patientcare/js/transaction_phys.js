@@ -10,7 +10,7 @@ $(document).ready(function () {
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans_phys").jqGrid({
 		datatype: "local",
-		editurl: "./doctornote_transaction_save",
+		editurl: "./ptcare_doctornote_transaction_save",
 		colModel: [
 			{ label: 'id', name: 'id', hidden: true,key:true },
 			{ label: 'chg_code', name: 'chg_code', hidden: true },
@@ -109,7 +109,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans_phys');
 
-			let editurl = "./doctornote_transaction_save?"+
+			let editurl = "./ptcare_doctornote_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -156,7 +156,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans_phys');
 
-			let editurl = "./doctornote_transaction_save?"+
+			let editurl = "./ptcare_doctornote_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -210,7 +210,7 @@ $(document).ready(function () {
 						    		oper: 'del'
 								}
 
-								$.post( "./doctornote_transaction_save",param, function( data ){
+								$.post( "./ptcare_doctornote_transaction_save",param, function( data ){
 									addmore_onadd_phys = false;
 									refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
 								},'json');
