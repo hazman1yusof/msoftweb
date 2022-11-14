@@ -616,6 +616,7 @@
 </div>
 
 	<!-- @include('layouts.allocate_part') -->
+	@include('layouts.till_part')
 
 @endsection
 

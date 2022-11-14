@@ -598,7 +598,6 @@ $(document).ready(function () {
 		saveParam.oper=oper;
 
 		let serializedForm = trimmall(form,uppercase);
-
 		$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(paymentform) , function( data ) {
 			
 		}).fail(function(data) {
@@ -904,14 +903,15 @@ $(document).ready(function () {
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
+			$("#dialogForm").dialog( "open" );
 			if(selform!=''){
-				$(".nav-tabs a[form='"+selform+"']").tab('show');
-				disabledPill();
-				populateFormdata("#jqGrid",'',selform,selRowId,'view');
+				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
+				// disabledPill();
+				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view');
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  

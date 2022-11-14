@@ -102,7 +102,7 @@
 	// }
 
 	$( "#tilldet" ).dialog({
-		autoOpen: true,
+		autoOpen: false,
 		width: 5/10 * $(window).width(),
 		modal: true,
 		open: function() { 
@@ -146,6 +146,7 @@ function checkifuserlogin(callback){
 		
 	},'json').done(function(data) {
 		if(data.rows.length == 0){
+			$( "#tilldet" ).dialog('open');
 			if (callback !== undefined) {
 				callback(data);
 			}

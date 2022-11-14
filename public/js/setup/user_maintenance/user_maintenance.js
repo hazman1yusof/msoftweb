@@ -111,7 +111,7 @@ $("body").show();
             {label:'Username',name:'username',width:90,canSearch:true, checked:true},
             {label:'Name',name:'name',width:300,canSearch:true},
             {label:'Group',name:'groupid',width:90,canSearch:true}, 
-            {label:'Department',name:'deptcode',width:100}, 
+            {label:'Department',name:'dept',width:100}, 
             {label:'Cashier',name:'cashier', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
             {label:'Billing',name:'billing', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
             {label:'Nurse',name:'nurse', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
@@ -278,7 +278,7 @@ $("body").show();
 	dialog_txndept.makedialog();
 
 	var dialog_deptcode = new ordialog(
-		'deptcode','sysdb.department','#deptcode',errorField,
+		'dept','sysdb.department','#dept',errorField,
 		{	colModel:[
 				{label:'Department ID',name:'deptcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
@@ -301,8 +301,8 @@ $("body").show();
 		},{
 			title:"Select Transaction Department",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol=['recstatus'],
-				dialog_deptcode.urlParam.filterVal=['ACTIVE']
+				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);

@@ -205,6 +205,7 @@ Route::post('/compcode/form','setup\CompcodeController@form');
 Route::get('/doctor','setup\DoctorController@show');
 Route::get('/doctor/table','setup\DoctorController@table');
 Route::post('/doctor/form','setup\DoctorController@form');
+Route::post('/doctorContribution/form','setup\DoctorContributionController@form');
 
 //// receipt AR setup page ///
 Route::get('/receipt','finance\ReceiptController@show');
