@@ -45,6 +45,8 @@ class ReceiptController extends defaultController
                 // return $this->defaultEdit($request);
             case 'del':
                 // return $this->defaultDel($request);
+            case 'allocate':
+                return $this->allocate($request);
             default:
                 return 'error happen..';
         }
@@ -153,6 +155,59 @@ class ReceiptController extends defaultController
 
 
         return json_encode($responce);
+    }
+
+    public function allocate(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            $amt_paid = 0;
+            foreach ($request->allo as $key => $value) {
+                $allo = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->whereIn('trantype',['IN','DN'])
+                            ->where('debtorcode',$request->debtorcode)
+                            ->where('auditno',$value['obj']['auditno'])
+                            ->where('outamount','>',0);
+
+                if($allo->exists()){
+                    $allo->update([
+                        'outamount' => $value['obj']['amtbal']
+                    ]);
+
+                    $amt_paid+=floatval($value['obj']['amtpaid']);
+                }
+            }
+
+            if($amt_paid > 0){
+                
+                $receipt = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype','RC')
+                            ->where('payercode',$request->payercode)
+                            ->where('auditno',$request->auditno);
+
+                if($receipt->exists()){
+
+                    $receipt_first = $receipt->first();
+                    
+                    $out_amt = floatval($receipt_first->outamount) - floatval($amt_paid);
+
+                    $receipt->update([
+                        'outamount' => $out_amt
+                    ]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage().$e, 500);
+        }
     }
 }
 

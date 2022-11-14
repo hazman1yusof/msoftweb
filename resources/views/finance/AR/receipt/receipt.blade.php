@@ -545,6 +545,7 @@
 
 <div id="allocateDialog" title="Create Allocation">
 	<form id='formallo'>
+		<input id="AlloAuditno" type="hidden" class="form-control input-sm" readonly>
 		<div class='col-md-9'>
 			<div class="col-md-6">
 				<label class="control-label">Document Type</label>

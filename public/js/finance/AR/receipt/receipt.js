@@ -810,9 +810,8 @@ $(document).ready(function () {
 			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			//{label: 'Payer Code', name: 'dbacthdr_payercode',width: 70}, //tunjuk
 			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true},//tunjuk
+			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},//tunjuk
 			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
@@ -1083,7 +1082,7 @@ $(document).ready(function () {
 			$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
 			grid='#jqGrid';
 			$('#AlloDtype').val(selrowData(grid).dbacthdr_trantype);
-			$('#AlloDtype2').html(selrowData(grid).dbacthdr_trantype);
+			$('#AlloDtype2').html(selrowData(grid).dbacthdr_PymtDescription);
 			$('#AlloDno').val(selrowData(grid).dbacthdr_recptno);
 			$('#AlloDebtor').val(selrowData(grid).dbacthdr_payercode);
 			$('#AlloDebtor2').html(selrowData(grid).dbacthdr_payername);
@@ -1093,6 +1092,7 @@ $(document).ready(function () {
 			$('#AlloOutamt').val(selrowData(grid).dbacthdr_outamount);
 			$('#AlloBalance').val(selrowData(grid).dbacthdr_outamount);
 			$('#AlloTotal').val(0);
+			$('#AlloAuditno').val(selrowData(grid).dbacthdr_auditno);
 			urlParamAllo.filterVal[0]=selrowData(grid).dbacthdr_payercode;
 			refreshGrid("#gridAllo",urlParamAllo);
 			parent_close_disabled(true);
@@ -1105,7 +1105,28 @@ $(document).ready(function () {
 		buttons:
 			[{
 				text: "Save",click: function() {
-					
+					console.log(myallocation.arrayAllo)
+					var obj={
+						allo:myallocation.arrayAllo
+					}
+
+					var saveParam={
+						action:'receipt_save',
+						url: 'receipt/form',
+						oper:'allocate',
+						debtorcode:$('#AlloDebtor').val(),
+						payercode:$('#AlloPayer').val(),
+						_token:$('#csrf_token').val(),
+						auditno:$('#AlloAuditno').val()
+					}
+
+					$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
+			
+					}).fail(function(data) {
+					}).success(function(data){
+						refreshGrid('#jqGrid', urlParam);
+						$('#allocateDialog').dialog('close');
+					});
 				}
 			},{
 				text: "Cancel",click: function() {
