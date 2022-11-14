@@ -1159,7 +1159,6 @@ $(document).ready(function () {
 				if(!myallocation.alloInArray(idno)){
 					myallocation.addAllo(idno,' ',0);
 				}
-				console.log(myallocation.arrayAllo);
 			});
 
 			delay(function(){
