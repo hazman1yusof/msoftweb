@@ -67,7 +67,13 @@ class arenquiryController extends defaultController
                         'db.adduser AS db_adduser',
                         'db.adddate AS db_adddate',
                         'db.upduser AS db_upduser',
-                        'db.upddate AS db_upddate'
+                        'db.upddate AS db_upddate',
+                        'db.currency AS db_currency',
+                        'db.PymtDescription AS db_PymtDescription',
+                        'db.paytype AS db_paytype',
+                        'db.tillcode AS db_tillcode',
+                        'db.tillno AS db_tillno',
+                        'db.recptno AS db_recptno'
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.source','=','PB');

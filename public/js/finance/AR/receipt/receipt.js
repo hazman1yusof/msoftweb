@@ -797,7 +797,6 @@ $(document).ready(function () {
 		 colModel: [
 			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
-			{label: 'outamount', name: 'dbacthdr_outamount', hidden: true},
 			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
 			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
 			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
@@ -805,27 +804,29 @@ $(document).ready(function () {
 			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
 			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
 			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'debtorcode', name: 'dbacthdr_debtorcode', hidden: true},
 			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
 			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 100, canSearch:true}, //tunjuk
+			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true}, //tunjuk
 			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer Code', name: 'dbacthdr_payercode',width: 70}, //tunjuk
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 200, classes: 'wrap text-uppercase', canSearch:true},//tunjuk
+			//{label: 'Payer Code', name: 'dbacthdr_payercode',width: 70}, //tunjuk
+			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true},//tunjuk
+			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
-			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap'}, //tunjuk
+			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
 			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount',width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45},
+			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
 			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
@@ -958,6 +959,21 @@ $(document).ready(function () {
 		});
 	}
 
+	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table, case_;
+		switch(options.colModel.name){
+			case 'dbacthdr_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_debtorcode';break;
+			case 'dbacthdr_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_payercode';break;
+			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;		
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		fdl.get_array('receipt',options,param,case_,cellvalue);
+		
+		if(cellvalue == null)cellvalue = " ";
+		return cellvalue;
+	}
+
 	////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
 	function searchBy() {
@@ -1067,6 +1083,7 @@ $(document).ready(function () {
 			$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
 			grid='#jqGrid';
 			$('#AlloDtype').val(selrowData(grid).dbacthdr_trantype);
+			$('#AlloDtype2').html(selrowData(grid).dbacthdr_trantype);
 			$('#AlloDno').val(selrowData(grid).dbacthdr_recptno);
 			$('#AlloDebtor').val(selrowData(grid).dbacthdr_payercode);
 			$('#AlloDebtor2').html(selrowData(grid).dbacthdr_payername);
@@ -1114,14 +1131,14 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true}, 
-			{ label: 'Auditno', name: 'auditno', width: 40},
+			{ label: 'Document No', name: 'auditno', width: 40},
+			{ label: 'Document Date', name: 'entrydate', width: 50},
+			{ label: 'MRN', name: 'mrn', width: 50},
+			{ label: 'EpisNo', name: 'episno', width: 50},
 			{ label: 'Src', name: 'source', width: 20, hidden: true}, 
 			{ label: 'Type', name: 'trantype', width: 20 , hidden: true},
 			{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true},
 			// { label: 'Batchno', name: 'NULL', width: 40},
-			{ label: 'Document Date', name: 'entrydate', width: 50},
-			{ label: 'MRN', name: 'mrn', width: 50},
-			{ label: 'EpisNo', name: 'episno', width: 50},
 			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50},
 			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50},
 			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center'},
