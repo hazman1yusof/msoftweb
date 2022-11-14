@@ -549,6 +549,7 @@
 			<div class="col-md-6">
 				<label class="control-label">Document Type</label>
 				<input id="AlloDtype" type="text" class="form-control input-sm" readonly>
+				<span class="help-block" id="AlloDtype2"></span>
 			</div>
 
 			<div class="col-md-6">
