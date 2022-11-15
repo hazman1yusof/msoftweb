@@ -640,11 +640,17 @@ Route::get('/paymentVoucher_Report/table','finance\PaymentVoucher_ReportControll
 Route::post('/paymentVoucher_Report/form','finance\PaymentVoucher_ReportController@form');
 Route::get('/paymentVoucher_Report/showExcel','finance\PaymentVoucher_ReportController@showExcel');
 
-//// Manual Allocation Transaction ///
+//// Manual Allocation Transaction AP///
 Route::get('/manualAlloc','finance\ManualAllocController@show');
 Route::get('/manualAlloc/table','finance\ManualAllocController@table');
 Route::post('/manualAlloc/form','finance\ManualAllocController@form');
 Route::get('/manualAlloc/form','finance\ManualAllocController@form');
+
+//// Manual Allocation Transaction AR///
+Route::get('/AllocAR','finance\AllocARController@show');
+Route::get('/AllocAR/table','finance\AllocARController@table');
+Route::post('/AllocAR/form','finance\AllocARController@form');
+Route::get('/AllocAR/form','finance\AllocARController@form');
 
 //// Credit Note ///
 Route::get('/creditNote','finance\CreditNoteController@show');
