@@ -842,6 +842,7 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortname:'dbacthdr_idno',
 		sortorder:'desc',
 		width: 900,
 		height: 300,

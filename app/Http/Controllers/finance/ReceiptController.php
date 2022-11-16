@@ -83,7 +83,7 @@ class ReceiptController extends defaultController
                 throw new \Exception("User dont have till");
             }
 
-
+            $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
 
             $array_insert = [
                 'compcode' => session('compcode'),
@@ -102,6 +102,7 @@ class ReceiptController extends defaultController
                 'debtorcode' => $request->dbacthdr_payercode,
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
+                'paymode' => $paymode_,
                 'amount' => $request->dbacthdr_amount,  
                 'outamount' => $request->dbacthdr_amount,  
                 'remark' => $request->dbacthdr_remark,  
@@ -207,6 +208,53 @@ class ReceiptController extends defaultController
             DB::rollback();
 
             return response($e->getMessage().$e, 500);
+        }
+    }
+
+    public function paymode_chg($paytype,$paymode){
+        $paytype_ = '';
+        $mode = false;
+        switch (strtolower($paytype)) {
+            case '#f_tab-cash':
+                $paytype_ = 'Cash';
+                break;
+            case '#f_tab-card':
+                $paytype_ = 'Card';
+                $mode = true;
+                break;
+            case '#f_tab-cheque':
+                $paytype_ = 'Cheque';
+                break;
+            case '#f_tab-debit':
+                $paytype_ = 'Bank';
+                $mode = true;
+                break;
+            case '#f_tab-forex':
+                $paytype_ = 'Forex';
+                break;
+        }
+
+        if($paytype_ != ''){
+
+            $paymode_db = DB::table('debtor.paymode')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AR')
+                            ->where('paytype',$paytype_);
+
+            if($mode == true){
+                $paymode_db = $paymode_db->where('paymode',$paymode);
+            }
+
+            if(!$paymode_db->exists()){
+                throw new \Exception("No Paymode");
+            }
+
+            $paymode_first  = $paymode_db->first();
+
+            return $paymode_first->paymode;
+
+        }else{
+            throw new \Exception("Error paytype");
         }
     }
 }

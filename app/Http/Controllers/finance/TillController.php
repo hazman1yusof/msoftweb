@@ -26,6 +26,11 @@ class TillController extends defaultController
         return view('finance.AR.till.till');
     }
 
+    public function till_close(Request $request)
+    {   
+        return view('finance.AR.till.till_close');
+    }
+
     public function form(Request $request)
     {   
 

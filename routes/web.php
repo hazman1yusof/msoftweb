@@ -886,6 +886,7 @@ Route::post('/facontrol/form','finance\facontrolController@form');
 
 //// till ///
 Route::get('/till','finance\tillController@show');
+Route::get('/till_close','finance\tillController@till_close');
 Route::get('/till/table','finance\tillController@table');
 Route::post('/till/form','finance\tillController@form');
 
