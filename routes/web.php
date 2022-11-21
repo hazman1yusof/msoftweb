@@ -646,12 +646,6 @@ Route::get('/manualAlloc/table','finance\ManualAllocController@table');
 Route::post('/manualAlloc/form','finance\ManualAllocController@form');
 Route::get('/manualAlloc/form','finance\ManualAllocController@form');
 
-//// Manual Allocation Transaction AR///
-Route::get('/AllocAR','finance\AllocARController@show');
-Route::get('/AllocAR/table','finance\AllocARController@table');
-Route::post('/AllocAR/form','finance\AllocARController@form');
-Route::get('/AllocAR/form','finance\AllocARController@form');
-
 //// Credit Note ///
 Route::get('/creditNote','finance\CreditNoteController@show');
 Route::get('/creditNote/table','finance\CreditNoteController@table');
