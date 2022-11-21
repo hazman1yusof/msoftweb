@@ -250,6 +250,43 @@ $(document).ready(function () {
 	);
 	dialog_logindeptcode.makedialog();
 
+	var dialog_allodebtor = new ordialog(
+		'AlloDebtor','debtor.debtormast','#AlloDebtor',errorField,
+		{	colModel:[
+				{label:'Code',name:'debtorcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			ondblClickRow:function(){
+				let data=selrowData('#'+dialog_allodebtor.gridname);
+				$('#AlloDebtor').val(data.debtorcode);
+				urlParamAllo.filterVal[0]=data.debtorcode;
+				refreshGrid("#gridAllo",urlParamAllo);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					//$('#apacthdr_actdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select MRN",
+			open: function(){
+				dialog_payercode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_payercode.urlParam.filterVal=['session.compcode','ACTIVE']
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_allodebtor.makedialog(true);
+
+
 	// var dialog_logintillcode = new ordialog(
 	// 	'till_tillcode', 'debtor.till', '#till_tillcode', errorField,
 	// 	{
@@ -1080,6 +1117,7 @@ $(document).ready(function () {
 		width: 9/10 * $(window).width(),
 		modal: true,
 		open: function(){
+			dialog_allodebtor.on();
 			$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
 			grid='#jqGrid';
 			$('#AlloDtype').val(selrowData(grid).dbacthdr_trantype);
@@ -1100,6 +1138,7 @@ $(document).ready(function () {
 			myallocation.renewAllo(selrowData(grid).dbacthdr_outamount);
 		},
 		close: function( event, ui ){
+			dialog_allodebtor.off();
 			parent_close_disabled(false);
 
 		},

@@ -28,7 +28,102 @@ class TillController extends defaultController
 
     public function till_close(Request $request)
     {   
-        return view('finance.AR.till.till_close');
+
+        $till = null;
+        $tilldetl = null;
+        $sum_cash = null;
+        $sum_chq = null;
+        $sum_card = null;
+        $sum_bank = null;
+        $sum_all = null;
+
+        $till_ = DB::table('debtor.till')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('tillstatus','O')
+                        ->where('lastuser',session('username'));
+
+        if($till_->exists()){
+            $till = $till_->first();
+
+            $tilldetl_ = DB::table('debtor.tilldetl')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('cashier',$till->lastuser)
+                        ->whereDate('opendate',$till->upddate);
+
+            if($tilldetl_->exists()){
+                $tilldetl = $tilldetl_->first();
+
+                $dbacthdr = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$tilldetl->tillcode)
+                        ->where('db.tillno',$tilldetl->tillno)
+                        // ->where('db.hdrtype','A')
+                        ->join('debtor.paymode as pm', function($join) use ($request){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                            ->where('pm.source','AR')
+                                            ->where('pm.compcode',session('compcode'));
+                        });
+
+                if($dbacthdr->exists()){
+                    $sum_cash = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CASH')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+                    $sum_chq = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CHEQUE')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+                    $sum_card = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CARD')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+                    $sum_bank = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','BANK')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+                    $sum_all = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->sum('amount');
+                }
+
+            }
+        }
+
+        
+
+        return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
     }
 
     public function form(Request $request)
@@ -70,6 +165,7 @@ class TillController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'), 
                     'tillcode' => $request->tillcode,
+                    'openamt' => $request->openamt,
                     'cashamt' => $request->openamt,
                     'cashier' => session('username'),
                     'opendate' => Carbon::now("Asia/Kuala_Lumpur"),
