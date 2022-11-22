@@ -344,7 +344,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['dc.compcode', 'dc.lineno_', 'dc.chgcode', 'dc.effdate', 'dc.epistype', 'dc.drprcnt', 'dc.amount', 'dc.stfamount', 'dc.stfpercent', 'dc.idno', 'd.doctorcode'],
+		field:['dc.compcode', 'dc.lineno_', 'dc.chgcode', 'dc.drcode', 'dc.effdate', 'dc.epistype', 'dc.drprcnt', 'dc.amount', 'dc.stfamount', 'dc.stfpercent', 'dc.idno', 'd.doctorcode'],
 		table_name:['debtor.drcontrib AS dc', 'hisdb.doctor AS d'],
 		table_id:'lineno_',
 		join_type:['LEFT JOIN'],
@@ -362,6 +362,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'drcode', name: 'drcode', width: 40, frozen:true, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Charge Code', name: 'chgcode', width: 150, classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -484,12 +485,14 @@ $(document).ready(function () {
 			
 		},
 		gridComplete: function(){
-
 			fdl.set_array().reset();
-			if(!hide_init){
-				hide_init=1;
-				hideatdialogForm_jqGrid2(false);
+			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			}
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid2_iledit").click();
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		}
 	});
 	var hide_init=0;
@@ -502,8 +505,8 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-
-			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").hide();
+			$('#jqGrid2').data('lastselrow','none');	
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").hide();
 
 			dialog_chgcode.on();
 
@@ -513,25 +516,35 @@ $(document).ready(function () {
 
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-			$("input[name='stfamount']").keydown(function(e) {//when click tab at document, auto save
+			$("input[name='stfamount']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
+				/*addmore_jqGrid2.state = true;
+				$('#jqGrid2_ilsave').click();*/
+			});
+			$("#jqGrid2 input[type='text']").on('focus',function(){
+				$("#jqGrid2 input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid2 input[type='text']").removeClass( "error" );
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqGrid2.state==true)addmore_jqGrid2.more=true; //only addmore after save inline
+			//if(addmore_jqGrid2.state == true)addmore_jqGrid2.more=true; //only addmore after save inline
+			addmore_jqGrid2.more = true; //state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
-			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").show();
-		}, 
-		errorfunc: function(rowid,response){
-			$(".noti").text(response.responseText);
-			// alert(response.responseText);
-			refreshGrid('#jqGrid2',urlParam2,'add');
+			errorField.length=0;
 			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
-		beforeSaveRow: function(options, rowid) {
-
-			//if(errorField.length>0)return false; 
+		errorfunc: function(rowid,response){
+			var data = JSON.parse(response.responseText)
+			//$('#p_error').text(response.responseText);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
+			refreshGrid('#jqGrid2',urlParam2,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
 
 			mycurrency2.formatOff();
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
@@ -541,10 +554,78 @@ $(document).ready(function () {
 					oper: 'add',
 					drcode: selrowData('#jqGrid').doctorcode,
 				});
-			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			hideatdialogForm_jqGrid2(false);
+			refreshGrid('#jqGrid2',urlParam2,'add');
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+
+	///////////////////////////////////////////myEditOptions_edit for jqGrid2///////////////////////////////////////////
+	var myEditOptions_edit = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").hide();
+
+			dialog_chgcode.on();
+
+			unsaved = false;
+			mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='stfamount']","#jqGrid2 input[name='amount']"]);
+
+			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			
+			$("input[name='stfamount']").keydown(function(e) {//when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid2_ilsave').click();
+				/*addmore_jqGrid2.state = true;
+				$('#jqGrid2_ilsave').click();*/
+			});
+			$("#jqGrid2 input[type='text']").on('focus',function(){
+				$("#jqGrid2 input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid2 input[type='text']").removeClass( "error" );
+			});
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqGrid2.state == true)addmore_jqGrid2.more=true; //only addmore after save inline
+			//state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid2',urlParam2,'edit');
+			errorField.length=0;
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
+		},
+		errorfunc: function(rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+
+			mycurrency2.formatOff();
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+			let editurl = "./doctorContribution/form?"+
+				$.param({
+					action: 'doctorContribution_save',
+					drcode: selrowData('#jqGrid2').drcode,
+					idno: selrowData('#jqGrid2').idno,
+					lineno_: selrowData('#jqGrid2').lineno_
+				});
+			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid2',urlParam2,'edit');
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
 		}
 	};
 
@@ -558,7 +639,7 @@ $(document).ready(function () {
 		addParams: { 
 			addRowParams: myEditOptions
 		},
-		editParams: myEditOptions
+		editParams: myEditOptions_edit
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2Delete",
 		caption:"",cursor: "pointer",position: "last", 
@@ -593,76 +674,6 @@ $(document).ready(function () {
 				});
 			}
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2EditAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-th-list",
-		title:"Edit All Row",
-		onClickButton: function(){
-			mycurrency2.array.length = 0;
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-			for (var i = 0; i < ids.length; i++) {
-
-				$("#jqGrid2").jqGrid('editRow',ids[i]);
-
-				Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_stfamount","#"+ids[i]+"_amount"]);
-			}
-			mycurrency2.formatOnBlur();
-			onall_editfunc();
-			hideatdialogForm_jqGrid2(true,'saveallrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2SaveAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-download-alt",
-		title:"Save All Row",
-		onClickButton: function(){
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-
-			var jqGrid2_data = [];
-			mycurrency2.formatOff();
-			for (var i = 0; i < ids.length; i++) {
-
-				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				var obj = 
-				{
-					'idno' : data.idno,
-					'lineno_' : ids[i],
-					'chgcode' : $("#jqGrid2 input#"+ids[i]+"_chgcode").val(),
-					'effdate' : $("#jqGrid2 input#"+ids[i]+"_effdate").val(),
-					'epistype' : $("#jqGrid2 select#"+ids[i]+"_epistype").val(),
-					'stfamount' : $("#jqGrid2 input#"+ids[i]+"_stfamount").val(),
-					'stfpercent' : $("#jqGrid2 input#"+ids[i]+"_stfpercent").val(),
-					'drprcnt' : $("#jqGrid2 input#"+ids[i]+"_drprcnt").val(),
-					'amount' : $("#jqGrid2 input#"+ids[i]+"_amount").val(),
-				}
-
-				jqGrid2_data.push(obj);
-			}
-
-			var param={
-				action: 'doctorContribution_save',
-				_token: $("#_token").val(),
-				idno: $('#idno').val()
-			}
-
-			$.post( "./doctorContribution/form?"+$.param(param),{oper:'edit_all',dataobj:jqGrid2_data}, function( data ){
-			}).fail(function(data) {
-				//////////////////errorText(dialog,data.responseText);
-			}).done(function(data){
-				hideatdialogForm_jqGrid2(false);
-				refreshGrid("#jqGrid2",urlParam2);
-			});
-		},	
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2CancelAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-remove-circle",
-		title:"Cancel",
-		onClickButton: function(){
-			hideatdialogForm_jqGrid2(false);
-			refreshGrid("#jqGrid2",urlParam2);
-		},	
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
 		id: "jqGridPager2Refresh",
 		caption: "", cursor: "pointer", position: "last",
@@ -682,28 +693,6 @@ $(document).ready(function () {
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
-
-	function onall_editfunc(jqgrid="none"){
-		dialog_chgcode.on();
-
-		mycurrency2.formatOnBlur();//make field to currency on leave cursor
-	}
-
-	function hideatdialogForm_jqGrid2(hide,saveallrow){
-		if(saveallrow == 'saveallrow'){
-
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2Refresh").hide();
-			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
-		}else if(hide){
-
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll,#jqGridPager2Refresh").hide();
-		}else{
-
-			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2Refresh").show();
-			$("#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
-		}
-		
-	}
 
 	////////////////////object for dialog handler//////////////////
 

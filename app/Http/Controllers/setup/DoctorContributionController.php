@@ -20,8 +20,8 @@ class DoctorContributionController extends defaultController
         switch($request->oper){
             case 'add':
                 return $this->add($request);
-            case 'edit_all':
-                return $this->edit_all($request);
+            case 'edit':
+                return $this->edit($request);
             case 'del':
                 return $this->del($request);
             default:
@@ -73,31 +73,41 @@ class DoctorContributionController extends defaultController
        
     }
 
-    public function edit_all(Request $request){
+    public function edit(Request $request){
 
         DB::beginTransaction();
 
         try {
 
-            foreach ($request->dataobj as $key => $value) {
+            $drtran = DB::table('debtor.drtran')
+                ->where('compcode','=',session('compcode'))
+                ->where('drcode','=',$request->drcode)
+                ->where('chgcode','=',$request->chgcode)
+                ->where('trandate','>=',$request->effdate)
+                ->first();
+            
+            if($drtran === null){
 
                 DB::table('debtor.drcontrib')
                     ->where('compcode','=',session('compcode'))
                     ->where('drcode','=',$request->drcode)
                     ->where('idno','=',$request->idno)
-                    ->where('lineno_','=',$value['lineno_'])
+                    ->where('lineno_','=',$request->lineno_)
                     ->update([
-                        'chgcode' => strtoupper($value['chgcode']),
-                        'effdate' => $this->turn_date($value['effdate']),
-                        'epistype' => $value['epistype'],
-                        'stfamount' => $value['stfamount'],
-                        'stfpercent' => $value['stfpercent'],
-                        'drprcnt' => $value['drprcnt'],
-                        'amount' => $value['amount'],
+                        'chgcode' => strtoupper($request->chgcode),
+                        'effdate' => $this->turn_date($request->effdate),
+                        'epistype' => strtoupper($request->epistype),
+                        'stfamount' => $request->stfamount,
+                        'stfpercent' => $request->stfpercent,
+                        'drprcnt' => $request->drprcnt,
+                        'amount' => $request->amount,
                         'lastuser' => session('username'), 
                         'lastdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                       
+                        
                     ]);
+
+            }else{
+
             }
 
             DB::commit();
