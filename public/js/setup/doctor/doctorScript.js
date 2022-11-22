@@ -496,6 +496,7 @@ $(document).ready(function () {
 		}
 	});
 	var hide_init=0;
+	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////////////////////////////Doctor Detail/////////////////////////////////////////////////
 	///////////////////////////////////////////myEditOptions for jqGrid2///////////////////////////////////////////
@@ -573,6 +574,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPager2Delete,#jqGridPager2Refresh").hide();
+			errorField.length = 0;
 
 			dialog_chgcode.on();
 
@@ -601,9 +603,11 @@ $(document).ready(function () {
 			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
 		errorfunc: function(rowid,response){
-			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
-			refreshGrid('#jqGrid',urlParam,'add');
+			// console.log(response);
+			alert('Error: '+response.responseText);
+			// $('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam);
+			refreshGrid('#jqGrid2',urlParam2);
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

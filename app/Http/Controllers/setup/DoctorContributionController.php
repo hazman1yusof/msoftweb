@@ -79,36 +79,34 @@ class DoctorContributionController extends defaultController
 
         try {
 
+           
             $drtran = DB::table('debtor.drtran')
                 ->where('compcode','=',session('compcode'))
                 ->where('drcode','=',$request->drcode)
                 ->where('chgcode','=',$request->chgcode)
-                ->where('trandate','>=',$request->effdate)
-                ->first();
-            
-            if($drtran === null){
+                ->whereDate('trandate','>=',Carbon::createFromFormat('d/m/Y',$request->effdate)->format('Y-m-d'));
 
-                DB::table('debtor.drcontrib')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('drcode','=',$request->drcode)
-                    ->where('idno','=',$request->idno)
-                    ->where('lineno_','=',$request->lineno_)
-                    ->update([
-                        'chgcode' => strtoupper($request->chgcode),
-                        'effdate' => $this->turn_date($request->effdate),
-                        'epistype' => strtoupper($request->epistype),
-                        'stfamount' => $request->stfamount,
-                        'stfpercent' => $request->stfpercent,
-                        'drprcnt' => $request->drprcnt,
-                        'amount' => $request->amount,
-                        'lastuser' => session('username'), 
-                        'lastdate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        
-                    ]);
-
-            }else{
-
+            if($drtran->exists()){
+                throw new \Exception("drtran exists");
             }
+
+            DB::table('debtor.drcontrib')
+                ->where('compcode','=',session('compcode'))
+                ->where('drcode','=',$request->drcode)
+                ->where('idno','=',$request->idno)
+                ->where('lineno_','=',$request->lineno_)
+                ->update([
+                    'chgcode' => strtoupper($request->chgcode),
+                    'effdate' => $this->turn_date($request->effdate),
+                    'epistype' => strtoupper($request->epistype),
+                    'stfamount' => $request->stfamount,
+                    'stfpercent' => $request->stfpercent,
+                    'drprcnt' => $request->drprcnt,
+                    'amount' => $request->amount,
+                    'lastuser' => session('username'), 
+                    'lastdate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    
+                ]);
 
             DB::commit();
 
