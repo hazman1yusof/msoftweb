@@ -104,6 +104,135 @@
 								<div class="col-md-3">
 									<input id="DebitRefund" name="DebitRefund" type="text" class="form-control input-sm" value="0.00" readonly>
 							</div>
+							<br><br>
+						</div>
+
+						<div class="form-group">
+							<div class='col-md-10' style="padding-right: 0px;">
+								<div class="panel panel-info"><br>
+								<div class="col-md-4  col-md-offset-1" style="text-align: center;margin-bottom: 10px;padding-left: 60px;"><h6><b>Denomination: </b></h6></div><br><br>
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm100">RM 100</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm100" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalRm100" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm50">RM 50</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm50" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalrm50" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm20">RM 20</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm20" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalrm20" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm10">RM 10</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm10" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalrm10" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm5">RM 5</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm5" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="rm1">RM 1</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilrm5" type="number" class="form-control input-sm" value="0" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-3 control-label" for="cents">CENTS</label>
+											<label class="col-md-1 control-label" for="darab">X</label>
+
+											<div class="col-md-3">
+												<input name="bilcents" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+
+											<label class="col-md-1 control-label" for="abortus">=</label>
+											<div class="col-md-3">
+												<input name="totalcents" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>
+
+									<div class="panel-body">
+										<div class="form-group">
+											<label class="col-md-7 control-label" for="grandTotal">TOTAL</label>
+											<div class="col-md-4">
+												<input name="grandTotal" type="number" class="form-control input-sm" value="0.00" >
+											</div>
+										</div>
+									</div>								
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
