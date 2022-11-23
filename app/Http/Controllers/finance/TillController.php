@@ -39,7 +39,6 @@ class TillController extends defaultController
 
         $till_ = DB::table('debtor.till')
                         ->where('compcode',session('compcode'))
-                        ->where('recstatus','ACTIVE')
                         ->where('tillstatus','O')
                         ->where('lastuser',session('username'));
 
@@ -48,7 +47,6 @@ class TillController extends defaultController
 
             $tilldetl_ = DB::table('debtor.tilldetl')
                         ->where('compcode',session('compcode'))
-                        ->where('recstatus','ACTIVE')
                         ->where('cashier',$till->lastuser)
                         ->whereDate('opendate',$till->upddate);
 
