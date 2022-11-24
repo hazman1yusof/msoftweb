@@ -117,12 +117,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm100" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm100" type="number" class="form-control input-sm" value="0" data-bill='100'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalRm100" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm100" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -133,12 +133,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm50" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm50" type="number" class="form-control input-sm" value="0"  data-bill='50'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalrm50" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm50" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -149,12 +149,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm20" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm20" type="number" class="form-control input-sm" value="0"  data-bill='20'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalrm20" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm20" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -165,12 +165,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm10" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm10" type="number" class="form-control input-sm" value="0"  data-bill='10'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalrm10" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm10" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -181,12 +181,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm5" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm5" type="number" class="form-control input-sm" value="0"  data-bill='5'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -197,12 +197,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilrm5" type="number" class="form-control input-sm" value="0" >
+												<input name="bilrm1" type="number" class="form-control input-sm" value="0"  data-bill='1'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalrm1" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -213,12 +213,12 @@
 											<label class="col-md-1 control-label" for="darab">X</label>
 
 											<div class="col-md-3">
-												<input name="bilcents" type="number" class="form-control input-sm" value="0.00" >
+												<input name="bilcents" type="number" class="form-control input-sm" value="0.00"  data-bill='1'>
 											</div>
 
 											<label class="col-md-1 control-label" for="abortus">=</label>
 											<div class="col-md-3">
-												<input name="totalcents" type="number" class="form-control input-sm" value="0.00" >
+												<input name="totalcents" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>
@@ -227,7 +227,7 @@
 										<div class="form-group">
 											<label class="col-md-7 control-label" for="grandTotal">TOTAL</label>
 											<div class="col-md-4">
-												<input name="grandTotal" type="number" class="form-control input-sm" value="0.00" >
+												<input name="grandTotal" type="number" class="form-control input-sm" value="0.00" readonly>
 											</div>
 										</div>
 									</div>								
@@ -277,7 +277,7 @@
 
 							<label class="col-md-2 control-label" for="discrepancy">Discrepancy</label>  
 								<div class="col-md-3">
-									<input id="discrepancy" name="discrepancy" type="text" class="form-control input-sm" value="0.00">
+									<input id="discrepancy" name="discrepancy" type="text" class="form-control input-sm" value="0.00" readonly>
 							</div>
 						</div>
 					</div>

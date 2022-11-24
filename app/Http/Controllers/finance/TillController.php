@@ -153,7 +153,7 @@ class TillController extends defaultController
                 ->update([
                     'compcode' => session('compcode'), 
                     'tillstatus' => 'O', 
-                    'dept' => auth()->user()->deptcode,
+                    'dept' => auth()->user()->dept,
                     'upduser' => session('username'),
                     'lastuser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
