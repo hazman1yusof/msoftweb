@@ -196,6 +196,7 @@ class TillController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'adduser' => session('username'), 
+                    'recstatus' => 'ACTIVE',
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'tillcode' => $request->tillcode, 
                     'description' => $request->description, 
