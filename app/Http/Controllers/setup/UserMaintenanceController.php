@@ -35,9 +35,9 @@ class UserMaintenanceController extends defaultController
     {   
         $table = $this->table;
 
+        $table = $table->where('compcode',session('compcode'));
+
         /////////where/////////
-
-
         
         /////////searching/////////
         if(!empty($request->searchCol)){
@@ -134,7 +134,7 @@ class UserMaintenanceController extends defaultController
 
         try {
 
-            $table = DB::table('sysdb.users')->where('id','=',$request->id);
+            $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
                 'username' => $request->username,
                 'name' => $request->name,
@@ -172,7 +172,7 @@ class UserMaintenanceController extends defaultController
 
         try {
 
-            $table = DB::table('sysdb.users')->where('id','=',$request->id);
+            $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
