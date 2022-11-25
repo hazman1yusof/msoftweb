@@ -228,6 +228,8 @@
 				field:'',
 				table_name:'debtor.debtormast',
 				table_id:'debtorcode',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno: true,
 			}
 
