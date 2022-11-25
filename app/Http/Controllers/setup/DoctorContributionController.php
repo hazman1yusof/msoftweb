@@ -121,21 +121,29 @@ class DoctorContributionController extends defaultController
         DB::beginTransaction();
 
         try {
-           
-            $drtran1 = DB::table('debtor.drtran')
-                ->where('compcode','=',session('compcode'))
-                ->where('drcode','=',$request->drcode)
-                ->where('chgcode','=',$request->chgcode)
-                ->whereDate('trandate','>=',Carbon::createFromFormat('d/m/Y',$request->effdate)->format('Y-m-d'));
 
-            if($drtran1->exists()){
-                throw new \Exception("drtran exists");
-            }
+            $drcontrib = DB::table('debtor.drcontrib')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$request->idno);
 
-            DB::table('debtor.drcontrib')
-                ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->delete();
+            if($drcontrib->exists()){
+                $drcontrib = $drcontrib->first();
+
+                $drtran1 = DB::table('debtor.drtran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('drcode','=',$drcontrib->drcode)
+                    ->where('chgcode','=',$drcontrib->chgcode)
+                    ->whereDate('trandate','>=',$drcontrib->effdate);
+
+                if($drtran1->exists()){
+                    throw new \Exception("drtran exists");
+                }
+
+                DB::table('debtor.drcontrib')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->delete();
+            }            
             
             DB::commit();
 

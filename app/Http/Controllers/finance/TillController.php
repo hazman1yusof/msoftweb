@@ -148,6 +148,8 @@ class TillController extends defaultController
         DB::beginTransaction();
         try {
 
+            $tillno = $this->defaultSysparam('AR','TN');
+
             DB::table('debtor.till')
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
@@ -163,6 +165,7 @@ class TillController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'), 
                     'tillcode' => $request->tillcode,
+                    'tillno' => $tillno,
                     'openamt' => $request->openamt,
                     'cashamt' => $request->openamt,
                     'cashier' => session('username'),

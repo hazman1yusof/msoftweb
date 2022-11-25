@@ -666,6 +666,7 @@ $(document).ready(function () {
 							}
 							$.post( "./doctorContribution/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
+								alert('Error: '+data.responseText);
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
 								refreshGrid("#jqGrid2",urlParam2);

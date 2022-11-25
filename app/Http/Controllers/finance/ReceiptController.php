@@ -77,7 +77,7 @@ class ReceiptController extends defaultController
 
                 $tillcode = $till_obj->tillcode;
                 $tillno = $tilldetl->first()->tillno;
-                $recptno = str_pad($till_obj->tillcode.$lastrcnumber, 9, "0", STR_PAD_LEFT);
+                $recptno = $till_obj->tillcode.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
 
             }else{
                 throw new \Exception("User dont have till");
@@ -90,6 +90,10 @@ class ReceiptController extends defaultController
                 'unit' => session('unit'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'reference' => $paymode_.' - '.$recptno,
+                'entryuser' => session('username'),
                 'recstatus' => 'ACTIVE',
                 'source' => 'PB',
                 'trantype' => $request->dbacthdr_trantype,
@@ -120,6 +124,11 @@ class ReceiptController extends defaultController
 
 
                 $array_insert = array_merge($array_insert, $array_insert_RD);
+            }else{
+                $array_insert_RC = [
+                    'hdrtype' => 'RC',
+                ];
+                $array_insert = array_merge($array_insert, $array_insert_RC);
             }
 
             DB::table('debtor.dbacthdr')

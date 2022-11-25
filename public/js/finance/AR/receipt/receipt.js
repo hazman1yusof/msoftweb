@@ -412,7 +412,7 @@ $(document).ready(function () {
 					}
 				}else{
 					$('#dbacthdr_payername').prop('readonly',true);
-					$("input:hidden[name='dbacthdr_hdrtype']").val('');
+					$("input:hidden[name='dbacthdr_hdrtype']").val('RC');
 					$("input:hidden[name='updpayername'],input:hidden[name='updepisode']").val('');
 					dialog_mrn.off();
 				}
