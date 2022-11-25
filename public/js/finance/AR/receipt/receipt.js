@@ -801,17 +801,17 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url: 'util/get_table_default',
+		action:'maintable',
+		url: './receipt/table',
 		field:'',
-		fixPost:'true',
-		table_name:['debtor.dbacthdr','hisdb.pat_mast'],
-		table_id:'dbacthdr_idno',
-		join_type:['LEFT JOIN'],
-		join_onCol:['dbacthdr.mrn'],
-		join_onVal:['pat_mast.mrn'],
-		filterCol:['dbacthdr.trantype'],
-		filterVal:['RC']
+		// fixPost:'true',
+		// table_name:['debtor.dbacthdr','hisdb.pat_mast'],
+		// table_id:'dbacthdr_idno',
+		// join_type:['LEFT JOIN'],
+		// join_onCol:['dbacthdr.mrn'],
+		// join_onVal:['pat_mast.mrn'],
+		// filterCol:['dbacthdr.trantype',''],
+		// filterVal:['RC']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

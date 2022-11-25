@@ -31,6 +31,8 @@ class ReceiptController extends defaultController
         switch($request->action){
             case 'get_debtorcode_outamount':
                 return $this->get_debtorcode_outamount($request);
+            case 'maintable':
+                return $this->maintable($request);
             default:
                 return 'error happen..';
         }
@@ -140,6 +142,42 @@ class ReceiptController extends defaultController
 
             return response($e->getMessage().$e, 500);
         }
+    }
+
+    public function maintable(Request $request){
+
+        $tilldetl = DB::table('debtor.tilldetl')
+                        ->where('compcode',session('compcode'))
+                        ->where('cashier',session('username'))
+                        ->whereNull('closedate');
+
+        if($tilldetl->exists()){
+            $tilldetl = $tilldetl->first();
+
+            $table = DB::table('debtor.dbacthdr')
+                            ->select($this->fixPost($request->field,"_"))
+                            ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+                                $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+                                            ->where('pat_mast.compcode','=',session('compcode'));
+                            })
+                            ->where('dbacthdr.tillcode',$tilldetl->tillcode)
+                            ->where('dbacthdr.tillno',$tilldetl->tillno)
+                            ->where('dbacthdr.compcode',session('compcode'))
+                            ->whereIn('dbacthdr.trantype',['RC','RD']);
+
+            $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+        }
+
+        return json_encode($responce);  
     }
 
     public function get_debtorcode_outamount(Request $request){

@@ -173,9 +173,6 @@ class TillController extends defaultController
                     'opentime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-
-            $request->session()->put('till', $request->tillcode);
-
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
