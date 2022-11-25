@@ -78,7 +78,6 @@ class DoctorContributionController extends defaultController
         DB::beginTransaction();
 
         try {
-
            
             $drtran = DB::table('debtor.drtran')
                 ->where('compcode','=',session('compcode'))
@@ -122,19 +121,21 @@ class DoctorContributionController extends defaultController
         DB::beginTransaction();
 
         try {
+           
+            $drtran1 = DB::table('debtor.drtran')
+                ->where('compcode','=',session('compcode'))
+                ->where('drcode','=',$request->drcode)
+                ->where('chgcode','=',$request->chgcode)
+                ->whereDate('trandate','>=',Carbon::createFromFormat('d/m/Y',$request->effdate)->format('Y-m-d'));
 
-            ///1. update detail
-            // DB::table('debtor.drcontrib')
-            //     ->where('compcode','=',session('compcode'))
-            //     ->where('idno','=',$request->idno)
-            //     ->where('drcode','=',$request->drcode)
-            //     ->update([
-            //         'deluser' => session('username'),
-            //         'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-            //         'recstatus' => 'DEACTIVE',
-            //         'lastcomputerid' => $request->lastcomputerid, 
-            //         'lastipaddress' => $request->lastipaddress, 
-            //     ]);
+            if($drtran1->exists()){
+                throw new \Exception("drtran exists");
+            }
+
+            DB::table('debtor.drcontrib')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
             
             DB::commit();
 

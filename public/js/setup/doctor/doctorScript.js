@@ -663,7 +663,6 @@ $(document).ready(function () {
 							param={
 								action: 'doctorContribution_save',
 								idno: selrowData('#jqGrid2').idno,
-
 							}
 							$.post( "./doctorContribution/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							}).fail(function(data) {
