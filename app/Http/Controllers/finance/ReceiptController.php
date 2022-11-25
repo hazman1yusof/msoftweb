@@ -79,7 +79,7 @@ class ReceiptController extends defaultController
 
                 $tillcode = $till_obj->tillcode;
                 $tillno = $tilldetl->first()->tillno;
-                $recptno = $till_obj->tillcode.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
+                $recptno = $till_obj->tillcode.'-'.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
 
             }else{
                 throw new \Exception("User dont have till");
