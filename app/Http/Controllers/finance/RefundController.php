@@ -1,0 +1,207 @@
+<?php
+
+namespace App\Http\Controllers\finance;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use DateTime;
+use Carbon\Carbon;
+
+class RefundController extends defaultController
+{   
+
+    var $table;
+    var $duplicateCode;
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->duplicateCode = "Code";
+    }
+
+    public function show(Request $request)
+    {   
+        return view('finance.AR.Refund.refund');
+    }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'get_debtorcode_outamount':
+                return $this->get_debtorcode_outamount($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function form(Request $request)
+    {   
+        switch($request->oper){
+            case 'add':
+                return $this->add($request);
+            case 'edit':
+                // return $this->defaultEdit($request);
+            case 'del':
+                // return $this->defaultDel($request);
+            case 'allocate':
+                return $this->allocate($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function add(Request $request){
+        DB::beginTransaction();
+
+        try{
+
+            $auditno = $this->defaultSysparam('PB',$request->dbacthdr_trantype);
+
+            $till = DB::table('debtor.till')
+                            ->where('compcode',session('compcode'))
+                            ->where('tillstatus','O')
+                            ->where('lastuser',session('username'));
+
+            if($till->exists()){
+
+                $till_obj = $till->first();
+
+                $tilldetl = DB::table('debtor.tilldetl')
+                            ->where('compcode',session('compcode'))
+                            ->where('cashier',$till_obj->lastuser)
+                            ->where('opendate','=',$till_obj->upddate);
+
+                $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
+
+                $tillcode = $till_obj->tillcode;
+                $tillno = $tilldetl->first()->tillno;
+                $recptno = str_pad($till_obj->tillcode.$lastrcnumber, 9, "0", STR_PAD_LEFT);
+
+            }else{
+                throw new \Exception("User dont have till");
+            }
+
+            $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
+
+            $array_insert = [
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE',
+                'source' => 'PB',
+                'trantype' => $request->dbacthdr_trantype,
+                'auditno' => $auditno,
+                'lineno_' => $request->dbacthdr_lineno_,
+                'currency' => $request->dbacthdr_currency,
+                'debtortype' => $request->dbacthdr_debtortype,
+                'PymtDescription' => $request->dbacthdr_PymtDescription,
+                'payercode' => $request->dbacthdr_payercode,
+                'debtorcode' => $request->dbacthdr_payercode,
+                'payername' => $request->dbacthdr_payername,
+                'paytype' => $request->dbacthdr_paytype,
+                'paymode' => $paymode_,
+                'amount' => $request->dbacthdr_amount,  
+                'outamount' => $request->dbacthdr_amount,  
+                'remark' => $request->dbacthdr_remark,  
+                'tillcode' => $tillcode,  
+                'tillno' => $tillno,  
+                'recptno' => $recptno,     
+            ];
+
+            if($request->dbacthdr_trantype == "RD"){
+                $array_insert_RD = [
+                    'hdrtype' => $request->dbacthdr_hdrtype,
+                    'mrn' => $request->dbacthdr_mrn,
+                    'episno' => $request->dbacthdr_episno
+                ];
+
+
+                $array_insert = array_merge($array_insert, $array_insert_RD);
+            }
+
+            DB::table('debtor.dbacthdr')
+                        ->insert($array_insert);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage().$e, 500);
+        }
+    }
+
+    public function get_debtorcode_outamount(Request $request){
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('payercode',$request->payercode)
+                        ->where('source','PB')
+                        ->where('recstatus','POSTED')
+                        ->where('outamount','>',0)
+                        ->whereIn('trantype',['DN','IN']);
+
+
+
+        $responce = new stdClass();
+
+
+        if($dbacthdr->exists()){
+            $responce->result = 'true';
+            $responce->outamount = $dbacthdr->sum('dbacthdr.outamount');
+        }else{
+            $responce->result = 'false';
+        }
+
+
+        return json_encode($responce);
+    }
+
+    public function paymode_chg($paytype,$paymode){
+        $paytype_ = '';
+        $mode = false;
+        switch (strtolower($paytype)) {
+            case '#f_tab-cash':
+                $paytype_ = 'Cash';
+                break;
+            case '#f_tab-card':
+                $paytype_ = 'Card';
+                $mode = true;
+                break;
+            case '#f_tab-cheque':
+                $paytype_ = 'Cheque';
+                break;
+            case '#f_tab-debit':
+                $paytype_ = 'Bank';
+                $mode = true;
+                break;
+            case '#f_tab-forex':
+                $paytype_ = 'Forex';
+                break;
+        }
+
+        if($paytype_ != ''){
+
+            $paymode_db = DB::table('debtor.paymode')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','AR')
+                            ->where('paytype',$paytype_);
+
+            if($mode == true){
+                $paymode_db = $paymode_db->where('paymode',$paymode);
+            }
+
+            if(!$paymode_db->exists()){
+                throw new \Exception("No Paymode");
+            }
+
+            $paymode_first  = $paymode_db->first();
+
+            return $paymode_first->paymode;
+
+        }else{
+            throw new \Exception("Error paytype");
+        }
+    }
+}

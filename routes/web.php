@@ -218,6 +218,11 @@ Route::get('/ReceiptAR_Report/table','finance\ReceiptAR_ReportController@table')
 Route::post('/ReceiptAR_Report/form','finance\ReceiptAR_ReportController@form');
 Route::get('/ReceiptAR_Report/showExcel','finance\ReceiptAR_ReportController@showExcel');
 
+//// refund AR setup page ///
+Route::get('/refund','finance\RefundController@show');
+Route::get('/refund/table','finance\RefundController@table');
+Route::post('/refund/form','finance\RefundController@form');
+
 //// doctor_maintenance setup page ///
 Route::get('/doctor_maintenance','hisdb\DoctorMaintenanceController@show');
 Route::get('/doctor_maintenance/table','hisdb\DoctorMaintenanceController@table');
