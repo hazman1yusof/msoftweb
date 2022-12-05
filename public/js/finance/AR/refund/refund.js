@@ -530,8 +530,13 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
-			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
+			{label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
+			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true},
+			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
+			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
+			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50, hidden: true},
+			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30}, //tunjuk
+			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 30}, //tunjuk
 			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
 			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
 			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
@@ -539,29 +544,22 @@ $(document).ready(function () {
 			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
 			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
 			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
-			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true}, //tunjuk
+			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true},
+			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},//tunjuk
-			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
-			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
+			{label: 'Payer', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
 			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
+			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70, hidden: true}, //tunjuk
 			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
 			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
@@ -570,7 +568,8 @@ $(document).ready(function () {
 			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
 			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
 			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
-			{label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', hidden: true},
+			{label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', width: 70},
+			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
 		],
 		autowidth:true,
