@@ -1230,6 +1230,10 @@ $(document).ready(function () {
 					}else{
 						$("#"+idno+"_amtpaid").trigger("change");
 					}
+				}else{
+					$("#"+idno+"_amtpaid").val(0).addClass( "valid" ).removeClass( "error" );
+					setbal(idno,rowdata.outamount);
+					$("#"+idno+"_amtpaid").trigger("change");
 				}
 			});
 			$("#gridAllo_c input[type='text'][rowid]").on('click',function(){
