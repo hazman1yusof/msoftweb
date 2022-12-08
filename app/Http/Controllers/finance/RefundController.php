@@ -31,6 +31,10 @@ class RefundController extends defaultController
         switch($request->action){
             case 'get_debtorcode_outamount':
                 return $this->get_debtorcode_outamount($request);
+            case 'refund_allo_table':
+                return $this->refund_allo_table($request);
+            case 'maintable':
+                return $this->maintable($request);
             default:
                 return 'error happen..';
         }
@@ -52,12 +56,72 @@ class RefundController extends defaultController
         }
     }
 
+    public function maintable(Request $request){
+
+        $tilldetl = DB::table('debtor.tilldetl')
+                        ->where('compcode',session('compcode'))
+                        ->where('cashier',session('username'))
+                        ->whereNull('closedate');
+
+        if($tilldetl->exists()){
+            $tilldetl = $tilldetl->first();
+
+            $table = DB::table('debtor.dbacthdr')
+                            ->select($this->fixPost($request->field,"_"))
+                            ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+                                $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+                                            ->where('pat_mast.compcode','=',session('compcode'));
+                            })
+                            ->where('dbacthdr.tillcode',$tilldetl->tillcode)
+                            ->where('dbacthdr.tillno',$tilldetl->tillno)
+                            ->where('dbacthdr.compcode',session('compcode'))
+                            ->where('dbacthdr.trantype','RF');
+                            // ->whereIn('dbacthdr.trantype',['RF']);
+
+            $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+        }
+
+        return json_encode($responce);  
+    }
+
+    public function refund_allo_table(Request $request){
+
+        $table = DB::table('debtor.dbacthdr')
+                        ->where('dbacthdr.payercode',$request->payercode)
+                        ->where('dbacthdr.compcode',session('compcode'))
+                        ->where('dbacthdr.outamount','>',0)
+                        ->where('dbacthdr.source','PB')
+                        ->whereIn('dbacthdr.trantype',['RD','RC']);
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);  
+    }
+
     public function add(Request $request){
         DB::beginTransaction();
 
         try{
 
-            $auditno = $this->defaultSysparam('PB',$request->dbacthdr_trantype);
+            $auditno = $this->defaultSysparam('PB','RF');
 
             $till = DB::table('debtor.till')
                             ->where('compcode',session('compcode'))
@@ -73,15 +137,17 @@ class RefundController extends defaultController
                             ->where('cashier',$till_obj->lastuser)
                             ->where('opendate','=',$till_obj->upddate);
 
-                $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
+                $lastrefundno = $this->defaultTill($till_obj->tillcode,'lastrefundno');
 
                 $tillcode = $till_obj->tillcode;
                 $tillno = $tilldetl->first()->tillno;
-                $recptno = str_pad($till_obj->tillcode.$lastrcnumber, 9, "0", STR_PAD_LEFT);
+                $refundno = $till_obj->tillcode.'-'.str_pad($lastrefundno, 9, "0", STR_PAD_LEFT);
 
             }else{
                 throw new \Exception("User dont have till");
             }
+
+            $outamount_ = floatval($request->dbacthdr_amount) - floatval($request->dbacthdr_allocamt);
 
             $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
 
@@ -92,7 +158,7 @@ class RefundController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'ACTIVE',
                 'source' => 'PB',
-                'trantype' => $request->dbacthdr_trantype,
+                'trantype' => 'RF',
                 'auditno' => $auditno,
                 'lineno_' => $request->dbacthdr_lineno_,
                 'currency' => $request->dbacthdr_currency,
@@ -104,26 +170,96 @@ class RefundController extends defaultController
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
                 'amount' => $request->dbacthdr_amount,  
-                'outamount' => $request->dbacthdr_amount,  
+                'outamount' => $outamount_,  
                 'remark' => $request->dbacthdr_remark,  
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
-                'recptno' => $recptno,     
+                'recptno' => $refundno,     
             ];
 
-            if($request->dbacthdr_trantype == "RD"){
-                $array_insert_RD = [
-                    'hdrtype' => $request->dbacthdr_hdrtype,
-                    'mrn' => $request->dbacthdr_mrn,
-                    'episno' => $request->dbacthdr_episno
-                ];
+            $latestidno = DB::table('debtor.dbacthdr')
+                                ->insertGetId($array_insert);
 
+            $refund_first = DB::table('debtor.dbacthdr')
+                                ->where('idno',$latestidno)
+                                ->first();
 
-                $array_insert = array_merge($array_insert, $array_insert_RD);
+            $amt_paid = 0;
+            foreach ($request->allo as $key => $value) {
+                $receipt = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->whereIn('trantype',['RD','RC'])
+                            ->where('payercode',$request->dbacthdr_payercode)
+                            ->where('auditno',$value['obj']['auditno'])
+                            ->where('outamount','>',0);
+
+                if($receipt->exists()){
+
+                    $receipt_first = $receipt->first();
+                    
+                    $receipt->update([
+                        'outamount' => $value['obj']['amtbal']
+                    ]);
+
+                    $amt_paid+=floatval($value['obj']['amtpaid']);
+
+                }else{
+                    throw new \Exception("Error no Receipt");
+                }
+
+                $auditno = $this->defaultSysparam('AR','AL');
+
+                DB::table('debtor.dballoc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'source' => 'AR',
+                            'trantype' => 'AL',
+                            'auditno' => $auditno,
+                            'lineno_' => intval($key)+1,
+                            'docsource' => $refund_first->source,
+                            'doctrantype' => $refund_first->trantype,
+                            'docauditno' => $refund_first->auditno,
+                            'refsource' => $receipt_first->source,
+                            'reftrantype' => $receipt_first->trantype,
+                            'refauditno' => $receipt_first->auditno,
+                            'refamount' => $receipt_first->amount,
+                            'reflineno' => $receipt_first->lineno_,
+                            'recptno' => $refund_first->recptno,
+                            'mrn' => $refund_first->mrn,
+                            'episno' => $refund_first->episno,
+                            'allocsts' => 'ACTIVE',
+                            'amount' => floatval($value['obj']['amtpaid']),
+                            'tillcode' => $refund_first->tillcode,
+                            'debtortype' => $this->get_debtortype($refund_first->payercode),
+                            'debtorcode' => $refund_first->payercode,
+                            'payercode' => $refund_first->payercode,
+                            'paymode' => $refund_first->paymode,
+                            'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            // 'remark' => 'Allocation '.$refund_first->source,
+                            'balance' => $value['obj']['amtbal'],
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser' => session('username'),
+                            'recstatus' => 'ACTIVE'
+                        ]);
             }
 
-            DB::table('debtor.dbacthdr')
-                        ->insert($array_insert);
+            // if($amt_paid > 0){
+                
+            //     $refund = DB::table('debtor.dbacthdr')
+            //                             ->where('idno',$latestidno);
+
+            //     if($refund->exists()){
+
+            //         $refund_first = $refund->first();
+                    
+            //         $out_amt = floatval($refund_first->outamount) - floatval($amt_paid);
+
+            //         $receipt->update([
+            //             'outamount' => $out_amt
+            //         ]);
+            //     }
+            // }
 
             DB::commit();
         } catch (\Exception $e) {
@@ -203,5 +339,19 @@ class RefundController extends defaultController
         }else{
             throw new \Exception("Error paytype");
         }
+    }
+
+    public function get_debtortype($debtorcode){
+        $debtormast = DB::table('debtor.debtormast')
+                            ->where('compcode',session('compcode'))
+                            ->where('debtorcode',$debtorcode);
+
+        if($debtormast->exists()){
+            $debtormast_ = $debtormast->first();
+            return $debtormast_->debtortype;
+        }else{
+            return null;
+        }
+
     }
 }

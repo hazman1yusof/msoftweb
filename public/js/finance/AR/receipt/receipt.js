@@ -940,7 +940,6 @@ $(document).ready(function () {
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
-			$("#dialogForm").dialog( "open" );
 			if(selform!=''){
 				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
 				// disabledPill();
@@ -949,6 +948,7 @@ $(document).ready(function () {
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
 			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
+			$("#dialogForm").dialog( "open" );
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -1145,7 +1145,6 @@ $(document).ready(function () {
 		buttons:
 			[{
 				text: "Save",click: function() {
-					console.log(myallocation.arrayAllo)
 					var obj={
 						allo:myallocation.arrayAllo
 					}

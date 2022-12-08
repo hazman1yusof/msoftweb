@@ -146,6 +146,7 @@
 <!-------------------------------- End Add + Login ------------------>
 
 <div id="dialogForm" title="Add Form" >
+
 	<form style='width:99%' id='formdata' autocomplete="off">
 		<input type='hidden' name='dbacthdr_source' value='PB'>
 		<input type='hidden' name='dbacthdr_tillno' >
@@ -159,6 +160,8 @@
 		<input type='hidden' name='dbacthdr_epistype'>
 		<input type='hidden' name='dbacthdr_billdebtor'>
 		<input type='hidden' name='dbacthdr_debtorcode'>
+        <input type='hidden' name='dbacthdr_debtortype'>
+        <input type='hidden' name='dbacthdr_payername'>
 		<input type='hidden' name='dbacthdr_lastrcnumber'>
 		<input type='hidden' name='dbacthdr_drcostcode'>
 		<input type='hidden' name='dbacthdr_crcostcode'>
@@ -170,31 +173,31 @@
 		<input type='hidden' name='dbacthdr_RCOSbalance'>
 		<input type='hidden' name='dbacthdr_units'>
 		<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class='col-md-12' style="padding:15px 5px">
+            <div class="form-group col-md-12">
+                <label class="control-label col-md-1" for="dbacthdr_recptno">Refund No</label>
+                <div class="col-md-2">
+                    <input id="dbacthdr_recptno" name="dbacthdr_recptno" type="text" class="form-control input-sm text-uppercase" rdonly>
+                </div>
 
-        <div class='clearfix'></div> 
-
-        <label class="col-md-1 control-label" for="dbacthdr_payercode">Payer</label>  
-        <div class="col-md-5">
-            <div class='input-group'>
-                <input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm text-uppercase">
-                <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                <label class="control-label col-md-1" for="dbacthdr_payercode">Payer</label>
+                <div class="col-md-4">
+                    <div class='input-group'>
+                        <input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm text-uppercase">
+                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                    </div>
+                    <span class="help-block"></span>
+                </div>
             </div>
-            <span class="help-block"></span>
+
+            <div class="form-group col-md-12">
+				<label class="control-label col-md-1" for="dbacthdr_remark">Remark</label>
+                <div class="col-md-8"> 
+                    <textarea class="form-control input-sm text-uppercase" name="dbacthdr_remark" rows="3" cols="55" id="dbacthdr_remark"> </textarea>
+                </div>
+            </div>
         </div>
-        <div class='clearfix'></div> 
-
-        <hr>
-
-		<div class='col-md-12'>
-			<div class="form-group">
-				<label class="control-label col-md-1" for="dbacthdr_remark">Remark</label> 
-		  		<div class='col-md-8'> 
-                    <textarea class="form-control input-sm text-uppercase" name="dbacthdr_remark" rows="4" cols="55" id="dbacthdr_remark"> </textarea>
-				</div>
-			</div>
-			<div class='clearfix'></div>
-			<hr>
-		</div>
 
         <div class='col-md-12'>
             <div class='panel panel-info'>
@@ -214,25 +217,14 @@
                             <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="hidden" value="CASH">
                             </br>
                             <div class="myformgroup">
-                                <label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
-                                <div class='col-md-4'> 
+                                <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
+                                <div class='col-md-3'> 
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
                                 </div>
 
-                                <label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
-                                <div class='col-md-4'> 
-                                    <input id="dbacthdr_outamount" name="dbacthdr_outamount" type="text" class="form-control input-sm" value="0.00" rdonly>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-md-2" for="dbacthdr_RCCASHbalance">Cash Balance</label> 
-                                <div class='col-md-4'> 
-                                    <input id="dbacthdr_RCCASHbalance" name="dbacthdr_RCCASHbalance" type="text" class="form-control input-sm" value="0.00">
-                                </div>
-
-                                <label class="control-label col-md-2" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
-                                <div class='col-md-4'> 
-                                    <input id="dbacthdr_RCFinalbalance" name="dbacthdr_RCFinalbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                <div class='col-md-3'> 
+                                    <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
                                 </div>
                             </div>
                             </form>
@@ -255,8 +247,13 @@
                             <div class='col-md-8'>
                                 <div class="form-group">
                                     <div class='col-md-4'> 
-                                        <label class="control-label" for="dbacthdr_amount">Payment</label> 
+                                        <label class="control-label" for="dbacthdr_amount">Refund Amount</label> 
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                    </div>
+
+                                    <div class='col-md-4'> 
+                                        <label class="control-label" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                        <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -294,9 +291,13 @@
                                 </div>
                             </div>
                             <div class="myformgroup">
-                                <label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
-                                <div class='col-md-4'> 
+                                <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
+                                <div class='col-md-3'> 
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                </div>
+                                <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                <div class='col-md-3'> 
+                                    <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -340,6 +341,14 @@
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
                                     </div>
                                 </div>
+
+                                <div class="myformgroup">
+                                    <div class='col-md-6'> 
+                                        <label class="control-label" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                        <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <div class='col-md-12'> 
                                         <label class="control-label" for="dbacthdr_reference">Reference</label> 
@@ -353,16 +362,39 @@
                 </div>
             </div>
         </div>
+
+        <div class='col-md-12' id='gridAllo_c' style="padding:0">
+            <hr>
+            <table id="gridAllo" class="table table-striped"></table>
+            <div id="pagerAllo"></div>
+        </div>
+
+        <div class="col-md-10 col-md-offset-1" id="alloSearch">
+            <label class="control-label" id='alloLabel'>Search</label>
+            <input id="alloText" type="text" class="form-control input-sm">
+            <select class="form-control" id="alloCol">
+                <option value="invno" >invoice no</option>
+                <option value="auditno" >auditno</option>
+                <option value="mrn" >mrn</option>
+                <option value="recptno" >docno</option>
+                <option value="newic" >newic</option>
+                <option value="staffid" >staffid</option>
+                <option value="batchno" >batchno</option>
+            </select>
+        </div>
 	</form>
     <!--end formdata-->
 
 </div>
+
+@include('layouts.till_part')
 
 @endsection
 
 
 @section('scripts')
 	
+    <script src="js/myjs/till_part.js"></script>
 	<script src="js/finance/AR/refund/refund.js"></script>
 	
 @endsection

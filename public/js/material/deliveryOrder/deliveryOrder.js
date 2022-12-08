@@ -3,8 +3,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-
-	$("body").show();
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
