@@ -500,7 +500,7 @@ $(document).ready(function () {
 		});
 	}
 
-	user_groupid();
+	// user_groupid();
 	function user_groupid(){
 		var groupid = $('#user_groupid').val().toUpperCase();
 
