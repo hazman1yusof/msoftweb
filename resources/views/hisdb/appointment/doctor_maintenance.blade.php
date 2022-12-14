@@ -62,9 +62,8 @@
 		        <th>End Time</th>
 		        <th>Start Time</th>
 		        <th>End Time</th>
-		        <th>Interval Time: <span id="intervaltime"></span> minutes</th>
+		        <th style="text-align: -webkit-center;">Interval Time: <input type="text" name="intervaltime" id="intervaltime" class="form-control input-sm" data-validation="required" style="width: 100px;">
 	            </tr>
-
 	            <tr>
 		        <td><input type="time" name="timefr1" id="time1" class="form-control input-sm" data-validation="required" value="08:00"></td>
 		        <td><input type="time" name="timeto1" id="time2" class="form-control input-sm" data-validation="required" value="12:00"></td>

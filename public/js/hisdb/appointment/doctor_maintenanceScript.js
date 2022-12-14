@@ -384,7 +384,7 @@
 					 // $('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					// $('#description').val(selrowData('#jqGrid').description);
 
-					$('#intervaltime').text(selrowData('#jqGrid').intervaltime);
+					$('#intervaltime').val(selrowData('#jqGrid').intervaltime);
 					$('#doctorcode').val(selrowData('#jqGrid').resourcecode);
 					urlParamtime.filterVal[0] = selrowData('#jqGrid').resourcecode;
 					urlParamleave.filterVal[0] = selrowData('#jqGrid').resourcecode;
@@ -561,7 +561,7 @@
 					objRow.timeto2 = $("#"+elem+"_timeto2").val();
 					rowsArray.push(objRow);
 				});
-				$.post( "/doctor_maintenance/save_session", {rowsArray:rowsArray,_token:$('#csrf_token').val(),oper:TSoper} , function( data ) {
+				$.post( "/doctor_maintenance/save_session", {rowsArray:rowsArray,_token:$('#csrf_token').val(),oper:TSoper,intervaltime:$('#intervaltime').val(),resourcecode:selrowData('#jqGrid').resourcecode} , function( data ) {
 		
 				}).success(function(data){
 					$("#TSBox").dialog('close');

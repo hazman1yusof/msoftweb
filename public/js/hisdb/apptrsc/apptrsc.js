@@ -60,7 +60,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
             urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -142,10 +142,11 @@ $(document).ready(function () {
 		$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 		let data = selrowData('#' + dialog_name.gridname);
-		let interval = data['d_intervaltime'];
+		let interval = data['a_intervaltime'];
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
 
+		console.log(interval)
 		console.log(apptsession)
 
 		td_from.addSessionInterval(interval,apptsession);
@@ -276,7 +277,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
 			urlParam: {
 				join_type : ['LEFT JOIN'],
@@ -325,7 +326,7 @@ $(document).ready(function () {
 		width: 10 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
-			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+			// set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			session_field.clear().ready().set();
 
 			$("#addForm input[name='icnum']").prop('readonly',true);

@@ -70,26 +70,31 @@ class DoctorMaintenanceController extends defaultController
     }
 
     public function save_session(Request $request){
-        if($request->oper == 'add'){
-            foreach ($request->rowsArray as $key => $value) {
-                if($value['status']=='True'){
-                    DB::table('hisdb.apptsession')->insert([
-                        'compcode' => session('compcode'),
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now(),
-                        'recstatus' =>'A',
-                        'doctorcode' => $value['doctorcode'],
-                        'days' => $value['days'],
-                        'timefr1' => $value['timefr1'],
-                        'timeto1' => $value['timeto1'],
-                        'timefr2' => $value['timefr2'],
-                        'timeto2' => $value['timeto2'],
-                        'status' => $value['status'],
 
+        DB::beginTransaction();
+
+        try {
+
+            $intervaltime = intval($request->intervaltime);
+
+            $apptresrc = DB::table('hisdb.apptresrc')
+                                ->where('resourcecode',$request->resourcecode);
+
+            if(!$apptresrc->exists()){
+                throw new \Exception("resourcecode doesnt exist in apptresrc");
+            }
+
+            DB::table('hisdb.apptresrc')
+                    ->where('resourcecode',$request->resourcecode)
+                    ->update([
+                        'intervaltime' => $intervaltime
                     ]);
-                }else{
-                    if($value['status']=='False'){
-                      DB::table('hisdb.apptsession')->insert([
+                        
+            if($request->oper == 'add'){
+
+                foreach ($request->rowsArray as $key => $value) {
+                    if($value['status']=='True'){
+                        DB::table('hisdb.apptsession')->insert([
                             'compcode' => session('compcode'),
                             'adduser' => session('username'),
                             'adddate' => Carbon::now(),
@@ -103,27 +108,52 @@ class DoctorMaintenanceController extends defaultController
                             'status' => $value['status'],
 
                         ]);
+                    }else{
+                        if($value['status']=='False'){
+                          DB::table('hisdb.apptsession')->insert([
+                                'compcode' => session('compcode'),
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now(),
+                                'recstatus' =>'A',
+                                'doctorcode' => $value['doctorcode'],
+                                'days' => $value['days'],
+                                'timefr1' => $value['timefr1'],
+                                'timeto1' => $value['timeto1'],
+                                'timefr2' => $value['timefr2'],
+                                'timeto2' => $value['timeto2'],
+                                'status' => $value['status'],
+
+                            ]);
+                        }
                     }
                 }
+            }else{
+                foreach ($request->rowsArray as $key => $value) {
+                    DB::table('hisdb.apptsession')
+                        ->where('doctorcode','=',$value['doctorcode'])
+                        ->where('days','=',$value['days'])
+                        ->update([
+                            'compcode' => session('compcode'),
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now(),
+                            'recstatus' => 'A',
+                            'timefr1' => $value['timefr1'],
+                            'timeto1' => $value['timeto1'],
+                            'timefr2' => $value['timefr2'],
+                            'timeto2' => $value['timeto2'],
+                            'status' => $value['status'],
+                        ]);
+                }
             }
-        }else{
-            foreach ($request->rowsArray as $key => $value) {
-                DB::table('hisdb.apptsession')
-                    ->where('doctorcode','=',$value['doctorcode'])
-                    ->where('days','=',$value['days'])
-                    ->update([
-                        'compcode' => session('compcode'),
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now(),
-                        'recstatus' => 'A',
-                        'timefr1' => $value['timefr1'],
-                        'timeto1' => $value['timeto1'],
-                        'timefr2' => $value['timefr2'],
-                        'timeto2' => $value['timeto2'],
-                        'status' => $value['status'],
-                    ]);
-            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e, 500);
         }
+
+
     }
 
     public function save_bgleave(Request $request){
