@@ -679,7 +679,7 @@ var dialog_authorid = new ordialog(
 			{label:'Username',name:'username',width:100,classes:'pointer',canSearch:true,or_search:true,checked:true},
 			{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Password',name:'password',width:400,classes:'pointer'},
-			{label:'Dept Code',name:'deptcode',width:400,classes:'pointer'},
+			{label:'Dept Code',name:'dept',width:400,classes:'pointer'},
 		],
 		urlParam: {
 			filterCol:['compcode','recstatus'],
@@ -689,7 +689,7 @@ var dialog_authorid = new ordialog(
 			let data=selrowData('#'+dialog_authorid.gridname);
 				$("#name").val(data['name']);
 				$("#password").val(data['password']).attr('type','password');
-				$("#deptcode").val(data['deptcode']);
+				$("#deptcode").val(data['dept']);
 				$('#deptcode').focus();
 		},
 		gridComplete: function(obj){

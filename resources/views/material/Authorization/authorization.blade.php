@@ -291,6 +291,6 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/material/Authorization/authorization.js"></script>
+	<script src="js/material/Authorization/authorization.js?v=2"></script>
 
 @endsection
