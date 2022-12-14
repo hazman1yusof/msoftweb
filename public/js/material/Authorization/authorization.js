@@ -705,8 +705,8 @@ var dialog_authorid = new ordialog(
 		},{
 		title:"Select Author ID",
 		open: function(){
-				dialog_authorid.urlParam.filterCol=['recstatus'],
-				dialog_authorid.urlParam.filterVal=['ACTIVE']
+				dialog_authorid.urlParam.filterCol=['recstatus','compcode'];
+				dialog_authorid.urlParam.filterVal=['ACTIVE','session.compcode'];
 			}
 		},'urlParam', 'radio', 'tab'
 	);
