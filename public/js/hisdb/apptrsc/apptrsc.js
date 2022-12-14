@@ -80,7 +80,7 @@ $(document).ready(function () {
 
 				var session_param ={
 					action:"get_table_default",
-					url:'util/get_table_default',
+					url:'./util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -155,7 +155,7 @@ $(document).ready(function () {
 
 		var event_apptbook = {
 			id: 'apptbook',
-			url: "apptrsc/getEvent",
+			url: "./apptrsc/getEvent",
 			type: 'GET',
 			data: {
 				type: 'apptbook',
@@ -165,7 +165,7 @@ $(document).ready(function () {
 
 		var event_appt_leave = {
 			id: 'appt_leave',
-			url: "apptrsc/getEvent",
+			url: "./apptrsc/getEvent",
 			type: 'GET',
 			data: {
 				type: 'appt_leave',
@@ -295,7 +295,7 @@ $(document).ready(function () {
 
             	var session_param ={
 					action:"get_value_default",
-					url:'util/get_table_default',
+					url:'./util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -644,7 +644,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("./apptrsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -661,7 +661,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("./apptrsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -677,7 +677,7 @@ $(document).ready(function () {
 			},
 			{	
 				id:'appt_ph',
-				url:'apptrsc/getEvent',
+				url:'./apptrsc/getEvent',
 				type:'GET',
 				data:{
 					type:'appt_ph'
@@ -694,7 +694,7 @@ $(document).ready(function () {
 	
 	var oper = 'add';
 	$('#submit').click(function(){
-		var url = (oper == 'add')?"apptrsc/addEvent":"apptrsc/editEvent";
+		var url = (oper == 'add')?"./apptrsc/addEvent":"./apptrsc/editEvent";
 
 		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
 			$.post(url, $("#addForm").serialize(), function (data) {
@@ -708,7 +708,7 @@ $(document).ready(function () {
 	});
 
 	$('#delete_but').click(function(){
-		$.post("apptrsc/delEvent", $("#addForm").serialize(), function (data) {
+		$.post("./apptrsc/delEvent", $("#addForm").serialize(), function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -813,7 +813,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "./apptrsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -840,7 +840,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "./apptrsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -889,7 +889,7 @@ $(document).ready(function () {
 			"arraytd":arraytd
 		}
 
-		$.post("apptrsc/editEvent?type=transfer", obj, function (data) {
+		$.post("./apptrsc/editEvent?type=transfer", obj, function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -1128,7 +1128,7 @@ $(document).ready(function () {
             var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
         }
 
-        $.post( "apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "./apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');

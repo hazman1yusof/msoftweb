@@ -337,7 +337,7 @@
 			
 			var urlParam={
 				action:'get_table_default',
-				url: 'util/get_table_default',
+				url: './util/get_table_default',
 				field:['resourcecode','description','TYPE'],
 				table_name:'hisdb.apptresrc',
 				table_id:'idno',
@@ -351,7 +351,7 @@
 			}
             var saveParam={
 				action:'save_table_default',
-				url:"doctor_maintenance/form",
+				url:"./doctor_maintenance/form",
 				field:['resourcecode','description','TYPE'],
 				oper:oper,
 				table_name:'hisdb.apptresrc',
@@ -502,7 +502,7 @@
 
             var urlParamtime = {
 				action:'get_table_default',
-				url: '/util/get_table_default',
+				url: './util/get_table_default',
 				field:"['doctorcode','days','timefr1','timeto1','timefr2','timeto2','status']",
 				table_name:'hisdb.apptsession',
 				table_id:'idno',
@@ -513,7 +513,7 @@
 
 			var saveParamtime={
 				action:'save_table_default',
-				url:"/doctor_maintenance/form",
+				url:"./doctor_maintenance/form",
 				field:['doctorcode','days','timefr1','timeto1','timefr2','timeto2','status'],
 				oper:oper,
 				table_name:'hisdb.apptsession',
@@ -561,7 +561,7 @@
 					objRow.timeto2 = $("#"+elem+"_timeto2").val();
 					rowsArray.push(objRow);
 				});
-				$.post( "/doctor_maintenance/save_session", {rowsArray:rowsArray,_token:$('#csrf_token').val(),oper:TSoper,intervaltime:$('#intervaltime').val(),resourcecode:selrowData('#jqGrid').resourcecode} , function( data ) {
+				$.post( "./doctor_maintenance/save_session", {rowsArray:rowsArray,_token:$('#csrf_token').val(),oper:TSoper,intervaltime:$('#intervaltime').val(),resourcecode:selrowData('#jqGrid').resourcecode} , function( data ) {
 		
 				}).success(function(data){
 					$("#TSBox").dialog('close');
@@ -674,7 +674,7 @@
 
             var urlParamph = {
 				action:'get_table_default',
-				url: '/util/get_table_default',
+				url: './util/get_table_default',
 				field:['apptph.idno','apptph.YEAR','apptph.datefr','apptph.dateto','apptph.remark','apptphcolor.color as backgroundcolor','apptph.backgroundcolor as colorpicker'],
 				table_name:['hisdb.apptph','hisdb.apptphcolor'],
 				join_type:['LEFT JOIN'],
@@ -688,7 +688,7 @@
 
 			var saveParamph={
 				action:'save_table_default',
-				url:"/doctor_maintenance/form",
+				url:"./doctor_maintenance/form",
 				field:['YEAR','datefr','dateto','remark'],
 				oper:oper,
 				table_name:'hisdb.apptph',
@@ -779,7 +779,7 @@
 			}
 
 			function save_colorph(color,idno){
-				$.post( "/doctor_maintenance/save_colorph", {color:color,_token:$('#csrf_token').val(),phidno:idno} , function( data ) {
+				$.post( "./doctor_maintenance/save_colorph", {color:color,_token:$('#csrf_token').val(),phidno:idno} , function( data ) {
 				}).success(function(data){
 
 				});
@@ -845,7 +845,7 @@
 
             var urlParamleave = {
 				action:'get_table_default',
-				url: '/util/get_table_default',
+				url: './util/get_table_default',
 				field:"['YEAR','datefr','dateto','remark','resourcecode']",
 				table_name:'hisdb.apptleave',
 				table_id:'idno',
@@ -855,7 +855,7 @@
 
 			var saveParamleave={
 				action:'save_table_default',
-				url:"/doctor_maintenance/form",
+				url:"./doctor_maintenance/form",
 				field:['YEAR','datefr','dateto','remark','resourcecode'],
 				oper:oper,
 				table_name:'hisdb.apptleave',
@@ -988,7 +988,7 @@
 
 		function savecolor(){
 			var bg_leave = $('#bg_leave').val();
-			$.post( "/doctor_maintenance/save_bgleave", {bg_leave:bg_leave,_token:$('#csrf_token').val()} , function( data ) {
+			$.post( "./doctor_maintenance/save_bgleave", {bg_leave:bg_leave,_token:$('#csrf_token').val()} , function( data ) {
 		
 			}).success(function(data){
 
@@ -998,14 +998,14 @@
 		function load_bg_leave(){
 			var urlParam={
 				action:'load_bg_leave',
-				url: '/util/get_value_default',
+				url: './util/get_value_default',
 				field:['pvalue1'],
 				table_name:'sysdb.sysparam',
 				filterCol:['source','trantype'],
 				filterVal:['HIS','ALCOLOR']
 			}
 
-			$.get( "util/get_value_default"+"?"+$.param(urlParam), function( data ) {
+			$.get( "./util/get_value_default"+"?"+$.param(urlParam), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data.rows)){
