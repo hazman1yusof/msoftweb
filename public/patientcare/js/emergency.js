@@ -51,7 +51,7 @@ $(document).ready(function () {
 		eventSources: [
 			{	
 				id: 'doctornote_event',
-				url: './doctornote/table',
+				url: './ptcare_doctornote/table',
 				type: 'GET',
 				data: {
 					type: 'apptbook',
@@ -64,15 +64,17 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'get_table_default',
-		url: $('#util_tab').val(),
+		url: './util/get_table_default',
 		field: '',
 		fixPost:'true',
 		table_name:['hisdb.episode as e','hisdb.pat_mast as p'],
 		join_type:['LEFT JOIN'],
 		join_onCol:['e.mrn'],
 		join_onVal:['p.mrn'],
-		filterCol:['e.reg_date'],
-		filterVal:[moment().format('YYYY-MM-DD')],
+		join_filterCol : [['p.compcode =']],
+        join_filterVal : [['session.compcode']],
+		filterCol:['e.reg_date','e.compcode'],
+		filterVal:[moment().format('YYYY-MM-DD'),'session.compcode'],
 	}
 
 	$("#jqGrid").jqGrid({
@@ -114,7 +116,7 @@ $(document).ready(function () {
 	});
 
 	function formatterRemarks(cellvalue, options, rowObject){
-		return "<a class='remarks_button btn btn-success btn-xs' target='_blank' href='./upload?mrn="+rowObject.e_mrn+"&episno="+rowObject.e_episno+"' > upload </a>";
+		return "<a class='remarks_button btn btn-success btn-xs' target='_blank' href='./ptcare_upload?mrn="+rowObject.e_mrn+"&episno="+rowObject.e_episno+"' > upload </a>";
 	}
 
 	function unformatRemarks(cellvalue, options, rowObject){

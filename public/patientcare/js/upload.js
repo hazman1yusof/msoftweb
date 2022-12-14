@@ -37,7 +37,7 @@ $(document).ready(function () {
 
         var urlParam={
             action:'preview value',
-            url:'./preview/data',
+            url:'./ptcare_preview/data',
             mrn:parseInt(mrn)
         }
 
@@ -72,7 +72,7 @@ $(document).ready(function () {
         if(filetype=='image'){
             return_value = `
                 <div class="imgcontainer">
-                    <img src="./thumbnail/`+filepath+`" >
+                    <img src="./ptcare_thumbnail/`+filepath+`" >
                       <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`">
                           <i class='search icon' ></i>
                       </a>
@@ -82,7 +82,7 @@ $(document).ready(function () {
             switch(fileextension){
                 case 'pdf': return_value =  `
                                     <div class="imgcontainer">
-                                        <img src="./thumbnail/application/pdf">
+                                        <img src="./ptcare_thumbnail/application/pdf">
                                           <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
                                               <i class='search icon' ></i>
                                           </a>
@@ -92,7 +92,7 @@ $(document).ready(function () {
                 case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
                 case 'msword': return_value =  `
                                     <div class="imgcontainer">
-                                        <img src="./thumbnail/application/msword">
+                                        <img src="./ptcare_thumbnail/application/msword">
                                           <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
                                               <i class='search icon' ></i>
                                           </a>
@@ -103,7 +103,7 @@ $(document).ready(function () {
                 case 'vnd.ms-excel':
                              return_value =  `
                                     <div class="imgcontainer">
-                                        <img src="./thumbnail/application/excel">
+                                        <img src="./ptcare_thumbnail/application/excel">
                                           <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
                                               <i class='search icon' ></i>
                                           </a>
@@ -113,7 +113,7 @@ $(document).ready(function () {
                 case 'vnd.openxmlformats-officedocument.presentationml.presentation':
                              return_value =  `
                                     <div class="imgcontainer">
-                                        <img src="./thumbnail/application/powerpoint">
+                                        <img src="./ptcare_thumbnail/application/powerpoint">
                                           <a class="small circular orange ui icon button btn" target="_blank" href="./uploads/`+filepath+`" >
                                               <i class='search icon' ></i>
                                           </a>
@@ -126,8 +126,8 @@ $(document).ready(function () {
         }else if(filetype=='video'){
             return_value =  `
                             <div class="imgcontainer">
-                                <img src="./thumbnail/video/video">
-                                  <a class="small circular orange ui icon button btn" target="_blank" href="./previewvideo/`+auditno+`" >
+                                <img src="./ptcare_thumbnail/video/video">
+                                  <a class="small circular orange ui icon button btn" target="_blank" href="./ptcare_previewvideo/`+auditno+`" >
                                       <i class='search icon' ></i>
                                   </a>
                             </div>`; 

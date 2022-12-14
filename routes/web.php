@@ -961,6 +961,19 @@ Route::get('/ptcare_nursing','patientcare\NursingController@show');
 Route::get('/ptcare_nursing/table','patientcare\NursingController@table');
 Route::post('/ptcare_nursing/form','patientcare\NursingController@form');
 
+
+Route::get('/ptcare_preview','patientcare\PreviewController@preview');
+Route::get('/ptcare_preview/data','patientcare\PreviewController@previewdata');
+Route::get('/ptcare_localpreview','patientcare\WebserviceController@localpreview');
+
+
+Route::get('/ptcare_thumbnail/{folder}/{image_path}','patientcare\PreviewController@thumbnail');
+
+Route::get('/ptcare_previewvideo/{id}','patientcare\PreviewController@previewvideo');
+
+Route::get('/ptcare_upload','patientcare\PreviewController@upload');
+Route::post('/ptcare_upload','patientcare\PreviewController@form');
+
 //dari dialysis
 
 Route::get('/dialysis_pat_mast','dialysis\PatmastController@show');

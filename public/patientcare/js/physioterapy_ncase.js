@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-
+	$('#formphys_ncase .ui.checkbox').checkbox();
 	disableForm('#formphys_ncase');
 
 	$("#new_phys_ncase").click(function(){
