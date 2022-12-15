@@ -203,6 +203,8 @@ $(document).ready(function () {
 		join_type: ['LEFT JOIN','LEFT JOIN'],
 		join_onCol: ['supplier.SuppCode','queuepo.recno'],
 		join_onVal: ['purordhd.suppcode','purordhd.recno'],
+		join_filterCol: [['supplier.compcode ='],['queuepo.compcode =']],
+		join_filterVal: [['session.compcode'],['session.compcode']],
 		// filterCol:['purordhd.prdept'],
 		// filterVal:[$('#deptcode').val()],
 		filterCol: filterCol_urlParam,
@@ -2813,5 +2815,5 @@ $(document).ready(function () {
 		}else if(scrollHeight>300){
 			scrollHeight = 300;
 		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
 	}

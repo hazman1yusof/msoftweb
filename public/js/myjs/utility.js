@@ -861,8 +861,8 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 
 	this.uncheckall_ = function(){
 		self.checkall_ = false;
-		$('#checkbox_all_uncheck').hide();
-		if($("select#Status").val()!='All')$('#checkbox_all_check').show();
+		// $('#checkbox_all_uncheck').hide();
+		// if($("select#Status").val()!='All')$('#checkbox_all_check').show();
 	}
 
 	this.show_hide_table = function(){
@@ -891,8 +891,8 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 					break;
 			}
 		}else if(reccount == 0){
-			$('#checkbox_all_check').show();
-			$("#checkbox_all_uncheck").hide();
+			// $('#checkbox_all_check').show();
+			// $("#checkbox_all_uncheck").hide();
 			$('#sel_tbl_panel').hide('fast');
 			$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 			$("#show_sel_tbl").data('hide',true);
