@@ -281,7 +281,11 @@ $(document).ready(function () {
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
+		},
+		beforeRequest: function(){
+			refreshGrid("#jqGrid2", urlParam, 'kosongkan')
 		}
+
 
 	});
 
@@ -888,6 +892,10 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = cbselect.recstatus;
+
+		if(rowObject.db_recstatus == "POSTED"){
+			return ' ';
+		}
 
 		if(options.gid == "jqGrid"){
 			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
@@ -1959,5 +1967,5 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
 }

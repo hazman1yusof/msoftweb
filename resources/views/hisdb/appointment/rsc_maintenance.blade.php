@@ -301,7 +301,7 @@
 	            <div class="form-group">
 					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
 					<div class="col-md-4">
-						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm text-uppercase" data-validation="required">
+						<input type="text" name="resourcecode" id="resourcecode" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 					</div>
 
 					<label class="col-md-2 control-label" for="description">Description</label>
@@ -311,9 +311,9 @@
 				</div>
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="interval">Time interval</label>
+					<label class="col-md-2 control-label" for="intervaltime">Time interval</label>
 					<div class="col-md-4">
-						<input type="number" name="interval" id="interval" class="form-control input-sm text-uppercase" data-validation="required">
+						<input type="number" name="intervaltime" id="intervaltime" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 
 					<label class="col-md-2 control-label" for="start">Start Time</label>

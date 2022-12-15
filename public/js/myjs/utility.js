@@ -758,49 +758,49 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	this.recstatus = recstatus;
 	this.checkall_ = false;
 	this.on = function(){
-		$(grid).jqGrid('setLabel',colname,`
-			<input type="checkbox" name="checkbox_all_" id="checkbox_all_check"  style="display:none">
-			<input type="checkbox" name="checkbox_all_" id="checkbox_all_uncheck" checked style="display:none">
-			`,
-			{'text-align':'center'});
+		// $(grid).jqGrid('setLabel',colname,`
+		// 	<input type="checkbox" name="checkbox_all_" id="checkbox_all_check"  style="display:none">
+		// 	<input type="checkbox" name="checkbox_all_" id="checkbox_all_uncheck" checked style="display:none">
+		// 	`,
+		// 	{'text-align':'center'});
 
 		let self = this;
-		$('#checkbox_all_check').click(function(){//click will check all
-			self.checkall_ = true;
-			let idno = self.idno;
-			let recstatus = self.recstatus;
-			$(this).hide();
-			$('#checkbox_all_uncheck').show();
-			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',true);
-			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
-			rowdatas.forEach(function(rowdata,index){
-				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
-				if(rowdata[recstatus] == "PARTIAL" || rowdata[recstatus] == "APPROVED"){
-					return ;
-				}
-				if($.isEmptyObject(rowdata_jqgridsel)){
-					$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
-					self.delete_function_on(rowdata[idno],index+1);
-				}
-			});
-			self.show_hide_table();
-		});
+		// $('#checkbox_all_check').click(function(){//click will check all
+		// 	self.checkall_ = true;
+		// 	let idno = self.idno;
+		// 	let recstatus = self.recstatus;
+		// 	$(this).hide();
+		// 	$('#checkbox_all_uncheck').show();
+		// 	$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',true);
+		// 	let rowdatas = $('#jqGrid').jqGrid ('getRowData');
+		// 	rowdatas.forEach(function(rowdata,index){
+		// 		let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
+		// 		if(rowdata[recstatus] == "PARTIAL" || rowdata[recstatus] == "APPROVED"){
+		// 			return ;
+		// 		}
+		// 		if($.isEmptyObject(rowdata_jqgridsel)){
+		// 			$('#jqGrid_selection').jqGrid ('addRowData', rowdata[idno],rowdata);
+		// 			self.delete_function_on(rowdata[idno],index+1);
+		// 		}
+		// 	});
+		// 	self.show_hide_table();
+		// });
 
-		$('#checkbox_all_uncheck').click(function(){//click will uncheck all
-			self.checkall_ = false;
-			let idno = self.idno;
-			$(this).hide();
-			$('#checkbox_all_check').show();
-			$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',false);
-			let rowdatas = $('#jqGrid').jqGrid ('getRowData');
-			rowdatas.forEach(function(rowdata){
-				let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
-				if(!$.isEmptyObject(rowdata_jqgridsel)){
-					$('#jqGrid_selection').jqGrid ('delRowData', rowdata[idno]);
-				}
-			});
-			self.show_hide_table();
-		});
+		// $('#checkbox_all_uncheck').click(function(){//click will uncheck all
+		// 	self.checkall_ = false;
+		// 	let idno = self.idno;
+		// 	$(this).hide();
+		// 	$('#checkbox_all_check').show();
+		// 	$("#jqGrid input[type='checkbox'][name='checkbox_selection']").prop('checked',false);
+		// 	let rowdatas = $('#jqGrid').jqGrid ('getRowData');
+		// 	rowdatas.forEach(function(rowdata){
+		// 		let rowdata_jqgridsel = $('#jqGrid_selection').jqGrid ('getRowData',rowdata[idno]);
+		// 		if(!$.isEmptyObject(rowdata_jqgridsel)){
+		// 			$('#jqGrid_selection').jqGrid ('delRowData', rowdata[idno]);
+		// 		}
+		// 	});
+		// 	self.show_hide_table();
+		// });
 
 		$("#show_sel_tbl").click(function(){
 			let hidden = $(this).data('hide');

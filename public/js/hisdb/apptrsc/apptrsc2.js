@@ -60,7 +60,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'resourcecode', width: 20, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'interval', name: 'interval', hidden:true},
+				{ label: 'intervaltim', name: 'intervaltime', hidden:true},
 				{ label: 'start', name: 'start', hidden:true},
 				{ label: 'end', name: 'end', hidden:true},
             ],
@@ -80,7 +80,7 @@ $(document).ready(function () {
 				$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 				let data = selrowData('#' + dialog_name.gridname);
-				let interval = data['interval'];
+				let interval = data['intervaltime'];
 				$('.fc-myCustomButton-button').show();
 
 				var apptsession=[
@@ -168,7 +168,7 @@ $(document).ready(function () {
 		$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 		let data = selrowData('#' + dialog_name.gridname);
-		let interval = data['d_intervaltime'];
+		let interval = data['a_intervaltime'];
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
 
@@ -300,7 +300,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:true},
             ],
 			urlParam: {
 				join_type : ['LEFT JOIN'],
