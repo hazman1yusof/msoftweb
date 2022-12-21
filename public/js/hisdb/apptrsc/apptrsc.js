@@ -146,9 +146,6 @@ $(document).ready(function () {
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
 
-		console.log(interval)
-		console.log(apptsession)
-
 		td_from.addSessionInterval(interval,apptsession);
 		td_to.addSessionInterval(interval,apptsession);
 		session_field.addSessionInterval(interval,apptsession);
@@ -619,6 +616,7 @@ $(document).ready(function () {
 				if(got == -1){
 					date_array.push(e.start.date());
 					date_obj.push({
+						type:e.source.ajaxSettings.data.type,
 						format_date:e.start.format("YYYY-MM-DD"),
 						date:e.start.date(),
 						count:1
@@ -631,7 +629,9 @@ $(document).ready(function () {
 			$("table tr td.fc-day-top span.ui.mini.teal.ribbon.label").remove();
 
 			date_obj.forEach(function(e,i){
-				$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+				if(e.type == 'apptbook'){
+					$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+				}
 			});
 		},
 		timeFormat: 'h(:mm)a',
@@ -686,7 +686,14 @@ $(document).ready(function () {
             	rendering: 'background'
 			},
 			{	
-				id:'appt_leave'
+				id:'appt_leave',
+				url:'./apptrsc/getEvent',
+				type:'GET',
+				data:{
+					type:'appt_leave'
+				}, 
+            	textColor: 'black',
+            	rendering: 'background'
 			}
 	    ]
 	});

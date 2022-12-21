@@ -57,15 +57,30 @@ class DoctorMaintenanceController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
-            case 'add':
-                return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            default:
-                return 'error happen..';
+        switch($request->action){
+            case 'al':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_al($request);
+                    case 'edit':
+                        return $this->edit_al($request);
+                    case 'del':
+                        return $this->del_al($request);
+                    default:
+                        return 'error happen..';
+                }
+            case 'ph':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_ph($request);
+                    case 'edit':
+                        return $this->edit_ph($request);
+                    case 'del':
+                        return $this->del_ph($request);
+                    default:
+                        return 'error happen..';
+                }
+
         }
     }
 
@@ -194,6 +209,195 @@ class DoctorMaintenanceController extends defaultController
                     'recstatus' => 'A'
                 ]);
         }
+    }
+
+    public function add_al(Request $request){
+        DB::beginTransaction();
+
+        $year = Carbon::parse($request->datefr)->format('Y');
+
+        try {
+
+            $table = DB::table('hisdb.apptleave');
+
+            $array_insert = [
+                'resourcecode' => $request->resourcecode,
+                'year' => $year,
+                'datefr' => $request->datefr,
+                'dateto' => $request->dateto,
+                'remark' => $request->remark,
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE'
+            ];
+
+            $table->insert($array_insert);
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function edit_al(Request $request){
+        DB::beginTransaction();
+
+        $year = Carbon::parse($request->datefr)->format('Y');
+        try {
+
+            $table = DB::table('hisdb.apptleave')->where('idno','=',$request->idno);
+
+            $array_update = [
+                'year' => $year,
+                'datefr' => $request->datefr,
+                'dateto' => $request->dateto,
+                'remark' => $request->remark,
+                'compcode' => session('compcode'),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE'
+            ];
+
+            $table->update($array_update);
+
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function del_al(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $table = DB::table('hisdb.apptleave')->where('idno','=',$request->idno);
+            $table->update([
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'DEACTIVE',
+            ]);
+
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function add_ph(Request $request){
+        DB::beginTransaction();
+
+        $year = Carbon::parse($request->datefr)->format('Y');
+        try {
+
+            $table = DB::table('hisdb.apptph');
+
+            $array_insert = [
+                'year' => $year,
+                'datefr' => $request->datefr,
+                'dateto' => $request->dateto,
+                'remark' => $request->remark,
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE'
+            ];
+
+            $table->insert($array_insert);
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function edit_ph(Request $request){
+        DB::beginTransaction();
+        
+        $year = Carbon::parse($request->datefr)->format('Y');
+        try {
+
+            $table = DB::table('hisdb.apptph')->where('idno','=',$request->idno);
+
+            $array_update = [
+                'year' => $year,
+                'datefr' => $request->datefr,
+                'dateto' => $request->dateto,
+                'remark' => $request->remark,
+                'compcode' => session('compcode'),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE'
+            ];
+
+            $table->update($array_update);
+
+            $queries = DB::getQueryLog();
+
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+        }
+        
+    }
+
+    public function del_ph(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $table = DB::table('hisdb.apptph')->where('idno','=',$request->idno);
+            $table->update([
+                'deluser' => session('username'),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'DEACTIVE',
+            ]);
+
+            $responce = new stdClass();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+        }
+        
     }
 
 }

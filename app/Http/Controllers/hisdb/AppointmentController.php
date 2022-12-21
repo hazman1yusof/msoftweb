@@ -109,6 +109,11 @@ class AppointmentController extends defaultController
                     ->whereBetween('datefr', [$request->start, $request->end])
                     ->get();
 
+                foreach ($select as $key => $value) {
+                    $end_ = Carbon::parse($value->end)->addDays(1);
+                    $value->end=$end_->format('Y-m-d');
+                }
+
                 break;
             case 'apptbook_1':
 

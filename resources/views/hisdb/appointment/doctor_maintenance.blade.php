@@ -86,27 +86,17 @@
 		<button type="button" class="btn btn-primary pull-right" id="tsbutton"><span class='fa fa-save fa-lg '></span> Save Session </button>
 	</div>
 
-	<div id="PHBox" title="Public Holiday" style="display:none">	
-     <!--  <ul>
-			<b>DOCTOR CODE : </b><span name='resourcecode' ></span> <br><br>
-			<b>DOCTOR NAME: </b><span name='description' ></span>
-		</ul> -->
-        
+	<div id="PHBox" title="Public Holiday" style="display:none">
+		<form id="searchForm1" class="formclass" style='width:99%'>
 			<fieldset>
-				<form id="searchForm1" class="formclass" style='width:99%'>
-			<fieldset>
-				<div class="ScolClass">
-						<div name='Scol'>Search By : </div> 
-						
+				<div class="ScolClass" style="margin-left: 5px;">
+					<div name='Scol'>Search By : </div>
 				</div>
 				<div class="StextClass">
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase">
-					
 				</div>
 			 </fieldset> 
 		</form>
-				
-			 </fieldset> 
 		
 		<div id='gridph_c' style="padding:15px 0 0 0">
             <table id="gridph" class="table table-striped"></table>
@@ -118,7 +108,7 @@
 	<div id="ALBox" title="Annual Leave" style="display:none">
 		<div class="row" style="padding:0">
 			<label class="col-md-2 control-label">DOCTOR CODE</label>
-			<span name='resourcecode' ></span>
+			<span name='resourcecode' id="span_rc_al"></span>
 		</div>
 		<div class="row" style="padding:0">
 			<label class="col-md-2 control-label">DOCTOR NAME</label>
@@ -208,37 +198,31 @@
 		<!-- 	<hr> -->
 			<form class='form-horizontal' style='width:89%' id='phformdata'>
 			{{ csrf_field() }}
-			<input id="resourcecode" name="resourcecode" type="hidden">
 			<input type="hidden" name="idno">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
 				<div class="form-group">
-				<!-- <div class="form-group">
-				
-			</div> -->
-	        
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="datefr">From</label>
-					<div class="col-md-2">
-						<div class='input-group'>
-							<input id="datefr" name="datefr" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
-										data-validation="required">		
-						  <span class="input-group-addon">
-                                    <span class="glyphicon-calendar glyphicon"></span>
-                                </span>						
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="datefr_ph">From</label>
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="datefr_ph" name="datefr" type="date" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+											data-validation="required">		
+							  <span class="input-group-addon">
+	                                    <span class="glyphicon-calendar glyphicon"></span>
+	                                </span>						
+							</div>
+							
 						</div>
-						
+						<label class="col-md-2 control-label" for="dateto_ph">To</label>
+						<div class="col-md-2">
+						<div class='input-group'>
+							<input id="dateto_ph" name="dateto" type="date" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+		                    <span class="input-group-addon">
+		                        <span class="glyphicon-calendar glyphicon"></span>
+		                    </span>						
+						</div>
+						</div>
 					</div>
-					<label class="col-md-2 control-label" for="dateto">To</label>
-					<div class="col-md-2">
-					<div class='input-group'>
-						<input id="dateto" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
-	                    <span class="input-group-addon">
-	                        <span class="glyphicon-calendar glyphicon"></span>
-	                    </span>						
-					</div>
-					</div>
-				</div>
 				</div>
 
 				<div class="form-group">
@@ -257,7 +241,6 @@
 		
 			<form class='form-horizontal' style='width:89%' id='alformdata'>
 			{{ csrf_field() }}
-			<input id="resourcecode" name="resourcecode" type="hidden">
 			<input id="idno" name="idno" type="hidden">
 			<input id="YEAR" name="YEAR" type="hidden"  value="<?php echo date("Y") ?>">
 				<div class="form-group">
@@ -265,10 +248,10 @@
 				
 			</div>
                 	<div class="form-group">
-					<label class="col-md-2 control-label" for="datefr">From</label>
+					<label class="col-md-2 control-label" for="datefr_al">From</label>
 					<div class="col-md-2">
 						<div class='input-group'>
-							<input id="datefr" name="datefr" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
+							<input id="datefr_al" name="datefr" type="date" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}"  maxlength="10" class="form-control input-sm" 
 										data-validation="required">		
 						  <span class="input-group-addon">
                                     <span class="glyphicon-calendar glyphicon"></span>
@@ -276,10 +259,10 @@
 						</div>
 						
 					</div>
-					<label class="col-md-2 control-label" for="dateto">To</label>
+					<label class="col-md-2 control-label" for="dateto_al">To</label>
 					<div class="col-md-2">
 					<div class='input-group'>
-						<input id="dateto" name="dateto" type="text" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
+						<input id="dateto_al" name="dateto" type="date" tabindex="-1" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->toDateString()}}" maxlength="10" class="form-control input-sm" data-validation="required" >
                     <span class="input-group-addon">
                         <span class="glyphicon-calendar glyphicon"></span>
                     </span>						
