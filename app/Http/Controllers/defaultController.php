@@ -16,7 +16,7 @@ abstract class defaultController extends Controller{
     }
 
     public function default_duplicate($table,$duplicateCode,$duplicateValue){//guna table id, tak fixpost
-        return DB::table($table)->where($duplicateCode,'=',$duplicateValue)->count();
+        return DB::table($table)->where('compcode',session('compcode'))->where($duplicateCode,'=',$duplicateValue)->count();
     }
 
     public function defaultSetter(Request $request){

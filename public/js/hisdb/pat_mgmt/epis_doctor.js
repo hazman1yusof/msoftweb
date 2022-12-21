@@ -109,7 +109,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + search_doctor.gridname);
@@ -122,10 +122,10 @@ $(document).ready(function () {
 				$("#doc_time").val(moment().format("HH:mm:ss"));
 			}
 		},{
-			title: "Select Bed Type search",
+			title: "Select Doctor",
 			open: function () {
 				search_doctor.urlParam.filterCol=['compcode', 'recstatus'];
-				search_doctor.urlParam.filterVal=['session.compcode', 'A'];
+				search_doctor.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 
 				$('div[aria-describedby="otherdialog_search_doctor"]').css("z-index", "1100");
 				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");

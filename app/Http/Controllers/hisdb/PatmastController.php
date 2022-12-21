@@ -2387,15 +2387,18 @@ class PatmastController extends defaultController
 
         try {
 
-            $idno = DB::table('hisdb.areacode')->max('idno');
+            // if($this->default_duplicate('hisdb.areacode','areacode',$request->title_code)>0){
+            //     throw new \Exception("Areacode already exist");
+            // }
 
+            $idno = DB::table('hisdb.areacode')->max('idno');
 
             DB::table('hisdb.areacode')
                 ->insert([
                     'compcode' => session('compcode'),
                     'areacode' => intval($idno) + 1,
                     'description' => $request->areacode_desc,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2415,15 +2418,19 @@ class PatmastController extends defaultController
 
         try {
 
+            // if($this->default_duplicate('hisdb.relationship','RelationShipCode',$request->title_code)>0){
+            //     throw new \Exception("Areacode already exist");
+            // }
+
             $idno = DB::table('hisdb.relationship')->max('idno');
 
 
             DB::table('hisdb.relationship')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'areacode' => intval($idno) + 1,
+                    'RelationShipCode' => intval($idno) + 1,
                     'description' => $request->relationship_desc,
-                    'recstatus' => 'A',
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
