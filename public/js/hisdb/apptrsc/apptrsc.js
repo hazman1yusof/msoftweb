@@ -3,7 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
+	console.log(document.documentElement.clientHeight);
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -483,9 +483,8 @@ $(document).ready(function () {
 	$("#apptdatefr_day,#apptdateto_day").change(function(){
 		session_field.clear().ready().set();
 	});
-	
 	$('#calendar').fullCalendar({
-		contentHeight: 500,
+		contentHeight: document.documentElement.offsetHeight - document.getElementById("divform").offsetHeight - 138,
 		// aspectRatio:  1.5,
 		header: {
 			left: 'prev,next today myCustomButton',
