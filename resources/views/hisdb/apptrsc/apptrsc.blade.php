@@ -140,7 +140,7 @@ i.fa {
 	
 	<div class='row'>
 		<input id="Class2" name="Type" type="hidden" value="{{Request::get('TYPE')}}">
-		<div id="divform" class="formclass clearfix" style='width:99%;padding-bottom: 12px'>
+		<div id="divform" class="formclass" style='width:99%;padding-bottom: 5px; position: relative;'>
 			<form id="searchForm" >
 				<fieldset>
 					<div class='col-md-12' style='padding: 0 0 5px 0;'>
@@ -162,7 +162,7 @@ i.fa {
 				 </fieldset>
 			</form>
 
-			<div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." style="padding-right:12px" >
+			<div class="btn-group btn-group-sm" role="group" aria-label="..." style="position: absolute;padding-right: 12px; right: 1px;bottom: 7px;" >
 				<button type="button" class="btn btn-default" id='transfer_doctor_but'>
 					<span class='fa fa-user-md fa-lg'></span> Transfer Doc
 				</button>
