@@ -117,7 +117,7 @@
 					<div class="panel-heading">Manual Allocation Detail</div>
 						<div class="panel-body">
 							<form id='formdata_manualAllocdtl' class='form-vertical' style='width:99%'>
-								<div id="manualAllocdtl" class='col-md-10'>
+								<div class='col-md-10' style="padding:0 0 15px 0">
 									<table id="manualAllocdtl" class="table table-striped"></table>
 									<div id="manualAllocdtlpg"></div>
 								</div>

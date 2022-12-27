@@ -69,7 +69,7 @@ use PDF;
                         
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
-                    ->where('ap.source','=',$request->source)
+                    ->where('ap.source','=','AP')
                     ->whereIn('ap.trantype',['PD','CN']);
 
         if(!empty($request->filterCol)){

@@ -2,6 +2,28 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
+	/////////////////////////validation//////////////////////////
+	$.validate({
+    	decimalSeparator : ',',
+		language : {
+			requiredFields: ''
+		},
+	});
+	
+	var errorField=[];
+	conf = {
+		onValidate : function($form) {
+			if(errorField.length>0){
+				return {
+					element : $(errorField[0]),
+					message : ' '
+				}
+			}
+		},
+	};
+
+	var fdl = new faster_detail_load();
+	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 
 	// ///////////////////  for handling amount based on trantype/////////////////////////
 	// function handleAmount(){
@@ -484,28 +506,6 @@ $(document).ready(function () {
 		// 	},
 		// });
 
-	/////////////////////////validation//////////////////////////
-	$.validate({
-    	decimalSeparator : ',',
-		language : {
-			requiredFields: ''
-		},
-	});
-	
-	var errorField=[];
-	conf = {
-		onValidate : function($form) {
-			if(errorField.length>0){
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
-			}
-		},
-	};
-
-	var fdl = new faster_detail_load();
-	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 
 	// //////////////////////////////////////////////////////////////
 	
@@ -574,8 +574,10 @@ $(document).ready(function () {
 		width: 9/10 * $(window).width(),
 		modal: true,
 		autoOpen: false,
-		open: function( event, ui ) {			
+		open: function( event, ui ) {
 			parent_close_disabled(true);
+			$("#manualAllocdtl").jqGrid ('setGridWidth', Math.floor($("#manualAllocdtl_c")[0].offsetWidth-$("#manualAllocdtl_c")[0].offsetLeft));
+			$("#manualAllochdr").jqGrid ('setGridWidth', Math.floor($("#manualAllochdr_c")[0].offsetWidth-$("#manualAllochdr_c")[0].offsetLeft));
 		},
 		close: function( event, ui ) {
 			parent_close_disabled(false);
