@@ -695,7 +695,7 @@ use PDF;
         $yearperiod = defaultController::getyearperiod_($apacthdr_obj->recdate);
 
         $credit_obj = $this->gltran_frombank($apacthdr_obj->bankcode);
-        $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode);
+        $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode,$apacthdr_obj->trantype);
 
         //1. buat gltran
         DB::table('finance.gltran')
@@ -788,7 +788,7 @@ use PDF;
         $yearperiod = defaultController::getyearperiod_($apacthdr_obj->recdate);
 
         $credit_obj = $this->gltran_frombank($apacthdr_obj->bankcode);
-        $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode);
+        $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode,$apacthdr_obj->trantype);
 
         //1. buat gltran
         DB::table('finance.gltran')
@@ -843,13 +843,21 @@ use PDF;
         return $obj;
     }
 
-    public function gltran_fromsupp($suppcode){
+    public function gltran_fromsupp($suppcode,$trantype){
 
-        $obj = DB::table("material.supplier")
+        if($trantype == 'PV'){
+            $obj = DB::table("material.supplier")
                 ->select('costcode','glaccno')
                 ->where('compcode','=',session('compcode'))
                 ->where('suppcode','=',$suppcode)
                 ->first();
+        }else{
+            $obj = DB::table("material.supplier")
+                ->select('Advccode as costcode','AdvGlaccno as glaccno')
+                ->where('compcode','=',session('compcode'))
+                ->where('suppcode','=',$suppcode)
+                ->first();
+        }
 
         return $obj;
     }
