@@ -331,6 +331,8 @@ use PDF;
                     'recstatus' => 'OPEN'
                 ];
 
+                $idno_apacthdr = $table->insertGetId($array_insert);
+
                 $responce = new stdClass();
                 $responce->auditno = $auditno;
                 $responce->idno = $idno_apacthdr;
