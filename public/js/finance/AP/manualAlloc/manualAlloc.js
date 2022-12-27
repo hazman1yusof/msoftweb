@@ -114,8 +114,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
-		filterCol:['source','trantype'],
-		filterVal:[$('#apacthdr_source').val(),$('#apacthdr_trantype').val()]
+		filterCol:['source','trantype', 'outamount'],
+		filterVal:[$('#apacthdr_source').val(),$('#apacthdr_trantype').val(), '>.0']
 	}
 
 	var addmore_manualAllochdr={more:false,state:true,edit:false}
@@ -125,7 +125,7 @@ $(document).ready(function () {
 		editurl: "./manualAlloc/form",
 		 colModel: [
 			{label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{label: 'Audit <br> No', name: 'auditno', width: 20, classes: 'wrap', hidden:false, editable:false},
+			{label: 'Audit <br> No', name: 'auditno', width: 25, classes: 'wrap', hidden:false, editable:false},
 			{label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', hidden:false, formatter: showdetail, unformat:un_showdetail, editable:false},
 			{label: 'Doc Date', name: 'actdate', width: 100, classes: 'wrap', editable:false,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
