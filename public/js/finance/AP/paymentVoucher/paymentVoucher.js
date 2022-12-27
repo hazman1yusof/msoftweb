@@ -1674,6 +1674,18 @@ function init_jq2(oper,urlParam2){
 			$('#pvpd_detail').hide();
 			$('#apacthdr_amount').prop('readonly',false);
 		}
+	}  else if(oper == 'view'){
+		if($('#apacthdr_trantype').val() == 'PV'){
+			$('#save').hide();
+			$('#apacthdr_amount').prop('readonly',true);
+			$('#pvpd_detail').show();
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
+		}else if($('#apacthdr_trantype').val() == 'PD') {
+			$('#save').show();
+			$('#pvpd_detail').hide();
+			$('#apacthdr_amount').prop('readonly',false);
+		}
 	} 
 }
 

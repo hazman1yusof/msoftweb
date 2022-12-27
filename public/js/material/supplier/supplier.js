@@ -72,7 +72,7 @@ $(document).ready(function () {
 
 
 	var dialog_CostCode = new ordialog(
-		'CostCode','finance.costcenter','#CostCode',errorField,
+		'Advccode','finance.costcenter','#Advccode',errorField,
 		{	colModel:[
 				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -82,7 +82,7 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
-					$('#GlAccNo').focus();
+					$('#AdvGlaccno').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -105,7 +105,7 @@ $(document).ready(function () {
 	dialog_CostCode.makedialog(true);
 
 	var dialog_GlAccNo = new ordialog(
-		'GlAccNo','finance.glmasref','#GlAccNo',errorField,
+		'AdvGlaccno','finance.glmasref','#AdvGlaccno',errorField,
 		{	colModel:[
 				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -263,6 +263,8 @@ $(document).ready(function () {
 			{ label: 'Term Disp', name: 'TermDisp', width: 30, align: 'right',editable: true, classes: 'wrap' },
 			{ label: 'Cost Code', name: 'CostCode', width: 30, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Gl Account No', name: 'GlAccNo', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Advance Cost Code', name: 'Advccode', width: 30, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Advance GL Account No', name: 'AdvGlaccno', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'AccNo', name: 'AccNo', width: 80, hidden: true, editable: true},
 			{ label: 'DepAmt', name: 'DepAmt', width: 80, hidden: true},
 			{ label: 'MiscAmt', name: 'MiscAmt', width: 80, hidden: true},
@@ -329,6 +331,8 @@ $(document).ready(function () {
 			case 'SuppGroup':field=['SuppGroup','description'];table="material.SuppGroup";case_='SuppGroup';break;
 			case 'CostCode':field=['costcode','description'];table="finance.costcenter";case_='CostCode';break;
 			case 'GlAccNo':field=['glaccno','description'];table="finance.glmasref";case_='GlAccNo';break;
+			case 'Advccode':field=['costcode','description'];table="finance.costcenter";case_='Advccode';break;
+			case 'AdvGlaccno':field=['glaccno','description'];table="finance.glmasref";case_='AdvGlaccno';break;
 
 			//suppitem//
 			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			

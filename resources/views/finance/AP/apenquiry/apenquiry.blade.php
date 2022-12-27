@@ -457,7 +457,7 @@
 				</div>
 			</div>
 
-			<div class='panel panel-info' id="pv_detail">
+			<!-- <div class='panel panel-info' id="pv_detail">
 			<div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
@@ -466,7 +466,7 @@
 						        <div id="jqGridPager2_indetail"></div>
 						</div>
 					</form>
-				</div>
+				</div> -->
 
 			<!-- <div class='panel panel-info' id="cn_in_detail">
 				<div class="panel-heading">Credit Note Detail</div>
