@@ -97,16 +97,11 @@ $(document).ready(function () {
 			urlParam_hdr.table_name='finance.apacthdr';
 			urlParam_hdr.table_id='auditno';
 			urlParam_hdr.field=['source','trantype'];
-			urlParam_hdr.filterCol=['source','trantype'];
-			urlParam_hdr.filterVal=['PB','RC'];
+		
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 
 		}else if($("#apacthdr_trantype option:selected").val('CN')){
-			urlParam_hdr.table_name='debtor.hdrtypmst';
-			urlParam_hdr.table_id='hdrtype';
-			urlParam_hdr.field=['source','trantype','description','hdrtype','updpayername','depccode','depglacc','updepisode'];
-			urlParam_hdr.filterCol=null;
-			urlParam_hdr.filterVal=null;
+		
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 		}
 	});
@@ -130,12 +125,9 @@ $(document).ready(function () {
 		editurl: "./manualAlloc/form",
 		 colModel: [
 			{label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{label: 'Audit No', name: 'auditno', width: 30, classes: 'wrap', hidden:false, editable:false},
-			{label: 'Creditor', name: 'suppcode', width: 80, classes: 'wrap', hidden:false, formatter: showdetail, unformat:un_showdetail, editable:false},
-			{label: 'Remark', name: 'remarks', width: 70, classes: 'wrap', hidden:false, editable:false},
-			{label: 'Amount', name: 'amount', width: 60, classes: 'wrap', hidden:false, editable:false},
-			{label: 'Out Amount', name: 'outamount', width: 60, classes: 'wrap', hidden:false, editable:false},
-			{label: 'Post Date', name: 'actdate', width: 130, classes: 'wrap', editable:true,
+			{label: 'Audit <br> No', name: 'auditno', width: 20, classes: 'wrap', hidden:false, editable:false},
+			{label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', hidden:false, formatter: showdetail, unformat:un_showdetail, editable:false},
+			{label: 'Doc Date', name: 'actdate', width: 100, classes: 'wrap', editable:false,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editoptions: {
 						dataInit: function (element) {
@@ -153,7 +145,28 @@ $(document).ready(function () {
 						}
 					}
 				},
-			{label: 'Total Paid', name: 'updepisode', width: 60, classes: 'wrap', hidden:false, editable:false},
+			{label: 'Remark', name: 'remarks', width: 130, classes: 'wrap', hidden:false, editable:false},
+			{label: 'Amount', name: 'amount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right"},
+			{label: 'Out Amount', name: 'outamount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right"},
+			{label: 'Post Date', name: 'recdate', width: 100, classes: 'wrap', editable:true,
+					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+					editoptions: {
+						dataInit: function (element) {
+							$(element).datepicker({
+								id: 'expdate_datePicker',
+								dateFormat: 'dd/mm/yy',
+								minDate: "dateToday",
+								//showOn: 'focus',
+								changeMonth: true,
+								changeYear: true,
+								onSelect : function(){
+									$(this).focus();
+								}
+							});
+						}
+					}
+				},
+			{label: 'Total Paid', name: 'updepisode', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right"},
 		],
 		autowidth:true,
 		multiSort: true,
