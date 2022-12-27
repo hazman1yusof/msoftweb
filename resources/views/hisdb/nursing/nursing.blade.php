@@ -44,7 +44,7 @@
 		</div>
 	</div>
 	<div id="jqGridTriageInfo_panel" class="panel-collapse collapse">
-		<div class="panel-body" style="overflow-y: auto;height: 550px;">
+		<div class="panel-body paneldiv" style="overflow-y: auto;">
 			<div class='col-md-12' style="padding:0 0 15px 0">
 
 				<form class='form-horizontal' style='width:99%' id='formTriageInfo'>

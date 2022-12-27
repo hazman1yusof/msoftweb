@@ -288,7 +288,9 @@ $(document).ready(function () {
 			}
 
 			addmore_jqGrid_ordcom.edit = addmore_jqGrid_ordcom.more = false; //reset
-			calc_jq_height_onchange("jqGrid_ordcom");
+			let jq_max_hgt = $('#jqGrid_ordcom>tbody').closest('div.paneldiv').prop('clientHeight') - 120;
+			console.log(jq_max_hgt);
+			calc_jq_height_onchange("jqGrid_ordcom",jq_max_hgt);
 		
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){			
@@ -521,6 +523,7 @@ $(document).ready(function () {
 	});	
 
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
+		SmoothScrollTo("#jqGrid_ordcom_panel", 500)
 		hideatdialogForm(false);
 		refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 		$("#jqGrid_ordcom").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
@@ -611,9 +614,9 @@ function populate_form_ordcom(obj,rowdata){
 //screen current patient//
 function populate_ordcom_currpt(obj){
 	//panel header	
-	$('#name_show_ordcom').text(obj.Name);
-	$('#mrn_show_ordcom').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_ordcom').text((obj.Sex).toUpperCase());
+	$('#name_show_ordcom').text(if_none(obj.Name));
+	$('#mrn_show_ordcom').text(if_none(("0000000" + obj.MRN).slice(-7)));
+	$('#sex_show_ordcom').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_ordcom').text(dob_chg(obj.DOB));
 	$('#age_show_ordcom').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_ordcom').text(if_none(obj.raceDesc).toUpperCase());

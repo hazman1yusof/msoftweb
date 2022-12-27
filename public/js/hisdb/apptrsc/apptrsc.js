@@ -93,7 +93,7 @@ $(document).ready(function () {
             ondblClickRow_off:'off',
         },{
             title: "Select Doctor",
-            width: 10/10 * $(window).width(),
+            width: 9/10 * $(window).width(),
             open: function () {
 
 				$("#"+dialog_name.gridname).jqGrid ('setGridHeight',100);
@@ -215,7 +215,7 @@ $(document).ready(function () {
 		},
 		{
 			title: "Select Case",
-            width: 10/10 * $(window).width(),
+            width: 9/10 * $(window).width(),
 			open: function () {
 				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
 				dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
@@ -320,7 +320,7 @@ $(document).ready(function () {
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
-		width: 10 / 10 * $(window).width(),
+		width: 9 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			// set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
@@ -339,7 +339,7 @@ $(document).ready(function () {
 	$("#start_time_dialog").dialog({
     	autoOpen : false, 
     	modal : true,
-		width: 10/10 * $(window).width(),
+		width: 9/10 * $(window).width(),
 		open: function(){
 			$("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
 		},
@@ -790,7 +790,7 @@ $(document).ready(function () {
 
 	$("#transfer_date").dialog({
 		autoOpen: false,
-		width: 10 / 10 * $(window).width(),
+		width: 9 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			$("#grid_transfer_date_from").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_from_c")[0].offsetWidth-$("#grid_transfer_date_from_c")[0].offsetLeft));

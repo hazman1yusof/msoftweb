@@ -65,8 +65,8 @@ class OrdcomController extends defaultController
                                 'freq.freqdesc as fre_desc',
                                 'drugindicator.drugindcode as dru_desc')
 
-                            ->where('trx.mrn' ,'=', $request->mrn)
-                            ->where('trx.episno' ,'=', $request->episno)
+                            // ->where('trx.mrn' ,'=', $request->mrn)
+                            // ->where('trx.episno' ,'=', $request->episno)
                             ->where('trx.compcode','=',session('compcode'))
                             ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
                             ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')

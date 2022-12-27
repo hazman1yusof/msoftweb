@@ -1918,22 +1918,26 @@ function galGridCustomValue (elem, operation, value){
 }
 
 function dob_chg(date){
-	let arrdate = date.split("-");
-	return arrdate[2]+'-'+arrdate[1]+'-'+arrdate[0];
+	if(date){
+		let arrdate = date.split("-");
+		return arrdate[2]+'-'+arrdate[1]+'-'+arrdate[0];
+	}return '';
 }
 
 function dob_age(date){
-	return moment().diff(date, 'years');
+	if(date){
+		return moment().diff(date, 'years');
+	}return '';
 }
 
-function if_none(str){
-	return (str)?str:'NONE';
+function if_none(str, none_return = 'NONE'){
+	return (str)?str:none_return;
 }
 
 function SmoothScrollTo(id_or_Name, timelength){
   var timelength = timelength || 500;
   $('html, body').animate({
-      scrollTop: $(id_or_Name).offset().top-70
+      scrollTop: $(id_or_Name).offset().top-60
   }, timelength, function(){
 
   });

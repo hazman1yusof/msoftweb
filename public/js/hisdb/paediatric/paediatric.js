@@ -23,6 +23,10 @@ $(document).ready(function () {
 	  this.style.height = (this.scrollHeight) + 'px';
 	});
 
+	$('#jqGridPaediatric_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#jqGridPaediatric_panel", 500)
+	});
+
 	var fdl = new faster_detail_load();
 
 	disableForm('#formPaediatric');
@@ -549,15 +553,15 @@ function saveForm_paediatric(callback){
     });
 }
 
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<50){
-		scrollHeight = 50;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-}
+// function calc_jq_height_onchange(jqgrid){
+// 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+// 	if(scrollHeight<50){
+// 		scrollHeight = 50;
+// 	}else if(scrollHeight>300){
+// 		scrollHeight = 300;
+// 	}
+// 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+// }
 
 
 
