@@ -55,6 +55,7 @@ $(document).ready(function () {
 			{ label: 'statecode', name: 'statecode', width: 17, classes: 'wrap',  hidden:true},
 			{ label: 'Tel No', name: 'telno', width: 5},	
 			{ label: 'idno', name: 'idno', hidden: true},
+			{ label: 'compcode', name: 'compcode', hidden: true},
 		],
 		autowidth:true,
 		viewrecords: true,

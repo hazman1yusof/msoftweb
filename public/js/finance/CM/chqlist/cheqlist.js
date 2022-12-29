@@ -45,6 +45,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./cheqlist/form",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true},
 			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, checked: true, hidden:true},
 			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},

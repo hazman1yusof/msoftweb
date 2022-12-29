@@ -45,7 +45,7 @@
 				datatype: "local",
 				editurl: "./costcenter/form",
 				 colModel: [
-					//{ label: 'compcode', name: 'compcode', width: 40, hidden:true},					
+					{ label: 'compcode', name: 'compcode', width: 40, hidden:true},					
 					{ label: 'Cost Code', name: 'costcode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Description', name: 'description', width: 70, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'idno', name: 'idno', hidden: true, key:true},	

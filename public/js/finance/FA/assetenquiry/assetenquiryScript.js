@@ -304,6 +304,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true},
 			{ label: 'Type', name: 'assettype', width: 10, classes: 'wrap',canSearch: true, formatter: showdetail, unformat:un_showdetail},		
 			{ label: 'Category', name: 'assetcode', width: 10, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},		
 			{ label: 'Asset No', name: 'assetno', width: 6, classes: 'wrap'},

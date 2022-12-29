@@ -127,6 +127,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
+			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},
 			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, checked: true},
 			{ label: 'Trantype', name: 'trantype', width: 13},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},

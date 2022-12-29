@@ -46,6 +46,7 @@
 				datatype: "local",
 				editurl: "./glmaster/form",
 				 colModel: [					
+					{ label: 'compcode', name: 'compcode', width: 90, hidden:true},
 					{ label: 'Gl Account', name: 'glaccno', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Description', name: 'description', width: 80, classes: 'wrap', checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 					{ label: 'Act Type', name: 'acttype', width: 80, hidden:true},

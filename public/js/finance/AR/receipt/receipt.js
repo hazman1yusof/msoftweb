@@ -832,6 +832,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{label: 'compcode', name: 'dbacthdr_compcode', width: 90, hidden: true  },
 			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
 			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
