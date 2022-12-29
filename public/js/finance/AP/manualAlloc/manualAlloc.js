@@ -32,15 +32,11 @@ $(document).ready(function () {
 
 	$('#apacthdr_source').on('change', function() {
 		if($("#apacthdr_trantype option:selected").val('PD')){
-			urlParam_hdr.table_name='finance.apacthdr';
-			urlParam_hdr.table_id='auditno';
-			urlParam_hdr.field=['source','trantype'];
+			
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 
 		}else if($("#apacthdr_trantype option:selected").val('CN')){
-			urlParam_hdr.table_name='finance.apacthdr';
-			urlParam_hdr.table_id='auditno';
-			urlParam_hdr.field=['source','trantype'];
+			
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 		}
 	});
