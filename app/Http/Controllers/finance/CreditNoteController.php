@@ -66,6 +66,7 @@ use Carbon\Carbon;
 
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
+                        'ap.compcode AS apacthdr_compcode',
                         'ap.auditno AS apacthdr_auditno',
                         'ap.trantype AS apacthdr_trantype',
                         'ap.doctype AS apacthdr_doctype',
@@ -95,6 +96,7 @@ use Carbon\Carbon;
                         'ap.trantype2 AS apacthdr_trantype2'
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source)
                     ->where('ap.trantype', '=','CN');
 

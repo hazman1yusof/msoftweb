@@ -88,6 +88,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 10, hidden: true, key:true},
 			{label: 'Cost code', name: 'glmasdtl_costcode', width: 90, canSearch:true, checked:true},
 			{label: 'Description', name: 'costcenter_description', width: 90, canSearch:true, checked:true},
 			{label: 'GL Account', name: 'glmasdtl_glaccount', width: 90, canSearch:true },

@@ -45,6 +45,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./region/form",
 		colModel: [
+			{ label: 'compcode', name: 'compcode', width: 5, hidden: true, key:true},
 			{ label: 'idno', name: 'idno', width: 5, hidden: true, key:true},
 			{ label: 'Section Code', name: 'regioncode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},

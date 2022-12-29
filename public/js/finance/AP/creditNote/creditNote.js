@@ -220,7 +220,6 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
-		//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
@@ -249,6 +248,7 @@ $(document).ready(function () {
 		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'trantype2', name: 'apacthdr_trantype2', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 
 	],
 		autowidth:true,

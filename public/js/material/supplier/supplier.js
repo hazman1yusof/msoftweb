@@ -250,6 +250,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
 			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
@@ -654,6 +655,7 @@ $(document).ready(function () {
 	$("#gridSuppitems").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Supplier Code', name: 'si_suppcode', width: 100, hidden: true},
 		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
 		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
@@ -1012,6 +1014,7 @@ $(document).ready(function () {
 	$("#gridSuppBonus").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 		 	{ label: 'Supplier Code', name: 'sb_suppcode', width: 50, hidden: true},
 		 	{ label: 'no', name: 'sb_lineno_', width: 50, hidden: true},
 		 	{ label: 'itemcode', name: 'sb_itemcode', width: 50, hidden: true},

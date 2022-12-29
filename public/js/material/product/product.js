@@ -823,6 +823,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			//{ label: 'compcode', name: 'compcode', hidden: true},
 		 	{ label: 'Unit', name: 'unit', width: 20, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Item Code', name: 'itemcode', width: 40, sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Item Description', name: 'description', width: 80, sorttype: 'text', classes: 'wrap', checked:true,canSearch: true  },

@@ -220,7 +220,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
+		
 			{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
@@ -245,6 +245,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
+			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
@@ -1663,18 +1664,6 @@ function init_jq2(oper,urlParam2){
 			$('#apacthdr_amount').prop('readonly',false);
 		}
 	} else if(oper == 'edit'){
-		if($('#apacthdr_trantype').val() == 'PV'){
-			$('#save').hide();
-			$('#apacthdr_amount').prop('readonly',true);
-			$('#pvpd_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
-		}else if($('#apacthdr_trantype').val() == 'PD') {
-			$('#save').show();
-			$('#pvpd_detail').hide();
-			$('#apacthdr_amount').prop('readonly',false);
-		}
-	}  else if(oper == 'view'){
 		if($('#apacthdr_trantype').val() == 'PV'){
 			$('#save').hide();
 			$('#apacthdr_amount').prop('readonly',true);

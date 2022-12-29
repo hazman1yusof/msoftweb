@@ -39,6 +39,7 @@ class APEnquiryController extends defaultController
 
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
+                        'ap.compcode AS apacthdr_compcode',
                         'ap.auditno AS apacthdr_auditno', //search
                         'ap.trantype AS apacthdr_trantype', //search
                         'ap.trantype2 AS apacthdr_trantype2', 
@@ -69,6 +70,7 @@ class APEnquiryController extends defaultController
                         
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=','AP');
                     
         if(!empty($request->filterCol)){

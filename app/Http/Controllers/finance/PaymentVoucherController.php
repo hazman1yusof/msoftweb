@@ -40,6 +40,7 @@ use PDF;
 
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
+                        'ap.compcode AS apacthdr_compcode',
                         'ap.auditno AS apacthdr_auditno',
                         'ap.trantype AS apacthdr_trantype',
                         'ap.doctype AS apacthdr_doctype',
@@ -70,6 +71,7 @@ use PDF;
                     )
                     ->where('ap.compcode',session('compcode'))
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=',$request->source)
                     ->whereIn('ap.trantype',['PD','PV']);
 
@@ -325,6 +327,7 @@ use PDF;
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
+                    'outamount' => $request->apacthdr_amount,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),
