@@ -227,6 +227,8 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'util/get_table_default',
 		field:'',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		table_name:'material.supplier',
 		table_id:'SuppCode',
 		sort_idno:true,
@@ -627,7 +629,7 @@ $(document).ready(function () {
 		join_onCol:['si.itemcode'],
 		join_onVal:['p.itemcode'],
 		filterCol:['si.SuppCode','si.compcode','p.compcode'],
-		filterVal:['','session.company','session.company'],//suppcode set when click supplier grid
+		filterVal:['','session.compcode','session.compcode'],//suppcode set when click supplier grid
 		sort_idno:true,
 	}
 
@@ -986,7 +988,7 @@ $(document).ready(function () {
 		join_onCol:['sb.bonitemcode'],
 		join_onVal:['p.itemcode'],
 		filterCol:['sb.itemcode', 'sb.suppcode',  'sb.compcode', 'p.compcode'],
-		filterVal:['', '', 'session.company', 'session.company'],
+		filterVal:['', '', 'session.compcode', 'session.compcode'],
 		sort_idno:true,
 	}
 

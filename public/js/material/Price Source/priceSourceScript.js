@@ -32,6 +32,8 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				table_name:'material.pricesource',
 				table_id:'pricecode',
 				sort_idno: true

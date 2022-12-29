@@ -68,6 +68,7 @@ use PDF;
                         'ap.bankcode AS apacthdr_bankcode'
                         
                     )
+                    ->where('ap.compcode',session('compcode'))
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.source','=',$request->source)
                     ->whereIn('ap.trantype',['PD','PV']);

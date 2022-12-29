@@ -116,17 +116,13 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 			hidetbl(true);
-			DataTable.clear().draw();
 			populateTable();
 			getTotal();
 			getBalance();
 		},
 		gridComplete: function(){
-			/*if(editedRow!=0){
-				$("#jqGrid").jqGrid('setSelection',editedRow,false);
-			}*/
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");
@@ -139,7 +135,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
+			refreshGrid("#jqGrid",urlParam,'edit');
 		},
 	})
 
@@ -182,6 +178,12 @@ $(document).ready(function () {
 	}
 
 	function populateTable(){
+		var latest_tblid = false;
+		if($("#TableGlmasdtl td[id^='glmasdtl_actamount']").hasClass("bg-primary")){
+			latest_tblid = $("#TableGlmasdtl td[class='bg-primary']").attr('id')
+		}
+		$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
+
 		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
 		$.each(rowData, function( index, value ) {
@@ -191,6 +193,10 @@ $(document).ready(function () {
 				$('#TableGlmasdtl #'+index+' span').text("0.00");
 			}
 		});
+
+		if(latest_tblid){
+			 $("#TableGlmasdtl td#"+latest_tblid).click();
+		}
 	}
 
 	$('#search').click(function(){
@@ -204,31 +210,32 @@ $(document).ready(function () {
 	});
 
 	var counter=20, moredr=true, morecr=true, DTscrollTop = 0;
-	function scroll_next1000(){
-		var scrolbody = $(".dataTables_scrollBody")[0];
-		$('#but_det').hide();
-		DTscrollTop = scrolbody.scrollTop;
-		if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
-			if(moredr || morecr){
-				mymodal.show("#TableGlmasTran_c");
-				getdatadr(false,counter,20);
-				getdatacr(false,counter,20);
-				counter+=20;
-			}
-		}
-	}
+	// function scroll_next1000(){
+	// 	var scrolbody = $(".dataTables_scrollBody")[0];
+	// 	$('#but_det').hide();
+	// 	DTscrollTop = scrolbody.scrollTop;
+	// 	if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
+	// 		if(moredr || morecr){
+	// 			mymodal.show("#TableGlmasTran_c");
+	// 			getdatadr(false,counter,20);
+	// 			getdatacr(false,counter,20);
+	// 			counter+=20;
+	// 		}
+	// 	}
+	// }
 	
 	$("#TableGlmasdtl td[id^='glmasdtl_actamount']").click(function(){
 		$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 		$(this).addClass("bg-primary");
 		DataTable.clear().draw();
-		$(".dataTables_scrollBody").unbind('scroll').scroll(scroll_next1000);
+		DataTable.ajax.reload();
 		hidetbl(false);
 		if($(this).text().length>0){
 			moredr=true;morecr=true;
 			mymodal.show("#TableGlmasTran_c");
-			getdatadr(false,0,20);
-			getdatacr(false,0,20);
+			// getdatadr(false,0,20);
+			// getdatacr(false,0,20);
+			// getdata();
 		}else{
 			hidetbl(true);
 		}
@@ -236,8 +243,10 @@ $(document).ready(function () {
 	
 
 	var DataTable = $('#TableGlmasTran').DataTable({
-	    responsive: true,
+    	ajax: './glenquiry/table?action=getdata',
 		scrollY: 500,
+    	deferRender: true,
+    	scroller: true,
 		paging: false,
 	    columns: [
 	    	{ data: 'open' ,"width": "5%", "sClass": "opendetail"},
@@ -251,10 +260,36 @@ $(document).ready(function () {
 			{ data: 'dramount', "sClass": "numericCol"},
 			{ data: 'cramount', "sClass": "numericCol"},
 		],
+		columnDefs: [
+			{targets: 0,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(`<i class='fa fa-folder-open-o'></i>`);
+	   			}
+	   		},{targets: 7,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).append(`<span class='help-block'>`+rowData.acctname+`</span>`);
+	   			}
+	   		},{targets: 8,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(numeral(cellData).format('0,0.00'));
+	   			}
+	   		},{targets: 9,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(numeral(cellData).format('0,0.00'));
+	   			}
+	   		}
+		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
 		}
-	});
+	}).on('xhr.dt', function ( e, settings, json, xhr ) {
+        mymodal.hide();
+    } ).on('preXhr.dt', function ( e, settings, data ) {
+        data.year = $('#year').val();
+        data.costcode = selrowData("#jqGrid").glmasdtl_costcode;
+        data.acc = $('#glaccount').val();
+        data.period = $("td[class='bg-primary']").attr('period');
+    });
 
 	$('#TableGlmasTran tbody').on( 'click', 'tr', function () {
 		DataTable.$('tr.bg-info').removeClass('bg-info');
@@ -280,15 +315,15 @@ $(document).ready(function () {
 
 	hidetbl(true);
 	function hidetbl(hide){
-		$('#but_det').hide();
-		counter=20
-		if(hide){
-			$('#TableGlmasTran_wrapper').children().first().hide();
-			$('#TableGlmasTran_wrapper').children().last().hide();
-		}else{
-			$('#TableGlmasTran_wrapper').children().first().show();
-			$('#TableGlmasTran_wrapper').children().last().show();
-		}
+		// $('#but_det').hide();
+		// // counter=20
+		// if(hide){
+		// 	$('#TableGlmasTran_wrapper').children().first().hide();
+		// 	$('#TableGlmasTran_wrapper').children().last().hide();
+		// }else{
+		// 	$('#TableGlmasTran_wrapper').children().first().show();
+		// 	$('#TableGlmasTran_wrapper').children().last().show();
+		// }
 	}
 
 	function getdatadr(fetchall,start,limit){
@@ -363,6 +398,34 @@ $(document).ready(function () {
 			}else{
 				morecr=false;
 			}
+		});
+	}
+
+	function getdata(){
+		var param={
+			url: './glenquiry/table',
+			action:'getdata',
+			costcode:selrowData("#jqGrid").glmasdtl_costcode,
+			acc:$('#glaccount').val(),
+			year:$('#year').val(),
+			period:$("td[class='bg-primary']").attr('period'),
+			sidx: 'postdate', sord:'desc'
+		}
+		$.get( param.url+"?"+$.param(param), function( data ) {
+				
+		},'json').done(function(data) {
+			// mymodal.hide();
+			// if(!$.isEmptyObject(data.rows)){
+			// 	data.rows.forEach(function(obj){
+			// 		obj.open="<i class='fa fa-folder-open-o' </i>"
+			// 		obj.postdate = moment(obj.postdate).format("DD-MM-YYYY");
+			// 		obj.cramount = numeral(obj.cramount).format('0,0.00');
+			// 		obj.dramount = numeral('0').format('0,0.00');
+			// 	});
+			// 	DataTable.rows.add(data.rows).draw();
+			// }else{
+			// 	morecr=false;
+			// }
 		});
 	}
 
@@ -645,13 +708,13 @@ function dialogForm_paymentVoucher(obj_id){
 		}
 		
 		$('#dialogForm_paymentVoucher').show();
-		populateata(data.rows[0],'#formdata_paymentVoucher');
+		populatedata(data.rows[0],'#formdata_paymentVoucher');
 		$('#dialogForm').dialog('open');
 
 	});
 }
 
-function populateata(rowData,form){
+function populatedata(rowData,form){
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
@@ -660,5 +723,14 @@ function populateata(rowData,form){
 			input.val(decodeEntities(value));
 		}
 	});
+
+	switch(form){
+		case '#formdata_paymentVoucher':
+			$('#formdata_paymentVoucher [name="paymode"]').parent().siblings( ".help-block" ).html(rowData.paymode_desc);
+			$('#formdata_paymentVoucher [name="bankcode"]').parent().siblings( ".help-block" ).html(rowData.bankcode_desc);
+			$('#formdata_paymentVoucher [name="suppcode"]').parent().siblings( ".help-block" ).html(rowData.suppcode_desc);
+			$('#formdata_paymentVoucher [name="payto"]').parent().siblings( ".help-block" ).html(rowData.payto_desc);
+			break;
+	}
 }
 		

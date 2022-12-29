@@ -115,6 +115,8 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				table_name:'material.productmaster',
 				table_id:'itemcode',
 				sort_idno:true,
@@ -260,8 +262,8 @@
 					showAssetClass();
 					$("#postClassAsset").prop("checked", true);
 
-					urlParam.filterCol = ['groupcode','Class'];
-					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val()];
+					urlParam.filterCol = ['groupcode','Class','compcode'];
+					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val(),'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
 				}else if(postGroupcode == "Others"){
 					showPostClass()
@@ -270,8 +272,8 @@
 					showOtherClass();
 					$("#postClassOther").prop("checked", true);
 
-					urlParam.filterCol = ['groupcode','Class'];
-					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val()];
+					urlParam.filterCol = ['groupcode','Class','compcode'];
+					urlParam.filterVal = [postGroupcode, $("input[name=postClass]:checked").val(),'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
 				}else if(postGroupcode == "Stock"){
 					showPostClass();
@@ -279,16 +281,16 @@
 					hideAssetClass();
 					hideOtherClass();
 					showStockClass();
-					urlParam.filterCol = ['groupcode'];
-					urlParam.filterVal = [postGroupcode];
+					urlParam.filterCol = ['groupcode','compcode'];
+					urlParam.filterVal = [postGroupcode,'session.compcode'];
 					refreshGrid('#jqGrid',urlParam);
 				}
 			})
 
 		    $("input[name=postClass]:radio").on('change click', function(){
 
-		    	urlParam.filterCol = ['groupcode','Class'];
-				urlParam.filterVal = [$("#postGroupcode option:selected" ).val(), $("input[name=postClass]:checked").val()];
+		    	urlParam.filterCol = ['groupcode','Class','compcode'];
+				urlParam.filterVal = [$("#postGroupcode option:selected" ).val(), $("input[name=postClass]:checked").val(),'session.compcode'];
 				refreshGrid('#jqGrid',urlParam);
 
 			});

@@ -119,8 +119,8 @@
 				field:'',
 				table_name:'material.category',
 				table_id:'catcode',
-				filterCol:['source', 'cattype','class'],
-				filterVal:[$('#source').val(), $('#cattype').val(), $('#class').val()],
+				filterCol:['source', 'cattype','class','compcode'],
+				filterVal:[$('#source').val(), $('#cattype').val(), $('#class').val(),'session.compcode'],
 				sort_idno: true,
 			}
 
