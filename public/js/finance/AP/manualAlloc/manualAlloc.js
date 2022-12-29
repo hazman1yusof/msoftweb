@@ -24,91 +24,7 @@ $(document).ready(function () {
 
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
-
-	// ///////////////////  for handling amount based on trantype/////////////////////////
-	// function handleAmount(){
-	// 	if($("input:radio[name='optradio'][value='receipt']").is(':checked')){
-	// 		amountchgOn(true);
-	// 	}else if($("input:radio[name='optradio'][value='deposit']").is(':checked')){
-	// 		amountchgOff(true);
-	// 	}
-	// }
-
-	// function amountFunction(){
-	// 	if(tabform=='#f_tab-cash'){
-	// 		getCashBal();
-	// 		getOutBal(true);
-	// 	}else if(tabform=='#f_tab-card'||tabform=='#f_tab-cheque'||tabform=='#f_tab-forex'){
-	// 		getOutBal(false);
-	// 	}else if(tabform=='#f_tab-debit'){
-	// 		getOutBal(false,$(tabform+" input[name='dbacthdr_bankcharges']").val());
-	// 	}
-	// }
-
-	// function amountchgOn(fromtab){
-	// 	$("input[name='dbacthdr_outamount']").prop( "disabled", false );
-	// 	$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
-	// 	$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
-	// 	$("input[name='dbacthdr_amount']").off('blur',amountFunction);
-	// 	$("input[name='dbacthdr_outamount']").off('blur',amountFunction);
-	// 	$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
-	// 	$(tabform+" input[name='dbacthdr_outamount']").on('blur',amountFunction);
-	// }
-
-	// function amountchgOff(fromtab){
-	// 	$("input[name='dbacthdr_amount']").off('blur',amountFunction);
-	// 	$("input[name='dbacthdr_outamount']").off('blur',amountFunction);
-	// 	$("input[name='dbacthdr_outamount']").prop( "disabled", true );
-	// 	$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", true );
-	// 	$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", true );
-	// }
-
-	// function getCashBal(){
-	// 	var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
-	// 	var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
-	// 	var RCCASHbalance=(pay-out>0) ? pay-out : 0;
-
-	// 	$(tabform+" input[name='dbacthdr_RCCASHbalance']").val(RCCASHbalance);
-	// 	mycurrency.formatOn();
-	// }
-
-	// function getOutBal(iscash,bc){
-	// 	var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
-	// 	var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
-	// 	var RCFinalbalance = 0;
-	// 	if(iscash){
-	// 		RCFinalbalance =(out-pay>0) ? out-pay : 0;
-	// 	}else{
-	// 		RCFinalbalance = out-pay;
-	// 	}
-
-	// 	if(bc==null)bc=0;
-	// 	$(tabform+" input[name='dbacthdr_RCFinalbalance']").val(parseFloat(RCFinalbalance)-parseFloat(bc));
-	// 	mycurrency.formatOn();
-	// }
-
-	// function showingForCash(pay,os,cashbal,finalbal,tabform){//amount,outamount,RCCASHbalance,RCFinalbalance
-	// 	var pay = parseFloat(pay);
-	// 	var os = parseFloat(os);
-	// 	var cashbal = parseFloat(cashbal);
-	// 	var finalbal = parseFloat(finalbal);
-
-	// 	if(cashbal>0 && finalbal==0){
-	// 		pay = os + cashbal;
-	// 		$(tabform+' #dbacthdr_amount').val(pay);
-	// 	}else if(finalbal>0){
-	// 		os = pay + finalbal;
-	// 		$(tabform+' #dbacthdr_outamount').val(os);
-	// 	}else if(finalbal<0){
-	// 		pay = os - finalbal;
-	// 		$(tabform+' #dbacthdr_amount').val(pay);
-	// 	}
-	// 	mycurrency.formatOn();
-	// }
-	///////////////////  end hadling amount based on trantype/////////////////////////
-
-	////////////////////////////////////transaction minimum date///////////////////////
-
+	var mycurrency2 =new currencymode([]);
 	var actdateObj = new setactdate(["input[name='apacthdr_entrydate']"]);
 	actdateObj.getdata().set();
 
@@ -119,11 +35,12 @@ $(document).ready(function () {
 			urlParam_hdr.table_name='finance.apacthdr';
 			urlParam_hdr.table_id='auditno';
 			urlParam_hdr.field=['source','trantype'];
-		
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 
 		}else if($("#apacthdr_trantype option:selected").val('CN')){
-		
+			urlParam_hdr.table_name='finance.apacthdr';
+			urlParam_hdr.table_id='auditno';
+			urlParam_hdr.field=['source','trantype'];
 			refreshGrid('#manualAllochdr',urlParam_hdr);
 		}
 	});
@@ -168,8 +85,8 @@ $(document).ready(function () {
 					}
 				},
 			{label: 'Remark', name: 'remarks', width: 130, classes: 'wrap', hidden:false, editable:false},
-			{label: 'Amount', name: 'amount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right"},
-			{label: 'Out Amount', name: 'outamount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right"},
+			{label: 'Amount', name: 'amount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right", formatter:'currency'},
+			{label: 'Out Amount', name: 'outamount', width: 45, classes: 'wrap', hidden:false, editable:false, align:"right", formatter:'currency'},
 			{label: 'Post Date', name: 'recdate', width: 100, classes: 'wrap', editable:true,
 					formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editoptions: {
@@ -215,7 +132,7 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			if(addmore_manualAllochdr.more == true){
-				$('#manualAllochdr_iladd').click();
+				$('#manualAllochdr_iledit').click();
 			}else{
 				$('#manualAllochdr').jqGrid ('setSelection', "1");
 			}
@@ -235,11 +152,11 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 
-			$("#manualAllocpgDelete, #manualAllocpgRefresh").hide();
-
+			$("#manualAllocpgDelete").hide();
+		
 			unsaved = false;
 			mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#manualAllochdr input[name='stfamount']","#manualAllochdr input[name='amount']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#manualAllochdr input[name='amount']"]);
 
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
@@ -254,13 +171,13 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			addmore_manualAllochdr.more=true; //only addmore after save inline
-			refreshGrid('#manualAllochdr',urlParam_hdr,'add');
+			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
 			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
 		}, 
 		errorfunc: function(rowid,response){
 			$(".noti").text(response.responseText);
 			// alert(response.responseText);
-			refreshGrid('#manualAllochdr',urlParam_hdr,'add');
+			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
 			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
 		},
 		beforeSaveRow: function(options, rowid) {
@@ -270,13 +187,13 @@ $(document).ready(function () {
 			let editurl = "./manualAlloc/form?"+
 				$.param({
 					action: 'manualAlloc_save',
-					oper: 'add',
+					oper: 'edit',
 					//auditno: selrowData('#manualAllochdr').auditno,
 				});
 			$("#manualAllochdr").jqGrid('setGridParam',{editurl:editurl});
 		},
 		afterrestorefunc : function( response ) {
-			refreshGrid('#manualAllochdr',urlParam_hdr,'add');
+			refreshGrid('#manualAllochdr',urlParam_hdr,'edit');
 			$("#manualAllocpgDelete,#manualAllocpgRefresh").show();
 		}
 	};
@@ -393,118 +310,118 @@ $(document).ready(function () {
 	});
 
 	//////////////////////////////////////////myEditOptions2 for manualAlloc detail/////////////////////////////////////////////
-	// var myEditOptions2 = {
-	// 	keys: true,
-	// 	extraparam:{
-	// 		"_token": $("#_token").val()
-	// 	},
-	// 	oneditfunc: function (rowid) {
+	var myEditOptions2 = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
 
-	// 		$("#manualAllocdtlpgDelete,#manualAllocdtlpgRefresh").hide();
-	// 		unsaved = false;
-	// 		mycurrency2.array.length = 0;
-	// 		Array.prototype.push.apply(mycurrency2.array, ["#manualAllocdtl input[name='stfamount']","#manualAllocdtl input[name='amount']"]);
+			$("#manualAllocdtlpgDelete,#manualAllocdtlpgRefresh").hide();
+			unsaved = false;
+			mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#manualAllocdtl input[name='stfamount']","#manualAllocdtl input[name='amount']"]);
 
-	// 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-	// 		$("input[name='stfamount']").keydown(function(e) {//when click tab at document, auto save
-	// 			var code = e.keyCode || e.which;
-	// 			if (code == '9')$('#manualAllocdtl_ilsave').click();
-	// 		});
-	// 	},
-	// 	aftersavefunc: function (rowid, response, options) {
-	// 		if(addmore_manualAllocdtl.state==true)addmore_manualAllocdtl.more=true; //only addmore after save inline
-	// 		refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
-	// 		$("#manualAllocdtlpgDelete,#jmanualAllocdtlpgRefresh").show();
-	// 	}, 
-	// 	errorfunc: function(rowid,response){
-	// 		$(".noti").text(response.responseText);
-	// 		// alert(response.responseText);
-	// 		refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
-	// 		$("#jmanualAllocdtlpgDelete,#manualAllocdtlpgRefresh").show();
-	// 	},
-	// 	beforeSaveRow: function(options, rowid) {
+			$("input[name='stfamount']").keydown(function(e) {//when click tab at document, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#manualAllocdtl_ilsave').click();
+			});
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_manualAllocdtl.state==true)addmore_manualAllocdtl.more=true; //only addmore after save inline
+			refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
+			$("#manualAllocdtlpgDelete,#jmanualAllocdtlpgRefresh").show();
+		}, 
+		errorfunc: function(rowid,response){
+			$(".noti").text(response.responseText);
+			// alert(response.responseText);
+			refreshGrid('#manualAllocdtl',urlParam_dtl,'add');
+			$("#jmanualAllocdtlpgDelete,#manualAllocdtlpgRefresh").show();
+		},
+		beforeSaveRow: function(options, rowid) {
 
-	// 		//if(errorField.length>0)return false; 
+			//if(errorField.length>0)return false; 
 
-	// 		mycurrency2.formatOff();
-	// 		let data = $('#manualAllocdtl').jqGrid ('getRowData', rowid);
-	// 		let editurl = "./manualAllocDetail/form?"+
-	// 			$.param({
-	// 				action: 'manualAllocdtl_save',
-	// 				oper: 'add',
-	// 			});
-	// 		$("#manualAllocdtl").jqGrid('setGridParam',{editurl:editurl});
-	// 	},
-	// 	afterrestorefunc : function( response ) {
+			mycurrency2.formatOff();
+			let data = $('#manualAllocdtl').jqGrid ('getRowData', rowid);
+			let editurl = "./manualAllocDetail/form?"+
+				$.param({
+					action: 'manualAllocdtl_save',
+					oper: 'add',
+				});
+			$("#manualAllocdtl").jqGrid('setGridParam',{editurl:editurl});
+		},
+		afterrestorefunc : function( response ) {
 			
-	// 	}
-	// };
+		}
+	};
 	
-		//////////////////////////////////////////pager manualAllocdtl/////////////////////////////////////////////
+		////////////////////////////////////////pager manualAllocdtl/////////////////////////////////////////////
 
-		// $("#manualAllocdtl").inlineNav('#manualAllocdtlpg',{	
-		// 	add:true,
-		// 	edit:true,
-		// 	cancel: true,
-		// 	//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-		// 	restoreAfterSelect: false,
-		// 	addParams: { 
-		// 		addRowParams: myEditOptions2
-		// 	},
-		// 	editParams: myEditOptions2
-		// }).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-		// 	id: "manualAllocdtlpgDelete",
-		// 	caption:"",cursor: "pointer",position: "last", 
-		// 	buttonicon:"glyphicon glyphicon-trash",
-		// 	title:"Delete Selected Row",
-		// 	onClickButton: function(){
-		// 		selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
-		// 		if(!selRowId){
-		// 			bootbox.alert('Please select row');
-		// 		}else{
-		// 			bootbox.confirm({
-		// 			    message: "Are you sure you want to delete this row?",
-		// 			    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-		// 			    },
-		// 			    callback: function (result) {
-		// 			    	if(result == true){
-		// 			    		param={
-		// 			    			action: 'manualAllocdtl_save',
-		// 							idno: selrowData('#manualAllocdtl').idno,
+		$("#manualAllocdtl").inlineNav('#manualAllocdtlpg',{	
+			add:true,
+			edit:true,
+			cancel: true,
+			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+			restoreAfterSelect: false,
+			addParams: { 
+				addRowParams: myEditOptions2
+			},
+			editParams: myEditOptions2
+		}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+			id: "manualAllocdtlpgDelete",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-trash",
+			title:"Delete Selected Row",
+			onClickButton: function(){
+				selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
+				if(!selRowId){
+					bootbox.alert('Please select row');
+				}else{
+					bootbox.confirm({
+					    message: "Are you sure you want to delete this row?",
+					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					    },
+					    callback: function (result) {
+					    	if(result == true){
+					    		param={
+					    			action: 'manualAllocdtl_save',
+									idno: selrowData('#manualAllocdtl').idno,
 
-		// 			    		}
-		// 			    		$.post( "./manualAllocDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-		// 						}).fail(function(data) {
-		// 							//////////////////errorText(dialog,data.responseText);
-		// 						}).done(function(data){
-		// 							refreshGrid("#manualAllocdtl",urlParam_dtl);
-		// 						});
-		// 			    	}else{
-	    //     					$("#manualAllocdtlpgEditAll").show();
-		// 			    	}
-		// 			    }
-		// 			});
-		// 		}
-		// 	},
-		// }).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-		// 	id: "manualAllocdtlpgCancelAll",
-		// 	caption:"",cursor: "pointer",position: "last", 
-		// 	buttonicon:"glyphicon glyphicon-remove-circle",
-		// 	title:"Cancel",
-		// 	onClickButton: function(){
-		// 		hideatdialogForm_jqGrid3(false);
-		// 		refreshGrid("#manualAllocdtl",urlParam_dtl);
-		// 	},	
-		// }).jqGrid('navButtonAdd', "#manualAllocdtlpg", {
-		// 	id: "manualAllocdtlpgRefresh",
-		// 	caption: "", cursor: "pointer", position: "last",
-		// 	buttonicon: "glyphicon glyphicon-refresh",
-		// 	title: "Refresh Table",
-		// 	onClickButton: function () {
-		// 		refreshGrid("#manualAllocdtl", urlParam_dtl);
-		// 	},
-		// });
+					    		}
+					    		$.post( "./manualAllocDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+								}).fail(function(data) {
+									//////////////////errorText(dialog,data.responseText);
+								}).done(function(data){
+									refreshGrid("#manualAllocdtl",urlParam_dtl);
+								});
+					    	}else{
+	        					$("#manualAllocdtlpgEditAll").show();
+					    	}
+					    }
+					});
+				}
+			},
+		}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+			id: "manualAllocdtlpgCancelAll",
+			caption:"",cursor: "pointer",position: "last", 
+			buttonicon:"glyphicon glyphicon-remove-circle",
+			title:"Cancel",
+			onClickButton: function(){
+				hideatdialogForm_jqGrid3(false);
+				refreshGrid("#manualAllocdtl",urlParam_dtl);
+			},	
+		}).jqGrid('navButtonAdd', "#manualAllocdtlpg", {
+			id: "manualAllocdtlpgRefresh",
+			caption: "", cursor: "pointer", position: "last",
+			buttonicon: "glyphicon glyphicon-refresh",
+			title: "Refresh Table",
+			onClickButton: function () {
+				refreshGrid("#manualAllocdtl", urlParam_dtl);
+			},
+		});
 
 
 	// //////////////////////////////////////////////////////////////
@@ -513,7 +430,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	
-	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
+	function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
 
 		var formname = $("a[aria-expanded='true']").attr('form')
 
@@ -688,36 +605,8 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-info-sign",
 		title:"View Selected Row",  
 		onClickButton: function(){
-			if(selrowData('#jqGrid').dbacthdr_trantype == 'RD'){
-				$( "input:radio[name='optradio'][value='deposit']" ).prop( "checked", true );
-				$( "input:radio[name='optradio'][value='deposit']" ).change();
-				delay(function(){
-					$("#sysparam").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_hdrtype, true);
-					$("#g_paymodebank").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-					$("#g_paymodecard").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-					$("#g_forex").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-				}, 500 );
-			}else{
-				$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
-				$( "input:radio[name='optradio'][value='receipt']" ).change();
-				delay(function(){
-					$("#sysparam").jqGrid('setSelection', 'RC');
-					$("#g_paymodebank").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-					$("#g_paymodecard").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-					$("#g_forex").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
-				}, 500 );
-			}
-			oper='view';
-			$('#dbacthdr_recptno').show();
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			var selform=selrowData('#jqGrid').dbacthdr_paytype;
-			if(selform!=''){
-				$(".nav-tabs a[form='"+selform+"']").tab('show');
-				disabledPill();
-				populateFormdata("#jqGrid",'',selform,selRowId,'view');
-			}else{
-				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
-			}
+			oper = 'view';
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -726,9 +615,6 @@ $(document).ready(function () {
 		title:"Add New Row", 
 		onClickButton: function(){
 			oper='add';
-			$('#dbacthdr_recptno').hide();
-			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
-			$( "input:radio[name='optradio'][value='receipt']" ).change();
 			$( "#dialogForm" ).dialog( "open" );
 		},
 	});
@@ -843,8 +729,6 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}
-	
-
 });
 
 function calc_jq_height_onchange(jqgrid){

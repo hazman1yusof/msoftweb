@@ -324,6 +324,7 @@ use PDF;
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
+                    'outamount' => $request->apacthdr_amount,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),
