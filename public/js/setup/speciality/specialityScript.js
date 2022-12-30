@@ -43,7 +43,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./speciality/form",
 			colModel: [
-			
+			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'idno', name: 'idno', width: 80, hidden:true, key:true},					
 			{ label: 'Speciality Code', name: 'specialitycode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, checked: true, width: 80, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},

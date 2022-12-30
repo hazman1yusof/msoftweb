@@ -35,6 +35,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'hisdb.taxmast',
 		table_id:'taxcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true
 	}
 
@@ -44,7 +46,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./taxmast/form",
 		 colModel: [
-			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
+			{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Tax Code', name: 'taxcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Rate', name: 'rate', width: 25, editable:true, align:'right'},									

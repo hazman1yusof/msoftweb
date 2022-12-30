@@ -43,6 +43,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: './doctorStatus/form',
 			colModel: [	 	
+			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Code', name: 'statuscode', width: 15, canSearch: true, checked: true, editable: true, 
 					editrules: { required: true }, 
