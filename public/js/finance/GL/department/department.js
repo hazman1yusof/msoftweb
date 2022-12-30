@@ -215,8 +215,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'sysdb.department',
 		table_id:'deptcode',
-		filterCol:['sector'],
-		filterVal:['session.unit'],
+		filterCol:['sector', 'compcode'],
+		filterVal:['session.unit', 'session.compcode'],
 		sort_idno:true,
 	}
 

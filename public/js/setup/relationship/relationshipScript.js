@@ -33,6 +33,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.relationship',
 		table_id: 'RelationShipCode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno:true
 	}
 

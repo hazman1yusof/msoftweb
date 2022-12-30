@@ -33,6 +33,8 @@ $(document).ready(function () {
 		url: 'util/get_table_default',
 		field:'',
 		table_name:'hisdb.areacode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		table_id:'idno'
 	}
 

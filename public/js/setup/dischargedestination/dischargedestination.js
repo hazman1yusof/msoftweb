@@ -33,7 +33,9 @@ $(document).ready(function () {
         url: 'util/get_table_default',
         field:'',
         table_name:'hisdb.discharge',
-        table_id:'idno'
+        table_id:'idno',
+        filterCol:['compcode'],
+		filterVal:['session.compcode']
     }
 
     /////////////////////parameter for saving url////////////////////////////////////////////////

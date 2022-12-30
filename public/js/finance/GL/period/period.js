@@ -94,6 +94,8 @@
 				field:'',
 				table_name:'sysdb.period',
 				table_id:'year',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno:true,
 			}
 

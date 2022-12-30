@@ -37,6 +37,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'sysdb.sector',
 		table_id: 'sectorcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true
 	}
 

@@ -36,7 +36,7 @@ $(document).ready(function () {
         table_id:'idno',
         filterCol:['compcode'],
 		filterVal:['session.compcode'],
-		sort_idno: true,
+		sort_idno: true
     }
 
 /////////////////////parameter for saving url////////////////////////////////////////////////

@@ -36,6 +36,8 @@
 				field:'',
 				table_name:'finance.costcenter',
 				table_id:'costcode',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno:true
 			}
 

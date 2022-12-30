@@ -37,6 +37,8 @@
 				field:'',
 				table_name:'finance.glmasref',
 				table_id:'glaccno',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				//sort_idno:true,
 			}
 

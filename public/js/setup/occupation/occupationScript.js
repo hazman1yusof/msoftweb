@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.occupation',
 		table_id: 'occupcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true,
 	}
 
