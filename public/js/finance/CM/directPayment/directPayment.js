@@ -115,8 +115,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
-		filterCol: ['source', 'trantype'],
-		filterVal: ['CM', 'DP'],
+		filterCol: ['source', 'trantype', 'compcode'],
+		filterVal: ['CM', 'DP', 'session.compcode'],
 		sort_idno: 'true'
 	}
 

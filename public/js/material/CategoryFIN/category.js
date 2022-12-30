@@ -35,8 +35,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'material.category',
 		table_id:'catcode',
-		filterCol:['source', 'cattype'],
-		filterVal:[$('#source').val(), $('#cattype').val()],
+		filterCol:['source', 'cattype', 'compcode'],
+		filterVal:[$('#source').val(), $('#cattype').val(), 'session.compcode'],
 		sort_idno: true,
 	}
 

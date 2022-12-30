@@ -175,6 +175,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true
 	}
 

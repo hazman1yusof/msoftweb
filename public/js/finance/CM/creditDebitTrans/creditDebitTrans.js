@@ -107,8 +107,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
-		filterCol: ['trantype'],
-		filterVal: [$('#adjustment').val()],
+		filterCol: ['trantype', 'compcode'],
+		filterVal: [$('#adjustment').val(), 'session.compcode'],
 		sort_idno: 'true'
 	}
 

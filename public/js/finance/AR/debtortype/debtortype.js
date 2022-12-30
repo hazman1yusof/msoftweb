@@ -112,6 +112,8 @@
 				field: '',
 				table_name:'debtor.debtortype',
 				table_id:'debtortycode',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno: true
 			}
 

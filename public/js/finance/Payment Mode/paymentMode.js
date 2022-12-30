@@ -272,8 +272,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'debtor.paymode',
 		table_id:'paymode',
-		filterCol:['source'],
-		filterVal:[$('#source2').val()]
+		filterCol:['source', 'compcode'],
+		filterVal:[$('#source2').val(), 'session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

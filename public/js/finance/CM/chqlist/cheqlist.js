@@ -34,8 +34,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
-		filterCol:['recstatus'],
-		filterVal:['ACTIVE'],
+		filterCol:['recstatus', 'compcode'],
+		filterVal:['ACTIVE', 'session.compcode'],
 		sort_idno:true,
 	}
 	
@@ -145,8 +145,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.chqtran',
 		table_id:'idno',
-		filterCol:['bankcode'],
-		filterVal:[$("#bankcode").val()],
+		filterCol:['bankcode','compcode'],
+		filterVal:[$("#bankcode").val(), 'session.compcode'],
 		sort_idno: true,
 	}
 	

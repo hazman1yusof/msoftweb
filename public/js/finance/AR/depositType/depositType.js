@@ -177,6 +177,8 @@
 				field:'',
 				table_name:'debtor.hdrtypmst',
 				table_id:'hdrtype',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno: true
 			}
 
