@@ -167,7 +167,7 @@ $(document).ready(function () {
 				disableForm('#formdata_cn');
 				refreshGrid("#jqGrid2_cn",urlParam2_cn);
 				$("#pg_jqGridPager2_cn table").hide();
-				dialog_departmentCN.check(errorField);
+				dialog_departmentCNA.check(errorField);
 				dialog_paymodeCN.check(errorField);
 				dialog_suppcodeCN.check(errorField);
 				dialog_paytoCN.check(errorField);
@@ -249,7 +249,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'trantype2', name: 'apacthdr_trantype2', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -266,7 +266,7 @@ $(document).ready(function () {
 				urlParam2_in.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				urlParam2_in_detail.auditno=selrowData("#jqGrid").apacthdr_auditno;
 				refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
-			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
+			}else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
 				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			}
 		},
@@ -330,11 +330,9 @@ $(document).ready(function () {
 				populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_in",urlParam2_in,'add');
 				refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
-			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note'){
+			}else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
 				populateFormdata("#jqGrid", "#dialogForm_cn", "#formdata_cn", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_cn",urlParam2_cn,'add');
-			}else if(selrowData("#jqGrid").apacthdr_trantype2=='Credit Note Unallocated'){
-				populateFormdata("#jqGrid", "#dialogForm_cna", "#formdata_cna", selRowId, 'view', '');
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='DN'){
 				populateFormdata("#jqGrid", "#dialogForm_dn", "#formdata_dn", selRowId, 'view', '');
 			}
@@ -1203,13 +1201,15 @@ $(document).ready(function () {
 	}
 
 	function init_jq2_cn(oper){
+		var unallocated = selrowData('#jqGrid').unallocated;
+		if(unallocated == 'true'){
+			$("#dialogForm_cn [name=apacthdr_trantype]").val('CNU');
+		}
 
-		if(($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note')) {
-			$('#save').hide();
+		if(($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CN')) {
 			$('#cn_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
-		} else if (($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
-			$('#save').show();
+			$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
+		} else if (($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CNU')) {
 			$('#cn_detail').hide();
 		}
 		

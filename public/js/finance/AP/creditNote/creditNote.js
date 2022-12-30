@@ -101,7 +101,7 @@ $(document).ready(function () {
 				addmore_jqgrid2.more = false;
 				//reset balik
 				parent_close_disabled(false);
-				emptyFormdata(errorField,'#formdata', ['#apacthdr_source','#apacthdr_trantype']);
+				emptyFormdata(errorField,'#formdata', ['#apacthdr_source']);
 				emptyFormdata(errorField,'#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
@@ -247,8 +247,8 @@ $(document).ready(function () {
 		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'trantype2', name: 'apacthdr_trantype2', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
+		{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
 
 	],
 		autowidth:true,
@@ -260,18 +260,18 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-		$('#save').hide();
-		$('#error_infront').text('');
-		let stat = selrowData("#jqGrid").apacthdr_recstatus;
-		let scope = $("#recstatus_use").val();
+			$('#save').hide();
+			$('#error_infront').text('');
+			let stat = selrowData("#jqGrid").apacthdr_recstatus;
+			let scope = $("#recstatus_use").val();
 
 
-		if(rowid != null) {
-			var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-			refreshGrid('#jqGrid2', urlParam2,'kosongkan');
-			$("#pg_jqGridPager3 table").hide();
-			$("#pg_jqGridPager2 table").show();
-		}
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
+				$("#pg_jqGridPager3 table").hide();
+				$("#pg_jqGridPager2 table").show();
+			}
 
 			$('#auditnodepan').text(selrowData("#jqGrid").apacthdr_auditno);//tukar kat depan tu
 			$('#trantypedepan').text(selrowData("#jqGrid").apacthdr_trantype);
@@ -372,7 +372,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox','apacthdr_compcode']);
 	
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -391,8 +391,7 @@ $(document).ready(function () {
 
 	////////////////////selected///////////////
 
-	$('#apacthdr_trantype2').on('change', function() {
-		let trantype = $("#apacthdr_trantype2 option:selected").val();
+	$('#apacthdr_trantype').on('change', function() {
 		init_jq2(oper);
 	});
 	
@@ -493,9 +492,13 @@ $(document).ready(function () {
 		}
 		saveParam.oper=selfoper;
 
-
-		let data_detail = $('#jqGrid2').jqGrid ('getRowData');
-		obj.data_detail = data_detail;
+		if($('#apacthdr_trantype').val() == 'CNU'){
+			obj.unallocated = true;
+		}else{
+			let data_detail = $('#jqGrid2').jqGrid('getRowData');
+			obj.data_detail = data_detail;
+			obj.unallocated = false;
+		}
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
@@ -1180,7 +1183,7 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
-				if(($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note')) {
+				if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
 					
 					$("#jqGrid2").jqGrid("clearGridData", true);
 
@@ -1240,7 +1243,7 @@ $(document).ready(function () {
 							myerrorIt_only(dialog_suppcode.textfield,true);
 						}
 					});
-				} else if (($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note Unallocated')) {
+				} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) {
 					$("#jqGrid2").jqGrid("clearGridData", true);
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
@@ -1355,18 +1358,21 @@ $(document).ready(function () {
 });
 
 function init_jq2(oper){
+	if(oper != 'add'){
+		var unallocated = selrowData('#jqGrid').unallocated;
+		if(unallocated == 'true'){
+			$("#apacthdr_trantype").val('CNU');
+		}
+	}
 
-
-	
-	if(($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note')) {
+	if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
 		$('#cn_detail').show();
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-	} else if (($("#apacthdr_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
 		$('#save').show();
 		$('#cn_detail').hide();
 	}
-	
 }
 
 function populate_form(obj){
@@ -1397,7 +1403,7 @@ function calc_jq_height_onchange(jqgrid){
 	if(scrollHeight<50){
 		scrollHeight = 50;
 	}else if(scrollHeight>300){
-		scrollHeight = 300;
+		scrollHeight = 330;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }

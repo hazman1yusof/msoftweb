@@ -93,7 +93,6 @@ use Carbon\Carbon;
                         'ap.pvno AS apacthdr_pvno',
                         'ap.paymode AS apacthdr_paymode',
                         'ap.bankcode AS apacthdr_bankcode',
-                        'ap.trantype2 AS apacthdr_trantype2'
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.compcode','=', session('compcode'))
@@ -154,19 +153,16 @@ use Carbon\Carbon;
                 $value->apactdtl_outamt = $value->apacthdr_outamount;
             }
 
-            // $apalloc = DB::table('finance.apalloc')
-            //             ->select('allocdate')
-            //             ->where('refsource','=',$value->apacthdr_source)
-            //             ->where('reftrantype','=',$value->apacthdr_trantype)
-            //             ->where('refauditno','=',$value->apacthdr_auditno)
-            //             ->where('recstatus','!=','CANCELLED')
-            //             ->orderBy('idno', 'desc');
+            $apalloc = DB::table('finance.apalloc')
+                        ->where('refsource','=',$value->apacthdr_source)
+                        ->where('reftrantype','=',$value->apacthdr_trantype)
+                        ->where('refauditno','=',$value->apacthdr_auditno);
 
-            // if($apalloc->exists()){
-            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
-            // }else{
-            //     $value->apalloc_allocdate = '';
-            // }
+            if($apalloc->exists()){
+                $value->unallocated = false;
+            }else{
+                $value->unallocated = true;
+            }
         }
 
         //////////paginate/////////
@@ -200,7 +196,7 @@ use Carbon\Carbon;
         
             $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
 
-            if($request->apacthdr_trantype2 == 'Credit Note') {
+            if($request->unallocated == 'false') {
 
                 $table = DB::table("finance.apacthdr");
                 
@@ -208,7 +204,7 @@ use Carbon\Carbon;
                     'source' => 'AP',
                     'auditno' => $auditno,
                     'trantype' => 'CN',
-                    'trantype2' => $request->apacthdr_trantype2,
+                    // 'trantype2' => $request->apacthdr_trantype2,
                     'actdate' => $request->apacthdr_actdate,
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
@@ -296,14 +292,14 @@ use Carbon\Carbon;
 
                 echo json_encode($responce);
 
-            } else  {
+            } else {
                 $table = DB::table("finance.apacthdr");
 
                 $array_insert = [
                     'source' => 'AP',
                     'auditno' => $auditno,
                     'trantype' => 'CN',
-                    'trantype2' => $request->apacthdr_trantype2,
+                    // 'trantype2' => $request->apacthdr_trantype2,
                     'actdate' => $request->apacthdr_actdate,
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
@@ -346,12 +342,7 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        $apacthdr_trantype2 = DB::table('finance.apacthdr')
-            ->select('trantype2')
-            ->where('compcode','=',session('compcode'))
-            ->where('auditno','=',$request->apacthdr_auditno)->first();
-
-        if($request->apacthdr_trantype2 == 'Credit Note') {
+        if($request->unallocated == 'false') {
 
             DB::beginTransaction();
 

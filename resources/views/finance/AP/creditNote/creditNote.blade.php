@@ -184,7 +184,7 @@ i.fa {
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
-					<input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden">
+					<!-- <input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden"> -->
 					<input id="auditno" name="auditno" type="hidden">
 					<input id="idno" name="idno" type="hidden">
 
@@ -206,11 +206,11 @@ i.fa {
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_trantype2">Transaction Type</label> 
+						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
 							<div class="col-md-2">
-							  	<select id="apacthdr_trantype2" name=apacthdr_trantype2 class="form-control" data-validation="required">
-							       <option value = "Credit Note">Credit Note</option>
-							       <option value = "Credit Note Unallocated">Credit Note Unallocated</option>
+							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
+							       <option value = "CN">Credit Note</option>
+							       <option value = "CNU">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 
