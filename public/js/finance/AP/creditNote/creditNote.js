@@ -1130,10 +1130,10 @@ $(document).ready(function () {
 			title:"Select Paymode",
 			open: function(){
 				//let data=selrowData('#'+dialog_paymode.gridname);
-				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source'],
-				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val()],
-				dialog_paymode.urlParam.WhereInCol=['paytype'];
-        		dialog_paymode.urlParam.WhereInVal=[['Bank Draft', 'Cheque', 'Cash', 'Bank', 'Tele Transfer']];
+				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val(), 'Credit Note'];
+				// dialog_paymode.urlParam.WhereInCol=['paytype'];
+        		// dialog_paymode.urlParam.WhereInVal=['Credit Note'];
 				}
 			},'urlParam','radio','tab'
 		);
