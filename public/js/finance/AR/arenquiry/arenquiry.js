@@ -90,6 +90,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 			colModel: [
+			{label: 'compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Source', name: 'source', width: 20, canSearch:true, checked:true},
 			{label: 'Trantype', name: 'trantype', width: 30, canSearch:true, checked:true},
 			{label: 'Auditno', name: 'auditno', width: 30, canSearch:true },

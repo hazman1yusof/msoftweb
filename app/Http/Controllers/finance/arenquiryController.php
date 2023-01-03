@@ -37,6 +37,7 @@ class arenquiryController extends defaultController
 
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
+                        'db.compcode AS db_compcode',
                         'db.debtorcode AS db_debtorcode',
                         'db.payercode AS db_payercode',
                         'dm.name AS dm_name', 
@@ -76,6 +77,7 @@ class arenquiryController extends defaultController
                         'db.recptno AS db_recptno'
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
+                    ->where('db.compcode','=',session('compcode'))
                     ->where('db.source','=','PB');
                     // ->where('db.trantype','=','IN','DN',);
 

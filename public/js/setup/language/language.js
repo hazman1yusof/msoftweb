@@ -35,6 +35,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.languagecode',
 		table_id: 'Code',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true,
 	}
 
@@ -44,6 +46,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./language/form",
 		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'Language Code', name: 'Code', width: 25, classes: 'wrap', editable: true, canSearch: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
 			{ label: 'Description', name: 'Description', width: 90, classes: 'wrap', canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"} },
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },

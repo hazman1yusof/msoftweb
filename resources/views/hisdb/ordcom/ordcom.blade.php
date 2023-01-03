@@ -30,7 +30,7 @@
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
-		<div class="panel-body" id="jqGrid_ordcom_c">
+		<div class="panel-body paneldiv" id="jqGrid_ordcom_c">
 			<div class='col-md-12' style="padding:0 0 15px 0" >
 		    	<input type="hidden" id="mrn_ordcom" name="mrn_ordcom">
 		    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">

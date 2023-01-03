@@ -323,7 +323,7 @@
 				},
 				close: function( event, ui ) {
 					parent_close_disabled(false);
-					emptyFormdata(errorField,'#resourceformdata');
+					emptyFormdata(errorField,'#resourceformdata',['#TYPE']);
 					$('#resourceformdata .alert').detach();
 					$("#resourceformdata a").off();
 					if(oper=='view'){
@@ -348,6 +348,7 @@
 
             var saveParam={
 				action:'save_table_default',
+				checkduplicate:'true',
 				url:"doctor_maintenance/form",
 				field:['resourcecode','description','TYPE','intervaltime','start','end'],
 				oper:oper,
@@ -373,6 +374,8 @@
                 multiSort: true,
 				viewrecords: true,
 				loadonce:false,
+				sortname:'idno',
+				sortorder:'desc',
 				height: 250,
 				//width: 100,
 				rowNum: 30,

@@ -965,24 +965,24 @@
 			 
 			 /////////////////// FUNCTION DATE /////////////////////////////////////////////////////////////////////
 
-	            $('#datefr,#dateto').datetimepicker({
-	            	format: 'YYYY-MM-DD',
-	                useCurrent: false,
-	                // minDate: moment()
-	            });
-	            $('#datefr').datetimepicker().on('dp.change', function (e) {
-	                var incrementDay = moment();
-	                incrementDay.add(0, 'days');
-	                // $('#dateto').data('DateTimePicker').minDate(incrementDay);
-	                $(this).data("DateTimePicker").hide();
-	            });
+	            // $('#datefr,#dateto').datetimepicker({
+	            // 	format: 'YYYY-MM-DD',
+	            //     useCurrent: false,
+	            //     // minDate: moment()
+	            // });
+	            // $('#datefr').datetimepicker().on('dp.change', function (e) {
+	            //     var incrementDay = moment();
+	            //     incrementDay.add(0, 'days');
+	            //     // $('#dateto').data('DateTimePicker').minDate(incrementDay);
+	            //     $(this).data("DateTimePicker").hide();
+	            // });
 
-	            $('#dateto').datetimepicker().on('dp.change', function (e) {
-	                var decrementDay = moment();
-	                decrementDay.subtract(0, 'days');
-	                // $('#datefr').data('DateTimePicker').maxDate(decrementDay);
-	                $(this).data("DateTimePicker").hide();
-	            });
+	            // $('#dateto').datetimepicker().on('dp.change', function (e) {
+	            //     var decrementDay = moment();
+	            //     decrementDay.subtract(0, 'days');
+	            //     // $('#datefr').data('DateTimePicker').maxDate(decrementDay);
+	            //     $(this).data("DateTimePicker").hide();
+	            // });
 
 		function savecolor(){
 			var bg_leave = $('#bg_leave').val();

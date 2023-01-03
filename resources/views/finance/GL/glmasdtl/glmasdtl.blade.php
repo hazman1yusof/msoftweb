@@ -190,9 +190,12 @@
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
-	<div id="dialogForm" title="Viewing Detail"></div>
+	<div id="dialogForm" title="Viewing Detail">
+		@include('finance.GL.glmasdtl.paymentVoucher_glmasdtl')
+	</div>
 
 
+	
 
 	@endsection
 

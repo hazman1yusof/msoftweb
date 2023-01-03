@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.racecode',
 		table_id: 'idno',
+		filterCol:['compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////

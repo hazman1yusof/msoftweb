@@ -260,8 +260,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'auditno',
-		filterCol: ['source', 'trantype'],
-		filterVal: ['CM', 'FT'],
+		filterCol: ['source', 'trantype', 'compcode'],
+		filterVal: ['CM', 'FT', 'session.compcode'],
 		sort_idno: true
 	}
 

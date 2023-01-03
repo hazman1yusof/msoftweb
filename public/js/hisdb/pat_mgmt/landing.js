@@ -1,6 +1,7 @@
 var preepisode;
 $(document).ready(function() {
     $(".preloader").fadeOut();
+    stop_scroll_on();
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
     jQuery.validator.setDefaults({
       debug: true,
@@ -680,6 +681,16 @@ $(document).ready(function() {
 
 });
 
+function calc_jq_height_onchange(jqgrid,max_height=300){
+    let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+    if(scrollHeight<50){
+        scrollHeight = 50;
+    }else if(scrollHeight>300){
+        scrollHeight = max_height;
+    }
+    $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+
+}
 
 
 if($('#epistycode').val() == 'OP'){
@@ -713,3 +724,15 @@ if($('#epistycode').val() == 'OP'){
 }
 
 epis_desc_show.load_desc();
+
+
+function stop_scroll_on(){
+    $('div.paneldiv').on('mouseenter',function(){
+        SmoothScrollTo('#'+$(this).parent('div.panel-collapse').attr('id'), 300,undefined,40);
+        $('body').addClass('stop-scrolling');
+    });
+
+    $('div.paneldiv').on('mouseleave',function(){
+        $('body').removeClass('stop-scrolling')
+    });
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\patientcare;
 
 use Illuminate\Http\Request;
 use stdClass;
@@ -31,7 +31,7 @@ class PreviewController extends defaultController
             return abort(404);
         }
 
-        return view('preview',compact('user'));
+        return view('patientcare.preview',compact('user'));
     }
 
     public function previewdata(Request $request)
@@ -49,7 +49,7 @@ class PreviewController extends defaultController
     public function previewvideo($auditno)
     {   
         $video = DB::table('hisdb.patresult')->where('auditno','=',$auditno)->first();
-        return view('previewvideo',compact('video'));
+        return view('patientcare.previewvideo',compact('video'));
     }
 
     
@@ -76,7 +76,7 @@ class PreviewController extends defaultController
         $patient = DB::table('hisdb.pat_mast')->select('Name','newic','DOB')->where('mrn','=',$request->mrn)->first();
         $patresult = DB::table('hisdb.patresult')->where('mrn','=',$request->mrn)->get();
 
-        return view('upload',compact('patient','episode','patresult'));
+        return view('patientcare.upload',compact('patient','episode','patresult'));
     }
 
     

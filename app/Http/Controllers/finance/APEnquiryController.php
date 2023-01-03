@@ -39,9 +39,10 @@ class APEnquiryController extends defaultController
 
         $table = DB::table('finance.apacthdr AS ap')
                     ->select(
+                        'ap.compcode AS apacthdr_compcode',
                         'ap.auditno AS apacthdr_auditno', //search
                         'ap.trantype AS apacthdr_trantype', //search
-                        'ap.trantype2 AS apacthdr_trantype2', 
+                        // 'ap.trantype2 AS apacthdr_trantype2', 
                         'ap.doctype AS apacthdr_doctype',
                         'ap.suppcode AS apacthdr_suppcode', 
                         'su.name AS supplier_name', 
@@ -69,6 +70,7 @@ class APEnquiryController extends defaultController
                         
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                    ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=','AP');
                     
         if(!empty($request->filterCol)){
@@ -141,19 +143,16 @@ class APEnquiryController extends defaultController
                 $value->apactdtl_outamt = $value->apacthdr_outamount;
             }
 
-            // $apalloc = DB::table('finance.apalloc')
-            //             ->select('allocdate')
-            //             ->where('refsource','=',$value->apacthdr_source)
-            //             ->where('reftrantype','=',$value->apacthdr_trantype)
-            //             ->where('refauditno','=',$value->apacthdr_auditno)
-            //             ->where('recstatus','!=','CANCELLED')
-            //             ->orderBy('idno', 'desc');
+            $apalloc = DB::table('finance.apalloc')
+                        ->where('refsource','=',$value->apacthdr_source)
+                        ->where('reftrantype','=',$value->apacthdr_trantype)
+                        ->where('refauditno','=',$value->apacthdr_auditno);
 
-            // if($apalloc->exists()){
-            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
-            // }else{
-            //     $value->apalloc_allocdate = '';
-            // }
+            if($apalloc->exists()){
+                $value->unallocated = false;
+            }else{
+                $value->unallocated = true;
+            }
         }
 
         //////////paginate/////////

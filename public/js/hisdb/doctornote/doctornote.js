@@ -639,7 +639,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
     });
-	SmoothScrollTo("#jqGridDoctorNote_panel", 500)
+	SmoothScrollTo("#jqGridDoctorNote_panel", 500);
 	$("#jqGrid_trans_doctornote").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_c")[0].offsetLeft));	
 	textare_init_doctornote();
 	urlParam_trans.mrn=$('#mrn_doctorNote').val();
@@ -789,12 +789,12 @@ function textare_init_doctornote(){
 	});
 }
 
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<50){
-		scrollHeight = 50;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-}
+// function calc_jq_height_onchange(jqgrid){
+// 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+// 	if(scrollHeight<50){
+// 		scrollHeight = 50;
+// 	}else if(scrollHeight>300){
+// 		scrollHeight = 300;
+// 	}
+// 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+// }

@@ -106,6 +106,8 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				table_name:'material.sequence',
 				table_id:'idno',
 				sort_idno:true,

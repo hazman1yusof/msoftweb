@@ -175,11 +175,31 @@ i.fa {
 					  			<span class="help-block"></span>
 				  			</div>
 				  
-				 		<label class="col-md-2 control-label" for="GlAccNo">Gl Account No</label>  
+				 		<label class="col-md-2 control-label" for="GlAccNo">GL Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
 									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
 									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
+					  			</div>
+					  			<span class="help-block"></span>
+				  			</div>
+					</div>
+
+					<div class="form-group">
+				  		<label class="col-md-2 control-label" for="Advccode">Advance Cost Code</label>  
+				  			<div class="col-md-3">
+					  			<div class='input-group'>
+									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" >
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  			</div>
+					  			<span class="help-block"></span>
+				  			</div>
+				  
+				 		<label class="col-md-2 control-label" for="AdvGlaccno">Advance GL Account No</label>  
+				  			<div class="col-md-3">
+					  			<div class='input-group'>
+									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
 				  			</div>
@@ -212,31 +232,31 @@ i.fa {
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-2">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-3 control-label" for="lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-2">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>    
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 						<div class="col-md-3">
-						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
 						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>    
                     
                  	<div class="form-group">
 				  		<label class="col-md-2 control-label" for="AccNo">Company Account No</label>  
 				 			<div class="col-md-3">
-				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase" data-validation="required">
+				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
 				  			</div>
                             
 				   	<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
@@ -400,24 +420,24 @@ i.fa {
                 <div class="form-group">
 					<label class="col-md-3 control-label" for="si_computerid">Computer Id</label>  
 						<div class="col-md-2">
-						  	<input id="si_computerid" name="si_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="si_computerid" name="si_computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="si_lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-2">
-							<input id="si_lastcomputerid" name="si_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="si_lastcomputerid" name="si_lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit hideOne>
 						  	</div>
 				</div>    
 
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="si_ipaddress">IP Address</label>  
 						<div class="col-md-2">
-						  	<input id="si_ipaddress" name="si_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="si_ipaddress" name="si_ipaddress" type="text" class="form-control input-sm"  frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="si_lastipaddress">Last IP Address</label>  
 						<div class="col-md-2">
-							<input id="si_lastipaddress" name="si_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="si_lastipaddress" name="si_lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>    
 			</form>
@@ -509,24 +529,24 @@ i.fa {
                 <div class="form-group">
 					<label class="col-md-3 control-label" for="sb_computerid">Computer Id</label>  
 						<div class="col-md-2">
-						  	<input id="sb_computerid" name="sb_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="sb_computerid" name="sb_computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="sb_lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-2">
-							<input id="sb_lastcomputerid" name="sb_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="sb_lastcomputerid" name="sb_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>    
 
 				<div class="form-group">
 					<label class="col-md-3 control-label" for="sb_ipaddress">IP Address</label>  
 						<div class="col-md-2">
-						  	<input id="sb_ipaddress" name="sb_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="sb_ipaddress" name="sb_ipaddress" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="sb_lastipaddress">Last IP Address</label>  
 						<div class="col-md-2">
-							<input id="sb_lastipaddress" name="sb_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+							<input id="sb_lastipaddress" name="sb_lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>    
             </form>

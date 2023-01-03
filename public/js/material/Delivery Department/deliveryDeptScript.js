@@ -149,6 +149,8 @@
 				field:'',
 				table_name:'material.deldept',
 				table_id:'deptcode',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno: true
 			}
 

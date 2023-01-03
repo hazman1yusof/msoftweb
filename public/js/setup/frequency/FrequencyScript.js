@@ -34,6 +34,8 @@ $(document).ready(function () {
         field:'',
         table_name:'hisdb.freq',
         table_id:'freqcode',
+        filterCol:['compcode'],
+		filterVal:['session.compcode'],
         sort_idno: true
     }
 
@@ -43,7 +45,8 @@ $(document).ready(function () {
         datatype: "local",
         editurl: "/frequency/form",
          colModel: [
-             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
+            {label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
+            { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
             { label: 'Frequency Code', name: 'freqcode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
             { label: 'Description', name: 'freqdesc', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
             { label: 'Conversion <br> Factor', name: 'convfactor', classes: 'wrap', width: 10, editable: true, align: 'right',

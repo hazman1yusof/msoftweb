@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'hisdb.bloodgroup',
 		table_id: 'bloodcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno:true
 	}
 

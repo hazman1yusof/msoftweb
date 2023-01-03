@@ -248,6 +248,7 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
+					{label: 'compcode', name: 'compcode', width: 90, hidden:true},
 					{label: 'Code', name: 'debtorcode', width: 50, canSearch: true},
 					{label: 'Name', name: 'name', width: 150, classes: 'wrap', checked:true,canSearch: true},
 					{label: 'Financial <br> Class', name: 'debtortype',editable: true, classes: 'wrap', width: 50, formatter: showdetail,unformat: unformat_showdetail}, 

@@ -34,6 +34,8 @@ $(document).ready(function () {
         field:'',
         table_name:'hisdb.instruction',
         table_id:'inscode',
+        filterCol:['compcode'],
+		filterVal:['session.compcode'],
         sort_idno: true
     }
 
@@ -43,6 +45,7 @@ $(document).ready(function () {
         datatype: "local",
         editurl: "/instruction/form",
          colModel: [
+            {label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
             { label: 'Instruction Code', name: 'inscode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
             { label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},

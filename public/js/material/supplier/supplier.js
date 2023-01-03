@@ -72,7 +72,7 @@ $(document).ready(function () {
 
 
 	var dialog_CostCode = new ordialog(
-		'CostCode','finance.costcenter','#CostCode',errorField,
+		'Advccode','finance.costcenter','#Advccode',errorField,
 		{	colModel:[
 				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -82,7 +82,7 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 				},
 				ondblClickRow: function () {
-					$('#GlAccNo').focus();
+					$('#AdvGlaccno').focus();
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -105,7 +105,7 @@ $(document).ready(function () {
 	dialog_CostCode.makedialog(true);
 
 	var dialog_GlAccNo = new ordialog(
-		'GlAccNo','finance.glmasref','#GlAccNo',errorField,
+		'AdvGlaccno','finance.glmasref','#AdvGlaccno',errorField,
 		{	colModel:[
 				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -227,6 +227,8 @@ $(document).ready(function () {
 		action:'get_table_default',
 		url:'util/get_table_default',
 		field:'',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		table_name:'material.supplier',
 		table_id:'SuppCode',
 		sort_idno:true,
@@ -248,6 +250,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Supplier Code', name: 'SuppCode', width: 35 , sorttype: 'text', classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'Name', width: 100, editable: true, classes: 'wrap',checked:true, canSearch: true },
 			{ label: 'Supplier Group', name: 'SuppGroup', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
@@ -263,6 +266,8 @@ $(document).ready(function () {
 			{ label: 'Term Disp', name: 'TermDisp', width: 30, align: 'right',editable: true, classes: 'wrap' },
 			{ label: 'Cost Code', name: 'CostCode', width: 30, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Gl Account No', name: 'GlAccNo', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Advance Cost Code', name: 'Advccode', width: 30, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Advance GL Account No', name: 'AdvGlaccno', width: 35, editable: true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'AccNo', name: 'AccNo', width: 80, hidden: true, editable: true},
 			{ label: 'DepAmt', name: 'DepAmt', width: 80, hidden: true},
 			{ label: 'MiscAmt', name: 'MiscAmt', width: 80, hidden: true},
@@ -329,6 +334,8 @@ $(document).ready(function () {
 			case 'SuppGroup':field=['SuppGroup','description'];table="material.SuppGroup";case_='SuppGroup';break;
 			case 'CostCode':field=['costcode','description'];table="finance.costcenter";case_='CostCode';break;
 			case 'GlAccNo':field=['glaccno','description'];table="finance.glmasref";case_='GlAccNo';break;
+			case 'Advccode':field=['costcode','description'];table="finance.costcenter";case_='Advccode';break;
+			case 'AdvGlaccno':field=['glaccno','description'];table="finance.glmasref";case_='AdvGlaccno';break;
 
 			//suppitem//
 			case 'si_pricecode':field=['pricecode','description'];table="material.pricesource";case_='si_pricecode';break;			
@@ -623,7 +630,7 @@ $(document).ready(function () {
 		join_onCol:['si.itemcode'],
 		join_onVal:['p.itemcode'],
 		filterCol:['si.SuppCode','si.compcode','p.compcode'],
-		filterVal:['','session.company','session.company'],//suppcode set when click supplier grid
+		filterVal:['','session.compcode','session.compcode'],//suppcode set when click supplier grid
 		sort_idno:true,
 	}
 
@@ -648,6 +655,7 @@ $(document).ready(function () {
 	$("#gridSuppitems").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'Supplier Code', name: 'si_suppcode', width: 100, hidden: true},
 		 	{ label: 'no', name: 'si_lineno_', width: 50, sorttype: 'number', hidden: true,}, // 
 		 	{ label: 'Item Code', name: 'si_itemcode', width: 150, sorttype: 'text', editable: true, classes: 'wrap', canSearch: true},
@@ -982,7 +990,7 @@ $(document).ready(function () {
 		join_onCol:['sb.bonitemcode'],
 		join_onVal:['p.itemcode'],
 		filterCol:['sb.itemcode', 'sb.suppcode',  'sb.compcode', 'p.compcode'],
-		filterVal:['', '', 'session.company', 'session.company'],
+		filterVal:['', '', 'session.compcode', 'session.compcode'],
 		sort_idno:true,
 	}
 
@@ -1006,6 +1014,7 @@ $(document).ready(function () {
 	$("#gridSuppBonus").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', width: 90, hidden:true, classes: 'wrap'},
 		 	{ label: 'Supplier Code', name: 'sb_suppcode', width: 50, hidden: true},
 		 	{ label: 'no', name: 'sb_lineno_', width: 50, hidden: true},
 		 	{ label: 'itemcode', name: 'sb_itemcode', width: 50, hidden: true},

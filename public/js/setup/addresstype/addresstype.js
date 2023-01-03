@@ -34,7 +34,9 @@ $(document).ready(function () {
         field:'',
         table_name:'hisdb.addcode',
         table_id:'idno',
-		sort_idno: true,
+        filterCol:['compcode'],
+		filterVal:['session.compcode'],
+		sort_idno: true
     }
 
 /////////////////////parameter for saving url////////////////////////////////////////////////

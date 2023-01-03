@@ -457,7 +457,7 @@
 				</div>
 			</div>
 
-			<div class='panel panel-info' id="pv_detail">
+			<!-- <div class='panel panel-info' id="pv_detail">
 			<div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
@@ -466,7 +466,7 @@
 						        <div id="jqGridPager2_indetail"></div>
 						</div>
 					</form>
-				</div>
+				</div> -->
 
 			<!-- <div class='panel panel-info' id="cn_in_detail">
 				<div class="panel-heading">Credit Note Detail</div>
@@ -514,11 +514,11 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_trantype2">Transaction Type</label> 
+						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
 							<div class="col-md-2">
-							  	<select id="apacthdr_trantype2" name=apacthdr_trantype2 class="form-control" data-validation="required">
-							       <option value = "Credit Note">Credit Note</option>
-							       <option value = "Credit Note Unallocated">Credit Note Unallocated</option>
+							  	<select id="apacthdr_trantype" name="apacthdr_trantype" class="form-control" data-validation="required">
+							       <option value = "CN">Credit Note</option>
+							       <option value = "CNU">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 

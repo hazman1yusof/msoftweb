@@ -35,8 +35,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'material.category',
 		table_id:'catcode',
-		filterCol:['source', 'cattype'],
-		filterVal:[$('#source').val(), $('#cattype').val()],
+		filterCol:['source', 'cattype', 'compcode'],
+		filterVal:[$('#source').val(), $('#cattype').val(), 'session.compcode'],
 		sort_idno: true,
 	}
 
@@ -46,7 +46,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./categoryfin/form",
 		 colModel: [
-			//{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
+			{label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
 			{label: 'Category Code', name: 'catcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{label: 'Description', name: 'description', width: 80, classes: 'wrap',checked:true, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},					
 			{label: 'Category Type', name: 'cattype', width: 90 , hidden: true},					

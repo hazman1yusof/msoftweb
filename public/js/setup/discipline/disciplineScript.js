@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'hisdb.discipline',
 		table_id:'idno',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno: true
 	}
 
@@ -43,7 +45,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: './discipline/form',
 			colModel: [
-			
+			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'Discipline Code', name: 'code', width: 15, canSearch: true, checked: true, editable: true, 
 					editrules: { required: true }, 

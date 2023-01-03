@@ -3,7 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
+	console.log(document.documentElement.clientHeight);
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -60,7 +60,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
             urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
 				var session_param ={
 					action:"get_table_default",
-					url:'util/get_table_default',
+					url:'./util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -93,7 +93,7 @@ $(document).ready(function () {
             ondblClickRow_off:'off',
         },{
             title: "Select Doctor",
-            width: 10/10 * $(window).width(),
+            width: 9/10 * $(window).width(),
             open: function () {
 
 				$("#"+dialog_name.gridname).jqGrid ('setGridHeight',100);
@@ -142,11 +142,9 @@ $(document).ready(function () {
 		$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 		let data = selrowData('#' + dialog_name.gridname);
-		let interval = data['d_intervaltime'];
+		let interval = data['a_intervaltime'];
 		let apptsession = $("#grid_session").jqGrid('getRowData');
 		$('.fc-myCustomButton-button').show();
-
-		console.log(apptsession)
 
 		td_from.addSessionInterval(interval,apptsession);
 		td_to.addSessionInterval(interval,apptsession);
@@ -154,7 +152,7 @@ $(document).ready(function () {
 
 		var event_apptbook = {
 			id: 'apptbook',
-			url: "apptrsc/getEvent",
+			url: "./apptrsc/getEvent",
 			type: 'GET',
 			data: {
 				type: 'apptbook',
@@ -164,7 +162,7 @@ $(document).ready(function () {
 
 		var event_appt_leave = {
 			id: 'appt_leave',
-			url: "apptrsc/getEvent",
+			url: "./apptrsc/getEvent",
 			type: 'GET',
 			data: {
 				type: 'appt_leave',
@@ -217,7 +215,7 @@ $(document).ready(function () {
 		},
 		{
 			title: "Select Case",
-            width: 10/10 * $(window).width(),
+            width: 9/10 * $(window).width(),
 			open: function () {
 				dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
 				dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
@@ -276,7 +274,7 @@ $(document).ready(function () {
             colModel: [
                 { label: 'Resource Code', name: 'a_resourcecode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 				{ label: 'Description', name: 'a_description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Interval Time', name: 'd_intervaltime', width: 400, classes: 'pointer', hidden:true},
+				{ label: 'Interval Time', name: 'a_intervaltime', width: 400, classes: 'pointer', hidden:false},
             ],
 			urlParam: {
 				join_type : ['LEFT JOIN'],
@@ -294,7 +292,7 @@ $(document).ready(function () {
 
             	var session_param ={
 					action:"get_value_default",
-					url:'util/get_table_default',
+					url:'./util/get_table_default',
 					field:'*',
 					table_name:'hisdb.apptsession',
 					table_id:'idno',
@@ -322,10 +320,10 @@ $(document).ready(function () {
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
-		width: 10 / 10 * $(window).width(),
+		width: 9 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
-			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
+			// set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
 			session_field.clear().ready().set();
 
 			$("#addForm input[name='icnum']").prop('readonly',true);
@@ -341,7 +339,7 @@ $(document).ready(function () {
 	$("#start_time_dialog").dialog({
     	autoOpen : false, 
     	modal : true,
-		width: 10/10 * $(window).width(),
+		width: 9/10 * $(window).width(),
 		open: function(){
 			$("#grid_start_time").jqGrid ('setGridWidth', Math.floor($("#grid_start_time_c")[0].offsetWidth-$("#grid_start_time_c")[0].offsetLeft));
 		},
@@ -485,9 +483,9 @@ $(document).ready(function () {
 	$("#apptdatefr_day,#apptdateto_day").change(function(){
 		session_field.clear().ready().set();
 	});
-	
 	$('#calendar').fullCalendar({
-		aspectRatio:  1.5,
+		contentHeight: document.documentElement.offsetHeight - document.getElementById("divform").offsetHeight - 138,
+		// aspectRatio:  1.5,
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
@@ -618,6 +616,7 @@ $(document).ready(function () {
 				if(got == -1){
 					date_array.push(e.start.date());
 					date_obj.push({
+						type:e.source.ajaxSettings.data.type,
 						format_date:e.start.format("YYYY-MM-DD"),
 						date:e.start.date(),
 						count:1
@@ -630,7 +629,9 @@ $(document).ready(function () {
 			$("table tr td.fc-day-top span.ui.mini.teal.ribbon.label").remove();
 
 			date_obj.forEach(function(e,i){
-				$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+				if(e.type == 'apptbook'){
+					$("table tr td.fc-day-top[data-date='"+e.format_date+"']").append("<span class='ui mini teal ribbon label'>"+e.count+" patients </span>");
+				}
 			});
 		},
 		timeFormat: 'h(:mm)a',
@@ -643,7 +644,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("./apptrsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -660,7 +661,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("./apptrsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -676,7 +677,7 @@ $(document).ready(function () {
 			},
 			{	
 				id:'appt_ph',
-				url:'apptrsc/getEvent',
+				url:'./apptrsc/getEvent',
 				type:'GET',
 				data:{
 					type:'appt_ph'
@@ -685,7 +686,14 @@ $(document).ready(function () {
             	rendering: 'background'
 			},
 			{	
-				id:'appt_leave'
+				id:'appt_leave',
+				url:'./apptrsc/getEvent',
+				type:'GET',
+				data:{
+					type:'appt_leave'
+				}, 
+            	textColor: 'black',
+            	rendering: 'background'
 			}
 	    ]
 	});
@@ -693,7 +701,7 @@ $(document).ready(function () {
 	
 	var oper = 'add';
 	$('#submit').click(function(){
-		var url = (oper == 'add')?"apptrsc/addEvent":"apptrsc/editEvent";
+		var url = (oper == 'add')?"./apptrsc/addEvent":"./apptrsc/editEvent";
 
 		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
 			$.post(url, $("#addForm").serialize(), function (data) {
@@ -707,7 +715,7 @@ $(document).ready(function () {
 	});
 
 	$('#delete_but').click(function(){
-		$.post("apptrsc/delEvent", $("#addForm").serialize(), function (data) {
+		$.post("./apptrsc/delEvent", $("#addForm").serialize(), function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -782,7 +790,7 @@ $(document).ready(function () {
 
 	$("#transfer_date").dialog({
 		autoOpen: false,
-		width: 10 / 10 * $(window).width(),
+		width: 9 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			$("#grid_transfer_date_from").jqGrid ('setGridWidth', Math.floor($("#grid_transfer_date_from_c")[0].offsetWidth-$("#grid_transfer_date_from_c")[0].offsetLeft));
@@ -812,7 +820,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "./apptrsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -839,7 +847,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "./apptrsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -888,7 +896,7 @@ $(document).ready(function () {
 			"arraytd":arraytd
 		}
 
-		$.post("apptrsc/editEvent?type=transfer", obj, function (data) {
+		$.post("./apptrsc/editEvent?type=transfer", obj, function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -1127,7 +1135,7 @@ $(document).ready(function () {
             var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
         }
 
-        $.post( "apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "./apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');

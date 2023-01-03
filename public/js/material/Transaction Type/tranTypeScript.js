@@ -99,6 +99,8 @@
 				action:'get_table_default',
 				url:'util/get_table_default',
 				field:'',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				table_name:'material.ivtxntype',
 				table_id:'trantype',
 				sort_idno: true

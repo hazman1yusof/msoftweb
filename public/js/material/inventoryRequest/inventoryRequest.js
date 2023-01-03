@@ -1727,5 +1727,5 @@ $(document).ready(function () {
 		}else if(scrollHeight>300){
 			scrollHeight = 300;
 		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
 	}

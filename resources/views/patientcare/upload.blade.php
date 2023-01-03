@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('patientcare.layouts.main')
 
 
 @section('style')
@@ -66,7 +66,7 @@
 				<td>{{$episode->reg_time}}</td>
 				<td>
         			<small id="remark_" style="display: none">Remark<br></small>
-					<form class="upload_form ui input" id="formdata" method="post" action="./upload" enctype="multipart/form-data">
+					<form class="upload_form ui input" id="formdata" method="post" action="./ptcare_upload" enctype="multipart/form-data">
 						{{csrf_field()}}
 
         				<input type="hidden" name='trxdate' value="{{$episode->reg_date}}">
@@ -130,14 +130,14 @@
 @endsection
 
 @section('css')
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/DataTables/datatables.min.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css">
 @endsection
 
 @section('js')
-	<script src="{{ asset('js/upload.js') }}"></script>
-	<script src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
+	<script src="{{ asset('patientcare/js/upload.js') }}"></script>
+	<script src="{{ asset('patientcare/assets/DataTables/datatables.min.js') }}"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 @endsection

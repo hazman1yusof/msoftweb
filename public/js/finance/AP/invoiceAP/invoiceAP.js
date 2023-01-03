@@ -212,7 +212,6 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			//{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
 			{ label: 'Audit No', name: 'apacthdr_auditno', width: 15, classes: 'wrap text-uppercase',formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'Document<br/> Type', name: 'apacthdr_doctype', width: 20, classes: 'wrap text-uppercase', hidden:false},
@@ -238,6 +237,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true', key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
+			{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
 
 		],
 		autowidth:true,
@@ -394,7 +394,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'apacthdr_idno','Checkbox']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'apacthdr_idno','Checkbox','apacthdr_compcode']);
 
 	$("#save").click(function(){
 		unsaved = false;

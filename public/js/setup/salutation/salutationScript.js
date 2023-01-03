@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'hisdb.title',
 		table_id:'Code',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno:true
 	}
 
@@ -43,6 +45,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./salutation/form",
 		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},		
 			{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},

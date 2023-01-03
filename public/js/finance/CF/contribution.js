@@ -86,6 +86,8 @@
             field: '',
             table_name:'hisdb.doctor',
             table_id:'doctorcode',
+			filterCol:['compcode'],
+			filterVal:['session.compcode'],
             sort_idno: true,
 		}
 		

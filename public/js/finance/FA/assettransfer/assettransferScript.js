@@ -220,6 +220,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",	
 			colModel: [
+			{label: 'compcode', name: 'compcode', hidden: true},
 			{label: 'Tagging No', name: 'assetno', width: 10, canSearch: true, checked: true},
 			{label: 'Item Code', name:'itemcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true, formatter: showdetail,unformat:un_showdetail},

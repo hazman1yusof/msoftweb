@@ -34,8 +34,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.bank',
 		table_id:'bankcode',
-		filterCol:['recstatus'],
-		filterVal:['ACTIVE'],
+		filterCol:['recstatus', 'compcode'],
+		filterVal:['ACTIVE', 'session.compcode'],
 		sort_idno:true,
 	}
 	
@@ -45,6 +45,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./cheqlist/form",
 		 colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true},
 			{ label: 'Bank Code', name: 'bankcode', width: 5,canSearch:true, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Bank Name', name: 'bankname', width: 10, canSearch:true, checked: true, hidden:true},
 			{ label: 'Address', name: 'address1', width: 17, classes: 'wrap', formatter:formatterAddress, unformat: unformatAddress},
@@ -144,8 +145,8 @@ $(document).ready(function () {
 		field:'',
 		table_name:'finance.chqtran',
 		table_id:'idno',
-		filterCol:['bankcode'],
-		filterVal:[$("#bankcode").val()],
+		filterCol:['bankcode','compcode'],
+		filterVal:[$("#bankcode").val(), 'session.compcode'],
 		sort_idno: true,
 	}
 	

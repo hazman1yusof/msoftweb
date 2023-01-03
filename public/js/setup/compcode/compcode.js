@@ -34,6 +34,8 @@ $(document).ready(function () {
 		field: '',
 		table_name: 'sysdb.company',
 		table_id: 'compcode',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
 		sort_idno:true
 	}
 
@@ -54,7 +56,7 @@ $(document).ready(function () {
 			{ label: 'Bmppath', name: 'bmppath2', width: 30, hidden: true},
 			{ label: 'Address', name: 'address1', width: 30, hidden: true},
 			{ label: 'Logo', name: 'logo1', width: 90, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			//{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			//{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 						editoptions:{

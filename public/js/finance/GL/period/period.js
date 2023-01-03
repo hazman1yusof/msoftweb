@@ -94,6 +94,8 @@
 				field:'',
 				table_name:'sysdb.period',
 				table_id:'year',
+				filterCol:['compcode'],
+				filterVal:['session.compcode'],
 				sort_idno:true,
 			}
 
@@ -112,6 +114,7 @@
 			$("#jqGrid").jqGrid({
 				datatype: "local",
 				 colModel: [
+					{ label: 'compcode', name: 'compcode', hidden: true},
 					{ label: 'Year', name: 'year', width: 30},
 					{ label: 'd', name: 'datefr1', width: 30, hidden:true},
 					{ label: 'd', name: 'datefr2', width: 30, hidden:true},

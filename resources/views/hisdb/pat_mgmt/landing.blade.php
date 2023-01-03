@@ -46,6 +46,10 @@
             -webkit-animation: cssload-spin 425ms infinite linear;
             -moz-animation: cssload-spin 425ms infinite linear;
         }
+		.stop-scrolling {
+		    padding-right: 16px;
+		    overflow: hidden;
+		}
         @keyframes cssload-spin {
           100%{ transform: rotate(360deg); transform: rotate(360deg); }
         }
@@ -317,6 +321,12 @@
 			vertical-align: top !important;
 		}
 
+		.paneldiv{
+/*		    padding-top: 5px !important;*/
+		    overflow-y: auto;
+		    height: calc(100vh - 70px);
+		}
+
 	</style>
 
 </head>
@@ -464,10 +474,10 @@
 
 		@if (!Session::has('isdoctor') && request()->get('curpat') == 'true')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
-	        <div class="panel-heading clearfix collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 20px 20px;">
+	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
 
-	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;top: 6px;"></i>
-	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;top: 6px;"></i >
+	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
+	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
 	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
 	            <h5><strong>PRE EPISODE</strong></h5>
 	        </div> 

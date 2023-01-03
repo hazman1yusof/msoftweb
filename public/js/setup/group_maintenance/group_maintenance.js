@@ -127,6 +127,7 @@ $(document).ready(function () {
 			{ label: 'Group Id', name: 'groupid', width: 100 },
 			{ label: 'Description', name: 'description', width: 300 },
 			{ label: 'idno', name: 'idno', width: 50, hidden: true },
+			{ label: 'compcode', name: 'compcode', hidden: true},
 		],
 		autowidth: true,
 		multiSort: true,
