@@ -241,6 +241,7 @@ use Carbon\Carbon;
 
             $auditno = $this->recno($request->apacthdr_source, $request->apacthdr_trantype);
             $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
+            $compcode = session('compcode');
       
             $table = DB::table("finance.apacthdr");
             
@@ -344,28 +345,13 @@ use Carbon\Carbon;
         DB::beginTransaction();
         try {
 
-
             foreach ($request->idno_array as $auditno){
 
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('auditno','=',$auditno)
                     ->first();
 
-                $apactdtl = DB::table('finance.apactdtl')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=', $auditno);
-
                 $this->gltran($auditno);
-
-                if($apactdtl->exists()){ 
-                    foreach ($apactdtl->get() as $value) {
-                        DB::table('material.delordhd')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('recstatus','=','POSTED')
-                            ->where('delordno','=',$value->document)
-                            ->update(['invoiceno'=>$apacthdr->document]);
-                    }
-                }
 
                 DB::table('finance.apacthdr')
                     ->where('auditno','=',$auditno)
