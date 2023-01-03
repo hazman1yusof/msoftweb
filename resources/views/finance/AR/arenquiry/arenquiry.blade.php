@@ -664,20 +664,20 @@
 									<div class="form-group">
 										<div class='col-md-12'>
 											<label class="control-label" for="dbacthdr_reference">Reference</label> 
-											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase">
+											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" rdonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class='col-md-6'>
 											<label class="control-label" for="dbacthdr_authno">Authorization No.</label> 
 											<div class=''> 
-												<input id="dbacthdr_authno" name="dbacthdr_authno" type="text" class="form-control input-sm text-uppercase">
+												<input id="dbacthdr_authno" name="dbacthdr_authno" type="text" class="form-control input-sm text-uppercase" rdonly>
 											</div>
 										</div>
 										<div class='col-md-6'>
 											<label class="control-label" for="dbacthdr_expdate">Expiry Date</label> 
 											<div class=''> 
-												<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+												<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
 											</div>
 										</div>
 									</div>
@@ -691,7 +691,7 @@
 								<div class="myformgroup">
 									<label class="control-label col-md-2" for="dbacthdr_entrydate">Transaction Date</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
 									</div>
 
 									<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
@@ -736,7 +736,7 @@
 									<div class="form-group">
 										<div class='col-md-4'> 
 											<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
 
 										</div>
 									</div>
@@ -744,11 +744,11 @@
 									<div class="myformgroup">
 										<div class='col-md-6'> 
 											<label class="control-label" for="dbacthdr_bankcharges">Bank Charges</label> 
-											<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm" value="0.00">
+											<input id="dbacthdr_bankcharges" name="dbacthdr_bankcharges" type="text" class="form-control input-sm" value="0.00" rdonly>
 										</div>
 										<div class='col-md-6'> 
 											<label class="control-label" for="dbacthdr_amount">Payment</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
 										</div>
 									</div>
 									<div class="form-group">
@@ -764,7 +764,7 @@
 									<div class="form-group">
 										<div class='col-md-12'> 
 											<label class="control-label" for="dbacthdr_reference">Reference</label> 
-											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 										</div>
 									</div>
 								</div>
@@ -805,7 +805,7 @@
 										</div>
 										<div class='col-md-8'> 
 											<label class="control-label" for="dbacthdr_amount">Amount</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -816,7 +816,7 @@
 										</div>
 										<div class='col-md-8'>
 											<label class="control-label" for="dbacthdr_amount2">Amount</label> 
-											<input id="dbacthdr_amount2" name="dbacthdr_amount2" type="text" class="form-control input-sm" value="0.00">
+											<input id="dbacthdr_amount2" name="dbacthdr_amount2" type="text" class="form-control input-sm" value="0.00" rdonly>
 										</div>
 									</div>
 									<div class="clearfix"></div>

@@ -1455,6 +1455,7 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog(false);
 
+	//RC
 	var dialog_logindeptcode = new ordialog(
 		'till_dept', 'sysdb.department', '#till_dept', errorField,
 		{
