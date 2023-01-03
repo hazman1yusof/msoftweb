@@ -607,7 +607,7 @@
 								<div class="myformgroup">
 									<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
 									</div>
 
 									<label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
@@ -618,7 +618,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-2" for="dbacthdr_RCCASHbalance">Cash Balance</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_RCCASHbalance" name="dbacthdr_RCCASHbalance" type="text" class="form-control input-sm" value="0.00">
+										<input id="dbacthdr_RCCASHbalance" name="dbacthdr_RCCASHbalance" type="text" class="form-control input-sm" value="0.00" rdonly>
 									</div>
 
 									<label class="control-label col-md-2" for="dbacthdr_RCFinalbalance">Outstanding Balance</label> 
@@ -647,7 +647,7 @@
 									<div class="form-group">
 										<div class='col-md-4'> 
 											<label class="control-label" for="dbacthdr_amount">Payment</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -696,7 +696,7 @@
 
 									<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
 									</div>
 								</div>
 								<div class="form-group">
@@ -713,7 +713,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
 									<div class='col-md-8'> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 									</div>
 								</div>
 							</form>

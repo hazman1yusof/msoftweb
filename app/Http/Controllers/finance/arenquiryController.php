@@ -28,6 +28,8 @@ class arenquiryController extends defaultController
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'populate_rc':
+                return $this->populate_rc($request);
             default:
                 return 'error happen..';
         }
@@ -146,6 +148,23 @@ class arenquiryController extends defaultController
 
         return json_encode($responce);
 
+    }
+
+    public function populate_rc(Request $request){
+            $table = DB::table('debtor.dbacthdr')
+                            ->where('idno','=',$request->idno);
+
+            $table = DB::table('debtor.dbacthdr')
+                    ->select($this->fixPost($request->field,"_"))
+                    ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+                        $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+                                    ->where('pat_mast.compcode','=',session('compcode'));
+                    })->where('dbacthdr.idno','=',$request->idno);
+
+            $responce = new stdClass();
+            $responce->rows = $table->first();
+
+            return json_encode($responce);
     }
 
     public function form(Request $request)
