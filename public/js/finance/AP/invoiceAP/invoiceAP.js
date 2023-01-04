@@ -207,6 +207,9 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
+	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_amount', 'Amount', { 'text-align': 'right' });
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_outamount', 'Outstanding', { 'text-align': 'right' });
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -224,7 +227,7 @@ $(document).ready(function () {
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 20, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
 			{ label: 'outamt', name: 'apactdtl_outamt', width: 25 , classes: 'wrap text-uppercase',hidden:true,},
-			{ label: 'Outstanding<br/>Amount', name: 'apacthdr_outamount', width: 25 , classes: 'wrap text-uppercase',formatter:'currency'},
+			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25 , classes: 'wrap text-uppercase',align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Last Payment<br/>Date', name: 'apalloc_allocdate', width: 25, classes: 'wrap text-uppercase',formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
