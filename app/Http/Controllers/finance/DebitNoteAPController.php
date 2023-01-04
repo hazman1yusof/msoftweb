@@ -371,56 +371,29 @@ use Carbon\Carbon;
     }
       
     public function cancel(Request $request){
-        DB::beginTransaction();
+        $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->where('compcode','=',session('compcode'));
 
-        try {
 
-            $apacthdr = DB::table('finance.apacthdr')
-                ->where('auditno','=',$request->auditno)
-                ->first();
+        if($apacthdr->recstatus = 'POSTED'){
 
-            if($apacthdr->recstatus = 'POSTED'){
-                $delordhd = DB::table('material.delordhd')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED')
-                        ->where('invoiceno','=',$apacthdr->document)
-                        ->update([
-                            'invoiceno' => null
-                        ]);
+            $this->gltran_cancel($request->idno);
+            $apacthdr
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
 
-                $this->gltran_cancel($request->auditno);
+        }else{
 
-                DB::table('finance.apacthdr')
-                    ->where('auditno','=',$request->auditno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }else if($apacthdr->recstatus = 'OPEN'){
-
-                $delordhd = DB::table('material.delordhd')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('recstatus','=','POSTED')
-                        ->where('invoiceno','=',$apacthdr->document)
-                        ->update([
-                            'invoiceno' => null
-                        ]);
-
-                DB::table('finance.apacthdr')
-                    ->where('auditno','=',$request->auditno)
-                    ->update([
-                        'recstatus' => 'CANCELLED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response($e->getMessage(), 500);
+            $apacthdr
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                    'recstatus' => 'CANCELLED' 
+                ]);
         }
     }
 
