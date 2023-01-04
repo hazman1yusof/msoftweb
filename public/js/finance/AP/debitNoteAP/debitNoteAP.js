@@ -244,10 +244,9 @@ $(document).ready(function () {
 		loadComplete: function(){
 			if ($('#apacthdr_trantype').val() == 'DN') {
 				$('#jqGrid3_c').hide();
-				$('#gridDo_c').hide();
+				
 			} else {
 				$('#jqGrid3_c').show();
-				$('#gridDo_c').show();
 			}
 			calc_jq_height_onchange("jqGrid");
 		},
@@ -321,7 +320,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('setLabel', 'amount', 'Amount', { 'text-align': 'right' });
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_amount', 'Amount', { 'text-align': 'right' });
 	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
