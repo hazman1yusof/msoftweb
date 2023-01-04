@@ -25,8 +25,50 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var mycurrency2 =new currencymode([]);
-	var actdateObj = new setactdate(["input[name='apacthdr_entrydate']"]);
+	var actdateObj = new setactdate(["input[name='apacthdr_entrydate']", "#recdate"]);
 	actdateObj.getdata().set();
+
+	///////////////////////////////////backdated////////////////////////////////////////////////
+
+	var backdated = new func_backdated('#recdate');
+	backdated.getdata();
+
+	function func_backdated(target){
+		this.sequence_data;
+		this.target=target;
+		this.param={
+			action:'get_value_default',
+			url:"util/get_value_default",
+			field: ['*'],
+			table_name:'material.sequence',
+			table_id:'idno',
+			filterCol:['trantype'],
+			filterVal:['AL'],
+		}
+
+		this.getdata = function(){
+			var self=this;
+			$.get( this.param.url+"?"+$.param(this.param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					self.sequence_data = data.rows;
+				}
+			});
+			return this;
+		}
+
+		this.set_backdate = function(dept){
+			$.each(this.sequence_data, function( index, value ) {
+				if(value.dept == dept){
+					var backday =  value.backday;
+					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+					$('#recdate').attr('min',backdate);
+				}
+			});
+		}
+	}
+
 
 	////////////////////////////source and trantype change////////////////////////////////
 

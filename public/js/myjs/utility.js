@@ -936,6 +936,8 @@ function setactdate(target){
 	this.actdateopen=[];
 	this.lowestdate;
 	this.highestdate;
+	this.lowest_opendate;
+	this.highest_opendate;
 	this.target=target;
 	this.param={
 		action:'get_value_default',
@@ -953,8 +955,9 @@ function setactdate(target){
 			if(!$.isEmptyObject(data.rows)){
 				self.lowestdate = data.rows[0]["datefr1"];
 				self.highestdate = data.rows[data.rows.length-1]["dateto12"];
+
 				data.rows.forEach(function(element){
-					if(element.year == moment().year()){
+					// if(element.year == moment().year()){
 						$.each(element, function( index, value ) {
 							if(index.match('periodstatus') && value == 'O'){
 								self.actdateopen.push({
@@ -963,12 +966,32 @@ function setactdate(target){
 								})
 							}
 						});
-					}
+					// }
+
+					$.each(element, function( index, value ) {
+						if(index.match('periodstatus') && value == 'O'){
+							let seldate = moment(element["datefr"+index.match(/\d+/)[0]]);
+							if(self.lowest_opendate == null){
+								self.lowest_opendate=seldate;
+							}else{
+								if(seldate.isBefore(self.lowest_opendate)){
+									self.lowest_opendate = seldate;
+								}
+							}
+							if(self.highest_opendate == null){
+								self.highest_opendate=seldate;
+							}else{
+								if(seldate.isAfter(self.highest_opendate)){
+									self.highest_opendate = seldate;
+								}
+							}
+						}
+					});
 				});
 
 				self.target.forEach(function(element,i){
-					$(element).attr('min',self.actdateopen[0].from);
-					$(element).attr('max',self.highestdate);
+					$(element).attr('min',self.lowest_opendate.format('YYYY-MM-DD'));
+					$(element).attr('max',self.highest_opendate.format('YYYY-MM-DD'));
 				});
 			}
 		});
@@ -978,7 +1001,7 @@ function setactdate(target){
 	this.set = function(){
 		var self = this;
 		this.target.forEach(function(element,i){
-			$(element).on('change',{data:self,index:i},validate_actdate);
+			$(element).on('blur',{data:self,index:i},validate_actdate);
 		});
 	}
 
