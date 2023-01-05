@@ -207,9 +207,6 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
-	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('setLabel', 'apacthdr_amount', 'Amount', { 'text-align': 'right' });
-	$("#jqGrid").jqGrid('setLabel', 'apacthdr_outamount', 'Outstanding', { 'text-align': 'right' });
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -346,9 +343,11 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 		},
+		
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid");
 	jqgrid_label_align_right("#jqGrid2");
 
 	$("#jqGrid").jqGrid('setLabel', 'qtyonhand', 'Qty On Hand', { 'text-align': 'right' });

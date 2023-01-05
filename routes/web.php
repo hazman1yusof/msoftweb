@@ -613,10 +613,15 @@ Route::get('/bankTransfer','finance\BankTransferController@show');
 Route::get('/bankTransfer/table','finance\BankTransferController@table');
 Route::post('/bankTransfer/form','finance\BankTransferController@form');
 
-//// Bank setup ///
+//// Bank Enquiry ///
 Route::get('/bankEnquiry','finance\BankEnquiryController@show');
 Route::get('/bankEnquiry/table','finance\BankEnquiryController@table');
 Route::post('/bankEnquiry/form','finance\BankEnquiryController@form');
+
+//// Cash Management Enquiry ///
+Route::get('/CMEnquiry','finance\CMEnquiryController@show');
+Route::get('/CMEnquiry/table','finance\CMEnquiryController@table');
+Route::post('/CMEnquiry/form','finance\CMEnquiryController@form');
 
 //// Direct Payment ///
 Route::get('/directPayment','finance\DirectPaymentController@show');
