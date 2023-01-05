@@ -2,7 +2,9 @@
 
 ///////////////////////start utility function/////////////////////////////////////////////////////////
 $('input').on('beforeValidation', function(value, lang, config) {
-	$(this).attr('data-validation-error-msg', ' ');
+	if(!$(this).is('[data-validation-error-msg]')){
+		$(this).attr('data-validation-error-msg', ' ');
+	}
 	// $(this).attr('data-validation-skipped', 1);
 });
 
@@ -1549,6 +1551,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					$( id ).parent().siblings( ".help-block" ).html("Invalid Code");
 					if($.inArray(idtopush,errorField)===-1){
 						errorField.push( idtopush );
+						$(id).data('show_error','Invalid Code');
 					}
 				}
 			}else if(self.required == false && value == ''){
@@ -2002,6 +2005,18 @@ function myerrorIt_only(id,fail){
 	}
 }
 
+function myerrorIt_only2(id,fail){
+	if(!fail){
+		$( id ).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
+		$( id ).parent().removeClass( "error" ).addClass( "valid" );
+		// $( id ).parent().siblings( ".help-block" ).html("");
+	}else{
+		$( id ).parent().parent().removeClass( "has-success" ).addClass( "has-error" );
+		$( id ).parent().removeClass( "valid" ).addClass( "error" );
+		$( id ).parent().parent().siblings( ".help-block" ).html("");
+	}
+}
+
 function emptyobj_(obj){
 	if($.isEmptyObject(obj)){
 		return true;
@@ -2019,6 +2034,31 @@ function getjqcust_oper(opt){
 	}else{
 		return 'add';
 	}
+}
+
+function show_errors(errorField,form){
+	errorField.forEach(function(elem,i){
+		let eleminput = $(form+' input[name='+elem+']');
+		let elemerror = eleminput.data('show_error');
+
+		if(eleminput.parent().hasClass('input-group')){
+			if(eleminput.parent().next().hasClass('help-block')){//check utk ordialog dah ada ke help block dia
+				eleminput.parent().next().html(elemerror);
+				myerrorIt_only2(form+' input[name='+elem+']',true);
+			}else{
+				eleminput.parent().append("<span class='help-block'>"+elemerror+"</span>");			
+				myerrorIt_only2(form+' input[name='+elem+']',true);
+			}
+		}else{
+			if(eleminput.next().hasClass('help-block')){//check dah ada ke help block dia
+				eleminput.next().html(elemerror);
+				myerrorIt_only(form+' input[name='+elem+']',true);
+			}else{
+				eleminput.parent().append("<span class='help-block'>"+elemerror+"</span>");
+				myerrorIt_only(form+' input[name='+elem+']',true);
+			}
+		}
+	});
 }
 
 $(document).ready(function () {

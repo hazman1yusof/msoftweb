@@ -7,7 +7,7 @@ $(document).ready(function () {
 	$.validate({
 		modules : 'sanitize',
 		language : {
-			requiredFields: ''
+			requiredFields: 'Please Enter Value'
 		},
 	});
 	
@@ -15,11 +15,11 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField);
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
 			}
 		},
 	};
@@ -1125,6 +1125,7 @@ $(document).ready(function () {
 	function check_suppcode_duplicate(){
 		if(oper == 'add' && $("#apacthdr_document").val().trim() != '' && $("#apacthdr_suppcode").val().trim() != '' ){
 			var id = "#apacthdr_document";
+			var id2 = "apacthdr_document";
 			var param={
 				func:'getDocNo',
 				action:'get_value_default',
@@ -1140,18 +1141,18 @@ $(document).ready(function () {
 			
 			},'json').done(function(data) {
 				if ($.isEmptyObject(data.rows)) {
-					// if($.inArray(id,errorField)!==-1){
-					// 	errorField.splice($.inArray(id,errorField), 1);
-					// }
-					// $( id ).removeClass( "error" ).addClass( "valid" );
+					if($.inArray(id2,errorField)!==-1){
+						errorField.splice($.inArray(id2,errorField), 1);
+					}
+					myerrorIt_only(id,false);
 				} else {
-
 					var supp_name = $('#apacthdr_suppcode').parent().next().text();
 					bootbox.alert("Duplicate Document No for <b>"+supp_name+'</b>');
-					// $( id ).removeClass( "valid" ).addClass( "error" );
-					// if($.inArray(id,errorField)===-1){
-					// 	errorField.push( id );
-					// }
+					if($.inArray(id2,errorField)===-1){
+						errorField.push( id2 );
+					}
+					myerrorIt_only(id,true);
+					$(id).data('show_error','Duplicate Document No');
 				}
 			});
 		}
@@ -1163,7 +1164,6 @@ $(document).ready(function () {
 		mycurrency.check0value(errorField);
 		unsaved = false;
 		
-		errorField.length=0;
 		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 		
 			dialog_supplier.off();
@@ -1189,7 +1189,7 @@ $(document).ready(function () {
 		rdonly('#formdata');
 		$(".noti, .noti2 ol").empty();
 		refreshGrid("#jqGrid2",urlParam2,'add');
-		errorField.length=0;
+		// errorField.length=0;
 	});
 
 

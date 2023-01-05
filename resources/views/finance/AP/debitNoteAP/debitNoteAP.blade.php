@@ -197,7 +197,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_doctype">Doc Type</label> 
 							<div class="col-md-3">
-							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required">
+							  	<select id="apacthdr_doctype" name=apacthdr_doctype class="form-control" data-validation="required" data-validation-error-msg="Please Enter Value">
 							       <option value="Debit_Note">Debit Note</option>
 							    </select>
 						  	</div>
@@ -212,7 +212,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_suppcode">Creditor</label>	 
 						 	<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -220,7 +220,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 					</div>
 
@@ -228,7 +228,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -236,7 +236,7 @@ i.fa {
 
 				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 					</div>
 
@@ -249,7 +249,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
 				  			<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -260,7 +260,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>

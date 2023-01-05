@@ -15,11 +15,11 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField);
-				return {
-					element : $(errorField[0]),
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
 					message : ' '
-				}
+				}]
 			}
 		},
 	};
@@ -692,6 +692,7 @@ $(document).ready(function () {
 	$("#apacthdr_document").blur(function(){
 		if(oper == 'add'){
 			var id = "#apacthdr_document";
+			var id2 = "apacthdr_document";
 			var param={
 				func:'getDocNo',
 				action:'get_value_default',
@@ -700,23 +701,25 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document'];
-			param.filterVal = [$("#apacthdr_document").val()];
+			param.filterCol = ['document','recstatus'];
+			param.filterVal = [$("#apacthdr_document").val(),'<>.CANCELLED'];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if ($.isEmptyObject(data.rows)) {
-					if($.inArray(id,errorField)!==-1){
-						errorField.splice($.inArray(id,errorField), 1);
+					if($.inArray(id2,errorField)!==-1){
+						errorField.splice($.inArray(id2,errorField), 1);
 					}
-					$( id ).removeClass( "error" ).addClass( "valid" );
+					myerrorIt_only(id,false);
 				} else {
 					bootbox.alert("Duplicate Document No");
 					$( id ).removeClass( "valid" ).addClass( "error" );
-					if($.inArray(id,errorField)===-1){
-						errorField.push( id );
+					if($.inArray(id2,errorField)===-1){
+						errorField.push( id2 );
 					}
+					myerrorIt_only(id,true);
+					$(id).data('show_error','Duplicate Document No');
 				}
 			});
 		}
