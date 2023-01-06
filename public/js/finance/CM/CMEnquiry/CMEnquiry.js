@@ -236,13 +236,18 @@ $(document).ready(function () {
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'apacthdr_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='apacthdr_bankcode';break;
+
+			//FT
+			case 'paymodeFT':field=['paymode','description'];table="debtor.paymode";break;
+			case 'paytoFT':field=['bankcode','bankname'];table="finance.bank";break;
+			case 'bankcodeFT':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 			
 			//DP
-			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
-			case 'category':field=['catcode','description'];table="material.category";case_='category';break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
-			case 'payto':field=['suppcode','name'];table="material.supplier";case_='payto';break;
-			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+			case 'deptcodeDP':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'categoryDP':field=['catcode','description'];table="material.category";case_='category';break;
+			case 'GSTCodeDP':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
+			case 'paytoDP':field=['suppcode','name'];table="material.supplier";case_='payto';break;
+			case 'bankcodeDP':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
 		var param={
 			action:'input_check',
@@ -382,7 +387,6 @@ $(document).ready(function () {
 		filterVal:['session.compcode', '', '<>.DELETE', 'CM', 'DP']
 	};
 
-	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2_dp").jqGrid({
 		datatype: "local",
 		editurl: "/directPaymentDetail/form",
@@ -399,9 +403,9 @@ $(document).ready(function () {
 					formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 80, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},editable: false,align: "right",},
-			{ label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:false,formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },},
+			{ label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:false,formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Amount', name: 'amount', width: 80, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
+			{ label: 'Amount', name: 'amount', width: 80, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align:"right"},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -415,7 +419,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2_dp",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid2_dp");
+			//calc_jq_height_onchange("jqGrid2_dp");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -711,25 +715,6 @@ $(document).ready(function () {
 					dialog_cheqnoFT.check('errorField');
 				}
 			});
-	}
-			
-	function init_jq2(){
-		if($('#apacthdr_doctype').val() == 'Supplier'){
-			$('#save').hide();
-			$('#ap_detail').show();
-			$('#pv_detail').show();
-			$('#cn_in_detail').show();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft-28));
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_pv_c")[0].offsetWidth-$("#jqGrid2_pv_c")[0].offsetLeft-28));
-			$("label[for='apactdtl_outamt'], input#apactdtl_outamt").show();
-		}else{
-			$('#save').hide();
-			$('#ap_detail').hide();
-			$('#pv_detail').hide();
-			$('#cn_in_detail').hide();
-			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft-28));
-			$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();
-		}
 	}
 
 	function init_jq2_cn(oper){
