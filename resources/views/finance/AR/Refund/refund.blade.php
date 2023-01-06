@@ -104,7 +104,7 @@
         <label class="col-md-2 control-label" for="till_tillcode">Till Code</label>  
         <div class="col-md-6">
             <div class='input-group'>
-                <input id="till_tillcode" name="till_tillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+                <input id="till_tillcode" name="till_tillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                 <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
             </div>
         </div>
@@ -121,7 +121,7 @@
 		<label class="col-md-2 control-label" for="till_dept">Department</label>  
 		<div class="col-md-6">
 			<div class='input-group'>
-				<input id="till_dept" name="till_dept" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				<input id="till_dept" name="till_dept" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 		</div>				  
@@ -137,7 +137,7 @@
 	<div class="myformgroup">
 		<label class="control-label col-md-2" for="defopenamt">Opening Amount</label> 
 		<div class='col-md-4'> 
-			<input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+			<input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 		</div>
 	</div>
   </form>
@@ -219,7 +219,7 @@
                             <div class="myformgroup">
                                 <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
                                 <div class='col-md-3'> 
-                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div>
 
                                 <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
@@ -240,7 +240,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
                                     <div class='col-md-9'> 
-                                        <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm text-uppercase">
+                                        <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
                                     </div>
                                 </div>
                             </div>
@@ -248,7 +248,7 @@
                                 <div class="form-group">
                                     <div class='col-md-4'> 
                                         <label class="control-label" for="dbacthdr_amount">Refund Amount</label> 
-                                        <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                        <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div>
 
                                     <div class='col-md-4'> 
@@ -293,7 +293,7 @@
                             <div class="myformgroup">
                                 <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
                                 <div class='col-md-3'> 
-                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div>
                                 <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
                                 <div class='col-md-3'> 
@@ -303,7 +303,7 @@
                             <div class="form-group">
                                 <label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
                                 <div class='col-md-8'> 
-                                    <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+                                    <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div>
                             </div>
                             </form>
@@ -318,7 +318,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
                                     <div class='col-md-9'> 
-                                        <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+                                        <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +326,7 @@
                                 <div class="form-group">
                                     <div class='col-md-4'> 
                                         <label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-                                        <input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+                                        <input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 
                                     </div>
                                 </div>
@@ -338,7 +338,7 @@
                                     </div>
                                     <div class='col-md-6'> 
                                         <label class="control-label" for="dbacthdr_amount">Payment</label> 
-                                        <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+                                        <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div>
                                 </div>
 
@@ -352,7 +352,7 @@
                                 <div class="form-group">
                                     <div class='col-md-12'> 
                                         <label class="control-label" for="dbacthdr_reference">Reference</label> 
-                                        <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+                                        <input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div>
                                 </div>
                             </div>

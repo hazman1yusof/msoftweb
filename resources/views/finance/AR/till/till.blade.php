@@ -8,7 +8,7 @@
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
-		<form id="searchForm" class="formclass" style='width:99%'; position:relative' onkeydown="return event.key != 'Enter';">
+		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<div class="ScolClass">
 						<div name='Scol'>Search By : </div>
@@ -39,7 +39,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="tillcode">Till Code</label>  
 				  <div class="col-md-4">
-				  <input id="tillcode" name="tillcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+				  <input id="tillcode" name="tillcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 				  </div>
                 </div>
 				
@@ -47,7 +47,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="description">Description</label>  
 				  <div class="col-md-8">
-				  <input id="description" name="description" type="text" maxlength="40" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="description" name="description" type="text" maxlength="40" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
                 </div>
                 
@@ -55,7 +55,7 @@
 					<label class="col-md-2 control-label" for="dept">Department</label>  
 					<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="dept" name="dept" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="dept" name="dept" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -63,7 +63,7 @@
 					
 					<label class="col-md-2 control-label" for="effectdate">Effective Date</label>  
 					<div class="col-md-3">
-					<input id="effectdate" name="effectdate" type="date" class="form-control input-sm" data-validation="required">
+					<input id="effectdate" name="effectdate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 					<!-- <input id="effectdate" name="effectdate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>"> -->
 
 					</div>
@@ -73,7 +73,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="defopenamt">Default Open Amount</label>  
 				  <div class="col-md-3">
-				  <input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float">
+				  <input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" data-validation="number" data-validation-allowing="float" data-validation-error-msg="Please Enter Value">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="tillstatus">Till Status</label>  

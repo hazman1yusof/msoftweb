@@ -2,6 +2,28 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
+	
+	/////////////////////////////////////////validation//////////////////////////
+	$.validate({
+		modules : 'sanitize',
+		language : {
+			requiredFields: 'Please Enter Value'
+		},
+	});
+
+	var errorField=[];
+	conf = {
+		onValidate : function($form) {
+			if(errorField.length>0){
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
+			}
+		},
+	};
+
 	var tabform="#f_tab-cash";
 
 	checkifuserlogin();

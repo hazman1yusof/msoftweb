@@ -45,14 +45,14 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="hdrtype">Header Type</label>  
 				  <div class="col-md-3">
-						<input id="hdrtype" name="hdrtype" type="text" maxlength="2" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+						<input id="hdrtype" name="hdrtype" type="text" maxlength="2" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 				  </div>
 				</div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="description">Description</label>  
 				  <div class="col-md-8">
-				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="description" name="description" type="text" maxlength="100" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
                 
@@ -60,7 +60,7 @@
 				  <label class="col-md-2 control-label" for="depccode">Deposit Cost</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="depccode" name="depccode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="depccode" name="depccode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -69,7 +69,7 @@
 				  <label class="col-md-2 control-label" for="depglacc">Deposit GL Account</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="depglacc" name="depglacc" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="depglacc" name="depglacc" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -79,13 +79,13 @@
                 <div class="form-group">
 				  <label class="col-md-2 control-label" for="updpayername">Update Payer Name</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input id="updpayername" type="radio" name="updpayername" value='1' data-validation="required" checked>Yes</label>
+					<label class="radio-inline"><input id="updpayername" type="radio" name="updpayername" value='1' data-validation="required" data-validation-error-msg="Please Enter Value" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="updpayername" value='0' data-validation="">No</label>
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="updepisode">Auto Allocation</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="updepisode" value='1' data-validation="required" checked>Yes</label>
+					<label class="radio-inline"><input type="radio" name="updepisode" value='1' data-validation="required" data-validation-error-msg="Please Enter Value" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="updepisode" value='0' data-validation="">No</label>
 				  </div>
 				</div>
@@ -100,7 +100,7 @@
 				
 				<label class="col-md-2 control-label" for="manualalloc">Manual Allocation</label>  
 				  <div class="col-md-3">
-					<label class="radio-inline"><input type="radio" name="manualalloc" value='1' data-validation="required" checked>Yes</label>
+					<label class="radio-inline"><input type="radio" name="manualalloc" value='1' data-validation="required" data-validation-error-msg="Please Enter Value" checked>Yes</label>
 					<label class="radio-inline"><input type="radio" name="manualalloc" value='0' data-validation="">No</label>
 				  </div>
 				</div>
@@ -132,12 +132,12 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit hideOne >
 						</div>
 
 						<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
+						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit hideOne >
 						</div>
 
 				</div> 
@@ -145,13 +145,13 @@
 				<div class="form-group">
 				<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 						  	<div class="col-md-3">
-								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit hideOne>
 						  	</div>
 					
 
 						<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
 						  	<div class="col-md-3">
-								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit hideOne>
 						  	</div>
 				</div>
 			</form>

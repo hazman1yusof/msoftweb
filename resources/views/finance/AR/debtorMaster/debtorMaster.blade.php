@@ -41,13 +41,13 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="debtorcode">Debtor Code</label>  
 				  <div class="col-md-3">
-				  <input id="debtorcode" name="debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit >
+				  <input id="debtorcode" name="debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit >
 				  </div>
 				                  
 				  <label class="col-md-2 control-label" for="debtortype">Financial Class</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="debtortype" name="debtortype" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+						<input id="debtortype" name="debtortype" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -57,14 +57,14 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="name">Debtor Name</label>  
 				  <div class="col-md-8">
-				  <input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="name" name="name" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 				
@@ -138,7 +138,7 @@
 				 <label class="col-md-2 control-label" for="billtype">Bill Type IP</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="billtype" name="billtype" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="billtype" name="billtype" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -148,7 +148,7 @@
                  <label class="col-md-2 control-label" for="billtypeop">Bill Type OP</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="billtypeop" name="billtypeop" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="billtypeop" name="billtypeop" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -262,13 +262,13 @@
 				</div>
 
 
-				  <input id="actdebccode" name="actdebccode" type="hidden" class="form-control input-sm" data-validation="required">
+				  <input id="actdebccode" name="actdebccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
-				  <input id="actdebglacc" name="actdebglacc" type="hidden" class="form-control input-sm" data-validation="required">
+				  <input id="actdebglacc" name="actdebglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
-				  <input id="depccode" name="depccode" type="hidden" class="form-control input-sm" data-validation="required">
+				  <input id="depccode" name="depccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
-				  <input id="depglacc" name="depglacc" type="hidden" class="form-control input-sm" data-validation="required">
+				  <input id="depglacc" name="depglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
 
 				 

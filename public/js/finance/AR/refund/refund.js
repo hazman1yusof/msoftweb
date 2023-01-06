@@ -3,21 +3,23 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 
+	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
-		decimalSeparator : ',',
+		modules : 'sanitize',
 		language : {
-			requiredFields: ''
+			requiredFields: 'Please Enter Value'
 		},
 	});
-	
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
 			}
 		},
 	};
@@ -458,7 +460,6 @@ $(document).ready(function () {
 			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
 			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
 			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
-			{label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', width: 70},
 			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
 		],

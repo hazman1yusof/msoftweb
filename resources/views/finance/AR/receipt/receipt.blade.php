@@ -139,7 +139,7 @@
         <label class="col-md-2 control-label" for="till_tillcode">Till Code</label>  
         <div class="col-md-6">
             <div class='input-group'>
-                <input id="till_tillcode" name="till_tillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+                <input id="till_tillcode" name="till_tillcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
                 <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
             </div>
         </div>
@@ -156,7 +156,7 @@
 		<label class="col-md-2 control-label" for="till_dept">Department</label>  
 		<div class="col-md-6">
 			<div class='input-group'>
-				<input id="till_dept" name="till_dept" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				<input id="till_dept" name="till_dept" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			</div>
 		</div>				  
@@ -172,7 +172,7 @@
 	<div class="myformgroup">
 		<label class="control-label col-md-2" for="defopenamt">Opening Amount</label> 
 		<div class='col-md-4'> 
-			<input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+			<input id="defopenamt" name="defopenamt" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 		</div>
 	</div>
   </form>
@@ -221,7 +221,7 @@
 					<hr>
 					<div class="form-group">
 						<div class='col-md-2 minuspad-15'>
-						<label>Trantype: </label><input id="dbacthdr_trantype" name="dbacthdr_trantype" type="text" class="form-control input-sm" data-validation="required" rdonly>
+						<label>Trantype: </label><input id="dbacthdr_trantype" name="dbacthdr_trantype" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 						</div>
 
 						<div class='col-md-10 '>
@@ -239,7 +239,7 @@
 		  			<div class="col-md-12 minuspad-15">
 							<label class="control-label" for="dbacthdr_payercode">Payer Code</label>  
 			  			<div class='input-group'>
-							<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required"/>
+							<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			  			</div>
 		  			</div>
@@ -247,14 +247,14 @@
 		  			<div class="col-md-12 minuspad-15">
 						<label class="control-label" for="dbacthdr_payername">Payer Name</label>
 			  			<div class=''>
-							<input id="dbacthdr_payername" name="dbacthdr_payername" type="text" class="form-control input-sm" data-validation="required" rdonly>
+							<input id="dbacthdr_payername" name="dbacthdr_payername" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 						</div>
 		  			</div>
 
 					<div class="col-md-6 minuspad-15">
 						<label class="control-label" for="dbacthdr_debtortype">Financial Class</label>
 			  			<div class=''>
-							<input id="dbacthdr_debtortype" name="dbacthdr_debtortype" type="text" class="form-control input-sm" data-validation="required" rdonly>
+							<input id="dbacthdr_debtortype" name="dbacthdr_debtortype" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 						</div>
 			  			<span class="help-block"></span>
 		  			</div>
@@ -268,7 +268,7 @@
 							<label class="control-label" for="dbacthdr_mrn">MRN</label>  
 				  			<div class="">
 					  			<div class='input-group'>
-									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -320,7 +320,7 @@
 							<div class="myformgroup">
 								<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 								</div>
 
 								<label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
@@ -352,7 +352,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
 							  		<div class='col-md-9'> 
-										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm text-uppercase">
+										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
 									</div>
 								</div>
 							</div>
@@ -360,7 +360,7 @@
 								<div class="form-group">
 							  		<div class='col-md-4'> 
 										<label class="control-label" for="dbacthdr_amount">Payment</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -409,7 +409,7 @@
 
 								<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 						  		<div class='col-md-4'> 
-									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+									<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 								</div>
 							</div>
 							<div class="form-group">
@@ -427,7 +427,7 @@
 							<div class="form-group">
 								<label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
 						  		<div class='col-md-8'> 
-									<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								</div>
 							</div>
 							</form>
@@ -442,7 +442,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
 							  		<div class='col-md-9'> 
-										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									</div>
 								</div>
 							</div>
@@ -450,7 +450,7 @@
 								<div class="form-group">
 							  		<div class='col-md-4'> 
 										<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+										<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 
 									</div>
 								</div>
@@ -462,7 +462,7 @@
 									</div>
 							  		<div class='col-md-6'> 
 										<label class="control-label" for="dbacthdr_amount">Payment</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 									</div>
 								</div>
 								<div class="form-group">
@@ -478,7 +478,7 @@
 								<div class="form-group">
 							  		<div class='col-md-12'> 
 										<label class="control-label" for="dbacthdr_reference">Reference</label> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									</div>
 								</div>
 							</div>
@@ -519,7 +519,7 @@
 									</div>
 							  		<div class='col-md-8'> 
 										<label class="control-label" for="dbacthdr_amount">Amount</label> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 									</div>
 								</div>
 								<div class="clearfix"></div>
@@ -563,7 +563,7 @@
 				<!-- <input id="AlloDebtor" type="text" class="form-control input-sm" readonly> -->
 				<label class="control-label" for="AlloDebtor">Debtor</label>  
 	  			<div class='input-group'>
-					<input id="AlloDebtor" name="AlloDebtor" type="text" class="form-control input-sm" data-validation="required"/>
+					<input id="AlloDebtor" name="AlloDebtor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 	  			</div>
 				<span class="help-block" id="AlloDebtor2"></span>

@@ -6,19 +6,21 @@ var editedRow=0;
 $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
 	$.validate({
+		modules : 'sanitize',
 		language : {
-			requiredFields: ''
+			requiredFields: 'Please Enter Value'
 		},
 	});
-	
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
 			}
 		},
 	};
