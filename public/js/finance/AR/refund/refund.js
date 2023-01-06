@@ -5,6 +5,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
+		decimalSeparator : ',',
 		modules : 'sanitize',
 		language : {
 			requiredFields: 'Please Enter Value'
