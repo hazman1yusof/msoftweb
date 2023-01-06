@@ -44,21 +44,21 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
 				  <div class="col-md-3">
-					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+					<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bankname">Name</label>  
 				  <div class="col-md-8">
-				  <input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="bankname" name="bankname" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="address1">Address</label>  
 				  <div class="col-md-8">
-				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  <input id="address1" name="address1" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 				
@@ -119,14 +119,14 @@
 				  <label class="col-md-2 control-label" for="effectdate">Effective Date</label>  
 				  <div class="col-md-3">
 				  <input id="effectdate" name="effectdate" type="date" data-date="" data-date-format="DD MMMM YYYY" class="form-control input-sm"
-                   data-validation="date" >
+                   data-validation="date" data-validation-error-msg="Please Enter Value">
 				  </div>
 				</div>
 				
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="bankaccount">Bank Account No.</label>  
 				  <div class="col-md-3">
-				  <input id="bankaccount" name="bankaccount" type="text" class="form-control input-sm" data-validation="required">
+				  <input id="bankaccount" name="bankaccount" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  </div>
 				  
 				  <label class="col-md-2 control-label" for="pctype">Petty Cash</label>  
@@ -140,7 +140,7 @@
 				  <label class="col-md-2 control-label" for="glccode">Cost Center</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="glccode" name="glccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="glccode" name="glccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -149,7 +149,7 @@
 				  <label class="col-md-2 control-label" for="glaccno">GL Account</label>  
 				  <div class="col-md-3">
 					  <div class='input-group'>
-						<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -196,25 +196,25 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne >
 						</div>
 
 					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne >
+						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit hideOne >
 						</div>
 				</div> 
 
 				<div class="form-group">
 				<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 						  	<div class="col-md-3">
-								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 					
 
 						<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
 						  	<div class="col-md-3">
-								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
 				</div>
 			</form>

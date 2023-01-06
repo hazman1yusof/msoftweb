@@ -101,21 +101,21 @@ i.fa {
 				<div class="form-group">
 				  		<label class="col-md-2 control-label" for="SuppCode">Supplier Code</label>  
                             <div class="col-md-2">
-                                <input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+                                <input id="SuppCode" name="SuppCode" type="text" maxlength="10" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
                             </div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Name">Name</label>  
 				  			<div class="col-md-8">
-				  				<input id="Name" name="Name" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required">
+				  				<input id="Name" name="Name" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 				 			</div>
 					</div>
                     
                     <div class="form-group">
 				  		<label class="col-md-2 control-label" for="Addr1">Address</label>  
 				  			<div class="col-md-8">
-				  				<input id="Addr1" name="Addr1" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required">
+				  				<input id="Addr1" name="Addr1" type="text" maxlength="333" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 				  			</div>
 					</div>
 				
@@ -158,7 +158,7 @@ i.fa {
 				   		<label class="col-md-2 control-label" for="SuppGroup">Supplier Group</label>  
 				 			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="SuppGroup" name="SuppGroup" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -169,7 +169,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="CostCode">Cost Code</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									<input id="CostCode" name="CostCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 					  			</div>
 					  			<span class="help-block"></span>
@@ -178,7 +178,7 @@ i.fa {
 				 		<label class="col-md-2 control-label" for="GlAccNo">GL Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+									<input id="GlAccNo" name="GlAccNo" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 									<!-- <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a> -->
 					  			</div>
 					  			<span class="help-block"></span>
@@ -189,7 +189,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="Advccode">Advance Cost Code</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" >
+									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -198,7 +198,7 @@ i.fa {
 				 		<label class="col-md-2 control-label" for="AdvGlaccno">Advance GL Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -316,7 +316,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="si_pricecode">Price Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_pricecode" name="si_pricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="si_pricecode" name="si_pricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -327,7 +327,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="si_itemcode">Item Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_itemcode" name="si_itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="si_itemcode" name="si_itemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -338,7 +338,7 @@ i.fa {
 				   	<label class="col-md-3 control-label" for="si_uomcode">UOM Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="si_uomcode" name="si_uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="si_uomcode" name="si_uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -384,7 +384,7 @@ i.fa {
                 <div class="form-group">
 				  	<label class="col-md-3 control-label" for="si_expirydate">Expiry Date</label>  
 				  		<div class="col-md-2">
-				  		<input id="si_expirydate" name="si_expirydate" type="Date" min="<?php echo date("Y-m-d"); ?>"   class="form-control input-sm" data-validation="required">
+				  		<input id="si_expirydate" name="si_expirydate" type="Date" min="<?php echo date("Y-m-d"); ?>"   class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" >
 				  		</div>
 
 				  	<label class="col-md-2 control-label" for="si_sitemcode">Item Code at Supplier's Site</label>  
@@ -461,7 +461,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonpricecode">Bonus Price Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonpricecode" name="sb_bonpricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="sb_bonpricecode" name="sb_bonpricecode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -472,7 +472,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonitemcode">Bonus Item Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonitemcode" name="sb_bonitemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="sb_bonitemcode" name="sb_bonitemcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -483,7 +483,7 @@ i.fa {
 				  <label class="col-md-3 control-label" for="sb_bonuomcode">Bonus UOM Code</label>  
 				  	<div class="col-md-3">
 					  <div class='input-group'>
-						<input id="sb_bonuomcode" name="sb_bonuomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+						<input id="sb_bonuomcode" name="sb_bonuomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  </div>
 					  <span class="help-block"></span>
@@ -498,7 +498,7 @@ i.fa {
 
 				  	<label class="col-md-2 control-label" for="sb_bonsitemcode">Bonus Item Code at Supplier Site</label>  
 				  		<div class="col-md-2">
-				  		<input id="sb_bonsitemcode" name="sb_bonsitemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+				  		<input id="sb_bonsitemcode" name="sb_bonsitemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 				  		</div>
                 </div>	
                 

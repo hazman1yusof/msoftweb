@@ -40,7 +40,7 @@
 				<div class="form-group">
 				  <label class="col-md-2 control-label" for="paymode">Payment Mode</label>  
 				  <div class="col-md-3">
-				  <input id="paymode" name="paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+				  <input id="paymode" name="paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 				  </div>
 				</div>
 				
@@ -79,7 +79,7 @@
 		 			<label class="col-md-2 control-label" for="ccode">Cost Code</label>  
 		 			 	<div class="col-md-3">
 			  				<div class='input-group'>
-								<input id="ccode" name="ccode" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="ccode" name="ccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			 				</div>
 			  			<span class="help-block"></span>
@@ -90,7 +90,7 @@
 					<label class="col-md-2 control-label" for="glaccno">GL Account</label>  
 		  				<div class="col-md-3">
 			  				<div class='input-group'>
-								<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="glaccno" name="glaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 						<span class="help-block"></span>

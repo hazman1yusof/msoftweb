@@ -113,13 +113,13 @@ i.fa {
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="doctorcode">Doctor Code</label>  
 							<div class="col-md-4">
-								<input id="doctorcode" name="doctorcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
+								<input id="doctorcode" name="doctorcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" frozeOnEdit>
 							</div>
 
 							<label class="col-md-2 control-label" for="doctype">Doctor Type</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="doctype" name="doctype" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
+									<input id="doctype" name="doctype" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -129,14 +129,14 @@ i.fa {
 						<div class="form-group">					
 							<label class="col-md-2 control-label" for="doctorname">Doctor Name</label>  
 							<div class="col-md-10">
-								<input id="doctorname" name="doctorname" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="doctorname" name="doctorname" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-2 control-label" for="department">Login ID</label>  
 							<div class="col-md-4">
-								<input id="loginid" name="loginid" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="loginid" name="loginid" type="text" maxlength="200" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 							</div>
 						</div>
 
@@ -144,7 +144,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="department">Costcenter</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="department" name="department" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
+									<input id="department" name="department" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -153,7 +153,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="specialitycode">Speciality</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
+									<input id="specialitycode" name="specialitycode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -164,7 +164,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="disciplinecode">Discipline</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
+									<input id="disciplinecode" name="disciplinecode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -173,7 +173,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="creditorcode">Creditor</label>  
 							<div class="col-md-4">
 								<div class='input-group'>
-									<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm text-uppercase" data-validation="required"/>
+									<input id="creditorcode" name="creditorcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -185,12 +185,12 @@ i.fa {
 							<div class="col-md-4">
 								<table>
 									<tr>							
-										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" value='CO' checked="">Consultant</label></td>
-										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" value='MO'>Medical Officer</label></td>							
+										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" data-validation-error-msg="Please Enter Value" value='CO' checked="">Consultant</label></td>
+										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" data-validation-error-msg="Please Enter Value" value='MO'>Medical Officer</label></td>							
 									</tr>						
 									<tr>
-										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" value='PH'>Pharmacist</label></td>
-										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" value='PHY'>Physiotherapist</label></td>                             
+										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" data-validation-error-msg="Please Enter Value" value='PH'>Pharmacist</label></td>
+										<td><label class="radio-inline"><input type="radio" name="classcode" data-validation="required" data-validation-error-msg="Please Enter Value" value='PHY'>Physiotherapist</label></td>                             
 									</tr>
 								</table>				
 							</div>
@@ -231,7 +231,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="intervaltime">Interval Time</label>  
 							<div class="col-md-4">
 								<div class="input-group">
-									<input id="intervaltime" name="intervaltime" type="text" maxlength="30" class="form-control input-sm" data-validation="required">
+									<input id="intervaltime" name="intervaltime" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<span class="input-group-addon">minutes</span>
 								</div>
 							</div>

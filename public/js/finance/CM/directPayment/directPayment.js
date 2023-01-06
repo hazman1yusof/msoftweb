@@ -17,10 +17,11 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
 			}
 		},
 	};
@@ -29,7 +30,6 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var mycurrency =new currencymode(['#amount']);
-	var radbuts=new checkradiobutton(['TaxClaimable']);
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -760,6 +760,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveDetailLabel////////////////////////////////////////////
 	$("#saveDetailLabel").click(function () {
+		radbuts.check();
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
@@ -789,7 +790,7 @@ $(document).ready(function () {
 		dialog_bankcode.on();
 		dialog_cheqno.on();
 		dialog_payto.on();
-
+		textCol.check();
 		enableForm('#formdata');
 		rdonly('#formdata');
 		$(".noti").empty();
@@ -815,6 +816,19 @@ $(document).ready(function () {
 
 	// });	
 
+	var radbuts=new checkradiobutton(['TaxClaimable']);
+
+	function textcolourradio(textcolour){
+		this.textcolour=textcolour;
+		this.check = function(){
+			$.each(this.textcolour, function( index, value ) {
+				$("label[for="+value+"]").css('color', '#444444');
+				$(":radio[name="+value+"]").parent('label').css('color', '#444444');
+			});
+		}
+	}
+
+	var textCol=new textcolourradio(['TaxClaimable']);
 	///////////////////////////////////////////////////////////////////////////////
 
 	function onall_editfunc(){

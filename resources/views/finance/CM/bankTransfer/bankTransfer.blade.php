@@ -79,14 +79,14 @@
 										<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
 											<div class="col-md-3">
 										  		<div class='input-group'>
-													<input id="actdate" name="actdate" type="date"  maxlength="30"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>"> 
+													<input id="actdate" name="actdate" type="date"  maxlength="30"  class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>"> 
 										  		</div>
 											</div>
 										
 										<label class="col-md-2 control-label" for="paymode">Payment Mode</label>  
 											<div class="col-md-3">
 										  		<div class='input-group'>
-													<input id="paymode" name="paymode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+													<input id="paymode" name="paymode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 										  			<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  		</div>
 										   		<span class="help-block"></span>
@@ -97,7 +97,7 @@
 										<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
 											<div class="col-md-3" id="bankcode_parent">
 										 		<div class='input-group'>
-													<input id="bankcode" name="bankcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+													<input id="bankcode" name="bankcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  		</div>
 												<span id='bc' class="help-block"></span>
@@ -118,13 +118,13 @@
 										<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
 											<div class="col-md-3">
 										  		<div class='input-group'>
-													<input id="cheqdate" name="cheqdate" type="date" maxlength="30"  class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>">
+													<input id="cheqdate" name="cheqdate" type="date" maxlength="30"  class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>">
 										  		</div>
 										 	</div>
 
 										<label class="col-md-2 control-label" for="amount">Amount</label>  
 											<div class="col-md-3">
-												<input id="amount" name="amount" type="text" maxlength="30" class="form-control input-sm" data-validation="required"/>
+												<input id="amount" name="amount" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 											</div>
 									</div>
 								</div>
@@ -142,7 +142,7 @@
 									<label class="col-md-2 control-label" for="payto">Bank Code</label>  
 										<div class="col-md-3">
 										  <div class='input-group'>
-											<input id="payto" name="payto" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required"/>
+											<input id="payto" name="payto" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  </div>
 										  <span class="help-block"></span>

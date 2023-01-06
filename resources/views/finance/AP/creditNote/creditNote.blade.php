@@ -113,11 +113,6 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
 
-				<!-- <div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div> -->
-
 			</fieldset> 
 		</form>
 
@@ -216,13 +211,13 @@ i.fa {
 
 						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  			</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -233,7 +228,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
-									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -254,7 +249,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_suppcode">Pay To (In Invoice)</label>	  
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_suppcode" name="apacthdr_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
@@ -263,7 +258,7 @@ i.fa {
 						<label class="col-md-2 control-label" for="apacthdr_payto">Pay To</label>	  
 							<div class="col-md-3">
 							  	<div class='input-group'>
-									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="apacthdr_payto" name="apacthdr_payto" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
