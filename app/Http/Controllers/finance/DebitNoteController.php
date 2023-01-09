@@ -207,7 +207,8 @@ class DebitNoteController extends defaultController
                 'unit' => strtoupper($request->db_deptcode),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
-                'entrydate' => strtoupper($request->db_entrydate),
+                'posteddate' => $request->posteddate,
+                'entrydate' => $request->posteddate,
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 // 'mrn' => strtoupper($request->db_mrn),

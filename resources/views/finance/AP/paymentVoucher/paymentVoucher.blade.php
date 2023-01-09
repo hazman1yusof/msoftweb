@@ -220,7 +220,7 @@ i.fa {
 
 						<label class="col-md-2 control-label" for="apacthdr_document">Document No</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 				  			</div>
 
 						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
