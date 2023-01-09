@@ -183,7 +183,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="txndept">Transaction Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="txndept" name="txndept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -204,7 +204,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="trantype">Transaction Type</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -212,7 +212,7 @@ i.fa {
 
 								<label class="col-md-2 control-label" for="trandate">Transaction Date</label>
 								  	<div class="col-md-2">
-										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required">
+										<input id="trandate" name="trandate" type="date" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date('Y-m-d');?>" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 								  	</div>
 
 								
@@ -228,7 +228,7 @@ i.fa {
 						  <div class="form-group">
 						  		<label class="col-md-2 control-label" for="sndrcvtype">Receiver Type</label>  
 						  			<div class="col-md-2 selectContainer" id="sndrcvtype_parent">
-						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required">
+						  				<select id="sndrcvtype" name="sndrcvtype" class="form-control" data-validation="required" data-validation-error-msg="Please Enter Value">
 							  				<option value="">PLEASE SELECT</option>
 											<option value="Department">DEPARTMENT</option>
 											<option value="Supplier">SUPPLIER</option>
@@ -239,7 +239,7 @@ i.fa {
 						  		<label class="col-md-2 control-label" for="sndrcv">Receiver</label>	  
 									<div class="col-md-2" id="sndrcv_parent">
 										  <div class='input-group'>
-											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+											<input id="sndrcv" name="sndrcv" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  </div>
 										  <span class="help-block"></span>

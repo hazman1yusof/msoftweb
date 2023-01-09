@@ -305,7 +305,7 @@ $(document).ready(function () {
 			
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
-				$('#save').hide();
+				//$('#save').hide();
 			}else if (stat == 'OPEN'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 
@@ -1810,7 +1810,7 @@ $(document).ready(function () {
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 				$("label[for='apactdtl_outamt'], input#apactdtl_outamt").show();
 			}else{
-				$('#save').show();
+				$('#save').hide();
 				$('#ap_detail').hide();
 				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
 				$("label[for='apactdtl_outamt'], input#apactdtl_outamt").hide();

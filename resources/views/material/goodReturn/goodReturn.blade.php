@@ -191,7 +191,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_prdept">Purchase Department</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="delordhd_prdept" name="delordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -216,7 +216,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_suppcode">Supplier Code</label>	 
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="delordhd_suppcode" name="delordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -237,7 +237,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="delordhd_deldept">Delivery Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="delordhd_deldept" name="delordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 
@@ -247,7 +247,7 @@ i.fa {
 								<label class="col-md-1 control-label" for="delordhd_credcode">Creditor</label>	  
 								<div class="col-md-2">
 									<div class='input-group'>
-										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="delordhd_credcode" name="delordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 
@@ -307,8 +307,8 @@ i.fa {
 
 				 				<label class="col-md-2 control-label" for="delordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='CLAIMABLE'>Yes</label>
-									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" value='NON-CLAIMABLE' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='CLAIMABLE'>Yes</label>
+									<label class="radio-inline"><input type="radio" name="delordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='NON-CLAIMABLE' selected>No</label>
 								  </div>
 								<!-- 
 							  <label class="col-md-2 control-label" for="delordhd_recstatus">Record Status</label>  

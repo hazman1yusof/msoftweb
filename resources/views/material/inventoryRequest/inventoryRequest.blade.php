@@ -209,7 +209,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="reqdept">Request Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="reqdept" name="reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="reqdept" name="reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -225,7 +225,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="reqtodept">Req. Made To</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="reqtodept" name="reqtodept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="reqtodept" name="reqtodept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -247,7 +247,7 @@ i.fa {
 
 									<label class="col-md-2 control-label" for="reqdt">Request Date</label>  
 					  			<div class="col-md-2">
-										<input id="reqdt" name="reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+										<input id="reqdt" name="reqdt" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 					  			</div>
 
 						  		<!-- <label class="col-md-2 control-label" for="amount">Amount</label>  

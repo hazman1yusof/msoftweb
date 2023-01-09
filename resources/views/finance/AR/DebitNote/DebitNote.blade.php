@@ -234,21 +234,15 @@ i.fa {
 							<div class="col-md-2"> 
 								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 							</div>
-							
-							<label class="col-md-3 control-label" for="db_entrydate">Document Date</label>  
+
+							<label class="col-md-3 control-label" for="db_amount">Total Amount</label>
 							<div class="col-md-2">
-								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-									max="<?php echo date('Y-m-d');?>">
+								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 							</div>
 						</div>
 							
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
-							<div class="col-md-2">
-								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
-							</div>
-
-							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
+							<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>  
 							<div class="col-md-2">
 									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 							</div>

@@ -27,6 +27,10 @@ $(document).ready(function () {
 	var mycurrency = new currencymode(['#db_outamount', '#db_amount']);
 	var fdl = new faster_detail_load();
 
+	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	var actdateObj = new setactdate(["#posteddate"]);
+	actdateObj.getdata().set();
+
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
 	var unsaved = false;
@@ -38,6 +42,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				parent_close_disabled(true);
+				actdateObj.getdata().set();
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();

@@ -241,7 +241,7 @@ div.noti > li{
 								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -262,7 +262,7 @@ div.noti > li{
                             	<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
 								<div class="col-md-2">
 								  <div class='input-group'>
-									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								  </div>
 								  <span class="help-block"></span>
@@ -291,7 +291,7 @@ div.noti > li{
                               <label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
 								 <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -300,7 +300,7 @@ div.noti > li{
                                   <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
 								  <div class="col-md-2">
 									  <div class='input-group'>
-										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
@@ -312,13 +312,13 @@ div.noti > li{
                             <div class="form-group">
                            		<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
 						  		<div class="col-md-2">
-						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required"> 
+						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required" data-validation-error-msg="Please Enter Value"> 
 								
 						  		</div>
                              
                                 <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
 						  		<div class="col-md-2">
-									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
+									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
 						  		</div>
 
 						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
@@ -361,8 +361,8 @@ div.noti > li{
 
 						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
 								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" value='Claimable'>Yes</label><br>
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required"  value='Non-Claimable' selected>No</label>
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='Claimable'>Yes</label><br>
+									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Claimable' selected>No</label>
 								  </div> 
 
 							   <div class="form-group">

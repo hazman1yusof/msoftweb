@@ -235,7 +235,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_reqdept">Request Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purreqhd_reqdept" name="purreqhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -251,7 +251,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="purreqhd_prdept">Purchase Department</label>
 								<div class="col-md-4">
 									<div class='input-group'>
-										<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+										<input id="purreqhd_prdept" name="purreqhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -303,7 +303,7 @@ i.fa {
 							<div class="form-group">
 					  			<label class="col-md-2 control-label" for="purreqhd_purreqdt">Request Date</label>
 					  			<div class="col-md-3">
-									<input id="purreqhd_purreqdt" name="purreqhd_purreqdt" data-validation="required" type="date" class="form-control input-sm">
+									<input id="purreqhd_purreqdt" name="purreqhd_purreqdt" data-validation="required" data-validation-error-msg="Please Enter Value" type="date" class="form-control input-sm">
 					  			</div>
 
 								<label class="col-md-2 control-label" for="purreqhd_recstatus">Status</label>  

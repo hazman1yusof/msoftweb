@@ -16,11 +16,11 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField)
-				return {
-					element : $(errorField[0]),
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
 					message : ' '
-				}
+				}]
 			}
 		},
 	};

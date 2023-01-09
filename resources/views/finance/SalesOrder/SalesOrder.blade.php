@@ -268,7 +268,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
-								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 									<span class="help-block"></span>
@@ -281,7 +281,7 @@ i.fa {
 
 							<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
 							<div class="col-md-2">
-								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
 						</div>
 
@@ -289,7 +289,7 @@ i.fa {
 							<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
 							<div class="col-md-4">
 								<div class='input-group'>
-								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -298,7 +298,7 @@ i.fa {
 							<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
 							<div class="col-md-2"> 
 								<div class='input-group'>
-									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" >
+									<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
 								<span class="help-block"></span>
@@ -312,7 +312,7 @@ i.fa {
 							</div>
 
 							<div class="col-md-2">
-								<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required">
+								<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required" data-validation-error-msg="Please Enter Value">
 									<option value='DAYS' selected>DAYS</option>
 									<option value='MONTH'>MONTH</option>
 									<option value='YEAR'>YEAR</option>
@@ -342,7 +342,7 @@ i.fa {
 
 							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
 								<div class="col-md-2">
-								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
