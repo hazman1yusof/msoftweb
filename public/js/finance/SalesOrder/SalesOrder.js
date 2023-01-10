@@ -29,6 +29,10 @@ $(document).ready(function () {
 	var sequence = new Sequences('SO','#db_entrydate');
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 
+	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	var actdateObj = new setactdate(["#db_entrydate"]);
+	actdateObj.getdata().set();
+
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;
 	var unsaved = false;
@@ -40,6 +44,7 @@ $(document).ready(function () {
 			autoOpen: false,
 			open: function (event, ui) {
 				errorField.length=0;
+				actdateObj.getdata().set();
 				parent_close_disabled(true);
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
@@ -109,6 +114,31 @@ $(document).ready(function () {
 			},
 		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
+	
+	///////////check postdate & docdate///////////////////
+	$("#posteddate,#db_entrydate").blur(checkdate);
+
+	function checkdate(nkreturn=false){
+		var posteddate = $('#posteddate').val();
+		var db_entrydate = $('#db_entrydate').val();
+
+		$(".noti2 ol").empty();
+		var failmsg=[];
+
+		if(moment(posteddate).isBefore(db_entrydate)){
+			failmsg.push("Post Date cannot be lower than Document date");
+		}
+
+		if(failmsg.length){
+			failmsg.forEach(function(element){
+				$('#dialogForm .noti2 ol').prepend('<li>'+element+'</li>');
+			});
+			if(nkreturn)return false;
+		}else{
+			if(nkreturn)return true;
+		}
+
+	}
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 

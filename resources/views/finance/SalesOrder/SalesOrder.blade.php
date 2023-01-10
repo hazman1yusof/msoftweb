@@ -319,14 +319,11 @@ i.fa {
 								</select> 
 							</div>
 
-							<label class="col-md-2 control-label" for="db_mrn">MRN</label>  
-							<div class="col-md-2"> 
-								<div class='input-group'>
-									<input id="db_mrn" name="db_mrn" type="text" maxlength="12" class="form-control input-sm text-uppercase" >
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-							</div>	
+							<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
+							<div class="col-md-2">
+								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
+							</div>
+	
 						</div>
 
 						<div class="form-group">		
@@ -338,11 +335,6 @@ i.fa {
 							<label class="col-md-3 control-label" for="db_auditno">Auto No</label>  
 							<div class="col-md-2"> 
 								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-							</div>
-
-							<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
-								<div class="col-md-2">
-								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
@@ -402,6 +394,8 @@ i.fa {
 					<hr/>
 
 					</form>
+					<div class="panel-body">
+					<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
 			
