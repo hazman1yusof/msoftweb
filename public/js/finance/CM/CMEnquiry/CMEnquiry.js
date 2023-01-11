@@ -70,18 +70,18 @@ $(document).ready(function () {
 				mycurrency.formatOn();
 				disableForm('#formdata_dp');
 				$("#pg_jqGridPager2 table").hide();
-				dialog_paymodeDP.check(errorField);
-				dialog_bankcodeDP.check(errorField);
-				dialog_paytoDP.check(errorField);
-				dialog_cheqnoDP.check(errorField);
-				dialog_deptcodeDP.check(errorField);
-				dialog_categoryDP.check(errorField);
-				dialog_GSTCodeDP.check(errorField);
+				dialog_paymodeDP.check('errorField');
+				dialog_bankcodeDP.check('errorField');
+				dialog_paytoDP.check('errorField');
+				dialog_cheqnoDP.check('errorField');
+				dialog_deptcodeDP.check('errorField');
+				dialog_categoryDP.check('errorField');
+				dialog_GSTCodeDP.check('errorField');
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#formdata_dp');
-				$('#formdata_dp .alert').detach();
+				$('.my-alert').detach();
 				$("#formdata_dp a").off();
 				$(".noti, .noti2 ol").empty();
 				refreshGrid("#jqGrid2_dp",null,"kosongkan");
@@ -206,6 +206,7 @@ $(document).ready(function () {
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='DP'){
 			 	populateFormdata("#jqGrid", "#dialogForm_dp", "#formdata_dp", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_dp",urlParam2_dp,'add');
+				getdata('DP',selrowData("#jqGrid").apacthdr_idno);
 			// }else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 			// 	populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
 			// 	refreshGrid("#jqGrid2_in",urlParam2_in,'add');
@@ -238,9 +239,9 @@ $(document).ready(function () {
 			case 'apacthdr_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='apacthdr_bankcode';break;
 
 			//FT
-			case 'paymodeFT':field=['paymode','description'];table="debtor.paymode";break;
-			case 'paytoFT':field=['bankcode','bankname'];table="finance.bank";break;
-			case 'bankcodeFT':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+			case 'paymode':field=['paymode','description'];table="debtor.paymode";case_='paymode';break;
+			case 'payto':field=['bankcode','bankname'];table="finance.bank";case_='payto';break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 			
 			//DP
 			case 'deptcodeDP':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
@@ -396,19 +397,17 @@ $(document).ready(function () {
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:false},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:false}, 
-			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', canSearch: true, editable: false,formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Category', name: 'category', width: 100, edittype:'text', classes: 'wrap', editable: false,formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Document', name: 'document', width: 100, classes: 'wrap', editable: false,},
-			{ label: 'GST Code', name: 'GSTCode', width: 100, edittype:'text', classes: 'wrap', editable: false,
-					formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 80, classes: 'wrap',
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},editable: false,align: "right",},
+			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', canSearch: true, editable: false, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Category', name: 'category', width: 100, edittype:'text', classes: 'wrap', editable: false, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Document', name: 'document', width: 100, classes: 'wrap', editable: false},
+			{ label: 'GST Code', name: 'GSTCode', width: 100, edittype:'text', classes: 'wrap', editable: false, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 80, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},editable: false,align: "right",},
 			{ label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:false,formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 80, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align:"right"},
 		],
 		autowidth: true,
-		shrinkToFit: true,
+		//shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
@@ -419,7 +418,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2_dp",
 		loadComplete: function(data){
-			//calc_jq_height_onchange("jqGrid2_dp");
+			calc_jq_height_onchange("jqGrid2_dp");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -430,162 +429,7 @@ $(document).ready(function () {
 
     ////DEBIT CREDIT
 
-	//DIALOG DP
-	var dialog_paymodeDP = new ordialog(
-		'paymodeDP','debtor.paymode',"#formdata_dp :input[name='paymode']",errorField,
-		{	colModel:[
-				{label:'Pay Mode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus', 'source'],
-				filterVal:['session.compcode','ACTIVE', 'CM']
-			},
-		},{
-			title:"Select Payment Mode",
-			open: function(){
-				dialog_paymodeDP.urlParam.filterCol=['compcode','recstatus', 'source'],
-				dialog_paymodeDP.urlParam.filterVal=['session.compcode','ACTIVE', 'CM']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_paymodeDP.makedialog(false);
 
-	var dialog_bankcodeDP = new ordialog(
-		'bankcodeDP','finance.bank',"#formdata_dp :input[name='bankcode']",errorField,
-		{	colModel:[
-				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-		},{
-			title:"Select Bank Code",
-			open: function(){
-				dialog_bankcodeDP.urlParam.filterCol=['compcode','recstatus'],
-				dialog_bankcodeDP.urlParam.filterVal=['session.compcode','ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_bankcodeDP.makedialog(false);
-
-	var dialog_paytoDP = new ordialog(
-		'paytoDP','material.supplier',"#formdata_dp :input[name='payto']",errorField,
-		{	colModel:[
-				{label:'Pay To',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-		},{
-			title:"Select Bank Code Pay To",
-			open: function(){
-				dialog_paytoDP.urlParam.filterCol=['compcode','recstatus'],
-				dialog_paytoDP.urlParam.filterVal=['session.compcode','ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_paytoDP.makedialog(false);
-
-	var dialog_cheqnoDP = new ordialog(
-		'cheqnoDP','finance.chqtran',"#formdata_dp :input[name='cheqno']",errorField,
-		{	colModel:[
-				{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer', hidden:true},
-				
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','OPEN']
-			},
-		},{
-			title:"Select Cheque No",
-			open: function(){
-				dialog_cheqnoDP.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
-				dialog_cheqnoDP.urlParam.filterVal=['session.compcode','OPEN', $('#bankcode').val()]
-			},
-			width:4/10 * $(window).width()
-		},'urlParam','radio','tab'
-	);
-	dialog_cheqnoDP.makedialog(false);
-
-	var dialog_deptcodeDP = new ordialog(
-		'deptcodeDP','sysdb.department',"#jqGrid2_dp input[name='deptcode']",errorField,
-		{	colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-		},{
-			title:"Select Department Code",
-			open: function(){
-				dialog_deptcodeDP.urlParam.filterCol=['compcode','recstatus'],
-				dialog_deptcodeDP.urlParam.filterVal=['session.compcode','ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_deptcodeDP.makedialog(false);
-
-	var dialog_categoryDP = new ordialog(
-		'categoryDP','material.category',"#jqGrid2_dp input[name='category']",errorField,
-		{	colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				
-			],
-			urlParam: {
-				filterCol:['compcode','source', 'cattype', 'recstatus'],
-				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
-			},
-		},{
-			title:"Select Category",
-			open: function(){
-				dialog_categoryDP.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
-				dialog_categoryDP.urlParam.filterVal=['session.compcode','CR', 'Other', 'ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_categoryDP.makedialog(false);
-
-	var dialog_GSTCodeDP = new ordialog(
-		'GSTCodeDP',['hisdb.taxmast'],"#jqGrid2_dp input[name='GSTCode']",errorField,
-		{	colModel:
-			[
-				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
-			],
-			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
-			
-		},{
-			title:"Select Tax Code For Item",
-			open: function(){
-				dialog_GSTCodeDP.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCodeDP.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
-			},
-			close: function(){
-				if($('#jqGridPager2SaveAll').css("display") == "none"){
-					$(dialog_GSTCodeDP.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
-				}
-				
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_GSTCodeDP.makedialog(false);
 
 });
 
@@ -680,11 +524,171 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_cheqnoFT.makedialog(false);
+
+		//DIALOG DP
+		var dialog_paymodeDP = new ordialog(
+			'paymodeDP','debtor.paymode',"#formdata_dp :input[name='paymode']",'errorField',
+			{	colModel:[
+					{label:'Pay Mode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus', 'source'],
+					filterVal:['session.compcode','ACTIVE', 'CM']
+				},
+			},{
+				title:"Select Payment Mode",
+				open: function(){
+					dialog_paymodeDP.urlParam.filterCol=['compcode','recstatus', 'source'],
+					dialog_paymodeDP.urlParam.filterVal=['session.compcode','ACTIVE', 'CM']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_paymodeDP.makedialog(false);
+	
+		var dialog_bankcodeDP = new ordialog(
+			'bankcodeDP','finance.bank',"#formdata_dp :input[name='bankcode']",'errorField',
+			{	colModel:[
+					{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			},{
+				title:"Select Bank Code",
+				open: function(){
+					dialog_bankcodeDP.urlParam.filterCol=['compcode','recstatus'],
+					dialog_bankcodeDP.urlParam.filterVal=['session.compcode','ACTIVE']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_bankcodeDP.makedialog(false);
+	
+		var dialog_paytoDP = new ordialog(
+			'paytoDP','material.supplier',"#formdata_dp :input[name='payto']",'errorField',
+			{	colModel:[
+					{label:'Pay To',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			},{
+				title:"Select Bank Code Pay To",
+				open: function(){
+					dialog_paytoDP.urlParam.filterCol=['compcode','recstatus'],
+					dialog_paytoDP.urlParam.filterVal=['session.compcode','ACTIVE']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_paytoDP.makedialog(false);
+	
+		var dialog_cheqnoDP = new ordialog(
+			'cheqnoDP','finance.chqtran',"#formdata_dp :input[name='cheqno']",'errorField',
+			{	colModel:[
+					{label:'Cheque No',name:'cheqno',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+					{label:'Bank Code',name:'bankcode',width:200,classes:'pointer', hidden:true},
+					
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','OPEN']
+				},
+			},{
+				title:"Select Cheque No",
+				open: function(){
+					dialog_cheqnoDP.urlParam.filterCol=['compcode','recstatus', 'bankcode'],
+					dialog_cheqnoDP.urlParam.filterVal=['session.compcode','OPEN', $('#bankcode').val()]
+				},
+				width:4/10 * $(window).width()
+			},'urlParam','radio','tab'
+		);
+		dialog_cheqnoDP.makedialog(false);
+	
+		var dialog_deptcodeDP = new ordialog(
+			'deptcodeDP','sysdb.department',"#jqGrid2_dp input[name='deptcode']",'errorField',
+			{	colModel:[
+					{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+					
+				],
+				urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+			},{
+				title:"Select Department Code",
+				open: function(){
+					dialog_deptcodeDP.urlParam.filterCol=['compcode','recstatus'],
+					dialog_deptcodeDP.urlParam.filterVal=['session.compcode','ACTIVE']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_deptcodeDP.makedialog(false);
+	
+		var dialog_categoryDP = new ordialog(
+			'categoryDP','material.category',"#jqGrid2_dp input[name='category']",'errorField',
+			{	colModel:[
+					{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+					
+				],
+				urlParam: {
+					filterCol:['compcode','source', 'cattype', 'recstatus'],
+					filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
+				},
+			},{
+				title:"Select Category",
+				open: function(){
+					dialog_categoryDP.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
+					dialog_categoryDP.urlParam.filterVal=['session.compcode','CR', 'Other', 'ACTIVE']
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_categoryDP.makedialog(false);
+	
+		var dialog_GSTCodeDP = new ordialog(
+			'GSTCodeDP',['hisdb.taxmast'],"#jqGrid2_dp input[name='GSTCode']",'errorField',
+			{	colModel:
+				[
+					{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+					{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+					{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
+				],
+				urlParam: {
+							filterCol:['compcode','recstatus'],
+							filterVal:['session.compcode','ACTIVE']
+						},
+				
+			},{
+				title:"Select Tax Code For Item",
+				open: function(){
+					dialog_GSTCodeDP.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
+					dialog_GSTCodeDP.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
+				},
+				close: function(){
+					if($('#jqGridPager2SaveAll').css("display") == "none"){
+						$(dialog_GSTCodeDP.textfield)			//lepas close dialog focus on next textfield 
+						.closest('td')						//utk dialog dalam jqgrid jer
+						.next()
+						.find("input[type=text]").focus();
+					}
+					
+				}
+			},'urlParam','radio','tab'
+		);
+		dialog_GSTCodeDP.makedialog(false);
 	
 	function getdata(mode,idno){
 		switch(mode){
 		case 'FT':
 			populateform_ft(idno);
+			break;
+		case 'DP':
+			populateform_dp(idno);
 			break;
 		}
 	}
@@ -713,6 +717,37 @@ $(document).ready(function () {
 					dialog_bankcodefromFT.check('errorField');
 					dialog_bankcodetoFT.check('errorField');
 					dialog_cheqnoFT.check('errorField');
+				}
+			});
+	}
+
+	function populateform_dp(idno){
+		var param={
+				action:'populate_dp',
+				url:'./CMEnquiry/table',
+				field:['apacthdr_compcode','apacthdr_bankcode', 'apacthdr_auditno', 'apacthdr_trantype',  'apacthdr_pvno', 'apacthdr_actdate','apacthdr_amount', 'apacthdr_payto', 'apacthdr_outamount', 'apacthdr_recstatus', 'apacthdr_cheqno', 'apacthdr_document', 'apacthdr_unit', 'apacthdr_deptcode' ,'apacthdr_remarks', 'apacthdr_adduser', 'apacthdr_adddate', 'apacthdr_upduser', 'apacthdr_upddate', 'apacthdr_source', 'apacthdr_idno', 'apacthdr_paymode'],
+				idno:idno,
+			}
+	
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.rows)){
+					$.each(data.rows, function( index, value ) {
+						var input=$("#dialogForm_ft [name='"+index+"']");
+						if(input.is("[type=radio]")){
+							$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+						}else{
+							input.val(value);
+						}
+					});
+					dialog_paymodeDP.check('errorField');
+					dialog_bankcodeDP.check('errorField');
+					dialog_paytoDP.check('errorField');
+					dialog_cheqnoDP.check('errorField');
+					dialog_deptcodeDP.check('errorField');
+					dialog_categoryDP.check('errorField');
+					dialog_GSTCodeDP.check('errorField');
 				}
 			});
 	}

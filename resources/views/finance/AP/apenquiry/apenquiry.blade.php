@@ -3,6 +3,35 @@
 @section('title', 'AP Enquiry')
 
 @section('style')
+
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+	display: none;
+	}
+
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+	display: inline-block;
+	}
+
+	i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+	}
+
+	.collapsed ~ .panel-body {
+	padding: 0;
+	}
+
+	.clearfix {
+	overflow: auto;
+	}
+
+	.whtspc_wrap{
+		white-space: pre-wrap !important;
+	}
+	
 	.num{
 		width:20px;
 	}
@@ -69,7 +98,25 @@
                         </div>
                     </div>
             </div>
-		</div>
+
+			<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>Allocation</h5>
+					</div>
+				</div>
+				<div id="gridDo_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="gridAlloc" class="table table-striped"></table>
+							<div id="jqGridPagerAlloc"></div>
+						</div>
+					</div>
+				</div>	
+			</div>  
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
@@ -442,7 +489,7 @@
 			
 
 		<div class='panel panel-info' id="ap_detail">
-			<div class="panel-heading">Invoice AP  Detail</div>
+			<div class="panel-heading">Invoice AP Detail</div>
 				<div class="panel-body">
 					<form id='formdata2_in' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_in_c" class='col-md-12'>
@@ -456,30 +503,6 @@
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
-
-			<!-- <div class='panel panel-info' id="pv_detail">
-			<div class="panel-heading">Payment Voucher Detail</div>
-				<div class="panel-body">
-					<form id='formdata2' class='form-vertical' style='width:99%'>
-						<div id="jqGrid2_indetail_c" class='col-md-12'>
-							<table id="jqGrid2_in_detail" class="table table-striped"></table>
-						        <div id="jqGridPager2_indetail"></div>
-						</div>
-					</form>
-				</div> -->
-
-			<!-- <div class='panel panel-info' id="cn_in_detail">
-				<div class="panel-heading">Credit Note Detail</div>
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<div id="jqGrid2_cnin_c" class='col-md-12'>
-								<table id="jqGrid2_cnin" class="table table-striped"></table>
-									<div id="jqGridPager2_cnin"></div>
-							</div>
-						</form>
-					</div>
-			</div> -->
-
 		</div>
 		</div>	
 

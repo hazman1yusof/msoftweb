@@ -127,12 +127,10 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				parent_close_disabled(true);
 				$("#jqGrid2_in").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_in_c")[0].offsetWidth-$("#jqGrid2_in_c")[0].offsetLeft));
-				//$("#jqGrid2_in_detail").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_indetail_c")[0].offsetWidth-$("#jqGrid2_indetail_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				disableForm('#formdata_in');
 				refreshGrid("#jqGrid2_in",urlParam2_in);
-				refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
 				$("#pg_jqGridPager2_in table").hide();
 				dialog_categoryIN.check(errorField);
 				dialog_departmentIN.check(errorField);
@@ -260,15 +258,22 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+
 			if(selrowData("#jqGrid").apacthdr_trantype=='PV'){
 				urlParam2_pv.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				urlParam2_in.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-				urlParam2_in_detail.auditno=selrowData("#jqGrid").apacthdr_auditno;
-				refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
 				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			}
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#gridAlloc', urlParam2_alloc,'kosongkan');
+				$("#pg_jqGridPager3 table").hide();
+				$("#pg_jqGridPager2 table").show();
+			}
+			urlParam2_alloc.idno=selrowData("#jqGrid").apacthdr_idno;
+			refreshGrid("#gridAlloc",urlParam2_alloc);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -285,8 +290,10 @@ $(document).ready(function () {
 			}
 			fdl.set_array().reset();
 		},
-		loadComplete: function(){
+		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid");
+			setjqgridHeight(data,'gridAlloc');
+			calc_jq_height_onchange("gridAlloc");
 		},
 		
 	});
@@ -329,7 +336,6 @@ $(document).ready(function () {
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 				populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_in",urlParam2_in,'add');
-				refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
 				populateFormdata("#jqGrid", "#dialogForm_cn", "#formdata_cn", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_cn",urlParam2_cn,'add');
@@ -571,54 +577,11 @@ $(document).ready(function () {
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid2_in");
-			// refreshGrid("#jqGrid2_in_detail",urlParam2_pv,'add');
-			// urlParam2_in_detail.apacthdr_auditno=selrowData("#jqGrid").apacthdr_auditno;
 		},
 		gridComplete: function(){
 			//fdl.set_array().reset();
 		},
 		beforeSubmit: function(postdata, rowid){
-	 	}
-	});
-
-	//// Invoice Detail (PV, PD, CN, IN, DN)
-	var urlParam2_in_detail={
-		action:'get_in_detail',
-		url:'./apenquiry/table',
-		auditno:''
-	};
-
-	$("#jqGrid2_in_detail").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
-			{ label: 'Creditor', name: 'suppcode', width: 60, classes: 'wrap', },//formatter: showdetail, unformat:un_showdetail
-			{ label: 'Document Date', name: 'actdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
-			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'O/S Amount', name: 'outamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency', hidden:true},
-			{ label: 'PV Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
-			{ label: 'Post Date', name: 'recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
-		
-		],
-		shrinkToFit: true,
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		rowNum: 30,
-		pager: "#jqGridPager2",
-		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid2_in_detail");
-			urlParam2_in_detail.auditno=selrowData("#jqGrid").auditno;
-			
-			refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail,'add');
-		},
-		gridComplete: function(){
-			//fdl.set_array().reset();
-		},
-		beforeSubmit: function(postdata, rowid){ 
 	 	}
 	});
 
@@ -678,6 +641,54 @@ $(document).ready(function () {
 		beforeSubmit: function(postdata, rowid){ 
 		}
 
+	});
+
+	//// Alloc Detail 
+	var urlParam2_alloc={
+		action:'get_alloc_detail',
+		url:'./apenquiry/table',
+		auditno:''
+	};
+
+	$("#gridAlloc").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'Source', name: 'source', width: 10, classes: 'wrap'},
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'PV No', name: 'pvno', width: 10, classes: 'wrap'},
+			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
+			{ label: 'Supplier Code', name: 'suppcode', width: 60, classes: 'wrap', },//formatter: showdetail, unformat:un_showdetail
+			{ label: 'Alloc Date', name: 'allocdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Invoice Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', },//formatter: showdetail, unformat:un_showdetail
+			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
+			{ label: 'Post Date', name: 'recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		
+		],
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function(data){
+			calc_jq_height_onchange("gridAlloc");
+			setjqgridHeight(data,'gridAlloc');
+			urlParam2_alloc.idno=selrowData("#jqGrid").apacthdr_idno;
+			
+			refreshGrid("#gridAlloc",urlParam2_alloc,'add');
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#gridAlloc");
+
+	// panel grid Alloc
+	$("#gridAlloc_panel").on("show.bs.collapse", function(){
+		$("#gridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft-28));
 	});
 
 	///////dialog handler PV///////
@@ -1173,6 +1184,16 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_departmentCNA.makedialog(false);
+
+	function setjqgridHeight(data,grid){
+		if(data.rows.length>=6){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
+		}else if(data.rows.length>=3){
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else{
+			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
+		}
+	}
 });
 
 	function calc_jq_height_onchange(jqgrid){
