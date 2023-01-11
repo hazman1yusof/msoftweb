@@ -40,6 +40,28 @@
 	}
 	<!-- end RC -->
 
+	<!-- start jqGridAlloc -->
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+		display: none;
+	}
+
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+		display: inline-block;
+	}
+
+	i.fa {
+		cursor: pointer;
+		float: right;
+		<!--  margin-right: 5px; -->
+	}
+
+	.clearfix {
+		overflow: auto;
+	}
+	<!-- end jqGridAlloc -->
+
 @endsection
 
 @section('body')
@@ -97,6 +119,24 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="panel-group">
+			<div class="panel panel-default" id="jqGridAlloc_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridAlloc_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Allocation
+				</div>
+				<div id="jqGridAlloc_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdataAlloc' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGridAlloc" class="table table-striped"></table>
+								<div id="jqGridPagerAlloc"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- </div> -->
     </div>
 	<!-- ***************End Search + table ********************* -->
@@ -116,7 +156,7 @@
 						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -124,7 +164,7 @@
 
 						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
 						<div class="col-md-2">
-							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
 					</div>
 
@@ -158,7 +198,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
 						<div class="col-md-2"> 
-							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 						</div>
 					</div>
@@ -209,7 +249,7 @@
 						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
 						<div class="col-md-3">
 							<div class='input-group'>
-								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -217,7 +257,7 @@
 
 						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
 						<div class="col-md-2">
-							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
 					</div>
 
@@ -251,7 +291,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
 						<div class="col-md-2"> 
-							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
+							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
 									max="<?php echo date('Y-m-d');?>">
 						</div>
 					</div>
@@ -305,7 +345,7 @@
 						<label class="col-md-2 control-label" for="db_deptcode">Store Dept</label>	 
 						<div class="col-md-4">
 							<div class='input-group'>
-								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_deptcode" name="db_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -318,7 +358,7 @@
 
 						<label class="col-md-1 control-label" for="db_entrydate">Document Date</label>  
 						<div class="col-md-2">
-							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
 					</div>
 
@@ -326,7 +366,7 @@
 						<label class="col-md-2 control-label" for="db_debtorcode">Customer</label>	 
 						<div class="col-md-4">
 							<div class='input-group'>
-								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
+								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -335,7 +375,7 @@
 						<label class="col-md-1 control-label" for="db_hdrtype">Bill Type</label>  
 						<div class="col-md-2"> 
 							<div class='input-group'>
-								<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" >
+								<input id="db_hdrtype" name="db_hdrtype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -349,7 +389,7 @@
 						</div>
 
 						<div class="col-md-2">
-							<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required">
+							<select class="form-control col-md-3" id='db_termmode' name='db_termmode' data-validation="required" data-validation-error-msg="Please Enter Value">
 								<option value='DAYS' selected>DAYS</option>
 								<option value='MONTH'>MONTH</option>
 								<option value='YEAR'>YEAR</option>
@@ -379,7 +419,7 @@
 
 						<label class="col-md-1 control-label" for="posteddate">Posted Date</label>  
 						<div class="col-md-2">
-							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required"  value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
 					</div>
 
@@ -505,7 +545,7 @@
 						<hr>
 						<div class="form-group">
 							<div class='col-md-2 minuspad-15'>
-								<label>Trantype: </label><input id="dbacthdr_trantype" name="dbacthdr_trantype" type="text" class="form-control input-sm" data-validation="required" rdonly>
+								<label>Trantype: </label><input id="dbacthdr_trantype" name="dbacthdr_trantype" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 							</div>
 
 							<div class='col-md-10 '>
@@ -523,7 +563,7 @@
 						<div class="col-md-12 minuspad-15">
 							<label class="control-label" for="dbacthdr_payercode">Payer Code</label>  
 							<div class='input-group'>
-								<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required"/>
+								<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 						</div>
@@ -531,14 +571,14 @@
 						<div class="col-md-12 minuspad-15">
 							<label class="control-label" for="dbacthdr_payername">Payer Name</label>
 							<div class=''>
-								<input id="dbacthdr_payername" name="dbacthdr_payername" type="text" class="form-control input-sm" data-validation="required" rdonly>
+								<input id="dbacthdr_payername" name="dbacthdr_payername" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 							</div>
 						</div>
 
 						<div class="col-md-6 minuspad-15">
 							<label class="control-label" for="dbacthdr_debtortype">Financial Class</label>
 							<div class=''>
-								<input id="dbacthdr_debtortype" name="dbacthdr_debtortype" type="text" class="form-control input-sm" data-validation="required" rdonly>
+								<input id="dbacthdr_debtortype" name="dbacthdr_debtortype" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 							</div>
 							<span class="help-block"></span>
 						</div>
@@ -554,7 +594,7 @@
 								<label class="control-label" for="dbacthdr_mrn">MRN</label>  
 								<div class="">
 									<div class='input-group'>
-										<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+										<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
@@ -607,7 +647,7 @@
 								<div class="myformgroup">
 									<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									</div>
 
 									<label class="control-label col-md-2" for="dbacthdr_outamount">Outstanding</label> 
@@ -639,7 +679,7 @@
 									<div class="form-group">
 										<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
 										<div class='col-md-9'> 
-											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm text-uppercase">
+											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
 										</div>
 									</div>
 								</div>
@@ -647,7 +687,7 @@
 									<div class="form-group">
 										<div class='col-md-4'> 
 											<label class="control-label" for="dbacthdr_amount">Payment</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -696,7 +736,7 @@
 
 									<label class="control-label col-md-2" for="dbacthdr_amount">Payment</label> 
 									<div class='col-md-4'> 
-										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
+										<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									</div>
 								</div>
 								<div class="form-group">
@@ -713,7 +753,7 @@
 								<div class="form-group">
 									<label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
 									<div class='col-md-8'> 
-										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+										<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									</div>
 								</div>
 							</form>
@@ -728,7 +768,7 @@
 									<div class="form-group">
 										<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
 										<div class='col-md-9'> 
-											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+											<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										</div>
 									</div>
 								</div>
@@ -736,7 +776,7 @@
 									<div class="form-group">
 										<div class='col-md-4'> 
 											<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
+											<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
 
 										</div>
 									</div>
@@ -748,7 +788,7 @@
 										</div>
 										<div class='col-md-6'> 
 											<label class="control-label" for="dbacthdr_amount">Payment</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										</div>
 									</div>
 									<div class="form-group">
@@ -764,7 +804,7 @@
 									<div class="form-group">
 										<div class='col-md-12'> 
 											<label class="control-label" for="dbacthdr_reference">Reference</label> 
-											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+											<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										</div>
 									</div>
 								</div>
@@ -805,7 +845,7 @@
 										</div>
 										<div class='col-md-8'> 
 											<label class="control-label" for="dbacthdr_amount">Amount</label> 
-											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" rdonly>
+											<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 										</div>
 									</div>
 									<div class="clearfix"></div>
@@ -907,7 +947,7 @@
 											<div class="myformgroup">
 												<label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
 												<div class='col-md-3'> 
-													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 												</div>
 
 												<label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
@@ -928,7 +968,7 @@
 												<div class="form-group">
 													<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
 													<div class='col-md-9'> 
-														<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" class="form-control input-sm text-uppercase">
+														<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
 													</div>
 												</div>
 											</div>
@@ -936,7 +976,7 @@
 												<div class="form-group">
 													<div class='col-md-4'> 
 														<label class="control-label" for="dbacthdr_amount">Refund Amount</label> 
-														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 													</div>
 
 													<div class='col-md-4'> 
@@ -981,7 +1021,7 @@
 											<div class="myformgroup">
 												<label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
 												<div class='col-md-3'> 
-													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+													<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 												</div>
 												<label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
 												<div class='col-md-3'> 
@@ -991,7 +1031,7 @@
 											<div class="form-group">
 												<label class="control-label col-md-2" for="dbacthdr_reference">Reference</label> 
 												<div class='col-md-8'> 
-													<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+													<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 												</div>
 											</div>
 										</form>
@@ -1006,7 +1046,7 @@
 												<div class="form-group">
 													<label class="control-label col-md-3" for="dbacthdr_paymode">Paymode:</label> 
 													<div class='col-md-9'> 
-														<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+														<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 													</div>
 												</div>
 											</div>
@@ -1014,7 +1054,7 @@
 												<div class="form-group">
 													<div class='col-md-4'> 
 														<label class="control-label" for="dbacthdr_entrydate">Transaction Date</label> 
-														<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+														<input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="date" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 
 													</div>
 												</div>
@@ -1026,7 +1066,7 @@
 													</div>
 													<div class='col-md-6'> 
 														<label class="control-label" for="dbacthdr_amount">Payment</label> 
-														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required">
+														<input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
 													</div>
 												</div>
 
@@ -1040,7 +1080,7 @@
 												<div class="form-group">
 													<div class='col-md-12'> 
 														<label class="control-label" for="dbacthdr_reference">Reference</label> 
-														<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+														<input id="dbacthdr_reference" name="dbacthdr_reference" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 													</div>
 												</div>
 											</div>

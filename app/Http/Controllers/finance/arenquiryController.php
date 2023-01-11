@@ -30,6 +30,8 @@ class arenquiryController extends defaultController
                 return $this->maintable($request);
             case 'populate_rc':
                 return $this->populate_rc($request);
+            case 'get_alloc':
+                return $this->get_alloc($request);
             default:
                 return 'error happen..';
         }
@@ -46,6 +48,7 @@ class arenquiryController extends defaultController
                         'db.entrydate AS db_entrydate',
                         'db.auditno AS db_auditno', //search
                         'db.invno AS db_invno', //search
+                        'db.recptno AS db_recptno', 
                         'db.ponum AS db_ponum',
                         'db.amount AS db_amount',
                         'db.remark AS db_remark',
@@ -179,5 +182,113 @@ class arenquiryController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function get_alloc(Request $request){
+
+        if($request->db_trantype == 'RC' || 'RD' || 'RF' || 'CN') {
+
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //                 ->where('idno','=',$request->db_idno)
+            //                 ->first();
+
+            $table = DB::table('debtor.dballoc AS dc')
+                        ->select(
+                            'dc.refsource',
+                            'dc.reftrantype',
+                            'dc.refauditno',
+                            'dc.debtorcode',
+                            'dc.payercode',
+                            'dc.amount',
+                            'dc.recptno',
+                            'dc.paymode',
+                            'dc.allocdate',
+                            'dc.mrn',
+                            'dc.episno',
+                        )
+                        ->join('debtor.dbacthdr as da', function($join) use ($request){
+                                    $join = $join->on('dc.docsource', '=', 'da.source')
+                                    ->on('dc.doctrantype', '=', 'da.trantype')
+                                    ->on('dc.docauditno', '=', 'da.auditno');
+                        })
+                        ->where('dc.compcode', '=', session('compcode'));
+
+                        // ->where('dc.docsource', '=', $dbacthdr->source)
+                        // ->where('dc.doctrantype', '=', $dbacthdr->trantype)
+                        // ->where('dc.docauditno', '=', $dbacthdr->auditno);
+
+                        // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
+
+
+            //////////paginate/////////
+            $paginate = $table->paginate($request->rows);
+
+            foreach ($paginate->items() as $key => $value) {
+                $value->sysAutoNo = $value->refsource.' '.$value->reftrantype.' '.$value->refauditno;
+            }
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+
+            return json_encode($responce);
+
+        } else if ($request->db_trantype == 'IN' || 'DN') {
+
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //                 ->where('idno','=',$request->db_idno)
+            //                 ->first();
+
+            $table = DB::table('debtor.dballoc AS dc')
+                        ->select(
+                            'dc.docsource',
+                            'dc.doctrantype',
+                            'dc.docauditno',
+                            'dc.debtorcode',
+                            'dc.payercode',
+                            'dc.amount',
+                            'dc.recptno',
+                            'dc.paymode',
+                            'dc.allocdate',
+                            'dc.mrn',
+                            'dc.episno',
+                        )
+                        ->join('debtor.dbacthdr as da', function($join) use ($request){
+                                    $join = $join->on('dc.refsource', '=', 'da.source')
+                                    ->on('dc.reftrantype', '=', 'da.trantype')
+                                    ->on('dc.refauditno', '=', 'da.auditno');
+                        })
+                        ->where('dc.compcode', '=', session('compcode'));
+
+                        // ->where('dc.refsource', '=', $dbacthdr->source)
+                        // ->where('dc.reftrantype', '=', $dbacthdr->trantype)
+                        // ->where('dc.refauditno', '=', $dbacthdr->auditno);
+
+
+            //////////paginate/////////
+            $paginate = $table->paginate($request->rows);
+
+            foreach ($paginate->items() as $key => $value) {
+                $value->sysAutoNo = $value->docsource.' '.$value->doctrantype.' '.$value->docauditno;
+            }
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            $responce->rows = $paginate->items();
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
+
+            return json_encode($responce);
+            
+        }
+
     }
 }

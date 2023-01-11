@@ -10,19 +10,19 @@ $(document).ready(function () {
 	$.validate({
 		modules : 'sanitize',
 		language : {
-			requiredFields: ''
+			requiredFields: 'Please Enter Value'
 		},
 	});
-	
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField);
-				return {
-					element : $(errorField[0]),
-					message : ' '
-				}
+				show_errors(errorField,'#formdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
 			}
 		},
 	};
@@ -432,11 +432,10 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true},
-			{ label: 'Customer', name: 'dm_name', width: 35, checked: true, classes: 'wrap'},
 			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap'},
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true},
-			{ label: 'Invoice No', name: 'db_invno', width: 8, align: 'right',},
+			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right',},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency'},
@@ -448,12 +447,12 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 7, align: 'right', canSearch: true,},
+			{ label: 'MRN', name: 'db_mrn', width: 20, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
-			{ label: 'Department Code', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -491,6 +490,9 @@ $(document).ready(function () {
 				// urlParam2_RC.billno = selrowData("#jqGrid").db_auditno;
 				// urlParam2_RC.deptcode = selrowData("#jqGrid").db_deptcode;
 			}
+			urlParamAlloc.db_idno = selrowData("#jqGrid").db_idno;
+			urlParamAlloc.db_trantype = selrowData("#jqGrid").db_trantype;
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
@@ -555,6 +557,81 @@ $(document).ready(function () {
 		},
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////Allocation/////////////////////////////////////////////
+	///////////////////////////////////////parameter for jqGridAlloc url///////////////////////////////////////
+	var urlParamAlloc={
+		action:'get_alloc',
+		url:'./arenquiry/table',
+		db_idno:'',
+		db_trantype:''
+	};
+
+	var addmore_jqGrid2={more:false,state:true,edit:false}
+	////////////////////////////////////////////////jqGridAlloc////////////////////////////////////////////////
+	$("#jqGridAlloc").jqGrid({
+		datatype: "local",
+		editurl: "./arenquiry/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'source', name: 'source', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'trantype', name: 'trantype', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'lineno_', name: 'lineno_', width: 20, frozen:true, classes: 'wrap', hidden:true},
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 90, classes: 'wrap'},
+			{ label: 'refsource', name: 'refsource', hidden: true},
+			{ label: 'reftrantype', name: 'reftrantype', hidden: true},
+			{ label: 'refauditno', name: 'refauditno', hidden: true},
+			{ label: 'docsource', name: 'docsource', hidden: true},
+			{ label: 'doctrantype', name: 'doctrantype', hidden: true},
+			{ label: 'docauditno', name: 'docauditno', hidden: true},
+			{ label: 'Debtor', name: 'debtorcode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Payer', name: 'payercode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Document No', name: 'recptno', width: 50, align: 'right'},
+			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap'},
+			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Episno', name: 'episno', width: 20, align: 'right'},			
+			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'idno',
+		sortorder: "desc",
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function(){
+			if(addmore_jqGrid2.more == true){$('#jqGridAlloc_iladd').click();}
+			else{
+				$('#jqGridAlloc').jqGrid ('setSelection', "1");
+			}
+
+			addmore_jqGrid2.edit = addmore_jqGrid2.more = false; //reset
+			
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+			if($('#jqGridAlloc').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGridAlloc").setSelection($("#jqGridAlloc").getDataIDs()[0]);
+			}
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPagerAlloc_iledit").click();
+			$('#p_error').text('');   //hilangkan duplicate error msj after save
+		}
+	});
+	var hide_init=0;
+	jqgrid_label_align_right("#jqGridAlloc");
+
+	$("#jqGridAlloc_panel").on("show.bs.collapse", function(){
+		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-18));
+	});
 
 	///////////////////// parameter for jqgrid url ///////////////////////////////////////////////////////
 
@@ -1137,6 +1214,8 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
+			case 'db_mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='db_mrn';break;
+			
 			//CN
             case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='Department CN';break;
 			case 'category':field=['catcode','description'];table="material.category";case_='Category CN';break;
@@ -1325,6 +1404,27 @@ $(document).ready(function () {
 	// 	},'urlParam','radio','tab'
 	// );
 	// dialog_Customer.makedialog();
+	
+	var dialog_mrnHDR = new ordialog(
+		'dialog_mrnHDR', 'hisdb.pat_mast', "#jqGrid input[name='db_mrn']", errorField,
+		{
+			colModel: [
+				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+			],
+			urlParam: {
+				filterCol:['compcode','ACTIVE'],
+				filterVal:['session.compcode','1']
+			},
+		}, {
+			title: "Select MRN",
+			open: function(){
+				dialog_mrnHDR.urlParam.filterCol=['recstatus', 'ACTIVE'];
+				dialog_mrnHDR.urlParam.filterVal=['ACTIVE', '1'];
+			}
+		},'none','radio','tab'
+	);
+	dialog_mrnHDR.makedialog(false);
 
 	//CN
 	var dialog_CustomerCN = new ordialog(
