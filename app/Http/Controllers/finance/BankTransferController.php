@@ -122,7 +122,7 @@ class BankTransferController extends defaultController
                             'upduser' => session('username') , 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
                             'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
-                            'stat' => 'ACTIVE' 
+                            'recstatus' => 'ACTIVE' 
                         ]);
 
             //1st step, 2nd phase, update bank detail
@@ -166,7 +166,7 @@ class BankTransferController extends defaultController
                             'upduser' => session('username') , 
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur") , 
                             'reference' => 'Transfer from :'. ' ' .$apacthdr_get->bankcode  . ' ' . 'to'. ' '. $apacthdr_get->payto , 
-                            'stat' => 'ACTIVE' 
+                            'recstatus' => 'ACTIVE' 
                         ]);
 
             //2nd step, 2nd phase, update bank detail

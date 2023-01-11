@@ -172,17 +172,18 @@ class APEnquiryController extends defaultController
 
     public function get_alloc_detail(Request $request){
 
-        //trantype (PV, CN, PD)
-        if(($request->apacthdr_trantype == 'PV' || 'PD') || ($request->unallocated == 'false')) {
+        $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-            $invoice = DB::table('finance.apacthdr')
-                            ->where('idno','=',$request->idno)
-                            ->first();
+        //trantype (PV, CN, PD)
+        if($apacthdr->trantype == 'PV' || $apacthdr->trantype =='PD') {
 
             $table = DB::table('finance.apalloc as al')
                         ->select(
-                            'ap.auditno',
-                            'ap.trantype',
+                            'al.refauditno as auditno',
+                            'al.reftrantype as trantype',
+                            'al.refsource as source',
                             'ap.suppcode',
                             'ap.actdate',
                             'ap.document',
@@ -203,27 +204,22 @@ class APEnquiryController extends defaultController
                                         ->on('al.docauditno', '=', 'ap.auditno');
                         })
                         ->where('al.compcode','=',session('compcode'))
-                        ->where('al.refsource','=',$invoice->source)
-                        ->where('al.reftrantype','=',$invoice->trantype)
-                        ->where('al.refauditno','=',$invoice->auditno)
-                        ->where('al.bankcode','=',$invoice->bankcode)
-                        ->where('ap.pvno','=',$invoice->pvno)
+                        ->where('al.docsource','=',$apacthdr->source)
+                        ->where('al.doctrantype','=',$apacthdr->trantype)
+                        ->where('al.docauditno','=',$apacthdr->auditno)
+                        ->where('al.bankcode','=',$apacthdr->bankcode)
+                        // ->where('ap.pvno','=',$invoice->pvno)
                         ->where('al.recstatus','=','POSTED')
                         ->orderBy('al.idno','DESC');
 
-        } //trantype (IN, DN)
-        
-            else  { //if (($request->apacthdr_trantype == 'DN' || 'IN') || ($request->unallocated == 'true'))
-
-            $invoice = DB::table('finance.apacthdr')
-                ->where('idno','=',$request->idno)
-                ->first();
+        }else{ //IN/DN
 
             $table = DB::table('finance.apalloc as al')
                         ->select(
-                            'ap.auditno',
-                            'ap.trantype',
-                            'ap.suppcode',
+                            'al.docauditno as auditno',
+                            'al.doctrantype as trantype',
+                            'al.docsource as source',
+                            'al.suppcode',
                             'ap.actdate',
                             'ap.document',
                             'ap.recstatus',
@@ -232,8 +228,7 @@ class APEnquiryController extends defaultController
                             'al.allocamount',
                             'al.outamount',
                             'al.recstatus',
-                            'al.bankcode',
-                            'al.allocdate',
+                         
                            
                         )
                         ->join('finance.apacthdr as ap', function($join) use ($request){
@@ -242,9 +237,9 @@ class APEnquiryController extends defaultController
                                         ->on('al.refauditno', '=', 'ap.auditno');
                         })
                         ->where('al.compcode','=',session('compcode'))
-                        ->where('al.docsource','=',$invoice->source)
-                        ->where('al.doctrantype','=',$invoice->trantype)
-                        ->where('al.docauditno','=',$invoice->auditno)
+                        ->where('al.refsource','=',$apacthdr->source)
+                        ->where('al.reftrantype','=',$apacthdr->trantype)
+                        ->where('al.refauditno','=',$apacthdr->auditno)
                         ->where('al.recstatus','=','POSTED')
                         ->orderBy('al.idno','DESC');
 

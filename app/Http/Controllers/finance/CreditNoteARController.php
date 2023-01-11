@@ -202,8 +202,7 @@ class CreditNoteARController extends defaultController
                 'ponum' => strtoupper($request->db_ponum),
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby,
-                'approveddate' => strtoupper($request->db_approveddate)
-            ];
+                'approveddate' => $request->db_approveddate,
 
 
             //////////where//////////
@@ -233,7 +232,7 @@ class CreditNoteARController extends defaultController
             'unit' => strtoupper($request->db_deptcode),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
-            'entrydate' => strtoupper($request->db_entrydate),
+            'entrydate' => $request->db_entrydate,
             'hdrtype' => strtoupper($request->db_hdrtype),
             'mrn' => strtoupper($request->db_mrn),
             //'termdays' => strtoupper($request->db_termdays),

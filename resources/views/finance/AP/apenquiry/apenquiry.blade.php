@@ -108,7 +108,7 @@
 						<h5>Allocation</h5>
 					</div>
 				</div>
-				<div id="gridDo_panel" class="panel-collapse collapse">
+				<div id="gridAlloc_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<table id="gridAlloc" class="table table-striped"></table>
