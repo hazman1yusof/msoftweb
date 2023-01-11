@@ -188,9 +188,9 @@ class arenquiryController extends defaultController
 
         if($request->db_trantype == 'RC' || 'RD' || 'RF' || 'CN') {
 
-            // $dbacthdr = DB::table('debtor.dbacthdr')
-            //                 ->where('idno','=',$request->db_idno)
-            //                 ->first();
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('idno','=',$request->db_idno)
+                            ->first();
 
             $table = DB::table('debtor.dballoc AS dc')
                         ->select(
@@ -211,11 +211,10 @@ class arenquiryController extends defaultController
                                     ->on('dc.doctrantype', '=', 'da.trantype')
                                     ->on('dc.docauditno', '=', 'da.auditno');
                         })
-                        ->where('dc.compcode', '=', session('compcode'));
-
-                        // ->where('dc.docsource', '=', $dbacthdr->source)
-                        // ->where('dc.doctrantype', '=', $dbacthdr->trantype)
-                        // ->where('dc.docauditno', '=', $dbacthdr->auditno);
+                        ->where('dc.compcode', '=', session('compcode'))
+                        ->where('dc.docsource', '=', $dbacthdr->source)
+                        ->where('dc.docsource', '=', $dbacthdr->trantype)
+                        ->where('dc.docsource', '=', $dbacthdr->auditno);
 
                         // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
 
@@ -240,9 +239,9 @@ class arenquiryController extends defaultController
 
         } else if ($request->db_trantype == 'IN' || 'DN') {
 
-            // $dbacthdr = DB::table('debtor.dbacthdr')
-            //                 ->where('idno','=',$request->db_idno)
-            //                 ->first();
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('idno','=',$request->db_idno)
+                            ->first();
 
             $table = DB::table('debtor.dballoc AS dc')
                         ->select(
@@ -263,11 +262,10 @@ class arenquiryController extends defaultController
                                     ->on('dc.reftrantype', '=', 'da.trantype')
                                     ->on('dc.refauditno', '=', 'da.auditno');
                         })
-                        ->where('dc.compcode', '=', session('compcode'));
-
-                        // ->where('dc.refsource', '=', $dbacthdr->source)
-                        // ->where('dc.reftrantype', '=', $dbacthdr->trantype)
-                        // ->where('dc.refauditno', '=', $dbacthdr->auditno);
+                        ->where('dc.compcode', '=', session('compcode'))
+                        ->where('dc.refsource', '=', $dbacthdr->source)
+                        ->where('dc.refsource', '=', $dbacthdr->trantype)
+                        ->where('dc.refsource', '=', $dbacthdr->auditno);
 
 
             //////////paginate/////////

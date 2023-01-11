@@ -490,8 +490,8 @@ $(document).ready(function () {
 				// urlParam2_RC.billno = selrowData("#jqGrid").db_auditno;
 				// urlParam2_RC.deptcode = selrowData("#jqGrid").db_deptcode;
 			}
-			urlParamAlloc.db_idno = selrowData("#jqGrid").db_idno;
-			urlParamAlloc.db_trantype = selrowData("#jqGrid").db_trantype;
+			// urlParamAlloc.db_idno = selrowData("#jqGrid").db_idno;
+			// urlParamAlloc.db_trantype = selrowData("#jqGrid").db_trantype;
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -563,8 +563,8 @@ $(document).ready(function () {
 	var urlParamAlloc={
 		action:'get_alloc',
 		url:'./arenquiry/table',
-		db_idno:'',
-		db_trantype:''
+		// db_idno:'',
+		// db_trantype:''
 	};
 
 	var addmore_jqGrid2={more:false,state:true,edit:false}
