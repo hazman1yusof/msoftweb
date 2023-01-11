@@ -288,7 +288,7 @@
 				<div class="panel-body">
 					<form id='formdata2_dp' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_dp_c" class='col-md-12'>
-							<table id="jqGrid2_dp_c" class="table table-striped"></table>
+							<table id="jqGrid2_dp" class="table table-striped"></table>
 							<div id="jqGridPager2_dp"></div>
 						</div>
 					</form>

@@ -32,6 +32,8 @@ class CMEnquiryController extends defaultController
                 return $this->get_in_detail($request);
             case 'populate_ft':
                 return $this->populate_ft($request);
+            case 'populate_dp':
+                return $this->populate_dp($request);
             default:
                 return 'error happen..';
         }
@@ -174,14 +176,24 @@ class CMEnquiryController extends defaultController
     public function populate_ft(Request $request){
         $table = DB::table('finance.apacthdr')
                         ->where('idno','=',$request->idno);
-
-      
+ 
 
         $responce = new stdClass();
         $responce->rows = $table->first();
 
         return json_encode($responce);
-}
+    }
+
+    public function populate_dp(Request $request){
+        $table = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno);
+ 
+
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+
+        return json_encode($responce);
+    }
 
     public function form(Request $request)
     {   
