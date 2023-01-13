@@ -6,22 +6,22 @@
 
 .panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
-  display: none;
+	display: none;
 }
 
 .panel-heading.collapsed .fa-angle-double-down,
 .panel-heading .fa-angle-double-up {
-  display: inline-block;
+	display: inline-block;
 }
 
 i.fa {
-  cursor: pointer;
-  float: right;
- <!--  margin-right: 5px; -->
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
 }
 
 .collapsed ~ .panel-body {
-  padding: 0;
+	padding: 0;
 }
 
 .clearfix {
@@ -53,29 +53,29 @@ i.fa {
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
+				<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
 						<div class="col-md-2">
 							<label class="control-label" for="Scol">Search By : </label>
-								<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+							<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 						</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
-								<div id="customer_text">
-									<div class='input-group'>
-										<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span id="customer_search_hb" class="help-block"></span>
+							<div id="customer_text">
+								<div class='input-group'>
+									<input id="customer_search" name="customer_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 								</div>
+								<span id="customer_search_hb" class="help-block"></span>
+							</div>
 
-								<div id="docuDate_text" class="form-inline" style="display:none">
-									FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-									TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+							<div id="docuDate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
 								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
 							</div>
 						</div>
@@ -127,30 +127,28 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
-
-			 </fieldset> 
+			</fieldset> 
 		</form>
-	</div>
 	
 		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
-    		<div class="panel-heading heading_panel_">List Of Selected Item</div>
-    		<div class="panel-body">
-    			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
-    				<table id="jqGrid_selection" class="table table-striped"></table>
-    				<div id="jqGrid_selectionPager"></div>
+			<div class="panel-heading heading_panel_">List Of Selected Item</div>
+			<div class="panel-body">
+				<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+					<table id="jqGrid_selection" class="table table-striped"></table>
+					<div id="jqGrid_selectionPager"></div>
 				</div>
-    		</div>
+			</div>
 		</div>
 
-        <div class="panel panel-default">
+		<div class="panel panel-default">
 			<div class="panel-heading">Credit Note DataEntry Header
-<!-- 				<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
- -->			</div>
-			
+				<!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
+			</div>
+				
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
 					<table id="jqGrid" class="table table-striped"></table>
-						<div id="jqGridPager"></div>
+					<div id="jqGridPager"></div>
 				</div>
 			</div>
 		</div>
@@ -159,20 +157,20 @@ i.fa {
 			<label class="control-label" style="margin-top: 10px;">Print Label</label>
 		</div> -->
 
-	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-	    	<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
-				<b>Credit NO: </b><span id="CreditNo_show"></span><br> 
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_panel">
+				<b>Credit No: </b><span id="CreditNo_show"></span><br> 
 				<!-- <b>CUSTOMER NAME: </b><span id="CustName_show"></span> -->
 				
-	    		<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
 					<h5>Credit Note Data Entry Detail</h5>
 				</div>
 			</div>
 
-    		<div id="jqGrid3_panel" class="panel-collapse collapse">
-	    		<div class="panel-body">
+			<div id="jqGrid3_panel" class="panel-collapse collapse">
+				<div class="panel-body">
 					@if (strtoupper(Request::get('scope')) == 'CANCEL')
 						<button 
 								type="button" 
@@ -183,119 +181,123 @@ i.fa {
 								Cancel Credit Note
 						</button>
 					@endif
-	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
-            			<table id="jqGrid3" class="table table-striped"></table>
-            			<div id="jqGridPager3"></div>
-    				</div>'
-	    		</div>
-	    	</div>	
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
+					</div>
+				</div>
+			</div>	
 		</div>
-        
     </div>
 	<!-- ***************End Search + table ********************* -->
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Credit Note Header</div>
-				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-					<form class='form-horizontal' style='width:99%' id='formdata'>
-						{{ csrf_field() }}
-						<input id="db_idno" name="db_idno" type="hidden">
-						<input id="db_source" name="db_source" type="hidden">
-						<input id="db_trantype" name="db_trantype" type="hidden">
+			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					{{ csrf_field() }}
+					<input id="db_idno" name="db_idno" type="hidden">
+					<input id="db_source" name="db_source" type="hidden" value="AR">
+					<input id="db_trantype" name="db_trantype" type="hidden">
 
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
-							<div class="col-md-3">
-								<div class='input-group'>
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
+						<div class="col-md-3">
+							<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
-
-							<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
-								<div class="col-md-2">
-								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
-							</div>
+							<span class="help-block"></span>
 						</div>
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_auditno">Credit No</label>  
-							<div class="col-md-2"> 
-								<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-							</div>
-
-							<label class="col-md-3 control-label" for="db_amount">Total Amount</label>
-							<div class="col-md-2">
-								<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
-							</div>
-							
+						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
+						<div class="col-md-2">
+							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
-							
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>  
-							<div class="col-md-2">
-									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
-							</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_auditno">Credit No</label>  
+						<div class="col-md-2"> 
+							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 						</div>
 
-						<hr>
-
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
-							<div class="col-md-2"> 
-							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-									max="<?php echo date('Y-m-d');?>">
-							</div>
+						<label class="col-md-3 control-label" for="db_amount">Total Amount</label>
+						<div class="col-md-2">
+							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 						</div>
+					</div>
+						
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>  
+						<div class="col-md-2">
+							<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
+						</div>
+					</div>
 
-						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
-							<div class="col-md-7"> 
+					<hr>
+						
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_reference">Reference No.</label>  
+						<div class="col-md-2">
+							<input id="db_reference" name="db_reference" class="form-control input-sm">
+						</div>
+					
+						<label class="col-md-3 control-label" for="db_paymode">Pay Mode</label>	 
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="db_paymode" name="db_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>		
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
+						<div class="col-md-7"> 
 							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
-							</div>
 						</div>
+					</div>
 
 					<hr/>
-
-					</form>
-				</div>
-			</div>
-			
-			<div class='panel panel-info'>
-				<div class="panel-heading">Credit Note Detail</div>
-					<div class="panel-body">
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
-
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<div class="panel-body">
-						<div class="noti" style="color:red"></div>
-					</div>
-
-			</div>
-				
-			<div id="dialog_remarks" title="Remarks">
-			  	<div class="panel panel-default">
-			    	<div class="panel-body">
-			    		<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
-			    	</div>
-			  	</div>
+				</form>
 			</div>
 		</div>
+			
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Note Detail</div>
+			<div class="panel-body">
+				<form id='formdata2' class='form-vertical' style='width:99%'>
+					<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
+					<div id="jqGrid2_c" class='col-md-12'>
+						<table id="jqGrid2" class="table table-striped"></table>
+						<div id="jqGridPager2"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="panel-body">
+				<div class="noti" style="color:red"></div>
+			</div>
+		</div>
+				
+		<div id="dialog_remarks" title="Remarks">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+				</div>
+			</div>
+		</div>
+		<!-- </div> -->
 	</div>
+
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
+	<script type="text/javascript">
 		$(document).ready(function () {
 			if(!$("table#jqGrid").is("[tabindex]")){
 				$("#jqGrid").bind("jqGridGridComplete", function () {

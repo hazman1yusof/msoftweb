@@ -69,7 +69,10 @@ class CreditNoteARController extends defaultController
                         'db.adduser AS db_adduser',
                         'db.adddate AS db_adddate',
                         'db.upduser AS db_upduser',
-                        'db.upddate AS db_upddate'
+                        'db.upddate AS db_upddate',
+                        'db.reference AS db_reference',
+                        'db.paymode AS db_paymode',
+                        
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.source','=','PB');
@@ -202,8 +205,10 @@ class CreditNoteARController extends defaultController
                 'ponum' => strtoupper($request->db_ponum),
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby,
-                'approveddate' => $request->db_approveddate,
-
+                // 'approveddate' => $request->db_approveddate,
+                'reference' => $request->db_reference,
+                'paymode' => $request->db_paymode,
+            ];
 
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);

@@ -67,8 +67,10 @@ $(document).ready(function () {
 						break;
 				}if (oper != 'add') {
 					dialog_CustomerSO.check(errorField);
+					dialog_paymodeAR.check(errorField);
 				} if (oper != 'view') {
 					dialog_CustomerSO.on();
+					dialog_paymodeAR.on();
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -92,6 +94,7 @@ $(document).ready(function () {
 				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_CustomerSO.off();
+				dialog_paymodeAR.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
@@ -209,6 +212,8 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
 			{ label: 'remarks', name: 'db_remark', width: 10, hidden: true },
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
+			{ label: 'Reference', name: 'db_reference', width: 10, hidden: true },
+			{ label: 'Pay Mode', name: 'db_paymode', width: 10, hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -228,6 +233,7 @@ $(document).ready(function () {
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
+			// urlParam2.filterVal[1]=selrowData("#jqGrid").db_auditno;
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -609,12 +615,88 @@ $(document).ready(function () {
 		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
 		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
 	};
+
+	// var urlParam2 = {
+	// 	action: 'get_table_dtl',
+	// 	url:'CreditNoteARDetail/table',
+	// 	source:'',
+	// 	trantype:'',
+	// 	auditno:'',
+	// 	field:['billsum.idno','billsum.lineno_','billsum.compcode','billsum.source','billsum.trantype','billsum.auditno','billsum.deptcode','billsum.taxcode','billsum.amount','billsum.taxamt as tot_gst','billsum.recstatus'],
+	// 	table_name:['debtor.billsum AS billsum'],
+	// 	table_id:'lineno_',
+	// 	filterCol:['billsum.compcode','billsum.auditno', 'billsum.recstatus','billsum.source','billsum.trantype'],
+	// 	filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
+	// };
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
+		// colModel: [
+		// 	{ label: 'idno', name: 'idno', hidden: true},
+		// 	{ label: 'lineno_', name: 'lineno_', hidden: true},
+		// 	{ label: 'compcode', name: 'compcode', hidden: true},
+        //     { label: 'source', name: 'source', hidden:true},
+        //     { label: 'trantype', name: 'trantype', hidden:true},
+		// 	{ label: 'auditno', name: 'auditno', hidden: true},
+        //     { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
+        //         editrules:{required: true,custom:true, custom_func:cust_rules},
+        //         formatter: showdetail,
+        //         edittype:'custom',	editoptions:
+        //             {  
+        //                 custom_element:deptcodeCustomEdit,
+        //                 custom_value:galGridCustomValue 	
+        //             },
+		// 	},
+        //     { label: 'GST Code', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
+        //         editrules:{required: true,custom:true, custom_func:cust_rules},
+        //         formatter: showdetail,
+        //         edittype:'custom',	editoptions:
+        //             {
+        //                 custom_element:GSTCodeCustomEdit,
+        //                 custom_value:galGridCustomValue 	
+        //             },
+		// 	},
+        //     { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
+        //         formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+        //         editable: true,
+        //         align: "right",
+        //         editrules:{required: true},edittype:"text",
+        //         editoptions:{
+        //             maxlength: 12,
+        //             dataInit: function(element) {
+        //                 element.style.textAlign = 'right';
+        //             }
+        //         },
+		// 	},
+        //     { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+        //         formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+        //         editable: true,
+        //         align: "right",
+        //         editrules:{required: true},edittype:"text",
+        //         editoptions:{
+        //             readonly: "readonly",
+        //             maxlength: 12,
+        //             dataInit: function(element) {
+        //                 element.style.textAlign = 'right';
+        //             },
+        //         }
+		// 	},
+		// 	{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
+		// 		formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
+		// 		editrules:{required: true},
+		// 		editoptions:{
+		// 			readonly: "readonly",
+		// 			maxlength: 12,
+		// 			dataInit: function(element) {
+		// 				element.style.textAlign = 'right';
+		// 			}
+		// 		},
+		// 	},
+		// 	{ label: 'recstatus', name: 'recstatus', hidden: true},
+		// ],
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
@@ -629,20 +711,6 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:categoryCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
-                //editrules:{required: true},
-                edittype:"text",
-				editoptions: {style: "text-transform: uppercase"},
-            },
             { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
@@ -652,7 +720,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -661,10 +729,10 @@ $(document).ready(function () {
                     maxlength: 12,
                     dataInit: function(element) {
                         element.style.textAlign = 'right';
-                    },
-                }
+                    }
+                },
             },
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
+            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -674,8 +742,8 @@ $(document).ready(function () {
                     maxlength: 12,
                     dataInit: function(element) {
                         element.style.textAlign = 'right';
-                    }
-                },
+                    },
+                }
             },
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
@@ -1163,6 +1231,7 @@ $(document).ready(function () {
 		} else {
 			mycurrency.formatOn();
 			dialog_CustomerSO.on();
+			dialog_paymodeAR.on();
 			//dialog_mrn.on();
 		}
 	});
@@ -1172,6 +1241,7 @@ $(document).ready(function () {
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
 		dialog_CustomerSO.on();
+		dialog_paymodeAR.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1295,6 +1365,41 @@ $(document).ready(function () {
 
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
+	
+	var dialog_paymodeAR = new ordialog(
+		'paymodeAR','debtor.paymode',"#formdata input[name='db_paymode']",errorField,
+		{	colModel:[
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow:function(){
+				$('#db_remark').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#db_remark').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Paymode",
+			open: function(){
+				dialog_paymodeAR.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymodeAR.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#db_source').val(), 'Credit Note'];
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_paymodeAR.makedialog(true);
+
 	var dialog_deptcode = new ordialog(
 		'db_deptcode', 'sysdb.department', "#jqGrid2 input[name='deptcode']", errorField,
 		{

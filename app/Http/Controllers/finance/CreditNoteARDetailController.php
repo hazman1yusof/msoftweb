@@ -54,6 +54,14 @@ class CreditNoteARDetailController extends defaultController
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');
 
+        // $table = DB::table('debtor.billsum')
+        //             ->where('source','=',$request->source)
+        //             ->where('trantype','=',$request->trantype)
+        //             ->where('auditno','=',$request->auditno)
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('recstatus','<>','DELETE')
+        //             ->orderBy('idno','desc');
+
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
@@ -179,6 +187,20 @@ class CreditNoteARDetailController extends defaultController
                     ->where('auditno','=',$auditno);
 
             $dbacthdr_obj = $dbacthdr->first();
+
+            // $billsum = DB::table('debtor.billsum')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('source','=',$source)
+            //         ->where('trantype','=',$trantype)
+            //         ->where('auditno','=',$auditno);
+
+            // if($billsum->exists()){
+            //     $count = $billsum->count();
+            //     $lineno_ = $count + 1;
+            //     $billsum_obj = $billsum->first();
+            // }else{
+            //     $lineno_ = 1;
+            // }
 
             $dbactdtl = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
