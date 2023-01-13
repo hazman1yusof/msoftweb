@@ -616,87 +616,12 @@ $(document).ready(function () {
 		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
 	};
 
-	// var urlParam2 = {
-	// 	action: 'get_table_dtl',
-	// 	url:'CreditNoteARDetail/table',
-	// 	source:'',
-	// 	trantype:'',
-	// 	auditno:'',
-	// 	field:['billsum.idno','billsum.lineno_','billsum.compcode','billsum.source','billsum.trantype','billsum.auditno','billsum.deptcode','billsum.taxcode','billsum.amount','billsum.taxamt as tot_gst','billsum.recstatus'],
-	// 	table_name:['debtor.billsum AS billsum'],
-	// 	table_id:'lineno_',
-	// 	filterCol:['billsum.compcode','billsum.auditno', 'billsum.recstatus','billsum.source','billsum.trantype'],
-	// 	filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
-	// };
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
 
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
-		// colModel: [
-		// 	{ label: 'idno', name: 'idno', hidden: true},
-		// 	{ label: 'lineno_', name: 'lineno_', hidden: true},
-		// 	{ label: 'compcode', name: 'compcode', hidden: true},
-        //     { label: 'source', name: 'source', hidden:true},
-        //     { label: 'trantype', name: 'trantype', hidden:true},
-		// 	{ label: 'auditno', name: 'auditno', hidden: true},
-        //     { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
-        //         editrules:{required: true,custom:true, custom_func:cust_rules},
-        //         formatter: showdetail,
-        //         edittype:'custom',	editoptions:
-        //             {  
-        //                 custom_element:deptcodeCustomEdit,
-        //                 custom_value:galGridCustomValue 	
-        //             },
-		// 	},
-        //     { label: 'GST Code', name: 'taxcode', width: 100, classes: 'wrap', editable: true,
-        //         editrules:{required: true,custom:true, custom_func:cust_rules},
-        //         formatter: showdetail,
-        //         edittype:'custom',	editoptions:
-        //             {
-        //                 custom_element:GSTCodeCustomEdit,
-        //                 custom_value:galGridCustomValue 	
-        //             },
-		// 	},
-        //     { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
-        //         formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-        //         editable: true,
-        //         align: "right",
-        //         editrules:{required: true},edittype:"text",
-        //         editoptions:{
-        //             maxlength: 12,
-        //             dataInit: function(element) {
-        //                 element.style.textAlign = 'right';
-        //             }
-        //         },
-		// 	},
-        //     { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
-        //         formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-        //         editable: true,
-        //         align: "right",
-        //         editrules:{required: true},edittype:"text",
-        //         editoptions:{
-        //             readonly: "readonly",
-        //             maxlength: 12,
-        //             dataInit: function(element) {
-        //                 element.style.textAlign = 'right';
-        //             },
-        //         }
-		// 	},
-		// 	{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
-		// 		formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-		// 		editrules:{required: true},
-		// 		editoptions:{
-		// 			readonly: "readonly",
-		// 			maxlength: 12,
-		// 			dataInit: function(element) {
-		// 				element.style.textAlign = 'right';
-		// 			}
-		// 		},
-		// 	},
-		// 	{ label: 'recstatus', name: 'recstatus', hidden: true},
-		// ],
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
