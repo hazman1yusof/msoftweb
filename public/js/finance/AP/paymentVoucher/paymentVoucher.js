@@ -951,115 +951,7 @@ $(document).ready(function () {
 			addRowParams: myEditOptions
 		},
 		editParams: myEditOptions
-	//});
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "jqGridPager2Delete",
-	// 	caption:"",cursor: "pointer",position: "last", 
-	// 	buttonicon:"glyphicon glyphicon-trash",
-	// 	title:"Delete Selected Row",
-	// 	onClickButton: function(){
-	// 		selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-	// 		if(!selRowId){
-	// 			bootbox.alert('Please select row');
-	// 		}else{
-	// 			bootbox.confirm({
-	// 			    message: "Are you sure you want to delete this row?",
-	// 			    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-	// 			    },
-	// 			    callback: function (result) {
-	// 			    	if(result == true){
-	// 			    		param={
-	// 			    			action: 'paymentVoucherDetail',
-	// 							auditno: $('#apacthdr_auditno').val(),
-	// 							lineno_: selrowData('#jqGrid2').lineno_,
 
-	// 			    		}
-	// 			    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-	// 						}).fail(function(data) {
-	// 							//////////////////errorText(dialog,data.responseText);
-	// 						}).done(function(data){
-	// 							$('#amount').val(data);
-	// 							refreshGrid("#jqGrid2",urlParam2);
-	// 						});
-	// 			    	}else{
- //        					$("#jqGridPager2EditAll").show();
-	// 			    	}
-	// 			    }
-	// 			});
-	// 		}
-	// 	},
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "jqGridPager2EditAll",
-	// 	caption:"",cursor: "pointer",position: "last", 
-	// 	buttonicon:"glyphicon glyphicon-th-list",
-	// 	title:"Edit All Row",
-	// 	onClickButton: function(){
-	// 		mycurrency2.array.length = 0;
-	// 		var ids = $("#jqGrid2").jqGrid('getDataIDs');
-	// 	    for (var i = 0; i < ids.length; i++) {
-
-	// 	        $("#jqGrid2").jqGrid('editRow',ids[i]);
-
-	// 	        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-	// 	    }
-	// 	   	onall_editfunc();
-	// 		hideatdialogForm(true,'saveallrow');
-	// 	},
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "jqGridPager2SaveAll",
-	// 	caption:"",cursor: "pointer",position: "last", 
-	// 	buttonicon:"glyphicon glyphicon-download-alt",
-	// 	title:"Save All Row",
-	// 	onClickButton: function(){
-	// 		var ids = $("#jqGrid2").jqGrid('getDataIDs');
-
-	// 		var jqgrid2_data = [];
-	// 		mycurrency2.formatOff();
-	// 	    for (var i = 0; i < ids.length; i++) {
-
-	// 			var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-
-	// 	    	var obj = 
-	// 	    	{
-	// 	    		'lineno_' : ids[i],
-	// 	    		'document' : $("#jqGrid2 input#"+ids[i]+"_document").val(),
-	// 	    		'reference' : data.reference,
-	// 	    		'amount' : data.amount,
- //                    'unit' : $("#"+ids[i]+"_unit").val()
-	// 	    	}
-
-	// 	    	jqgrid2_data.push(obj);
-	// 	    }
-
-	// 		var param={
- //    			action: 'paymentVoucherDetail_save',
-	// 			_token: $("#_token").val(),
-	// 			auditno: $('#apacthdr_auditno').val()
- //    		}
-
- //    		$.post( "/paymentVoucherDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
-	// 		}).fail(function(data) {
-	// 			//////////////////errorText(dialog,data.responseText);
-	// 		}).done(function(data){
-	// 			// $('#amount').val(data);
-	// 			hideatdialogForm(false);
-	// 			refreshGrid("#jqGrid2",urlParam2);
-	// 		});
-	// 	},	
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "jqGridPager2CancelAll",
-	// 	caption:"",cursor: "pointer",position: "last", 
-	// 	buttonicon:"glyphicon glyphicon-remove-circle",
-	// 	title:"Cancel",
-	// 	onClickButton: function(){
-	// 		hideatdialogForm(false);
-	// 		refreshGrid("#jqGrid2",urlParam2);
-	// 	},	
-	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
-	// 	id: "saveHeaderLabel",
-	// 	caption:"Header",cursor: "pointer",position: "last", 
-	// 	buttonicon:"",
-	// 	title:"Header"//
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveDetailLabel",
 		caption:"Save",cursor: "pointer",position: "last", 
@@ -1680,6 +1572,18 @@ function init_jq2(oper,urlParam2){
 			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
 		}else if($('#apacthdr_trantype').val() == 'PD') {
 			$('#save').show();
+			$('#pvpd_detail').hide();
+			$('#apacthdr_amount').prop('readonly',false);
+		}
+	} else if(oper == 'view'){
+		if($('#apacthdr_trantype').val() == 'PV'){
+			$('#save').hide();
+			$('#apacthdr_amount').prop('readonly',true);
+			$('#pvpd_detail').show();
+			$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+			refreshGrid("#jqGrid2",urlParam2,'kosongkan');
+		}else if($('#apacthdr_trantype').val() == 'PD') {
+			$('#save').hide();
 			$('#pvpd_detail').hide();
 			$('#apacthdr_amount').prop('readonly',false);
 		}

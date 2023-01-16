@@ -144,7 +144,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Credit Note Detail</h5>
+					<h5>Credit Note Allocation</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -279,9 +279,8 @@ i.fa {
 				</div>
 			</div>
 		</div>
-			
-
-		<div class='panel panel-info' id="cn_detail">
+		
+		<div class='panel panel-info' id="grid_detail">
 			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
@@ -292,6 +291,21 @@ i.fa {
 					</form>
 				</div>
 		</div>
+
+		<div class='panel panel-info' id="alloc_detail">
+			<div class="panel-heading">Credit Note Allocation</div>
+				<div class="panel-body">
+					<form id='formdataAlloc' class='form-vertical' style='width:99%'>
+						<div id="jqGrid_Alloc" class='col-md-12'>
+							<table id="jqGridAlloc" class="table table-striped"></table>
+						        <div id="jqGridPagerAlloc"></div>
+						</div>
+					</form>
+				</div>
+		</div>
+
+		
+		
 	</div>			
 			
 </div>
