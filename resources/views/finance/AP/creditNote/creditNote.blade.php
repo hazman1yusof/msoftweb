@@ -278,6 +278,7 @@ i.fa {
 
 					</div>
 					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+					<button type="button" id='posted_button' class='btn btn-primary btn-sm pull-right' style='margin: 0.2%;'>Posted</button>
 				</form>
 				<div class="panel-body">
 					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>

@@ -285,7 +285,7 @@ $(document).ready(function () {
 		}
 	}).on('xhr.dt', function ( e, settings, json, xhr ) {
         mymodal.hide();
-    } ).on('preXhr.dt', function ( e, settings, data ) {
+    }).on('preXhr.dt', function ( e, settings, data ) {
         data.year = $('#year').val();
         data.costcode = selrowData("#jqGrid").glmasdtl_costcode;
         data.acc = $('#glaccount').val();

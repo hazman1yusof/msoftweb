@@ -91,29 +91,31 @@ class CreditNoteDetailController extends defaultController
 
         try {
             
+            // $apacthdr = DB::table("finance.apacthdr")
+            //                 ->where('idno','=',$request->idno)
+            //                 ->where('compcode','=','DD');
+
+            // if($apacthdr->exists()){
+            //     $delordno = $this->request_no('DO',$delordhd->first()->prdept);
+            //     $recno = $this->recno('PUR','DO');
+
+            //     DB::table("material.delordhd")
+            //         ->where('idno','=',$request->idno)
+            //         ->update([
+            //             'docno' => $delordno,
+            //             'recno' => $recno,
+            //             'compcode' => session('compcode'),
+            //         ]);
+            // }
+
             $apacthdr = DB::table("finance.apacthdr")
-                            ->where('idno','=',$request->idno)
-                            ->where('compcode','=','DD');
+                ->where('idno','=',$request->idno)
+                ->first();
 
-            if($apacthdr->exists()){
-                $delordno = $this->request_no('DO',$delordhd->first()->prdept);
-                $recno = $this->recno('PUR','DO');
-
-                DB::table("material.delordhd")
-                    ->where('idno','=',$request->idno)
-                    ->update([
-                        'docno' => $delordno,
-                        'recno' => $recno,
-                        'compcode' => session('compcode'),
-                    ]);
-            }
-
-            $apacthdr = DB::table("finance.apacthdr")
-            ->where('idno','=',$request->idno)
-            ->first();
+            $auditno = $apacthdr->auditno;
 
             ////1. calculate lineno_ by auditno
-            $apactdtl = DB::table('finance.apactdtl')
+            $sqlln = DB::table('finance.apactdtl')
                         ->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
@@ -152,10 +154,9 @@ class CreditNoteDetailController extends defaultController
           ///4. then update to header
           DB::table('finance.apacthdr')
               ->where('compcode','=',session('compcode'))
-              ->where('auditno','=',$auditno)
+              ->where('idno','=',$request->idno)
               ->update([
                   'amount' => $totalAmount
-                
               ]);
           DB::commit();
           return response($totalAmount,200);
