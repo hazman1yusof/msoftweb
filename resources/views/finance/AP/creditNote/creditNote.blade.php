@@ -232,7 +232,12 @@ i.fa {
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
-						  	</div>		
+						  	</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_recstatus">Record Status</label>  
+							<div class="col-md-2">
+								<input id="apacthdr_recstatus" name="apacthdr_recstatus" type="text" value='OPEN' maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+							</div>	
 					</div>
 
 					<hr/>
