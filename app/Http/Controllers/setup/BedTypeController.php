@@ -46,6 +46,7 @@ class BedTypeController extends defaultController
         try {
 
             $bedtype = DB::table('hisdb.bedtype')
+                            ->where('compcode','=',session('compcode'))
                             ->where('bedtype','=',$request->bedtype);
 
             if($bedtype->exists()){
@@ -59,7 +60,7 @@ class BedTypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'bedchgcode' => strtoupper($request->bedchgcode),
                     'lodchgcode' => strtoupper($request->lodchgcode),
-                    'recstatus' => strtoupper($request->recstatus),
+                    'recstatus' => 'ACTIVE',
                     //'idno' => strtoupper($request->idno),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),

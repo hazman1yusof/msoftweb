@@ -108,6 +108,7 @@ class BedController extends defaultController
         try {
 
             $bednum = DB::table('hisdb.bed')
+                            ->where('compcode','=',session('compcode'))
                             ->where('bednum','=',$request->bednum);
 
             if($bednum->exists()){
@@ -127,7 +128,7 @@ class BedController extends defaultController
                     // 'tel_ext' => $this->truefalse($request->tel_ext),
                     'bedchgcode' => strtoupper($request->bedchgcode),
                     'statistic' => strtoupper($request->statistic), 
-                    'recstatus' => strtoupper($request->recstatus),
+                    'recstatus' => 'ACTIVE',
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'adduser' => strtoupper(session('username')),
@@ -161,7 +162,7 @@ class BedController extends defaultController
                     'tel_ext' => strtoupper($request->tel_ext),  
                     'bedchgcode' => strtoupper($request->bedchgcode), 
                     'statistic' => $request->statistic,    
-                    'recstatus' => strtoupper($request->recstatus),
+                    // 'recstatus' => strtoupper($request->recstatus),
                     'lastcomputerid' => strtoupper($request->lastcomputerid),
                     'lastipaddress' => strtoupper($request->lastipaddress),
                     'upduser' => strtoupper(session('username')),

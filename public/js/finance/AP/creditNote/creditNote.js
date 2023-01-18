@@ -1611,11 +1611,11 @@ $(document).ready(function () {
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
 					$("#apacthdr_payto").val(data['suppcode']);
-					$("#jqGridAlloc input[name='document']").val(data['suppcode']);
-					$("#jqGridAlloc input[name='entrydate']").val(data['recdate']); 
-					$("#jqGridAlloc input[name='reference']").val(data['document']);
-					$("#jqGridAlloc input[name='refamount']").val(data['amount']);
-					$("#jqGridAlloc input[name='outamount']").val(data['outamount']);
+					// $("#jqGridAlloc input[name='document']").val(data['suppcode']);
+					// $("#jqGridAlloc input[name='entrydate']").val(data['recdate']); 
+					// $("#jqGridAlloc input[name='reference']").val(data['document']);
+					// $("#jqGridAlloc input[name='refamount']").val(data['amount']);
+					// $("#jqGridAlloc input[name='outamount']").val(data['outamount']);
 
 					var urlParam_alloc = {
 						action: 'get_value_default',

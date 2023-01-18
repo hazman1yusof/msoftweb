@@ -889,7 +889,7 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
-			$('#db_unit').val(response.responseText);
+			// $('#db_unit').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 	    	//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -910,10 +910,7 @@ $(document).ready(function () {
 			let editurl = "./CreditNoteARDetail/form?"+
 				$.param({
 					action: 'CreditNoteAR_detail_save',
-					source: $('#db_source').val(),
-					trantype: $('#db_trantype').val(),
-					auditno: $('#db_auditno').val(),
-					amount:data.amount,
+					idno: $('#db_idno').val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -1093,6 +1090,7 @@ $(document).ready(function () {
 			case 'category':field=['catcode','description'];table="material.category";break;
 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
+			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 			//case 'db_payercode':field=['debtormast','name'];table="debtor.debtormast";case_='db_payercode';break;
@@ -1888,7 +1886,7 @@ $(document).ready(function () {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_CustomerSO.textfield,false);
-
+							console.log(data.rows);
 							data.rows.forEach(function(elem) {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{

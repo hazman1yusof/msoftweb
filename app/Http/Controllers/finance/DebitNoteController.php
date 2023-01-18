@@ -386,29 +386,43 @@ class DebitNoteController extends defaultController
 
             foreach ($request->idno_array as $value){
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+                $apacthdr = DB::table('debtor.dbacthdr')
+                    ->where('idno','=',$value)
+                    ->first();
 
-                $purreqhd_get = $purreqhd->first();
-                if(!in_array($purreqhd_get->recstatus, ['POSTED'])){
-                    continue;
-                }
+                // $this->gltran($auditno);
 
-                $purreqhd->update([
-                    'recstatus' => 'CANCELLED'
-                ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([  
-                        'recstatus' => 'CANCELLED',
+                DB::table('debtor.dbacthdr')
+                    ->where('idno','=',$value)
+                    ->update([
+                        'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->delete();
+                // $purreqhd = DB::table("material.purreqhd")
+                //     ->where('idno','=',$value);
+
+                // $purreqhd_get = $purreqhd->first();
+                // if(!in_array($purreqhd_get->recstatus, ['POSTED'])){
+                //     continue;
+                // }
+
+                // $purreqhd->update([
+                //     'recstatus' => 'CANCELLED'
+                // ]);
+
+                // DB::table("material.purreqdt")
+                //     ->where('recno','=',$purreqhd_get->recno)
+                //     ->update([  
+                //         'recstatus' => 'CANCELLED',
+                //         'upduser' => session('username'),
+                //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                //     ]);
+
+                // DB::table("material.queuepr")
+                //     ->where('recno','=',$purreqhd_get->recno)
+                //     ->delete();
 
             }
            

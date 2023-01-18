@@ -20,7 +20,6 @@ class CreditNoteARDetailController extends defaultController
     {   
         switch($request->oper){
             case 'add':
-                // dd('asd');
                 return $this->add($request);
             case 'edit':
                 return $this->edit($request);
@@ -167,31 +166,21 @@ class CreditNoteARDetailController extends defaultController
         DB::beginTransaction();
         
         try {
-             
-            $source = 'PB';
-            $trantype = 'CN';
-            $auditno = $request->auditno;
-        //  dd($auditno);
-
 
             $dbacthdr = DB::table('debtor.dbacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('source','=',$source)
-                    ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno);
+                    ->where('idno','=',$request->idno);
 
             $dbacthdr_obj = $dbacthdr->first();
 
             $dbactdtl = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('source','=',$source)
-                    ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno);
+                    ->where('source','=',$dbacthdr_obj->source)
+                    ->where('trantype','=',$dbacthdr_obj->trantype)
+                    ->where('auditno','=',$dbacthdr_obj->auditno);
 
             if($dbactdtl->exists()){
                 $count = $dbactdtl->count();
                 $lineno_ = $count + 1;
-                $dbactdtl_obj = $dbactdtl->first();
             }else{
                 $lineno_ = 1;
             }
@@ -200,24 +189,24 @@ class CreditNoteARDetailController extends defaultController
             DB::table('debtor.dbactdtl')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'source' => $source,
-                    'trantype' => $trantype,
-                    'auditno' => $auditno,
+                    'source' => $dbacthdr_obj->source,
+                    'trantype' => $dbacthdr_obj->trantype,
+                    'auditno' => $dbacthdr_obj->auditno,
                     'lineno_' => $lineno_,
                     'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'document'  => strtoupper($request->document),
+                    // 'document'  => strtoupper($request->document),
                     'amount' => $request->amount,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'deptcode' => strtoupper($request->deptcode),
-                    'category' => strtoupper($request->category),
-                    'paymode' => strtoupper($request->paymode),
-                    'grnno' => strtoupper($request->grnno),
+                    // 'category' => strtoupper($request->category),
+                    'paymode' => $dbacthdr_obj->paymode,
+                    // 'grnno' => strtoupper($request->grnno),
                     //'dorecno' => strtoupper($request->dorecno),
-                    'unit' => strtoupper($request->unit),
+                    'unit' => session('unit'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'OPEN',
+                    'recstatus' => 'POSTED',
                     'GSTCode' => strtoupper($request->GSTCode),
                     'AmtB4GST' => floatval($request->AmtB4GST),
                    // 'amtslstax' => $tot_gst, 
@@ -229,16 +218,16 @@ class CreditNoteARDetailController extends defaultController
             ///3. calculate total amount from detail
             $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('source','=',$source)
-                    ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno)
+                    ->where('source','=',$dbacthdr_obj->source)
+                    ->where('trantype','=',$dbacthdr_obj->trantype)
+                    ->where('auditno','=',$dbacthdr_obj->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
             ///4. then update to header        
             $dbacthdr->update([
-                    'amount' => $totalAmount,
-                ]);
+                'amount' => $totalAmount,
+            ]);
 
             echo $totalAmount;
 

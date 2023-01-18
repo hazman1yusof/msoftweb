@@ -33,7 +33,7 @@ $(document).ready(function () {
 			case 'Bed Type':temp=$("#jqGrid input[name='bedtype']");break;
 			case 'Ward':temp=$("#jqGrid input[name='ward']");break;
 			case 'Bed Status':temp=$("#jqGrid input[name='occup']");break;
-			case 'Charge Code':temp=$('#bedchgcode');break;
+			// case 'Charge Code':temp=$('#bedchgcode');break;
 			case 'Statistic':temp=$("#jqGrid input[name='statistic']");break;
 			case ' ':temp=$("#jqGrid input[name='recstatus']");break;
 				break;
@@ -148,7 +148,7 @@ $(document).ready(function () {
 						},
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', formatter: stat_format, unformat:stat_unformat, canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:statCustomEdit,
 						custom_value:galGridCustomValue 	
@@ -156,21 +156,22 @@ $(document).ready(function () {
 			},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', width: 5, align : 'right'},
-			{ label: 'Patient Name', name: 'name', width: 40, canSearch: true, classes: 'wrap'},
+			{ label: 'Patient Name', name: 'name', width: 30, canSearch: true, classes: 'wrap'},
 			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
-			{ label: 'Charge Code', name: 'bedchgcode', width: 15 , classes: 'wrap', editable:true,
-				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
+			{ label: 'Charge Code', name: 'bedchgcode', width: 25 , classes: 'wrap', editable:true,
+				editrules:{required: false}, formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{ 	custom_element:chgcodeCustomEdit,
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: ' ', name: 'recstatus', width: 10, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-				{ 	custom_element:recstatusCustomEdit,
-					custom_value:galGridCustomValue 	
-				},
-			},
+			// { label: ' ', name: 'recstatus', width: 10, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
+			// 	edittype:'custom',	editoptions:
+			// 	{ 	custom_element:recstatusCustomEdit,
+			// 		custom_value:galGridCustomValue 	
+			// 	},
+			// },
+			{ label: 'recstatus', name: 'recstatus', width:10, hidden: true},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
@@ -304,6 +305,27 @@ $(document).ready(function () {
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
+	function stat_format(cellvalue, options, rowObject){
+		if(cellvalue == null){
+			return "";
+		}else if(cellvalue == '1'){
+			return 'TRUE';
+		}else if(cellvalue == '0'){
+			return 'FALSE';
+		}
+	}
+
+	function stat_unformat(cellvalue, options, rowObject){
+		if(cellvalue == 'TRUE'){
+			return '1';
+		}else if(cellvalue == 'FALSE'){
+			return '0';
+		}else{
+			return '';
+		}
+	}
+
+
 	function occup(cellvalue, options, rowObject){
 		if(cellvalue==undefined){
 			cellvalue="";
@@ -346,8 +368,8 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_chargecode.on();
 			dialog_stat.on();
-			dialog_recstatus.on();
-			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+			// dialog_recstatus.on();
+			$("input[name='bedchgcode']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -410,9 +432,9 @@ $(document).ready(function () {
 			dialog_occup.on();
 			dialog_chargecode.on();
 			dialog_stat.on();
-			dialog_recstatus.on();
+			// dialog_recstatus.on();
 			$("input[name='bednum']").attr('disabled','disabled');
-			$("select[name='recstatus']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='bedchgcode']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				/*addmore_jqgrid.state = true;
@@ -642,8 +664,8 @@ $(document).ready(function () {
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
-				filterCol:['recstatus','compcode','warddept'],
-				filterVal:['ACTIVE', 'session.compcode','1']
+				filterCol:['recstatus','compcode','warddept','sector'],
+				filterVal:['ACTIVE', 'session.compcode','1','session.unit']
 					},
 			ondblClickRow:function(){
 				$('#tel_ext').focus().select();
@@ -661,8 +683,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Ward Type",
 			open: function(){
-				dialog_ward.urlParam.filterCol = ['recstatus','compcode','warddept'];
-				dialog_ward.urlParam.filterVal = ['ACTIVE', 'session.compcode','1'];
+				dialog_ward.urlParam.filterCol = ['recstatus','compcode','warddept','sector'];
+				dialog_ward.urlParam.filterVal = ['ACTIVE', 'session.compcode','1','session.unit'];
 			},
 			close: function(){
 				$("#jqGrid input[name='tel_ext']").focus().select();
@@ -754,7 +776,7 @@ $(document).ready(function () {
 	dialog_stat.makedialog(false);	
 
 	var dialog_chargecode = new ordialog(
-		'chgcode','hisdb.chgmast',"#jqGrid input[name='bedchgcode']",errorField,
+		'chgcode','hisdb.chgmast',"#jqGrid input[name='bedchgcode']",'errorField',
 		{	colModel:[
 				{label:'Chargecode',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -789,43 +811,43 @@ $(document).ready(function () {
 	);
 	dialog_chargecode.makedialog();
 
-	var dialog_recstatus = new ordialog(
-		'recstatus','hisdb.bed',"#jqGrid input[name='recstatus']",errorField,
-		{	colModel:
-			[
-				{label:'Record Status',name:'stat',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
-			],
-			urlParam: {
-				url:'./sysparam_recstatus',
-				filterCol:['recstatus','compcode'],
-				filterVal:['ACTIVE', 'session.compcode']
-				},
-			ondblClickRow:function(event){
+	// var dialog_recstatus = new ordialog(
+	// 	'recstatus','hisdb.bed',"#jqGrid input[name='recstatus']",errorField,
+	// 	{	colModel:
+	// 		[
+	// 			{label:'Record Status',name:'stat',width:200,classes:'pointer left',canSearch:true,checked:true,or_search:true},
+	// 			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			url:'./sysparam_recstatus',
+	// 			filterCol:['recstatus','compcode'],
+	// 			filterVal:['ACTIVE', 'session.compcode']
+	// 			},
+	// 		ondblClickRow:function(event){
 
-				$(dialog_recstatus.textfield).val(selrowData("#"+dialog_recstatus.gridname)['description']);
+	// 			$(dialog_recstatus.textfield).val(selrowData("#"+dialog_recstatus.gridname)['description']);
 
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					// $('#room').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Select Record Status",
-			open: function(){
-				dialog_recstatus.urlParam.filterCol = ['recstatus','compcode'];
-				dialog_recstatus.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
-			},
-			width:4/10 * $(window).width()
-		},'urlParam','radio','tab'
-	);
-	dialog_recstatus.makedialog(false);
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				// $('#room').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Select Record Status",
+	// 		open: function(){
+	// 			dialog_recstatus.urlParam.filterCol = ['recstatus','compcode'];
+	// 			dialog_recstatus.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+	// 		},
+	// 		width:4/10 * $(window).width()
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_recstatus.makedialog(false);
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////

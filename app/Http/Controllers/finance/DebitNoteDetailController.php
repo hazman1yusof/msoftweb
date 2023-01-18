@@ -238,6 +238,7 @@ class DebitNoteDetailController extends defaultController
 
             ///4. then update to header        
             $dbacthdr->update([
+                    'outamount' => $totalAmount,
                     'amount' => $totalAmount,
                 ]);
 
