@@ -28,6 +28,8 @@ class CreditNoteARDetailController extends defaultController
                 return $this->edit_all($request);
             case 'del':
                 return $this->del($request);
+            case 'add_alloc':
+                return $this->add_alloc($request);
             default:
                 return 'error happen..';
         }
@@ -392,5 +394,89 @@ class CreditNoteARDetailController extends defaultController
             return response($e->getMessage(), 500);
         }       
     }
+
+    public function add_alloc(Request $request){
+
+        DB::beginTransaction();
+        
+        try {
+
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno)
+                ->first();
+
+            foreach ($request->data_detail as $key => $value){
+                $dbacthdr_IV = DB::table('debtor.dbacthdr')
+                        ->where('idno','=',$value['idno'])
+                        ->first();
+
+                $outamount = floatval($value['outamount']);
+                $balance = floatval($value['balance']);
+                $allocamount = floatval($value['outamount']) - floatval($value['balance']);
+                $newoutamount_IV = floatval($outamount - $allocamount);
+
+                DB::table('debtor.dballoc')
+                        ->insert([                            
+                            'compcode' => session('compcode'),
+                            'source' => 'AR',
+                            'trantype' => 'CN',
+                            'auditno' => $dbacthdr->auditno,
+                            'lineno_' => $key+1,
+                            'docsource' => 'AR',
+                            'doctrantype' => 'CN',
+                            'docauditno' => $dbacthdr->auditno,
+                            'refsource' => $dbacthdr_IV->source,
+                            'reftrantype' => $dbacthdr_IV->trantype,
+                            'refauditno' => $dbacthdr_IV->auditno,
+                            'debtorcode' => $request->debtorcode,
+                            'allocdate' => $request->allocdate,
+                            'recptno' => $request->recptno,
+                            'refamount' => $request->refamount,
+                            'amount' => $request->amount,
+                            'balance' => $request->balance,
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'OPEN'
+                        ]);
+
+                $dbacthdr_IV = DB::table('debtor.dbacthdr')
+                    ->where('idno','=',$value['idno'])
+                    ->update([
+                        'outamount' => $newoutamount_IV
+                    ]);
+            }
+
+            //calculate total amount from detail
+            $totalAmount = DB::table('debtor.dballoc')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->where('source','=','AR')
+                ->where('trantype','=','CN')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+
+            //then update to header
+            DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount,
+                ]);  
+
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->result = 'success';
+
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
 }
 

@@ -44,10 +44,12 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				actdateObj.getdata().set();
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
+				$("#jqGridAlloc").jqGrid('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth - $("#jqGridAlloc_c")[0].offsetLeft));
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				switch (oper) {
 					case state = 'add':
+						$("#jqGridAlloc").jqGrid("clearGridData", false);
 						$("#jqGrid2").jqGrid("clearGridData", true);
 						$("#pg_jqGridPager2 table").show();
 						hideatdialogForm(true);
@@ -66,12 +68,14 @@ $(document).ready(function () {
 						$("#pg_jqGridPager2 table").hide();
 						break;
 				}if (oper != 'add') {
+					refreshGrid("#jqGridAlloc",urlParamAlloc);
 					dialog_CustomerSO.check(errorField);
 					dialog_paymodeAR.check(errorField);
 				} if (oper != 'view') {
 					dialog_CustomerSO.on();
 					dialog_paymodeAR.on();
 				}
+				init_jq2(oper);
 			},
 			beforeClose: function (event, ui) {
 				if (unsaved) {
@@ -226,14 +230,25 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+			$('#posted_button').hide();
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").db_recstatus;
 			let scope = $("#recstatus_use").val();
+			
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGridAlloc', urlParamAlloc,'kosongkan');
+				// $("#pg_jqGridPager3 table").hide();
+				// $("#pg_jqGridPager2 table").show();
+			}
 
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
 			// urlParam2.filterVal[1]=selrowData("#jqGrid").db_auditno;
+
+			urlParamAlloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
+			refreshGrid("#jqGridArAlloc",urlParamAlloc);
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
 			$('#reqdeptdepan').text(selrowData("#jqGrid").purreqhd_reqdept);
@@ -299,6 +314,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2", urlParam2);
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
@@ -309,6 +325,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -341,6 +358,10 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
+
+	$('#db_trantype2').on('change', function() {
+		init_jq2(oper);
+	});
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -1172,6 +1193,7 @@ $(document).ready(function () {
 		rdonly('#formdata');
 		$(".noti").empty();
 		refreshGrid("#jqGrid2", urlParam2);
+		refreshGrid("#jqGridAlloc",urlParamAlloc);
 	});
 
 	/////////////calculate conv fac//////////////////////////////////
@@ -1288,6 +1310,329 @@ $(document).ready(function () {
 	$("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
+	////////////////////////////////////////////////parameter for jqGridAlloc url////////////////////////////////////////////////
+	var urlParamAlloc={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
+		table_name:['debtor.dballoc AS alloc'],
+		table_id:'lineno_',
+		filterCol:['alloc.compcode','alloc.auditno','alloc.source','alloc.trantype'],
+		filterVal:['session.compcode', '', 'AR','CN']
+	};
+
+	var addmore_jqGrid3={more:false,state:false,edit:true} // if addmore is true, add after refresh jqGridAlloc, state true kalau kosong
+	////////////////////////////////////////////////jqGridAlloc////////////////////////////////////////////////
+	$("#jqGridAlloc").jqGrid({
+		datatype: "local",
+		editurl: "./CreditNoteARDetail/form",
+		colModel: [
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc},
+			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
+			},
+			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap'},
+			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function(e){
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+							}
+						});
+					}
+				},
+			},
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
+				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Amount Paid', name: 'amount', width: 100, classes: 'wrap', 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 20, classes: 'wrap', hidden:true}, 
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true}, 
+		
+		],
+		autowidth: true,
+		shrinkToFit: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function(data){
+			if(addmore_jqGrid3.more == true){$('#jqGridAlloc_iladd').click();}
+			else{
+				$('#jqGridAlloc').jqGrid ('setSelection', "1");
+			}
+
+			setjqgridHeight(data,'jqGridAlloc');
+
+			addmore_jqGrid3.edit = true;
+			addmore_jqGrid3.more = false; //reset
+			calc_jq_height_onchange("jqGridAlloc");
+		},
+
+		gridComplete: function(){
+			fdl.set_array().reset();
+			if(oper == 'edit'){
+				//calc bal
+				var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+				for (var i = 0; i < ids.length; i++) {
+					let data = $("#jqGridAlloc").jqGrid ('getRowData', ids[i]);
+					let balance = parseFloat(data.outamount) - parseFloat(data.amount);
+					$("#jqGridAlloc").jqGrid('setCell', ids[i], 'balance', balance);
+				}
+
+				calc_amtpaid_bal();
+						
+				var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+				for (var i = 0; i < ids.length; i++) {
+					$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+
+					$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+				}
+
+			}
+
+			unsaved = false;
+			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+			var result = ids.filter(function(text){
+								if(text.search("jqg") != -1)return false;return true;
+							});
+			if(result.length == 0 && oper=='edit')unsaved = true;
+		},
+		beforeSubmit: function(postdata, rowid){ 
+			/*dialog_suppcode.check(errorField);
+			dialog_payto.check(errorField);
+			dialog_category.check(errorField);*/
+	 	}
+	});
+
+	////////////////////////////////////////////////set label jqGrid2 right////////////////////////////////////////////////
+	addParamField('#jqGridAlloc',false,urlParam2,['checkbox','balance'])
+	jqgrid_label_align_right("#jqGridAlloc");
+
+	function checkbox_jqgAlloc(cellvalue, options, rowObject){
+		return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+	}
+
+	function calc_amtpaid_bal(){
+		$('input.checkbox_jqgAlloc[type="checkbox"]').on('click',function(){
+			let rowid = $(this).data('rowid');
+			let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
+			if($(this).prop('checked')){
+				$('#jqGridAlloc input#'+rowid+'_amount').val(data.outamount);
+				$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', 0);
+			}else{
+				$('#jqGridAlloc input#'+rowid+'_amount').val(0);
+				$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', data.outamount);
+			}
+		});
+	}
+
+	function calc_amtpaid(event){
+		let rowid = event.data.rowid;
+		let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
+		var val = $(this).val();
+		if(parseFloat(val) > parseFloat(data.outamount)){
+			$(this).val(data.outamount);
+			event.preventDefault();
+		}
+		if(val.match(/[^0-9\.]/)){
+			event.preventDefault();
+			$(this).val(val.slice(0,val.length-1));
+		}
+
+		var balance = parseFloat(data.outamount) - parseFloat($(this).val());
+		$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
+
+
+	}
+
+	////////////////////////////////////////////////myEditOptions_alloc////////////////////////////////////////////////
+	var myEditOptions_alloc = {
+        keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+        	console.log(rowid);
+
+        	$("#jqGridPagerAllocEditAll,#saveHeaderLabel,#jqGridPagerAllocDelete").hide();
+
+        	mycurrency2.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGridAlloc input[name='amount']"]);
+
+        	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGridAlloc_ilsave').click();
+			})
+        },
+        aftersavefunc: function (rowid, response, options) {
+        	// $('#apacthdr_outamount').val(response.responseText);
+        	if(addmore_jqGrid3.state==true)addmore_jqGrid3.more=true; //only addmore after save inline
+        	refreshGrid('#jqGridAlloc',urlParamAlloc,'add_alloc');
+	    	$("#jqGridPagerAllocEditAll,#jqGridPagerAllocDelete").show();
+        }, 
+        errorfunc: function(rowid,response){
+        	alert(response.responseText);
+        	refreshGrid('#jqGridAlloc',urlParamAlloc,'add_alloc');
+	    	$("#jqGridPagerAllocDelete").show();
+        },
+        beforeSaveRow: function(options, rowid) {
+
+        	//if(errorField.length>0)return false;
+        	mycurrency2.formatOff();
+			let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
+			let editurl = "./CreditNoteARDetail/form?"+
+				$.param({
+					action: 'CreditNoteAR_detail_save',
+					idno: $('#db_idno').val(),
+					auditno:$('#db_auditno').val(),
+					amount:data.amount,
+				});
+			$("#jqGridAlloc").jqGrid('setGridParam',{editurl:editurl});
+        },
+        afterrestorefunc : function( response ) {
+			hideatdialogForm(false);
+	    }
+    };
+
+    ////////////////////////////////////////////////pager jqGridAlloc////////////////////////////////////////////////
+	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{	
+		add:false,
+		edit:true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions_alloc
+		},
+		editParams: myEditOptions_alloc
+	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
+		id: "save_alloc",
+		caption:"Save",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Save Alloc"
+	});
+
+	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
+	$("#jqGridArAlloc").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGridAlloc").jqGrid('getGridParam','colModel'),
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPagerArAlloc",
+		loadComplete: function(data){
+
+			setjqgridHeight(data,'jqGridArAlloc');
+			calc_jq_height_onchange("jqGridArAlloc");
+		},
+		gridComplete: function(){
+			
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#jqGridArAlloc");
+
+
+	$("#jqGridArAlloc_panel").on("show.bs.collapse", function(){
+		$("#jqGridArAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridArAlloc_c")[0].offsetWidth-$("#jqGridArAlloc_c")[0].offsetLeft-28));
+	});
+
+	
+	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
+	$("#save_alloc").click(function(){
+		// mycurrency.formatOff();
+		// mycurrency.check0value(errorField);
+		// unsaved = false;
+		
+		// if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+		// 	saveHeader("#formdata",oper,saveParam,{idno:$('#idno').val()});
+		// 	unsaved = false;
+		// 	errorField.length=0;
+		// 	// $("#dialogForm").dialog('close');
+		// }else{
+		// 	mycurrency.formatOn();
+		// }
+		var param={
+			url: './CreditNoteARDetail/form',
+			oper: 'add_alloc',
+			idno: $('#idno').val()
+		}
+		var obj={
+			_token : $('#_token').val(),
+			data_detail: $('#jqGridAlloc').jqGrid('getRowData')
+		}
+
+		$.post( param.url+"?"+$.param(param),obj, function( data ) {
+		
+		},'json').fail(function(data) {
+		}).success(function(data){
+			$("#dialogForm").dialog('close');
+		});
+	});
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	
@@ -1319,7 +1664,7 @@ $(document).ready(function () {
 			title:"Select Paymode",
 			open: function(){
 				dialog_paymodeAR.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
-				dialog_paymodeAR.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#db_source').val(), 'Credit Note'];
+				dialog_paymodeAR.urlParam.filterVal=['ACTIVE', 'session.compcode', 'AR', 'Credit Note'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -1508,15 +1853,80 @@ $(document).ready(function () {
 		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
 		{
 			colModel: [
-				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','ACTIVE']
 			},
-			ondblClickRow: function () {
-				$('#posteddate').focus();
+			ondblClickRow:function(){
+				if(($("#db_trantype2").find(":selected").text() == 'Credit Note')) {
+					
+					$("#jqGridAlloc").jqGrid("clearGridData", true);
+
+					let data=selrowData('#'+dialog_CustomerSO.gridname);					
+					// $("#jqGridAlloc input[name='debtorcode']").val(data['debtorcode']);
+					// $("#jqGridAlloc input[name='allocdate']").val(data['posteddate']);
+					// $("#jqGridAlloc input[name='recptno']").val(data['recptno']); 
+					// $("#jqGridAlloc input[name='refamount']").val(data['amount']);
+					// $("#jqGridAlloc input[name='outamount']").val(data['outamount']);
+
+					var urlParam2 = {
+						action: 'get_value_default',
+						url: 'util/get_value_default',
+						field: [],
+						table_name: ['debtor.dbacthdr'],
+						filterCol: ['dbacthdr.debtorcode', 'dbacthdr.compcode', 'dbacthdr.recstatus', 'dbacthdr.outamount','dbacthdr.source'],
+						filterVal: [$("#db_debtorcode").val(), 'session.compcode', 'POSTED', '>.0','PB'],
+						WhereInCol: ['dbacthdr.trantype'],
+						WhereInVal: [['IN','DN']],
+						table_id: 'idno',
+					};
+
+					$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
+					}, 'json').done(function (data) {
+						if (!$.isEmptyObject(data.rows)) {
+							myerrorIt_only(dialog_CustomerSO.textfield,false);
+
+							data.rows.forEach(function(elem) {
+								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
+									{
+										idno:elem['idno'],
+										debtorcode:elem['debtorcode'],
+										allocdate:elem['posteddate'],
+										recptno:elem['recptno'],
+										refamount:elem['amount'],
+										outamount:elem['outamount'],
+										amount: 0,
+										balance:elem['outamount'],
+									}
+								);
+							});
+
+							calc_amtpaid_bal();
+							
+							var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+							for (var i = 0; i < ids.length; i++) {
+								$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+
+								$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+							}
+
+						} else {
+							alert("This debtor doesnt have any invoice!");
+							$(dialog_CustomerSO.textfield).val('');
+							myerrorIt_only(dialog_CustomerSO.textfield,true);
+						}
+					});
+				} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) {
+					$("#jqGridAlloc").jqGrid("clearGridData", true);
+
+					let data=selrowData('#'+dialog_CustomerSO.gridname);
+					// $("#apacthdr_payto").val(data['suppcode']);
+					$('#posteddate').focus();
+				}
+				
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1658,4 +2068,28 @@ function calc_jq_height_onchange(jqgrid){
 		scrollHeight = 300;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}
+
+function init_jq2(oper){
+	if(oper != 'add'){
+		var unallocated = selrowData('#jqGrid').unallocated;
+		if(unallocated == 'true'){
+			$("#db_trantype2").val('CNU');
+		}
+	}
+
+	if(($("#db_trantype2").find(":selected").text() == 'Credit Note')) {
+		// $('#save').hide();
+		$('#grid_alloc').show();
+		$('#grid_dtl').show();
+		$('#jqGridPagerAlloc').hide();
+		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-28));
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+		$('#save').hide();
+		$('#grid_alloc').hide();
+		$('#grid_dtl').show();
+		$('#jqGridPagerAlloc').hide();
+ 		//$("#jqGridAlloc input[name='allocamount']").attr('readonly','readonly');
+	}
 }

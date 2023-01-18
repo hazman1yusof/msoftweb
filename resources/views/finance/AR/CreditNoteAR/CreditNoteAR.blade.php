@@ -188,6 +188,25 @@ i.fa {
 				</div>
 			</div>	
 		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="jqGridArAlloc_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridArAlloc_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Allocation</h5>
+				</div>
+			</div>
+
+			<div id="jqGridArAlloc_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGridArAlloc" class="table table-striped"></table>
+						<div id="jqGridPagerArAlloc"></div>
+					</div>
+				</div>
+			</div>	
+		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
 
@@ -202,35 +221,43 @@ i.fa {
 					<input id="db_trantype" name="db_trantype" type="hidden">
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
-						<div class="col-md-3">
+						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
+						<div class="col-md-2">
+							<select id="db_trantype2" name=db_trantype2 class="form-control" data-validation="required">
+								<option value = "CN">Credit Note</option>
+								<option value = "CNU">Credit Note Unallocated</option>
+							</select>
+						</div>
+
+						<label class="col-md-3 control-label" for="db_debtorcode">Debtor</label>	 
+						<div class="col-md-2">
 							<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
 						</div>
+					</div>
 
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
 						<div class="col-md-2">
 							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_auditno">Credit No</label>  
+						<label class="col-md-3 control-label" for="db_auditno">Credit No</label>  
 						<div class="col-md-2"> 
 							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-						</div>
-
-						<label class="col-md-3 control-label" for="db_amount">Total Amount</label>
-						<div class="col-md-2">
-							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 						</div>
 					</div>
 						
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>  
+						<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
+						<div class="col-md-2">
+							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
+						</div>
+
+						<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
 						<div class="col-md-2">
 							<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 						</div>
@@ -262,11 +289,14 @@ i.fa {
 					</div>
 
 					<hr/>
+
+					<button type="button" id='posted_button' class='btn btn-primary btn-sm pull-right' style='margin: 0.2%;'>Posted</button>
+
 				</form>
 			</div>
 		</div>
 			
-		<div class='panel panel-info'>
+		<div class='panel panel-info' id="grid_dtl">
 			<div class="panel-heading">Credit Note Detail</div>
 			<div class="panel-body">
 				<form id='formdata2' class='form-vertical' style='width:99%'>
@@ -275,6 +305,24 @@ i.fa {
 					<div id="jqGrid2_c" class='col-md-12'>
 						<table id="jqGrid2" class="table table-striped"></table>
 						<div id="jqGridPager2"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="panel-body">
+				<div class="noti" style="color:red"></div>
+			</div>
+		</div>
+			
+		<div class='panel panel-info' id="grid_alloc">
+			<div class="panel-heading">Allocation</div>
+			<div class="panel-body">
+				<form id='formdataAlloc' class='form-vertical' style='width:99%'>
+					<input type="hidden" id="jqGridAlloc_itemcode_refresh" name="" value="0">
+
+					<div id="jqGridAlloc_c" class='col-md-12'>
+						<table id="jqGridAlloc" class="table table-striped"></table>
+						<div id="jqGridPagerAlloc"></div>
 					</div>
 				</form>
 			</div>
