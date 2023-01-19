@@ -103,6 +103,8 @@ $(document).ready(function () {
 			},
 			close: function( event, ui ) {
         		show_post_button(false);
+				addmore_jqgrid2.state = false;
+				addmore_jqgrid2.more = false;
 				addmore_jqgridAlloc.state = false;
 				addmore_jqgridAlloc.more = false;
 				//reset balik
@@ -516,6 +518,10 @@ $(document).ready(function () {
 		}).done(function (data) {
 
 			hideatdialogForm(false);
+			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
+				addmore_jqgrid2.state = true;
+				$('#jqGrid2_iladd').click();
+			}
 			
 			if(selfoper=='add'){
 
@@ -1545,7 +1551,7 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
-				$('#apacthdr_bankcode').focus();
+				$('#apacthdr_remarks').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
