@@ -136,17 +136,18 @@ i.fa {
 		    	</div>
 		</div>
 
-	    <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel" id="panel_jqGrid3">
+	 <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
 				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 				<b>CREDITOR NAME: </b><span id="suppcode_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Credit Note Allocation</h5>
-				</div>
+					<h5>Credit Note Detail</h5>
+				</div>				
 			</div>
+
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
 				<div class="panel-body">
 				@if (strtoupper(Request::get('scope')) == 'CANCEL')
@@ -164,9 +165,30 @@ i.fa {
 						<div id="jqGridPager3"></div>
 					</div>
 				</div>
-			</div>	
+			</div>
+
 		</div>
-        
+
+	    <div class="panel panel-default" style="position: relative;" id="jqGridAPAlloc_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAPAlloc_panel">
+				
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Credit Note Allocation</h5>
+				</div>
+			</div>
+
+			<div id="jqGridAPAlloc_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
+            			<table id="jqGridAPAlloc" class="table table-striped"></table>
+            			<div id="jqGridPagerAPAlloc"></div>
+    				</div>
+	    		</div>
+			</div>	
+			
+		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
 

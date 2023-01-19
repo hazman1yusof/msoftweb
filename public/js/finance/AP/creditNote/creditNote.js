@@ -49,13 +49,14 @@ $(document).ready(function () {
 				actdateObj.getdata().set();
 				unsaved = false;
 				errorField.length=0;
-				$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft));
-				$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+				$("#jqGridAlloc").jqGrid('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft));
 				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
 				switch (oper) {
 					case state = 'add':
+					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#jqGridAlloc").jqGrid("clearGridData", false);
-					$("#jqGrid2").jqGrid("clearGridData", false);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -80,8 +81,8 @@ $(document).ready(function () {
 					dialog_payto.on();
 				}
 				if(oper!='add'){
-					refreshGrid("#jqGridAlloc",urlParam2_alloc);
 					refreshGrid("#jqGrid2",urlParam2);
+					refreshGrid("#jqGridAlloc",urlParam2_alloc);
 					dialog_department.check(errorField);
 					dialog_paymode.check(errorField);
 					dialog_suppcode.check(errorField);
@@ -277,7 +278,6 @@ $(document).ready(function () {
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGridAlloc', urlParam2_alloc,'kosongkan');
-				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
 			}
@@ -288,9 +288,9 @@ $(document).ready(function () {
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
 			urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			refreshGrid("#jqGrid3",urlParam2_alloc);
+			refreshGrid("#jqGridAPAlloc",urlParam2_alloc);
+			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
-			refreshGrid("#jqGrid3",urlParam2_alloc);
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -1516,7 +1516,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		colModel: $("#jqGridAlloc").jqGrid('getGridParam','colModel'),
+		colModel: $("#jqGrid2").jqGrid('getGridParam','colModel'),
 		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
@@ -1536,6 +1536,39 @@ $(document).ready(function () {
 		},
 	});
 	jqgrid_label_align_right("#jqGrid3");
+
+		
+	$("#jqGrid3_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+	});
+
+	////////////////////////////////////////////////jqGridAPAlloc////////////////////////////////////////////////
+	$("#jqGridAPAlloc").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGridAlloc").jqGrid('getGridParam','colModel'),
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPagerAPAlloc",
+		loadComplete: function(data){
+
+			setjqgridHeight(data,'jqGridAPAlloc');
+			calc_jq_height_onchange("jqGridAPAlloc");
+		},
+		gridComplete: function(){
+			
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#jqGridAPAlloc");
+
+	$("#jqGridAPAlloc_panel").on("show.bs.collapse", function(){
+		$("#jqGridAPAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAPAlloc_c")[0].offsetWidth-$("#jqGridAPAlloc_c")[0].offsetLeft-28));
+	});
 
 	////////////////////////////////////////// object for dialog handler//////////////////////////////////////////
 
@@ -1623,11 +1656,6 @@ $(document).ready(function () {
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
 					$("#apacthdr_payto").val(data['suppcode']);
-					// $("#jqGridAlloc input[name='document']").val(data['suppcode']);
-					// $("#jqGridAlloc input[name='entrydate']").val(data['recdate']); 
-					// $("#jqGridAlloc input[name='reference']").val(data['document']);
-					// $("#jqGridAlloc input[name='refamount']").val(data['amount']);
-					// $("#jqGridAlloc input[name='outamount']").val(data['outamount']);
 
 					var urlParam_alloc = {
 						action: 'get_value_default',
@@ -1886,10 +1914,6 @@ $(document).ready(function () {
 		}
 	}
 
-	$("#jqGrid3_panel").on("show.bs.collapse", function(){
-		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
-	});
-
 });
 
 function init_jq2(oper){
@@ -1904,7 +1928,7 @@ function init_jq2(oper){
 		$('#save').hide();
 		$('#alloc_detail').show();
 		$('#grid_detail').show();
-		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
 		$('#save').hide();

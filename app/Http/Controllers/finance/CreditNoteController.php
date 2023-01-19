@@ -351,25 +351,25 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        if($request->unallocated == 'false') {
+        // if($request->unallocated == 'false') {
 
-            DB::beginTransaction();
+        //     DB::beginTransaction();
 
-            $table = DB::table("finance.apacthdr");
+        //     $table = DB::table("finance.apacthdr");
 
-            $array_update = [
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
-                'document' => strtoupper($request->apacthdr_document),
-                'paymode' => strtoupper($request->apacthdr_paymode),
-                'remarks' => strtoupper($request->apacthdr_remarks),
-            ];
+        //     $array_update = [
+        //         'upduser' => session('username'),
+        //         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+        //         'pvno' => $request->apacthdr_pvno,
+        //         'doctype' => $request->apacthdr_doctype,
+        //         'document' => strtoupper($request->apacthdr_document),
+        //         'paymode' => strtoupper($request->apacthdr_paymode),
+        //         'remarks' => strtoupper($request->apacthdr_remarks),
+        //     ];
 
-            try {
+        //     try {
 
-                $table->update($array_update)->where('idno',$request->idno);
+        //         $table->update($array_update)->where('idno',$request->idno);
 
                 // foreach ($request->data_detail as $key => $value) {
                 //     $idno = $value['idno'];
@@ -440,14 +440,14 @@ use Carbon\Carbon;
                 //         'outamount' => $value['outamount'] - $value['allocamount']
                 //     ]);    
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollback();
+        //         DB::commit();
+        //     } catch (\Exception $e) {
+        //         DB::rollback();
 
-                return response('Error'.$e, 500);
-            }
+        //         return response('Error'.$e, 500);
+        //     }
 
-        } else {
+        // } else {
 
             DB::beginTransaction();
 
@@ -485,7 +485,7 @@ use Carbon\Carbon;
                 return response($e, 500);
             }            
 
-        }
+       // }
     }
 
     public function save_alloc(Request $request){
