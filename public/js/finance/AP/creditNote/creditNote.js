@@ -289,6 +289,10 @@ $(document).ready(function () {
 
 			urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			refreshGrid("#jqGridAPAlloc",urlParam2_alloc);
+
+			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			refreshGrid("#jqGrid2",urlParam2);
+
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 			if_cancel_hide();
