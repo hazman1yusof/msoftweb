@@ -55,6 +55,7 @@ $(document).ready(function () {
 				switch (oper) {
 					case state = 'add':
 					$("#jqGridAlloc").jqGrid("clearGridData", false);
+					$("#jqGrid2").jqGrid("clearGridData", false);
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
@@ -80,13 +81,13 @@ $(document).ready(function () {
 				}
 				if(oper!='add'){
 					refreshGrid("#jqGridAlloc",urlParam2_alloc);
+					refreshGrid("#jqGrid2",urlParam2);
 					dialog_department.check(errorField);
 					dialog_paymode.check(errorField);
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
 				init_jq2(oper);
-			//	recstatus(oper);
 			},
 			beforeClose: function(event, ui){
 				if(unsaved){
@@ -117,6 +118,7 @@ $(document).ready(function () {
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGridAlloc",null,"kosongkan");
+				refreshGrid("#jqGrid2",null,"kosongkan");
 				errorField.length=0;
 			},
 	});
@@ -273,6 +275,7 @@ $(document).ready(function () {
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGridAlloc', urlParam2_alloc,'kosongkan');
+				refreshGrid('#jqGrid2', urlParam2,'kosongkan');
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
 			}
@@ -346,6 +349,7 @@ $(document).ready(function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
+			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -356,6 +360,7 @@ $(document).ready(function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
+			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -1477,6 +1482,7 @@ $(document).ready(function () {
 		rdonly('#formdata');
 		$(".noti").empty();
 		refreshGrid("#jqGridAlloc",urlParam2_alloc);
+		refreshGrid("#jqGrid2",urlParam2);
 		errorField.length=0;
 	});
 
