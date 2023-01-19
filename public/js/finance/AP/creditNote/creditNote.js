@@ -1886,7 +1886,7 @@ function init_jq2(oper){
 		if(unallocated == 'true'){
 			$("#apacthdr_trantype").val('CNU');
 		}
-	 }
+	}
 
 	if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
@@ -1898,27 +1898,8 @@ function init_jq2(oper){
 		$('#save').hide();
 		$('#alloc_detail').hide();
 		$('#grid_detail').show();
- 		//$("#jqGridAlloc input[name='allocamount']").attr('readonly','readonly');
 	}
 }
-
-// function recstatus(oper){
-// 	if(oper == 'add'){
-// 		if($('#apacthdr_recstatus').val() == 'POSTED'){
-// 			$('#save').hide();
-// 			$('#alloc_detail').show();
-// 			$('#grid_detail').show();
-// 			$('#jqGridPager2').hide();
-// 			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
-// 		} else if($('#apacthdr_recstatus').val() == 'OPEN'){
-// 			$('#save').hide();
-// 			$('#grid_detail').show();
-// 			$('#alloc_detail').show();
-// 			$('#jqGridPagerAlloc').hide();
-// 			//$("#jqGridAlloc input[name='allocamount']").attr('readonly','readonly');
-// 		}
-// 	}
-// }
 
 function populate_form(obj){
 

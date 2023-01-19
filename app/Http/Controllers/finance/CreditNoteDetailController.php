@@ -131,11 +131,9 @@ class CreditNoteDetailController extends defaultController
                   'lineno_' => $li,
                   'source' => 'AP',
                   'trantype' => 'CN',
-                //  'document' => strtoupper($request->document),
                   'amount' => $request->amount,
                   'GSTCode' => $request->GSTCode,
                   'AmtB4GST' => $request->AmtB4GST,
-                 // 'category' => $request->category,
                   'deptcode' => $request->deptcode,
                   'adduser' => session('username'), 
                   'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
@@ -234,11 +232,9 @@ class CreditNoteDetailController extends defaultController
                 ->update([
                     'source' => 'AP',
                     'trantype' => 'CN',
-                    'document' => strtoupper($request->document),
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
-                    'category' => $request->category,
                     'deptcode' => $request->deptcode,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
@@ -329,9 +325,7 @@ class CreditNoteDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->where('lineno_','=',$value['lineno_'])
                     ->update([
-                        'document' => strtoupper($value['document']),
                         'amount' => $value['amount'],
-                        'category' => $value['category'],
                         'deptcode' => $value['deptcode'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
@@ -365,15 +359,12 @@ class CreditNoteDetailController extends defaultController
 
     }
 
-
-
     public function delete_dd(Request $request){
         DB::table('finance.apacthdr')
                 ->where('idno','=',$request->idno)
                 ->where('compcode','=','DD')
                 ->delete();
     }
-
 
 }
 
