@@ -29,6 +29,8 @@ class CreditNoteARDetailController extends defaultController
                 return $this->del($request);
             case 'add_alloc':
                 return $this->add_alloc($request);
+            case 'posted_single':
+                return $this->posted_single($request);break;
             default:
                 return 'error happen..';
         }
@@ -464,6 +466,50 @@ class CreditNoteARDetailController extends defaultController
             DB::rollback();
 
             return response($e->getMessage(), 500);
+        }
+    }
+
+    public function posted_single(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+            
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno)
+                ->first();
+            
+            // $this->gltran($request->idno);
+            
+            DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'POSTED',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+            
+            $dbactdtl = DB::table('debtor.dbactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('source','=', $dbacthdr->source)
+                ->where('trantype','=', $dbacthdr->trantype)
+                ->where('auditno','=', $dbacthdr->auditno)
+                ->update([
+                    'recstatus' => 'POSTED'
+                ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->result = 'success';
+            
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response('Error'.$e, 500);
         }
     }
 

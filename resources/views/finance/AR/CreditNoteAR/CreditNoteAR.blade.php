@@ -189,7 +189,7 @@ i.fa {
 			</div>	
 		</div>
 
-		<div class="panel panel-default" style="position: relative;" id="jqGridArAlloc_c">
+		<!-- <div class="panel panel-default" style="position: relative;" id="jqGridArAlloc_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridArAlloc_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -206,7 +206,7 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div>
+		</div> -->
     </div>
 	<!-- ***************End Search + table ********************* -->
 
@@ -217,7 +217,7 @@ i.fa {
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
 					<input id="db_idno" name="db_idno" type="hidden">
-					<input id="db_source" name="db_source" type="hidden" value="AR">
+					<input id="db_source" name="db_source" type="hidden">
 					<input id="db_trantype" name="db_trantype" type="hidden">
 
 					<div class="form-group">
