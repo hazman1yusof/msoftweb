@@ -588,7 +588,7 @@ use Carbon\Carbon;
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            $apalloc = DB::table('finance.apactdtl')
+            DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('unit','=',session('unit'))
                 ->where('source','=', $apacthdr->source)
@@ -632,17 +632,17 @@ use Carbon\Carbon;
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                $apalloc = DB::table('finance.apalloc')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('unit','=',session('unit'))
-                    ->where('source','=', $apacthdr->source)
-                    ->where('trantype','=', $apacthdr->trantype)
-                    ->where('auditno','=', $apacthdr->auditno)
-                    ->update([
-                        'recstatus' => 'POSTED',
-                        'lastuser' => session('username'),
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                // $apalloc = DB::table('finance.apalloc')
+                //     ->where('compcode','=',session('compcode'))
+                //     ->where('unit','=',session('unit'))
+                //     ->where('source','=', $apacthdr->source)
+                //     ->where('trantype','=', $apacthdr->trantype)
+                //     ->where('auditno','=', $apacthdr->auditno)
+                //     ->update([
+                //         'recstatus' => 'POSTED',
+                //         'lastuser' => session('username'),
+                //         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                //     ]);
 
             }
 

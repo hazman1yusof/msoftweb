@@ -440,15 +440,8 @@ class testController extends Controller
     // }
 
     public function test(Request $request){
-        $product = DB::table('material.product')
-                        ->where('compcode','9A')
-                        ->where('itemcode','LIKE','25%')
-                        ->get();
-
-
-        if($product->exists()){
-            dd('got');
-        }
+        dd('sdsd');
+        return view('test.test');
     }
 
 }

@@ -1837,7 +1837,6 @@ $(document).ready(function () {
 
 					$(event.currentTarget).parent().next().html('');
 				}
-				console.log(optid)
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);

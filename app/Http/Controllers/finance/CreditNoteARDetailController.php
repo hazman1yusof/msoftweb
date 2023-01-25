@@ -50,8 +50,8 @@ class CreditNoteARDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.dbactdtl')
-                    ->where('source','=',$request->source)
-                    ->where('trantype','=',$request->trantype)
+                    ->where('source','=','PB')
+                    ->where('trantype','=','CN')
                     ->where('auditno','=',$request->auditno)
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')

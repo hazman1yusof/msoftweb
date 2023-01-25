@@ -34,36 +34,7 @@ class TestController extends defaultController
     }
 
     public function test(Request $request){
-        $product = DB::table('material.product')
-                        ->where('compcode','9A')
-                        ->where('itemcode','LIKE','65%');
-
-        if($product->exists()){
-            $product = $product->get();
-
-            foreach ($product as $key => $value) {
-                $chgmast = DB::table('material.stockexp')
-                                    ->where('compcode','9A')
-                                    ->where('ItemCode',$value->itemcode);
-
-
-                if($chgmast->exists()){
-                    // DB::table('hisdb.chgmast')
-                    //     ->where('compcode','9A')
-                    //     ->where('chgcode',$value->itemcode)
-                    //     ->update([
-                    //         'uom' => $value->uomcode
-                    //     ]);
-
-                    DB::table('material.stockexp')
-                        ->where('compcode','9A')
-                        ->where('ItemCode',$value->itemcode)
-                        ->update([
-                            'UomCode' => $value->uomcode
-                        ]);
-                }             
-            }
-        }
+        return view('test.test');
     }
 
     public function excel(Request $request)

@@ -249,7 +249,6 @@ $(document).ready(function () {
 			urlParam2.source = selrowData("#jqGrid").db_source;
 			urlParam2.trantype = selrowData("#jqGrid").db_trantype;
 			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
-			// urlParam2.filterVal[1]=selrowData("#jqGrid").db_auditno;
 
 			urlParamAlloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
 			refreshGrid("#jqGridArAlloc",urlParamAlloc);
@@ -432,12 +431,10 @@ $(document).ready(function () {
 
 			if (selfoper == 'add') {
 				oper = 'edit';//sekali dia add terus jadi edit lepas tu
-				$('#purreqhd_recno').val(data.recno);
-				$('#purreqhd_purreqno').val(data.purreqno);
-				$('#idno').val(data.idno);//just save idno for edit later
-				$('#purreqhd_totamount').val(data.totalAmount);
+				$('#db_idno').val(data.idno);
+				$('#db_auditno').val(data.auditno);
 
-				urlParam2.filterVal[0] = data.recno;
+				urlParam2.auditno = data.auditno;
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
 			}
@@ -643,14 +640,9 @@ $(document).ready(function () {
 	var urlParam2 = {
 		action: 'get_table_dtl',
 		url:'CreditNoteARDetail/table',
-		source:'',
-		trantype:'',
+		source:'PB',
+		trantype:'CN',
 		auditno:'',
-		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
-		table_name:['debtor.dbactdtl AS dbactdtl'],
-		table_id:'lineno_',
-		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -819,10 +811,14 @@ $(document).ready(function () {
 
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
-
+		let recstatus = rowObject.db_recstatus;
+		console.log(recstatus);
 		if(options.gid == "jqGrid"){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			if(recstatus != 'POSTED'){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else{
+				return ' ';
+			}
 		}else if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
@@ -895,7 +891,7 @@ $(document).ready(function () {
 			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2]},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("input[name='amount']").keydown(function(e) {//when click tab at amount, auto save
 				var code = e.keyCode || e.which;
@@ -1166,7 +1162,8 @@ $(document).ready(function () {
 	}
 	function GSTCodeCustomEdit(val, opt) {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a><input id="'+opt.id+'_gstpercent" name="gstpercent" type="hidden"></div><span class="help-block"></span>');
+		var id_optid = opt.id.substring(0,opt.id.search("_"));
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a><input id="'+id_optid+'_gstpercent" name="gstpercent" type="hidden"></div><span class="help-block"></span>');
 	}
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1239,7 +1236,7 @@ $(document).ready(function () {
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2]},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
@@ -1252,13 +1249,14 @@ $(document).ready(function () {
 
 	var mycurrency2 =new currencymode([]);
 	function calculate_line_totgst_and_totamt(event){
-		
 		mycurrency2.formatOff();
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 		
 		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
+		console.log(gstpercent)
+		console.log(id_optid)
 		
 		var tot_gst = amntb4gst * (gstpercent / 100);
 		var amount = amntb4gst + tot_gst;
@@ -1564,8 +1562,8 @@ $(document).ready(function () {
     ////////////////////////////////////////////////pager jqGridAlloc////////////////////////////////////////////////
 	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{	
 		add:false,
-		edit:true,
-		cancel: true,
+		edit:false,
+		cancel: false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: { 
@@ -1622,9 +1620,9 @@ $(document).ready(function () {
 		// 	mycurrency.formatOn();
 		// }
 		var param={
-			url: './CreditNoteARDetail/form',
-			oper: 'add_alloc',
-			idno: $('#idno').val()
+			url: './CreditNoteAR/form',
+			oper: 'save_alloc',
+			idno: $('#db_idno').val()
 		}
 		var obj={
 			_token : $('#_token').val(),
@@ -1642,9 +1640,9 @@ $(document).ready(function () {
 	////////////////////////////////////////////////posted_button////////////////////////////////////////////////
 	$("#posted_button").click(function(){
 		var param={
-			url: './CreditNoteARDetail/form',
+			url: './CreditNoteAR/form',
 			oper: 'posted_single',
-			idno: $('#idno').val()
+			idno: $('#db_idno').val()
 		}
 		
 		$.get( param.url+"?"+$.param(param), function( data ) {
@@ -1661,7 +1659,7 @@ $(document).ready(function () {
 				
 				$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
 			}
-			$('#save_alloc').show();
+			$('#save_alloc,#jqGridPagerAlloc').show();
 		});
 	});
 
@@ -1794,9 +1792,7 @@ $(document).ready(function () {
 
 				}
 				let data=selrowData('#'+dialog_GSTCode.gridname);
-				console.log("#jqGrid2 #"+optid+"_gstpercent")
-				console.log($("#jqGrid2 #"+optid+"_gstpercent"))
-				$("#jqGrid2 #"+optid+"_gstpercent").val(data['rate']);
+				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
 				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
@@ -1903,7 +1899,7 @@ $(document).ready(function () {
 					// $("#jqGridAlloc input[name='refamount']").val(data['amount']);
 					// $("#jqGridAlloc input[name='outamount']").val(data['outamount']);
 
-					var urlParam2 = {
+					var param = {
 						action: 'get_value_default',
 						url: 'util/get_value_default',
 						field: [],
@@ -1915,7 +1911,7 @@ $(document).ready(function () {
 						table_id: 'idno',
 					};
 
-					$.get("util/get_value_default?" + $.param(urlParam2), function (data) {
+					$.get("util/get_value_default?" + $.param(param), function (data) {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_CustomerSO.textfield,false);
@@ -1936,13 +1932,6 @@ $(document).ready(function () {
 							});
 
 							calc_amtpaid_bal();
-							
-							// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-							// for (var i = 0; i < ids.length; i++) {
-							// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
-
-							// 	$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-							// }
 
 						} else {
 							alert("This debtor doesnt have any invoice!");
