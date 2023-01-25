@@ -28,7 +28,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#posteddate"]);
+	var actdateObj = new setactdate(["#posteddate"],true);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -67,8 +67,10 @@ $(document).ready(function () {
 						break;
 				}if (oper != 'add') {
 					dialog_CustomerDN.check(errorField);
+					dialog_paymode.check(errorField);
 				} if (oper != 'view') {
 					dialog_CustomerDN.on();
+					dialog_paymode.on();
 				}
 			},
 			beforeClose: function (event, ui) {
@@ -92,6 +94,7 @@ $(document).ready(function () {
 				$('.my-alert').detach();
 				$("#formdata a").off();
 				dialog_CustomerDN.off();
+				dialog_paymode.off();
 				$(".noti").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
@@ -195,6 +198,7 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
+			{ label: 'db_paymode', name: 'db_paymode', width: 20, hidden: true },
 			{ label: 'mrn', name: 'db_mrn', width: 10, hidden: true },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
@@ -381,7 +385,8 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
-			alert(data.responseJSON.message);
+			console.log(data);
+			// alert(data.responseJSON.message);
 			$('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
@@ -680,15 +685,15 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:categoryCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
+            // { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
+            //     editrules:{required: true,custom:true, custom_func:cust_rules},
+            //     formatter: showdetail,
+            //     edittype:'custom',	editoptions:
+            //         {  
+            //             custom_element:categoryCustomEdit,
+            //             custom_value:galGridCustomValue 	
+            //         },
+            // },
             { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
                 //editrules:{required: true},
                 edittype:"text",
@@ -703,25 +708,12 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
-				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-				editable: true,
-				align: "right",
-				editrules:{required: true},edittype:"text",
-				editoptions:{
-					maxlength: 12,
-					dataInit: function(element) {
-						element.style.textAlign = 'right';
-						}
-					},
-			},
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
                 editrules:{required: true},edittype:"text",
                 editoptions:{
-                    readonly: "readonly",
                     maxlength: 12,
                     dataInit: function(element) {
                         element.style.textAlign = 'right';
@@ -739,6 +731,19 @@ $(document).ready(function () {
 					}
 				},
 			},
+            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+                editable: true,
+                align: "right",
+                editrules:{required: true},edittype:"text",
+                editoptions:{
+                    readonly: "readonly",
+                    maxlength: 12,
+                    dataInit: function(element) {
+                        element.style.textAlign = 'right';
+                    },
+                }
+            },
             { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true
             },
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
@@ -777,6 +782,7 @@ $(document).ready(function () {
 			//dialog_mrn.check(errorField);
 			dialog_CustomerDN.check(errorField);
 			dialog_approvedbySO.check(errorField);
+			dialog_paymode.check(errorField);
 		}
 
 		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
@@ -839,10 +845,14 @@ $(document).ready(function () {
 
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
-		let recstatus = cbselect.recstatus;
+		let recstatus = rowObject.db_recstatus;
 
 		if(options.gid == "jqGrid"){
-			return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			if(recstatus != 'POSTED'){
+				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
+			}else{
+				return ' ';
+			}
 		}else if(options.gid != "jqGrid"){
 			return "<button class='btn btn-xs btn-danger btn-md' id='delete_"+rowObject[idno]+"' ><i class='fa fa-trash' aria-hidden='true'></i></button>";
 		}else{
@@ -906,7 +916,7 @@ $(document).ready(function () {
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();
-			dialog_category.on();
+			// dialog_category.on();
 			dialog_GSTCode.on();
 
 			unsaved = false;
@@ -918,7 +928,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			//mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
-			$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('keyup',{currency: [mycurrency2]},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
 			$("input[name='amount']").keydown(function(e) {//when click tab at amount, auto save
 				var code = e.keyCode || e.which;
@@ -1082,7 +1092,7 @@ $(document).ready(function () {
                     'lineno_' : ids[i],
 		    		'idno' : data.idno,
 		    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
-		    		'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
+		    		// 'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
 		    		'document' : $('#'+ids[i]+"_document").val(),
 		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
@@ -1138,7 +1148,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
             case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'category':field=['catcode','description'];table="material.category";break;
+			// case 'category':field=['catcode','description'];table="material.category";break;
 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
@@ -1161,7 +1171,7 @@ $(document).ready(function () {
 		var temp=null;
 		switch (name) {
             case 'Department':temp=$('#deptcode');break;
-			case 'Category':temp=$('#category');break;
+			// case 'Category':temp=$('#category');break;
 
 			case 'Item Code': temp = $("#jqGrid2 input[name='chggroup']"); break;
 			case 'UOM Code': temp = $("#jqGrid2 input[name='uom']"); break;
@@ -1193,14 +1203,21 @@ $(document).ready(function () {
 		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
-	function categoryCustomEdit(val, opt) {
-		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-	}
+	// function categoryCustomEdit(val, opt) {
+	// 	val = getEditVal(val);
+	// 	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	// }
 	function GSTCodeCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		// return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a><input id="'+opt.id+'_gstpercent" name="gstpercent" type="hidden"></div><span class="help-block"></span>');
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+
+		var id_optid = opt.id.substring(0,opt.id.search("_"));
+		return $(`<div class="input-group">
+			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+		</div>
+		<span class="help-block"></span>
+		<div class="input-group">
+			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
+		</div>`);
 	}
 		function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
@@ -1226,6 +1243,7 @@ $(document).ready(function () {
 		} else {
 			mycurrency.formatOn();
 			dialog_CustomerDN.on();
+			dialog_paymode.on();
 			//dialog_mrn.on();
 		}
 	});
@@ -1235,6 +1253,7 @@ $(document).ready(function () {
 		emptyFormdata(errorField, '#formdata2');
 		hideatdialogForm(true);
 		dialog_CustomerDN.on();
+		dialog_paymode.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1265,7 +1284,7 @@ $(document).ready(function () {
 
 		errorField.length=0;
 		dialog_deptcode.on();
-		dialog_category.on();
+		// dialog_category.on();
 		dialog_GSTCode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -1273,7 +1292,7 @@ $(document).ready(function () {
 		
 		// $("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
 		// $("#jqGrid2 input[name='tot_gst'],#jqGrid2 input[name='tot_gst']").on('blur',{currency: [mycurrency2,mycurrency_np]},calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: [mycurrency2]},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
 
@@ -1286,31 +1305,20 @@ $(document).ready(function () {
 	var mycurrency2 =new currencymode([]);
 	//var mycurrency_np =new currencymode([],true);
 	function calculate_line_totgst_and_totamt(event) {
+        mycurrency2.formatOff();
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
 
-		// console.log(event.data.currency)
-		// event.data.currency.forEach(function(element){
-		// 	element.formatOff();
-		// });
+		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
+		
+		var tot_gst = amntb4gst * (gstpercent / 100);
+		var amount = amntb4gst + tot_gst;
 
-		// var optid = event.currentTarget.id;
-		// var id_optid = optid.substring(0,optid.search("_"));
+		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
-		// let AmountB4GST = parseFloat($("#"+id_optid+"_AmtB4GST").val());
-		// let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
-
-		// var tot_gst = AmountB4GST * (gstpercent / 100);
-		// var amount = AmountB4GST + tot_gst;
-
-		// $("#"+id_optid+"tot_gst").val(tot_gst); //total tax
-
-		// $("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst) //total gst amount
-		// $("#jqGrid2 #"+id_optid+"_amount").val(amount) //total amount
-
-		// event.data.currency.forEach(function(element){
-		// 	element.formatOn();
-		// });
-
-		// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
+		event.data.currency.formatOn();//change format to currency on each calculation
 
 	}
 
@@ -1375,14 +1383,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$("#jqGrid2 input[name='category']").focus();
+				$("#jqGrid2 input[name='document']").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='category']").focus();
+					$("#jqGrid2 input[name='document']").focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1397,39 +1405,73 @@ $(document).ready(function () {
 	);
 	dialog_deptcode.makedialog(false);
 
-	var dialog_category = new ordialog(
-		'category','material.category',"#jqGrid2 input[name='category']",errorField,
+	var dialog_paymode = new ordialog(
+		'paymodeAR','debtor.paymode',"#formdata input[name='db_paymode']",errorField,
 		{	colModel:[
-				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
-				
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
-				filterCol:['compcode','source', 'cattype', 'recstatus'],
-				filterVal:['session.compcode','PBDN', 'Other', 'ACTIVE']
+				filterCol:['compcode','recstatus', 'source', 'paytype'],
+				filterVal:['session.compcode','ACTIVE', 'AR', 'Debit Note']
 			},
-			ondblClickRow: function () {
-				$("#jqGrid2 input[name='document']").focus();
+			ondblClickRow:function(){
+				$('#db_remark').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='document']").focus();
+					$('#db_remark').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},{
-			title:"Select Category",
+			title:"Select Paymode",
 			open: function(){
-				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
-				dialog_category.urlParam.filterVal=['session.compcode','PBDN', 'Other', 'ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_category.makedialog(true);
+				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', 'AR', 'Debit Note'];
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_paymode.makedialog(true);
+
+	// var dialog_category = new ordialog(
+	// 	'category','material.category',"#jqGrid2 input[name='category']",errorField,
+	// 	{	colModel:[
+	// 			{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Description',name:'description',width:200,classes:'pointer',canSearch:true,or_search:true, checked:true},
+				
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','source', 'cattype', 'recstatus'],
+	// 			filterVal:['session.compcode','PBDN', 'Other', 'ACTIVE']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			$("#jqGrid2 input[name='document']").focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$("#jqGrid2 input[name='document']").focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},{
+	// 		title:"Select Category",
+	// 		open: function(){
+	// 			dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
+	// 			dialog_category.urlParam.filterVal=['session.compcode','PBDN', 'Other', 'ACTIVE']
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_category.makedialog(true);
 
 	var dialog_GSTCode = new ordialog(
 		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,
@@ -1444,23 +1486,23 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
 
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
+					$(event.currentTarget).parent().next().html('');
 				}else{
 
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 
+					$(event.currentTarget).parent().next().html('');
 				}
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 
-				// $("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
-				console.log("#jqGrid2 #"+optid+"_gstpercent")
-				console.log($("#jqGrid2 #"+optid+"_gstpercent"))
-				$("#jqGrid2 #"+optid+"_gstpercent").val(data['rate']);
+				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
 				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
@@ -1480,12 +1522,13 @@ $(document).ready(function () {
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'OUTPUT'];
 			},
 			close: function(){
-				if($('#jqGridPager2SaveAll').css("display") == "none"){
-					$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus().select();
-				}
+				// if($('#jqGridPager2SaveAll').css("display") == "none"){
+				// 	$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
+				// 	.closest('td')						//utk dialog dalam jqgrid jer
+				// 	.next()
+				// 	.find("input[type=text]").focus().select();
+				// }
+				$("#jqGrid2 input[name='amount']").focus().select();
 				
 			}
 		},'urlParam','radio','tab'

@@ -934,7 +934,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	}
 }
 
-function setactdate(target){
+function setactdate(target,cantmorethantoday = false){
 	this.actdateopen=[];
 	this.lowestdate;
 	this.highestdate;
@@ -993,7 +993,12 @@ function setactdate(target){
 
 				self.target.forEach(function(element,i){
 					$(element).attr('min',self.lowest_opendate.format('YYYY-MM-DD'));
-					$(element).attr('max',self.highest_opendate.format('YYYY-MM-DD'));
+
+					if(cantmorethantoday){
+						$(element).attr('max',moment().format("YYYY-MM-DD"));
+					}else{
+						$(element).attr('max',self.highest_opendate.format('YYYY-MM-DD'));
+					}
 				});
 			}
 		});

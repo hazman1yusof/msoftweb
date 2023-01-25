@@ -192,6 +192,7 @@ class DebitNoteController extends defaultController
         try { 
 
             $auditno = $this->recno('PB','DN');
+            $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
 
             $array_insert = [
                 'source' => 'PB',
@@ -211,6 +212,7 @@ class DebitNoteController extends defaultController
                 'entrydate' => $request->posteddate,
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
+                'paymode' => strtoupper($request->db_paymode),
                 // 'mrn' => strtoupper($request->db_mrn),
                 // 'billno' => $invno,
                 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
@@ -390,7 +392,7 @@ class DebitNoteController extends defaultController
                     ->where('idno','=',$value)
                     ->first();
 
-                // $this->gltran($auditno);
+                $this->gltran($auditno);
 
                 DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
@@ -435,228 +437,95 @@ class DebitNoteController extends defaultController
         }
     }
 
-    public function support(Request $request){
-        DB::beginTransaction();
+    public function gltran($idno){
+        $apacthdr_obj = DB::table('finance.apacthdr')
+                            ->where('idno','=',$idno)
+                            ->first();
 
-        try{
+        //amik yearperiod dari delordhd
+        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->recdate);
 
-            foreach ($request->idno_array as $value){
+        $credit_obj = $this->gltran_frompaymode($apacthdr_obj->paymode,$apacthdr_obj->source);
+        $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode,$apacthdr_obj->trantype);
 
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => $apacthdr_obj->compcode,
+                'adduser' => $apacthdr_obj->adduser,
+                'adddate' => $apacthdr_obj->adddate,
+                'auditno' => $apacthdr_obj->auditno,
+                'lineno_' => 1,
+                'source' => $apacthdr_obj->source,
+                'trantype' => $apacthdr_obj->trantype,
+                'reference' => $apacthdr_obj->document,
+                'postdate' => $apacthdr_obj->recdate,
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $debit_obj->costcode,
+                'dracc' => $debit_obj->glaccno,
+                'crcostcode' => $credit_obj->glccode,
+                'cracc' => $credit_obj->glaccno,
+                'amount' => $apacthdr_obj->amount,
+                'idno' => null
+            ]);
 
-                $purreqhd_get = $purreqhd->first();
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  defaultController::isGltranExist_($debit_obj->costcode,$debit_obj->glaccno,$yearperiod->year,$yearperiod->period);
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','VERIFIED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','VERIFIED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
-                            
-                    }
-
-                    $authorise_use = $authorise->first();
-
-                    $purreqhd->update([
-                            'verifiedby' => $authorise_use->authorid,
-                            'supportdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'SUPPORT'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'SUPPORT',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    DB::table("material.queuepr")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'SUPPORT',
-                            'trantype' => 'VERIFIED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-                }
-
-
-                // 4. email and whatsapp
-                $data = new stdClass();
-                $data->status = 'SUPPORT';
-                $data->deptcode = $purreqhd_get->reqdept;
-                $data->purreqno = $purreqhd_get->purreqno;
-                $data->email_to = 'hazman.yusof@gmail.com';
-                $data->whatsapp = '01123090948';
-            
-                //$this->sendemail($data);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$debit_obj->costcode)
+                ->where('glaccount','=',$debit_obj->glaccno)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $apacthdr_obj->amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $debit_obj->costcode,
+                    'glaccount' => $debit_obj->glaccno,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $apacthdr_obj->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
-    }
 
-    public function verify(Request $request){
-         DB::beginTransaction();
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($credit_obj->glccode,$credit_obj->glaccno,$yearperiod->year,$yearperiod->period);
 
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
-
-                    $authorise = DB::table('material.authdtl')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('trantype','=','PR')
-                        ->where('cando','=', 'ACTIVE')
-                        ->where('recstatus','=','APPROVED')
-                        ->where('deptcode','=',$purreqhd_get->reqdept)
-                        ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                    if(!$authorise->exists()){
-
-                        $authorise = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('trantype','=','PR')
-                            ->where('cando','=', 'ACTIVE')
-                            ->where('recstatus','=','APPROVED')
-                            ->where('deptcode','=','ALL')
-                            ->where('deptcode','=','all')
-                            ->where('maxlimit','>=',$purreqhd_get->totamount);
-
-                            if(!$authorise->exists()){
-                                throw new \Exception("Authorization for this purchase request doesnt exists",500);
-                            }
-                            
-                    }
-
-                    $authorise_use = $authorise->first();
-
-                    $purreqhd->update([
-                            'approvedby' => $authorise_use->authorid,
-                            'verifieddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'VERIFIED'
-                        ]);
-
-                    DB::table("material.purreqdt")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'recstatus' => 'VERIFIED',
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                    DB::table("material.queuepr")
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->update([
-                            'AuthorisedID' => $authorise_use->authorid,
-                            'recstatus' => 'VERIFIED',
-                            'trantype' => 'APPROVED',
-                            'adduser' => session('username'),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                        ]);
-
-                }
-
-
-                // 4. email and whatsapp
-                $data = new stdClass();
-                $data->status = 'APPROVED';
-                $data->deptcode = $purreqhd_get->reqdept;
-                $data->purreqno = $purreqhd_get->purreqno;
-                $data->email_to = 'hazman.yusof@gmail.com';
-                $data->whatsapp = '01123090948';
-
-                //$this->sendemail($data);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
-        }
-    }
-
-    public function approved(Request $request){
-         DB::beginTransaction();
-
-        try{
-
-            foreach ($request->idno_array as $value){
-
-                $purreqhd = DB::table("material.purreqhd")
-                    ->where('idno','=',$value);
-
-                $purreqhd_get = $purreqhd->first();
-
-                $purreqhd->update([
-                        'approveddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'recstatus' => 'APPROVED'
-                    ]);
-
-                DB::table("material.purreqdt")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'APPROVED',
-                        'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                DB::table("material.queuepr")
-                    ->where('recno','=',$purreqhd_get->recno)
-                    ->update([
-                        'recstatus' => 'APPROVED',
-                        'trantype' => 'DONE',
-                        'adduser' => session('username'),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-            }
-
-           
-            DB::commit();
-        
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response($e->getMessage(), 500);
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$credit_obj->glccode)
+                ->where('glaccount','=',$credit_obj->glaccno)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $apacthdr_obj->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $credit_obj->glccode,
+                    'glaccount' => $credit_obj->glaccno,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$apacthdr_obj->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
         }
     }
 

@@ -117,11 +117,7 @@ i.fa {
 						id="but_post_jq" 
 						data-oper="posted"
 						style="display: none;">						
-						@if (strtoupper(Request::get('scope')) == 'ALL')
-							{{'POST'}}
-						@else
-							{{Request::get('scope').' ALL'}}
-						@endif
+						POST
 					</button>
 
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_single_jq" data-oper="posted" style="display: none;">
@@ -242,10 +238,21 @@ i.fa {
 						</div>
 							
 						<div class="form-group">
-							<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>  
+
+							<label class="col-md-2 control-label" for="db_paymode">Pay Mode</label>	 
+							<div class="col-md-2">
+								<div class='input-group'>
+									<input id="db_paymode" name="db_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>	
+
+							<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
 							<div class="col-md-2">
 									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 							</div>
+
 						</div>
 
 						<hr>

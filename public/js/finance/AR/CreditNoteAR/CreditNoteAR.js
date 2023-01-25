@@ -812,7 +812,6 @@ $(document).ready(function () {
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let idno = cbselect.idno;
 		let recstatus = rowObject.db_recstatus;
-		console.log(recstatus);
 		if(options.gid == "jqGrid"){
 			if(recstatus != 'POSTED'){
 				return "<input type='checkbox' name='checkbox_selection' id='checkbox_selection_"+rowObject[idno]+"' data-idno='"+rowObject[idno]+"' data-rowid='"+options.rowId+"'>";
@@ -1673,8 +1672,8 @@ $(document).ready(function () {
 				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus', 'source', 'paytype'],
+				filterVal:['session.compcode','ACTIVE', 'AR', 'Credit Note']
 			},
 			ondblClickRow:function(){
 				$('#db_remark').focus();
