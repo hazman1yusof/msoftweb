@@ -18,7 +18,6 @@ class DebitNoteAPDetailController extends defaultController
 
      public function form(Request $request)
     {   
-
         DB::enableQueryLog();
         switch($request->oper){
             case 'add': 
@@ -35,6 +34,40 @@ class DebitNoteAPDetailController extends defaultController
                 return 'error happen..';
         }
     }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'get_table_dtl':
+                return $this->get_table_dtl($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function get_table_dtl(Request $request){
+        $table = DB::table('finance.apactdtl')
+                    ->where('source','=',$request->source)
+                    ->where('trantype','=',$request->trantype)
+                    ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
+
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')
@@ -107,7 +140,7 @@ class DebitNoteAPDetailController extends defaultController
             $li=intval($sqlln)+1;
             
               ///2. insert detail
-              DB::table('finance.apactdtl')
+            DB::table('finance.apactdtl')
               ->insert([
                   'compcode' => session('compcode'),
                   'auditno' => $auditno,
@@ -128,11 +161,12 @@ class DebitNoteAPDetailController extends defaultController
           ///3. calculate total amount from detail
           $totalAmount = DB::table('finance.apactdtl')
                   ->where('compcode','=',session('compcode'))
+                  ->where('source','=','AP')
+                  ->where('trantype','=','DN')
                   ->where('auditno','=',$auditno)
                   ->where('recstatus','!=','DELETE')
                   ->sum('amount');
 
-     
           ///4. then update to header
           DB::table('finance.apacthdr')
               ->where('compcode','=',session('compcode'))
@@ -141,6 +175,7 @@ class DebitNoteAPDetailController extends defaultController
                   'amount' => $totalAmount
               ]);
           DB::commit();
+
           return response($totalAmount,200);
         
         } catch (\Exception $e) {

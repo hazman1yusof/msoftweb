@@ -966,7 +966,7 @@ $(document).ready(function () {
 					source: $('#db_source').val(),
 					trantype: $('#db_trantype').val(),
 					auditno: $('#db_auditno').val(),
-					amount:data.amount,
+					// amount:data.amount,
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
