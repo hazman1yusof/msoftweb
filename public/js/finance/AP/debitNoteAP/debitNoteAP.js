@@ -509,8 +509,8 @@ $(document).ready(function () {
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
 				$('#apacthdr_auditno,#auditno').val(data.auditno);
-				$('#apacthdr_amount').val(data.totalAmount);
-				$('#idno').val(data.idno);
+				//$('#apacthdr_amount').val(data.totalAmount);
+				$('#apacthdr_idno').val(data.idno);
 
 				urlParam2.filterVal[1]=data.auditno;
 
