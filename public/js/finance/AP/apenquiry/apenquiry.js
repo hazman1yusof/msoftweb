@@ -364,6 +364,10 @@ $(document).ready(function () {
 			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='apacthdr_suppcode';break;
 			case 'apacthdr_category':field=['catcode','description'];table="material.category";case_='apacthdr_category';break;
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+
+			//gridAlloc
+			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -653,16 +657,16 @@ $(document).ready(function () {
 	$("#gridAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Source', name: 'source', width: 10, classes: 'wrap'},
+			{ label: 'Src', name: 'source', width: 10, classes: 'wrap'},
 			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
-			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-			{ label: 'PV No', name: 'pvno', width: 10, classes: 'wrap'},
+			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'PV No', name: 'pvno', width: 20, classes: 'wrap'},
 			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
-			{ label: 'Supplier Code', name: 'suppcode', width: 60, classes: 'wrap', },//formatter: showdetail, unformat:un_showdetail
+			{ label: 'Supplier Code', name: 'suppcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Alloc Date', name: 'allocdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Invoice Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', },//formatter: showdetail, unformat:un_showdetail
+			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
 			{ label: 'Post Date', name: 'recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 		
