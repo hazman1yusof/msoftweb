@@ -75,16 +75,16 @@ $(document).ready(function () {
 				}
 				if(oper!='view'){
 					backdated.set_backdate($('#apacthdr_actdate').val());
-					dialog_paymode.on();
-					dialog_department.on();
+					//dialog_paymode.on();
+					//dialog_department.on();
 					dialog_suppcode.on();
 					dialog_payto.on();
 				}
 				if(oper!='add'){
 					refreshGrid("#jqGrid2",urlParam2);
 					refreshGrid("#jqGridAlloc",urlParam2_alloc);
-					dialog_department.check(errorField);
-					dialog_paymode.check(errorField);
+					// dialog_department.check(errorField);
+					// dialog_paymode.check(errorField);
 					dialog_suppcode.check(errorField);
 					dialog_payto.check(errorField);
 				}
@@ -114,8 +114,8 @@ $(document).ready(function () {
 				emptyFormdata(errorField,'#formdata2');
 				$('.my-alert').detach();
 				$("#formdata a").off();
-				dialog_department.off();
-				dialog_paymode.off();
+				// dialog_department.off();
+				// dialog_paymode.off();
 				dialog_suppcode.off();
 				dialog_payto.off();
 				$(".noti").empty();
@@ -703,6 +703,15 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
+			{ label: 'Category', name: 'category', width: 150, classes: 'wrap', canSearch: true, editable: true,
+			editrules:{required: true,custom:true, custom_func:cust_rules},
+			formatter: showdetail,
+			edittype:'custom',	editoptions:
+				{  
+					custom_element:categoryCustomEdit,
+					custom_value:galGridCustomValue 	
+				},
+		},
             { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
@@ -781,6 +790,7 @@ $(document).ready(function () {
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_deptcode.check(errorField);
+			dialog_category.check(errorField);
 			dialog_GSTCode.check(errorField);
 	 	}
 	});
@@ -800,6 +810,7 @@ $(document).ready(function () {
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();//start binding event on jqgrid2
+			dialog_category.on();
 			dialog_GSTCode.on();
 
 			unsaved = false;
@@ -936,7 +947,8 @@ $(document).ready(function () {
 		    		'lineno_' : ids[i],
 		    		'idno' : data.idno,
 		    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
-		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
+		    		'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
+					'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
 		    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
 		    		'amount' : ('#'+ids[i]+"_amount").val(),
@@ -1298,6 +1310,7 @@ $(document).ready(function () {
 
 			//detail
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='deptcode';break;
 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
@@ -1312,6 +1325,7 @@ $(document).ready(function () {
 		var temp;
 		switch(name){
 			case 'Department':temp=$('#deptcode');break;
+			case 'Category':temp=$('#category');break;
 			case 'GST Code':temp=$('#GSTCode');break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
@@ -1321,6 +1335,11 @@ $(document).ready(function () {
 	function deptcodeCustomEdit(val, opt) {
 		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function categoryCustomEdit(val, opt) {
+		val = getEditVal(val);
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function GSTCodeCustomEdit(val,opt){
@@ -1431,8 +1450,8 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-		dialog_department.off();
-		dialog_paymode.off();
+		// dialog_department.off();
+		// dialog_paymode.off();
 		dialog_suppcode.off();
 		dialog_payto.off();
 		errorField.length = 0;
@@ -1441,8 +1460,8 @@ $(document).ready(function () {
 			unsaved = false;
 		} else {
 			mycurrency.formatOn();
-			dialog_department.on();
-			dialog_paymode.on();
+			// dialog_department.on();
+			// dialog_paymode.on();
 			dialog_suppcode.on();
 			dialog_payto.on();
 		}
@@ -1484,8 +1503,8 @@ $(document).ready(function () {
 	$("#saveHeaderLabel").click(function(){
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
-		dialog_department.on();
-		dialog_paymode.on();
+		// dialog_department.on();
+		// dialog_paymode.on();
 		dialog_suppcode.on();
 		dialog_payto.on();
 		enableForm('#formdata');
@@ -1576,72 +1595,72 @@ $(document).ready(function () {
 
 	////////////////////////////////////////// object for dialog handler//////////////////////////////////////////
 
-	var dialog_paymode = new ordialog(
-		'paymode','debtor.paymode','#apacthdr_paymode',errorField,
-		{	colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-					},
-			ondblClickRow:function(){
-				$('#apacthdr_remarks').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_bankcode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-			}
-		},{
-			title:"Select Paymode",
-			open: function(){
-				dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
-				dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val(), 'Credit Note'];
-				}
-			},'urlParam','radio','tab'
-		);
-	dialog_paymode.makedialog(true);
+	// var dialog_paymode = new ordialog(
+	// 	'paymode','debtor.paymode','#apacthdr_paymode',errorField,
+	// 	{	colModel:[
+	// 			{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+	// 			{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+	// 		],
+	// 		urlParam: {
+	// 				filterCol:['compcode','recstatus'],
+	// 				filterVal:['session.compcode','ACTIVE']
+	// 				},
+	// 		ondblClickRow:function(){
+	// 			$('#apacthdr_remarks').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 					$(gridname+' tr#1').click();
+	// 					$(gridname+' tr#1').dblclick();
+	// 					$('#apacthdr_bankcode').focus();
+	// 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 					$('#'+obj.dialogname).dialog('close');
+	// 				}
+	// 		}
+	// 	},{
+	// 		title:"Select Paymode",
+	// 		open: function(){
+	// 			dialog_paymode.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+	// 			dialog_paymode.urlParam.filterVal=['ACTIVE', 'session.compcode', $('#apacthdr_source').val(), 'Credit Note'];
+	// 			}
+	// 		},'urlParam','radio','tab'
+	// 	);
+	// dialog_paymode.makedialog(true);
 
-	var dialog_department = new ordialog(
-		'department','sysdb.department','#apacthdr_deptcode',errorField,
-		{	colModel:[
-				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-					},
-			ondblClickRow:function(){
-				$('#apacthdr_paymode').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_paymode').focus();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
-			}
-		},{
-			title:"Select Department Code",
-			open: function(){
-				dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
-				dialog_department.urlParam.filterVal=['ACTIVE', 'session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
-	dialog_department.makedialog(true);
+	// var dialog_department = new ordialog(
+	// 	'department','sysdb.department','#apacthdr_deptcode',errorField,
+	// 	{	colModel:[
+	// 			{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 				filterCol:['compcode','recstatus'],
+	// 				filterVal:['session.compcode','ACTIVE']
+	// 				},
+	// 		ondblClickRow:function(){
+	// 			$('#apacthdr_paymode').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 					$(gridname+' tr#1').click();
+	// 					$(gridname+' tr#1').dblclick();
+	// 					$('#apacthdr_paymode').focus();
+	// 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 					$('#'+obj.dialogname).dialog('close');
+	// 				}
+	// 		}
+	// 	},{
+	// 		title:"Select Department Code",
+	// 		open: function(){
+	// 			dialog_department.urlParam.filterCol=['recstatus', 'compcode'],
+	// 			dialog_department.urlParam.filterVal=['ACTIVE', 'session.compcode']
+	// 			}
+	// 		},'urlParam','radio','tab'
+	// 	);
+	// dialog_department.makedialog(true);
 	
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#apacthdr_suppcode',errorField,
@@ -1784,7 +1803,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$("#jqGrid2 input[name='GSTCode']").focus().select();
+				$("#jqGrid2 input[name='category']").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1809,6 +1828,49 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_deptcode.makedialog(true);
+
+	var dialog_category = new ordialog(
+		'category','material.category',"#jqGrid2 input[name='category']",errorField,
+		{	colModel:[
+				{label:'Category Code',name:'catcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'povalidate',name:'povalidate',width:400,classes:'pointer', hidden:true},
+				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
+			],
+			urlParam: {
+				filterCol:['recstatus', 'compcode'],
+				filterVal:['ACTIVE', 'session.compcode']
+			},
+		
+			ondblClickRow:function(){
+				$("#jqGrid2 input[name='GSTCode']").focus().select();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$("#jqGrid2 input[name='GSTCode']").focus().select();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+		},{	
+			title:"Select Category Code",
+			open: function(){
+					if (($('#apacthdr_doctype').val()=="Supplier")) {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '1'];
+					}else {
+						dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
+						dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '0'];
+					}
+				}
+
+			},'urlParam','radio','tab'
+		
+	);
+	dialog_category.makedialog(true);
 
 	var dialog_GSTCode = new ordialog(
 		'GSTCode',['hisdb.taxmast'],"#jqGrid2 input[name='GSTCode']",errorField,

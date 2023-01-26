@@ -134,7 +134,7 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Debit Note Data Entry Header</div>
+		    <div class="panel-heading">Debit Note Header</div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -152,7 +152,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Invoice Detail</h5>
+					<h5>Debit Note Detail</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -246,17 +246,17 @@ i.fa {
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" data-show_error=''>
 				  			</div>
 
-				  		<label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
+				  		<!-- <label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
 				  			<div class="col-md-3">
 							  	<div class='input-group'>
 									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  	</div>
 							  	<span class="help-block"></span>
-						  	</div>
+						  	</div> -->
 					</div>
 
-					<div class="form-group">
+					<!-- <div class="form-group">
 						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
 							<div class="col-md-3">
 							  	<div class='input-group'>
@@ -265,7 +265,7 @@ i.fa {
 							  	</div>
 							  	<span class="help-block"></span>
 						 	 </div>
-					</div>
+					</div> -->
 
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
@@ -286,13 +286,24 @@ i.fa {
 		 					</div>
 					</div>
 
-					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+					<!-- <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button> -->
 
 				</form>
 				<div class="panel-body">
 				    <div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 			    </div>
 			</div>
+		</div>
+		<div class='panel panel-info' id="grid_detail">
+			<div class="panel-heading">Debit Note Detail</div>
+				<div class="panel-body">
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+						        <div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
 		</div>	
        
 	</div>
