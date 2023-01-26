@@ -167,19 +167,6 @@ use Carbon\Carbon;
                 $value->apactdtl_outamt = $value->apacthdr_outamount;
             }
 
-            // $apalloc = DB::table('finance.apalloc')
-            //             ->select('allocdate')
-            //             ->where('refsource','=',$value->apacthdr_source)
-            //             ->where('reftrantype','=',$value->apacthdr_trantype)
-            //             ->where('refauditno','=',$value->apacthdr_auditno)
-            //             ->where('recstatus','!=','CANCELLED')
-            //             ->orderBy('idno', 'desc');
-
-            // if($apalloc->exists()){
-            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
-            // }else{
-            //     $value->apalloc_allocdate = '';
-            // }
         }
 
         //////////paginate/////////
@@ -253,12 +240,17 @@ use Carbon\Carbon;
                 'recdate' => $request->apacthdr_recdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
-                'category' => strtoupper($request->apacthdr_category),
+                // 'category' => strtoupper($request->apacthdr_category),
+                'suppcode' => strtoupper($request->apacthdr_suppcode),
+                'payto' => strtoupper($request->apacthdr_payto),
                 'remarks' => strtoupper($request->apacthdr_remarks),
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entryuser' => session('username'),
+                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN',
+                'amount' => $request->apacthdr_amount,
                 'outamount' => $request->apacthdr_amount,
             ];
 
@@ -308,7 +300,7 @@ use Carbon\Carbon;
             'doctype' => $request->apacthdr_doctype,
             'recdate' => $request->apacthdr_recdate,
             'document' => strtoupper($request->apacthdr_document),
-            'category' => strtoupper($request->apacthdr_category),
+            // 'category' => strtoupper($request->apacthdr_category),
             'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur")

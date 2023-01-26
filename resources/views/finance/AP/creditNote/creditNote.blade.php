@@ -236,26 +236,6 @@ i.fa {
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 				  			</div>
 
-						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-
 						<label class="col-md-2 control-label" for="apacthdr_recstatus">Record Status</label>  
 							<div class="col-md-2">
 								<input id="apacthdr_recstatus" name="apacthdr_recstatus" type="text" value='OPEN' maxlength="30" class="form-control input-sm text-uppercase" rdonly>

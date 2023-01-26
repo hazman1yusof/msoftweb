@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class CreditNoteDetailController extends defaultController
+class DebitNoteAPDetailController extends defaultController
 {   
 
     public function __construct()
@@ -91,23 +91,6 @@ class CreditNoteDetailController extends defaultController
 
         try {
             
-            // $apacthdr = DB::table("finance.apacthdr")
-            //                 ->where('idno','=',$request->idno)
-            //                 ->where('compcode','=','DD');
-
-            // if($apacthdr->exists()){
-            //     $delordno = $this->request_no('DO',$delordhd->first()->prdept);
-            //     $recno = $this->recno('PUR','DO');
-
-            //     DB::table("material.delordhd")
-            //         ->where('idno','=',$request->idno)
-            //         ->update([
-            //             'docno' => $delordno,
-            //             'recno' => $recno,
-            //             'compcode' => session('compcode'),
-            //         ]);
-            // }
-
             $apacthdr = DB::table("finance.apacthdr")
                 ->where('idno','=',$request->idno)
                 ->first();
@@ -130,7 +113,7 @@ class CreditNoteDetailController extends defaultController
                   'auditno' => $auditno,
                   'lineno_' => $li,
                   'source' => 'AP',
-                  'trantype' => 'CN',
+                  'trantype' => 'DN',
                   'amount' => $request->amount,
                   'GSTCode' => $request->GSTCode,
                   'AmtB4GST' => $request->AmtB4GST,
@@ -159,59 +142,7 @@ class CreditNoteDetailController extends defaultController
               ]);
           DB::commit();
           return response($totalAmount,200);
-           
-        //     $auditno = $request->query('auditno');
-      
-        //     ////1. calculate lineno_ by auditno
-        //     $sqlln = DB::table('finance.apalloc')->select('lineno_')
-        //                 ->where('compcode','=',session('compcode'))
-        //                 ->where('auditno','=',$auditno)
-        //                 ->count('lineno_');
-
-        //     $li=intval($sqlln)+1;
-
-        //     ///2. insert detail
-        //     DB::table('finance.apalloc')
-        //         ->insert([
-        //             'compcode' => session('compcode'),
-        //             'refauditno' => $auditno,
-        //             'lineno_' => $li,
-        //             'docsource' => 'AP',
-        //             'doctrantype' => 'AL',
-        //             'docauditno' => $request->auditno,
-        //             'refsource' => $request->refsource,
-        //             'reftrantype' => $request->reftrantype,
-        //             'entrydate' => $request->entrydate,
-        //             'reference' => $request->reference,
-        //             'refamount' => $request->amount,
-        //             'outamount' => $request->outamount,
-        //             'allocamount' => $request->allocamount,
-        //             'balance' => $request->balance,
-        //             'adduser' => session('username'), 
-        //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-        //             'allocstat' => 'OPEN',
-        //             'unit' => session('unit')
-        //         ]);
-
-        //     ///3. calculate total amount from detail
-        //     $totalAmount = DB::table('finance.apalloc')
-        //             ->where('compcode','=',session('compcode'))
-        //             ->where('auditno','=',$auditno)
-        //             ->where('recstatus','!=','DELETE')
-        //             ->sum('allocamount');
-
-       
-        //     ///4. then update to header
-        //     DB::table('finance.apacthdr')
-        //         ->where('compcode','=',session('compcode'))
-        //         ->where('auditno','=',$auditno)
-        //         ->update([
-        //             'allocamount' => $totalAmount
-                  
-        //         ]);
-        //     DB::commit();
-        //     return response($totalAmount,200);
-
+        
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -232,7 +163,7 @@ class CreditNoteDetailController extends defaultController
                 ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'source' => 'AP',
-                    'trantype' => 'CN',
+                    'trantype' => 'DN',
                     'amount' => $request->amount,
                     'GSTCode' => $request->GSTCode,
                     'AmtB4GST' => $request->AmtB4GST,
