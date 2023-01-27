@@ -186,13 +186,13 @@ $(document).ready(function () {
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true },			
 			//{ label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
-			// { label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
+			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Status', name: 'db_recstatus', width: 15, classes: 'wrap text-uppercase' },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			// { label: 'Trantype', name: 'db_trantype', width: 10 },
+			{ label: 'Trantype', name: 'db_trantype', width: 10, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
@@ -1197,20 +1197,23 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
-	function uomcodeCustomEdit(val,opt){  	
+	function uomcodeCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
+
 	function deptcodeCustomEdit(val, opt) {
 		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
+
 	// function categoryCustomEdit(val, opt) {
 	// 	val = getEditVal(val);
 	// 	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="category" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	// }
+
 	function GSTCodeCustomEdit(val, opt) {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
@@ -1223,7 +1226,8 @@ $(document).ready(function () {
 			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
 		</div>`);
 	}
-		function galGridCustomValue (elem, operation, value){
+
+	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
 		} 
@@ -1276,7 +1280,6 @@ $(document).ready(function () {
 		delay(function(){
 			remove_error("#jqGrid2 #"+id_optid+"_pouom");
 		}, 500 );
-
 
 		$(".noti").empty();
 
