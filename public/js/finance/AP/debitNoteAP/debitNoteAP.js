@@ -634,7 +634,7 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt as tot_gst', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
@@ -692,7 +692,7 @@ $(document).ready(function () {
             },
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-				editrules:{required: true},
+				editrules:{required: true}, edittype:"text",
 				editoptions:{
 					readonly: "readonly",
 					maxlength: 12,
@@ -803,6 +803,7 @@ $(document).ready(function () {
 				$.param({
 					action: 'DebitNoteAPDetail_save',
 					idno: $('#apacthdr_idno').val(),
+					//auditno: $('#apacthdr_auditno').val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -900,7 +901,7 @@ $(document).ready(function () {
 					'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
 		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
-		    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
+		    		//'taxamt' : $('#'+ids[i]+"_taxamt").val(),
 		    		'amount' : ('#'+ids[i]+"_amount").val(),
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
