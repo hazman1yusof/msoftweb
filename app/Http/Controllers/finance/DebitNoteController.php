@@ -443,9 +443,10 @@ class DebitNoteController extends defaultController
                             ->first();
 
         $dbactdtl_obj = DB::table('finance.dbactdtl')
-                        ->where('source','=',$dbacthdr_obj->source)
-                        ->where('trantype','=',$dbacthdr_obj->trantype)
-                        ->where('auditno','=',$dbacthdr_obj->auditno);
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$dbacthdr_obj->source)
+                            ->where('trantype','=',$dbacthdr_obj->trantype)
+                            ->where('auditno','=',$dbacthdr_obj->auditno);
 
         if($dbactdtl_obj->exists()){
 
