@@ -464,11 +464,11 @@ use Carbon\Carbon;
         if($apactdtl_obj->exists()){
             $apactdtl_get = $apactdtl_obj->get();
 
-            foreach ($dbactdtl_get as $key => $value){
+            foreach ($apactdtl_get as $key => $value){
                 $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
 
-                $category_obj = $this->gltran_fromcategory($value['category']);
-                $dept_obj = $this->gltran_fromdept($value['deptcode']);
+                $category_obj = $this->gltran_fromcategory($value->category);
+                $dept_obj = $this->gltran_fromdept($value->deptcode);
                 $supp_obj = $this->gltran_fromsupp($apacthdr_obj->payto);
 
                 //1. buat gltran
@@ -479,15 +479,15 @@ use Carbon\Carbon;
                         'lineno_' => $key+1,
                         'source' => $apacthdr_obj->source,
                         'trantype' => $apacthdr_obj->trantype,
-                        'reference' => $value['document'],
-                        'description' => $apacthdr_obj->remark,
+                        'reference' => $value->document,
+                        'description' => $apacthdr_obj->remarks,
                         'year' => $yearperiod->year,
                         'period' => $yearperiod->period,
                         'drcostcode' => $dept_obj->costcode,
                         'dracc' => $category_obj->expacct,
                         'crcostcode' => $supp_obj->costcode,
                         'cracc' => $supp_obj->glaccno,
-                        'amount' => $value['amount'],
+                        'amount' => $value->amount,
                         'postdate' => $apacthdr_obj->actdate,
                         'adduser' => $apacthdr_obj->adduser,
                         'adddate' => $apacthdr_obj->adddate,
@@ -506,7 +506,7 @@ use Carbon\Carbon;
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $value['amount'] + $gltranAmount,
+                            'actamount'.$yearperiod->period => $value->amount + $gltranAmount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -516,7 +516,7 @@ use Carbon\Carbon;
                             'costcode' => $dept_obj->costcode,
                             'glaccount' => $category_obj->expacct,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => $value['amount'],
+                            'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'
@@ -535,7 +535,7 @@ use Carbon\Carbon;
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $gltranAmount - $value['amount'],
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -545,7 +545,7 @@ use Carbon\Carbon;
                             'costcode' => $supp_obj->costcode,
                             'glaccount' => $supp_obj->glaccno,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => - $value['amount'],
+                            'actamount'.$yearperiod->period => - $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'

@@ -456,7 +456,7 @@ class DebitNoteController extends defaultController
                 $yearperiod = defaultController::getyearperiod_($dbacthdr_obj->entrydate);
 
                 $paymode_obj = $this->gltran_frompaymode($dbacthdr_obj->paymode);
-                $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
+                $dept_obj = $this->gltran_fromdept($value->deptcode);
                 $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
 
                 //1. buat gltran
@@ -467,7 +467,7 @@ class DebitNoteController extends defaultController
                         'lineno_' => $key+1,
                         'source' => $dbacthdr_obj->source,
                         'trantype' => $dbacthdr_obj->trantype,
-                        'reference' => $value['document'],
+                        'reference' => $value->document,
                         'description' => $dbacthdr_obj->remark,
                         'year' => $yearperiod->year,
                         'period' => $yearperiod->period,
@@ -475,7 +475,7 @@ class DebitNoteController extends defaultController
                         'dracc' => $debtormast_obj->actdebglacc,
                         'crcostcode' => $dept_obj->costcode,
                         'cracc' => $paymode_obj->glaccno,
-                        'amount' => $value['amount'],
+                        'amount' => $value->amount,
                         'postdate' => $dbacthdr_obj->entrydate,
                         'adduser' => $dbacthdr_obj->adduser,
                         'adddate' => $dbacthdr_obj->adddate,
@@ -494,7 +494,7 @@ class DebitNoteController extends defaultController
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $value['amount'] + $gltranAmount,
+                            'actamount'.$yearperiod->period => $value->amount + $gltranAmount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -504,7 +504,7 @@ class DebitNoteController extends defaultController
                             'costcode' => $debtormast_obj->actdebccode,
                             'glaccount' => $debtormast_obj->actdebglacc,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => $value['amount'],
+                            'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'
@@ -523,7 +523,7 @@ class DebitNoteController extends defaultController
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $gltranAmount - $value['amount'],
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -533,7 +533,7 @@ class DebitNoteController extends defaultController
                             'costcode' => $dept_obj->costcode,
                             'glaccount' => $paymode_obj->glaccno,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => - $value['amount'],
+                            'actamount'.$yearperiod->period => - $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'
@@ -631,7 +631,7 @@ class DebitNoteController extends defaultController
         $obj = DB::table('debtor.debtormast')
                 ->select('actdebglacc','actdebccode')
                 ->where('compcode','=',session('compcode'))
-                ->where('payercode','=',$payercode)
+                ->where('debtorcode','=',$payercode)
                 ->first();
 
         return $obj;

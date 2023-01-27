@@ -701,7 +701,7 @@ use Carbon\Carbon;
                 $yearperiod = defaultController::getyearperiod_($apacthdr_obj->entrydate);
 
                 $paymode_obj = $this->gltran_frompaymode($apacthdr_obj->paymode);
-                $dept_obj = $this->gltran_fromdept($apacthdr_obj->deptcode);
+                $dept_obj = $this->gltran_fromdept($value->deptcode);
                 $debtormast_obj = $this->gltran_fromdebtormast($apacthdr_obj->payercode);
 
                 //1. buat gltran
@@ -712,7 +712,7 @@ use Carbon\Carbon;
                         'lineno_' => $key+1,
                         'source' => $apacthdr_obj->source,
                         'trantype' => $apacthdr_obj->trantype,
-                        'reference' => $value['document'],
+                        'reference' => $value->document,
                         'description' => $apacthdr_obj->remark,
                         'year' => $yearperiod->year,
                         'period' => $yearperiod->period,
@@ -720,7 +720,7 @@ use Carbon\Carbon;
                         'dracc' => $paymode_obj->glaccno,
                         'crcostcode' => $debtormast_obj->actdebccode,
                         'cracc' => $debtormast_obj->actdebglacc,
-                        'amount' => $value['amount'],
+                        'amount' => $value->amount,
                         'postdate' => $apacthdr_obj->entrydate,
                         'adduser' => $apacthdr_obj->adduser,
                         'adddate' => $apacthdr_obj->adddate,
@@ -739,7 +739,7 @@ use Carbon\Carbon;
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $value['amount'] + $gltranAmount,
+                            'actamount'.$yearperiod->period => $value->amount + $gltranAmount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -749,7 +749,7 @@ use Carbon\Carbon;
                             'costcode' => $dept_obj->costcode,
                             'glaccount' => $paymode_obj->glaccno,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => $value['amount'],
+                            'actamount'.$yearperiod->period => $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'
@@ -768,7 +768,7 @@ use Carbon\Carbon;
                         ->update([
                             'upduser' => session('username'),
                             'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                            'actamount'.$yearperiod->period => $gltranAmount - $value['amount'],
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
                             'recstatus' => 'ACTIVE'
                         ]);
                 }else{
@@ -778,7 +778,7 @@ use Carbon\Carbon;
                             'costcode' => $debtormast_obj->actdebccode,
                             'glaccount' => $debtormast_obj->actdebglacc,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => - $value['amount'],
+                            'actamount'.$yearperiod->period => - $value->amount,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                             'recstatus' => 'ACTIVE'
@@ -898,7 +898,7 @@ use Carbon\Carbon;
         $obj = DB::table('debtor.debtormast')
                 ->select('actdebglacc','actdebccode')
                 ->where('compcode','=',session('compcode'))
-                ->where('payercode','=',$payercode)
+                ->where('debtorcode','=',$payercode)
                 ->first();
 
         return $obj;
