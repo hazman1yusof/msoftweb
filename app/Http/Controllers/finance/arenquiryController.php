@@ -186,17 +186,18 @@ class arenquiryController extends defaultController
 
     public function get_alloc(Request $request){
 
-        if($request->db_trantype == 'RC' || 'RD' || 'RF' || 'CN') {
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-            $dbacthdr = DB::table('debtor.dbacthdr')
-                            ->where('idno','=',$request->db_idno)
-                            ->first();
+        //if trantype = RC/RD/RF/CN
+        if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN') {
 
-            $table = DB::table('debtor.dballoc AS dc')
+            $table = DB::table('debtor.dballoc as dc')
                         ->select(
-                            'dc.refsource',
-                            'dc.reftrantype',
-                            'dc.refauditno',
+                            'dc.refsource as source',
+                            'dc.reftrantype as trantype',
+                            'dc.refauditno as auditno',
                             'dc.debtorcode',
                             'dc.payercode',
                             'dc.amount',
@@ -208,22 +209,23 @@ class arenquiryController extends defaultController
                         )
                         ->join('debtor.dbacthdr as da', function($join) use ($request){
                                     $join = $join->on('dc.docsource', '=', 'da.source')
-                                    ->on('dc.doctrantype', '=', 'da.trantype')
-                                    ->on('dc.docauditno', '=', 'da.auditno');
+                                        ->on('dc.doctrantype', '=', 'da.trantype')
+                                        ->on('dc.docauditno', '=', 'da.auditno');
                         })
-                        ->where('dc.compcode', '=', session('compcode'))
-                        ->where('dc.docsource', '=', $dbacthdr->source)
-                        ->where('dc.docsource', '=', $dbacthdr->trantype)
-                        ->where('dc.docsource', '=', $dbacthdr->auditno);
+                        ->where('dc.compcode','=',session('compcode'))
+                        ->where('dc.docsource','=',$dbacthdr->source)
+                        ->where('dc.doctrantype','=',$dbacthdr->trantype)
+                        ->where('dc.docauditno','=',$dbacthdr->auditno);
 
                         // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
 
-
-            //////////paginate/////////
+            /////////////////paginate/////////////////
             $paginate = $table->paginate($request->rows);
 
             foreach ($paginate->items() as $key => $value) {
-                $value->sysAutoNo = $value->refsource.' '.$value->reftrantype.' '.$value->refauditno;
+                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
 
             $responce = new stdClass();
@@ -237,17 +239,13 @@ class arenquiryController extends defaultController
 
             return json_encode($responce);
 
-        } else if ($request->db_trantype == 'IN' || 'DN') {
+        }else if($dbacthdr->trantype == 'IN' || 'DN') {//if trantype = IN/DN
 
-            $dbacthdr = DB::table('debtor.dbacthdr')
-                            ->where('idno','=',$request->db_idno)
-                            ->first();
-
-            $table = DB::table('debtor.dballoc AS dc')
+            $table = DB::table('debtor.dballoc as dc')
                         ->select(
-                            'dc.docsource',
-                            'dc.doctrantype',
-                            'dc.docauditno',
+                            'dc.docsource as source',
+                            'dc.doctrantype as trantype',
+                            'dc.docauditno as auditno',
                             'dc.debtorcode',
                             'dc.payercode',
                             'dc.amount',
@@ -259,20 +257,21 @@ class arenquiryController extends defaultController
                         )
                         ->join('debtor.dbacthdr as da', function($join) use ($request){
                                     $join = $join->on('dc.refsource', '=', 'da.source')
-                                    ->on('dc.reftrantype', '=', 'da.trantype')
-                                    ->on('dc.refauditno', '=', 'da.auditno');
+                                        ->on('dc.reftrantype', '=', 'da.trantype')
+                                        ->on('dc.refauditno', '=', 'da.auditno');
                         })
-                        ->where('dc.compcode', '=', session('compcode'))
-                        ->where('dc.refsource', '=', $dbacthdr->source)
-                        ->where('dc.refsource', '=', $dbacthdr->trantype)
-                        ->where('dc.refsource', '=', $dbacthdr->auditno);
+                        ->where('dc.compcode','=',session('compcode'))
+                        ->where('dc.refsource','=',$dbacthdr->source)
+                        ->where('dc.reftrantype','=',$dbacthdr->trantype)
+                        ->where('dc.refauditno','=',$dbacthdr->auditno);
 
-
-            //////////paginate/////////
+            /////////////////paginate/////////////////
             $paginate = $table->paginate($request->rows);
 
             foreach ($paginate->items() as $key => $value) {
-                $value->sysAutoNo = $value->docsource.' '.$value->doctrantype.' '.$value->docauditno;
+                $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+
+                $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
 
             $responce = new stdClass();
@@ -285,8 +284,9 @@ class arenquiryController extends defaultController
             $responce->sql_query = $this->getQueries($table);
 
             return json_encode($responce);
-            
+
         }
 
     }
+
 }
