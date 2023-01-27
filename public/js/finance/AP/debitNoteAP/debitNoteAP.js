@@ -901,7 +901,7 @@ $(document).ready(function () {
 					'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
 		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
 		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
-		    		//'taxamt' : $('#'+ids[i]+"_taxamt").val(),
+		    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
 		    		'amount' : ('#'+ids[i]+"_amount").val(),
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
