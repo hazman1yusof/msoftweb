@@ -442,7 +442,7 @@ class DebitNoteController extends defaultController
                             ->where('idno','=',$idno)
                             ->first();
 
-        $dbactdtl_obj = DB::table('finance.dbactdtl')
+        $dbactdtl_obj = DB::table('debtor.dbactdtl')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$dbacthdr_obj->source)
                             ->where('trantype','=',$dbacthdr_obj->trantype)
