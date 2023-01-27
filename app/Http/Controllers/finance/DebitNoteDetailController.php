@@ -161,9 +161,6 @@ class DebitNoteDetailController extends defaultController
     }
 
     public function add(Request $request){
-
-       
-
         DB::beginTransaction();
         
         try {
