@@ -24,11 +24,11 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#amount']);
+	var mycurrency = new currencymode(['#amount', '#db_amount']);
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#posteddate"]);
+	var actdateObj = new setactdate(["#posteddate"],true);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -186,19 +186,21 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true, classes: 'wrap'},
+			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
+			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
+			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
-			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true},
+			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
-			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
+			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },
+			{ label: 'Outstanding Amount', name: 'db_outamount', width: 15, align: 'right', formatter: 'currency' },
+			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Status', name: 'db_recstatus', width: 15 },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'Trantype', name: 'db_trantype', width: 10, canSearch: true},
+			{ label: 'Trantype', name: 'db_trantype', width: 10, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
 			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
@@ -210,8 +212,8 @@ $(document).ready(function () {
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true},
-			{ label: 'Department Code', name: 'db_deptcode', width: 15},
+			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
+			{ label: 'Department Code', name: 'db_deptcode', width: 15, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -221,7 +223,7 @@ $(document).ready(function () {
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 			{ label: 'Reference', name: 'db_reference', width: 10, hidden: true },
 			{ label: 'Pay Mode', name: 'db_paymode', width: 10, hidden: true },
-			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -367,8 +369,8 @@ $(document).ready(function () {
 	});
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#trandate"]);
-	actdateObj.getdata().set();
+	// var actdateObj = new setactdate(["#trandate"]);
+	// actdateObj.getdata().set();
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$('#jqGrid2_ilcancel').click(function(){
@@ -1101,6 +1103,9 @@ $(document).ready(function () {
             case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
 			case 'category':field=['catcode','description'];table="material.category";break;
 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
+
+			// jqGrid
+			case 'db_paymode':field=['paymode','description'];table="debtor.paymode";case_='db_paymode';break;
 
 			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;

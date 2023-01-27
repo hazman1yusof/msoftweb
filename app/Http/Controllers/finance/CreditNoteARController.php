@@ -205,6 +205,7 @@ class CreditNoteARController extends defaultController
         try { 
 
             $auditno = $this->recno('PB','CN');
+            $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
 
             $array_insert = [
                 'source' => 'PB',

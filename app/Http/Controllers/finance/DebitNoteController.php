@@ -438,7 +438,7 @@ class DebitNoteController extends defaultController
     }
 
     public function gltran($idno){
-        $dbacthdr_obj = DB::table('finance.dbacthdr')
+        $dbacthdr_obj = DB::table('debtor.dbacthdr')
                             ->where('idno','=',$idno)
                             ->first();
 

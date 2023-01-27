@@ -245,27 +245,7 @@ i.fa {
 				  			<div class="col-md-3">
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" data-show_error=''>
 				  			</div>
-
-				  		<!-- <label class="col-md-2 control-label" for="apacthdr_category">Category</label>	  
-				  			<div class="col-md-3">
-							  	<div class='input-group'>
-									<input id="apacthdr_category" name="apacthdr_category" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div> -->
 					</div>
-
-					<!-- <div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>
-							<div class="col-md-3">
-							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						 	 </div>
-					</div> -->
 
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
@@ -275,18 +255,12 @@ i.fa {
 			   		</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_amount">Invoice Amount</label>  
+						<label class="col-md-2 control-label" for="apacthdr_amount">Amount</label>  
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
 
-						<!-- <label class="col-md-2 control-label" for="apacthdr_outamount">Total Detail Amount</label>  
-					  		<div class="col-md-3">
-								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
-		 					</div> -->
 					</div>
-
-					<!-- <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button> -->
 
 				</form>
 				<div class="panel-body">
