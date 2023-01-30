@@ -512,7 +512,7 @@ class CreditNoteARController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([
                     'amount' => $totalAmount,
-                    'outamount' => $totalAmount,
+                    'outamount' => $newoutamount_IV,
                 ]);  
 
             DB::commit();
