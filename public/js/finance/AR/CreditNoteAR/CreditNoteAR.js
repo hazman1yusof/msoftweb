@@ -1536,12 +1536,12 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
         	// $('#apacthdr_outamount').val(response.responseText);
         	if(addmore_jqGrid3.state==true)addmore_jqGrid3.more=true; //only addmore after save inline
-        	refreshGrid('#jqGridAlloc',urlParamAlloc,'add_alloc');
+        	refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
 	    	$("#jqGridPagerAllocEditAll,#jqGridPagerAllocDelete").show();
         }, 
         errorfunc: function(rowid,response){
         	alert(response.responseText);
-        	refreshGrid('#jqGridAlloc',urlParamAlloc,'add_alloc');
+        	refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
 	    	$("#jqGridPagerAllocDelete").show();
         },
         beforeSaveRow: function(options, rowid) {
