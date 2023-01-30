@@ -47,7 +47,7 @@ class DebitNoteController extends defaultController
                         'db.payercode AS db_payercode',
                         'dm.name AS dm_name',
                         'db.entrydate AS db_entrydate',
-                        'db.sector AS db_unit',
+                        'db.unit AS db_unit',
                         'db.ponum AS db_ponum',
                         'db.amount AS db_amount',
                         'db.recstatus AS db_recstatus',
@@ -75,22 +75,63 @@ class DebitNoteController extends defaultController
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode',session('compcode'))
-                    ->where('db.source','=',$request->source)
-                    ->whereIn('ap.trantype',['PB','DN']);
+                    ->where('db.source','=','PB')
+                    ->where('db.trantype','DN');
 
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
         }
 
-        if(!empty($request->filterdate)){
-            $table = $table->where('db_entrydate','>',$request->filterdate[0]);
-            $table = $table->where('db_entrydate','<',$request->filterdate[1]);
+        if(!empty($request->fromdate)){
+            $table = $table->where('db.entrydate','>=',$request->fromdate);
+            $table = $table->where('db.entrydate','<=',$request->todate);
         }
 
         if(!empty($request->searchCol)){
-            $table = $table->Where(function ($table) use ($request) {
-                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
-                    });
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+            
+            $count = array_count_values($searchCol_array);
+            // dump($request->searchCol);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
         }
 
         if(!empty($request->sidx)){
@@ -112,32 +153,32 @@ class DebitNoteController extends defaultController
 
        $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
-            $dbactdtl = DB::table('debtor.dbactdtl')
-                        ->where('source','=',$value->db_source)
-                        ->where('trantype','=',$value->db_trantype)
-                        ->where('auditno','=',$value->db_auditno);
+        // foreach ($paginate->items() as $key => $value) {
+        //     $dbactdtl = DB::table('debtor.dbactdtl')
+        //                 ->where('source','=',$value->db_source)
+        //                 ->where('trantype','=',$value->db_trantype)
+        //                 ->where('auditno','=',$value->db_auditno);
 
-            if($dbactdtl->exists()){
-                $value->dbactdtl_outamt = $dbactdtl->sum('amount');
-            }else{
-                $value->dbactdtl_outamt = $value->dbacthdr_outamount;
-            }
+        //     if($dbactdtl->exists()){
+        //         $value->dbactdtl_outamt = $dbactdtl->sum('amount');
+        //     }else{
+        //         $value->dbactdtl_outamt = $value->dbacthdr_outamount;
+        //     }
 
-            // $apalloc = DB::table('finance.apalloc')
-            //             ->select('allocdate')
-            //             ->where('refsource','=',$value->dbacthdr_source)
-            //             ->where('reftrantype','=',$value->dbacthdr_trantype)
-            //             ->where('refauditno','=',$value->dbacthdr_auditno)
-            //             ->where('recstatus','!=','CANCELLED')
-            //             ->orderBy('idno', 'desc');
+        //     // $apalloc = DB::table('finance.apalloc')
+        //     //             ->select('allocdate')
+        //     //             ->where('refsource','=',$value->dbacthdr_source)
+        //     //             ->where('reftrantype','=',$value->dbacthdr_trantype)
+        //     //             ->where('refauditno','=',$value->dbacthdr_auditno)
+        //     //             ->where('recstatus','!=','CANCELLED')
+        //     //             ->orderBy('idno', 'desc');
 
-            // if($apalloc->exists()){
-            //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
-            // }else{
-            //     $value->apalloc_allocdate = '';
-            // }
-        }
+        //     // if($apalloc->exists()){
+        //     //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
+        //     // }else{
+        //     //     $value->apalloc_allocdate = '';
+        //     // }
+        // }
 
         //////////paginate/////////
 
