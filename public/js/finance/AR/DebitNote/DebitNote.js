@@ -179,8 +179,8 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
-			{ label: 'Customer Name', name: 'dm_name', width: 50, canSearch: true,classes: 'wrap text-uppercase', checked: true },
+			{ label: 'Debtor Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
+			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap text-uppercase', checked: true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true },			
@@ -206,7 +206,7 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
-			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true, hidden: true },
+			{ label: 'Department Code', name: 'db_deptcode', width: 15, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -445,24 +445,24 @@ $(document).ready(function () {
 		$('#payer_search, #docuDate_from, #docuDate_to').val('');
 		$('#payer_search_hb').text('');
 		removeValidationClass(['#payer_search']);
-		if ($('#Scol').val() == 'purreqhd_purdate'){
+		if ($('#Scol').val() == 'db_entrydate'){
 			$("input[name='Stext']").show("fast");
 			$("#docuDate_text").show("fast");
 			$("input[name='Stext'], #payer_text").hide("fast");
-			$("#tunjukname").hide("fast");
+			// $("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'date');
 			$("input[name='Stext']").velocity({ width: "250px" });
 			$("input[name='Stext']").on('change', searchbydate);
-		} else if($('#Scol').val() == 'supplier_name'){
+		} else if($('#Scol').val() == 'db_payercode'){
 			$("input[name='Stext']").hide("fast");
-			$("#tunjukname").show("fast");
+			// $("#tunjukname").show("fast");
 			$("input[name='Stext'],#docuDate_text").hide("fast");
 			$("#payer_text").show("fast");
 			payer_search.on();
 		} else {
 			$("#payer_text,#docuDate_text").hide("fast");
 			$("input[name='Stext']").show("fast");
-			$("#tunjukname").hide("fast");
+			// $("#tunjukname").hide("fast");
 			$("input[name='Stext']").attr('type', 'text');
 			$("input[name='Stext']").velocity({ width: "100%" });
 			$("input[name='Stext']").off('change', searchbydate);
@@ -569,7 +569,7 @@ $(document).ready(function () {
 
 	function searchChange() {
 		cbselect.empty_sel_tbl();
-		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];  //ni apeni trandept guna tak///
+		var arrtemp = ['session.compcode', $('#Status option:selected').val()];  
 
 		var filter = arrtemp.reduce(function (a, b, c) {
 			if (b.toUpperCase() == 'ALL') {
@@ -579,7 +579,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		}, { fct: ['purreqhd.compcode', 'purreqhd.recstatus', 'purreqhd.prdept'], fv: [], fc: [] });
+		}, { fct: ['db.compcode', 'db.recstatus'], fv: [], fc: [] });
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
