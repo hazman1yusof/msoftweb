@@ -177,9 +177,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
+			{ label: 'Payer Code', name: 'db_payercode', hidden: true },
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
-			{ label: 'Debtor Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
 			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap text-uppercase', checked: true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
@@ -435,7 +435,7 @@ $(document).ready(function () {
 		removeValidationClass(['#payer_search']);
 		if ($('#Scol').val() == 'db_entrydate'){
 			$("#docudate_text").show();
-		}else if($('#Scol').val() == 'db_payercode'){
+		}else if($('#Scol').val() == 'db_debtorcode'){
 			$("#creditor_text").show("fast");
 			payer_search.on();
 		}else{

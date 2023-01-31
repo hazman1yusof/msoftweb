@@ -186,9 +186,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
+			{ label: 'Payer Code', name: 'db_payercode', hidden: true },
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
-			{ label: 'Debtor Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap' },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'Customer', name: 'dm_name', width: 50, classes: 'wrap' },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
@@ -456,6 +456,7 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
+	////////////////////////////changing status and trigger search////////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	$('#docudate_search').on('click', searchDate);
@@ -469,7 +470,7 @@ $(document).ready(function () {
 		removeValidationClass(['#customer_search']);
 		if ($('#Scol').val() == 'db_entrydate'){
 			$("#docudate_text").show();
-		}else if($('#Scol').val() == 'db_payercode'){
+		}else if($('#Scol').val() == 'db_debtorcode'){
 			$("#customer_text").show("fast");
 			customer_search.on();
 		}else{
@@ -531,15 +532,14 @@ $(document).ready(function () {
 					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
-
-				if($('#Scol').val() == 'db_payercode'){
+				
+				if($('#Scol').val() == 'db_debtorcode'){
+					urlParam.searchCol=["db_debtorcode"];
+					urlParam.searchVal=[data];
+				}else if($('#Scol').val() == 'db_payercode'){
 					urlParam.searchCol=["db_payercode"];
 					urlParam.searchVal=[data];
 				}
-				// }else if($('#Scol').val() == 'db_payercode'){
-				// 	urlParam.searchCol=["db.payercode"];
-				// 	urlParam.searchVal=[data];
-				// }
 				refreshGrid('#jqGrid', urlParam);
 			},
 			gridComplete: function(obj){
@@ -1879,7 +1879,7 @@ $(document).ready(function () {
 	// dialog_GSTCode.makedialog();
 
 	var dialog_CustomerSO = new ordialog(
-		'customer', 'debtor.debtormast', '#db_debtorcode', errorField,
+		'customer', 'debtor.debtormast', "#formdata input[name='db_debtorcode']", errorField,
 		{
 			colModel: [
 				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
