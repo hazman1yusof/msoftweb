@@ -429,7 +429,7 @@ $(document).ready(function () {
 	function whenchangetodate() {
 		urlParam.fromdate=urlParam.todate=null;
 		payer_search.off();
-		$('#payer_search, #docuDate_from, #docuDate_to').val('');
+		$('#payer_search, #docudate_from, #docudate_to').val('');
 		$('#payer_search_hb').text('');
 		$("input[name='Stext'],#docudate_text,#creditor_text").hide();
 		removeValidationClass(['#payer_search']);
