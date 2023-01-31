@@ -774,7 +774,7 @@ $(document).ready(function () {
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='tot_gst'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -804,7 +804,6 @@ $(document).ready(function () {
 				$.param({
 					action: 'DebitNoteAPDetail_save',
 					idno: $('#apacthdr_idno').val(),
-					tot_gst:data.tot_gst,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -967,7 +966,8 @@ $(document).ready(function () {
 		var tot_gst = amntb4gst * (gstpercent / 100);
 		var amount = amntb4gst + tot_gst;
 
-		$("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst)
+		$("#"+id_optid+"_tot_gst").val(tot_gst);
+
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
 		event.data.currency.formatOn();//change format to currency on each calculation
 
@@ -1032,7 +1032,13 @@ $(document).ready(function () {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group" type="hidden"><input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden"></div>`);
+		return $(`<div class="input-group">
+			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+		</div>
+		<span class="help-block"></span>
+		<div class="input-group">
+			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
+		</div>`);
 	}
 
 	function galGridCustomValue (elem, operation, value){
