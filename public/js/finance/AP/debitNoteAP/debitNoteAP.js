@@ -294,7 +294,8 @@ $(document).ready(function () {
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('setLabel', 'apacthdr_amount', 'Amount', { 'text-align': 'right' });
-	
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_outamount', 'Outstanding', { 'text-align': 'right' });
+
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -694,7 +695,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true}, edittype:"text",
 				editoptions:{
-					readonly: "readonly",
+					//readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
@@ -773,7 +774,7 @@ $(document).ready(function () {
 			$("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
-			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='tot_gst'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -803,7 +804,7 @@ $(document).ready(function () {
 				$.param({
 					action: 'DebitNoteAPDetail_save',
 					idno: $('#apacthdr_idno').val(),
-					//auditno: $('#apacthdr_auditno').val(),
+					tot_gst:data.tot_gst,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -844,7 +845,6 @@ $(document).ready(function () {
 				    			action: 'DebitNoteAPDetail_save',
 								auditno: $('#apacthdr_auditno').val(),
 								lineno_: selrowData('#jqGrid2').lineno_,
-
 				    		}
 				    		$.post( "./DebitNoteAPDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
 							},'json').fail(function(data) {
@@ -967,8 +967,7 @@ $(document).ready(function () {
 		var tot_gst = amntb4gst * (gstpercent / 100);
 		var amount = amntb4gst + tot_gst;
 
-		$("#"+id_optid+"_tot_gst").val(tot_gst);
-
+		$("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst)
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
 		event.data.currency.formatOn();//change format to currency on each calculation
 
@@ -1127,8 +1126,12 @@ $(document).ready(function () {
 	});	
 
 	function onall_editfunc(){
+		dialog_deptcode.on();//start binding event on jqgrid2
+		dialog_category.on();
+		dialog_GSTCode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
+		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='tot_gst'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 		
 	}
 
@@ -1333,6 +1336,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+				//$("#jqGrid2 #"+id_optid+"_tot_gst").val(data['rate']);
 				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){

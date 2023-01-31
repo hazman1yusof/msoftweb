@@ -240,7 +240,6 @@ use Carbon\Carbon;
                 'recdate' => $request->apacthdr_recdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
-                // 'category' => strtoupper($request->apacthdr_category),
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
                 'payto' => strtoupper($request->apacthdr_payto),
                 'remarks' => strtoupper($request->apacthdr_remarks),
