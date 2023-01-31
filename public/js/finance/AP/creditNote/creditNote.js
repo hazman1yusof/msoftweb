@@ -677,7 +677,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.taxamt as tot_gst','apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
@@ -737,7 +737,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
 				editoptions:{
-					readonly: "readonly",
+					//readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
