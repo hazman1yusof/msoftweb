@@ -821,6 +821,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -1021,6 +1022,20 @@ $(document).ready(function () {
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
 		event.data.currency.formatOn();//change format to currency on each calculation
 
+	}
+
+	function calculate_edited_gst(event){
+
+        mycurrency2.formatOff();
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let editedgst = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
+		var amount = amntb4gst + editedgst;
+
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
+		event.data.currency.formatOn();//change format to currency on each calculation
 	}
 
 	/////////////////////////////parameter for jqGridAlloc url///////////////////////////////////////////////
