@@ -75,36 +75,84 @@ class CreditNoteARController extends defaultController
                         
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
-                    ->where('db.source','=','PB');
+                    ->where('db.source','=','PB')
+                    ->where('db.trantype','CN');
 
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
         }
 
-        if(!empty($request->filterdate)){
-            $table = $table->where('db.entrydate','>',$request->filterdate[0]);
-            $table = $table->where('db.entrydate','<',$request->filterdate[1]);
+        if(!empty($request->fromdate)){
+            $table = $table->where('db.entrydate','>=',$request->fromdate);
+            $table = $table->where('db.entrydate','<=',$request->todate);
         }
 
         if(!empty($request->searchCol)){
-            if($request->searchCol[0] == 'db_auditno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('db.auditno','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'db_invno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('db.invno','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'db_trantype'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('db.trantype','like',$request->searchVal[0]);
-                    });
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
             }else{
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
-                    });
-            }          
+                $searchCol_array = $request->searchCol;
+            }
+            
+            $count = array_count_values($searchCol_array);
+            // dump($request->searchCol);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
         }
+
+        // if(!empty($request->searchCol)){
+        //     if($request->searchCol[0] == 'db_auditno'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('db.auditno','like',$request->searchVal[0]);
+        //             });
+        //     }else if($request->searchCol[0] == 'db_invno'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('db.invno','like',$request->searchVal[0]);
+        //             });
+        //     }else if($request->searchCol[0] == 'db_trantype'){
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where('db.trantype','like',$request->searchVal[0]);
+        //             });
+        //     }else{
+        //         $table = $table->Where(function ($table) use ($request) {
+        //                 $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+        //             });
+        //     }          
+        // }
 
         if(!empty($request->sidx)){
 

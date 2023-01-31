@@ -73,13 +73,24 @@ i.fa {
 								<span id="customer_search_hb" class="help-block"></span>
 							</div>
 
-							<div id="docuDate_text" class="form-inline" style="display:none">
-								FROM DATE <input id="docuDate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-								TO DATE <input id="docuDate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-								<button type="button" class="btn btn-primary btn-sm" id="docuDate_search">SEARCH</button>
+							<div id="docudate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="docudate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO DATE <input id="docudate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="docudate_search">SEARCH</button>
 							</div>
 						</div>
 					</div>
+				</div>
+
+				<div class="col-md-2">
+					<label class="control-label" for="Status">Status</label>  
+					<select id="Status" name="Status" class="form-control input-sm">
+						<option value="All" selected>ALL</option>
+						<option value="Open">OPEN</option>
+						<option value="Confirmed">CONFIRMED</option>
+						<option value="Posted">POSTED</option>
+						<option value="Cancelled">CANCELLED</option>
+					</select>
 				</div>
 
 				<?php 

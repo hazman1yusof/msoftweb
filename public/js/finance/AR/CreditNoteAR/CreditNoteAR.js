@@ -156,8 +156,8 @@ $(document).ready(function () {
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	var urlParam = {
-		action: 'get_table_default',
-		url:'util/get_table_default',
+		action: 'maintable',
+		url:'CreditNoteAR/table',
 		field:'',
 		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
 		table_id: 'idno',
@@ -188,8 +188,8 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, hidden: true, classes: 'wrap' },
-			{ label: 'Customer', name: 'dm_name', width: 50, canSearch: true, classes: 'wrap' },
+			{ label: 'Debtor Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap' },
+			{ label: 'Customer', name: 'dm_name', width: 50, classes: 'wrap' },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
@@ -456,6 +456,27 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#docudate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		urlParam.fromdate=urlParam.todate=null;
+		customer_search.off();
+		$('#customer_search, #docudate_from, #docudate_to').val('');
+		$('#customer_search_hb').text('');
+		$("input[name='Stext'],#docudate_text,#customer_text").hide();
+		removeValidationClass(['#customer_search']);
+		if ($('#Scol').val() == 'db_entrydate'){
+			$("#docudate_text").show();
+		}else if($('#Scol').val() == 'db_payercode'){
+			$("#customer_text").show("fast");
+			customer_search.on();
+		}else{
+			$("input[name='Stext']").show("fast");
+		}
+	}
+
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy() {
@@ -471,32 +492,9 @@ $(document).ready(function () {
 		});
 	}
 
-	$('#Scol').on('change', whenchangetodate);
-	$('#Status').on('change', searchChange);
-	$('#docuDate_search').on('click', searchDate);
-
-	function whenchangetodate() {
-		customer_search.off();
-		$('#customer_search,#docuDate_from,#docuDate_to').val('');
-		$('#customer_search_hb').text('');
-		urlParam.filterdate = null;
-		removeValidationClass(['#customer_search']);
-		if($('#Scol').val()=='db_entrydate'){
-			$("input[name='Stext'], #customer_text").hide("fast");
-			$("#docuDate_text").show("fast");
-		} else if($('#Scol').val() == 'dm_name'){
-			$("input[name='Stext'],#docuDate_text").hide("fast");
-			$("#customer_text").show("fast");
-			customer_search.on();
-		} else {
-			$("#customer_text,#docuDate_text").hide("fast");
-			$("input[name='Stext']").show("fast");
-			$("input[name='Stext']").velocity({ width: "100%" });
-		}
-	}
-
 	function searchDate(){
-		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
+		urlParam.fromdate = $('#docudate_from').val();
+		urlParam.todate = $('#docudate_to').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -534,8 +532,8 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'dm_name'){
-					urlParam.searchCol=["db.debtorcode"];
+				if($('#Scol').val() == 'db_payercode'){
+					urlParam.searchCol=["db_payercode"];
 					urlParam.searchVal=[data];
 				}
 				// }else if($('#Scol').val() == 'db_payercode'){
@@ -1776,7 +1774,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
