@@ -167,6 +167,79 @@ class ReceiptController extends defaultController
                             ->where('dbacthdr.compcode',session('compcode'))
                             ->whereIn('dbacthdr.trantype',['RC','RD']);
 
+            if(!empty($request->filterCol)){
+                foreach ($request->filterCol as $key => $value) {
+                    $pieces = explode(".", $request->filterVal[$key], 2);
+                    if($pieces[0] == 'session'){
+                        $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                    }else if($pieces[0] == '<>'){
+                        $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                    }else if($pieces[0] == '>'){
+                        $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                    }else if($pieces[0] == '>='){
+                        $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                    }else if($pieces[0] == '<'){
+                        $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                    }else if($pieces[0] == '<='){
+                        $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                    }else if($pieces[0] == 'on'){
+                        $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                    }else if($pieces[0] == 'null'){
+                        $table = $table->whereNull($request->filterCol[$key]);
+                    }else if($pieces[0] == 'raw'){
+                        $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                    }else{
+                        $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                    }
+                }
+            }
+
+            if(!empty($request->fromdate)){
+                $table = $table->where('dbacthdr.entrydate','>=',$request->fromdate);
+                $table = $table->where('dbacthdr.entrydate','<=',$request->todate);
+            }
+        
+            if(!empty($request->searchCol)){
+                if(!empty($request->fixPost)){
+                    $searchCol_array = $this->fixPost3($request->searchCol);
+                }else{
+                    $searchCol_array = $request->searchCol;
+                }
+                
+                $count = array_count_values($searchCol_array);
+                // dump($request->searchCol);
+
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                    $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false){
+                                $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            }
+                        }
+                    });
+                }
+            }
+
+            if(!empty($request->sidx)){
+
+                $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+                if(count($pieces)==1){
+                    $table = $table->orderBy($request->sidx, $request->sord);
+                }else{
+                    foreach ($pieces as $key => $value) {
+                        $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                        $pieces_inside = explode(" ", $value_);
+                        $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                    }
+                }
+            }else{
+                $table = $table->orderBy('db.idno','DESC');
+            }
+
             $paginate = $table->paginate($request->rows);
 
             $responce = new stdClass();

@@ -826,7 +826,7 @@ $(document).ready(function () {
 		action:'maintable',
 		url: './receipt/table',
 		field:'',
-		// fixPost:'true',
+		fixPost: true
 		// table_name:['debtor.dbacthdr','hisdb.pat_mast'],
 		// table_id:'dbacthdr_idno',
 		// join_type:['LEFT JOIN'],
@@ -867,11 +867,11 @@ $(document).ready(function () {
 			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
 			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
 			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true}, //tunjuk
-			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
+			{label: 'Date', name: 'dbacthdr_entrydate',width: 40,formatter: dateFormatter, unformat: dateUNFormatter, canSearch:true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
 			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},//tunjuk
+			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', hidden: true},//tunjuk
 			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
@@ -1045,8 +1045,33 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+		searchClick2('#jqGrid', '#searchForm', urlParam);
+	}
+
+	$('#Scol').on('change', whenchangetodate);
+	$('#docudate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		urlParam.fromdate=urlParam.todate=null;
+		payer_search.off();
+		$('#payer_search, #docuDate_from, #docuDate_to').val('');
+		$('#payer_search_hb').text('');
+		$("input[name='Stext'],#actdate_text,#payer_text").hide();
+		removeValidationClass(['#payer_search']);
+		if ($('#Scol').val() == 'dbacthdr_entrydate'){
+			$("#actdate_text").show();
+		}else if($('#Scol').val() == 'dbacthdr_payercode'){
+			$("#payer_text").show("fast");
+			payer_search.on();
+		}else{
+			$("input[name='Stext']").show("fast");
+		}
+	}
+	function searchDate(){
+		urlParam.fromdate = $('#docudate_from').val();
+		urlParam.todate = $('#docudate_to').val();
+		refreshGrid('#jqGrid',urlParam);
 	}
 
 	$('#Status').on('change', searchChange);
@@ -1082,11 +1107,8 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + payer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'db_debtorcode'){
-					urlParam.searchCol=["db.debtorcode"];
-					urlParam.searchVal=[data];
-				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
+				if($('#Scol').val() == 'dbacthdr_payercode'){
+					urlParam.searchCol=["dbacthdr_payercode"];
 					urlParam.searchVal=[data];
 				}
 				refreshGrid('#jqGrid', urlParam);
@@ -1103,8 +1125,8 @@ $(document).ready(function () {
 		},{
 			title: "Select Payer",
 			open: function () {
-				payer_search.urlParam.filterCol = ['recstatus'];
-				payer_search.urlParam.filterVal = ['ACTIVE'];
+				payer_search.urlParam.filterCol = ['compcode','recstatus'];
+				payer_search.urlParam.filterVal = ['session.compcode','ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);

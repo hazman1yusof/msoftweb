@@ -41,9 +41,9 @@
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
-								<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+								<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 
-								<div id="payer_text">
+								<div id="payer_text" style="display:none">
 									<div class='input-group'>
 										<input id="payer_search" name="payer_search" type="text" maxlength="12" class="form-control input-sm">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -52,9 +52,9 @@
 								</div>
 
 								<div id="actdate_text" class="form-inline" style="display:none">
-									FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
-									TO DATE <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
-									<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+									FROM DATE <input id="docudate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+									TO DATE <input id="docudate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+									<button type="button" class="btn btn-primary btn-sm" id="docudate_search">SEARCH</button>
 								</div>							
 							</div>
 		      </div>
