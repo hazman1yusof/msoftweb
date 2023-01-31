@@ -147,7 +147,7 @@ $(document).ready(function () {
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	var urlParam = {
 		action:'maintable',
-		url:'util/get_table_default',
+		url:'DebitNote/table',
 		field:'',
 		table_name: ['debtor.dbacthdr as db','debtor.debtormast as dm'],
 		table_id: 'idno',
@@ -179,8 +179,8 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true },
 			//{ label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
-			{ label: 'Payer Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
-			{ label: 'Customer Name', name: 'dm_name', width: 50, canSearch: true,classes: 'wrap text-uppercase', checked: true },
+			{ label: 'Debtor Code', name: 'db_payercode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
+			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap text-uppercase', checked: true },
 			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
 			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true },			
@@ -206,7 +206,7 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
-			{ label: 'Department Code', name: 'db_deptcode', width: 15, canSearch: true, hidden: true },
+			{ label: 'Department Code', name: 'db_deptcode', width: 15, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -252,11 +252,12 @@ $(document).ready(function () {
 			}
 		},
 		gridComplete: function () {
+			refreshGrid("#jqGrid3",null,"kosongkan");
 			cbselect.show_hide_table();
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
+			// if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
+			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			// }
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 
 				if($('#jqGrid').data('inputfocus') == 'payer_search'){
@@ -419,6 +420,29 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
+	////////////////////////////changing status and trandept trigger search/////////////////////////
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	//$('#trandept').on('change', searchChange);
+	$('#docudate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		urlParam.fromdate=urlParam.todate=null;
+		payer_search.off();
+		$('#payer_search, #docuDate_from, #docuDate_to').val('');
+		$('#payer_search_hb').text('');
+		$("input[name='Stext'],#docudate_text,#creditor_text").hide();
+		removeValidationClass(['#payer_search']);
+		if ($('#Scol').val() == 'db_entrydate'){
+			$("#docudate_text").show();
+		}else if($('#Scol').val() == 'db_payercode'){
+			$("#creditor_text").show("fast");
+			payer_search.on();
+		}else{
+			$("input[name='Stext']").show("fast");
+		}
+	}
+
 	///////////////////utk dropdown search By/////////////////////////////////////////////////
 	searchBy();
 	function searchBy() {
@@ -430,43 +454,8 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
-	}
-
-	////////////////////////////changing status and trandept trigger search/////////////////////////
-	$('#Scol').on('change', whenchangetodate);
-	$('#Status').on('change', searchChange);
-	//$('#trandept').on('change', searchChange);
-	$('#docuDate_search').on('click', searchDate);
-
-	function whenchangetodate() {
-		payer_search.off();
-		$('#payer_search, #docuDate_from, #docuDate_to').val('');
-		$('#payer_search_hb').text('');
-		removeValidationClass(['#payer_search']);
-		if ($('#Scol').val() == 'purreqhd_purdate'){
-			$("input[name='Stext']").show("fast");
-			$("#docuDate_text").show("fast");
-			$("input[name='Stext'], #payer_text").hide("fast");
-			$("#tunjukname").hide("fast");
-			$("input[name='Stext']").attr('type', 'date');
-			$("input[name='Stext']").velocity({ width: "250px" });
-			$("input[name='Stext']").on('change', searchbydate);
-		} else if($('#Scol').val() == 'supplier_name'){
-			$("input[name='Stext']").hide("fast");
-			$("#tunjukname").show("fast");
-			$("input[name='Stext'],#docuDate_text").hide("fast");
-			$("#payer_text").show("fast");
-			payer_search.on();
-		} else {
-			$("#payer_text,#docuDate_text").hide("fast");
-			$("input[name='Stext']").show("fast");
-			$("#tunjukname").hide("fast");
-			$("input[name='Stext']").attr('type', 'text');
-			$("input[name='Stext']").velocity({ width: "100%" });
-			$("input[name='Stext']").off('change', searchbydate);
-		}
+		searchClick2('#jqGrid', '#searchForm', urlParam);
 	}
 
 	var payer_search = new ordialog(
@@ -484,10 +473,10 @@ $(document).ready(function () {
 				let data = selrowData('#' + payer_search.gridname).debtorcode;
 
 				if($('#Scol').val() == 'db_debtorcode'){
-					urlParam.searchCol=["db.debtorcode"];
+					urlParam.searchCol=["db_debtorcode"];
 					urlParam.searchVal=[data];
 				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
+					urlParam.searchCol=["db_payercode"];
 					urlParam.searchVal=[data];
 				}
 				refreshGrid('#jqGrid', urlParam);
@@ -559,7 +548,8 @@ $(document).ready(function () {
 	supplierkatdepan.makedialog();
 
 	function searchDate(){
-		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
+		urlParam.fromdate = $('#docudate_from').val();
+		urlParam.todate = $('#docudate_to').val();
 		refreshGrid('#jqGrid',urlParam);
 	}
 
@@ -569,7 +559,7 @@ $(document).ready(function () {
 
 	function searchChange() {
 		cbselect.empty_sel_tbl();
-		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];  //ni apeni trandept guna tak///
+		var arrtemp = ['session.compcode', $('#Status option:selected').val()];  
 
 		var filter = arrtemp.reduce(function (a, b, c) {
 			if (b.toUpperCase() == 'ALL') {
@@ -579,7 +569,7 @@ $(document).ready(function () {
 				a.fv = a.fv.concat(b);
 				return a;
 			}
-		}, { fct: ['purreqhd.compcode', 'purreqhd.recstatus', 'purreqhd.prdept'], fv: [], fc: [] });
+		}, { fct: ['db.compcode', 'db.recstatus'], fv: [], fc: [] });
 
 		urlParam.filterCol = filter.fc;
 		urlParam.filterVal = filter.fv;
@@ -587,71 +577,6 @@ $(document).ready(function () {
 		urlParam.WhereInVal = null;
 		refreshGrid('#jqGrid', urlParam);
 	}
-
-	resizeColumnHeader = function () {
-        var rowHight, resizeSpanHeight,
-        // get the header row which contains
-        headerRow = $(this).closest("div.ui-jqgrid-view")
-            .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
-
-        // reset column height
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.height = "";
-        });
-
-        // increase the height of the resizing span
-        resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.cssText = resizeSpanHeight;
-        });
-
-        // set position of the dive with the column header text to the middle
-        rowHight = headerRow.height();
-        headerRow.find("div.ui-jqgrid-sortable").each(function () {
-            var ts = $(this);
-            ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
-        });
-    },
-    fixPositionsOfFrozenDivs = function () {
-        var $rows;
-        if (typeof this.grid.fbDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
-            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                if ($(this).hasClass("jqgrow")) {
-                    $(this).height(rowHight);
-                    rowHightFrozen = $(this).height();
-                    if (rowHight !== rowHightFrozen) {
-                        $(this).height(rowHight + (rowHight - rowHightFrozen));
-                    }
-                }
-            });
-            $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
-            $(this.grid.fbDiv).css($(this.grid.bDiv).position());
-        }
-        if (typeof this.grid.fhDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
-            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                $(this).height(rowHight);
-                rowHightFrozen = $(this).height();
-                if (rowHight !== rowHightFrozen) {
-                    $(this).height(rowHight + (rowHight - rowHightFrozen));
-                }
-            });
-            $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
-            $(this.grid.fhDiv).css($(this.grid.hDiv).position());
-        }
-    },
-    fixGboxHeight = function () {
-        var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
-            pagerHeight = $(this.p.pager).outerHeight();
-
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-        gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
-        pagerHeight = $(this.p.pager).outerHeight();
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-    }
 
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
 	var urlParam2 = {
@@ -786,50 +711,7 @@ $(document).ready(function () {
 			dialog_paymode.check(errorField);
 		}
 
-		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
-    });
-	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-
-	$("#jqGrid2").jqGrid('bindKeys');
-		var updwnkey_fld;
-		function updwnkey_func(event){
-			var optid = event.currentTarget.id;
-			var fieldname = optid.substring(optid.search("_"));
-			updwnkey_fld = fieldname;
-		}
-
-		$("#jqGrid2").keydown(function(e) {
-	      switch (e.which) {
-	        case 40: // down
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
-
-	          e.preventDefault();
-	          break;
-
-	        case 38: // up
-	          var $grid = $(this);
-	          var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-			  $("#"+selectedRowId+updwnkey_fld).focus();
-
-	          e.preventDefault();
-	          break;
-
-	        default:
-	          return;
-	      }
-	    });
-
-
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-  	useColSpanStyle: false, 
-	  groupHeaders:[
-		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-		//{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-	  ]
-	});
+	})
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -973,9 +855,6 @@ $(document).ready(function () {
 		},
 		 afterrestorefunc : function( response ) {
 			errorField.length=0;
-			delay(function(){
-				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			}, 500 );
 			hideatdialogForm(false);
 	    },
 	    errorTextFormat: function (data) {
@@ -1218,13 +1097,7 @@ $(document).ready(function () {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $(`<div class="input-group">
-			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-		</div>
-		<span class="help-block"></span>
-		<div class="input-group">
-			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
-		</div>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group"><input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden"></div>`);
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1369,11 +1242,7 @@ $(document).ready(function () {
 
 			//calculate_quantity_outstanding('#jqGrid3');
 		},
-	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
-    });
-	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
-	$("#jqGrid3").jqGrid("setFrozenColumns");
+	})
 	jqgrid_label_align_right("#jqGrid3");
 
 
@@ -1485,7 +1354,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {

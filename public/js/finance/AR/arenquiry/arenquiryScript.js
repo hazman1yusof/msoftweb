@@ -490,8 +490,14 @@ $(document).ready(function () {
 				// urlParam2_RC.billno = selrowData("#jqGrid").db_auditno;
 				// urlParam2_RC.deptcode = selrowData("#jqGrid").db_deptcode;
 			}
-			// urlParamAlloc.db_idno = selrowData("#jqGrid").db_idno;
-			// urlParamAlloc.db_trantype = selrowData("#jqGrid").db_trantype;
+			if(rowid != null) {
+				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				refreshGrid('#jqGridAlloc', urlParamAlloc,'kosongkan');
+				// $("#pg_jqGridPager3 table").hide();
+				// $("#pg_jqGridPager2 table").show();
+			}
+			urlParamAlloc.idno=selrowData("#jqGrid").db_idno;
+			urlParamAlloc.auditno=selrowData("#jqGrid").db_auditno;
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -512,6 +518,11 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 			fdl.set_array().reset();
+		},
+		loadComplete: function(data){
+			calc_jq_height_onchange("jqGrid");
+			setjqgridHeight(data,'jqGridAlloc');
+			calc_jq_height_onchange("jqGridAlloc");
 		},
 		
 	});
@@ -563,70 +574,47 @@ $(document).ready(function () {
 	var urlParamAlloc={
 		action:'get_alloc',
 		url:'./arenquiry/table',
-		// db_idno:'',
-		// db_trantype:''
+		auditno:''
 	};
 
-	var addmore_jqGrid2={more:false,state:true,edit:false}
 	////////////////////////////////////////////////jqGridAlloc////////////////////////////////////////////////
 	$("#jqGridAlloc").jqGrid({
 		datatype: "local",
 		editurl: "./arenquiry/form",
 		colModel: [
-			{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'trantype', name: 'trantype', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'auditno', name: 'auditno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'lineno_', name: 'lineno_', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'System Auto No.', name: 'sysAutoNo', width: 90, classes: 'wrap'},
-			{ label: 'refsource', name: 'refsource', hidden: true},
-			{ label: 'reftrantype', name: 'reftrantype', hidden: true},
-			{ label: 'refauditno', name: 'refauditno', hidden: true},
-			{ label: 'docsource', name: 'docsource', hidden: true},
-			{ label: 'doctrantype', name: 'doctrantype', hidden: true},
-			{ label: 'docauditno', name: 'docauditno', hidden: true},
-			{ label: 'Debtor', name: 'debtorcode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Payer', name: 'payercode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			// { label: 'compcode', name: 'compcode', width: 20, hidden:true},
+			// { label: 'lineno_', name: 'lineno_', width: 20, hidden:true},
+			// { label: 'idno', name: 'idno', width: 20, hidden:true},
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50, classes: 'wrap'},
+			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true},
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true},
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero, hidden: true},
+			{ label: 'Debtor', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Payer', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Document No', name: 'recptno', width: 50, align: 'right'},
-			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap'},
+			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Episno', name: 'episno', width: 20, align: 'right'},			
-			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Episno', name: 'episno', width: 20, align: 'right'},
 		],
-		autowidth: true,
 		shrinkToFit: true,
+		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		loadonce:false,
-		width: 1150,
-		height: 200,
 		rowNum: 30,
-		sortname: 'idno',
-		sortorder: "desc",
 		pager: "#jqGridPagerAlloc",
-		loadComplete: function(){
-			if(addmore_jqGrid2.more == true){$('#jqGridAlloc_iladd').click();}
-			else{
-				$('#jqGridAlloc').jqGrid ('setSelection', "1");
-			}
-
-			addmore_jqGrid2.edit = addmore_jqGrid2.more = false; //reset
+		loadComplete: function(data){
+			calc_jq_height_onchange("jqGridAlloc");
+			setjqgridHeight(data,'jqGridAlloc');
+			urlParamAlloc.idno=selrowData("#jqGrid").db_idno;
 			
+			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
-			if($('#jqGridAlloc').jqGrid('getGridParam', 'reccount') > 0 ){
-				$("#jqGridAlloc").setSelection($("#jqGridAlloc").getDataIDs()[0]);
-			}
 		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPagerAlloc_iledit").click();
-			$('#p_error').text('');   //hilangkan duplicate error msj after save
-		}
 	});
-	var hide_init=0;
 	jqgrid_label_align_right("#jqGridAlloc");
 
 	$("#jqGridAlloc_panel").on("show.bs.collapse", function(){
@@ -1237,6 +1225,11 @@ $(document).ready(function () {
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
 
+			//jqGridAlloc
+			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
+			case 'payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='payercode';break;
+			case 'paymode':field=['paymode','description'];table="debtor.paymode";case_='paymode';break;
+			case 'mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='mrn';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

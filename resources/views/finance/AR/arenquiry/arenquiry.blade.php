@@ -18,6 +18,30 @@
   		text-transform: uppercase;
 	}
 	
+	.panel-heading.collapsed .fa-angle-double-up,
+	.panel-heading .fa-angle-double-down {
+		display: none;
+	}
+
+	.panel-heading.collapsed .fa-angle-double-down,
+	.panel-heading .fa-angle-double-up {
+		display: inline-block;
+	}
+
+	i.fa {
+		cursor: pointer;
+		float: right;
+		<!-- margin-right: 5px; -->
+	}
+
+	.collapsed ~ .panel-body {
+		padding: 0;
+	}
+
+	.clearfix {
+		overflow: auto;
+	}
+	
 	<!-- start RC -->
 	#gridAllo_c input[type='text'][rowid]{
 		height: 30%;
@@ -39,29 +63,6 @@
 		border-color: #e7e7e7;
 	}
 	<!-- end RC -->
-
-	<!-- start jqGridAlloc -->
-	.panel-heading.collapsed .fa-angle-double-up,
-	.panel-heading .fa-angle-double-down {
-		display: none;
-	}
-
-	.panel-heading.collapsed .fa-angle-double-down,
-	.panel-heading .fa-angle-double-up {
-		display: inline-block;
-	}
-
-	i.fa {
-		cursor: pointer;
-		float: right;
-		<!--  margin-right: 5px; -->
-	}
-
-	.clearfix {
-		overflow: auto;
-	}
-	<!-- end jqGridAlloc -->
-
 @endsection
 
 @section('body')
@@ -120,22 +121,22 @@
 			</div>
 		</div>
 
-		<div class="panel-group">
-			<div class="panel panel-default" id="jqGridAlloc_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridAlloc_panel">
-					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Allocation
-				</div>
-				<div id="jqGridAlloc_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<form id='formdataAlloc' class='form-vertical' style='width:99%'>
-							<div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGridAlloc" class="table table-striped"></table>
-								<div id="jqGridPagerAlloc"></div>
-							</div>
-						</form>
-					</div>
+		<div class="panel panel-default" style="position: relative;" id="jqGridAlloc_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAlloc_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Allocation</h5>
 				</div>
 			</div>
+			<div id="jqGridAlloc_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGridAlloc" class="table table-striped"></table>
+						<div id="jqGridPagerAlloc"></div>
+					</div>
+				</div>
+			</div>	
 		</div>
 		<!-- </div> -->
     </div>
