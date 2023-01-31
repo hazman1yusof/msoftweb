@@ -515,21 +515,6 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 
-	////////////////////////////populate data for dropdown search By////////////////////////////
-	searchBy();
-	function searchBy() {
-		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
-			if (value['canSearch']) {
-				if (value['selected']) {
-					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
-				} else {
-					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
-				}
-			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
-		});
-	}
-
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	$('#actdate_search').on('click', searchDate);
@@ -552,6 +537,21 @@ $(document).ready(function () {
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
+	}
+
+	////////////////////////////populate data for dropdown search By////////////////////////////
+	searchBy();
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
+				}
+			}
+			searchClick2('#jqGrid', '#searchForm', urlParam);
+		});
 	}
 
 	function searchDate(){

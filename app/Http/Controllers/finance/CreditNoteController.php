@@ -108,8 +108,8 @@ use Carbon\Carbon;
         }
 
         if(!empty($request->filterdate)){
-            $table = $table->where('ap.actdate','>',$request->filterdate[0]);
-            $table = $table->where('ap.actdate','<',$request->filterdate[1]);
+            $table = $table->where('ap.actdate','>=',$request->filterdate[0]);
+            $table = $table->where('ap.actdate','<=',$request->filterdate[1]);
         }
 
         if(!empty($request->searchCol)){
