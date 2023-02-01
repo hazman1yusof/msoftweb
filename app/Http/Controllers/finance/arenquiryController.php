@@ -81,7 +81,8 @@ class arenquiryController extends defaultController
                         'db.paytype AS db_paytype',
                         'db.tillcode AS db_tillcode',
                         'db.tillno AS db_tillno',
-                        'db.recptno AS db_recptno'
+                        'db.recptno AS db_recptno',
+                        'db.paymode AS db_paymode'
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode','=',session('compcode'))
@@ -139,6 +140,30 @@ class arenquiryController extends defaultController
         }
 
         $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {
+            $dbactdtl = DB::table('debtor.dbactdtl')
+                        ->where('source','=',$value->db_source)
+                        ->where('trantype','=',$value->db_trantype)
+                        ->where('auditno','=',$value->db_auditno);
+            
+            if($dbactdtl->exists()){
+                $value->dbactdtl_outamt = $dbactdtl->sum('amount');
+            }else{
+                $value->dbactdtl_outamt = $value->db_outamount;
+            }
+            
+            $dballoc = DB::table('debtor.dballoc')
+                        ->where('docsource','=',$value->db_source)
+                        ->where('doctrantype','=',$value->db_trantype)
+                        ->where('docauditno','=',$value->db_auditno);
+            
+            if($dballoc->exists()){
+                $value->unallocated = false;
+            }else{
+                $value->unallocated = true;
+            }
+        }
 
         //////////paginate/////////
 

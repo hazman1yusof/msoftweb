@@ -186,31 +186,33 @@
 					<input id="db_trantype" name="db_trantype" type="hidden">
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
-						<div class="col-md-3">
+						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
+						<div class="col-md-2">
+							<select id="db_trantype2" name=db_trantype2 class="form-control" data-validation="required">
+								<option value = "CN">Credit Note</option>
+								<option value = "CNU">Credit Note Unallocated</option>
+							</select>
+						</div>
+
+						<label class="col-md-3 control-label" for="db_debtorcode">Debtor</label>	 
+						<div class="col-md-2">
 							<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
 						</div>
+					</div>
 
+					<div class="form-group">
 						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
 						<div class="col-md-2">
 							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_auditno">Credit/Debit No</label>  
+						<label class="col-md-3 control-label" for="db_auditno">Credit No</label>  
 						<div class="col-md-2"> 
 							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
-						</div>
-						
-						<label class="col-md-3 control-label" for="db_entrydate">Document Date</label>  
-						<div class="col-md-2">
-							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-								max="<?php echo date('Y-m-d');?>">
 						</div>
 					</div>
 						
@@ -227,13 +229,21 @@
 					</div>
 
 					<hr>
-
+	
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_approveddate">Approved Date</label>  
-						<div class="col-md-2"> 
-							<input id="db_approveddate" name="db_approveddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-									max="<?php echo date('Y-m-d');?>">
+						<label class="col-md-2 control-label" for="db_reference">Reference No.</label>  
+						<div class="col-md-2">
+							<input id="db_reference" name="db_reference" class="form-control input-sm text-uppercase">
 						</div>
+
+						<label class="col-md-3 control-label" for="db_paymode">Pay Mode</label>	 
+						<div class="col-md-2">
+							<div class='input-group'>
+								<input id="db_paymode" name="db_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>		
 					</div>
 
 					<div class="form-group">
@@ -248,8 +258,8 @@
 			</div>
 		</div>
 			
-		<div class='panel panel-info'>
-			<div class="panel-heading"> Credit Note Detail </div>
+		<div class='panel panel-info' id="grid_dtl">
+			<div class="panel-heading">Credit Note Detail</div>
 			<div class="panel-body">
 				<form id='formdata2_CN' class='form-vertical' style='width:99%'>
 					<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
@@ -257,6 +267,24 @@
 					<div id="jqGrid2_CN_c" class='col-md-12'>
 						<table id="jqGrid2_CN" class="table table-striped"></table>
 						<div id="jqGridPager2_CN"></div>
+					</div>
+				</form>
+			</div>
+
+			<div class="panel-body">
+				<div class="noti" style="color:red"></div>
+			</div>
+		</div>
+			
+		<div class='panel panel-info' id="grid_alloc">
+			<div class="panel-heading">Allocation</div>
+			<div class="panel-body">
+				<form id='formdata2_Alloc' class='form-vertical' style='width:99%'>
+					<input type="hidden" id="jqGrid2Alloc_itemcode_refresh" name="" value="0">
+
+					<div id="jqGrid2_Alloc_c" class='col-md-12'>
+						<table id="jqGrid2_Alloc" class="table table-striped"></table>
+						<div id="jqGridPager2_Alloc"></div>
 					</div>
 				</form>
 			</div>
@@ -299,19 +327,22 @@
 						<div class="col-md-2"> 
 							<input id="db_auditno" name="db_auditno" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" rdonly>
 						</div>
-						
-						<label class="col-md-3 control-label" for="db_entrydate">Document Date</label>  
+
+						<label class="col-md-3 control-label" for="db_amount">Total Amount</label>
 						<div class="col-md-2">
-							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?>" min="<?php $backday= 20; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" 
-								max="<?php echo date('Y-m-d');?>">
+							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 						</div>
 					</div>
 						
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_amount">Total Amount</label>
+						<label class="col-md-2 control-label" for="db_paymode">Pay Mode</label>	 
 						<div class="col-md-2">
-							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
-						</div>
+							<div class='input-group'>
+								<input id="db_paymode" name="db_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>	
 
 						<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
 						<div class="col-md-2">

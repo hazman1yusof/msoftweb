@@ -28,7 +28,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
+	var mycurrency =new currencymode(['#db_outamount', '#db_amount', "#formdata_DN input[name='db_amount']", "#formdata_CN input[name='db_amount']"]);
 	var mycurrency2 =new currencymode(['#db_outamount', '#db_amount']);
 	var fdl = new faster_detail_load();
 	
@@ -217,11 +217,15 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				errorField.length=0;
 				$("#jqGrid2_CN").jqGrid('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth - $("#jqGrid2_CN_c")[0].offsetLeft));
+				$("#jqGrid2_Alloc").jqGrid('setGridWidth', Math.floor($("#jqGrid2_Alloc_c")[0].offsetWidth - $("#jqGrid2_Alloc_c")[0].offsetLeft));
 				refreshGrid("#jqGrid2_CN",urlParam2_CN);
 				mycurrency.formatOnBlur();
 				disableForm('#formdata_CN');
 				$("#pg_jqGridPager2 table").hide();
+				$("#pg_jqGridPager2_Alloc table").hide();
 				dialog_CustomerCN.check(errorField);
+				dialog_paymodeCN.check(errorField);
+				init_jq2(oper);
 			},
 			close: function( event, ui ) {
 			}
@@ -241,6 +245,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid2_DN",urlParam2_DN);
 				$("#pg_jqGridPager2_DN table").hide();
 				dialog_CustomerDN.check(errorField);
+				dialog_paymodeDN.check(errorField);
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -426,7 +431,7 @@ $(document).ready(function () {
 
 	searchClick2('#jqGrid','#searchForm',urlParam);
 
-	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
+	///////////////////////////////////////////////jqgrid///////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -448,18 +453,20 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 20, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'MRN', name: 'db_mrn', width: 20, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true,},
+			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
+			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -550,7 +557,10 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			if(selrowData("#jqGrid").db_trantype=='CN'){ //CN
 				populateFormdata("#jqGrid","#dialogForm_CN","#formdata_CN",selRowId,'view');
-				refreshGrid("#jqGrid2_CN", urlParam2_CN,'add');
+				refreshGrid("#jqGrid2_CN",urlParam2_CN,'add');
+
+				urlParam2_Alloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
+				refreshGrid("#jqGrid2_Alloc",urlParam2_Alloc,'add');
 			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
 				populateFormdata("#jqGrid", "#dialogForm_DN", "#formdata_DN", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_DN",urlParam2_DN,'add');
@@ -573,8 +583,95 @@ $(document).ready(function () {
 		},
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////Detail/////////////////////////////////////////////////
+	var urlParam3 = {
+		action:'get_table_default',
+		url: 'util/get_table_default',
+		field:'',
+		table_name:'debtor.dbactdtl',
+		filterCol:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.recstatus'],
+		filterVal:['session.compcode', '', '', '', '<>.DELETE']
+	}
 
-	/////////////////////////////////////////////Allocation/////////////////////////////////////////////
+	////////////////////////////////////////////////jqGrid3////////////////////////////////////////////////
+	$("#jqGrid3").jqGrid({
+		datatype: "local",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'AuditNo', name: 'auditno', hidden: true },
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
+            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:deptcodeCNCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+            { label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:categoryCNCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:GSTCodeCNCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false },
+			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			// { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
+			{ label: 'idno', name: 'idno', editable: false, hidden: true },
+			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
+			{ label: 'recstatus', name: 'recstatus', hidden: true },
+		],
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager3",
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){//ini baru
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
+			calc_jq_height_onchange("jqGrid3");
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#jqGrid3");
+	addParamField('#jqGrid3',true,urlParam3);
+
+	$("#jqGridDtl_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGridDtl_c")[0].offsetWidth-$("#jqGridDtl_c")[0].offsetLeft-18));
+	});
+
+	/////////////////////////////////////////////////Allocation/////////////////////////////////////////////////
 	///////////////////////////////////////parameter for jqGridAlloc url///////////////////////////////////////
 	var urlParamAlloc={
 		action:'get_alloc',
@@ -587,21 +684,21 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./arenquiry/form",
 		colModel: [
-			// { label: 'compcode', name: 'compcode', width: 20, hidden:true},
-			// { label: 'lineno_', name: 'lineno_', width: 20, hidden:true},
-			// { label: 'idno', name: 'idno', width: 20, hidden:true},
-			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50, classes: 'wrap'},
-			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true},
-			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true},
-			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero, hidden: true},
-			{ label: 'Debtor', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Payer', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'Document No', name: 'recptno', width: 50, align: 'right'},
-			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Episno', name: 'episno', width: 20, align: 'right'},
+			// { label: 'compcode', name: 'compcode', width: 20, hidden:true },
+			// { label: 'lineno_', name: 'lineno_', width: 20, hidden:true },
+			// { label: 'idno', name: 'idno', width: 20, hidden:true },
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 50, classes: 'wrap' },
+			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero, hidden: true },
+			{ label: 'Debtor', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Payer', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Document No', name: 'recptno', width: 50, align: 'right' },
+			{ label: 'Paymode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Alloc Date', name: 'allocdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'MRN', name: 'mrn', width: 50, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Episno', name: 'episno', width: 20, align: 'right' },
 		],
 		shrinkToFit: true,
 		autowidth:true,
@@ -707,91 +804,126 @@ $(document).ready(function () {
 		}
 	});
 
-	////////////////////////////////////////////////jqGrid3////////////////////////////////////////////////
-	
-	var urlParam3 = {
+	////////////////////////////////////////////////parameter for jqGrid2_Alloc url////////////////////////////////////////////////
+	var urlParam2_Alloc={
 		action:'get_table_default',
-		url: 'util/get_table_default',
-		field:'',
-		table_name:'debtor.dbactdtl',
-		filterCol:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.recstatus'],
-		filterVal:['session.compcode', '', '', '', '<>.DELETE']
-	}
+		url:'util/get_table_default',
+		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
+		table_name:['debtor.dballoc AS alloc'],
+		table_id:'lineno_',
+		filterCol:['alloc.compcode','alloc.auditno','alloc.source','alloc.trantype'],
+		filterVal:['session.compcode', '', 'AR','CN']
+	};
 
-	$("#jqGrid3").jqGrid({
+	////////////////////////////////////////////////jqGrid2_Alloc////////////////////////////////////////////////
+	$("#jqGrid2_Alloc").jqGrid({
 		datatype: "local",
+		editurl: "./CreditNoteARDetail/form",
 		colModel: [
-			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'AuditNo', name: 'auditno', hidden: true },
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
-            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:deptcodeCNCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-            { label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:categoryCNCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
-			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
-				editrules:{required: true,custom:true, custom_func:cust_rules},
-				formatter: showdetail,
-				edittype:'custom',	editoptions:
-					{
-						custom_element:GSTCodeCNCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc, hidden:true },
+			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
-			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false },
-			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
-			// { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
-			{ label: 'idno', name: 'idno', editable: false, hidden: true },
-			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
-			{ label: 'recstatus', name: 'recstatus', hidden: true },
+			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap' },
+			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function(e){
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+							}
+						});
+					}
+				},
+			},
+			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
+				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Amount Paid', name: 'amount', width: 100, classes: 'wrap', 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'Line No', name: 'lineno_', width: 20, classes: 'wrap', hidden:true }, 
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true },
+			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true },
 		],
+		autowidth: true,
 		shrinkToFit: true,
-		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
+		loadonce:false,
+		width: 1150,
+		height: 200,
 		rowNum: 30,
 		sortname: 'lineno_',
 		sortorder: "desc",
-		pager: "#jqGridPager3",
+		pager: "#jqGridPager2_Alloc",
 		loadComplete: function(data){
-			data.rows.forEach(function(element){
-				if(element.callback_param != null){//ini baru
-					$("#"+element.callback_param[2]).on('click', function() {
-						seemoreFunction(
-							element.callback_param[0],
-							element.callback_param[1],
-							element.callback_param[2]
-						)
-					});
-				}
-			});
-			calc_jq_height_onchange("jqGrid3");
+			calc_jq_height_onchange("jqGrid2_Alloc");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
 		},
+		beforeSubmit: function(postdata, rowid){
+	 	}
 	});
-	jqgrid_label_align_right("#jqGrid3");
-	addParamField('#jqGrid3',true,urlParam3);
 
-	$("#jqGridDtl_panel").on("show.bs.collapse", function(){
-		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGridDtl_c")[0].offsetWidth-$("#jqGridDtl_c")[0].offsetLeft-18));
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function checkbox_jqgAlloc(cellvalue, options, rowObject){
+		return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+	}
+
+	$("#formdata_CN input[name='db_trantype2']").on('change', function() {
+		init_jq2(oper);
 	});
 
 	////////////////////////////////////////////////////DN////////////////////////////////////////////////////
@@ -888,6 +1020,7 @@ $(document).ready(function () {
 		deptcode:''
 	};
 
+	////////////////////////////////////////////////jqGrid2_IN////////////////////////////////////////////////
 	$("#jqGrid2_IN").jqGrid({
 		datatype: "local",
 		editurl: "SalesOrderDetail/form",
@@ -977,6 +1110,7 @@ $(document).ready(function () {
 		sysparam:{source:'PB',trantype:'RC',useOn:'auditno'}
 	};
 
+	////////////////////////////////////////////////jqGrid2_RC////////////////////////////////////////////////
 	$("#jqGrid2_RC").jqGrid({
 		datatype: "local",
 		editurl: "receipt/form",
@@ -1528,6 +1662,40 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_CustomerCN.makedialog(false);
+
+	var dialog_paymodeCN = new ordialog(
+		'db_paymodeCN','debtor.paymode',"#formdata_CN input[name='db_paymode']",errorField,
+		{	colModel:[
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus', 'source', 'paytype'],
+				filterVal:['session.compcode','ACTIVE', 'AR', 'Credit Note']
+			},
+			ondblClickRow:function(){
+				// $('#db_remark').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#db_remark').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Paymode",
+			open: function(){
+				dialog_paymodeCN.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymodeCN.urlParam.filterVal=['ACTIVE', 'session.compcode', 'AR', 'Credit Note'];
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_paymodeCN.makedialog(true);
 	
 	//DN
 	var dialog_CustomerDN = new ordialog(
@@ -1550,6 +1718,40 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_CustomerDN.makedialog(false);
+
+	var dialog_paymodeDN = new ordialog(
+		'db_paymodeDN','debtor.paymode',"#formdata_DN input[name='db_paymode']",errorField,
+		{	colModel:[
+				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus', 'source', 'paytype'],
+				filterVal:['session.compcode','ACTIVE', 'AR', 'Debit Note']
+			},
+			ondblClickRow:function(){
+				// $('#db_remark').focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					// $('#db_remark').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Paymode",
+			open: function(){
+				dialog_paymodeDN.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
+				dialog_paymodeDN.urlParam.filterVal=['ACTIVE', 'session.compcode', 'AR', 'Debit Note'];
+				}
+			},'urlParam','radio','tab'
+		);
+	dialog_paymodeDN.makedialog(true);
 	
 	//IN-SalesOrder
 	var dialog_deptcode = new ordialog(
@@ -1963,4 +2165,28 @@ function disabledPill(){
 function enabledPill(){
 	$('#dialogForm_RC .nav li').removeClass('disabled');
 	$('#dialogForm_RC .nav li').find('a').attr("data-toggle","tab");
+}
+
+function init_jq2(oper){
+	if(oper != 'add'){
+		var unallocated = selrowData('#jqGrid').unallocated;
+		if(unallocated == 'true'){
+			$("#db_trantype2").val('CNU');
+		}
+	}
+
+	if(($("#db_trantype2").find(":selected").text() == 'Credit Note')) {
+		// $('#save').hide();
+		$('#grid_alloc').show();
+		$('#grid_dtl').show();
+		$('#jqGridPager2_Alloc').hide();
+		$("#jqGrid2_Alloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_Alloc_c")[0].offsetWidth-$("#jqGrid2_Alloc_c")[0].offsetLeft-28));
+		$("#jqGrid2_CN").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth-$("#jqGrid2_CN_c")[0].offsetLeft));
+	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+		// $('#save').hide();
+		$('#grid_alloc').hide();
+		$('#grid_dtl').show();
+		$('#jqGridPager2_Alloc').hide();
+ 		//$("#jqGrid2_Alloc input[name='allocamount']").attr('readonly','readonly');
+	}
 }
