@@ -121,6 +121,38 @@
 			</div>
 		</div>
 
+		<div class="panel panel-default" style="position: relative;" id="jqGridDtl_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridDtl_panel">
+				<!-- <b>Credit No: </b><span id="CreditNo_show"></span><br>  -->
+				<!-- <b>CUSTOMER NAME: </b><span id="CustName_show"></span> -->
+				
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Detail</h5>
+				</div>
+			</div>
+
+			<div id="jqGridDtl_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<!-- @if (strtoupper(Request::get('scope')) == 'CANCEL')
+						<button 
+								type="button" 
+								class="btn btn-danger btn-sm" 
+								id="but_post2_jq"
+								data-oper="cancel"
+								style="float: right;margin: 0px 20px 10px 20px;">
+								Cancel Credit Note
+						</button>
+					@endif -->
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_CN" class="table table-striped"></table>
+						<div id="jqGridPagerDtl"></div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
 		<div class="panel panel-default" style="position: relative;" id="jqGridAlloc_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAlloc_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>

@@ -208,7 +208,7 @@ $(document).ready(function () {
 	}
 	//end RC
 
-	////////////////////////////////////start dialog//////////////////////////////////////
+	///////////////////////////////////////////start dialogForm///////////////////////////////////////////
 	$("#dialogForm_CN")
 		.dialog({
 			width: 9 / 10 * $(window).width(),
@@ -217,6 +217,7 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				errorField.length=0;
 				$("#jqGrid2_CN").jqGrid('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth - $("#jqGrid2_CN_c")[0].offsetLeft));
+				refreshGrid("#jqGrid2_CN",urlParam2_CN);
 				mycurrency.formatOnBlur();
 				disableForm('#formdata_CN');
 				$("#pg_jqGridPager2 table").hide();
@@ -430,15 +431,15 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true},
-			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
-			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap'},
-			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true},
-			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right',},
-			{ label: 'Document Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
+			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true },
+			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
+			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
+			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
+			{ label: 'Document Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 12 },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, canSearch: true, },
@@ -469,22 +470,23 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			if(selrowData("#jqGrid").db_trantype=='CN'){    //CN
+			if(selrowData("#jqGrid").db_trantype=='CN'){	//CN
 				urlParam2_CN.source = selrowData("#jqGrid").db_source;
 				urlParam2_CN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_CN.auditno = selrowData("#jqGrid").db_auditno;
-				urlParam2_CN.filterVal[1]=selrowData("#jqGrid").db_auditno;
-			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
+				refreshGrid("#jqGrid3_CN",urlParam2_CN);
+				// urlParam2_CN.filterVal[1]=selrowData("#jqGrid").db_auditno;
+			}else if(selrowData("#jqGrid").db_trantype=='DN'){	//DN
 				urlParam2_DN.source = selrowData("#jqGrid").db_source;
 				urlParam2_DN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_DN.auditno = selrowData("#jqGrid").db_auditno;
-				urlParam2_DN.filterVal[1]=selrowData("#jqGrid").db_auditno;
-			}else if(selrowData("#jqGrid").db_trantype=='IN'){ //IN
+				// urlParam2_DN.filterVal[1]=selrowData("#jqGrid").db_auditno;
+			}else if(selrowData("#jqGrid").db_trantype=='IN'){	//IN
 				urlParam2_IN.source = selrowData("#jqGrid").db_source;
 				urlParam2_IN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_IN.billno = selrowData("#jqGrid").db_auditno;
 				urlParam2_IN.deptcode = selrowData("#jqGrid").db_deptcode;
-			}else if(selrowData("#jqGrid").db_trantype=='RC'){ //RC
+			}else if(selrowData("#jqGrid").db_trantype=='RC'){	//RC
 				// urlParam2_RC.source = selrowData("#jqGrid").db_source;
 				// urlParam2_RC.trantype = selrowData("#jqGrid").db_trantype;
 				// urlParam2_RC.billno = selrowData("#jqGrid").db_auditno;
@@ -545,7 +547,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			if(selrowData("#jqGrid").db_trantype=='CN'){ //CN
 				populateFormdata("#jqGrid","#dialogForm_CN","#formdata_CN",selRowId,'view');
-				refreshGrid("#jqGrid2_CN", urlParam2_CN);
+				refreshGrid("#jqGrid2_CN", urlParam2_CN,'add');
 			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
 				populateFormdata("#jqGrid", "#dialogForm_DN", "#formdata_DN", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_DN",urlParam2_DN,'add');
@@ -621,32 +623,32 @@ $(document).ready(function () {
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-18));
 	});
 
-	///////////////////// parameter for jqgrid url ///////////////////////////////////////////////////////
+	/////////////////////////////////////////parameter for jqgrid url/////////////////////////////////////////
 
-	//// CN
+	////////////////////////////////////////////////////CN////////////////////////////////////////////////////
 	var urlParam2_CN = {
 		action: 'get_table_dtl',
 		url:'CreditNoteARDetail/table',
 		source:'',
 		trantype:'',
 		auditno:'',
-		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
-		table_name:['debtor.dbactdtl AS dbactdtl'],
-		table_id:'lineno_',
-		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
+		// field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
+		// table_name:['debtor.dbactdtl AS dbactdtl'],
+		// table_id:'lineno_',
+		// filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
+		// filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'CN']
 	};
 
-	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
+	////////////////////////////////////////////////jqGrid2_CN////////////////////////////////////////////////
 	$("#jqGrid2_CN").jqGrid({
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'AuditNo', name: 'auditno', hidden: true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
-            { label: 'Department CN', name: 'deptcode', width: 250, classes: 'wrap', canSearch: true, editable: false,
+			{ label: 'AuditNo', name: 'auditno', hidden: true },
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
+            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -655,7 +657,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Category CN', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false,
+            { label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
                 editrules:{required: true,custom:true, custom_func:cust_rules},
                 formatter: showdetail,
                 edittype:'custom',	editoptions:
@@ -664,8 +666,8 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', editable: false},
-			{ label: 'GST Code CN', name: 'GSTCode', width: 150, classes: 'wrap', editable: false,
+			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -674,10 +676,10 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},},
-			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 120, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},},
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:false},
-			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false },
+			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', hidden: true },
@@ -704,31 +706,81 @@ $(document).ready(function () {
 		}
 	});
 
-	//////// DN
+	////////////////////////////////////////////////jqGrid3_CN////////////////////////////////////////////////
+	$("#jqGrid3_CN").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid2_CN").jqGrid('getGridParam','colModel'),
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager3",
+		loadComplete: function(data){
+			data.rows.forEach(function(element){
+				if(element.callback_param != null){//ini baru
+					$("#"+element.callback_param[2]).on('click', function() {
+						seemoreFunction(
+							element.callback_param[0],
+							element.callback_param[1],
+							element.callback_param[2]
+						)
+					});
+				}
+			});
+
+			setjqgridHeight(data,'jqGrid3_CN');
+			calc_jq_height_onchange("jqGrid3_CN");
+		},
+		gridComplete: function(){
+			$("#jqGrid3_CN").find(".remarks_button").on("click", function(e){
+				$("#remarks2").data('rowid',$(this).data('rowid'))
+				$("#remarks2").data('grid',$(this).data('grid'))
+				$("#dialog_remarks").dialog( "open" );
+			});
+			fdl.set_array().reset();
+
+			//calculate_quantity_outstanding('#jqGrid3_CN');
+		},
+	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        // fixPositionsOfFrozenDivs.call(this);
+    });
+	// fixPositionsOfFrozenDivs.call($('#jqGrid3_CN')[0]);
+	$("#jqGrid3_CN").jqGrid("setFrozenColumns");
+	jqgrid_label_align_right("#jqGrid3_CN");
+
+	$("#jqGridDtl_panel").on("show.bs.collapse", function(){
+		$("#jqGrid3_CN").jqGrid ('setGridWidth', Math.floor($("#jqGridDtl_c")[0].offsetWidth-$("#jqGridDtl_c")[0].offsetLeft-18));
+	});
+
+	////////////////////////////////////////////////////DN////////////////////////////////////////////////////
 	var urlParam2_DN = {
 		action: 'get_table_dtl',
 		url:'DebitNoteDetail/table',
 		source:'',
 		trantype:'',
 		auditno:'',
-		field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
-		table_name:['debtor.dbactdtl AS dbactdtl'],
-		table_id:'lineno_',
-		filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'DN']
+		// field:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.lineno_','dbactdtl.deptcode','dbactdtl.category','dbactdtl.document', 'dbactdtl.AmtB4GST', 'dbactdtl.GSTCode', 'dbactdtl.amount', 'dbactdtl.grnno', 'dbactdtl.amtslstax as tot_gst'],
+		// table_name:['debtor.dbactdtl AS dbactdtl'],
+		// table_id:'lineno_',
+		// filterCol:['dbactdtl.compcode','dbactdtl.auditno', 'dbactdtl.recstatus','dbactdtl.source','dbactdtl.trantype'],
+		// filterVal:['session.compcode', '', '<>.DELETE', 'PB', 'DN']
 	};
 
+	////////////////////////////////////////////////jqGrid2_DN////////////////////////////////////////////////
 	$("#jqGrid2_DN").jqGrid({
 		datatype: "local",
 		editurl: "./DebitNoteDetail/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'AuditNo', name: 'auditno', hidden: true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false},
+			{ label: 'AuditNo', name: 'auditno', hidden: true },
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
 			//{ label: 'Department', name: 'deptcode', width: 250, classes: 'wrap', canSearch: true, editable: false },
-			//{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false},
-			{ label: 'Department DN', name: 'deptcode', width: 250, classes: 'wrap', canSearch: true, editable: false,
+			//{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false },
+			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -737,7 +789,7 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Category DN', name: 'category', width: 250, edittype:'text', classes: 'wrap', editable: false,
+			{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -746,9 +798,9 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Document', name: 'document', width: 250, classes: 'wrap', editable: false },
-			//{ label: 'GST Code', name: 'GSTCode', width: 150, classes: 'wrap', editable: false},
-			{ label: 'GST Code DN', name: 'GSTCode', width: 150, classes: 'wrap', editable: true,
+			{ label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: false },
+			//{ label: 'GST Code', name: 'GSTCode', width: 150, classes: 'wrap', editable: false },
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -757,10 +809,10 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},},
-			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 120, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},},
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
-			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, } },
+			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', hidden: true },
@@ -790,7 +842,7 @@ $(document).ready(function () {
 		fixPositionsOfFrozenDivs.call(this);
 	});
 		
-	///IN
+	////////////////////////////////////////////////////IN////////////////////////////////////////////////////
 	var urlParam2_IN={
 		action: 'get_table_dtl',
 		url:'SalesOrderDetail/table',
@@ -870,7 +922,7 @@ $(document).ready(function () {
 		}
     });
 
-	///RC
+	////////////////////////////////////////////////////RC////////////////////////////////////////////////////
 	var urlParam2_RC={
 		action:'maintable',
 		url: './receipt/table',
@@ -1331,21 +1383,7 @@ $(document).ready(function () {
 		}
 	}
 
-	////////////////////////////populate data for dropdown search By////////////////////////////
-	searchBy();
-	function searchBy() {
-		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
-			if (value['canSearch']) {
-				if (value['selected']) {
-					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
-				} else {
-					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
-				}
-			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
-		});
-	}
-
+	////////////////////////////changing status and trigger search////////////////////////////
 	$('#Scol').on('change', whenchangetodate);
 	$('#Status').on('change', searchChange);
 	$('#docuDate_search').on('click', searchDate);
@@ -1361,7 +1399,7 @@ $(document).ready(function () {
 		if($('#Scol').val()=='db_entrydate'){
 			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
 			$("#docuDate_text").show("fast");
-		} else if($('#Scol').val() == 'dm_name'){
+		} else if($('#Scol').val() == 'db_debtorcode'){
 			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
 			$("#customer_text").show("fast");
 			customer_search.on();
@@ -1374,6 +1412,21 @@ $(document).ready(function () {
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
+	}
+
+	////////////////////////////populate data for dropdown search By////////////////////////////
+	searchBy();
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
+				}
+			}
+			searchClick2('#jqGrid', '#searchForm', urlParam);
+		});
 	}
 
 	//////////////////Showdetail Header Dialog///////////////

@@ -32,6 +32,8 @@ class arenquiryController extends defaultController
                 return $this->populate_rc($request);
             case 'get_alloc':
                 return $this->get_alloc($request);
+            case 'get_table_dtl':
+                return $this->get_table_dtl($request);
             default:
                 return 'error happen..';
         }
@@ -91,8 +93,8 @@ class arenquiryController extends defaultController
         }
 
         if(!empty($request->filterdate)){
-            $table = $table->where('db.entrydate','>',$request->filterdate[0]);
-            $table = $table->where('db.entrydate','<',$request->filterdate[1]);
+            $table = $table->where('db.entrydate','>=',$request->filterdate[0]);
+            $table = $table->where('db.entrydate','<=',$request->filterdate[1]);
         }
 
         if(!empty($request->searchCol)){
@@ -287,6 +289,29 @@ class arenquiryController extends defaultController
 
         }
 
+    }
+
+    public function get_table_dtl(Request $request){
+        $table = DB::table('debtor.dbactdtl')
+                    ->where('source','=','PB')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
     }
 
 }
