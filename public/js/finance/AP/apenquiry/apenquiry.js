@@ -193,7 +193,7 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
-				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_dn_c")[0].offsetWidth-$("#jqGrid2_dn_c")[0].offsetLeft));
+				$("#jqGrid2_dn").jqGrid('setGridWidth', Math.floor($("#jqGrid2_dn_c")[0].offsetWidth-$("#jqGrid2_dn_c")[0].offsetLeft));
 				disableForm('#formdata_dn');
 				refreshGrid("#jqGrid2_dn",urlParam2_dn);
 				dialog_suppcodeDN.check(errorField);

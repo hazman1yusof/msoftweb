@@ -174,7 +174,7 @@ class APEnquiryController extends defaultController
         }
 
 
-       $paginate = $table->paginate($request->rows);
+        $paginate = $table->paginate($request->rows);
 
         foreach ($paginate->items() as $key => $value) {
             $apactdtl = DB::table('finance.apactdtl')
@@ -189,9 +189,9 @@ class APEnquiryController extends defaultController
             }
 
             $apalloc = DB::table('finance.apalloc')
-                        ->where('refsource','=',$value->apacthdr_source)
-                        ->where('reftrantype','=',$value->apacthdr_trantype)
-                        ->where('refauditno','=',$value->apacthdr_auditno);
+                        ->where('source','=',$value->apacthdr_source)
+                        ->where('trantype','=',$value->apacthdr_trantype)
+                        ->where('auditno','=',$value->apacthdr_auditno);
 
             if($apalloc->exists()){
                 $value->unallocated = false;

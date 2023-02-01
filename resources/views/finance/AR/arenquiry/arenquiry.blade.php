@@ -146,7 +146,7 @@
 						</button>
 					@endif -->
 					<div id="" class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3_CN" class="table table-striped"></table>
+						<table id="jqGrid3" class="table table-striped"></table>
 						<div id="jqGridPagerDtl"></div>
 					</div>
 				</div>

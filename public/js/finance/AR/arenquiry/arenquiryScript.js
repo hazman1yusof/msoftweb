@@ -310,16 +310,16 @@ $(document).ready(function () {
 							getcr('CASH');
 							break;
 						case state = '#f_tab-card':
-							refreshGrid("#g_paymodecard",urlParam3);
+							refreshGrid("#g_paymodecard",urlParam3_rc);
 							break;
 						case state = '#f_tab-cheque':
 							getcr('cheque');
 							break;
 						case state = '#f_tab-debit':
-							refreshGrid("#g_paymodebank",urlParam2);
+							refreshGrid("#g_paymodebank",urlParam2_rc);
 							break;
 						case state = '#f_tab-forex':
-							refreshGrid("#g_forex",urlParam4);
+							refreshGrid("#g_forex",urlParam4_rc);
 							break;
 					}
 					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
@@ -356,13 +356,13 @@ $(document).ready(function () {
 	
 						switch(selrowData('#jqGrid2_RC').dbacthdr_paytype) {
 							case state = '#f_tab-card':
-								refreshGrid("#g_paymodecard",urlParam3);
+								refreshGrid("#g_paymodecard",urlParam3_rc);
 								break;
 							case state = '#f_tab-debit':
-								refreshGrid("#g_paymodebank",urlParam2);
+								refreshGrid("#g_paymodebank",urlParam2_rc);
 								break;
 							case state = '#f_tab-forex':
-								refreshGrid("#g_forex",urlParam4);
+								refreshGrid("#g_forex",urlParam4_rc);
 								break;
 						}
 					
@@ -433,7 +433,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
-			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true },
+			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap', canSearch: true },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
@@ -470,11 +470,15 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			urlParam3.filterVal[1] = selrowData("#jqGrid").db_source;
+			urlParam3.filterVal[2] = selrowData("#jqGrid").db_trantype;
+			urlParam3.filterVal[3] = selrowData("#jqGrid").db_auditno;
+			refreshGrid("#jqGrid3",urlParam3);
+
 			if(selrowData("#jqGrid").db_trantype=='CN'){	//CN
 				urlParam2_CN.source = selrowData("#jqGrid").db_source;
 				urlParam2_CN.trantype = selrowData("#jqGrid").db_trantype;
 				urlParam2_CN.auditno = selrowData("#jqGrid").db_auditno;
-				refreshGrid("#jqGrid3_CN",urlParam2_CN);
 				// urlParam2_CN.filterVal[1]=selrowData("#jqGrid").db_auditno;
 			}else if(selrowData("#jqGrid").db_trantype=='DN'){	//DN
 				urlParam2_DN.source = selrowData("#jqGrid").db_source;
@@ -523,7 +527,6 @@ $(document).ready(function () {
 		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid");
-			setjqgridHeight(data,'jqGridAlloc');
 			calc_jq_height_onchange("jqGridAlloc");
 		},
 		
@@ -608,7 +611,6 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGridAlloc");
-			setjqgridHeight(data,'jqGridAlloc');
 			urlParamAlloc.idno=selrowData("#jqGrid").db_idno;
 			
 			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
@@ -696,7 +698,6 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
-			setjqgridHeight(data,'jqGrid2_CN');	
 			calc_jq_height_onchange("jqGrid2_CN");
 		},
 		gridComplete: function(){
@@ -706,10 +707,60 @@ $(document).ready(function () {
 		}
 	});
 
-	////////////////////////////////////////////////jqGrid3_CN////////////////////////////////////////////////
-	$("#jqGrid3_CN").jqGrid({
+	////////////////////////////////////////////////jqGrid3////////////////////////////////////////////////
+	
+	var urlParam3 = {
+		action:'get_table_default',
+		url: 'util/get_table_default',
+		field:'',
+		table_name:'debtor.dbactdtl',
+		filterCol:['dbactdtl.compcode','dbactdtl.source','dbactdtl.trantype','dbactdtl.auditno','dbactdtl.recstatus'],
+		filterVal:['session.compcode', '', '', '', '<>.DELETE']
+	}
+
+	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		colModel: $("#jqGrid2_CN").jqGrid('getGridParam','colModel'),
+		colModel: [
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'AuditNo', name: 'auditno', hidden: true },
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
+            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:deptcodeCNCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+            { label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
+                editrules:{required: true,custom:true, custom_func:cust_rules},
+                formatter: showdetail,
+                edittype:'custom',	editoptions:
+                    {  
+                        custom_element:categoryCNCustomEdit,
+                        custom_value:galGridCustomValue 	
+                    },
+            },
+			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:GSTCodeCNCustomEdit,
+						custom_value:galGridCustomValue 	
+					},
+			},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:false },
+			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
+			// { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
+			{ label: 'idno', name: 'idno', editable: false, hidden: true },
+			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
+			{ label: 'recstatus', name: 'recstatus', hidden: true },
+		],
 		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
@@ -730,29 +781,17 @@ $(document).ready(function () {
 					});
 				}
 			});
-
-			setjqgridHeight(data,'jqGrid3_CN');
-			calc_jq_height_onchange("jqGrid3_CN");
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
-			$("#jqGrid3_CN").find(".remarks_button").on("click", function(e){
-				$("#remarks2").data('rowid',$(this).data('rowid'))
-				$("#remarks2").data('grid',$(this).data('grid'))
-				$("#dialog_remarks").dialog( "open" );
-			});
 			fdl.set_array().reset();
-
-			//calculate_quantity_outstanding('#jqGrid3_CN');
 		},
-	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        // fixPositionsOfFrozenDivs.call(this);
-    });
-	// fixPositionsOfFrozenDivs.call($('#jqGrid3_CN')[0]);
-	$("#jqGrid3_CN").jqGrid("setFrozenColumns");
-	jqgrid_label_align_right("#jqGrid3_CN");
+	});
+	jqgrid_label_align_right("#jqGrid3");
+	addParamField('#jqGrid3',true,urlParam3);
 
 	$("#jqGridDtl_panel").on("show.bs.collapse", function(){
-		$("#jqGrid3_CN").jqGrid ('setGridWidth', Math.floor($("#jqGridDtl_c")[0].offsetWidth-$("#jqGridDtl_c")[0].offsetLeft-18));
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGridDtl_c")[0].offsetWidth-$("#jqGridDtl_c")[0].offsetLeft-18));
 	});
 
 	////////////////////////////////////////////////////DN////////////////////////////////////////////////////
@@ -828,8 +867,7 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(data){
-			setjqgridHeight(data,'jqGrid2_DN');			
+		loadComplete: function(data){	
 			calc_jq_height_onchange("jqGrid2_DN");
 		},		
 		gridComplete: function(){
@@ -838,8 +876,6 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 		}
 
-		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-		fixPositionsOfFrozenDivs.call(this);
 	});
 		
 	////////////////////////////////////////////////////IN////////////////////////////////////////////////////
@@ -909,8 +945,7 @@ $(document).ready(function () {
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
-		loadComplete: function(data){
-			setjqgridHeight(data,'jqGrid2_IN');					
+		loadComplete: function(data){			
 			calc_jq_height_onchange("jqGrid2_IN");
 		},		
 		gridComplete: function(){
@@ -1088,7 +1123,7 @@ $(document).ready(function () {
 		}
 	});
 
-	var urlParam2={
+	var urlParam2_rc={
 		action:'get_table_default',
 		url: 'util/get_table_default',
 		field:'',
@@ -1128,7 +1163,7 @@ $(document).ready(function () {
 		}
 	});
 
-	var urlParam3={
+	var urlParam3_rc={
 		action:'get_table_default',
 		url: 'util/get_table_default',
 		field:'',
@@ -1183,7 +1218,7 @@ $(document).ready(function () {
 		}
 	});
 
-	var urlParam4={
+	var urlParam4_rc={
 		action:'get_effdate',
 		type:'forex'
 	}
@@ -1820,16 +1855,6 @@ $(document).ready(function () {
 	$('#department_search').on('keyup',ifnullsearch);	
 	////////////End SerarchBy/////////////////
 
-	function setjqgridHeight(data,grid){
-		if(data.rows.length>=6){
-			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
-		}else if(data.rows.length>=3){
-			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
-		}else{
-			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
-		}
-	}
-
 	function ifnullsearch(){
 		if($(this).val() == ''){
 			urlParam.searchCol=[];
@@ -1847,7 +1872,7 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 
 function getdata(mode,idno){
