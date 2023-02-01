@@ -136,7 +136,7 @@ i.fa {
 		    	</div>
 		</div>
 
-	 <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
 				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
 				<b>CREDITOR NAME: </b><span id="suppcode_show"></span>
