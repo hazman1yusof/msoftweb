@@ -30,9 +30,35 @@ class APEnquiryController extends defaultController
                 return $this->maintable($request);
             case 'get_alloc_detail':
                     return $this->get_alloc_detail($request);
+            case 'get_table_dtl':
+                return $this->get_table_dtl($request);
             default:
                 return 'error happen..';
         }
+    }
+
+    public function get_table_dtl(Request $request){
+        $table = DB::table('finance.apactdtl as apdt')
+                    ->select('apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno')
+                    ->where('source','=',$request->source)
+                    ->where('trantype','=',$request->trantype)
+                    ->where('auditno','=',$request->auditno)
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recstatus','<>','DELETE')
+                    ->orderBy('idno','desc');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
     }
 
     public function maintable(Request $request){
@@ -74,12 +100,35 @@ class APEnquiryController extends defaultController
                     ->where('ap.source','=','AP');
                     
         if(!empty($request->filterCol)){
-            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
         }
 
-        if(!empty($request->filterdate)){
-            $table = $table->where('ap.actdate','>',$request->filterdate[0]);
-            $table = $table->where('ap.actdate','<',$request->filterdate[1]);
+        if(!empty($request->fromdate)){
+            $table = $table->where('ap.actdate','>',$request->fromdate);
+            $table = $table->where('ap.actdate','<',$request->todate);
         }
 
         if(!empty($request->searchCol)){
@@ -98,10 +147,6 @@ class APEnquiryController extends defaultController
             }else if($request->searchCol[0] == 'apacthdr_trantype'){
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('ap.trantype','like',$request->searchVal[0]);
-                    });
-            }else if($request->searchCol[0] == 'apacthdr_pvno'){
-                $table = $table->Where(function ($table) use ($request) {
-                        $table->Where('ap.pvno','like',$request->searchVal[0]);
                     });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
