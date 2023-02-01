@@ -196,7 +196,7 @@ i.fa {
 			</div>	
 		</div>
 
-		<!-- <div class="panel panel-default" style="position: relative;" id="jqGridArAlloc_c">
+		<div class="panel panel-default" style="position: relative;" id="jqGridArAlloc_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridArAlloc_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -213,7 +213,7 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div> -->
+		</div>
     </div>
 	<!-- ***************End Search + table ********************* -->
 
