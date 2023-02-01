@@ -2,6 +2,7 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
+var errorField=[];
 $(document).ready(function () {
 	$('body').show();
 	/////////////////////////validation//////////////////////////
@@ -11,12 +12,9 @@ $(document).ready(function () {
 			requiredFields: ''
 		},
 	});
-	
-	var errorField=[];
-	conf = {
+		conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
-				console.log(errorField);
 				return {
 					element : $(errorField[0]),
 					message : ' '
@@ -42,10 +40,6 @@ $(document).ready(function () {
 				mycurrency.formatOnBlur();
 				mycurrency.formatOn();
 				disableForm('#formdata_ft');
-				dialog_paymodeFT.check('errorField');
-				dialog_bankcodefromFT.check('errorField');
-				dialog_bankcodetoFT.check('errorField');
-				dialog_cheqnoFT.check('errorField');
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -70,13 +64,6 @@ $(document).ready(function () {
 				mycurrency.formatOn();
 				disableForm('#formdata_dp');
 				$("#pg_jqGridPager2 table").hide();
-				dialog_paymodeDP.check('errorField');
-				dialog_bankcodeDP.check('errorField');
-				dialog_paytoDP.check('errorField');
-				dialog_cheqnoDP.check('errorField');
-				dialog_deptcodeDP.check('errorField');
-				dialog_categoryDP.check('errorField');
-				dialog_GSTCodeDP.check('errorField');
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -104,14 +91,15 @@ $(document).ready(function () {
 			{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 30, classes: 'wrap text-uppercase',  canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
 			{ label: 'Transaction <br>Type', name: 'apacthdr_trantype', width: 25, classes: 'wrap text-uppercase', canSearch: true},
-            { label: 'Invoice No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:false, canSearch: true},
+            { label: 'PV No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:false, canSearch: true},
+            { label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', hidden:false},
+            { label: 'Paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:false},
             { label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
             { label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25, hidden:true, classes: 'wrap', align: 'right', formatter:'currency'},
             { label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', hidden:true},
+            { label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Unit', name: 'apacthdr_unit', width: 30, hidden:true},
 			{ label: 'Supplier Code', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Category Code', name: 'apacthdr_category', width: 40, hidden:true, classes: 'wrap'},		
@@ -127,7 +115,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:true},
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
-			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+			
 			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
@@ -139,15 +127,21 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#jqGrid3_div_ft,#jqGrid3_div_dp').hide();
+
 			if(selrowData("#jqGrid").apacthdr_trantype=='DP'){
-				urlParam2_dp.filterVal[1]=selrowData("#jqGrid").auditno;
-			// }else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
-			// 	urlParam2_in.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			// 	urlParam2_in_detail.auditno=selrowData("#jqGrid").apacthdr_auditno;
-			// 	refreshGrid("#jqGrid2_in_detail",urlParam2_in_detail);
-			// }else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
-			// 	urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-			 }
+				$('#jqGrid3_div_dp').show();
+				urlParam2_dp.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+				$("#jqGrid3_dp").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_dp")[0].offsetWidth-$("#jqGrid3_div_dp")[0].offsetLeft));
+				refreshGrid("#jqGrid3_dp",urlParam2_dp);
+
+			}else if(selrowData("#jqGrid").apacthdr_trantype=='FT'){
+				$('#jqGrid3_div_ft').show();
+				urlParam3_ft.filterVal[3] = selrowData("#jqGrid").apacthdr_idno;
+				$("#jqGrid3_ft").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_ft")[0].offsetWidth-$("#jqGrid3_div_ft")[0].offsetLeft));
+				refreshGrid("#jqGrid3_ft",urlParam3_ft);
+			}
+
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -201,11 +195,10 @@ $(document).ready(function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			if(selrowData("#jqGrid").apacthdr_trantype=='FT'){
-				populateFormdata("#jqGrid", "#dialogForm_ft", "#formdata_ft", selRowId, 'view', '');
+				// populateFormdata("#jqGrid", "#dialogForm_ft", "#formdata_ft", selRowId, 'view', '');
 				getdata('FT',selrowData("#jqGrid").apacthdr_idno);
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='DP'){
 			 	populateFormdata("#jqGrid", "#dialogForm_dp", "#formdata_dp", selRowId, 'view', '');
-				refreshGrid("#jqGrid2_dp",urlParam2_dp,'add');
 				getdata('DP',selrowData("#jqGrid").apacthdr_idno);
 			// }else if(selrowData("#jqGrid").apacthdr_trantype=='IN'){
 			// 	populateFormdata("#jqGrid", "#dialogForm_in", "#formdata_in", selRowId, 'view', '');
@@ -244,11 +237,11 @@ $(document).ready(function () {
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 			
 			//DP
-			case 'deptcodeDP':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
-			case 'categoryDP':field=['catcode','description'];table="material.category";case_='category';break;
-			case 'GSTCodeDP':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
-			case 'paytoDP':field=['suppcode','name'];table="material.supplier";case_='payto';break;
-			case 'bankcodeDP':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='category';break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
+			case 'payto':field=['suppcode','name'];table="material.supplier";case_='payto';break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
 		var param={
 			action:'input_check',
@@ -257,7 +250,8 @@ $(document).ready(function () {
 			field:field,
 			value:cellvalue,
 			filterCol:[field[0]],
-			filterVal:[cellvalue]};
+			filterVal:[cellvalue]
+		};
 	
 		fdl.get_array('CMEnquiry',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
@@ -377,16 +371,47 @@ $(document).ready(function () {
 		}
 	}
 
-	////DIRECT PAYMENT
-	var urlParam2_dp={
+	var urlParam3_ft={
 		action:'get_table_default',
-		url:'/util/get_table_default',
-		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
-		table_name:['finance.apactdtl AS apactdtl'],
-		table_id:'lineno_',
-		filterCol:['apactdtl.compcode','apactdtl.auditno', 'apactdtl.recstatus','apactdtl.source','apactdtl.trantype'],
-		filterVal:['session.compcode', '', '<>.DELETE', 'CM', 'DP']
-	};
+		url:'util/get_table_default',
+		field:'',
+		table_name:'finance.apacthdr',
+		table_id:'idno',
+		filterCol: ['source', 'trantype', 'compcode','idno'],
+		filterVal: ['CM', 'FT', 'session.compcode',''],
+	}
+
+	$("#jqGrid3_ft").jqGrid({
+		datatype: "local",
+		colModel: [
+		 	{label: 'compcode', name: 'compcode', width: 10 , hidden: true,  classes: 'wrap'},
+		 	{label: 'idno', name: 'idno', width: 10 , hidden: true,  classes: 'wrap'},
+		 	{label: 'source', name: 'source', width: 10, hidden: true, classes: 'wrap'},
+		 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
+			{label: 'Audit No', name: 'auditno', width: 5, checked: true, classes: 'wrap' },
+			{label: 'Payment No', name: 'pvno', width: 20, classes: 'wrap'},
+			{label: 'Transfer Date', name: 'actdate', width: 20, classes: 'wrap'},
+			{label: 'Bank Code To', name: 'payto', width: 80, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
+			{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency'},
+		],
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 900,
+		height: 300,
+		rowNum: 30,
+		pager: "#jqGridPager3",
+		onSelectRow:function(rowid, selected){
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		},
+		loadComplete:function(data){
+			calc_jq_height_onchange("jqGrid3_ft");
+		}			
+	});
 
 	$("#jqGrid2_dp").jqGrid({
 		datatype: "local",
@@ -427,11 +452,40 @@ $(document).ready(function () {
 	 	}
 	});
 
+	$("#jqGrid3_dp").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid2_dp").jqGrid('getGridParam','colModel'),
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		sortname: 'lineno_',
+		sortorder: "desc",
+		pager: "#jqGridPager3_dp",
+		loadComplete: function(data){
+			calc_jq_height_onchange("jqGrid3_dp");
+		},
+		gridComplete: function(){
+			fdl.set_array().reset();
+		}
+	});
+	jqgrid_label_align_right("#jqGrid3_dp");
+
     ////DEBIT CREDIT
 
-
-
 });
+
+	var urlParam2_dp={
+		action:'get_table_default',
+		url:'/util/get_table_default',
+		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
+		table_name:['finance.apactdtl AS apactdtl'],
+		table_id:'lineno_',
+		filterCol:['apactdtl.compcode','apactdtl.auditno', 'apactdtl.recstatus','apactdtl.source','apactdtl.trantype'],
+		filterVal:['session.compcode', '', '<>.DELETE', 'CM', 'DP']
+	};
+
 
 	function calc_jq_height_onchange(jqgrid){
 		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
@@ -440,7 +494,7 @@ $(document).ready(function () {
 		}else if(scrollHeight>300){
 			scrollHeight = 300;
 		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 	}
 	
 	///////dialog handler FT///////
@@ -463,7 +517,7 @@ $(document).ready(function () {
 			}
 		},'urlParam','radio','tab'
 	);
-	dialog_paymodeFT.makedialog(false);
+	dialog_paymodeFT.makedialog(false);	
 
 	var dialog_bankcodefromFT = new ordialog(
 		'bankcodeFT','finance.bank',"#formdata_ft :input[name='bankcode']",'errorField',
@@ -705,18 +759,38 @@ $(document).ready(function () {
 				
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data.rows)){
+					$('#dialogForm_ft').dialog( "open" );	
 					$.each(data.rows, function( index, value ) {
 						var input=$("#dialogForm_ft [name='"+index+"']");
 						if(input.is("[type=radio]")){
-							$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+							$("#dialogForm_ft [name='"+index+"'][value='"+value+"']").prop('checked', true);
 						}else{
 							input.val(value);
 						}
 					});
-					dialog_paymodeFT.check('errorField');
-					dialog_bankcodefromFT.check('errorField');
-					dialog_bankcodetoFT.check('errorField');
-					dialog_cheqnoFT.check('errorField');
+
+					//setpaymodeused
+					var paymode = $("#paymode").val();
+
+					dialog_paymodeFT.check(errorField);
+					dialog_bankcodefromFT.check(errorField);
+					dialog_bankcodetoFT.check(errorField);
+					$('#chg_div,#cheqno_a').hide();
+
+					if(paymode == "CHEQUE"){
+						$('#chg_div,#cheqno_a').show();
+						$('#chg_label').text('CHEQUE No.');
+						dialog_cheqnoFT.check(errorField);
+					}else if (paymode == "CASH"){
+						$('#chg_label').text('');
+					}else if (paymode == "BD"){
+						$('#chg_div').show();
+						$('#chg_label').text('DD No');
+					}else if (paymode == "TT"){
+						$('#chg_div').show();
+						$('#chg_label').text('TT No.');
+					}
+
 				}
 			});
 	}
@@ -734,20 +808,23 @@ $(document).ready(function () {
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data.rows)){
 					$.each(data.rows, function( index, value ) {
-						var input=$("#dialogForm_ft [name='"+index+"']");
+						var input=$("#dialogForm_dp [name='"+index+"']");
 						if(input.is("[type=radio]")){
-							$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+							$("#dialogForm_dp [name='"+index+"'][value='"+value+"']").prop('checked', true);
 						}else{
 							input.val(value);
 						}
 					});
-					dialog_paymodeDP.check('errorField');
-					dialog_bankcodeDP.check('errorField');
-					dialog_paytoDP.check('errorField');
-					dialog_cheqnoDP.check('errorField');
-					dialog_deptcodeDP.check('errorField');
-					dialog_categoryDP.check('errorField');
-					dialog_GSTCodeDP.check('errorField');
+					dialog_paymodeDP.check(errorField);
+					dialog_bankcodeDP.check(errorField);
+					dialog_paytoDP.check(errorField);
+					dialog_cheqnoDP.check(errorField);
+					dialog_deptcodeDP.check(errorField);
+					dialog_categoryDP.check(errorField);
+					dialog_GSTCodeDP.check(errorField);
+
+
+					refreshGrid("#jqGrid2_dp",urlParam2_dp,'add');
 				}
 			});
 	}

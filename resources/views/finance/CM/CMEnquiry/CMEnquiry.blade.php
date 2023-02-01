@@ -62,13 +62,34 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">CM Enquiry Header</div>
-                    <div class="panel-body">
-                        <div class='col-md-12' style="padding:0 0 15px 0">
-                            <table id="jqGrid" class="table table-striped"></table>
-                            <div id="jqGridPager"></div>
-                        </div>
+                <div class="panel-body">
+                    <div class='col-md-12' style="padding:0 0 15px 0">
+                        <table id="jqGrid" class="table table-striped"></table>
+                        <div id="jqGridPager"></div>
                     </div>
+                </div>
             </div>
+
+            <div class="panel panel-default" id="jqGrid3_div_ft" style="display:none;">
+			    <div class="panel-heading">Bank Transfer To</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_ft" class="table table-striped"></table>
+						<div id="jqGridPager3_ft"></div>
+					</div>
+				</div>
+			</div>
+
+            <div class="panel panel-default" id="jqGrid3_div_dp" style="display:none;">
+			    <div class="panel-heading">Bank Transfer To</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_dp" class="table table-striped"></table>
+						<div id="jqGridPager3_dp"></div>
+					</div>
+				</div>
+			</div>
+
 		</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>

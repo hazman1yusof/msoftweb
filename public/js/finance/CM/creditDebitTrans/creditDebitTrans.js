@@ -223,6 +223,15 @@ $(document).ready(function () {
 	});
 	
 	$('#adjustment').on('change', function() {
+
+		// if($(this).val() == 'CA'){
+		// 	$('#top_heading').text('Credit Header');
+		// 	$('#btm_heading').text('Credit Detail');
+		// }else{
+		// 	$('#top_heading').text('Debit Header');
+		// 	$('#btm_heading').text('Debit Detail');
+		// }
+
 		let adjustment1  = $("#adjustment option:selected" ).val();
 		$("#jqGridplus").show();
 		urlParam.filterCol = ['trantype'];
@@ -1128,5 +1137,5 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }

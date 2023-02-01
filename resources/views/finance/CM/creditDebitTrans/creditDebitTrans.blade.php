@@ -113,7 +113,7 @@ i.fa {
 				{{ csrf_field() }}
 				<div class='col-md-12'>
 					<div class='panel panel-info'>
-						<div id="detail" class="panel-heading">Credit/Debit Header</div>
+						<div id="top_heading" class="panel-heading">Header</div>
 							<div class="panel-body">
 
 								<input id="source" name="source" type="hidden" value="CM">
@@ -185,7 +185,7 @@ i.fa {
 
 			<div class='col-md-12'>
 				<div class='panel panel-info'>
-					<div class="panel-heading">Credit/Debit Detail</div>
+					<div id="btm_heading" class="panel-heading">Detail</div>
 						<div class="panel-body">
 							<input id="source" name="source" type="hidden" value="CM">
 								<input id="trantype" name="trantype" type="hidden" >

@@ -39,14 +39,24 @@
 
 		<div class="panel panel-default">
 		    <div class="panel-heading">Bank Transfer</div>
-		    	<div class="panel-body">
-		    		<div class='col-md-12' style="padding:0 0 15px 0">
-            			<table id="jqGrid" class="table table-striped"></table>
-            				<div id="jqGridPager"></div>
-        			</div>
-		    	</div>
-			</div>
+	    	<div class="panel-body">
+	    		<div class='col-md-12' style="padding:0 0 15px 0">
+        			<table id="jqGrid" class="table table-striped"></table>
+        				<div id="jqGridPager"></div>
+    			</div>
+	    	</div>
 		</div>
+
+		<div class="panel panel-default">
+		    <div class="panel-heading">Bank Transfer To</div>
+			<div class="panel-body">
+				<div class='col-md-12' style="padding:0 0 15px 0">
+					<table id="jqGrid3" class="table table-striped"></table>
+					<div id="jqGridPager3"></div>
+				</div>
+			</div>
+		</div>  
+</div>
 
 	<!-- ***************End Search + table ********************* -->
 		
@@ -100,17 +110,19 @@
 													<input id="bankcode" name="bankcode" type="text" maxlength="30" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 													<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 										  		</div>
-												<span id='bc' class="help-block"></span>
+												<span class="help-block"></span>
 											</div>
 										
-									  	<label class="col-md-2 control-label" for="cheqno">Cheque No</label>  
+									  	<div id="chg_div" style="display:none;">
+									  	<label class="col-md-2 control-label" for="cheqno" id="chg_label">Cheque No</label>  
 						  					<div class="col-md-3" id="cheqno_parent">
 							 					<div class='input-group'>
 													<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase">
 													<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
 							  					</div>
-							 					<span id='cn' class="help-block"></span>
+							 					<span class="help-block"></span>
 		                      				</div>
+		                      			</div>
 					    			</div>
 
 
