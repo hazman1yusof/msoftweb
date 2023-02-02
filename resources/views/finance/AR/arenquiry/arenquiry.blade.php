@@ -121,33 +121,61 @@
 			</div>
 		</div>
 
-		<div class="panel panel-default" style="position: relative;" id="jqGridDtl_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGridDtl_panel">
-				<!-- <b>Credit No: </b><span id="CreditNo_show"></span><br>  -->
-				<!-- <b>CUSTOMER NAME: </b><span id="CustName_show"></span> -->
-				
+		<!-- Credit Note -->
+		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_CN_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_CN_panel">
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Detail</h5>
+					<h5>Credit Note Detail</h5>
 				</div>
 			</div>
 
-			<div id="jqGridDtl_panel" class="panel-collapse collapse">
+			<div id="jqGrid3_CN_panel" class="panel-collapse collapse">
 				<div class="panel-body">
-					<!-- @if (strtoupper(Request::get('scope')) == 'CANCEL')
-						<button 
-								type="button" 
-								class="btn btn-danger btn-sm" 
-								id="but_post2_jq"
-								data-oper="cancel"
-								style="float: right;margin: 0px 20px 10px 20px;">
-								Cancel Credit Note
-						</button>
-					@endif -->
 					<div id="" class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3" class="table table-striped"></table>
-						<div id="jqGridPagerDtl"></div>
+						<table id="jqGrid3_CN" class="table table-striped"></table>
+						<div id="jqGridPager3_CN"></div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+		<!-- Debit Note -->
+		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_DN_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_DN_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Debit Note Detail</h5>
+				</div>
+			</div>
+
+			<div id="jqGrid3_DN_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_DN" class="table table-striped"></table>
+						<div id="jqGridPager3_DN"></div>
+					</div>
+				</div>
+			</div>	
+		</div>
+
+		<!-- Sales Order -->
+		<div class="panel panel-default" style="position: relative; display:none;" id="jqGrid3_IN_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid3_IN_panel">
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Sales Order Detail</h5>
+				</div>
+			</div>
+
+			<div id="jqGrid3_IN_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div id="" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_IN" class="table table-striped"></table>
+						<div id="jqGridPager3_IN"></div>
 					</div>
 				</div>
 			</div>	
@@ -175,9 +203,9 @@
 	<!-- ***************End Search + table ********************* -->
 
 	<!-- *************** View Form for Credit ********************* -->
-	<div id="dialogForm_CN" title="Viewing Detail" >
+	<div id="dialogForm_CN" title="Credit Note">
 		<div class='panel panel-info'>
-			<div class="panel-heading"> Credit Header </div>
+			<div class="panel-heading">Credit Note Header</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata_CN'>
 					{{ csrf_field() }}
@@ -298,9 +326,9 @@
 	<!-- ***************End View Form for Credit ********************* -->
 
 	<!-- *************** View Form for Debit ********************* -->
-	<div id="dialogForm_DN" title="Add Form" >
+	<div id="dialogForm_DN" title="Debit Note">
 		<div class='panel panel-info'>
-			<div class="panel-heading">Debit Header</div>
+			<div class="panel-heading">Debit Note Header</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata_DN'>
 					{{ csrf_field() }}
@@ -394,7 +422,7 @@
 	<!-- ***************End View Form for Debit ********************* -->
 
 	<!-- *************** View Form for Sales Order ********************* -->
-	<div id="dialogForm_IN" title="Add Form" >
+	<div id="dialogForm_IN" title="Sales Order">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Sales Order Header</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
@@ -568,7 +596,7 @@
 	<!-- ***************End View Form for Sales Order ********************* -->
 
 	<!-- *************** View Form for Receipt ********************* -->
-	<div id="dialogForm_RC" title="Add Form" >
+	<div id="dialogForm_RC" title="Receipt">
 		<form style='width:99%' id='formdata_RC' autocomplete="off">
 			{{ csrf_field() }}
 			<input type='hidden' name='dbacthdr_source' value='PB'>
@@ -935,7 +963,7 @@
 	<!-- ***************End View Form for Receipt ********************* -->
 
 	<!-- *************** View Form for Refund ********************* -->
-	<!-- <div id="dialogForm_RF" title="Add Form" >
+	<!-- <div id="dialogForm_RF" title="Refund">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Refund Header</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
