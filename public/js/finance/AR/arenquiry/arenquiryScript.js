@@ -429,8 +429,6 @@ $(document).ready(function () {
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
-	searchClick2('#jqGrid','#searchForm',urlParam);
-
 	///////////////////////////////////////////////jqgrid///////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -1555,6 +1553,7 @@ $(document).ready(function () {
 		$('#department_search_hb').text('');
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
 			$("#docuDate_text").show("fast");
 		} else if($('#Scol').val() == 'db_debtorcode'){
@@ -1570,6 +1569,13 @@ $(document).ready(function () {
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
+
+
+		if($('#Scol').val()=='db_entrydate'){
+			refreshGrid('#jqGrid', urlParam);
+		}else{
+			search('#jqGrid',$('#searchForm [name=Stext]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
+		}
 	}
 
 	////////////////////////////populate data for dropdown search By////////////////////////////
@@ -1584,7 +1590,7 @@ $(document).ready(function () {
 				}
 			}
 		});
-		searchClick2('#jqGrid', '#searchForm', urlParam);
+		searchClick2('#jqGrid', '#searchForm', urlParam,false);
 	}
 
 	//////////////////Showdetail Header Dialog///////////////
@@ -2162,6 +2168,8 @@ function init_jq2(oper){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
 			$("#formdata_CN select[name='db_trantype2']").val('CNU');
+		}else{
+			$("#formdata_CN select[name='db_trantype2']").val('CN');
 		}
 	}
 

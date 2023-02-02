@@ -2097,6 +2097,8 @@ function init_jq2(oper){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
 			$("#db_trantype2").val('CNU');
+		}else{
+			$("#db_trantype2").val('CN');
 		}
 	}
 
