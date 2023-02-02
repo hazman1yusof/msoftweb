@@ -230,7 +230,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
 						<div class="col-md-2">
-							<select id="db_trantype2" name="db_trantype2" class="form-control" data-validation="required">
+							<select id="db_trantype2" name='db_trantype2' class="form-control" data-validation="required">
 								<option value = "CN">Credit Note</option>
 								<option value = "CNU">Credit Note Unallocated</option>
 							</select>
