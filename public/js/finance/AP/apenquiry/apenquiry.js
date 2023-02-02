@@ -306,6 +306,7 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function(){
+			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
 				$("#creditor_search").focus();
 				$('#jqGrid').data('inputfocus','');
@@ -458,7 +459,34 @@ $(document).ready(function () {
 			searchClick2('#jqGrid','#searchForm',urlParam);
 		});
 	}
-	
+
+	function searchDate(){
+		urlParam.fromdate = $('#actdate_from').val();
+		urlParam.todate = $('#actdate_to').val();
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		cbselect.empty_sel_tbl();
+		var arrtemp = ['session.compcode', $('#Status option:selected').val()];  
+
+		var filter = arrtemp.reduce(function(a,b,c){
+			if (b.toUpperCase() == 'ALL') {
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.compcode','ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		urlParam.WhereInCol = null;
+		urlParam.WhereInVal = null;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
 	var creditor_search = new ordialog(
 		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
 		{
@@ -507,33 +535,6 @@ $(document).ready(function () {
 			$('#jqGrid').data('inputfocus','creditor_search');
 			refreshGrid('#jqGrid', urlParam);
 		}
-	}
-
-	function searchDate(){
-		urlParam.fromdate = $('#actdate_from').val();
-		urlParam.todate = $('#actdate_to').val();
-		refreshGrid('#jqGrid',urlParam);
-	}
-
-	function searchChange(){
-		cbselect.empty_sel_tbl();
-		var arrtemp = ['session.compcode', $('#Status option:selected').val()];  
-
-		var filter = arrtemp.reduce(function(a,b,c){
-			if (b.toUpperCase() == 'ALL') {
-				return a;
-			}else{
-				a.fc = a.fc.concat(a.fct[c]);
-				a.fv = a.fv.concat(b);
-				return a;
-			}
-		},{fct:['ap.compcode','ap.recstatus'],fv:[],fc:[]});
-
-		urlParam.filterCol = filter.fc;
-		urlParam.filterVal = filter.fv;
-		urlParam.WhereInCol = null;
-		urlParam.WhereInVal = null;
-		refreshGrid('#jqGrid',urlParam);
 	}
 
 	////PV
@@ -699,8 +700,8 @@ $(document).ready(function () {
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
             { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 130, classes: 'wrap',formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Category', name: 'category', width: 120, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+            { label: 'Department', name: 'deptcode', width: 120, classes: 'wrap',formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Category', name: 'category', width: 100, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
             { label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', align: 'right', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false },
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false},
