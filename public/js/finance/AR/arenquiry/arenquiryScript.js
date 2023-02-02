@@ -521,6 +521,8 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function () {
+			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);	// highlight 1st record
+			
 			if($('#jqGrid').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
 				$('#jqGrid').data('inputfocus','');
