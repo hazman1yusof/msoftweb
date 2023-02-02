@@ -99,38 +99,47 @@
                     </div>
             </div>
 
-			<!-- <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="document_show"></span><span id="ifcancel_show" style="color: red;"></span><br>
-				<b>CREDITOR NAME: </b><span id="suppcode_show"></span>
-
-				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Enquiry Detail</h5>
-				</div>				
-			</div>
-
-			<div id="jqGrid3_panel" class="panel-collapse collapse">
+			<div class="panel panel-default" id="jqGrid3_div_in" style="display:none;">
+			    <div class="panel-heading">Invoice Detail</div>
 				<div class="panel-body">
-				@if (strtoupper(Request::get('scope')) == 'CANCEL')
-						<button 
-								type="button" 
-								class="btn btn-danger btn-sm" 
-								id="but_post2_jq"
-								data-oper="cancel"
-								style="float: right;margin: 0px 20px 10px 20px;">
-								Cancel CN
-						</button>
-					@endif
-					<div class='col-md-12' style="padding:0 0 15px 0">
-						<table id="jqGrid3" class="table table-striped"></table>
-						<div id="jqGridPager3"></div>
+					<div class='col-md-12' style="padding:0 0 13px 0">
+						<table id="jqGrid3_in" class="table table-striped"></table>
+						<div id="jqGridPager3_in"></div>
 					</div>
 				</div>
 			</div>
 
-		</div> -->
+            <div class="panel panel-default" id="jqGrid3_div_pv" style="display:none;">
+			    <div class="panel-heading">Payment Voucher Detail</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 13px 0">
+						<table id="jqGrid3_pv" class="table table-striped"></table>
+						<div id="jqGridPager3_pv"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default" id="jqGrid3_div_dn" style="display:none;">
+			    <div class="panel-heading">Debit Note Detail</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 13px 0">
+						<table id="jqGrid3_dn" class="table table-striped"></table>
+						<div id="jqGridPager3_dn"></div>
+					</div>
+				</div>
+			</div>
+
+            <div class="panel panel-default" id="jqGrid3_div_cn" style="display:none;">
+			    <div class="panel-heading">Credit Note Detail</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 13px 0">
+						<table id="jqGrid3_cn" class="table table-striped"></table>
+						<div id="jqGridPager3_cn"></div>
+					</div>
+				</div>
+			</div>
+
+		</div>
 
 			<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
@@ -582,26 +591,12 @@
 				  			<div class="col-md-2">
 								<input id="apacthdr_document" name="apacthdr_document" type="text" maxlength="30" class="form-control input-sm text-uppercase">
 				  			</div>
+						
+						<label class="col-md-2 control-label" for="apacthdr_recstatus">Record Status</label>  
+							<div class="col-md-2">
+								<input id="apacthdr_recstatus" name="apacthdr_recstatus" type="text" value='OPEN' maxlength="30" class="form-control input-sm text-uppercase" rdonly>
+							</div>	
 
-						<label class="col-md-2 control-label" for="apacthdr_deptcode">Department</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_deptcode" name="apacthdr_deptcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>
-					</div>
-
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_paymode">Paymode</label>	 
-						 	<div class="col-md-2">
-							  	<div class='input-group'>
-									<input id="apacthdr_paymode" name="apacthdr_paymode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-							  	</div>
-							  	<span class="help-block"></span>
-						  	</div>		
 					</div>
 
 					<hr/>
@@ -656,6 +651,18 @@
 						<div id="jqGrid2_cn_c" class='col-md-12'>
 							<table id="jqGrid2_cn" class="table table-striped"></table>
 						        <div id="jqGridPager2_cn"></div>
+						</div>
+					</form>
+				</div>
+		</div>
+
+		<div class='panel panel-info' id="alloc_detail">
+			<div class="panel-heading">Credit Note Allocation</div>
+				<div class="panel-body">
+					<form id='formdataAlloc' class='form-vertical' style='width:99%'>
+						<div id="jqGrid_Alloc" class='col-md-12'>
+							<table id="jqGridAlloc" class="table table-striped"></table>
+						        <div id="jqGridPagerAllocdtl"></div>
 						</div>
 					</form>
 				</div>

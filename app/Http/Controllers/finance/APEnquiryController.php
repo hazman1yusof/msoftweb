@@ -68,7 +68,6 @@ class APEnquiryController extends defaultController
                         'ap.compcode AS apacthdr_compcode',
                         'ap.auditno AS apacthdr_auditno', //search
                         'ap.trantype AS apacthdr_trantype', //search
-                        // 'ap.trantype2 AS apacthdr_trantype2', 
                         'ap.doctype AS apacthdr_doctype',
                         'ap.suppcode AS apacthdr_suppcode', 
                         'su.name AS supplier_name', 
@@ -222,7 +221,7 @@ class APEnquiryController extends defaultController
                         ->first();
 
         //trantype (PV, CN, PD)
-        if($apacthdr->trantype == 'PV' || $apacthdr->trantype =='PD') {
+        if($apacthdr->trantype == 'PV' || $apacthdr->trantype =='PD' || $apacthdr->trantype =='CN') {
 
             $table = DB::table('finance.apalloc as al')
                         ->select(
@@ -273,7 +272,6 @@ class APEnquiryController extends defaultController
                             'al.allocamount',
                             'al.outamount',
                             'al.recstatus',
-                         
                            
                         )
                         ->join('finance.apacthdr as ap', function($join) use ($request){
