@@ -389,7 +389,7 @@ function searchClick(grid,form,urlParam){
 	}
 }
 
-function searchClick2(grid,form,urlParam){
+function searchClick2(grid,form,urlParam,withscol=true){
 	$(form+' [name=Stext]').on( "keyup", function(e) {
 		var code = e.keyCode || e.which;
 		if(code != '9'){
@@ -401,13 +401,14 @@ function searchClick2(grid,form,urlParam){
 			}, 500 );
 		}
 	});
-
-	$(form+' [name=Scol]').on( "change", function() {
-		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
-		$('#recnodepan').text("");//tukar kat depan tu
-		$('#reqdeptdepan').text("");
-		refreshGrid("#jqGrid3",null,"kosongkan");
-	});
+	if(withscol){
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			$('#recnodepan').text("");//tukar kat depan tu
+			$('#reqdeptdepan').text("");
+			refreshGrid("#jqGrid3",null,"kosongkan");
+		});
+	}
 }
 
 function search(grid,Stext,Scol,urlParam){

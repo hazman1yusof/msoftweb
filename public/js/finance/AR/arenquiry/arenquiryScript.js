@@ -225,7 +225,7 @@ $(document).ready(function () {
 				$("#pg_jqGridPager2_Alloc table").hide();
 				dialog_CustomerCN.check(errorField);
 				dialog_paymodeCN.check(errorField);
-				init_jq2(oper);
+				init_jq2('view');
 			},
 			close: function( event, ui ) {
 			}
@@ -865,10 +865,6 @@ $(document).ready(function () {
 	function checkbox_jqgAlloc(cellvalue, options, rowObject){
 		return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
 	}
-
-	$("#formdata_CN input[name='db_trantype2']").on('change', function() {
-		init_jq2(oper);
-	});
 
 	////////////////////////////////////////////////////DN////////////////////////////////////////////////////
 	var urlParam2_DN = {
@@ -1557,7 +1553,6 @@ $(document).ready(function () {
 		$('#customer_search,#docuDate_from,#docuDate_to,#department_search').val('');
 		$('#customer_search_hb').text('');
 		$('#department_search_hb').text('');
-		urlParam.filterdate = null;
 		removeValidationClass(['#customer_search,#department_search']);
 		if($('#Scol').val()=='db_entrydate'){
 			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
@@ -1588,8 +1583,8 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+		searchClick2('#jqGrid', '#searchForm', urlParam);
 	}
 
 	//////////////////Showdetail Header Dialog///////////////
@@ -1946,6 +1941,7 @@ $(document).ready(function () {
 	function searchDate(){
 		urlParam.filterdate = [$('#docuDate_from').val(),$('#docuDate_to').val()];
 		refreshGrid('#jqGrid',urlParam);
+		urlParam.filterdate = null;
 	}
 
 	function searchChange(){
@@ -2165,18 +2161,18 @@ function init_jq2(oper){
 	if(oper != 'add'){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
-			$("#formdata_CN input[name='db_trantype2']").val('CNU');
+			$("#formdata_CN select[name='db_trantype2']").val('CNU');
 		}
 	}
 
-	if(($("#formdata_CN input[name='db_trantype2']").find(":selected").text() == 'Credit Note')) {
+	if(($("#formdata_CN select[name='db_trantype2']").find(":selected").text() == 'Credit Note')) {
 		// $('#save').hide();
 		$('#grid_alloc').show();
 		$('#grid_dtl').show();
 		$('#jqGridPager2_Alloc').hide();
 		$("#jqGrid2_Alloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_Alloc_c")[0].offsetWidth-$("#jqGrid2_Alloc_c")[0].offsetLeft-28));
 		$("#jqGrid2_CN").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth-$("#jqGrid2_CN_c")[0].offsetLeft));
-	} else if (($("#formdata_CN input[name='db_trantype2']").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#formdata_CN select[name='db_trantype2']").find(":selected").text() == 'Credit Note Unallocated')) { 
 		// $('#save').hide();
 		$('#grid_alloc').hide();
 		$('#grid_dtl').show();
