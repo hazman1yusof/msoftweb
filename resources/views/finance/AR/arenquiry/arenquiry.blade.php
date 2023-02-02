@@ -80,7 +80,7 @@
 							<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		             	</div>
 
-						<div class="col-md-5">
+						<div class="col-md-5" style="margin-top: 4px;">
 					  		<label class="control-label"></label>  
 							<input style="display:none" name="Stext" type="search" placeholder="Search Here ..." class="form-control text-uppercase" tabindex="2">
 
@@ -216,7 +216,7 @@
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
 						<div class="col-md-2">
-							<select id="db_trantype2" name='db_trantype2' class="form-control" data-validation="required">
+							<select id="db_trantype2" name="db_trantype2" class="form-control" data-validation="required">
 								<option value = "CN">Credit Note</option>
 								<option value = "CNU">Credit Note Unallocated</option>
 							</select>

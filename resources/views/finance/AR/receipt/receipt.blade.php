@@ -39,7 +39,7 @@
 					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		          </div>
 
-					  	<div class="col-md-5">
+					  	<div class="col-md-5" style="margin-top: 4px;">
 					  		<label class="control-label"></label>  
 								<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 

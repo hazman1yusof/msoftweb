@@ -990,7 +990,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
-			//{ label: 'Item Code', name: 'chggroup', width: 100, classes: 'wrap', editable: false},
+			// { label: 'Item Code', name: 'chggroup', width: 100, classes: 'wrap', editable: false },
 			{ label: 'Item Code', name: 'chggroup', width: 280, classes: 'wrap', editable: false,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
@@ -1019,14 +1019,14 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
-			{ label: 'Quantity', name: 'quantity', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'integer', formatoptions: { thousandsSeparator: ",", },},
-			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'integer', formatoptions: { thousandsSeparator: ",", },},
-			{ label: 'Bill Type <br>%', name: 'billtypeperct', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
-			{ label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { thousandsSeparator: ",", },},
-			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:false, formatter:'currency',formatoptions:{thousandsSeparator: ",",},},
-			{ label: 'Tax Amount', name: 'taxamt', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },},
-			{ label: 'Total Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:false, formatter:'currency',formatoptions:{thousandsSeparator: ",",},},
+			{ label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap txnum', align: 'right', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, } },
+			{ label: 'Quantity', name: 'quantity', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'integer', formatoptions: { thousandsSeparator: ",", } },
+			{ label: 'Quantity on Hand', name: 'qtyonhand', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'integer', formatoptions: { thousandsSeparator: ",", } },
+			{ label: 'Bill Type <br>%', name: 'billtypeperct', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, } },
+			{ label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { thousandsSeparator: ",", } },
+			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:false, formatter:'currency',formatoptions:{thousandsSeparator: ",",} },
+			{ label: 'Tax Amount', name: 'taxamt', width: 80, align: 'right', classes: 'wrap txnum', editable: false, formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, } },
+			{ label: 'Total Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:false, formatter:'currency',formatoptions:{thousandsSeparator: ",",} },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
 		],
@@ -1103,48 +1103,48 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "receipt/form",
 		colModel: [
-			{label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true  },
-			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
-			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
-			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
-			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
-			{label: 'currency', name: 'dbacthdr_currency', hidden: true},
-			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
-			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
-			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
-			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true}, //tunjuk
-			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},//tunjuk
-			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
-			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
-			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
-			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
-			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
-			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
-			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
-			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
-			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
-			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
-			{label: 'units', name: 'dbacthdr_unit', hidden: true},
-			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
-			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
-			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
-			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
-			{label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', hidden: true},
-			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
+			{ label: 'auditno', name: 'dbacthdr_auditno', width: 90, hidden: true },
+			{ label: 'lineno_', name: 'dbacthdr_lineno_', width: 90, hidden: true },
+			{ label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true },
+			{ label: 'conversion', name: 'dbacthdr_conversion', hidden: true },
+			{ label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true },
+			{ label: 'currency', name: 'dbacthdr_currency', hidden: true },
+			{ label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true },
+			{ label: 'tillno', name: 'dbacthdr_tillno', hidden: true },
+			{ label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true },
+			{ label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter }, //tunjuk
+			{ label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50 }, //tunjuk
+			{ label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true }, //tunjuk
+			{ label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true },
+			{ label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true },
+			{ label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true },
+			{ label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true },//tunjuk
+			// { label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50 }, //tunjuk
+			{ label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40 }, //tunjuk
+			{ label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true },
+			{ label: 'remark', name: 'dbacthdr_remark', hidden: true },
+			{ label: 'authno', name: 'dbacthdr_authno', hidden: true },
+			{ label: 'epistype', name: 'dbacthdr_epistype', hidden: true },
+			{ label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true },
+			{ label: 'reference', name: 'dbacthdr_reference', hidden: true },
+			{ label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70 }, //tunjuk
+			{ label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{ label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{ label: 'source', name: 'dbacthdr_source', hidden: true, checked:true },
+			{ label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Status', name: 'dbacthdr_recstatus',width: 50 }, //tunjuk
+			{ label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true },
+			{ label: 'expdate', name: 'dbacthdr_expdate', hidden: true },
+			{ label: 'rate', name: 'dbacthdr_rate', hidden: true },
+			{ label: 'units', name: 'dbacthdr_unit', hidden: true },
+			{ label: 'invno', name: 'dbacthdr_invno', hidden: true },
+			{ label: 'paytype', name: 'dbacthdr_paytype', hidden: true },
+			{ label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true },
+			{ label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true },
+			{ label: 'RCOSbalance', name: 'dbacthdr_RCOSbalance', hidden: true },
+			{ label: 'idno', name: 'dbacthdr_idno', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1190,14 +1190,14 @@ $(document).ready(function () {
 	$("#sysparam").jqGrid({
 		datatype: "local",
 		colModel: [
-			{label: 'source', name: 'source', width: 60, hidden:true},
-			{label: 'Tran type', name: 'trantype', width: 60, hidden:true},
-			{label: 'Description', name: 'description', width: 150 },
-			{label: 'hdrtype', name: 'hdrtype', width: 150, hidden:true},
-			{label: 'updpayername', name: 'updpayername', width: 150, hidden:true},
-			{label: 'depccode', name: 'depccode', width: 150, hidden:true},
-			{label: 'depglacc', name: 'depglacc', width: 150, hidden:true},
-			{label: 'updepisode', name: 'updepisode', width: 150, hidden:true},
+			{ label: 'source', name: 'source', width: 60, hidden:true },
+			{ label: 'Tran type', name: 'trantype', width: 60, hidden:true },
+			{ label: 'Description', name: 'description', width: 150 },
+			{ label: 'hdrtype', name: 'hdrtype', width: 150, hidden:true },
+			{ label: 'updpayername', name: 'updpayername', width: 150, hidden:true },
+			{ label: 'depccode', name: 'depccode', width: 150, hidden:true },
+			{ label: 'depglacc', name: 'depglacc', width: 150, hidden:true },
+			{ label: 'updepisode', name: 'updepisode', width: 150, hidden:true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1258,10 +1258,10 @@ $(document).ready(function () {
 	$("#g_paymodebank").jqGrid({
 		datatype: "local",
 		colModel: [
-			{label: 'Pay Mode', name: 'paymode', width: 60},
-			{label: 'Description', name: 'description', width: 150 },
-			{label: 'ccode', name: 'ccode', hidden: true },
-			{label: 'glaccno', name: 'glaccno', hidden: true },
+			{ label: 'Pay Mode', name: 'paymode', width: 60 },
+			{ label: 'Description', name: 'description', width: 150 },
+			{ label: 'ccode', name: 'ccode', hidden: true },
+			{ label: 'glaccno', name: 'glaccno', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1298,12 +1298,12 @@ $(document).ready(function () {
 	$("#g_paymodecard").jqGrid({
 		datatype: "local",
 		colModel: [
-			{label: 'Pay Mode', name: 'paymode', width: 60},
-			{label: 'Description', name: 'description', width: 150 },
-			{label: 'ccode', name: 'ccode', hidden: true },
-			{label: 'glaccno', name: 'glaccno', hidden: true },
-			{label: 'cardflag', name: 'cardflag', hidden: true },
-			{label: 'valexpdate', name: 'valexpdate', hidden: true },
+			{ label: 'Pay Mode', name: 'paymode', width: 60 },
+			{ label: 'Description', name: 'description', width: 150 },
+			{ label: 'ccode', name: 'ccode', hidden: true },
+			{ label: 'glaccno', name: 'glaccno', hidden: true },
+			{ label: 'cardflag', name: 'cardflag', hidden: true },
+			{ label: 'valexpdate', name: 'valexpdate', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1348,12 +1348,12 @@ $(document).ready(function () {
 	$("#g_forex").jqGrid({
 		datatype: "local",
 		colModel: [
-			{label: 'Forex Code', name: 'forexcode', width: 60},
-			{label: 'Description', name: 'description', width: 150 },
-			{label: 'costcode', name: 'costcode', hidden: true },
-			{label: 'glaccount', name: 'glaccount' , hidden: true},
-			{label: 'Rate', name: 'rate', width: 50 },
-			{label: 'effdate', name: 'effdate', width: 50  , hidden: true},
+			{ label: 'Forex Code', name: 'forexcode', width: 60 },
+			{ label: 'Description', name: 'description', width: 150 },
+			{ label: 'costcode', name: 'costcode', hidden: true },
+			{ label: 'glaccount', name: 'glaccount' , hidden: true },
+			{ label: 'Rate', name: 'rate', width: 50 },
+			{ label: 'effdate', name: 'effdate', width: 50  , hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1569,8 +1569,7 @@ $(document).ready(function () {
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
 		}
-
-
+		
 		if($('#Scol').val()=='db_entrydate'){
 			refreshGrid('#jqGrid', urlParam);
 		}else{
@@ -1620,7 +1619,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','ACTIVE'],
@@ -1642,7 +1641,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1661,9 +1660,9 @@ $(document).ready(function () {
 	var dialog_paymodeCN = new ordialog(
 		'db_paymodeCN','debtor.paymode',"#formdata_CN input[name='db_paymode']",errorField,
 		{	colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+				{ label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true },
+				{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
+				{ label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus', 'source', 'paytype'],
@@ -1698,7 +1697,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1717,9 +1716,9 @@ $(document).ready(function () {
 	var dialog_paymodeDN = new ordialog(
 		'db_paymodeDN','debtor.paymode',"#formdata_DN input[name='db_paymode']",errorField,
 		{	colModel:[
-				{label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true},
+				{ label:'Paymode',name:'paymode',width:200,classes:'pointer',canSearch:true,or_search:true },
+				{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
+				{ label:'Paytype',name:'paytype',width:200,classes:'pointer',hidden:true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus', 'source', 'paytype'],
@@ -1754,7 +1753,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'SectorCode', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','chgdept','storedept'],
@@ -1775,7 +1774,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'DebtorCode', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1796,7 +1795,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'Billtype', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus','opprice'],
@@ -1817,7 +1816,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','ACTIVE'],
@@ -1839,7 +1838,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1875,9 +1874,9 @@ $(document).ready(function () {
 	var dialog_mrn = new ordialog(
 		'mrn','hisdb.pat_mast','#dbacthdr_mrn',errorField,
 		{	colModel:[
-				{label:'MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Last Episode',name:'Episno',width:100,classes:'pointer'},
+				{ label:'MRN',name:'MRN',width:100,classes:'pointer',canSearch:true,or_search:true },
+				{ label:'Name',name:'Name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
+				{ label:'Last Episode',name:'Episno',width:100,classes:'pointer' },
 			],
 			urlParam: {
 					filterCol:['compcode'],
@@ -2085,11 +2084,11 @@ function getdata(mode,idno){
 var dialog_payercode = new ordialog(
 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
 	{	colModel:[
-			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'debtortype',name:'debtortype',hidden:true},
-			{label:'actdebccode',name:'actdebccode',hidden:true},
-			{label:'actdebglacc',name:'actdebglacc',hidden:true},
+			{ label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true },
+			{ label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
+			{ label:'debtortype',name:'debtortype',hidden:true },
+			{ label:'actdebccode',name:'actdebccode',hidden:true },
+			{ label:'actdebglacc',name:'actdebglacc',hidden:true },
 		],
 		urlParam: {
 					filterCol:['compcode','recstatus'],
