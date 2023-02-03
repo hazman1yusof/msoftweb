@@ -57,6 +57,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly("#formdata");
 					hideOne("#formdata");
+					setpaymodeused();
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
@@ -65,25 +66,25 @@ $(document).ready(function () {
 					frozeOnEdit("#dialogForm");
 					rdonly("#formdata");
 					$('#formdata :input[hideOne]').show();
+					setpaymodeused('edit');
 					break;
 				case state = 'view':
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
 					$('#formdata :input[hideOne]').show();
+					setpaymodeused('view');
 					break;
 			}
 			if(oper!='view'){
 				dialog_paymode.on();
 				dialog_bankcode.on();
 				dialog_payto.on();
-				dialog_cheqno.on();
 			}
 
 			if(oper!='add'){
 				dialog_paymode.check(errorField);
 				dialog_bankcode.check(errorField);
 				dialog_payto.check(errorField);
-				dialog_cheqno.check(errorField);
 			}
 		},
 
@@ -98,7 +99,6 @@ $(document).ready(function () {
 			dialog_paymode.off();
 			dialog_bankcode.off();
 			dialog_payto.off();
-			dialog_cheqno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
 			refreshGrid("#jqGrid2",null,"kosongkan");
@@ -110,14 +110,16 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		table_name:'finance.apacthdr',
-		table_id:'auditno',
-		filterCol: ['source', 'trantype', 'compcode'],
-		filterVal: ['CM', 'DP', 'session.compcode'],
-		sort_idno: 'true'
+		// action:'get_table_default',
+		// url:'util/get_table_default',
+		// field:'',
+		// table_name:'finance.apacthdr',
+		// table_id:'auditno',
+		// filterCol: ['source', 'trantype', 'compcode'],
+		// filterVal: ['CM', 'DP', 'session.compcode'],
+		// sort_idno: 'true'
+		action:'maintable',
+		url:'./directPayment/table',
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -136,10 +138,11 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true},
 			{ label: 'compcode', name: 'compcode', width: 10 , hidden: true  },
-			{ label: 'Audit No', name: 'auditno', width: 27,  canSearch: true, checked: true},
-			{ label: 'Bank Code', name: 'bankcode', width: 35 , canSearch: true,classes : 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Pay To', name: 'payto', width: 35, classes : 'wrap', formatter: showdetail,unformat:un_showdetail },
-			{ label: 'Post Date', name: 'actdate', width: 25, },
+			//{ label: 'Creditor Name', name: 'supplier_name', width: 50, canSearch: false, checked: false, hidden: true},
+			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: false},
+			{ label: 'Bank Code', name: 'bankcode', width: 35 , checked:true, canSearch: true, classes : 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Pay To', name: 'payto', width: 35, classes : 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'} ,//unformat:unformat2}
 			{ label: 'Status', name: 'recstatus', width: 20, },
 			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
@@ -197,6 +200,23 @@ $(document).ready(function () {
 				}
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				$("#searchForm input[name=Stext]").focus();
+
+				if($('#jqGrid').data('inputfocus') == 'bankcode_search'){
+					$("#bankcode_search").focus();
+					$('#jqGrid').data('inputfocus','');
+					$('#bankcode_search_hb').text('');
+					removeValidationClass(['#bankcode_search']);
+
+				}else if($('#jqGrid').data('inputfocus') == 'creditor_search'){
+					$("#creditor_search").focus();
+					$('#jqGrid').data('inputfocus','');
+					$('#creditor_search_hb').text('');
+					removeValidationClass(['#creditor_search']);
+
+				}else{
+					$("#searchForm input[name=Stext]").focus();
+				}
+
 				fdl.set_array().reset();
 				populate_form(selrowData("#jqGrid"));
 				//empty_form()
@@ -340,26 +360,167 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 	
+	////////////////////////////////searching/////////////////////////////////
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#actdate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		bankcode_search.off();
+		creditor_search.off();
+		$('#bankcode_search,#creditor_search,#actdate_from,#actdate_to').val('');
+		$('#bankcode_search_hb').text('');
+		$('#creditor_search_hb').text('');
+		urlParam.filterdate = null;
+		removeValidationClass(['#bankcode_search, #creditor_search']);
+		if($('#Scol').val()=='actdate'){
+			$("input[name='Stext'], #bankcode_text, #creditor_text").hide("fast");
+			$("#actdate_text").show("fast");
+		} else if($('#Scol').val() == 'bankcode'){
+			$("input[name='Stext'],#actdate_text, #creditor_text").hide("fast");
+			$("#bankcode_text").show("fast");
+			bankcode_search.on();
+		} else if($('#Scol').val() == 'payto'){
+			$("input[name='Stext'],#actdate_text, #bankcode_text").hide("fast");
+			$("#creditor_text").show("fast");
+			creditor_search.on();
+		} else {
+			$("#bankcode_text,#actdate_text, #creditor_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+	}
+
 	////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
-	function searchBy(){
-		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
-			if(value['canSearch']){
-				if(value['selected']){
-					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
-				}else{
-					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid','#searchForm',urlParam);
+			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+	}
+
+	function searchDate(){
+		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var bankcode_search = new ordialog(
+		'bankcode_search', 'finance.bank', '#bankcode_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Bank Code', name: 'bankcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'bankname', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + bankcode_search.gridname).bankcode;
+
+				if($('#Scol').val() == 'bankcode'){
+					urlParam.searchCol=["ap.bankcode"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Bankcode",
+			open: function () {
+				bankcode_search.urlParam.filterCol = ['compcode', 'recstatus'];
+				bankcode_search.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	bankcode_search.makedialog(true);
+	$('#bankcode_search').on('keyup',ifnullsearch);
+
+	var creditor_search = new ordialog(
+		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + creditor_search.gridname).suppcode;
+
+				if($('#Scol').val() == 'payto'){
+					urlParam.searchCol=["ap.payto"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				}
+			}
+		},{
+			title: "Select Creditor",
+			open: function () {
+				creditor_search.urlParam.filterCol = ['recstatus'];
+				creditor_search.urlParam.filterVal = ['ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	creditor_search.makedialog(true);
+	$('#creditor_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($(this).val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus',$(this).attr('id'));
+			refreshGrid('#jqGrid', urlParam);
+		}
 	}
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
 		url:'/util/get_table_default',
-		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
+		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.taxamt AS tot_gst', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
 		table_name:['finance.apactdtl AS apactdtl'],
 		table_id:'lineno_',
 		filterCol:['apactdtl.compcode','apactdtl.auditno', 'apactdtl.recstatus','apactdtl.source','apactdtl.trantype'],
@@ -427,10 +588,10 @@ $(document).ready(function () {
 			},
 			
 			{ label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable:true,
-				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
 				editoptions:{
-					readonly: "readonly",
+					//readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
@@ -524,6 +685,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -766,7 +928,7 @@ $(document).ready(function () {
 		unsaved = false;
 		dialog_paymode.off();
 		dialog_bankcode.off();
-		dialog_cheqno.off();
+		//dialog_cheqno.off();
 		dialog_payto.off();
 		errorField.length = 0;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
@@ -776,7 +938,7 @@ $(document).ready(function () {
 			mycurrency.formatOn();
 			dialog_paymode.on();
 			dialog_bankcode.on();
-			dialog_cheqno.on();
+			//dialog_cheqno.on();
 			dialog_payto.on();
 		}
 	});
@@ -788,7 +950,6 @@ $(document).ready(function () {
 		hideatdialogForm(true);
 		dialog_paymode.on();
 		dialog_bankcode.on();
-		dialog_cheqno.on();
 		dialog_payto.on();
 		textCol.check();
 		enableForm('#formdata');
@@ -872,7 +1033,6 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
-		// let amount = parseFloat($("#"+id_optid+"_amount").val());
 		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
 		
@@ -882,13 +1042,22 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
-		// $("#jqGrid2").jqGrid('setRowData', id_optid ,{amount:amount});
-		//$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
-
-		
 		event.data.currency.formatOn();//change format to currency on each calculation
 
-		//fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+	}
+
+	function calculate_edited_gst(event){
+
+        mycurrency2.formatOff();
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let editedgst = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
+		var amount = amntb4gst + editedgst;
+
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
+		event.data.currency.formatOn();//change format to currency on each calculation
 	}
 
 
@@ -949,6 +1118,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_paymode.urlParam.filterCol=['compcode','recstatus', 'source'],
 				dialog_paymode.urlParam.filterVal=['session.compcode','ACTIVE', 'CM']
+			},
+			close: function(){
+				setpaymodeused();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1215,6 +1387,28 @@ $(document).ready(function () {
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
 	}
+
+	function setpaymodeused(oper='add'){
+		var paymode = $("#paymode").val();
+		dialog_cheqno.off();
+		$('#chg_div,#cheqno_a,#chq_div').hide();
+		if(paymode == "CHEQUE"){
+			$('#chg_div,#cheqno_a,#chq_div').show();
+			$('#chg_label').text('Cheque No');
+			dialog_cheqno.on();
+			if(oper != 'add'){
+				dialog_cheqno.check(errorField);
+			}
+		}else if (paymode == "CASH"){
+			$('#chg_label').text('');
+		}else if (paymode == "BD"){
+			$('#chg_div').show();
+			$('#chg_label').text('BD No');
+		}else if (paymode == "TT"){
+			$('#chg_div').show();
+			$('#chg_label').text('TT No');
+		}
+	}
 });
 
 function populate_form(obj){
@@ -1239,6 +1433,6 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 		

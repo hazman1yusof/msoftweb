@@ -102,14 +102,17 @@ $(document).ready(function () {
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		table_name:'finance.apacthdr',
-		table_id:'auditno',
-		filterCol: ['trantype', 'compcode'],
-		filterVal: [$('#adjustment').val(), 'session.compcode'],
-		sort_idno: 'true'
+		// action:'get_table_default',
+		// url:'util/get_table_default',
+		// field:'',
+		// table_name:'finance.apacthdr',
+		// table_id:'auditno',
+		// filterCol: ['trantype', 'compcode'],
+		// filterVal: [$('#adjustment').val(), 'session.compcode'],
+		// sort_idno: 'true'
+		action:'maintable',
+		url:'./creditDebitTrans/table',
+		trantype:$('#adjustment').val(),
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -128,12 +131,12 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},
-			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, checked: true},
+			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: false},
 			{ label: 'Trantype', name: 'trantype', width: 13},
-			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap',},
-			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap'},
-			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', formatter:'currency'} ,//unformat:unformat2}
+			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', checked: true, canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap', canSearch: true},
+			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', align:'right', formatter:'currency'},
 			{ label: 'Remarks', name: 'remarks', width: 43, classes: 'wrap',},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap'},
 			{ label: 'Entered By', name: 'adduser', width: 20, classes: 'wrap', hidden:true},
@@ -194,27 +197,14 @@ $(document).ready(function () {
 				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 				$("#searchForm input[name=Stext]").focus();
 
-				/*adj = $("#adjustment option:selected" ).val();
-
-					if (adj == "CA" && adj == "DA") {
-						$("#jqGridplus").hide();
-					} else {
-						$("#jqGridplus").show();
-					}
-
-					if(oper == 'edit'){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
-
-					$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-
-					adj = $("#adjustment option:selected" ).val();
-
-					if (adj == "CA" && adj == "DA") {
-						$("#jqGridplus2").hide();
-					} else {
-						$("#jqGridplus2").show();
-					}	*/
+				if($('#jqGrid').data('inputfocus') == 'bankcode_search'){
+					$("#bankcode_search").focus();
+					$('#jqGrid').data('inputfocus','');
+					$('#bankcode_search_hb').text('');
+					removeValidationClass(['#bankcode_search']);
+				}else{
+					$("#searchForm input[name=Stext]").focus();
+				}
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");
@@ -241,6 +231,7 @@ $(document).ready(function () {
 	})
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid");
 	jqgrid_label_align_right("#jqGrid2");	
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -383,26 +374,122 @@ $(document).ready(function () {
 		unsaved = true; //kalu dia change apa2 bagi prompt
 	});
 	
+	////////////////////////////////searching/////////////////////////////////
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#actdate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		bankcode_search.off();
+		$('#bankcode_search,#actdate_from,#actdate_to').val('');
+		$('#bankcode_search_hb').text('');
+		urlParam.filterdate = null;
+		removeValidationClass(['#bankcode_search']);
+		if($('#Scol').val()=='actdate'){
+			$("input[name='Stext'], #bankcode_text").hide("fast");
+			$("#actdate_text").show("fast");
+		} else if($('#Scol').val() == 'bankcode'){
+			$("input[name='Stext'],#actdate_text").hide("fast");
+			$("#bankcode_text").show("fast");
+			bankcode_search.on();
+		} else {
+			$("#bankcode_text,#actdate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+	}
+
 	////////////////////////////populate data for dropdown search By////////////////////////////
 	searchBy();
-	function searchBy(){
-		$.each($("#jqGrid").jqGrid('getGridParam','colModel'), function( index, value ) {
-			if(value['canSearch']){
-				if(value['selected']){
-					$( "#searchForm [id=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
-				}else{
-					$( "#searchForm [id=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+	function searchBy() {
+		$.each($("#jqGrid").jqGrid('getGridParam', 'colModel'), function (index, value) {
+			if (value['canSearch']) {
+				if (value['selected']) {
+					$("#searchForm [id=Scol]").append(" <option selected value='" + value['name'] + "'>" + value['label'] + "</option>");
+				} else {
+					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid','#searchForm',urlParam);
+			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+	}
+
+	function searchDate(){
+		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	function searchChange(){
+		var arrtemp = [$('#Status option:selected').val()];
+		var filter = arrtemp.reduce(function(a,b,c){
+			if(b=='All'){
+				return a;
+			}else{
+				a.fc = a.fc.concat(a.fct[c]);
+				a.fv = a.fv.concat(b);
+				return a;
+			}
+		},{fct:['ap.recstatus'],fv:[],fc:[]});
+
+		urlParam.filterCol = filter.fc;
+		urlParam.filterVal = filter.fv;
+		refreshGrid('#jqGrid',urlParam);
+	}
+
+	var bankcode_search = new ordialog(
+		'bankcode_search', 'finance.bank', '#bankcode_search', 'errorField',
+		{
+			colModel: [
+				{ label: 'Bank Code', name: 'bankcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Description', name: 'bankname', width: 400, classes: 'pointer', canSearch: true, or_search: true, checked:true},
+			],
+			urlParam: {
+						filterCol:['compcode','recstatus'],
+						filterVal:['session.compcode','ACTIVE']
+					},
+			ondblClickRow: function () {
+				let data = selrowData('#' + bankcode_search.gridname).bankcode;
+
+				if($('#Scol').val() == 'bankcode'){
+					urlParam.searchCol=["ap.bankcode"];
+					urlParam.searchVal=[data];
+				}
+				refreshGrid('#jqGrid', urlParam);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					// $('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title: "Select Bankcode",
+			open: function () {
+				bankcode_search.urlParam.filterCol = ['compcode', 'recstatus'];
+				bankcode_search.urlParam.filterVal = ['session.compcode', 'ACTIVE'];
+			}
+		},'urlParam','radio','tab'
+	);
+	bankcode_search.makedialog(true);
+	$('#bankcode_search').on('keyup',ifnullsearch);
+
+	function ifnullsearch(){
+		if($('#bankcode_search').val() == ''){
+			urlParam.searchCol=[];
+			urlParam.searchVal=[];
+			$('#jqGrid').data('inputfocus','bankcode_search');
+			refreshGrid('#jqGrid', urlParam);
+		}
 	}
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
+		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.taxamt AS tot_gst', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno'],
 		table_name:['finance.apactdtl AS apactdtl'],
 		table_id:'lineno_',
 		filterCol:['apactdtl.compcode','apactdtl.auditno', 'apactdtl.recstatus','apactdtl.source','apactdtl.trantype'],
@@ -474,7 +561,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
 				editoptions:{
-					readonly: "readonly",
+					//readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
@@ -568,6 +655,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -891,9 +979,21 @@ $(document).ready(function () {
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
 
-		
 		event.data.currency.formatOn();//change format to currency on each calculation
+	}
 
+	function calculate_edited_gst(event){
+
+        mycurrency2.formatOff();
+		var optid = event.currentTarget.id;
+		var id_optid = optid.substring(0,optid.search("_"));
+
+		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let editedgst = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
+		var amount = amntb4gst + editedgst;
+
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
+		event.data.currency.formatOn();//change format to currency on each calculation
 	}
 
 

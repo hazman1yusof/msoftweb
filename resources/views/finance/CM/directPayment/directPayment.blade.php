@@ -42,7 +42,7 @@ i.fa {
 		<fieldset>
 			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
-				<div class='col-md-12' style="padding:0 0 15px 0;">
+			<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
 						<div class="col-md-2">
 						  	<label class="control-label" for="Scol">Search By : </label>  
@@ -50,8 +50,31 @@ i.fa {
 			            </div>
 
 						<div class="col-md-5">
-						  	<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+					  		<label class="control-label"></label>  
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="bankcode_text">
+								<div class='input-group'>
+									<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="bankcode_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="creditor_text" style="display:none">
+								<div class='input-group'>
+									<input id="creditor_search" name="creditor_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="creditor_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
+							
 						</div>
 
 			        </div>
@@ -152,26 +175,30 @@ i.fa {
 							 				<span id='bc' class="help-block"></span>
 		                      			</div>
 
-		                    		<label class="col-md-2 control-label" for="cheqno">Cheque No</label>  
-						  				<div class="col-md-3" id="cheqno_parent">
-							 				<div class='input-group'>
-												<input id="cheqno" name="cheqno" type="text" class="form-control input-sm">
-													<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
-							  				</div>
-							 				<span id='cn' class="help-block"></span>
-		                      			</div>
+									<div id="chg_div" style="display:none;">
+										<label class="col-md-2 control-label" for="cheqno" id="chg_label">Cheque No</label>  
+											<div class="col-md-3" id="cheqno_parent">
+												<div class='input-group'>
+													<input id="cheqno" name="cheqno" type="text" class="form-control input-sm">
+														<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
+												</div>
+												<span id='cn' class="help-block"></span>
+											</div>
+									</div>
 					    		</div>
 
 							    <div class="form-group">
-							    	<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
-									  	<div class="col-md-3">
-											<input id="cheqdate" name="cheqdate" type="date"  maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-									  	</div>
+									<div id="chq_div" style="display:none;">
+										<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
+											<div class="col-md-3">
+												<input id="cheqdate" name="cheqdate" type="date"  maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+											</div>
+									</div>
 
-									 <label class="col-md-2 control-label" for="amount">Amount</label>  
-									  	<div class="col-md-2">
-												<input id="amount" name="amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
-						 				</div>
+										<label class="col-md-2 control-label" for="amount">Amount</label>  
+											<div class="col-md-2">
+													<input id="amount" name="amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
+											</div>
 							    </div>
 
 							    <div class="form-group">

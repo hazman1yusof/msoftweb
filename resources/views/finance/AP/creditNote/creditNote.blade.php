@@ -55,7 +55,7 @@ i.fa {
 					  			<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 		             	</div>
 
-						 <div class="col-md-5">
+						<div class="col-md-5">
 					  		<label class="control-label"></label>  
 							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 

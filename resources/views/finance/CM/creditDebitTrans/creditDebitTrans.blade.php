@@ -42,7 +42,7 @@ i.fa {
 		<fieldset>
 			<input id="getYear" name="getYear" type="hidden"  value="{{Carbon\Carbon::now()->year}}">
 
-				<div class='col-md-12' style="padding:0 0 15px 0;">
+			<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
 						<div class="col-md-2">
 						  	<label class="control-label" for="Scol">Search By : </label>  
@@ -50,8 +50,23 @@ i.fa {
 			            </div>
 
 						<div class="col-md-5">
-						  	<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+					  		<label class="control-label"></label>  
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="bankcode_text">
+								<div class='input-group'>
+									<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="bankcode_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
+							
 						</div>
 
 			        </div>

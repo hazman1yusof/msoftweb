@@ -40,6 +40,137 @@ class BankTransferController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function maintable(Request $request){
+
+        $table = DB::table('finance.apacthdr AS ap')
+                    ->select(
+                        'ap.compcode AS compcode',
+                        'ap.auditno AS auditno',
+                        'ap.trantype AS trantype',
+                        'ap.doctype AS doctype',
+                        'ap.suppcode AS suppcode',
+                        'ap.actdate AS actdate',
+                        'ap.document AS document',
+                        'ap.cheqno AS cheqno',
+                        'ap.deptcode AS deptcode',
+                        'ap.amount AS amount',
+                        'ap.outamount AS outamount',
+                        'ap.recstatus AS recstatus',
+                        'ap.payto AS payto',
+                        'ap.recdate AS recdate',
+                        'ap.category AS category',
+                        'ap.remarks AS remarks',
+                        'ap.adduser AS adduser',
+                        'ap.adddate AS adddate',
+                        'ap.upduser AS upduser',
+                        'ap.upddate AS upddate',
+                        'ap.source AS source',
+                        'ap.idno AS idno',
+                        'ap.unit AS unit',
+                        'ap.pvno AS pvno',
+                        'ap.paymode AS paymode',
+                        'ap.bankcode AS bankcode',
+                    )
+                    ->where('ap.compcode','=', session('compcode'))
+                    ->where('ap.source','=', 'CM')
+                    ->where('ap.trantype', '=','FT');
+
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+
+        if(!empty($request->filterdate)){
+            $table = $table->where('ap.actdate','>=',$request->filterdate[0]);
+            $table = $table->where('ap.actdate','<=',$request->filterdate[1]);
+        }
+
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'bankcode'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.bankcode','like',$request->searchVal[0]);
+                    });
+            } else if($request->searchCol[0] == 'payto'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.payto','like',$request->searchVal[0]);
+                    });
+            } else{
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+            }
+            
+        }
+
+        if(!empty($request->sidx)){
+
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('ap.idno','DESC');
+        }
+
+
+        $paginate = $table->paginate($request->rows);
+
+        // foreach ($paginate->items() as $key => $value) {
+        //     $apactdtl = DB::table('finance.apactdtl')
+        //                 ->where('source','=',$value->source)
+        //                 ->where('trantype','=',$value->trantype)
+        //                 ->where('auditno','=',$value->auditno);
+
+        //     if($apactdtl->exists()){
+        //         $value->apactdtl_outamt = $apactdtl->sum('amount');
+        //     }else{
+        //         $value->apactdtl_outamt = $value->outamount;
+        //     }
+
+        //     $apalloc = DB::table('finance.apalloc')
+        //                 ->where('docsource','=',$value->source)
+        //                 ->where('doctrantype','=',$value->trantype)
+        //                 ->where('docauditno','=',$value->auditno);
+
+        //     if($apalloc->exists()){
+        //         $value->unallocated = false;
+        //     }else{
+        //         $value->unallocated = true;
+        //     }
+        // }
+
+        //////////paginate/////////
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
+    }
+
     public function add(Request $request){
 
         if(!empty($request->fixPost)){

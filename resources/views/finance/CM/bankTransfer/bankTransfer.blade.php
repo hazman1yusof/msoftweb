@@ -22,13 +22,27 @@
 			            </div>
 
 						<div class="col-md-5">
-						  	<label class="control-label"></label>  
-							<input  name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+					  		<label class="control-label"></label>  
+							<input style="display:none" name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
+
+							<div id="bankcode_text">
+								<div class='input-group'>
+									<input id="bankcode_search" name="bankcode_search" type="text" maxlength="12" class="form-control input-sm">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span id="bankcode_search_hb" class="help-block"></span>
+							</div>
+
+							<div id="actdate_text" class="form-inline" style="display:none">
+								FROM DATE <input id="actdate_from" type="date" placeholder="FROM DATE" class="form-control text-uppercase">
+								TO <input id="actdate_to" type="date" placeholder="TO DATE" class="form-control text-uppercase" >
+								<button type="button" class="btn btn-primary btn-sm" id="actdate_search">SEARCH</button>
+							</div>
+							
 						</div>
 
 			        </div>
 				</div>
-
 
 				<div id="div_for_but_post" class="col-md-10 col-md-offset-2" style="padding-top: 20px; text-align: end;">
 					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
@@ -127,17 +141,20 @@
 
 
 									<div class="form-group">
-										<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
-											<div class="col-md-3">
-										  		<div class='input-group'>
-													<input id="cheqdate" name="cheqdate" type="date" maxlength="30"  class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>">
-										  		</div>
-										 	</div>
+										<div id="chq_div" style="display:none;">
+											<label class="col-md-2 control-label" for="cheqdate">Cheque Date</label>  
+												<div class="col-md-3">
+													<div class='input-group'>
+														<input id="cheqdate" name="cheqdate" type="date" maxlength="30"  class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>">
+													</div>
+												</div>
+										</div>
 
-										<label class="col-md-2 control-label" for="amount">Amount</label>  
-											<div class="col-md-3">
-												<input id="amount" name="amount" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
-											</div>
+											<label class="col-md-2 control-label" for="amount">Amount</label>  
+												<div class="col-md-3">
+													<input id="amount" name="amount" type="text" maxlength="30" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
+												</div>
+										
 									</div>
 								</div>
 							</div>
