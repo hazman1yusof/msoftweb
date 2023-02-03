@@ -386,10 +386,13 @@ $(document).ready(function () {
 		$('#bankcode_search_hb').text('');
 		urlParam.filterdate = null;
 		removeValidationClass(['#bankcode_search']);
+
 		if($('#Scol').val()=='actdate'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'], #bankcode_text").hide("fast");
 			$("#actdate_text").show("fast");
 		} else if($('#Scol').val() == 'bankcode'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'],#actdate_text").hide("fast");
 			$("#bankcode_text").show("fast");
 			bankcode_search.on();
@@ -397,6 +400,12 @@ $(document).ready(function () {
 			$("#bankcode_text,#actdate_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+
+		if($('#Scol').val()=='actdate' || $('#Scol').val() == 'bankcode'){
+			refreshGrid('#jqGrid', urlParam);
+		}else{
+			search('#jqGrid',$('#searchForm [name=Stext]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 		}
 	}
 
@@ -411,7 +420,7 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
+			searchClick2('#jqGrid', '#searchForm', urlParam, false);
 		});
 	}
 

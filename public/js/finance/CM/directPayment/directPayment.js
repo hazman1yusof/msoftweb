@@ -372,14 +372,18 @@ $(document).ready(function () {
 		$('#creditor_search_hb').text('');
 		urlParam.filterdate = null;
 		removeValidationClass(['#bankcode_search, #creditor_search']);
+
 		if($('#Scol').val()=='actdate'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'], #bankcode_text, #creditor_text").hide("fast");
 			$("#actdate_text").show("fast");
 		} else if($('#Scol').val() == 'bankcode'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'],#actdate_text, #creditor_text").hide("fast");
 			$("#bankcode_text").show("fast");
 			bankcode_search.on();
 		} else if($('#Scol').val() == 'payto'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'],#actdate_text, #bankcode_text").hide("fast");
 			$("#creditor_text").show("fast");
 			creditor_search.on();
@@ -387,6 +391,12 @@ $(document).ready(function () {
 			$("#bankcode_text,#actdate_text, #creditor_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+
+		if($('#Scol').val()=='actdate' || $('#Scol').val() == 'bankcode' || $('#Scol').val() == 'payto'){
+			refreshGrid('#jqGrid', urlParam);
+		}else{
+			search('#jqGrid',$('#searchForm [name=Stext]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 		}
 	}
 
@@ -401,7 +411,7 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
+			searchClick2('#jqGrid', '#searchForm', urlParam, false);
 		});
 	}
 

@@ -104,6 +104,10 @@ class DirectPaymentController extends defaultController
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where('ap.payto','like',$request->searchVal[0]);
                     });
+            }else if($request->searchCol[0] == 'auditno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('ap.auditno','like',$request->searchVal[0]);
+                    });
             }else{
                 $table = $table->Where(function ($table) use ($request) {
                         $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
