@@ -224,6 +224,7 @@ $(document).ready(function () {
 
 		let adjustment1  = $("#adjustment option:selected" ).val();
 		$("#jqGridplus").show();
+		urlParam.trantype = $('#adjustment').val();
 		urlParam.filterCol = ['trantype'];
 		urlParam.filterVal = [$('#adjustment').val()];
 		urlParam2.filterVal[4] = $('#adjustment').val();

@@ -179,7 +179,7 @@ $(document).ready(function () {
 			{label: 'Status', name: 'recstatus', width: 30, classes: 'wrap'},
 			{label: 'Entered By', name: 'adduser', width: 30, classes: 'wrap'},
 			{label: 'Entered Date', name: 'adddate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
-			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', canSearch:false, formatter: showdetail,unformat:un_showdetail},
+			{label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheq No', name: 'cheqno', width: 30, classes: 'wrap', formatter:formatterCheqnno, unformat:unformatterCheqnno},
 			{label: 'unit', name: 'unit', width: 40, hidden:'true'},
 		],
@@ -294,10 +294,13 @@ $(document).ready(function () {
 		$('#bankcode_search_hb').text('');
 		urlParam.filterdate = null;
 		removeValidationClass(['#bankcode_search']);
+
 		if($('#Scol').val()=='actdate'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'], #bankcode_text").hide("fast");
 			$("#actdate_text").show("fast");
 		} else if($('#Scol').val() == 'bankcode' || $('#Scol').val() == 'payto'){
+			urlParam.searchCol=urlParam.searchVal=null;
 			$("input[name='Stext'],#actdate_text").hide("fast");
 			$("#bankcode_text").show("fast");
 			bankcode_search.on();
@@ -305,6 +308,12 @@ $(document).ready(function () {
 			$("#bankcode_text,#actdate_text").hide("fast");
 			$("input[name='Stext']").show("fast");
 			$("input[name='Stext']").velocity({ width: "100%" });
+		}
+
+		if($('#Scol').val()=='actdate' || $('#Scol').val() == 'bankcode' || $('#Scol').val() == 'payto'){
+			refreshGrid('#jqGrid', urlParam);
+		}else{
+			search('#jqGrid',$('#searchForm [name=Stext]').val(),$('#searchForm [name=Scol] option:selected').val(),urlParam);
 		}
 	}
 
@@ -319,8 +328,8 @@ $(document).ready(function () {
 					$("#searchForm [id=Scol]").append(" <option value='" + value['name'] + "'>" + value['label'] + "</option>");
 				}
 			}
-			searchClick2('#jqGrid', '#searchForm', urlParam);
 		});
+		searchClick2('#jqGrid', '#searchForm', urlParam,false);
 	}
 
 	function searchDate(){
@@ -481,8 +490,6 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid");
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	
-	populateSelect2('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
