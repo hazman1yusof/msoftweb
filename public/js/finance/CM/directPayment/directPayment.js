@@ -138,12 +138,11 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true},
 			{ label: 'compcode', name: 'compcode', width: 10 , hidden: true  },
-			//{ label: 'Creditor Name', name: 'supplier_name', width: 50, canSearch: false, checked: false, hidden: true},
-			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: false},
 			{ label: 'Bank Code', name: 'bankcode', width: 35 , checked:true, canSearch: true, classes : 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Pay To', name: 'payto', width: 35, classes : 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail },
+			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: true},
 			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'} ,//unformat:unformat2}
+			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, },
 			{ label: 'Payment Mode', name: 'paymode', width: 30, hidden:true },
 			{ label: 'Cheque No', name: 'cheqno', width: 40, hidden:true},//formatter:formatterCheqnno, unformat:unformatterCheqnno

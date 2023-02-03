@@ -60,7 +60,6 @@ class DirectPaymentController extends defaultController
                         'ap.trantype AS trantype',
                         'ap.doctype AS doctype',
                         'ap.suppcode AS suppcode',
-                       // 'su.name AS supplier_name', 
                         'ap.actdate AS actdate',
                         'ap.document AS document',
                         'ap.cheqno AS cheqno',
@@ -83,7 +82,6 @@ class DirectPaymentController extends defaultController
                         'ap.paymode AS paymode',
                         'ap.bankcode AS bankcode',
                     )
-                  //  ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=', 'CM')
                     ->where('ap.trantype', '=','DP');

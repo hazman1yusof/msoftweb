@@ -131,9 +131,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},
-			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: false},
 			{ label: 'Trantype', name: 'trantype', width: 13},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', checked: true, canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap', canSearch: true},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', align:'right', formatter:'currency'},
