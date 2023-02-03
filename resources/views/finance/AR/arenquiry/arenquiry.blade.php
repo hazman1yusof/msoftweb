@@ -108,6 +108,17 @@
 						</div>
 		            </div>
 				</div>
+
+				<div class="col-md-2">
+					<label class="control-label" for="Status">Status</label>  
+					<select id="Status" name="Status" class="form-control input-sm">
+						<option value="All" selected>ALL</option>
+						<option value="Open">OPEN</option>
+						<option value="Confirmed">CONFIRMED</option>
+						<option value="Posted">POSTED</option>
+						<option value="Cancelled">CANCELLED</option>
+					</select>
+				</div>
 			</fieldset> 
 		</form>
 		 
