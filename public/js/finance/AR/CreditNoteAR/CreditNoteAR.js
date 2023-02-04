@@ -526,9 +526,9 @@ $(document).ready(function () {
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 				
@@ -1760,9 +1760,9 @@ $(document).ready(function () {
 				{ label:'Tax Rate',name:'rate',width:200,classes:'pointer' },
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
@@ -1817,7 +1817,7 @@ $(document).ready(function () {
 	// 		urlParam: {
 	// 			filterCol:['recstatus','compcode','taxtype'],
 	// 			filterVal:['ACTIVE', 'session.compcode','OUTPUT']
-	// 			},
+	// 		},
 	// 		ondblClickRow:function(event){
 	// 			if(event.type == 'keydown'){
 	// 				var optid = $(event.currentTarget).get(0).getAttribute("optid");
