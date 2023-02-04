@@ -148,7 +148,7 @@ i.fa {
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Credit Note DataEntry Header
+			<div class="panel-heading">Credit Note Data Entry Header
 				<!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
 			</div>
 				
