@@ -251,6 +251,8 @@ $(document).ready(function () {
 			urlParam2.auditno = selrowData("#jqGrid").db_auditno;
 			
 			urlParamAlloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
+			urlParamAlloc.filterVal[2]=selrowData("#jqGrid").db_source;
+			urlParamAlloc.filterVal[3]=selrowData("#jqGrid").db_trantype;
 			refreshGrid("#jqGridArAlloc",urlParamAlloc);
 			
 			$('#reqnodepan').text(selrowData("#jqGrid").purreqhd_purreqno);//tukar kat depan tu
@@ -1311,8 +1313,8 @@ $(document).ready(function () {
 		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
 		table_name:['debtor.dballoc AS alloc'],
 		table_id:'lineno_',
-		filterCol:['alloc.compcode','alloc.auditno','alloc.source','alloc.trantype'],
-		filterVal:['session.compcode', '', 'AR','CN']
+		filterCol:['alloc.compcode','alloc.docauditno','alloc.docsource','alloc.doctrantype'],
+		filterVal:['session.compcode', '', '', '']
 	};
 
 	var addmore_jqGrid3={more:false,state:false,edit:true} // if addmore is true, add after refresh jqGridAlloc, state true kalau kosong
