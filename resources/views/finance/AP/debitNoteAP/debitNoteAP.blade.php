@@ -174,7 +174,28 @@ i.fa {
 				</div>
 				
 			</div>
-		</div>   
+		</div>
+		
+		<div class="panel panel-default" style="position: relative;" id="jqGridAPAlloc_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAPAlloc_panel">
+				
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Debit Note Allocation</h5>
+				</div>
+			</div>
+
+			<div id="jqGridAPAlloc_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+	    			<div id="" class='col-md-12' style="padding:0 0 15px 0">
+            			<table id="jqGridAlloc" class="table table-striped"></table>
+            			<div id="jqGridPagerAPAlloc"></div>
+    				</div>
+	    		</div>
+			</div>	
+			
+		</div>
 
     </div>
 	

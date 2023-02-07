@@ -174,7 +174,8 @@ class DebitNoteAPDetailController extends defaultController
               ->where('compcode','=',session('compcode'))
               ->where('idno','=',$request->idno)
               ->update([
-                  'amount' => $totalAmount
+                  'amount' => $totalAmount,
+                  'outamount' => $totalAmount
               ]);
           DB::commit();
 
@@ -225,7 +226,8 @@ class DebitNoteAPDetailController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount
                 ]);
 
             DB::commit();
