@@ -136,7 +136,7 @@ class InvoiceAPDetailController extends defaultController
 
 
             $delordhd = DB::table('material.delordhd')
-                    ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode')
+                    ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
                     ->where('compcode','=',session('compcode'))
                     ->where('delordno','=',$request->document)
                     ->first();
@@ -156,6 +156,7 @@ class InvoiceAPDetailController extends defaultController
                     'AmtB4GST' => $delordhd->TaxAmt,
                     'dorecno' => $delordhd->recno,
                     'grnno' => $delordhd->docno,
+                    'deptcode' => $delordhd->deptcode,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -221,6 +222,7 @@ class InvoiceAPDetailController extends defaultController
                     'AmtB4GST' => $request->AmtB4GST,
                     'dorecno' => $request->dorecno,
                     'grnno'=> $request->grnno,
+                    'deptcode' => $request->deptcode,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -325,6 +327,7 @@ class InvoiceAPDetailController extends defaultController
                         'amount' => $value['amount'],
                         'dorecno' => $value['dorecno'],
                         'grnno' => $value['grnno'],
+                        'deptcode' => $value['deptcode'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        

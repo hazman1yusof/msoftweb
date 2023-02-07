@@ -233,16 +233,16 @@ $(document).ready(function () {
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap', hidden:true},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+		{ label: 'Pay To', name: 'apacthdr_payto', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden: true},
-		{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+		{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-		{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
+		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
+		{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25 , classes: 'wrap', align: 'right', formatter:'currency'},
 		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
-		{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', canSearch: true, hidden:true},
-		{ label: 'Doc Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', hidden:true},
 		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -338,6 +338,8 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_amount', 'Amount', { 'text-align': 'right' });
+	$("#jqGrid").jqGrid('setLabel', 'apacthdr_outamount', 'Outstanding', { 'text-align': 'right' });
 	jqgrid_label_align_right("#jqGridAlloc");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
@@ -1322,6 +1324,7 @@ $(document).ready(function () {
 			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 			case 'apacthdr_suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
+			case 'apacthdr_payto':field=['suppcode','name'];table="material.supplier";case_='apacthdr_payto';break;
 
 			//detail
 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;

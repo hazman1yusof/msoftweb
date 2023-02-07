@@ -774,6 +774,9 @@ $(document).ready(function () {
 			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
 			},
+			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
+				edittype:"text",
+			},
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -971,6 +974,7 @@ $(document).ready(function () {
 		    		'amount' : data.amount,
 		    		'dorecno' : data.dorecno,
 		    		'grnno' : data.grnno,
+					'deptcode' : data.deptcode,
                     'unit' : $("#"+ids[i]+"_unit").val()
 		    	}
 
@@ -1669,6 +1673,7 @@ $(document).ready(function () {
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
 				{label:'suppcode',name:'suppcode',width:400,classes:'pointer', hidden:true},
+				{label:'prdept',name:'prdept',width:400,classes:'pointer', hidden:true},
 
 			],
 			urlParam: {
@@ -1686,6 +1691,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='dorecno']").val(data['recno']);
 				$("#jqGrid2 input[name='grnno']").val(data['docno']);
 				$("#jqGrid2 input[name='entrydate']").val(data['deliverydate']);
+				$("#jqGrid2 input[name='deptcode']").val(data['prdept']);
 
 				addmore_jqgrid2.state = true;
 				$('#jqGrid2_ilsave').click();
