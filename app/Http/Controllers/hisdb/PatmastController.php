@@ -211,7 +211,7 @@ class PatmastController extends defaultController
 
             $table_patm = $table_patm
                         ->where('Active','=','1')
-                        ->where('compcode','=',session('compcode'))
+                        ->where('compcode','=','13A')
                         ->whereBetween('MRN',$mrn_range);
 
 
