@@ -380,6 +380,23 @@ $(document).ready(function () {
 		});
 	});
 
+	$("#but_post2_jq").click(function(){
+		var obj={};
+		obj.idno = selrowData('#jqGrid').db_idno;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( './DebitNote/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
+		});
+	});
+
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form, selfoper, saveParam, obj) {
 		if (obj == null) {
