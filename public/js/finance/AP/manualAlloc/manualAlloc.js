@@ -25,6 +25,8 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var mycurrency2 =new currencymode([]);
+
+	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["input[name='apacthdr_entrydate']", "#recdate"]);
 	actdateObj.getdata().set();
 
@@ -69,6 +71,144 @@ $(document).ready(function () {
 		}
 	}
 
+	////////////////////////////////////start dialog////////////////////////////////////
+	var oper = 'add';
+
+	$("#dialogForm")
+		.dialog({ 
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			parent_close_disabled(true);
+			$("#manualAllocdtl").jqGrid ('setGridWidth', Math.floor($("#manualAllocdtl_c")[0].offsetWidth-$("#manualAllocdtl_c")[0].offsetLeft));
+			$("#manualAllochdr").jqGrid ('setGridWidth', Math.floor($("#manualAllochdr_c")[0].offsetWidth-$("#manualAllochdr_c")[0].offsetLeft));
+		},
+		close: function( event, ui ) {
+			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata');
+		
+			$('.alert').detach();
+			
+			$("#formdata a").off();
+			$("#refresh_jqGrid").click();
+			if(oper=='view'){
+				$(this).dialog("option", "buttons",butt1);
+			}
+		},
+		buttons :butt1,
+		});
+	////////////////////////////////////////end dialog///////////////////////////////////////////
+
+	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	var urlParam={
+		action:'maintable',
+		url:'./manualAlloc/table',
+	}
+
+	/////////////////////parameter for saving url////////////////////////////////////////////////
+	
+	$("#jqGrid").jqGrid({
+		datatype: "local",
+			colModel: [
+			{ label: 'Supplier Code', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: false},
+			{ label: 'Transaction <br>Type', name: 'apacthdr_trantype', width: 25, classes: 'wrap text-uppercase', canSearch: false},
+			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 30, classes: 'wrap text-uppercase', hidden:false},
+			{ label: 'PV No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true, canSearch: false},
+			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Unit', name: 'apacthdr_unit', width: 30, hidden:false},
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},
+			{ label: 'Category Code', name: 'apacthdr_category', width: 40, hidden:false, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},		
+			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25, hidden:false, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
+			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
+			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
+			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
+		],
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		sortorder:'desc',
+		width: 900,
+		height: 300,
+		rowNum: 30,
+		pager: "#jqGridPager",
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPager td[title='View Selected Row']").click();
+		},
+		onSelectRow: function(rowid){
+		},
+		gridComplete: function(){
+			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			fdl.set_array().reset();
+			if(oper == 'add'){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+
+			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+
+			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
+				$("#creditor_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#creditor_search_hb').text('');
+				removeValidationClass(['#creditor_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
+		},
+		loadComplete:function(data){
+			calc_jq_height_onchange("jqGrid");
+		}
+		
+	});
+
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#jqGrid",urlParam);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first", 
+		buttonicon:"glyphicon glyphicon-info-sign",
+		title:"View Selected Row",  
+		onClickButton: function(){
+			oper = 'view';
+			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager",{
+		caption:"",cursor: "pointer",position: "first",  
+		buttonicon:"glyphicon glyphicon-plus", 
+		title:"Add New Row", 
+		onClickButton: function(){
+			oper='add';
+			$( "#dialogForm" ).dialog( "open" );
+		},
+	});
+
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
+	populateSelect('#jqGrid','#searchForm');
+	searchClick2('#jqGrid','#searchForm',urlParam);
+
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+	addParamField('#jqGrid',true,urlParam);
 
 	////////////////////////////source and trantype change////////////////////////////////
 
@@ -79,11 +219,10 @@ $(document).ready(function () {
 
 		}else if($("#apacthdr_trantype option:selected").val('CN')){
 			
-			refreshGrid('#manualAllochdr',urlParam_hdr);
+			refreshGrid('#manualAllochdr',urlParam2_cn);
 		}
 	});
 
-	//var err_reroll = new err_reroll('#manualAllochdr',['actdate']);
 	///////////////////////////////////////////trantype//////////////////////
 	var urlParam_hdr={
 		action:'get_table_default',
@@ -241,58 +380,58 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////pager manual Allochdr/////////////////////////////////////////////
 
-		$("#manualAllochdr").inlineNav('#manualAllocpg',{	
-			add:false,
-			edit:true,
-			cancel: true,
-			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-			restoreAfterSelect: false,
-			addParams: { 
-				addRowParams: myEditOptions
-			},
-			editParams: myEditOptions
-		}).jqGrid('navButtonAdd',"#manualAllocpg",{
-			id: "manualAllocpgDelete",
-			caption:"",cursor: "pointer",position: "last", 
-			buttonicon:"glyphicon glyphicon-trash",
-			title:"Delete Selected Row",
-			onClickButton: function(){
-				selRowId = $("#manualAllochdr").jqGrid ('getGridParam', 'selrow');
-				if(!selRowId){
-					bootbox.alert('Please select row');
-				}else{
-					bootbox.confirm({
-					    message: "Are you sure you want to delete this row?",
-					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-					    },
-					    callback: function (result) {
-					    	if(result == true){
-					    		param={
-					    			action: 'manualAlloc_save',
-									idno: selrowData('#manualAllochdr').idno,
-					    		}
-					    		$.post( "./manualAlloc/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-								}).fail(function(data) {
-									//////////////////errorText(dialog,data.responseText);
-								}).done(function(data){
-									refreshGrid("#manualAllochdr",urlParam_hdr);
-								});
-					    	}else{
-	        					$("#manualAllocpgEditAll").show();
-					    	}
-					    }
-					});
-				}
-			},
-		}).jqGrid('navButtonAdd', "#manualAllocpg", {
-			id: "manualAllocpgRefresh",
-			caption: "", cursor: "pointer", position: "last",
-			buttonicon: "glyphicon glyphicon-refresh",
-			title: "Refresh Table",
-			onClickButton: function () {
-				refreshGrid("#manualAllochdr", urlParam_hdr);
-			},
-		});
+	$("#manualAllochdr").inlineNav('#manualAllocpg',{	
+		add:false,
+		edit:true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions
+		},
+		editParams: myEditOptions
+	}).jqGrid('navButtonAdd',"#manualAllocpg",{
+		id: "manualAllocpgDelete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#manualAllochdr").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				bootbox.alert('Please select row');
+			}else{
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if(result == true){
+							param={
+								action: 'manualAlloc_save',
+								idno: selrowData('#manualAllochdr').idno,
+							}
+							$.post( "./manualAlloc/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								refreshGrid("#manualAllochdr",urlParam_hdr);
+							});
+						}else{
+							$("#manualAllocpgEditAll").show();
+						}
+					}
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd', "#manualAllocpg", {
+		id: "manualAllocpgRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#manualAllochdr", urlParam_hdr);
+		},
+	});
 	
 	///////////////////////////////////////manualAlloc detail//////////////////////////////////////////////////////////////////////////
 
@@ -396,76 +535,82 @@ $(document).ready(function () {
 		}
 	};
 	
-		////////////////////////////////////////pager manualAllocdtl/////////////////////////////////////////////
+	////////////////////////////////////////pager manualAllocdtl/////////////////////////////////////////////
 
-		$("#manualAllocdtl").inlineNav('#manualAllocdtlpg',{	
-			add:true,
-			edit:true,
-			cancel: true,
-			//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-			restoreAfterSelect: false,
-			addParams: { 
-				addRowParams: myEditOptions2
-			},
-			editParams: myEditOptions2
-		}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-			id: "manualAllocdtlpgDelete",
-			caption:"",cursor: "pointer",position: "last", 
-			buttonicon:"glyphicon glyphicon-trash",
-			title:"Delete Selected Row",
-			onClickButton: function(){
-				selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
-				if(!selRowId){
-					bootbox.alert('Please select row');
-				}else{
-					bootbox.confirm({
-					    message: "Are you sure you want to delete this row?",
-					    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-					    },
-					    callback: function (result) {
-					    	if(result == true){
-					    		param={
-					    			action: 'manualAllocdtl_save',
-									idno: selrowData('#manualAllocdtl').idno,
+	$("#manualAllocdtl").inlineNav('#manualAllocdtlpg',{	
+		add:true,
+		edit:true,
+		cancel: true,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: { 
+			addRowParams: myEditOptions2
+		},
+		editParams: myEditOptions2
+	}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+		id: "manualAllocdtlpgDelete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#manualAllocdtl").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				bootbox.alert('Please select row');
+			}else{
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if(result == true){
+							param={
+								action: 'manualAllocdtl_save',
+								idno: selrowData('#manualAllocdtl').idno,
 
-					    		}
-					    		$.post( "./manualAllocDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-								}).fail(function(data) {
-									//////////////////errorText(dialog,data.responseText);
-								}).done(function(data){
-									refreshGrid("#manualAllocdtl",urlParam_dtl);
-								});
-					    	}else{
-	        					$("#manualAllocdtlpgEditAll").show();
-					    	}
-					    }
-					});
-				}
-			},
-		}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
-			id: "manualAllocdtlpgCancelAll",
-			caption:"",cursor: "pointer",position: "last", 
-			buttonicon:"glyphicon glyphicon-remove-circle",
-			title:"Cancel",
-			onClickButton: function(){
-				hideatdialogForm_jqGrid3(false);
-				refreshGrid("#manualAllocdtl",urlParam_dtl);
-			},	
-		}).jqGrid('navButtonAdd', "#manualAllocdtlpg", {
-			id: "manualAllocdtlpgRefresh",
-			caption: "", cursor: "pointer", position: "last",
-			buttonicon: "glyphicon glyphicon-refresh",
-			title: "Refresh Table",
-			onClickButton: function () {
-				refreshGrid("#manualAllocdtl", urlParam_dtl);
-			},
-		});
+							}
+							$.post( "./manualAllocDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
+							}).fail(function(data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function(data){
+								refreshGrid("#manualAllocdtl",urlParam_dtl);
+							});
+						}else{
+							$("#manualAllocdtlpgEditAll").show();
+						}
+					}
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#manualAllocdtlpg",{
+		id: "manualAllocdtlpgCancelAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-remove-circle",
+		title:"Cancel",
+		onClickButton: function(){
+			hideatdialogForm_jqGrid3(false);
+			refreshGrid("#manualAllocdtl",urlParam_dtl);
+		},	
+	}).jqGrid('navButtonAdd', "#manualAllocdtlpg", {
+		id: "manualAllocdtlpgRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid("#manualAllocdtl", urlParam_dtl);
+		},
+	});
 
-
-	// //////////////////////////////////////////////////////////////
-	
-	// dialog_dept=new makeDialog('sysdb.department','#dept',['deptcode','description'], 'Department');
-
+	////// Cn
+	var urlParam2_cn={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.taxamt as tot_gst','apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
+		table_name:['finance.apactdtl AS apdt'],
+		table_id:'lineno_',
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source', 'apdt.trantype'],
+		filterVal:['session.compcode', '', '<>.DELETE', 'AP', 'CN']
+		
+	};
 	////////////////////////////////////start dialog//////////////////////////////////////
 	
 	function saveFormdata(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
@@ -521,151 +666,6 @@ $(document).ready(function () {
 
 	$("input[name=dbacthdr_entrydate]").keydown(false);
 
-	////////////////////////////////////start dialog////////////////////////////////////
-	var oper = 'add';
-
-	$("#dialogForm")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			$("#manualAllocdtl").jqGrid ('setGridWidth', Math.floor($("#manualAllocdtl_c")[0].offsetWidth-$("#manualAllocdtl_c")[0].offsetLeft));
-			$("#manualAllochdr").jqGrid ('setGridWidth', Math.floor($("#manualAllochdr_c")[0].offsetWidth-$("#manualAllochdr_c")[0].offsetLeft));
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-		
-			$('.alert').detach();
-			
-			$("#formdata a").off();
-			$("#refresh_jqGrid").click();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
-		buttons :butt1,
-	  });
-	////////////////////////////////////////end dialog///////////////////////////////////////////
-
-	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam={
-		action:'maintable',
-		url:'./manualAlloc/table',
-	}
-
-	/////////////////////parameter for saving url////////////////////////////////////////////////
-	
-	// var saveParam={	
-	// 	action:'receipt_save',
-	// 	url: 'receipt/form',
-	// 	oper:'add',
-	// 	field:'',
-	// 	table_name:'debtor.dbacthdr',
-	// 	table_id:'auditno',
-	// 	fixPost:true,
-	// 	skipduplicate: true,
-	// 	returnVal:true,
-	// 	sysparam:{source:'PB',trantype:'RC',useOn:'auditno'}
-	// };
-	
-	$("#jqGrid").jqGrid({
-		datatype: "local",
-		 colModel: [
-			{ label: 'Supplier Code', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
-			{ label: 'Transaction <br>Type', name: 'apacthdr_trantype', width: 25, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 30, classes: 'wrap text-uppercase', hidden:false},
-			{ label: 'PV No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true, canSearch: true},
-			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Unit', name: 'apacthdr_unit', width: 30, hidden:false},
-			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},
-			{ label: 'Category Code', name: 'apacthdr_category', width: 40, hidden:false, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},		
-			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25, hidden:false, classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
-			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
-			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
-			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
-			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'trantype2', name: 'apacthdr_trantype2', width: 50, classes: 'wrap', hidden:true},
-		],
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		loadonce:false,
-		sortorder:'desc',
-		width: 900,
-		height: 300,
-		rowNum: 30,
-		pager: "#jqGridPager",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='View Selected Row']").click();
-		},
-		onSelectRow: function(rowid){
-			// allocate("#jqGrid");
-		},
-		gridComplete: function(){
-			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-			fdl.set_array().reset();
-			if(oper == 'add'){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
-
-			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
-		},
-		loadComplete:function(data){
-			calc_jq_height_onchange("jqGrid");
-		}
-		
-	});
-
-	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-info-sign",
-		title:"View Selected Row",  
-		onClickButton: function(){
-			oper = 'view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first",  
-		buttonicon:"glyphicon glyphicon-plus", 
-		title:"Add New Row", 
-		onClickButton: function(){
-			oper='add';
-			$( "#dialogForm" ).dialog( "open" );
-		},
-	});
-
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	populateSelect('#jqGrid','#searchForm');
-	searchClick2('#jqGrid','#searchForm',urlParam);
-
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
-//	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno','dbacthdr_amount']);
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
@@ -680,6 +680,31 @@ $(document).ready(function () {
 		fdl.get_array('manualAlloc',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
+	}
+
+	////////////////////////////////searching/////////////////////////////////
+	$('#Scol').on('change', whenchangetodate);
+	$('#Status').on('change', searchChange);
+	$('#actdate_search').on('click', searchDate);
+
+	function whenchangetodate() {
+		creditor_search.off();
+		$('#creditor_search,#actdate_from,#actdate_to').val('');
+		$('#creditor_search_hb').text('');
+		urlParam.filterdate = null;
+		removeValidationClass(['#creditor_search']);
+		if($('#Scol').val()=='apacthdr_actdate'){
+			$("input[name='Stext'], #creditor_text").hide("fast");
+			$("#actdate_text").show("fast");
+		} else if($('#Scol').val() == 'apacthdr_suppcode' || $('#Scol').val() == 'apacthdr_payto'){
+			$("input[name='Stext'],#actdate_text").hide("fast");
+			$("#creditor_text").show("fast");
+			creditor_search.on();
+		} else {
+			$("#creditor_text,#actdate_text").hide("fast");
+			$("input[name='Stext']").show("fast");
+			$("input[name='Stext']").velocity({ width: "100%" });
+		}
 	}
 
 	////////////////////////////populate data for dropdown search By////////////////////////////
@@ -697,7 +722,10 @@ $(document).ready(function () {
 		});
 	}
 
-	$('#Status').on('change', searchChange);
+	function searchDate(){
+		urlParam.filterdate = [$('#actdate_from').val(),$('#actdate_to').val()];
+		refreshGrid('#jqGrid',urlParam);
+	}
 
 	function searchChange(){
 		var arrtemp = [$('#Status option:selected').val()];
@@ -716,11 +744,11 @@ $(document).ready(function () {
 		refreshGrid('#jqGrid',urlParam);
 	}
 
-	var payer_search = new ordialog(
-		'payer_search', 'debtor.debtormast', '#payer_search', 'errorField',
+	var creditor_search = new ordialog(
+		'creditor_search', 'material.supplier', '#creditor_search', 'errorField',
 		{
 			colModel: [
-				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Supplier Code', name: 'suppcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
@@ -728,13 +756,13 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow: function () {
-				let data = selrowData('#' + payer_search.gridname).debtorcode;
+				let data = selrowData('#' + creditor_search.gridname).suppcode;
 
-				if($('#Scol').val() == 'db_debtorcode'){
-					urlParam.searchCol=["db.debtorcode"];
+				if($('#Scol').val() == 'apacthdr_suppcode'){
+					urlParam.searchCol=["ap.suppcode"];
 					urlParam.searchVal=[data];
-				}else if($('#Scol').val() == 'db_payercode'){
-					urlParam.searchCol=["db.payercode"];
+				}else if($('#Scol').val() == 'apacthdr_payto'){
+					urlParam.searchCol=["ap.payto"];
 					urlParam.searchVal=[data];
 				}
 				refreshGrid('#jqGrid', urlParam);
@@ -749,21 +777,21 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title: "Select Payer",
+			title: "Select Creditor",
 			open: function () {
-				payer_search.urlParam.filterCol = ['recstatus'];
-				payer_search.urlParam.filterVal = ['ACTIVE'];
+				creditor_search.urlParam.filterCol = ['recstatus'];
+				creditor_search.urlParam.filterVal = ['ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
-	payer_search.makedialog(true);
-	$('#payer_search').on('keyup',ifnullsearch);
+	creditor_search.makedialog(true);
+	$('#creditor_search').on('keyup',ifnullsearch);
 
 	function ifnullsearch(){
-		if($('#payer_search').val() == ''){
+		if($('#creditor_search').val() == ''){
 			urlParam.searchCol=[];
 			urlParam.searchVal=[];
-			$('#jqGrid').data('inputfocus','payer_search');
+			$('#jqGrid').data('inputfocus','creditor_search');
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}
