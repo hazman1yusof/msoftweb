@@ -216,14 +216,14 @@ class arenquiryController extends defaultController
     }
 
     public function get_alloc(Request $request){
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr')
                         ->where('idno','=',$request->idno)
                         ->first();
-
-        //if trantype = RC/RD/RF/CN
+                        
+        // if trantype = RC/RD/RF/CN
         if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN') {
-
+            
             $table = DB::table('debtor.dballoc as dc')
                         ->select(
                             'dc.refsource as source',
@@ -247,18 +247,18 @@ class arenquiryController extends defaultController
                         ->where('dc.docsource','=',$dbacthdr->source)
                         ->where('dc.doctrantype','=',$dbacthdr->trantype)
                         ->where('dc.docauditno','=',$dbacthdr->auditno);
-
+                        
                         // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
-
+                        
             /////////////////paginate/////////////////
             $paginate = $table->paginate($request->rows);
-
+            
             foreach ($paginate->items() as $key => $value) {
                 $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-
+                
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
-
+            
             $responce = new stdClass();
             $responce->page = $paginate->currentPage();
             $responce->total = $paginate->lastPage();
@@ -267,11 +267,11 @@ class arenquiryController extends defaultController
             $responce->sql = $table->toSql();
             $responce->sql_bind = $table->getBindings();
             $responce->sql_query = $this->getQueries($table);
-
+            
             return json_encode($responce);
-
-        }else if($dbacthdr->trantype == 'IN' || 'DN') {//if trantype = IN/DN
-
+            
+        }else { // if trantype = IN/DN
+            
             $table = DB::table('debtor.dballoc as dc')
                         ->select(
                             'dc.docsource as source',
@@ -295,16 +295,16 @@ class arenquiryController extends defaultController
                         ->where('dc.refsource','=',$dbacthdr->source)
                         ->where('dc.reftrantype','=',$dbacthdr->trantype)
                         ->where('dc.refauditno','=',$dbacthdr->auditno);
-
+                        
             /////////////////paginate/////////////////
             $paginate = $table->paginate($request->rows);
-
+            
             foreach ($paginate->items() as $key => $value) {
                 $auditno = str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-
+                
                 $value->sysAutoNo = $value->source.'-'.$value->trantype.'-'.$auditno;
             }
-
+            
             $responce = new stdClass();
             $responce->page = $paginate->currentPage();
             $responce->total = $paginate->lastPage();
@@ -313,11 +313,11 @@ class arenquiryController extends defaultController
             $responce->sql = $table->toSql();
             $responce->sql_bind = $table->getBindings();
             $responce->sql_query = $this->getQueries($table);
-
+            
             return json_encode($responce);
-
+            
         }
-
+        
     }
 
     public function get_table_dtl(Request $request){
