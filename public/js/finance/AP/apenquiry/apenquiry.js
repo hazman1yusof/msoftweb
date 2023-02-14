@@ -199,7 +199,7 @@ $(document).ready(function () {
 				$("#jqGrid2_dn").jqGrid('setGridWidth', Math.floor($("#jqGrid2_dn_c")[0].offsetWidth-$("#jqGrid2_dn_c")[0].offsetLeft));
 				disableForm('#formdata_dn');
 				refreshGrid("#jqGrid2_dn",urlParam2_dn);
-				refreshGrid("#jqGridAllocdn",urlParam2_allocdn);
+				//refreshGrid("#jqGridAllocdn",urlParam2_allocdn);
 				dialog_suppcodeDN.check(errorField);
 				dialog_paytoDN.check(errorField);
 			},
@@ -210,7 +210,7 @@ $(document).ready(function () {
 				$("#formdata_dn a").off();
 				$(".noti").empty();
 				refreshGrid("#jqGrid2_dn",null,"kosongkan");
-				refreshGrid("#jqGridAllocdn",null, urlParam2_allocdn,'kosongkan');
+				//refreshGrid("#jqGridAllocdn",null, urlParam2_allocdn,'kosongkan');
 				errorField.length=0;
 			},
 	});
@@ -283,6 +283,7 @@ $(document).ready(function () {
 				urlParam2_dn.source = selrowData("#jqGrid").apacthdr_source;
 				urlParam2_dn.trantype = selrowData("#jqGrid").apacthdr_trantype;
 				urlParam2_dn.auditno = selrowData("#jqGrid").apacthdr_auditno;
+				//urlParam2_allocdn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				$("#jqGrid3_dn").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_dn")[0].offsetWidth-$("#jqGrid3_div_dn")[0].offsetLeft));
 				refreshGrid("#jqGrid3_dn",urlParam2_dn);
 
@@ -372,7 +373,7 @@ $(document).ready(function () {
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='DN'){
 				populateFormdata("#jqGrid", "#dialogForm_dn", "#formdata_dn", selRowId, 'view', '');
 				refreshGrid("#jqGrid2_dn",urlParam2_dn,'add');
-				refreshGrid("#jqGridAllocdn",urlParam2_allocdn,'add');
+				//refreshGrid("#jqGridAllocdn",urlParam2_allocdn,'add');
 			}
 		},
 	});
@@ -888,59 +889,59 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid3_dn");
 
 	////////////////////////////////////////////////jqGridAllocDN////////////////////////////////////////////////
-	var urlParam2_allocdn={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.idno','apdt.suppcode','apdt.allocdate','apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno'],
-		table_name:['finance.apalloc AS apdt'],
-		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
-		filterVal:['session.compcode', '', 'AP','DN']
-	};
+	// var urlParam2_allocdn={
+	// 	action:'get_table_default',
+	// 	url:'util/get_table_default',
+	// 	field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.idno','apdt.suppcode','apdt.allocdate','apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno'],
+	// 	table_name:['finance.apalloc AS apdt'],
+	// 	table_id:'lineno_',
+	// 	filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
+	// 	filterVal:['session.compcode', '', 'AP','DN']
+	// };
 
-	$("#jqGridAllocdn").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
-			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
-			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
-			{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
-			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
-			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2},editrules:{required: false},editoptions:{readonly: "readonly"}},
-			{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: true, align: "right"},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false, align: "right"},
-			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+	// $("#jqGridAllocdn").jqGrid({
+	// 	datatype: "local",
+	// 	colModel: [
+	// 		{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
+	// 		{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
+	// 		{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+	// 		{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+	// 		{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
+	// 		{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
+	// 		{ label: 'Outstanding', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2},editrules:{required: false},editoptions:{readonly: "readonly"}},
+	// 		{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: true, align: "right"},
+	// 		{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false, align: "right"},
+	// 		{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+	// 		{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
 			
-		],
-		shrinkToFit: true,
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
-		pager: "#jqGridPagerDNAlloc",
-		loadComplete: function(data){
+	// 	],
+	// 	shrinkToFit: true,
+	// 	autowidth:true,
+	// 	multiSort: true,
+	// 	viewrecords: true,
+	// 	rowNum: 30,
+	// 	sortname: 'lineno_',
+	// 	sortorder: "desc",
+	// 	pager: "#jqGridPagerDNAlloc",
+	// 	loadComplete: function(data){
 
-			setjqgridHeight(data,'jqGridAllocdn');
-			calc_jq_height_onchange("jqGridAllocdn");
-		},
-		gridComplete: function(){
+	// 		setjqgridHeight(data,'jqGridAllocdn');
+	// 		calc_jq_height_onchange("jqGridAllocdn");
+	// 	},
+	// 	gridComplete: function(){
 			
-			fdl.set_array().reset();
-		},
-	});
-	jqgrid_label_align_right("#jqGridAllocdn");
+	// 		fdl.set_array().reset();
+	// 	},
+	// });
+	// jqgrid_label_align_right("#jqGridAllocdn");
 
 	//////////////////////////////////////////////// Alloc Detail Luar////////////////////////////////////////////
 	var urlParam2_alloc={
