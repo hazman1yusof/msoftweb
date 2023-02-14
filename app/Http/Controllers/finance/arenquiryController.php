@@ -222,7 +222,8 @@ class arenquiryController extends defaultController
                         ->first();
                         
         // if trantype = RC/RD/RF/CN
-        if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN') {
+        // if($dbacthdr->trantype == 'RC' || 'RD' || 'RF' || 'CN') {
+        if($dbacthdr->trantype == 'RC' || $dbacthdr->trantype =='RD' || $dbacthdr->trantype =='RF' || $dbacthdr->trantype =='CN') {
             
             $table = DB::table('debtor.dballoc as dc')
                         ->select(
