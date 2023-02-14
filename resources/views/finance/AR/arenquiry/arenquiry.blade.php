@@ -114,7 +114,6 @@
 					<select id="Status" name="Status" class="form-control input-sm">
 						<option value="All" selected>ALL</option>
 						<option value="Open">OPEN</option>
-						<option value="Confirmed">CONFIRMED</option>
 						<option value="Posted">POSTED</option>
 						<option value="Cancelled">CANCELLED</option>
 					</select>
