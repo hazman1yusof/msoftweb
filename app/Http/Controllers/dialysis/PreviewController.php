@@ -80,27 +80,28 @@ class PreviewController extends Controller
 
     
     public function thumbnail($folder,$image_path){
+        $mypath = 'C:\laragon\www\msoftweb';
 
         if($folder == 'pat_enq'){ //image
-            $img = Image::make('uploads/'.$folder.'/'.$image_path)->resize(96, 96);
+            $img = Image::make($mypath.'/uploads/'.$folder.'/'.$image_path)->resize(96, 96);
         }else if($folder == 'application'){
             switch($image_path){
-                case 'pdf': $img = Image::make('uploads/pat_enq/pdf_icon.png')->resize(96, 96); break;
-                case 'msword': $img = Image::make('uploads/pat_enq/word_icon.png')->resize(96, 96); break;
-                case 'powerpoint': $img = Image::make('uploads/pat_enq/powerpoint_icon.png')->resize(96, 96); break;
-                case 'excel': $img = Image::make('uploads/pat_enq/excel_icon.png')->resize(96, 96); break;
+                case 'pdf': $img = Image::make($mypath.'/uploads/pat_enq/pdf_icon.png')->resize(96, 96); break;
+                case 'msword': $img = Image::make($mypath.'/uploads/pat_enq/word_icon.png')->resize(96, 96); break;
+                case 'powerpoint': $img = Image::make($mypath.'/uploads/pat_enq/powerpoint_icon.png')->resize(96, 96); break;
+                case 'excel': $img = Image::make($mypath.'/uploads/pat_enq/excel_icon.png')->resize(96, 96); break;
             }
         }else if($folder == 'video'){
             switch($image_path){
-                case 'video': $img = Image::make('uploads/pat_enq/video-icon.png')->resize(96, 96); break;
+                case 'video': $img = Image::make($mypath.'/uploads/pat_enq/video-icon.png')->resize(96, 96); break;
             }
         }else if($folder == 'audio'){
             switch($image_path){
-                case 'audio': $img = Image::make('uploads/pat_enq/audio-icon.png')->resize(96, 96); break;
+                case 'audio': $img = Image::make($mypath.'/uploads/pat_enq/audio-icon.png')->resize(96, 96); break;
             }
         }else if($folder == 'text'){
             switch($image_path){
-                case 'notepad': $img = Image::make('uploads/pat_enq/notepad_icon.png')->resize(96, 96); break;
+                case 'notepad': $img = Image::make($mypath.'/uploads/pat_enq/notepad_icon.png')->resize(96, 96); break;
             }
         }else{
 
@@ -110,7 +111,8 @@ class PreviewController extends Controller
     }
 
     public function download(Request $request,$folder,$image_path){
-        $file = public_path()."\\uploads\\".$folder."\\".$image_path;
+        $mypath = 'C:\laragon\www\msoftweb';
+        $file = $mypath."\\uploads\\".$folder."\\".$image_path;
         // dump($file);
         return Response::download($file,$request->filename);
     }
@@ -124,7 +126,7 @@ class PreviewController extends Controller
         }else{
             $filename = $request->file('file')->getClientOriginalName();
         }
-        $file_path = $request->file('file')->store('pat_enq', 'webhosting_uploads');
+        $file_path = $request->file('file')->store('pat_enq', 'ptcare_uploads');
         DB::table('hisdb.patresult')
             ->insert([
                 'compcode' => '-',

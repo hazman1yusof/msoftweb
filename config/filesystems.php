@@ -67,6 +67,11 @@ return [
             'root'   => public_path() . '/uploads',
         ],
 
+        'ptcare_uploads' => [
+            'driver' => 'local',
+            'root'   => 'C:/laragon/www/msoftweb/uploads',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
