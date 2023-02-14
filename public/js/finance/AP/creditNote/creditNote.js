@@ -328,8 +328,9 @@ $(document).ready(function () {
 			}
 			fdl.set_array().reset();
 
-			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+			cbselect.show_hide_table();
+			cbselect.checkbox_function_on();
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");

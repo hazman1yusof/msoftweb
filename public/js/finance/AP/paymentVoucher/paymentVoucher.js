@@ -323,6 +323,7 @@ $(document).ready(function () {
 				delete rowdata.apacthdr_recdate
 			});
 			cbselect.refresh_seltbl();
+			cbselect.show_hide_table();
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");
