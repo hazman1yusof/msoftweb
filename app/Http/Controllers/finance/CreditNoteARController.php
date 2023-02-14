@@ -407,13 +407,16 @@ class CreditNoteARController extends defaultController
             
             $dbacthdr = DB::table('debtor.dbacthdr')
                             ->where('idno','=',$request->idno)
-                            ->where('compcode','=',session('compcode'));
+                            ->where('compcode','=',session('compcode'))
+                            ->first();
             
-            if($dbacthdr->recstatus = 'POSTED'){
+            if($dbacthdr->recstatus == 'POSTED'){
                 
                 $this->gltran_cancel($request->idno);
                 
-                $dbacthdr
+                DB::table('debtor.dbacthdr')
+                    ->where('idno','=',$request->idno)
+                    ->where('compcode','=',session('compcode'))
                     ->update([
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
@@ -422,7 +425,9 @@ class CreditNoteARController extends defaultController
                     
             }else{
                 
-                $dbacthdr
+                DB::table('debtor.dbacthdr')
+                    ->where('idno','=',$request->idno)
+                    ->where('compcode','=',session('compcode'))
                     ->update([
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
