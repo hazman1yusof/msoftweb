@@ -877,8 +877,8 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 		// $("#show_sel_tbl").is(":hidden") && 
 		$("#show_sel_tbl,#but_post_jq,#but_reopen_jq,#but_cancel_jq").hide();
 		if(reccount > 0){
-			switch(status_){
-				case 'All':
+			switch(status_.toUpperCase()){
+				case 'ALL':
 					// $('#checkbox_all_uncheck,#checkbox_all_check').hide();
 					$("#show_sel_tbl,#but_post_jq,#but_cancel_jq").show();
 					break;
@@ -904,11 +904,11 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	}
 
 	this.init_allcb = function(){
-		$('#checkbox_all_check,#checkbox_all_uncheck').hide();
-		$('#checkbox_all_check').prop('checked', false);
-		$("#checkbox_all_check").show();
-		$('#checkbox_all_uncheck').prop('checked', true);
-		$("#checkbox_all_uncheck").hide();
+		// $('#checkbox_all_check,#checkbox_all_uncheck').hide();
+		// $('#checkbox_all_check').prop('checked', false);
+		// $("#checkbox_all_check").show();
+		// $('#checkbox_all_uncheck').prop('checked', true);
+		// $("#checkbox_all_uncheck").hide();
 	}
 
 	this.refresh_seltbl = function(){

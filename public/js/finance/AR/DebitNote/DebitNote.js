@@ -123,7 +123,7 @@ $(document).ready(function () {
 		filterVal_urlParam = ['session.compcode','session.username'];
 	}
 
-	var cbselect = new checkbox_selection("#jqGrid","Checkbox","idno","recstatus");
+	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 	
 	////////////////////////////////////////////searchClick2////////////////////////////////////////////
 	function searchClick2(grid,form,urlParam){
@@ -258,7 +258,6 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
-			cbselect.show_hide_table();
 			$('#but_cancel_jq,#but_post_jq').hide();
 			// if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
 			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
@@ -278,8 +277,9 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
 
-			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
+			cbselect.show_hide_table();
+			cbselect.checkbox_function_on();
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
@@ -368,7 +368,6 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		
 		$.post( 'DebitNote/form', obj , function( data ) {
-			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
 			$(self_).attr('disabled',false);
 			cbselect.empty_sel_tbl();

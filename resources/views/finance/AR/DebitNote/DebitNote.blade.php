@@ -82,7 +82,6 @@ i.fa {
 					<select id="Status" name="Status" class="form-control input-sm">
 						<option value="All" selected>ALL</option>
 						<option value="Open">OPEN</option>
-						<option value="Confirmed">CONFIRMED</option>
 						<option value="Posted">POSTED</option>
 						<option value="Cancelled">CANCELLED</option>
 					</select>
@@ -125,9 +124,9 @@ i.fa {
 						@endif
 					</button>
 
-					<button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
+					<!-- <button type="button" class="btn btn-default btn-sm" id="but_reopen_jq" data-oper="reopen" style="display: none;">REOPEN</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
+					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button> -->
 				</div>
 			</fieldset> 
 		</form>
