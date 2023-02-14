@@ -236,7 +236,8 @@ $(document).ready(function () {
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden: true},
 		{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		{ label: 'Post Date', name: 'apacthdr_recdate', hidden:true},
+		{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 		{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
@@ -683,8 +684,8 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.taxamt as tot_gst','apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
-		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val()]
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source','apdt.trantype'],
+		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val(),'CN']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -1048,7 +1049,7 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.dorecno', 'apdt.grnno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
+		filterCol:['apdt.compcode','apdt.docauditno','apdt.docsource','apdt.doctrantype'],
 		filterVal:['session.compcode', '', 'AP','CN']
 	};
 
@@ -1198,11 +1199,15 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGridAlloc right & calculate balance ////////////////////////////////////////////////
-	addParamField('#jqGridAlloc',false,urlParam2_alloc,['checkbox','balance','entrydate'])
+	addParamField('#jqGridAlloc',false,urlParam2_alloc,['checkbox','entrydate'])
 	jqgrid_label_align_right("#jqGridAlloc");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){
-		return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+		if(options.gid == "jqGridAPAlloc"){
+			return '';
+		}else{
+			return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;		
+		}
 	}
 
 	function calc_amtpaid_bal(){
@@ -1597,18 +1602,17 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerAPAlloc",
 		loadComplete: function(data){
-
-			setjqgridHeight(data,'jqGridAPAlloc');
 			calc_jq_height_onchange("jqGridAPAlloc");
 		},
 		gridComplete: function(){
-			
+			calc_jq_height_onchange("jqGridAPAlloc");
 			fdl.set_array().reset();
 		},
 	});
 	jqgrid_label_align_right("#jqGridAPAlloc");
 
-	$("#jqGridAPAlloc_panel").on("show.bs.collapse", function(){
+	$("#jqGridAPAlloc_panel").on("shown.bs.collapse", function(){
+		calc_jq_height_onchange("jqGridAPAlloc");
 		$("#jqGridAPAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAPAlloc_c")[0].offsetWidth-$("#jqGridAPAlloc_c")[0].offsetLeft-28));
 	});
 
@@ -1896,7 +1900,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {

@@ -392,6 +392,10 @@ class DebitNoteController extends defaultController
                             ->where('idno','=',$request->idno)
                             ->where('compcode','=',session('compcode'))
                             ->first();
+
+            if($dbacthdr->outamount != $dbacthdr->amount){
+                throw new \Exception('Already allocate, cant cancel', 500);
+            }
             
             if($dbacthdr->recstatus == 'POSTED'){
                 
@@ -589,10 +593,74 @@ class DebitNoteController extends defaultController
                             'recstatus' => 'ACTIVE'
                         ]);
                 }
-
             }
         }
-        
+    }
+
+    public function gltran_cancel($idno){
+        $dbacthdr_obj = DB::table('debtor.dbacthdr')
+                            ->where('idno','=',$idno)
+                            ->first();
+
+        $dbactdtl_obj = DB::table('debtor.dbactdtl')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$dbacthdr_obj->source)
+                            ->where('trantype','=',$dbacthdr_obj->trantype)
+                            ->where('auditno','=',$dbacthdr_obj->auditno);
+
+        if($dbactdtl_obj->exists()){
+
+            $dbactdtl_get = $dbactdtl_obj->get();
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dbacthdr_obj->source)
+                ->where('trantype','=',$dbacthdr_obj->trantype)
+                ->where('auditno','=',$dbacthdr_obj->auditno);
+                ->delete();
+
+            foreach ($dbactdtl_get as $key => $value){
+                $yearperiod = defaultController::getyearperiod_($dbacthdr_obj->entrydate);
+
+                $paymode_obj = $this->gltran_frompaymode($dbacthdr_obj->paymode);
+                $dept_obj = $this->gltran_fromdept($value->deptcode);
+                $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
+
+                //2. check glmastdtl utk debit, kalu ada update kalu xde create
+                $gltranAmount =  defaultController::isGltranExist_($debtormast_obj->actdebccode,$debtormast_obj->actdebglacc,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$debtormast_obj->actdebccode)
+                        ->where('glaccount','=',$debtormast_obj->actdebglacc)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $gltranAmount - $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+
+                //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+                $gltranAmount = defaultController::isGltranExist_($dept_obj->costcode,$paymode_obj->glaccno,$yearperiod->year,$yearperiod->period);
+
+                if($gltranAmount!==false){
+                    DB::table('finance.glmasdtl')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('costcode','=',$dept_obj->costcode)
+                        ->where('glaccount','=',$paymode_obj->glaccno)
+                        ->where('year','=',$yearperiod->year)
+                        ->update([
+                            'upduser' => session('username'),
+                            'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                            'actamount'.$yearperiod->period => $gltranAmount + $value->amount,
+                            'recstatus' => 'ACTIVE'
+                        ]);
+                }
+            }
+        }
     }
 
     public function showpdf(Request $request){
