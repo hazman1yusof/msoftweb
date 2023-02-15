@@ -66,7 +66,8 @@ use PDF;
                         'ap.unit AS apacthdr_unit',
                         'ap.pvno AS apacthdr_pvno',
                         'ap.paymode AS apacthdr_paymode',
-                        'ap.bankcode AS apacthdr_bankcode'
+                        'ap.bankcode AS apacthdr_bankcode',
+                        'ap.postdate AS apacthdr_postdate'
                         
                     )
                     ->where('ap.compcode',session('compcode'))
@@ -213,7 +214,8 @@ use PDF;
                     'auditno' => $auditno,
                     'trantype' => $request->apacthdr_trantype,
                     'actdate' => $request->apacthdr_actdate,
-                    // 'recdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'postdate' => $request->apacthdr_postdate,
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),

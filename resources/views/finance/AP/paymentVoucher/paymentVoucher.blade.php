@@ -197,10 +197,11 @@ i.fa {
 								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 
-				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+						<label class="col-md-2 control-label" for="apacthdr_postdate">Date</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
+								<input id="apacthdr_postdate" name="apacthdr_postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
+
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
 				  			<div class="col-md-2">
@@ -301,6 +302,11 @@ i.fa {
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
 		 					</div>
+
+						<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+				  			<div class="col-md-3">
+								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30" rdonly>
+				  			</div>
 					</div>
 
 					<!-- <hr/>
