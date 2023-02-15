@@ -1432,12 +1432,12 @@ $(document).ready(function () {
 			else{
 				$('#jqGridAlloc').jqGrid ('setSelection', "1");
 			}
-
-			setjqgridHeight(data,'jqGridAlloc');
-
+			
 			addmore_jqGrid3.edit = true;
 			addmore_jqGrid3.more = false; //reset
-			calc_jq_height_onchange("jqGridAlloc");
+			
+			// calc_jq_height_onchange("jqGridAlloc");
+			// setjqgridHeight(data,'jqGridAlloc');
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1596,8 +1596,8 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerArAlloc",
 		loadComplete: function(data){
-			setjqgridHeight(data,'jqGridArAlloc');
-			calc_jq_height_onchange("jqGridArAlloc");
+			// setjqgridHeight(data,'jqGridArAlloc');
+			// calc_jq_height_onchange("jqGridArAlloc");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();

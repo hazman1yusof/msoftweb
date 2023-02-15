@@ -1354,8 +1354,8 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerArAlloc",
 		loadComplete: function(data){
-			setjqgridHeight(data,'jqGridArAlloc');
-			calc_jq_height_onchange("jqGridArAlloc");
+			// setjqgridHeight(data,'jqGridArAlloc');
+			// calc_jq_height_onchange("jqGridArAlloc");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
