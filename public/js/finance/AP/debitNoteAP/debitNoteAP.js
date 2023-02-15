@@ -185,6 +185,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
+		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:false, key:true},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
@@ -205,10 +206,9 @@ $(document).ready(function () {
 		{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true', key:true},
-		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
-		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
+		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
+		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:true},
 
 	],
 		autowidth:true,
@@ -414,7 +414,7 @@ $(document).ready(function () {
 		let ids = $('#jqGrid_selection').jqGrid ('getDataIDs');
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-	    	idno_array.push(data.apacthdr_auditno);
+	    	idno_array.push(data.apacthdr_idno);
 	    }
 	    
 		var obj={};

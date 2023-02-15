@@ -341,7 +341,7 @@ use Carbon\Carbon;
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->first();
-
+                    
                 $this->gltran($idno);
 
                 DB::table('finance.apacthdr')
