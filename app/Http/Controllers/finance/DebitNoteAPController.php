@@ -345,7 +345,7 @@ use Carbon\Carbon;
                 $this->gltran($idno);
 
                 DB::table('finance.apacthdr')
-                    ->where('auditno','=',$idno)
+                    ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
@@ -458,7 +458,7 @@ use Carbon\Carbon;
         }
     }
 
-    public function gltran($auditno){
+    public function gltran($idno){
         $apacthdr_obj = DB::table('finance.apacthdr')
                             ->where('idno','=',$idno)
                             ->first();

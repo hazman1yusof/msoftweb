@@ -1203,7 +1203,7 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.idno','apdt.suppcode','apdt.allocdate','apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
+		filterCol:['apdt.compcode','apdt.refauditno','apdt.refsource','apdt.reftrantype'],
 		filterVal:['session.compcode', '', 'AP','DN']
 	};
 
@@ -1405,7 +1405,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true, or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
