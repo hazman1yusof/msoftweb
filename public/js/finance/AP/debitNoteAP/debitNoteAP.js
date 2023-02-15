@@ -185,7 +185,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 	datatype: "local",
 	colModel: [
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:false, key:true},
+		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
