@@ -322,8 +322,8 @@ $(document).ready(function () {
 		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid");
-			setjqgridHeight(data,'gridAlloc');
-			calc_jq_height_onchange("gridAlloc");
+			// setjqgridHeight(data,'gridAlloc');
+			// calc_jq_height_onchange("gridAlloc");
 		},
 		
 	});
@@ -808,7 +808,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerAllocdtl",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGridAlloc");
+			//calc_jq_height_onchange("jqGridAlloc");
 		},
 		gridComplete: function(){	
 			fdl.set_array().reset();
@@ -974,8 +974,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
-			calc_jq_height_onchange("gridAlloc");
-			setjqgridHeight(data,'gridAlloc');
+			// calc_jq_height_onchange("gridAlloc");
+			// setjqgridHeight(data,'gridAlloc');
 			urlParam2_alloc.idno=selrowData("#jqGrid").apacthdr_idno;
 			
 			refreshGrid("#gridAlloc",urlParam2_alloc,'add');
