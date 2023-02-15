@@ -744,7 +744,7 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -767,7 +767,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();//start binding event on jqgrid2
@@ -1173,7 +1173,7 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid3");
+			//calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1241,8 +1241,8 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAPAlloc",
 		loadComplete: function(data){
 
-			setjqgridHeight(data,'jqGridAlloc');
-			calc_jq_height_onchange("jqGridAlloc");
+			// setjqgridHeight(data,'jqGridAlloc');
+			// calc_jq_height_onchange("jqGridAlloc");
 		},
 		gridComplete: function(){
 			
@@ -1545,5 +1545,5 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>500){
 		scrollHeight = 500;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }

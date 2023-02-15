@@ -783,11 +783,11 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGrid2');
+			//setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1153,11 +1153,11 @@ $(document).ready(function () {
 				$('#jqGridAlloc').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGridAlloc');
+			//setjqgridHeight(data,'jqGridAlloc');
 
 			addmore_jqgridAlloc.edit = true;
 			addmore_jqgridAlloc.more = false; //reset
-			calc_jq_height_onchange("jqGridAlloc");
+			//calc_jq_height_onchange("jqGridAlloc");
 		},
 
 		gridComplete: function(){
@@ -1574,8 +1574,8 @@ $(document).ready(function () {
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
 
-			setjqgridHeight(data,'jqGrid3');
-			calc_jq_height_onchange("jqGrid3");
+			//setjqgridHeight(data,'jqGrid3');
+			//calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			
@@ -1602,17 +1602,17 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerAPAlloc",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGridAPAlloc");
+			//calc_jq_height_onchange("jqGridAPAlloc");
 		},
 		gridComplete: function(){
-			calc_jq_height_onchange("jqGridAPAlloc");
+			//calc_jq_height_onchange("jqGridAPAlloc");
 			fdl.set_array().reset();
 		},
 	});
 	jqgrid_label_align_right("#jqGridAPAlloc");
 
 	$("#jqGridAPAlloc_panel").on("shown.bs.collapse", function(){
-		calc_jq_height_onchange("jqGridAPAlloc");
+		//calc_jq_height_onchange("jqGridAPAlloc");
 		$("#jqGridAPAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAPAlloc_c")[0].offsetWidth-$("#jqGridAPAlloc_c")[0].offsetLeft-28));
 	});
 
