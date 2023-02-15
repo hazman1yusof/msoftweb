@@ -117,6 +117,8 @@ class CreditNoteDetailController extends defaultController
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')
                         ->select('lineno_')
+                        ->where('source','=','AP')
+                        ->where('trantype','=','CN')
                         ->where('compcode','=',session('compcode'))
                         ->where('auditno','=',$auditno)
                         ->count('lineno_');
@@ -145,10 +147,12 @@ class CreditNoteDetailController extends defaultController
 
           ///3. calculate total amount from detail
           $totalAmount = DB::table('finance.apactdtl')
-                  ->where('compcode','=',session('compcode'))
-                  ->where('auditno','=',$auditno)
-                  ->where('recstatus','!=','DELETE')
-                  ->sum('amount');
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$auditno)
+                    ->where('source','=','AP')
+                    ->where('trantype','=','CN')
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
 
      
           ///4. then update to header
@@ -248,10 +252,12 @@ class CreditNoteDetailController extends defaultController
 
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$request->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
 
             ///3. update total amount to header
             DB::table('finance.apacthdr')
@@ -281,16 +287,20 @@ class CreditNoteDetailController extends defaultController
             ///1. update detail
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','CN')
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$request->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
 
           
             ///3. update total amount to header
@@ -326,28 +336,35 @@ class CreditNoteDetailController extends defaultController
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$request->auditno)
-                    ->where('lineno_','=',$value['lineno_'])
+                    ->where('idno','=',$value['idno'])
                     ->update([
-                        'amount' => $value['amount'],
                         'deptcode' => $value['deptcode'],
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                       
+                        'category' => $value['category'],
+                        'GSTCode' => $value['GSTCode'],
+                        'AmtB4GST' => $value['AmtB4GST'],
+                        'taxamt' => $value['tot_gst'],
+                        'amount' => $value['amount'],
+                        'upduser' => session('username'), 
+                        'upduser' => Carbon::now("Asia/Kuala_Lumpur"), 
                     ]);
 
                 ///2. recalculate total amount
                 $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','CN')
                     ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
                 ///3. update total amount to header
-                DB::table('finance.apactdtl')
+                DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','CN')
                     ->where('auditno','=',$request->auditno)
                     ->update([
+                        'outamount' => $totalAmount, 
                         'amount' => $totalAmount, 
                     ]);
             }

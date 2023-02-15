@@ -523,6 +523,10 @@ class CreditNoteARController extends defaultController
                 $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                 $newoutamount_IV = floatval($outamount - $allocamount);
 
+                if($allocamount == 0){
+                    continue;
+                }
+
                 DB::table('debtor.dballoc')
                         ->insert([                            
                             'compcode' => session('compcode'),
@@ -558,21 +562,21 @@ class CreditNoteARController extends defaultController
             }
 
             //calculate total amount from detail
-            $totalAmount = DB::table('debtor.dballoc')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$dbacthdr->auditno)
-                ->where('source','=','AR')
-                ->where('trantype','=','CN')
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
+            // $totalAmount = DB::table('debtor.dballoc')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$dbacthdr->auditno)
+            //     ->where('source','=','AR')
+            //     ->where('trantype','=','CN')
+            //     ->where('recstatus','!=','DELETE')
+            //     ->sum('amount');
 
-            //then update to header
-            DB::table('debtor.dbacthdr')
-                ->where('idno','=',$request->idno)
-                ->update([
-                    'amount' => $totalAmount,
-                    'outamount' => $newoutamount_IV,
-                ]);  
+            // //then update to header
+            // DB::table('debtor.dbacthdr')
+            //     ->where('idno','=',$request->idno)
+            //     ->update([
+            //         'amount' => $totalAmount,
+            //         'outamount' => $newoutamount_IV,
+            //     ]);  
 
             DB::commit();
 

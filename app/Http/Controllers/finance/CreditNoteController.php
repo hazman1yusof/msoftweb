@@ -77,6 +77,7 @@ use Carbon\Carbon;
                         'ap.suppcode AS apacthdr_suppcode',
                         'su.name AS supplier_name', 
                         'ap.actdate AS apacthdr_actdate',
+                        'ap.postdate AS apacthdr_postdate',
                         'ap.document AS apacthdr_document',
                         'ap.cheqno AS apacthdr_cheqno',
                         'ap.deptcode AS apacthdr_deptcode',
@@ -352,141 +353,47 @@ use Carbon\Carbon;
             $idno = $request->table_id;
         }
 
-        // if($request->unallocated == 'false') {
+        DB::beginTransaction();
 
-        //     DB::beginTransaction();
+        $table = DB::table("finance.apacthdr");
 
-        //     $table = DB::table("finance.apacthdr");
+        $array_update = [
+            'unit' => session('unit'),
+            'compcode' => session('compcode'),
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'postdate' => $request->apacthdr_postdate,
+            'actdate' => $request->apacthdr_actdate,
+            // 'amount' => $request->apacthdr_amount,
+            // 'outamount' => $request->apacthdr_amount,
+            'remarks' => $request->apacthdr_remarks,
+            'pvno' => $request->apacthdr_pvno,
+            'doctype' => $request->apacthdr_doctype,
+            'suppcode' => strtoupper($request->apacthdr_suppcode),
+            'deptcode' => strtoupper($request->apacthdr_deptcode),
+            'document' => strtoupper($request->apacthdr_document),
+            'paymode' => strtoupper($request->apacthdr_paymode),
+            'remarks' => strtoupper($request->apacthdr_remarks),
+            
+        ];
 
-        //     $array_update = [
-        //         'upduser' => session('username'),
-        //         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-        //         'pvno' => $request->apacthdr_pvno,
-        //         'doctype' => $request->apacthdr_doctype,
-        //         'document' => strtoupper($request->apacthdr_document),
-        //         'paymode' => strtoupper($request->apacthdr_paymode),
-        //         'remarks' => strtoupper($request->apacthdr_remarks),
-        //     ];
+        try {
+            //////////where//////////
+            $table = $table->where('idno','=',$request->idno);
+            $table->update($array_update);
 
-        //     try {
+            DB::commit();
 
-        //         $table->update($array_update)->where('idno',$request->idno);
+            $responce = new stdClass();
+            $responce->auditno = $request->apacthdr_auditno;
+            $responce->idno = $request->idno;
+            echo json_encode($responce);
 
-                // foreach ($request->data_detail as $key => $value) {
-                //     $idno = $value['idno'];
-                //     $apacthdr_IV = DB::table('finance.apacthdr')
-                //                     ->where('idno','=',$idno)
-                //                     ->first();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-                //     DB::table('finance.apalloc')
-                //             ->where('compcode','=',session('compcode'))
-                //             ->where('source','=','AP')
-                //             ->where('trantype','=','CN')
-                //             ->where('auditno','=',$request->apacthdr_auditno)
-                //             ->where('lineno_','=',$value['lineno_'])
-                //             ->update([
-                //                 'docauditno' => $request->auditno,
-                //                 'refsource' => $request->source,
-                //                 'reftrantype' => $request->trantype,
-                //                 'refamount' => $request->amount,
-                //                 'reference' => $request->reference,
-                //                 'allocamount' => floatval($request['outamount']) - floatval($request['balance']),
-                //                 'outamount' => floatval($request['outamount']),
-                //                 'paymode' => $request->apacthdr_paymode,
-                //                 'bankcode' => $request->apacthdr_bankcode,
-                //                 'suppcode' => $request->apacthdr_suppcode,
-                //                 'lastuser' => session('username'),
-                //                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                //                 'recstatus' => 'OPEN'
-                //             ]);
-                // //}
-
-                // //calculate total amount from detail
-                // $totalAmount = DB::table('finance.apalloc')
-                // ->where('compcode','=',session('compcode'))
-                // ->where('auditno','=',$auditno)
-                // ->where('recstatus','!=','DELETE')
-                // ->sum('allocamount');
-    
-    
-                // //then update to header
-                // DB::table('finance.apacthdr')
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('auditno','=',$apacthdr_IV->auditno)
-                //     ->where('source','=', 'AP')
-                //     ->where('trantype','=', 'CN')
-                //     ->update([
-                //         'amount' => $totalAmount,
-                //         'outamount' => '0',
-                //         'recstatus' => 'OPEN'
-                    
-                //     ]);
-                
-                // DB::table('finance.apacthdr')
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('auditno','=',$auditno)
-                //     ->where('source','=', 'AP')
-                //     ->where('trantype','=', 'CN')
-                //     ->update([
-                //         'amount' => $totalAmount,
-                //         'outamount' => '0',
-                //         'recstatus' => 'OPEN'
-                    
-                //     ]);
-    
-                // DB::table('finance.apacthdr')
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('auditno','=',$auditno)
-                //     ->update([
-                //         'outamount' => $value['outamount'] - $value['allocamount']
-                //     ]);    
-
-        //         DB::commit();
-        //     } catch (\Exception $e) {
-        //         DB::rollback();
-
-        //         return response('Error'.$e, 500);
-        //     }
-
-        // } else {
-
-            DB::beginTransaction();
-
-            $table = DB::table("finance.apacthdr");
-
-            $array_update = [
-                'unit' => session('unit'),
-                'compcode' => session('compcode'),
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'amount' => $request->apacthdr_amount,
-                'outamount' => $request->apacthdr_amount,
-                'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
-                'suppcode' => strtoupper($request->apacthdr_suppcode),
-                'deptcode' => strtoupper($request->apacthdr_deptcode),
-                'document' => strtoupper($request->apacthdr_document),
-                'paymode' => strtoupper($request->apacthdr_paymode),
-                'remarks' => strtoupper($request->apacthdr_remarks),
-                
-            ];
-
-            try {
-                //////////where//////////
-                $table = $table->where('idno','=',$request->idno);
-                $table->update($array_update);
-
-                DB::commit();
-
-                $responce = new stdClass();
-                echo json_encode($responce);
-            } catch (\Exception $e) {
-                DB::rollback();
-
-                return response($e, 500);
-            }            
-
-       // }
+            return response($e, 500);
+        } 
     }
 
     public function save_alloc(Request $request){
@@ -508,6 +415,10 @@ use Carbon\Carbon;
                 $balance = floatval($value['balance']);
                 $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                 $newoutamount_IV = floatval($outamount - $allocamount);
+
+                if($allocamount == 0){
+                    continue;
+                }
 
                 DB::table('finance.apalloc')
                         ->insert([
@@ -544,13 +455,13 @@ use Carbon\Carbon;
             }
 
             //calculate total amount from detail
-            $totalAmount = DB::table('finance.apalloc')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$apacthdr->auditno)
-                ->where('source','=','AP')
-                ->where('trantype','=','AL')
-                ->where('recstatus','!=','DELETE')
-                ->sum('allocamount');
+            // $totalAmount = DB::table('finance.apalloc')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('auditno','=',$apacthdr->auditno)
+            //     ->where('source','=','AP')
+            //     ->where('trantype','=','AL')
+            //     ->where('recstatus','!=','DELETE')
+            //     ->sum('allocamount');
 
             //then update to header
             // DB::table('finance.apacthdr')

@@ -267,14 +267,18 @@ class CreditNoteARDetailController extends defaultController
             ///2. recalculate total amount
             $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('source','=','PB')
+                ->where('trantype','=','CN')
+                ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
 
             ///3. update total amount to header
             DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$request->recno)
+                ->where('source','=','PB')
+                ->where('trantype','=','CN')
+                ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
                 ]);
@@ -314,7 +318,9 @@ class CreditNoteARDetailController extends defaultController
                 ///2. recalculate total amount
                 $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
+                    ->where('source','=','PB')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
                     
@@ -322,7 +328,9 @@ class CreditNoteARDetailController extends defaultController
                 ///3. update total amount to header
                 DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recno','=',$request->recno)
+                    ->where('source','=','PB')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 
                     ]);

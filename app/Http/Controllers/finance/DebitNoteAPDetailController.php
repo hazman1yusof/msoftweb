@@ -135,6 +135,8 @@ class DebitNoteAPDetailController extends defaultController
             $sqlln = DB::table('finance.apactdtl')
                         ->select('lineno_')
                         ->where('compcode','=',session('compcode'))
+                        ->where('source','=','AP')
+                        ->where('trantype','=','DN')
                         ->where('auditno','=',$auditno)
                         ->count('lineno_');
 
@@ -217,6 +219,8 @@ class DebitNoteAPDetailController extends defaultController
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','DN')
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
@@ -257,6 +261,8 @@ class DebitNoteAPDetailController extends defaultController
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','DN')
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
@@ -265,6 +271,8 @@ class DebitNoteAPDetailController extends defaultController
             ///3. update total amount to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','DN')
                 ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
@@ -308,13 +316,17 @@ class DebitNoteAPDetailController extends defaultController
                 ///2. recalculate total amount
                 $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','DN')
                     ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
                 ///3. update total amount to header
-                DB::table('finance.apactdtl')
+                DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','AP')
+                    ->where('trantype','=','DN')
                     ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 
