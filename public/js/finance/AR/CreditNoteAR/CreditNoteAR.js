@@ -1479,7 +1479,11 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGridAlloc");
 
 	function checkbox_jqgAlloc(cellvalue, options, rowObject){
-		return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+		if(options.gid == "jqGridArAlloc"){
+			return '';
+		}else{
+			return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;		
+		}
 	}
 
 	function calc_amtpaid_bal(){
@@ -1772,7 +1776,7 @@ $(document).ready(function () {
 		{
 			colModel: [
 				{ label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true },
-				{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true },
+				{ label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
 				{ label:'Tax Rate',name:'rate',width:200,classes:'pointer' },
 			],
 			urlParam: {

@@ -766,7 +766,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc, hidden:true },
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
@@ -865,7 +865,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function checkbox_jqgAlloc(cellvalue, options, rowObject){
-		return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+		if(options.gid == "jqGrid2_Alloc"){
+			return '';
+		}else{
+			return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;		
+		}
 	}
 
 	////////////////////////////////////////////////////DN////////////////////////////////////////////////////

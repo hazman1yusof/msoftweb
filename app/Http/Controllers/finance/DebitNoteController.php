@@ -616,7 +616,7 @@ class DebitNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=',$dbacthdr_obj->source)
                 ->where('trantype','=',$dbacthdr_obj->trantype)
-                ->where('auditno','=',$dbacthdr_obj->auditno);
+                ->where('auditno','=',$dbacthdr_obj->auditno)
                 ->delete();
 
             foreach ($dbactdtl_get as $key => $value){
