@@ -47,7 +47,7 @@ class DebitNoteAPDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('finance.apactdtl as apdt')
-                    ->select('apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno')
+                    ->select('apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno','apdt.idno')
                     ->where('source','=',$request->source)
                     ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
