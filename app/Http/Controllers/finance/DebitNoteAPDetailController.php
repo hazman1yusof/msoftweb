@@ -165,9 +165,9 @@ class DebitNoteAPDetailController extends defaultController
           ///3. calculate total amount from detail
           $totalAmount = DB::table('finance.apactdtl')
                   ->where('compcode','=',session('compcode'))
+                  ->where('auditno','=',$auditno)
                   ->where('source','=','AP')
                   ->where('trantype','=','DN')
-                  ->where('auditno','=',$auditno)
                   ->where('recstatus','!=','DELETE')
                   ->sum('amount');
 
@@ -254,6 +254,8 @@ class DebitNoteAPDetailController extends defaultController
             ///1. update detail
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','AP')
+                ->where('trantype','=','DN')
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
@@ -275,7 +277,8 @@ class DebitNoteAPDetailController extends defaultController
                 ->where('trantype','=','DN')
                 ->where('auditno','=',$request->auditno)
                 ->update([
-                    'amount' => $totalAmount
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount
                   
                 ]);
 
@@ -303,13 +306,16 @@ class DebitNoteAPDetailController extends defaultController
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$request->auditno)
-                    ->where('lineno_','=',$value['lineno_'])
+                    ->where('idno','=',$value['idno'])
                     ->update([
-                        'amount' => $value['amount'],
                         'deptcode' => $value['deptcode'],
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'category' => $value['category'],
+                        'GSTCode' => $value['GSTCode'],
+                        'AmtB4GST' => $value['AmtB4GST'],
+                        'taxamt' => $value['tot_gst'],
+                        'amount' => $value['amount'],
+                        'upduser' => session('username'), 
+                        'upduser' => Carbon::now("Asia/Kuala_Lumpur"), 
                        
                     ]);
 
@@ -330,6 +336,7 @@ class DebitNoteAPDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 
+                        'outamount' => $totalAmount
                     ]);
             }
 

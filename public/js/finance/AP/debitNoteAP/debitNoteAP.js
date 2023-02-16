@@ -131,27 +131,8 @@ $(document).ready(function () {
 		}
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","apacthdr_idno","apacthdr_recstatus",recstatus_filter[0][0]);
-	
-	var urlParam={
-		action:'maintable',
-		url:'./debitNoteAP/table',
-		source:$('#apacthdr_source').val(),
-		trantype:$('#apacthdr_trantype').val(),
-	}
 
-	/////////////////////parameter for saving url///////////////////////////////////////////////////////
-	var saveParam={
-		action:'debitNoteAP_save',
-		url:'./debitNoteAP/form',
-		field:'',
-		fixPost:'true',
-		oper:oper,
-		table_name:'finance.apacthdr',
-		table_id:'apacthdr_auditno',
-		filterCol: ['source', 'trantype'],
-		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
-	};
-
+	////////////////////padzero///////////////////
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";
 		while(padzero>0){
@@ -180,6 +161,26 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
 	}
+	
+	var urlParam={
+		action:'maintable',
+		url:'./debitNoteAP/table',
+		source:$('#apacthdr_source').val(),
+		trantype:$('#apacthdr_trantype').val(),
+	}
+
+	/////////////////////parameter for saving url///////////////////////////////////////////////////////
+	var saveParam={
+		action:'debitNoteAP_save',
+		url:'./debitNoteAP/form',
+		field:'',
+		fixPost:'true',
+		oper:oper,
+		table_name:'finance.apacthdr',
+		table_id:'apacthdr_auditno',
+		filterCol: ['source', 'trantype'],
+		filterVal: [$('#apacthdr_source').val(), $('#apacthdr_trantype').val()],
+	};
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
@@ -497,12 +498,15 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				$('#apacthdr_auditno,#auditno').val(data.auditno);
+
+				$('#apacthdr_auditno').val(data.auditno);
+				$('#apacthdr_amount').val(data.totalAmount);
 				$('#apacthdr_idno').val(data.idno);
 
 				urlParam2.auditno = data.auditno;
 
 			}else if(selfoper=='edit'){
+				urlParam2.auditno = $('#apacthdr_auditno').val();
 			}
 			disableForm('#formdata');
 
@@ -642,11 +646,11 @@ $(document).ready(function () {
 		source:'',
 		trantype:'',
 		auditno:'',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno'],
+		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.taxamt AS tot_gst', 'apdt.dorecno', 'apdt.grnno', 'apdt.idno'],
 		table_name:['finance.apactdtl AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source'],
-		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val()]
+		filterCol:['apdt.compcode','apdt.auditno', 'apdt.recstatus','apdt.source', 'apdt.trantype'],
+		filterVal:['session.compcode', '', '<>.DELETE', $('#apacthdr_source').val(), 'DN']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, add after refresh jqgrid2, state true kalu kosong
@@ -813,6 +817,9 @@ $(document).ready(function () {
 				$.param({
 					action: 'DebitNoteAPDetail_save',
 					idno: $('#apacthdr_idno').val(),
+					auditno:$('#apacthdr_auditno').val(),
+					amount:data.amount,
+					lineno_:data.lineno_,
 				});
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
@@ -877,12 +884,34 @@ $(document).ready(function () {
 		onClickButton: function(){
 			mycurrency2.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    for (var i = 0; i < ids.length; i++) {
+			for (var i = 0; i < ids.length; i++) {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_tot_gst","#"+ids[i]+"_AmtB4GST"]);
 				cari_gstpercent(ids[i]);
+
+				dialog_deptcode.id_optid = ids[i];
+		        dialog_deptcode.check(errorField,ids[i]+"_deptcode","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        }
+			    );
+
+			    dialog_category.id_optid = ids[i];
+		        dialog_category.check(errorField,ids[i]+"_category","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        }
+			    );
+
+			    dialog_GSTCode.id_optid = ids[i];
+		        dialog_GSTCode.check(errorField,ids[i]+"_GSTCode","jqGrid2",null,
+		        	function(self){
+		        		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        }
+			    );
+
 		    }
 		   	onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
@@ -906,28 +935,29 @@ $(document).ready(function () {
 		    		'lineno_' : ids[i],
 		    		'idno' : data.idno,
 		    		'deptcode' : $("#jqGrid2 input#"+ids[i]+"_deptcode").val(),
-					'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
-		    		'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
-		    		'AmtB4GST' : $('#'+ids[i]+"_AmtB4GST").val(),
-		    		'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
-		    		'amount' : ('#'+ids[i]+"_amount").val(),
-                    'unit' : $("#"+ids[i]+"_unit").val()
+		    		'category' : $("#jqGrid2 input#"+ids[i]+"_category").val(),
+					'GSTCode' : $("#jqGrid2 input#"+ids[i]+"_GSTCode").val(),
+		    		'AmtB4GST' : $('#jqGrid2 input#'+ids[i]+"_AmtB4GST").val(),
+		    		'tot_gst' : $('#jqGrid2 input#'+ids[i]+"_tot_gst").val(),
+		    		'amount' : $('#jqGrid2 input#'+ids[i]+"_amount").val(),
 		    	}
 
 		    	jqgrid2_data.push(obj);
+				console.log(jqgrid2_data);
 		    }
 
 			var param={
     			action: 'DebitNoteAPDetail_save',
 				_token: $("#_token").val(),
-				auditno: $('#apacthdr_auditno').val()
+				auditno: $('#apacthdr_auditno').val(),
+				idno: $('#apacthdr_idno').val()
     		}
 
     		$.post( "./DebitNoteAPDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				// $('#amount').val(data);
+				$('#apacthdr_amount').val(data);
 				hideatdialogForm(false);
 				refreshGrid("#jqGrid2",urlParam2,'add');
 			});
@@ -959,7 +989,14 @@ $(document).ready(function () {
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
-		$("#jqGrid2 #"+id+"_gstpercent").val(data.rate);
+		let gstpercent = 0.00;
+		if(data.tot_gst != ''){
+			let tot_gst = data.tot_gst;
+			let amntb4gst = data.AmtB4GST;
+			gstpercent = (tot_gst / amntb4gst) * 100;
+		}
+
+		$("#jqGrid2 #"+id+"_gstpercent").val(gstpercent);
 	}
 
 	var mycurrency2 =new currencymode([]);
@@ -977,8 +1014,13 @@ $(document).ready(function () {
 
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
-		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
-		event.data.currency.formatOn();//change format to currency on each calculation
+		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
+		console.log(id_optid);
+		console.log($("#jqGrid2 #"+id_optid+"_amount"));
+
+		if(event.data != undefined){
+			event.data.currency.formatOn();//change format to currency on each calculation
+		}
 	}
 
 	function calculate_edited_gst(event){
@@ -992,7 +1034,9 @@ $(document).ready(function () {
 		var amount = amntb4gst + editedgst;
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
-		event.data.currency.formatOn();//change format to currency on each calculation
+		if(event.data != undefined){
+			event.data.currency.formatOn();//change format to currency on each calculation
+		}
 	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -1155,8 +1199,8 @@ $(document).ready(function () {
 		dialog_category.on();
 		dialog_GSTCode.on();
 		
-		mycurrency2.formatOnBlur();//make field to currency on leave cursor
-		$("#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
+		$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 		
 	}
 

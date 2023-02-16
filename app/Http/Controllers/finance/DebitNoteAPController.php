@@ -296,13 +296,20 @@ use Carbon\Carbon;
         $array_update = [
             'unit' => session('unit'),
             'compcode' => session('compcode'),
-            'doctype' => $request->apacthdr_doctype,
-            'recdate' => $request->apacthdr_recdate,
-            'document' => strtoupper($request->apacthdr_document),
-            // 'category' => strtoupper($request->apacthdr_category),
-            'remarks' => strtoupper($request->apacthdr_remarks),
             'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'postdate' => $request->apacthdr_postdate,
+            'actdate' => $request->apacthdr_actdate,
+            // 'amount' => $request->apacthdr_amount,
+            // 'outamount' => $request->apacthdr_amount,
+            'remarks' => $request->apacthdr_remarks,
+            'pvno' => $request->apacthdr_pvno,
+            'doctype' => $request->apacthdr_doctype,
+            'suppcode' => strtoupper($request->apacthdr_suppcode),
+            'deptcode' => strtoupper($request->apacthdr_deptcode),
+            'document' => strtoupper($request->apacthdr_document),
+            'paymode' => strtoupper($request->apacthdr_paymode),
+            'remarks' => strtoupper($request->apacthdr_remarks),
         ];
 
         foreach ($field as $key => $value) {
@@ -317,14 +324,14 @@ use Carbon\Carbon;
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
 
+            DB::commit();
+
             $responce = new stdClass();
-            $responce->amount = $request->apacthdr_amount;
+            $responce->auditno = $request->apacthdr_auditno;
+            $responce->idno = $request->idno;
             echo json_encode($responce);
 
-            // $queries = DB::getQueryLog();
-            // dump($queries);
-
-            DB::commit();
+            
         } catch (\Exception $e) {
             DB::rollback();
 
