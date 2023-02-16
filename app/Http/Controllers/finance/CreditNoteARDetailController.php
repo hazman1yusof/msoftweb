@@ -49,6 +49,7 @@ class CreditNoteARDetailController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
+        
         $table = DB::table('debtor.dbactdtl')
                     ->where('source','=','PB')
                     ->where('trantype','=','CN')
@@ -56,10 +57,10 @@ class CreditNoteARDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');
-
+                    
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -67,8 +68,9 @@ class CreditNoteARDetailController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
-
+        
         return json_encode($responce);
+
     }
    
     public function get_itemcode_price(Request $request){
@@ -154,6 +156,7 @@ class CreditNoteARDetailController extends defaultController
 
         return json_encode($responce);
     }
+
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);
@@ -164,29 +167,29 @@ class CreditNoteARDetailController extends defaultController
     }
 
     public function add(Request $request){
-
+        
         DB::beginTransaction();
         
         try {
-
+            
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$request->idno);
-
+            
             $dbacthdr_obj = $dbacthdr->first();
-
+            
             $dbactdtl = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$dbacthdr_obj->source)
                     ->where('trantype','=',$dbacthdr_obj->trantype)
                     ->where('auditno','=',$dbacthdr_obj->auditno);
-
+            
             if($dbactdtl->exists()){
                 $count = $dbactdtl->count();
                 $lineno_ = $count + 1;
             }else{
                 $lineno_ = 1;
             }
-
+            
             ///2. insert detail
             DB::table('debtor.dbactdtl')
                 ->insert([
@@ -216,7 +219,7 @@ class CreditNoteARDetailController extends defaultController
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") 
                 ]);
-
+            
             ///3. calculate total amount from detail
             $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
@@ -225,45 +228,51 @@ class CreditNoteARDetailController extends defaultController
                     ->where('auditno','=',$dbacthdr_obj->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
-
+            
             ///4. then update to header        
             $dbacthdr->update([
                 'amount' => $totalAmount,
             ]);
-
+            
             echo $totalAmount;
-
+            
             DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
 
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
             return response($e->getMessage(), 500);
+
         }
     }
 
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
+
             ///1. update detail
             DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
+                ->where('auditno','=',$request->auditno)
+                ->where('lineno_','=',$request->lineno_)
                 ->update([
                     'deptcode' => strtoupper($request->deptcode),
-                    'category' => strtoupper($request->category),
-                    'document'=> strtoupper($request->document),
                     'GSTCode'=> strtoupper($request->GSTCode),
-                    'amount'=> $request->amount,
                     'AmtB4GST' => $request->AmtB4GST,
-                   // 'amtslstax' => $tot_gst, 
                     'tot_gst' => $request->tot_gst,
+                    'amount'=> $request->amount,
+                    // 'category' => strtoupper($request->category),
+                    // 'document'=> strtoupper($request->document),
+                    // 'amtslstax' => $tot_gst,
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'unit' => session('unit')
                 ]);
-
+            
             ///2. recalculate total amount
             $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
@@ -272,7 +281,7 @@ class CreditNoteARDetailController extends defaultController
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
-
+            
             ///3. update total amount to header
             DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
@@ -282,39 +291,45 @@ class CreditNoteARDetailController extends defaultController
                 ->update([
                     'amount' => $totalAmount
                 ]);
-            
+                
             echo $totalAmount;
-
+            
             DB::commit();
             return response($totalAmount,200);
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+
         }
     }
 
     public function edit_all(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-            foreach ($request->dataobj as $key => $value) {
 
+            foreach ($request->dataobj as $key => $value) {
+                
                 ///1. update detail
                 DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$request->idno)
                     ->update([
-                        'document' => strtoupper($value['document']),
-                        'amount' => $value['amount'],
-                        'category' => $value['category'],
                         'deptcode' => $value['deptcode'],
+                        'GSTCode' => strtoupper($value['GSTCode']),
+                        'AmtB4GST' => $value['AmtB4GST'],
+                        'tot_gst' => $value['tot_gst'],
+                        'amount' => $value['amount'],
+                        // 'document' => strtoupper($value['document']),
+                        // 'category' => $value['category'],
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),                      
                     ]);
-
+                
                 ///2. recalculate total amount
                 $totalAmount = DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
@@ -323,8 +338,7 @@ class CreditNoteARDetailController extends defaultController
                     ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
-                    
-
+                
                 ///3. update total amount to header
                 DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
@@ -334,15 +348,18 @@ class CreditNoteARDetailController extends defaultController
                     ->update([
                         'amount' => $totalAmount, 
                     ]);
+                
             }
-
+            
             DB::commit();
             return response($totalAmount,200);
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error'.$e, 500);
+            
         }
 
     }
