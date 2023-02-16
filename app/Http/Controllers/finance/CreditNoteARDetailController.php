@@ -317,7 +317,7 @@ class CreditNoteARDetailController extends defaultController
                 ///1. update detail
                 DB::table('debtor.dbactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('idno','=',$request->idno)
+                    ->where('idno','=',$value['idno'])
                     ->update([
                         'deptcode' => $value['deptcode'],
                         'GSTCode' => strtoupper($value['GSTCode']),
@@ -340,7 +340,7 @@ class CreditNoteARDetailController extends defaultController
                     ->sum('amount');
                 
                 ///3. update total amount to header
-                DB::table('debtor.dbactdtl')
+                DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=','PB')
                     ->where('trantype','=','CN')

@@ -1052,19 +1052,19 @@ $(document).ready(function () {
 			var jqgrid2_data = [];
 			mycurrency2.formatOff();
 			
-			if(errorField.length>0){
-				console.log(errorField)
-				return false;
-			}
+			// if(errorField.length>0){
+			// 	console.log(errorField)
+			// 	return false;
+			// }
 			
 			for (var i = 0; i < ids.length; i++) {
-				if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
+				// if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2",data);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					return false;
-				}
+				// let retval = check_cust_rules("#jqGrid2",data);
+				// if(retval[0]!= true){
+				// 	alert(retval[1]);
+				// 	return false;
+				// }
 				
 				// cust_rules()
 				
@@ -1084,6 +1084,8 @@ $(document).ready(function () {
 				
 				jqgrid2_data.push(obj);
 			}
+
+			console.log(jqgrid2_data);
 			
 			var param={
 				action: 'CreditNoteAR_detail_save',
