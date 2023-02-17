@@ -226,16 +226,16 @@ class DebitNoteController extends defaultController
     }
 
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
-        try { 
-
+        
+        try {
+            
             $auditno = $this->recno('PB','DN');
             $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
-
+            
             $array_insert = [
                 'source' => 'PB',
                 'trantype' => 'DN',
@@ -266,32 +266,35 @@ class DebitNoteController extends defaultController
                 'approvedby' => $request->db_approvedby,
                 'approveddate' => strtoupper($request->db_approveddate)
             ];
-
-
+            
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
             $idno = $table->insertGetId($array_insert);
-
+            
             $responce = new stdClass();
             $responce->db_auditno = $auditno;
             $responce->idno = $idno;
             // $responce->totalAmount = $request->purreqhd_totamount;
             echo json_encode($responce);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
 
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
+        
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
             'unit' => strtoupper($request->db_deptcode),
@@ -308,27 +311,31 @@ class DebitNoteController extends defaultController
             'remark' => strtoupper($request->db_remark),
             'approvedby' => $request->approvedby
         ];
-
+        
         try {
+            
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
-
+            
             $responce = new stdClass();
             $responce->totalAmount = $request->purreqhd_totamount;
             echo json_encode($responce);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
-
+        
     }
 
     public function del(Request $request){
-
+        
     }
 
     public function reopen(Request $request){
@@ -392,7 +399,7 @@ class DebitNoteController extends defaultController
                             ->where('idno','=',$request->idno)
                             ->where('compcode','=',session('compcode'))
                             ->first();
-
+                            
             if($dbacthdr->outamount != $dbacthdr->amount){
                 throw new \Exception('Already allocate, cant cancel', 500);
             }
@@ -436,18 +443,19 @@ class DebitNoteController extends defaultController
     }
 
     public function posted(Request $request){
+        
         DB::beginTransaction();
-
+        
         try{
-
+            
             foreach ($request->idno_array as $value){
-
+                
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->first();
-
+                    
                 $this->gltran($value);
-
+                
                 DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->update([
@@ -455,19 +463,19 @@ class DebitNoteController extends defaultController
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
-
+                    
                 // $purreqhd = DB::table("material.purreqhd")
                 //     ->where('idno','=',$value);
-
+                
                 // $purreqhd_get = $purreqhd->first();
                 // if(!in_array($purreqhd_get->recstatus, ['POSTED'])){
                 //     continue;
                 // }
-
+                
                 // $purreqhd->update([
                 //     'recstatus' => 'CANCELLED'
                 // ]);
-
+                
                 // DB::table("material.purreqdt")
                 //     ->where('recno','=',$purreqhd_get->recno)
                 //     ->update([  
@@ -475,20 +483,23 @@ class DebitNoteController extends defaultController
                 //         'upduser' => session('username'),
                 //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 //     ]);
-
+                
                 // DB::table("material.queuepr")
                 //     ->where('recno','=',$purreqhd_get->recno)
                 //     ->delete();
-
+                
             }
            
             DB::commit();
         
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
 
     public function gltran($idno){

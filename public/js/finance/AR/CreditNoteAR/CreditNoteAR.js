@@ -1084,7 +1084,7 @@ $(document).ready(function () {
 				
 				jqgrid2_data.push(obj);
 			}
-
+			
 			console.log(jqgrid2_data);
 			
 			var param={
@@ -1268,14 +1268,14 @@ $(document).ready(function () {
 	function onall_editfunc(){
 		errorField.length=0;
 		dialog_deptcode.on();
-		dialog_category.on();
+		// dialog_category.on();
 		dialog_GSTCode.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid2 input[name='amount'],#jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 		
-		$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
+		// $("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom'],#jqGrid2 input[name='pricecode'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 	}
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
@@ -1809,6 +1809,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(event){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
@@ -1831,7 +1832,10 @@ $(document).ready(function () {
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
-			}
+			},
+			close: function(){
+				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
+			},
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
