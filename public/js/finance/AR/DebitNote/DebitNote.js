@@ -428,7 +428,7 @@ $(document).ready(function () {
 				
 				urlParam2.auditno = data.db_auditno;
 			} else if (selfoper == 'edit') {
-				urlParam2.auditno = data.db_auditno;
+				urlParam2.auditno = $('#db_auditno').val();
 				//doesnt need to do anything
 			}
 			disableForm('#formdata');
