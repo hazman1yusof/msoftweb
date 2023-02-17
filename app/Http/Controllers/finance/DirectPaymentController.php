@@ -81,6 +81,7 @@ class DirectPaymentController extends defaultController
                         'ap.pvno AS pvno',
                         'ap.paymode AS paymode',
                         'ap.bankcode AS bankcode',
+                        'ap.TaxClaimable AS TaxClaimable',
                     )
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=', 'CM')
@@ -135,30 +136,6 @@ class DirectPaymentController extends defaultController
 
 
         $paginate = $table->paginate($request->rows);
-
-        // foreach ($paginate->items() as $key => $value) {
-        //     $apactdtl = DB::table('finance.apactdtl')
-        //                 ->where('source','=',$value->source)
-        //                 ->where('trantype','=',$value->trantype)
-        //                 ->where('auditno','=',$value->auditno);
-
-        //     if($apactdtl->exists()){
-        //         $value->apactdtl_outamt = $apactdtl->sum('amount');
-        //     }else{
-        //         $value->apactdtl_outamt = $value->outamount;
-        //     }
-
-        //     $apalloc = DB::table('finance.apalloc')
-        //                 ->where('docsource','=',$value->source)
-        //                 ->where('doctrantype','=',$value->trantype)
-        //                 ->where('docauditno','=',$value->auditno);
-
-        //     if($apalloc->exists()){
-        //         $value->unallocated = false;
-        //     }else{
-        //         $value->unallocated = true;
-        //     }
-        // }
 
         //////////paginate/////////
 
@@ -589,11 +566,9 @@ class DirectPaymentController extends defaultController
             $table->update($array_update);
 
             $responce = new stdClass();
-            $responce->amount = $request->apacthdr_amount;
+            $responce->auditno = $request->auditno;
+            $responce->idno = $request->idno;
             echo json_encode($responce);
-
-            // $queries = DB::getQueryLog();
-            // dump($queries);
 
             DB::commit();
         } catch (\Exception $e) {

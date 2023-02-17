@@ -81,6 +81,7 @@ class CreditDebitTransController extends defaultController
                         'ap.paymode AS paymode',
                         'ap.bankcode AS bankcode',
                         'ap.refsource AS refsource',
+                        'ap.TaxClaimable AS TaxClaimable',
                     )
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=', 'CM')
@@ -131,30 +132,6 @@ class CreditDebitTransController extends defaultController
 
 
         $paginate = $table->paginate($request->rows);
-
-        // foreach ($paginate->items() as $key => $value) {
-        //     $apactdtl = DB::table('finance.apactdtl')
-        //                 ->where('source','=',$value->source)
-        //                 ->where('trantype','=',$value->trantype)
-        //                 ->where('auditno','=',$value->auditno);
-
-        //     if($apactdtl->exists()){
-        //         $value->apactdtl_outamt = $apactdtl->sum('amount');
-        //     }else{
-        //         $value->apactdtl_outamt = $value->outamount;
-        //     }
-
-        //     $apalloc = DB::table('finance.apalloc')
-        //                 ->where('docsource','=',$value->source)
-        //                 ->where('doctrantype','=',$value->trantype)
-        //                 ->where('docauditno','=',$value->auditno);
-
-        //     if($apalloc->exists()){
-        //         $value->unallocated = false;
-        //     }else{
-        //         $value->unallocated = true;
-        //     }
-        // }
 
         //////////paginate/////////
 
@@ -241,11 +218,10 @@ class CreditDebitTransController extends defaultController
 
             DB::commit();
             $responce = new stdClass();
+            $responce->auditno = $request->auditno;
+            $responce->idno = $request->idno;
             $responce->amount = $request->apacthdr_amount;
             echo json_encode($responce);
-
-            // $queries = DB::getQueryLog();
-            // dump($queries);
 
         } catch (\Exception $e) {
             DB::rollback();

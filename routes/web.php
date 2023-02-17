@@ -636,6 +636,7 @@ Route::get('/creditDebitTrans/table','finance\CreditDebitTransController@table')
 Route::post('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::get('/creditDebitTrans/form','finance\CreditDebitTransController@form');
 Route::post('/creditDebitTransDetail/form','finance\CreditDebitTransDetailController@form');
+Route::get('/creditDebitTransDetail/table','finance\CreditDebitTransDetailController@table');
 
 //// Payment Voucher Transaction ///
 Route::get('/paymentVoucher','finance\PaymentVoucherController@show');

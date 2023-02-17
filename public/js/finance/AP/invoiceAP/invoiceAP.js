@@ -1671,11 +1671,12 @@ $(document).ready(function () {
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
 				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
+				{label:'Purchase Dept',name:'prdept',width:300,classes:'pointer', hidden:false},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
 				{label:'record no',name:'recno',width:400,classes:'pointer', hidden:true},
 				{label:'suppcode',name:'suppcode',width:400,classes:'pointer', hidden:true},
-				{label:'prdept',name:'prdept',width:400,classes:'pointer', hidden:true},
+				
 
 			],
 			urlParam: {

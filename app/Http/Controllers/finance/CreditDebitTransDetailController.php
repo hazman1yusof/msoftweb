@@ -86,7 +86,6 @@ class CreditDebitTransDetailController extends defaultController
 
     public function add(Request $request){
         DB::beginTransaction();
-/*dd('test');*/
         try {
            
             $auditno = $request->query('auditno');
@@ -107,7 +106,7 @@ class CreditDebitTransDetailController extends defaultController
                     'lineno_' => $li,
                     'source' => 'CM',
                     'trantype' => strtoupper($request->trantype),
-                    'category' => strtoupper($request->category),
+                    'category' => $request->category,
                     'deptcode' => strtoupper($request->deptcode),
                     'document' => strtoupper($request->document),
                     'amount' => $request->amount,
@@ -161,7 +160,7 @@ class CreditDebitTransDetailController extends defaultController
                     'compcode' => session('compcode'),
                     'source' => 'CM',
                     'trantype' => $trantype,
-                    'category' => strtoupper($request->category),
+                    'category' => $request->category,
                     'deptcode' => strtoupper($request->deptcode),
                     'document' => strtoupper($request->document),
                     'amount' => $request->amount,
@@ -254,15 +253,16 @@ class CreditDebitTransDetailController extends defaultController
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$request->auditno)
-                    ->where('lineno_','=',$value['lineno_'])
+                    ->where('idno','=',$value['idno'])
                     ->update([
                         'document' => strtoupper($value['document']),
                         'amount' => $value['amount'],
-                        'category' => strtoupper($value['category']),
+                        'AmtB4GST' => $value['AmtB4GST'],
+                        'taxamt' => $value['tot_gst'],
+                        'category' => $value['category'],
                         'deptcode' => strtoupper($value['deptcode']),
-                        'adduser' => session('username'), 
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        
                     ]);
 

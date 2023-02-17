@@ -202,9 +202,10 @@ use Carbon\Carbon;
         // $responce->sql_bind = $table->getBindings();
 
         $table = DB::table('material.delordhd')
-                    ->select('delordno','srcdocno','docno','deliverydate','subamount as amount','taxclaimable','TaxAmt','recno','suppcode')
+                    ->select('delordno','srcdocno','docno','deliverydate','subamount as amount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
                     ->where('compcode','=',session('compcode'))
                     ->where('suppcode','=',$request->suppcode)
+                  //  ->where('prdept','=',$request->prdept)
                     ->where('recstatus','=','POSTED')
                     ->whereDate('trandate','<=',$request->recdate)
                     ->whereNull('invoiceno');

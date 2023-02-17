@@ -134,7 +134,7 @@ i.fa {
 								<input id="source" name="source" type="hidden" value="CM">
 								<input id="trantype" name="trantype" type="hidden">
 								<input id="idno" name="idno" type="hidden">
-
+								<input id="auditno" name="auditno" type="hidden">
 
 								<div class="form-group" style="position: relative">
 								  	<label class="col-md-2 control-label" for="auditno">Audit No</label>  
