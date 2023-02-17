@@ -122,6 +122,8 @@ class CreditDebitTransDetailController extends defaultController
             ///3. calculate total amount from detail
             $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
@@ -130,6 +132,8 @@ class CreditDebitTransDetailController extends defaultController
             ///4. then update to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=',$request->trantype)
                 ->where('auditno','=',$auditno)
                 ->update([
                     'amount' => $totalAmount
@@ -209,6 +213,8 @@ class CreditDebitTransDetailController extends defaultController
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
+                ->where('source','=','CM')
+                ->where('trantype','=',$request->trantype)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
 
@@ -216,6 +222,8 @@ class CreditDebitTransDetailController extends defaultController
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
+                ->where('source','=','CM')
+                ->where('trantype','=',$request->trantype)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
 
@@ -223,6 +231,8 @@ class CreditDebitTransDetailController extends defaultController
             ///3. update total amount to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=',$request->trantype)
                 ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
@@ -269,13 +279,17 @@ class CreditDebitTransDetailController extends defaultController
                 ///2. recalculate total amount
                 $totalAmount = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
                 ///3. update total amount to header
-                DB::table('finance.apactdtl')
+                DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 

@@ -543,9 +543,9 @@ $(document).ready(function () {
 		editurl: "/directPaymentDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		 	{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, key:true},
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true, editable:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true, editable:true}, //canSearch: true, checked: true},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', canSearch: true, editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -921,7 +921,8 @@ $(document).ready(function () {
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function deptcodeCustomEdit(val,opt){
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $('<div class="input-group"><input id="deptcode" name="deptcode" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>');
+
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function categoryCustomEdit(val,opt){
@@ -932,13 +933,7 @@ $(document).ready(function () {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $(`<div class="input-group">
-			<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-		</div>
-		<span class="help-block"></span>
-		<div class="input-group">
-			<input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden">
-		</div>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group"><input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden"></div>`);
 	}
 
 

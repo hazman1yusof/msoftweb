@@ -125,7 +125,8 @@ class DirectPaymentController extends defaultController
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
                 foreach ($pieces as $key => $value) {
-                    $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    // $value_ = substr_replace($value,"ap.",0,strpos($value,"_")+1);
+                    $value_ = 'ap.'.$value;
                     $pieces_inside = explode(" ", $value_);
                     $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
                 }
@@ -174,8 +175,8 @@ class DirectPaymentController extends defaultController
                         'TaxClaimable' => $request->TaxClaimable,
                         'pvno' => $pvno,
                         'cheqdate' => $request->cheqdate,
-                        'source' => $request->source,
-                        'trantype' => $request->trantype,
+                        'source' => 'CM',
+                        'trantype' => 'DP',
                         'compcode' => session('compcode'),
                         'unit' => session('unit'),
                         'adduser' => session('username'),

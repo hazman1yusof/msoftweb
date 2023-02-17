@@ -88,13 +88,8 @@ class DirectPaymentDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-            
-            $apacthdr = DB::table("finance.apacthdr")
-            ->where('idno','=',$request->idno)
-            ->first();
 
-            $auditno = $apacthdr->auditno;
-            //$auditno = $request->query('auditno');
+            $auditno = $request->auditno;
 
             ////1. calculate lineno_ by auditno
             $sqlln = DB::table('finance.apactdtl')->select('lineno_')
@@ -141,6 +136,8 @@ class DirectPaymentDetailController extends defaultController
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$auditno)
+                ->where('source','=','CM')
+                ->where('trantype','=','DP')
                 ->update([
                     'amount' => $totalAmount
                   
@@ -219,6 +216,8 @@ class DirectPaymentDetailController extends defaultController
             ///1. update detail
             DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=','DP')
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
                 ->delete();
@@ -226,6 +225,8 @@ class DirectPaymentDetailController extends defaultController
             ///2. recalculate total amount
             $totalAmount = DB::table('finance.apactdtl')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=','DP')
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
@@ -234,6 +235,8 @@ class DirectPaymentDetailController extends defaultController
             ///3. update total amount to header
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
+                ->where('source','=','CM')
+                ->where('trantype','=','DP')
                 ->where('auditno','=',$request->auditno)
                 ->update([
                     'amount' => $totalAmount
@@ -288,8 +291,10 @@ class DirectPaymentDetailController extends defaultController
                     ->sum('amount');
 
                 ///3. update total amount to header
-                DB::table('finance.apactdtl')
+                DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
+                    ->where('source','=','CM')
+                    ->where('trantype','=','DP')
                     ->where('auditno','=',$request->auditno)
                     ->update([
                         'amount' => $totalAmount, 
