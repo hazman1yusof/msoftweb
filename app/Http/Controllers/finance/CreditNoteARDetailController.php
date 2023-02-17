@@ -346,7 +346,8 @@ class CreditNoteARDetailController extends defaultController
                     ->where('trantype','=','CN')
                     ->where('auditno','=',$request->auditno)
                     ->update([
-                        'amount' => $totalAmount, 
+                        'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
                     ]);
                 
             }
