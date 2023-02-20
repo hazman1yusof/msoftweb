@@ -266,11 +266,12 @@ class CreditDebitTransDetailController extends defaultController
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'document' => strtoupper($value['document']),
-                        'amount' => $value['amount'],
+                        'deptcode' => $value['deptcode'],
+                        'category' => $value['category'],
+                        'GSTCode' => $value['GSTCode'],
                         'AmtB4GST' => $value['AmtB4GST'],
                         'taxamt' => $value['tot_gst'],
-                        'category' => $value['category'],
-                        'deptcode' => strtoupper($value['deptcode']),
+                        'amount' => $value['amount'],
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        

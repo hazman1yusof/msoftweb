@@ -1279,30 +1279,23 @@ $(document).ready(function () {
 				filterCol:['compcode','recstatus'],
 				filterVal:['session.compcode','ACTIVE']
 			},
-			ondblClickRow: function () {
-				$("#jqGrid2 input[name='category']").focus().select();
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_category").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-
-				/*if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					//$('#cheqdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
-				}*/
-
-				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
-				if(str.toUpperCase() == '' && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-					obj.ontabbing = false;
-				}
-
-				if($(gridname).jqGrid('getDataIDs').length == 1){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='category']").focus().select();
 				}
 			}
 		},{
@@ -1311,8 +1304,7 @@ $(document).ready(function () {
 				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
 				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
-		},'urlParam','radio','tab'
-	);
+		},'urlParam','radio','tab');
 	dialog_deptcode.makedialog(true);
 
 	var dialog_category = new ordialog(
@@ -1326,15 +1318,21 @@ $(document).ready(function () {
 				filterCol:['compcode','source', 'cattype', 'recstatus'],
 				filterVal:['session.compcode','CR', 'Other', 'ACTIVE']
 			},
-			ondblClickRow: function () {
-				$("#jqGrid2 input[name='document']").focus().select();
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_document").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='document']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1344,7 +1342,7 @@ $(document).ready(function () {
 			open: function(){
 				dialog_category.urlParam.filterCol=['compcode','source', 'cattype', 'recstatus'],
 				dialog_category.urlParam.filterVal=['session.compcode','CR', 'Other', 'ACTIVE']
-			}
+			},
 		},'urlParam','radio','tab'
 	);
 	dialog_category.makedialog(true);
@@ -1358,58 +1356,35 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
 			ondblClickRow:function(event){
-				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}
-				console.log(optid)
+				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
 				let data=selrowData('#'+dialog_GSTCode.gridname);
-
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
-				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
-			},
-			close: function(){
-				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
-			},
-			
+			}
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
-			},
-			close: function(){
-				if($('#jqGridPager2SaveAll').css("display") == "none"){
-					$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
-				}
-				
 			}
 		},'urlParam','radio','tab'
 	);
