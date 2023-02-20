@@ -1015,8 +1015,6 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
-		console.log(id_optid);
-		console.log($("#jqGrid2 #"+id_optid+"_amount"));
 
 		if(event.data != undefined){
 			event.data.currency.formatOn();//change format to currency on each calculation
@@ -1317,15 +1315,15 @@ $(document).ready(function () {
 				$('#apacthdr_recdate').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_recdate').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#apacthdr_recdate').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
@@ -1350,23 +1348,21 @@ $(document).ready(function () {
 				$('#apacthdr_actdate').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#apacthdr_actdate').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Supplier Code",
 			open: function(){
 				dialog_payto.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_payto.urlParam.filterVal=['ACTIVE', 'session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
+			}
+		},'urlParam','radio','tab');
 	dialog_payto.makedialog(true);
 
 	var dialog_deptcode = new ordialog(
@@ -1378,22 +1374,24 @@ $(document).ready(function () {
 			urlParam: {
 					filterCol:['compcode','recstatus'],
 					filterVal:['session.compcode','ACTIVE']
-					},
-			ondblClickRow:function(){
-				$("#jqGrid2 input[name='category']").focus().select();
+			},
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_category").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-				let str = $(obj.textfield).val() ? $(obj.textfield).val() : '';
-				if(str.toUpperCase() == '' && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-					obj.ontabbing = false;
-				}
-
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='category']").focus().select();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
 				}
 			}
 		},{
@@ -1401,9 +1399,8 @@ $(document).ready(function () {
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
+			}
+		},'urlParam','radio','tab');
 		dialog_deptcode.makedialog(true);
 
 	var dialog_category = new ordialog(
@@ -1418,27 +1415,31 @@ $(document).ready(function () {
 				filterCol:['recstatus', 'compcode'],
 				filterVal:['ACTIVE', 'session.compcode']
 			},
-		
-			ondblClickRow:function(){
-				$("#jqGrid2 input[name='GSTCode']").focus().select();
+			ondblClickRow:function(event){
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_GSTCode").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
-					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-						$(gridname+' tr#1').click();
-						$(gridname+' tr#1').dblclick();
-						$("#jqGrid2 input[name='GSTCode']").focus().select();
-					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-						$('#'+obj.dialogname).dialog('close');
-					}
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
 				}
+			}
 		},{	
 			title:"Select Category Code",
 			open: function(){
 				dialog_category.urlParam.filterCol=['recstatus', 'compcode', 'source', 'povalidate'];
 				dialog_category.urlParam.filterVal=['ACTIVE', 'session.compcode', 'CR', '0'];
-			}
-
+			},
 		},'urlParam','radio','tab'
 		
 	);
@@ -1453,58 +1454,35 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
 			ondblClickRow:function(event){
-				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					// $(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					// $(event.currentTarget).parent().next().html('');
 				}
+				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
 				let data=selrowData('#'+dialog_GSTCode.gridname);
-
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
-				//$("#jqGrid2 #"+id_optid+"_tot_gst").val(data['rate']);
-				$(dialog_GSTCode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$("#jqGrid2 input[name='AmtB4GST']").focus().select();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
-			},
-			close: function(){
-				$("#jqGrid2 input[name='AmtB4GST']").focus().select();
-			},
-			
+			}
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
-			},
-			close: function(){
-				if($('#jqGridPager2SaveAll').css("display") == "none"){
-					$(dialog_GSTCode.textfield)			//lepas close dialog focus on next textfield 
-					.closest('td')						//utk dialog dalam jqgrid jer
-					.next()
-					.find("input[type=text]").focus();
-				}
-				
 			}
 		},'urlParam','radio','tab'
 	);
