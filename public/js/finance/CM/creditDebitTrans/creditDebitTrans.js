@@ -1139,8 +1139,7 @@ $(document).ready(function () {
 				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'],
 				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
-		},'urlParam','radio','tab'
-	);
+		},'urlParam','radio','tab');
 	dialog_deptcode.makedialog(true);
 
 	var dialog_category = new ordialog(
@@ -1188,7 +1187,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Tax code',name:'taxcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true, or_search:true},
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
