@@ -330,6 +330,11 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
+			
+			if(selrowData('#jqGrid').db_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -2119,15 +2124,15 @@ function init_jq(oper){
 		// $('#save').hide();
 		$('#grid_alloc').show();
 		$('#grid_dtl').show();
-		$('#jqGridPagerAlloc').hide();
+		$('#jqGridPagerAlloc').show();
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) {
 		// $('#save').hide();
 		$('#grid_alloc').hide();
 		$('#grid_dtl').show();
 		$('#jqGridPagerAlloc').hide();
- 		//$("#jqGridAlloc input[name='allocamount']").attr('readonly','readonly');
+		// $("#jqGridAlloc input[name='allocamount']").attr('readonly','readonly');
 	}
 }
 
@@ -2138,11 +2143,10 @@ function init_jq2(oper){
 		$('#grid_dtl').show();
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-
+		
 		if($('#db_debtorcode').val() != ''){
 			populate_alloc_table();
 		}
-
 	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
 		// $('#save').hide();
 		$('#grid_alloc').hide();
