@@ -2,9 +2,6 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
-var x = document.getElementById("myDiv");
-     x.style.display = "none";
-
 $(document).ready(function () {
 	$("body").show();
     check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
@@ -230,36 +227,25 @@ $(document).ready(function () {
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-		
 			if (rowid != null) {
 				rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-				var myDataNumber = rowData['bednum'];
-				var myDataStatus = rowData['occup'];
-				var myDataType = rowData['bedtype'];
-                document.getElementById("myNumber").innerHTML = myDataNumber;
-				document.getElementById("myStatus").innerHTML = myDataStatus;
-				document.getElementById("myType").innerHTML = myDataType;
-				x.style.display = "block";
+
 				if (rowData['mrn'] == '') {
 					$("#jqGrid_iledit").click();
-					
 				}
-				init_bedstat();
 			}
 			// $("#jqGrid_iledit").click();
 			$('#p_error').text('');   //hilangkan duplicate error msj after save
 		},
 		gridComplete: function () {
-			x.style.display = "none";
 			fdl.set_array().reset();
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}			
         },
-		aftersavefunc: function (rowid, response, options) {			
+		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid2.state==true)addmore_jqgrid.more=true; //only addmore after save inline
 			//refreshGrid('#jqGrid',urlParam,'add');
-			
 		}, 
 	});
 
@@ -891,17 +877,3 @@ $(document).ready(function () {
 		}
 	}
 });
-
-function init_bedstat(){
-	$.get( "./bedmanagement/statistic", function( data ) {
-			
-	},'json').done(function(data) {
-		$('#bed-vac').text(data.vacant)
-		$('#bed-occ').text(data.occupied)
-		$('#bed-res').text(data.reserve)
-		$('#bed-hou').text(data.housekeeping)
-		$('#bed-mai').text(data.maintenance)
-		$('#bed-iso').text(data.isolated)
-		$('#bed-tot').text(data.totalbed)
-	});
-}

@@ -506,27 +506,29 @@ class CreditNoteARController extends defaultController
     }
 
     public function save_alloc(Request $request){
+        
         DB::beginTransaction();
+        
         try {
-
+            
             $dbacthdr = DB::table('debtor.dbacthdr')
                 ->where('idno','=',$request->idno)
                 ->first();
-
+                
             foreach ($request->data_detail as $key => $value){
                 $dbacthdr_IV = DB::table('debtor.dbacthdr')
                         ->where('idno','=',$value['idno'])
                         ->first();
-
+                        
                 $outamount = floatval($value['outamount']);
                 $balance = floatval($value['balance']);
                 $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                 $newoutamount_IV = floatval($outamount - $allocamount);
-
+                
                 if($allocamount == 0){
                     continue;
                 }
-
+                
                 DB::table('debtor.dballoc')
                         ->insert([                            
                             'compcode' => session('compcode'),
@@ -553,14 +555,14 @@ class CreditNoteARController extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => 'OPEN'
                         ]);
-
+                        
                 $dbacthdr_IV = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'outamount' => $newoutamount_IV
                     ]);
             }
-
+            
             //calculate total amount from detail
             // $totalAmount = DB::table('debtor.dballoc')
             //     ->where('compcode','=',session('compcode'))
@@ -569,26 +571,30 @@ class CreditNoteARController extends defaultController
             //     ->where('trantype','=','CN')
             //     ->where('recstatus','!=','DELETE')
             //     ->sum('amount');
-
+            
             // //then update to header
             // DB::table('debtor.dbacthdr')
             //     ->where('idno','=',$request->idno)
             //     ->update([
             //         'amount' => $totalAmount,
             //         'outamount' => $newoutamount_IV,
-            //     ]);  
-
+            //     ]);
+            
             DB::commit();
-
+            
             $responce = new stdClass();
             $responce->result = 'success';
-
+            
             return json_encode($responce);
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error'.$e, 500);
+            
         }
+        
     }
 
     public function posted_single(Request $request){

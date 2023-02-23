@@ -2014,15 +2014,15 @@ $(document).ready(function () {
 				$('#delordhd_delordno').focus();
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#delordhd_delordno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_delordno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Transaction Type",
 			open: function(){
@@ -2149,15 +2149,20 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(event){
 				$("#jqGrid2 input[name='itemcode']").focus().select();
-				let data = selrowData('#'+dialog_pricecode.gridname);
-
+				if(event.type == 'keydown'){
+					var optid = $(event.currentTarget).get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}else{
+					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+					var id_optid = optid.substring(0,optid.search("_"));
+				}
+				$("#jqGrid2 #"+id_optid+"_itemcode").focus().select();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -2205,17 +2210,11 @@ $(document).ready(function () {
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					// $(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					// $(event.currentTarget).parent().next().html('');
 				}
 
 				let data=selrowData('#'+dialog_itemcode.gridname);
@@ -2251,7 +2250,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					// $(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
 				}
 			}
 		},{
@@ -2352,19 +2350,12 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(event){
-				$("#jqGrid2 input[name='pouom']").focus().select();
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}
 				
 				let data=selrowData('#'+dialog_uomcode.gridname);
@@ -2464,17 +2455,11 @@ $(document).ready(function () {
 			ondblClickRow: function (event) {
 				$("#jqGrid2 input[name='qtydelivered']").focus().select();
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}
 
 				let data=selrowData('#'+dialog_pouom.gridname);
@@ -2523,17 +2508,11 @@ $(document).ready(function () {
 			ondblClickRow:function(event){
 				$("#jqGrid2 input[name='expdate']").focus().select();
 				if(event.type == 'keydown'){
-
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}else{
-
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
-
-					$(event.currentTarget).parent().next().html('');
 				}
 
 				let data=selrowData('#'+dialog_taxcode.gridname);
@@ -2652,33 +2631,33 @@ $(document).ready(function () {
 
 });
 
-	function populate_form(obj){
-		//panel header
-		$('#prdept_show').text(obj.delordhd_prdept);
-		$('#grnno_show').text(padzero(obj.delordhd_docno));
-		$('#suppcode_show').text(obj.supplier_name);
-		
-		if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
-			$('td#glyphicon-plus,td#glyphicon-edit').hide();
-		}else{
-			$('td#glyphicon-plus,td#glyphicon-edit').show();
-		}
+function populate_form(obj){
+	//panel header
+	$('#prdept_show').text(obj.delordhd_prdept);
+	$('#grnno_show').text(padzero(obj.delordhd_docno));
+	$('#suppcode_show').text(obj.supplier_name);
+	
+	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
+		$('td#glyphicon-plus,td#glyphicon-edit').hide();
+	}else{
+		$('td#glyphicon-plus,td#glyphicon-edit').show();
 	}
+}
 
-	function empty_form(){
+function empty_form(){
 
-		$('#prdept_show').text('');
-		$('#grnno_show').text('');
-		$('#suppcode_show').text('');
+	$('#prdept_show').text('');
+	$('#grnno_show').text('');
+	$('#suppcode_show').text('');
 
+}
+
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<50){
+		scrollHeight = 50;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
 	}
-
-	function calc_jq_height_onchange(jqgrid){
-		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-		if(scrollHeight<50){
-			scrollHeight = 50;
-		}else if(scrollHeight>300){
-			scrollHeight = 300;
-		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+15);
-	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+15);
+}

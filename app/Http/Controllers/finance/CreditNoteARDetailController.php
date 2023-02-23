@@ -232,6 +232,7 @@ class CreditNoteARDetailController extends defaultController
             ///4. then update to header        
             $dbacthdr->update([
                 'amount' => $totalAmount,
+                'outamount' => $totalAmount,
             ]);
             
             echo $totalAmount;
