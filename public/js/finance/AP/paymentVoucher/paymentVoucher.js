@@ -360,6 +360,11 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
+
+			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -791,7 +796,7 @@ $(document).ready(function () {
 			
 		
 			fdl.set_array().reset();
-			if(oper == 'edit'){
+			if($('#apacthdr_recstatus').val() == 'POSTED' && oper == 'add'){
 				//calc bal
 				var ids = $("#jqGrid2").jqGrid('getDataIDs');
 				for (var i = 0; i < ids.length; i++) {

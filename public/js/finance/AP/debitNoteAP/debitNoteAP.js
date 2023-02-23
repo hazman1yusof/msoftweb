@@ -328,6 +328,11 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
+			
+			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -1210,7 +1215,7 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		rowNum: 30,
+		rowNum: 50,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
