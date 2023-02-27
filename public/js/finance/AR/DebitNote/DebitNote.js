@@ -624,52 +624,52 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'AuditNo', name: 'auditno', hidden: true },
-            { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true },
-            { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true },
-            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:deptcodeCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-            // { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
-            //     editrules:{required: true,custom:true, custom_func:cust_rules},
-            //     formatter: showdetail,
-            //     edittype:'custom',	editoptions:
-            //         {  
-            //             custom_element:categoryCustomEdit,
-            //             custom_value:galGridCustomValue 	
-            //         },
-            // },
-            { label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: true,
-                //editrules:{required: true},
-                edittype:"text",
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true },
+			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true },
+			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:deptcodeCustomEdit,
+						custom_value:galGridCustomValue
+					},
+			},
+			// { label: 'Category', name: 'category', width: 150, edittype:'text', classes: 'wrap', editable: true,
+			// 	editrules:{required: true,custom:true, custom_func:cust_rules},
+			// 	formatter: showdetail,
+			// 	edittype:'custom',	editoptions:
+			// 		{
+			// 			custom_element:categoryCustomEdit,
+			// 			custom_value:galGridCustomValue
+			// 		},
+			// },
+			{ label: 'Document', name: 'document', width: 120, classes: 'wrap', editable: true,
+				//editrules:{required: true},
+				edittype:"text",
 				editoptions: {style: "text-transform: uppercase"},
-            },
-            { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {
-                        custom_element:GSTCodeCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
-                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-                editable: true,
-                align: "right",
-                editrules:{required: true},edittype:"text",
-                editoptions:{
-                    maxlength: 12,
-                    dataInit: function(element) {
-                        element.style.textAlign = 'right';
-                    }
-                },
-            },
+			},
+			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:GSTCodeCustomEdit,
+						custom_value:galGridCustomValue
+					},
+			},
+			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+					}
+				},
+			},
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true},
@@ -681,20 +681,20 @@ $(document).ready(function () {
 					}
 				},
 			},
-            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
-                formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
-                editable: true,
-                align: "right",
-                editrules:{required: true},edittype:"text",
-                editoptions:{
-                    readonly: "readonly",
-                    maxlength: 12,
-                    dataInit: function(element) {
-                        element.style.textAlign = 'right';
-                    },
-                }
-            },
-            { label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
+			{ label: 'Amount', name: 'amount', width: 90, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+					},
+				}
+			},
+			{ label: 'rate', name: 'rate', width: 50, classes: 'wrap', hidden:true },
 			{ label: 'idno', name: 'idno', editable: false, hidden: true },
 			{ label: 'No', name: 'lineno_', editable: false, hidden: true },
 			{ label: 'recstatus', name: 'recstatus', hidden: true },
