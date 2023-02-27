@@ -246,7 +246,7 @@ i.fa {
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
+						<label class="col-md-2 control-label" for="posteddate">Date</label>  
 						<div class="col-md-2">
 							<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>

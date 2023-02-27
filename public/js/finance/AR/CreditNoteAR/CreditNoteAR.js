@@ -135,6 +135,20 @@ $(document).ready(function () {
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 	
+	////////////////////////////////////////////padzero////////////////////////////////////////////
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 5, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+	
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+	
 	////////////////////////////////////////////searchClick2////////////////////////////////////////////
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
@@ -190,8 +204,8 @@ $(document).ready(function () {
 			// { label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap' },
-			{ label: 'Document Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
+			{ label: 'Date', name: 'db_entrydate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Credit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Amount', name: 'db_amount', width: 15, align: 'right', formatter: 'currency' },

@@ -125,6 +125,20 @@ $(document).ready(function () {
 
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 	
+	////////////////////////////////////////////padzero////////////////////////////////////////////
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 5, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+	
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+	
 	////////////////////////////////////////////searchClick2////////////////////////////////////////////
 	function searchClick2(grid,form,urlParam){
 		$(form+' [name=Stext]').on( "keyup", function() {
@@ -181,9 +195,9 @@ $(document).ready(function () {
 			// { label: 'Payer Code', name: 'db_payercode', width: 15, canSearch: true },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 15, classes: 'wrap text-uppercase', canSearch: true },
 			{ label: 'Name', name: 'dm_name', width: 50, classes: 'wrap text-uppercase', checked: true },
-			{ label: 'Document Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Date', name: 'db_entrydate', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			// { label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', canSearch: true },
-			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true },			
+			{ label: 'Debit No', name: 'db_auditno', width: 12, align: 'right', classes: 'wrap text-uppercase', canSearch: true, formatter: padzero, unformat: unpadzero },			
 			// { label: 'Debit No', name: 'db_invno', width: 15, canSearch: true, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 15, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero, hidden: true },

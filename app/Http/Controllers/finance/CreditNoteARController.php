@@ -11,21 +11,21 @@ use Carbon\Carbon;
 use PDF;
 
 class CreditNoteARController extends defaultController
-{   
+{
     var $gltranAmount;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('finance.AR.CreditNoteAR.CreditNoteAR');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -34,9 +34,9 @@ class CreditNoteARController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function maintable(Request $request){
-
+        
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
                         'db.debtorcode AS db_debtorcode',
@@ -77,7 +77,7 @@ class CreditNoteARController extends defaultController
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.source','=','PB')
                     ->where('db.trantype','CN');
-
+        
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
                 $pieces = explode(".", $request->filterVal[$key], 2);
@@ -104,12 +104,12 @@ class CreditNoteARController extends defaultController
                 }
             }
         }
-
+        
         if(!empty($request->fromdate)){
             $table = $table->where('db.entrydate','>=',$request->fromdate);
             $table = $table->where('db.entrydate','<=',$request->todate);
         }
-
+        
         if(!empty($request->searchCol)){
             if(!empty($request->fixPost)){
                 $searchCol_array = $this->fixPost3($request->searchCol);
@@ -119,10 +119,10 @@ class CreditNoteARController extends defaultController
             
             $count = array_count_values($searchCol_array);
             // dump($request->searchCol);
-
+            
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
+                
                 $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
@@ -133,7 +133,7 @@ class CreditNoteARController extends defaultController
                 });
             }
         }
-
+        
         // if(!empty($request->searchCol)){
         //     if($request->searchCol[0] == 'db_auditno'){
         //         $table = $table->Where(function ($table) use ($request) {
@@ -153,11 +153,11 @@ class CreditNoteARController extends defaultController
         //             });
         //     }          
         // }
-
+        
         if(!empty($request->sidx)){
-
+            
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
-
+            
             if(count($pieces)==1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
@@ -170,9 +170,9 @@ class CreditNoteARController extends defaultController
         }else{
             $table = $table->orderBy('db.idno','DESC');
         }
-
+        
         $paginate = $table->paginate($request->rows);
-
+        
         foreach ($paginate->items() as $key => $value) {
             $dbactdtl = DB::table('debtor.dbactdtl')
                         ->where('source','=',$value->db_source)
@@ -196,9 +196,9 @@ class CreditNoteARController extends defaultController
                 $value->unallocated = true;
             }
         }
-
+        
         //////////paginate/////////
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -207,12 +207,13 @@ class CreditNoteARController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
-
+        
         return json_encode($responce);
-    }
 
+    }
+    
     public function form(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
@@ -245,18 +246,18 @@ class CreditNoteARController extends defaultController
                 return 'Errors happen';
         }
     }
-
+    
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
-        try { 
-
+        
+        try {
+            
             $auditno = $this->recno('PB','CN');
-            $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
-
+            // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
+            
             $array_insert = [
                 'source' => 'PB',
                 'trantype' => 'CN',
@@ -288,30 +289,34 @@ class CreditNoteARController extends defaultController
                 'reference' => $request->db_reference,
                 'paymode' => $request->db_paymode,
             ];
-
+            
             //////////where//////////
             // $table = $table->where('idno','=',$request->idno);
             $idno_apacthdr = $table->insertGetId($array_insert);
-
+            
             $responce = new stdClass();
             $responce->auditno = $auditno;
             $responce->idno = $idno_apacthdr;
             echo json_encode($responce);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
 
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
+        
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
             'unit' => strtoupper($request->db_deptcode),
@@ -328,27 +333,31 @@ class CreditNoteARController extends defaultController
             'remark' => strtoupper($request->db_remark),
             'approvedby' => $request->approvedby
         ];
-
+        
         try {
+            
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
-
+            
             $responce = new stdClass();
             $responce->totalAmount = $request->purreqhd_totamount;
             echo json_encode($responce);
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
-
+        
     }
 
     public function del(Request $request){
-
+        
     }
 
     public function reopen(Request $request){
@@ -412,7 +421,7 @@ class CreditNoteARController extends defaultController
                             ->where('idno','=',$request->idno)
                             ->where('compcode','=',session('compcode'))
                             ->first();
-
+                            
             if($dbacthdr->outamount != $dbacthdr->amount){
                 throw new \Exception('Already allocate, cant cancel', 500);
             }
@@ -456,18 +465,19 @@ class CreditNoteARController extends defaultController
     }
 
     public function posted(Request $request){
+        
         DB::beginTransaction();
+        
         try {
-
-
+            
             foreach ($request->idno_array as $idno){
-
+                
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$idno)
                     ->first();
-
+                
                 $this->gltran($idno);
-
+                
                 DB::table('debtor.dbacthdr')
                     ->where('idno','=',$idno)
                     ->update([
@@ -485,7 +495,7 @@ class CreditNoteARController extends defaultController
                     ->update([
                         'recstatus' => 'POSTED'
                     ]);
-
+                
                 // $apalloc = DB::table('finance.apalloc')
                 //     ->where('compcode','=',session('compcode'))
                 //     ->where('unit','=',session('unit'))
@@ -497,15 +507,19 @@ class CreditNoteARController extends defaultController
                 //         'lastuser' => session('username'),
                 //         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 //     ]);
-
+                
             }
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error'.$e, 500);
+            
         }
+        
     }
 
     public function save_alloc(Request $request){
@@ -567,7 +581,7 @@ class CreditNoteARController extends defaultController
                         'outamount' => $newoutamount_IV
                     ]);
             }
-
+            
             // calculate total amount from alloc
             $totalAllocAmount = DB::table('debtor.dballoc')
                 ->where('compcode','=',session('compcode'))
@@ -632,9 +646,6 @@ class CreditNoteARController extends defaultController
                     ->where('lineno_','=',$request->lineno_)
                     ->first();
             
-            $refauditno = str_pad($dballoc->refauditno, 5, "0", STR_PAD_LEFT);
-            $docauditno = str_pad($dballoc->docauditno, 5, "0", STR_PAD_LEFT);
-                    
             $amount = floatval($dballoc->amount);
             $balance = floatval($dballoc->balance);
             $newoutamount_IV = floatval($amount + $balance);
@@ -644,7 +655,7 @@ class CreditNoteARController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('source','=',$dballoc->refsource)
                 ->where('trantype','=',$dballoc->reftrantype)
-                ->where('auditno','=',$refauditno)
+                ->where('auditno','=',$dballoc->refauditno)
                 ->update([
                     'outamount' => $newoutamount_IV
                 ]);
@@ -669,7 +680,7 @@ class CreditNoteARController extends defaultController
             DB::table('debtor.dbacthdr')
                 ->where('source','=',$dballoc->docsource)
                 ->where('trantype','=',$dballoc->doctrantype)
-                ->where('auditno','=',$docauditno)
+                ->where('auditno','=',$dballoc->docauditno)
                 ->update([
                     'outamount' => $outamount_hdr,
                 ]);
@@ -687,9 +698,9 @@ class CreditNoteARController extends defaultController
     }
 
     public function posted_single(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
             
             $dbacthdr = DB::table('debtor.dbacthdr')
@@ -722,12 +733,15 @@ class CreditNoteARController extends defaultController
             $responce->result = 'success';
             
             return json_encode($responce);
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error'.$e, 500);
+            
         }
+        
     }
 
     public function gltran($idno){

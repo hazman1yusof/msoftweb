@@ -11,21 +11,21 @@ use Carbon\Carbon;
 use PDF;
 
 class DebitNoteController extends defaultController
-{   
+{
     var $gltranAmount;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('finance.AR.DebitNote.DebitNote');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -36,9 +36,9 @@ class DebitNoteController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function maintable(Request $request){
-
+        
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
                         'db.compcode AS db_compcode',
@@ -78,7 +78,7 @@ class DebitNoteController extends defaultController
                     ->where('db.compcode',session('compcode'))
                     ->where('db.source','=','PB')
                     ->where('db.trantype','DN');
-
+        
         if(!empty($request->filterCol)){
             foreach ($request->filterCol as $key => $value) {
                 $pieces = explode(".", $request->filterVal[$key], 2);
@@ -105,12 +105,12 @@ class DebitNoteController extends defaultController
                 }
             }
         }
-
+        
         if(!empty($request->fromdate)){
             $table = $table->where('db.entrydate','>=',$request->fromdate);
             $table = $table->where('db.entrydate','<=',$request->todate);
         }
-
+        
         if(!empty($request->searchCol)){
             if(!empty($request->fixPost)){
                 $searchCol_array = $this->fixPost3($request->searchCol);
@@ -120,10 +120,10 @@ class DebitNoteController extends defaultController
             
             $count = array_count_values($searchCol_array);
             // dump($request->searchCol);
-
+            
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
+                
                 $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
@@ -134,11 +134,11 @@ class DebitNoteController extends defaultController
                 });
             }
         }
-
+        
         if(!empty($request->sidx)){
-
+            
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
-
+            
             if(count($pieces)==1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
@@ -151,21 +151,21 @@ class DebitNoteController extends defaultController
         }else{
             $table = $table->orderBy('db.idno','DESC');
         }
-
+        
        $paginate = $table->paginate($request->rows);
-
+       
         // foreach ($paginate->items() as $key => $value) {
         //     $dbactdtl = DB::table('debtor.dbactdtl')
         //                 ->where('source','=',$value->db_source)
         //                 ->where('trantype','=',$value->db_trantype)
         //                 ->where('auditno','=',$value->db_auditno);
-
+        
         //     if($dbactdtl->exists()){
         //         $value->dbactdtl_outamt = $dbactdtl->sum('amount');
         //     }else{
         //         $value->dbactdtl_outamt = $value->dbacthdr_outamount;
         //     }
-
+        
         //     // $apalloc = DB::table('finance.apalloc')
         //     //             ->select('allocdate')
         //     //             ->where('refsource','=',$value->dbacthdr_source)
@@ -173,16 +173,16 @@ class DebitNoteController extends defaultController
         //     //             ->where('refauditno','=',$value->dbacthdr_auditno)
         //     //             ->where('recstatus','!=','CANCELLED')
         //     //             ->orderBy('idno', 'desc');
-
+        
         //     // if($apalloc->exists()){
         //     //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
         //     // }else{
         //     //     $value->apalloc_allocdate = '';
         //     // }
         // }
-
+        
         //////////paginate/////////
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -191,13 +191,13 @@ class DebitNoteController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
-
+        
         return json_encode($responce);
-
+        
     }
 
     public function form(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->oper){
             case 'add':
@@ -234,7 +234,7 @@ class DebitNoteController extends defaultController
         try {
             
             $auditno = $this->recno('PB','DN');
-            $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
+            // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
             
             $array_insert = [
                 'source' => 'PB',
@@ -300,7 +300,8 @@ class DebitNoteController extends defaultController
             'unit' => strtoupper($request->db_deptcode),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
-            'entrydate' => $request->db_entrydate,
+            'posteddate' => $request->posteddate,
+            'entrydate' => $request->posteddate,
             'hdrtype' => strtoupper($request->db_hdrtype),
             'paymode' => strtoupper($request->db_paymode),
             'mrn' => $request->db_mrn,
