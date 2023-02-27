@@ -60,6 +60,7 @@ $(document).ready(function () {
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
+						// $("#save_alloc").hide();
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
@@ -67,6 +68,7 @@ $(document).ready(function () {
 					case state = 'view':
 						disableForm('#formdata');
 						$("#pg_jqGridPager2 table").hide();
+						$("#jqGridPagerAlloc_left table").hide();
 						break;
 				} if (oper != 'add') {
 					refreshGrid("#jqGridAlloc",urlParamAlloc);
@@ -1356,8 +1358,8 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
-
-			//calculate_quantity_outstanding('#jqGrid3');
+			
+			// calculate_quantity_outstanding('#jqGrid3');
 		},
 	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
         fixPositionsOfFrozenDivs.call(this);
@@ -1373,8 +1375,8 @@ $(document).ready(function () {
 		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.outamount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
 		table_name:['debtor.dballoc AS alloc'],
 		table_id:'lineno_',
-		filterCol:['alloc.compcode','alloc.docauditno','alloc.docsource','alloc.doctrantype'],
-		filterVal:['session.compcode', '', '', '']
+		filterCol:['alloc.compcode','alloc.docauditno','alloc.docsource','alloc.doctrantype','alloc.recstatus'],
+		filterVal:['session.compcode', '', '', '','POSTED']
 	};
 
 	var addmore_jqGrid3={more:false,state:false,edit:true} // if addmore is true, add after refresh jqGridAlloc, state true kalau kosong
@@ -1542,44 +1544,44 @@ $(document).ready(function () {
 			event.preventDefault();
 			$(this).val(val.slice(0,val.length-1));
 		}
-
+		
 		var balance = parseFloat(data.outamount) - parseFloat($(this).val());
 		$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
 	}
 
 	////////////////////////////////////////////////myEditOptions_alloc////////////////////////////////////////////////
 	var myEditOptions_alloc = {
-        keys: true,
-        extraparam:{
-		    "_token": $("#_token").val()
-        },
-        oneditfunc: function (rowid) {
-        	console.log(rowid);
-
-        	$("#jqGridPagerAllocEditAll,#saveHeaderLabel,#jqGridPagerAllocDelete").hide();
-
-        	mycurrency2.array.length = 0;
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			console.log(rowid);
+			
+			$("#jqGridPagerAllocEditAll,#saveHeaderLabel,#jqGridPagerAllocDelete").hide();
+			
+			mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGridAlloc input[name='amount']"]);
-
-        	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
+			
+			$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridAlloc_ilsave').click();
 			})
-        },
-        aftersavefunc: function (rowid, response, options) {
-        	// $('#apacthdr_outamount').val(response.responseText);
-        	if(addmore_jqGrid3.state==true)addmore_jqGrid3.more=true; //only addmore after save inline
-        	refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
-	    	$("#jqGridPagerAllocEditAll,#jqGridPagerAllocDelete").show();
-        }, 
-        errorfunc: function(rowid,response){
-        	alert(response.responseText);
-        	refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
-	    	$("#jqGridPagerAllocDelete").show();
-        },
-        beforeSaveRow: function(options, rowid) {
-        	//if(errorField.length>0)return false;
-        	mycurrency2.formatOff();
+		},
+		aftersavefunc: function (rowid, response, options) {
+			// $('#apacthdr_outamount').val(response.responseText);
+			if(addmore_jqGrid3.state==true)addmore_jqGrid3.more=true; //only addmore after save inline
+			refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
+			$("#jqGridPagerAllocEditAll,#jqGridPagerAllocDelete").show();
+		},
+		errorfunc: function(rowid,response){
+			alert(response.responseText);
+			refreshGrid('#jqGridAlloc',urlParamAlloc,'save_alloc');
+			$("#jqGridPagerAllocDelete").show();
+		},
+		beforeSaveRow: function(options, rowid) {
+			// if(errorField.length>0)return false;
+			mycurrency2.formatOff();
 			let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
 			let editurl = "./CreditNoteARDetail/form?"+
 				$.param({
@@ -1589,26 +1591,74 @@ $(document).ready(function () {
 					amount:data.amount,
 				});
 			$("#jqGridAlloc").jqGrid('setGridParam',{editurl:editurl});
-        },
-        afterrestorefunc : function( response ) {
+		},
+		afterrestorefunc : function( response ) {
 			hideatdialogForm(false);
-	    }
-    };
+		}
+	};
 
     ////////////////////////////////////////////////pager jqGridAlloc////////////////////////////////////////////////
-	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{	
+	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{
 		add:false,
 		edit:false,
-		cancel: false,
+		cancel: true,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
-		addParams: { 
+		addParams: {
 			addRowParams: myEditOptions_alloc
 		},
 		editParams: myEditOptions_alloc
+	}).jqGrid('navButtonAdd', "#jqGridPagerAlloc", {
+		id: "delete_alloc",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
+		onClickButton: function () {
+			selRowId = $("#jqGridAlloc").jqGrid('getGridParam', 'selrow');
+			if (!selRowId) {
+				bootbox.alert('Please select row');
+			} else {
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if (result == true) {
+							param = {
+								_token: $("#_token").val(),
+								action: 'CreditNoteAR_save',
+								source: selrowData('#jqGridAlloc').source,
+								trantype: selrowData('#jqGridAlloc').trantype,
+								auditno: selrowData('#jqGridAlloc').auditno,
+								lineno_: selrowData('#jqGridAlloc').lineno_,
+								idno: selrowData('#jqGridAlloc').idno,
+								db_outamount: selrowData('#jqGrid').db_outamount,
+							}
+							$.post( "./CreditNoteAR/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()},
+							function( data ){
+							}).fail(function (data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data) {
+								// $('#db_amount').val(data);
+								// $('#amount').val(data);
+								refreshGrid("#jqGridAlloc",urlParamAlloc);
+							});
+						}else{
+							// $("#jqGridPagerAllocEditAll").show();
+						}
+					}
+				});
+			}
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
+		id: "add_alloc",
+		caption:"Add",cursor: "pointer",position: "last",
+		buttonicon:"",
+		title:"Add Alloc"
 	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
 		id: "save_alloc",
-		caption:"Save",cursor: "pointer",position: "last", 
+		caption:"Save",cursor: "pointer",position: "last",
 		buttonicon:"",
 		title:"Save Alloc"
 	});
@@ -1639,6 +1689,11 @@ $(document).ready(function () {
 		$("#jqGridArAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridArAlloc_c")[0].offsetWidth-$("#jqGridArAlloc_c")[0].offsetLeft-28));
 	});
 	
+	////////////////////////////////////////////////add_alloc////////////////////////////////////////////////
+	$("#add_alloc").click(function(){
+		populate_alloc_table();
+	});
+	
 	////////////////////////////////////////////////save_alloc////////////////////////////////////////////////
 	$("#save_alloc").click(function(){
 		// mycurrency.formatOff();
@@ -1662,7 +1717,7 @@ $(document).ready(function () {
 			_token : $('#_token').val(),
 			data_detail: $('#jqGridAlloc').jqGrid('getRowData')
 		}
-
+		
 		$.post( param.url+"?"+$.param(param),obj, function( data ) {
 		
 		},'json').fail(function(data) {

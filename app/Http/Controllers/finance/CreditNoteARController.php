@@ -239,6 +239,8 @@ class CreditNoteARController extends defaultController
                 return $this->refresh_do($request);
             case 'save_alloc':
                 return $this->save_alloc($request);break;
+            case 'del_alloc':
+                return $this->del_alloc($request);
             default:
                 return 'Errors happen';
         }
@@ -315,7 +317,8 @@ class CreditNoteARController extends defaultController
             'unit' => strtoupper($request->db_deptcode),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
-            'entrydate' => $request->db_entrydate,
+            'posteddate' => $request->posteddate,
+            'entrydate' => $request->posteddate,
             'hdrtype' => strtoupper($request->db_hdrtype),
             'mrn' => strtoupper($request->db_mrn),
             //'termdays' => strtoupper($request->db_termdays),
@@ -529,6 +532,7 @@ class CreditNoteARController extends defaultController
                     continue;
                 }
                 
+                // buat allocation
                 DB::table('debtor.dballoc')
                         ->insert([                            
                             'compcode' => session('compcode'),
@@ -553,32 +557,49 @@ class CreditNoteARController extends defaultController
                             'balance' => $balance,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'recstatus' => 'OPEN'
+                            'recstatus' => 'POSTED'
                         ]);
                         
+                // update kat header (debit note)
                 $dbacthdr_IV = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'outamount' => $newoutamount_IV
                     ]);
             }
+
+            // calculate total amount from alloc
+            $totalAllocAmount = DB::table('debtor.dballoc')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$dbacthdr->auditno)
+                ->where('source','=','AR')
+                ->where('trantype','=','CN')
+                ->where('recstatus','=','POSTED')
+                ->sum('amount');
             
-            //calculate total amount from detail
-            // $totalAmount = DB::table('debtor.dballoc')
-            //     ->where('compcode','=',session('compcode'))
-            //     ->where('auditno','=',$dbacthdr->auditno)
-            //     ->where('source','=','AR')
-            //     ->where('trantype','=','CN')
-            //     ->where('recstatus','!=','DELETE')
-            //     ->sum('amount');
+            // calculate total amount from detail
+            $totalDtlAmount = DB::table('debtor.dbactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','PB')
+                    ->where('trantype','=','CN')
+                    ->where('auditno','=',$dbacthdr->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('amount');
+                
+            $outamount_hdr = floatval($totalDtlAmount - $totalAllocAmount);
             
-            // //then update to header
-            // DB::table('debtor.dbacthdr')
-            //     ->where('idno','=',$request->idno)
-            //     ->update([
-            //         'amount' => $totalAmount,
-            //         'outamount' => $newoutamount_IV,
-            //     ]);
+            // then update to header (credit note)
+            DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'outamount' => $outamount_hdr,
+                ]);
+                
+            // if($totalAllocAmount <= $amount_hdr){
+                
+            // }else{
+            //     throw new \Exception("Error exist.");
+            // }
             
             DB::commit();
             
@@ -592,6 +613,74 @@ class CreditNoteARController extends defaultController
             DB::rollback();
             
             return response('Error'.$e, 500);
+            
+        }
+        
+    }
+
+    public function del_alloc(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+                    
+            $dballoc = DB::table('debtor.dballoc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=',$request->source)
+                    ->where('trantype','=',$request->trantype)
+                    ->where('auditno','=',$request->auditno)
+                    ->where('lineno_','=',$request->lineno_)
+                    ->first();
+            
+            $refauditno = str_pad($dballoc->refauditno, 5, "0", STR_PAD_LEFT);
+            $docauditno = str_pad($dballoc->docauditno, 5, "0", STR_PAD_LEFT);
+                    
+            $amount = floatval($dballoc->amount);
+            $balance = floatval($dballoc->balance);
+            $newoutamount_IV = floatval($amount + $balance);
+            
+            // update kat header (debit note)
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dballoc->refsource)
+                ->where('trantype','=',$dballoc->reftrantype)
+                ->where('auditno','=',$refauditno)
+                ->update([
+                    'outamount' => $newoutamount_IV
+                ]);
+        
+            // change status to CANCELLED
+            DB::table('debtor.dballoc')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
+                ->where('lineno_','=',$request->lineno_)
+                // ->delete();
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                    'lineno_' => null,
+                ]);
+            
+            $db_outamount = floatval($request->db_outamount);
+            $outamount_hdr = floatval($db_outamount + $amount);
+            
+            // then update to header (credit note)
+            DB::table('debtor.dbacthdr')
+                ->where('source','=',$dballoc->docsource)
+                ->where('trantype','=',$dballoc->doctrantype)
+                ->where('auditno','=',$docauditno)
+                ->update([
+                    'outamount' => $outamount_hdr,
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
             
         }
         

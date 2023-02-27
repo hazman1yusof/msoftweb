@@ -263,7 +263,14 @@ i.fa {
 							<input id="db_amount" name="db_amount" type="text" maxlength="11" class="form-control input-sm" value="0.00" rdonly>
 						</div>
 
-						<label class="col-md-3 control-label" for="db_recstatus">Record Status</label>  
+						<label class="col-md-3 control-label" for="db_outamount">Out Amount</label>
+						<div class="col-md-2">
+							<input id="db_outamount" name="db_outamount" maxlength="10" class="form-control input-sm" rdonly>
+						</div>
+					</div>
+						
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="db_recstatus">Record Status</label>
 						<div class="col-md-2">
 							<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 						</div>
