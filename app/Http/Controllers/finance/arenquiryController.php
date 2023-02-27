@@ -247,7 +247,8 @@ class arenquiryController extends defaultController
                         ->where('dc.compcode','=',session('compcode'))
                         ->where('dc.docsource','=',$dbacthdr->source)
                         ->where('dc.doctrantype','=',$dbacthdr->trantype)
-                        ->where('dc.docauditno','=',$dbacthdr->auditno);
+                        ->where('dc.docauditno','=',$dbacthdr->auditno)
+                        ->where('dc.recstatus','=',"POSTED");
                         
                         // ->whereIn('dc.doctrantype',['RC','RD','RF','CN'])
                         
@@ -295,7 +296,8 @@ class arenquiryController extends defaultController
                         ->where('dc.compcode','=',session('compcode'))
                         ->where('dc.refsource','=',$dbacthdr->source)
                         ->where('dc.reftrantype','=',$dbacthdr->trantype)
-                        ->where('dc.refauditno','=',$dbacthdr->auditno);
+                        ->where('dc.refauditno','=',$dbacthdr->auditno)
+                        ->where('dc.recstatus','=',"POSTED");
                         
             /////////////////paginate/////////////////
             $paginate = $table->paginate($request->rows);

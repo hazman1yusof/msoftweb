@@ -1294,8 +1294,8 @@ $(document).ready(function () {
 		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
 		table_name:['debtor.dballoc AS alloc'],
 		table_id:'lineno_',
-		filterCol:['alloc.compcode','alloc.refauditno','alloc.refsource','alloc.reftrantype'],
-		filterVal:['session.compcode', '', '','']
+		filterCol:['alloc.compcode','alloc.refauditno','alloc.refsource','alloc.reftrantype','alloc.recstatus'],
+		filterVal:['session.compcode', '', '','','POSTED']
 	};
 
 	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
