@@ -272,6 +272,7 @@ class APEnquiryController extends defaultController
                             'al.allocamount',
                             'al.outamount',
                             'al.recstatus',
+                            'al.allocdate'
                            
                         )
                         ->join('finance.apacthdr as ap', function($join) use ($request){

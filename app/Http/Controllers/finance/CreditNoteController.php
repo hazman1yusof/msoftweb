@@ -312,9 +312,7 @@ use Carbon\Carbon;
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
-                   // 'paymode' => $request->apacthdr_paymode,
                     'remarks' => strtoupper($request->apacthdr_remarks),
-                   // 'deptcode' => $request->apacthdr_deptcode,
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
@@ -455,21 +453,15 @@ use Carbon\Carbon;
             }
 
             //calculate total amount from detail
-            // $totalAmount = DB::table('finance.apalloc')
-            //     ->where('compcode','=',session('compcode'))
-            //     ->where('auditno','=',$apacthdr->auditno)
-            //     ->where('source','=','AP')
-            //     ->where('trantype','=','AL')
-            //     ->where('recstatus','!=','DELETE')
-            //     ->sum('allocamount');
+            $totalAmount = DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apacthdr->auditno)
+                ->where('source','=','AP')
+                ->where('trantype','=','AL')
+                ->where('recstatus','!=','DELETE')
+                ->sum('allocamount');
 
-            //then update to header
-            // DB::table('finance.apacthdr')
-            //     ->where('idno','=',$request->idno)
-            //     ->update([
-            //         'amount' => $totalAmount,
-            //         'outamount' => $totalAmount,
-            //     ]);  
+           
 
             DB::commit();
 

@@ -160,7 +160,8 @@ class CreditNoteDetailController extends defaultController
               ->where('compcode','=',session('compcode'))
               ->where('idno','=',$request->idno)
               ->update([
-                  'amount' => $totalAmount
+                  'amount' => $totalAmount,
+                  'outamount' => $totalAmount
               ]);
           DB::commit();
           return response($totalAmount,200);
