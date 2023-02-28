@@ -632,6 +632,10 @@
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm"> 
 		 					</div>
+						<label class="col-md-2 control-label" for="apacthdr_outamount">Out Amount</label>  
+					  		<div class="col-md-3">
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm"> 
+		 					</div>
 
 					</div>
 				</form>
