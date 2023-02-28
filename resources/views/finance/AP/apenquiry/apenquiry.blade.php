@@ -102,7 +102,7 @@
 			<div class="panel panel-default" id="jqGrid3_div_in" style="display:none;">
 			    <div class="panel-heading">Invoice Detail</div>
 				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 13px 0">
+					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_in" class="table table-striped"></table>
 						<div id="jqGridPager3_in"></div>
 					</div>
@@ -112,7 +112,7 @@
             <div class="panel panel-default" id="jqGrid3_div_pv" style="display:none;">
 			    <div class="panel-heading">Payment Voucher Detail</div>
 				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 13px 0">
+					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_pv" class="table table-striped"></table>
 						<div id="jqGridPager3_pv"></div>
 					</div>
@@ -122,7 +122,7 @@
 			<div class="panel panel-default" id="jqGrid3_div_dn" style="display:none;">
 			    <div class="panel-heading">Debit Note Detail</div>
 				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 13px 0">
+					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_dn" class="table table-striped"></table>
 						<div id="jqGridPager3_dn"></div>
 					</div>
@@ -132,7 +132,7 @@
             <div class="panel panel-default" id="jqGrid3_div_cn" style="display:none;">
 			    <div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 13px 0">
+					<div class='col-md-12' style="padding:0 0 15px 0">
 						<table id="jqGrid3_cn" class="table table-striped"></table>
 						<div id="jqGridPager3_cn"></div>
 					</div>

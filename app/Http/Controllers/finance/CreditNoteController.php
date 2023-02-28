@@ -585,7 +585,6 @@ use Carbon\Carbon;
         
     }
 
-
     public function posted_single(Request $request){
         DB::beginTransaction();
         try {

@@ -24,6 +24,7 @@ $(document).ready(function () {
 			}
 		},
 	};
+
 	/////////////////////////////////// currency ///////////////////////////////
 	var fdl = new faster_detail_load();
 	var mycurrency =new currencymode(["#formdata_cn :input[name='apacthdr_amount']", "#formdata_cn :input[name='apacthdr_outamount']", "#formdata_dn :input[name='apacthdr_amount']", "#formdata_dn :input[name='apacthdr_outamount']", "#formdata_cna :input[name='apacthdr_amount']", "#formdata_pv :input[name='apacthdr_amount']", "#formdata_pd :input[name='apacthdr_amount']", "#formdata_in :input[name='apacthdr_amount']", "#formdata_in :input[name='apactdtl_outamt']"]);
@@ -283,7 +284,6 @@ $(document).ready(function () {
 				urlParam2_dn.source = selrowData("#jqGrid").apacthdr_source;
 				urlParam2_dn.trantype = selrowData("#jqGrid").apacthdr_trantype;
 				urlParam2_dn.auditno = selrowData("#jqGrid").apacthdr_auditno;
-				//urlParam2_allocdn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				$("#jqGrid3_dn").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_dn")[0].offsetWidth-$("#jqGrid3_div_dn")[0].offsetLeft));
 				refreshGrid("#jqGrid3_dn",urlParam2_dn);
 
