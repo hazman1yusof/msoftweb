@@ -34,6 +34,8 @@ use Carbon\Carbon;
                 return $this->del($request);break;
             case 'save_alloc':
                 return $this->save_alloc($request);break;
+            case 'del_alloc':
+                return $this->del_alloc($request);break;
             case 'posted_single':
                 return $this->posted_single($request);break;
             case 'posted':
@@ -452,17 +454,35 @@ use Carbon\Carbon;
                     ]);
             }
 
-            //calculate total amount from detail
-            $totalAmount = DB::table('finance.apalloc')
+            //calculate total allocamount
+            $totalAlloc = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$apacthdr->auditno)
                 ->where('source','=','AP')
                 ->where('trantype','=','AL')
-                ->where('recstatus','!=','DELETE')
+                ->where('recstatus','=','POSTED')
                 ->sum('allocamount');
 
-           
+               // dd($allocamount);
+            
+            //calculate total amount from detail
+            $totalDtl = DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apacthdr->auditno)
+                ->where('source','=','AP')
+                ->where('trantype','=','CN')
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+            
+            $newoutamt = floatval($totalDtl - $totalAlloc);
 
+            //then update to header
+            DB::table('finance.apacthdr')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'outamount' => $newoutamt
+                ]);
+            
             DB::commit();
 
             $responce = new stdClass();
@@ -475,6 +495,96 @@ use Carbon\Carbon;
             return response('Error'.$e, 500);
         }
     }
+
+    public function del_alloc(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $apalloc = DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
+                ->where('lineno_','=',$request->lineno_)
+                ->first();
+                
+
+            $allocamt = floatval($apalloc->allocamount);
+            $balance = floatval($apalloc->balance);
+            $curr_outamthdr = floatval($allocamt + $balance);
+
+            //update alloc amount asal IN/DN
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apalloc->refauditno)
+                ->where('source','=',$apalloc->refsource)
+                ->where('trantype','=',$apalloc->reftrantype)
+                ->update([
+                    'outamount' => $curr_outamthdr
+                ]);
+
+            //recalculate total allocamount
+            $totalAlloc = DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$request->auditno)
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('recstatus','=','POSTED')
+                ->sum('allocamount');
+        
+            //recalculate total amountdtl CN
+            $totalDtl = DB::table('finance.apactdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apalloc->docauditno)
+                ->where('source','=',$apalloc->docsource)
+                ->where('trantype','=',$apalloc->doctrantype)
+                ->where('recstatus','!=','DELETE')
+                ->sum('amount');
+            
+            $newoutamthdr = floatval($totalDtl - $totalAlloc);
+
+            //then update to header
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->where('source','=',$request->source)
+                ->where('trantype','=',$request->trantype)
+                ->where('auditno','=',$request->auditno)
+                ->update([
+                    'outamount' => $newoutamthdr
+                ]);
+                
+             //update status
+             DB::table('finance.apalloc')
+             ->where('compcode','=',session('compcode'))
+             ->where('auditno','=',$request->auditno)
+             ->where('source','=',$request->source)
+             ->where('trantype','=',$request->trantype)
+             ->where('lineno_','=',$request->lineno_)
+             ->update([
+                       'recstatus' => 'CANCELLED',
+                       'lineno_' => null,
+                     ]);
+        
+            DB::commit();
+
+
+            $responce = new stdClass();
+           // $responce->newoutamthdr = $newoutamthdr;
+
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
+    }
+
 
     public function posted_single(Request $request){
         DB::beginTransaction();

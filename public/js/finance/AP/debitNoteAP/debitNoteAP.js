@@ -187,7 +187,7 @@ $(document).ready(function () {
 	datatype: "local",
 	colModel: [
 		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
-		{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+		{ label: 'Audit <br>No', name: 'apacthdr_auditno', width: 13, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
@@ -395,7 +395,6 @@ $(document).ready(function () {
 		
 	});
 
-	
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_reopen_jq,#but_post_single_jq,#but_cancel_jq").click(function(){
 
@@ -695,7 +694,7 @@ $(document).ready(function () {
                         custom_value:galGridCustomValue 	
                     },
             },
-            { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap',
+            { label: 'Amount Before GST', name: 'AmtB4GST', width: 95, classes: 'wrap',
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -707,18 +706,17 @@ $(document).ready(function () {
                     }
                 },
             },
-			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total Tax Amount', name: 'tot_gst', width: 95, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules:{required: true}, edittype:"text",
 				editoptions:{
-					//readonly: "readonly",
 					maxlength: 12,
 					dataInit: function(element) {
 						element.style.textAlign = 'right';
 					}
 				},
 			},
-            { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', 
+            { label: 'Amount', name: 'amount', width: 95, classes: 'wrap', 
                 formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
                 editable: true,
                 align: "right",
@@ -753,6 +751,7 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+			setjqgridHeight(data,'jqGrid2');
 			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
@@ -1263,7 +1262,7 @@ $(document).ready(function () {
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
 			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
-			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Creditor', name: 'suppcode', width: 130, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
@@ -1288,7 +1287,7 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAPAlloc",
 		loadComplete: function(data){
 
-			// setjqgridHeight(data,'jqGridAlloc');
+			setjqgridHeight(data,'jqGridAlloc');
 			// calc_jq_height_onchange("jqGridAlloc");
 		},
 		gridComplete: function(){

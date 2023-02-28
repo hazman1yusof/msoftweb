@@ -704,9 +704,9 @@ $(document).ready(function () {
 			{ label: 'AuditNo', name: 'auditno', hidden: true},
             { label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:true},
             { label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:true},
-            { label: 'Department', name: 'deptcode', width: 120, classes: 'wrap',formatter: showdetail, unformat:un_showdetail},
+            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap',formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Category', name: 'category', width: 100, classes: 'wrap', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-            { label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+            { label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', align: 'right', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false },
 			{ label: 'Total Tax Amount', name: 'tot_gst', width: 90, align: 'right', classes: 'wrap', editable:true,formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false},
             { label: 'Amount', name: 'amount', width: 90, classes: 'wrap', align: 'right', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2}, editable: false},
@@ -767,8 +767,8 @@ $(document).ready(function () {
 		field:['apdt.suppcode', 'apdt.allocdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.compcode', 'apdt.source', 'apdt.trantype', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno', 'apdt.auditno', 'apdt.lineno_', 'apdt.idno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype'],
-		filterVal:['session.compcode', '', 'AP','CN']
+		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype', 'apdt.recstatus'],
+		filterVal:['session.compcode', '', 'AP','CN', '<>.CANCELLED']
 	};
 
 	$("#jqGridAlloc").jqGrid({
@@ -794,6 +794,7 @@ $(document).ready(function () {
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
 			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
+			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden:true}, 
 		
 		],
 		autowidth: true,
@@ -956,15 +957,15 @@ $(document).ready(function () {
 			{ label: 'Src', name: 'source', width: 10, classes: 'wrap'},
 			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
 			{ label: 'Audit No', name: 'auditno', width: 20, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-			{ label: 'PV No', name: 'pvno', width: 20, classes: 'wrap'},
-			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
-			{ label: 'Supplier Code', name: 'suppcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Alloc Date', name: 'allocdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
-			{ label: 'Invoice Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'PV No', name: 'pvno', width: 25, classes: 'wrap'},
+			{ label: 'Document No', name: 'document', width: 40, classes: 'wrap', },
+			{ label: 'Supplier Code', name: 'suppcode', width: 70, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Alloc Date', name: 'allocdate', width: 30, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Alloc Amount', name: 'allocamount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
+			{ label: 'Invoice Amount', name: 'amount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
-			{ label: 'Post Date', name: 'recdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post Date', name: 'recdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 		
 		],
 		shrinkToFit: true,
@@ -975,7 +976,7 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
 			// calc_jq_height_onchange("gridAlloc");
-			// setjqgridHeight(data,'gridAlloc');
+			setjqgridHeight(data,'gridAlloc');
 			urlParam2_alloc.idno=selrowData("#jqGrid").apacthdr_idno;
 			
 			refreshGrid("#gridAlloc",urlParam2_alloc,'add');
@@ -1531,9 +1532,11 @@ $(document).ready(function () {
 	}
 
 	function init_jq2_cn(oper){
-		var unallocated = selrowData('#jqGrid').unallocated;
-		if(unallocated == 'true'){
-			$("#dialogForm_cn [name=apacthdr_trantype]").val('CNU');
+		if(oper != 'view'){
+			var unallocated = selrowData('#jqGrid').unallocated;
+			if(unallocated == 'true'){
+				$("#apacthdr_trantype").val('CNU');
+			}
 		}
 
 		if(($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CN')) {

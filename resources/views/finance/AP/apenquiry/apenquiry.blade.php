@@ -139,8 +139,6 @@
 				</div>
 			</div>
 
-		</div>
-
 			<div class="panel panel-default" style="position: relative;" id="gridAlloc_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAlloc_panel">
 

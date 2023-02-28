@@ -276,6 +276,10 @@ i.fa {
 					  		<div class="col-md-3">
 								<input id="apacthdr_amount" name="apacthdr_amount" maxlength="12" class="form-control input-sm" rdonly> 
 		 					</div>
+						<label class="col-md-2 control-label" for="apacthdr_outamount">Out Amount</label>  
+							<div class="col-md-3">
+								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm" rdonly> 
+							</div>
 
 					</div>
 					<button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
