@@ -767,7 +767,7 @@ $(document).ready(function () {
 		field:['apdt.suppcode', 'apdt.allocdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.compcode', 'apdt.source', 'apdt.trantype', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno', 'apdt.auditno', 'apdt.lineno_', 'apdt.idno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.auditno','apdt.source','apdt.trantype', 'apdt.recstatus'],
+		filterCol:['apdt.compcode','apdt.docauditno','apdt.docsource','apdt.doctrantype', 'apdt.recstatus'],
 		filterVal:['session.compcode', '', 'AP','CN', '<>.CANCELLED']
 	};
 
@@ -1537,13 +1537,28 @@ $(document).ready(function () {
 			if(unallocated == 'true'){
 				$("#apacthdr_trantype").val('CNU');
 			}
+			else{
+				$("#apacthdr_trantype").val('CN');
+			}
 		}
 
-		if(($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CN')) {
-			$('#cn_detail').show();
-			$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
-		} else if (($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CNU')) {
-			$('#cn_detail').hide();
+		if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+			$('#save').hide();
+			$('#alloc_detail').show();
+			$('#grid_detail').show();
+			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft-28));
+			$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn")[0].offsetWidth-$("#jqGrid2_cn")[0].offsetLeft));
+		} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
+			$('#save').hide();
+			$('#alloc_detail').hide();
+			$('#grid_detail').show();
 		}
+
+		// if(($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CN')) {
+		// 	$('#cn_detail').show();
+		// 	$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
+		// } else if (($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CNU')) {
+		// 	$('#cn_detail').hide();
+		// }
 		
 	}
