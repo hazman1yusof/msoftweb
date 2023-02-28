@@ -663,7 +663,7 @@ $(document).ready(function () {
 				edittype:"text",
 				editoptions: {style: "text-transform: uppercase"},
 			},
-			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
+			{ label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -1252,8 +1252,6 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 		
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
-		console.log(id_optid);
-		console.log($("#jqGrid2 #"+id_optid+"_amount"));
 		
 		if(event.data != undefined){
 			event.data.currency.formatOn();//change format to currency on each calculation
@@ -1323,7 +1321,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap' },
 			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap' },
-			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+			{ label: 'Amount', name: 'refamount', width: 90, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
 				align: "right",
@@ -1341,11 +1339,11 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
+			{ label: 'O/S Amount', name: 'outamount', width: 90, align: 'right', classes: 'wrap', editable:false,	
 				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'amount', width: 100, classes: 'wrap', 
+			{ label: 'Amount Paid', name: 'amount', width: 90, classes: 'wrap', 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -1362,7 +1360,7 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
+			{ label: 'Balance', name: 'balance', width: 90, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
 				align: "right",
@@ -1542,8 +1540,8 @@ $(document).ready(function () {
 				{ label:'Tax Rate',name:'rate',width:200,classes:'pointer' },
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus','taxtype'],
+				filterVal:['session.compcode','ACTIVE','OUTPUT']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1557,6 +1555,21 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 				
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.taxcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

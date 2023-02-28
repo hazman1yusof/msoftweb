@@ -30,6 +30,8 @@ class CreditNoteARController extends defaultController
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_alloc_when_edit':
+                return $this->get_alloc_when_edit($request);
             default:
                 return 'error happen..';
         }
@@ -208,6 +210,59 @@ class CreditNoteARController extends defaultController
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
         
+        return json_encode($responce);
+
+    }
+
+    public function get_alloc_when_edit(Request $request){
+
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('debtorcode',$request->filterVal[0])
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','!=','CANCELLED')
+                    ->where('outamount','>',0)
+                    ->where('source','PB')
+                    ->whereIn('trantype',['IN','DN']);
+
+        $dballoc = DB::table('debtor.dballoc')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','AR')
+                    ->where('trantype','CN')
+                    ->where('auditno',$request->auditno)
+                    ->where('recstatus','!=','CANCELLED');
+
+        $return_array=[];
+        if($dballoc->exists()){
+            foreach ($dbacthdr->get() as $obj_dbacthdr) {
+                foreach ($dballoc->get() as $obj_dballoc) {
+                    if(
+                        $obj_dballoc->refsource == $obj_dbacthdr->source
+                        && $obj_dballoc->reftrantype == $obj_dbacthdr->trantype
+                        && $obj_dballoc->refauditno == $obj_dbacthdr->auditno
+                    ){
+                        $obj_dbacthdr->can_alloc=false;
+                        $obj_dbacthdr->outamount = $obj_dballoc->outamount;
+                        $obj_dbacthdr->amount = $obj_dballoc->amount;
+                        $obj_dbacthdr->source = $obj_dballoc->source;
+                        $obj_dbacthdr->trantype = $obj_dballoc->trantype;
+                        $obj_dbacthdr->auditno = $obj_dballoc->auditno;
+                        $obj_dbacthdr->lineno_ = $obj_dballoc->lineno_;
+                        $obj_dbacthdr->idno = $obj_dballoc->idno;
+
+                        array_push($return_array,$obj_dbacthdr);
+                    }else{
+                        $obj_dbacthdr->can_alloc=true;
+                        array_push($return_array,$obj_dbacthdr);
+                    }
+                }
+            }
+        }else{
+            $return_array = $dbacthdr->get();
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $return_array;
+
         return json_encode($responce);
 
     }
@@ -545,6 +600,18 @@ class CreditNoteARController extends defaultController
                 if($allocamount == 0){
                     continue;
                 }
+
+                $lineno_ = DB::table('debtor.dballoc') 
+                                ->where('compcode','=',session('compcode'))
+                                ->where('source','=','AR')
+                                ->where('trantype','=','CN')
+                                ->where('auditno','=',$dbacthdr->auditno)->max('lineno_');
+
+                if($lineno_ == null){
+                    $lineno_ = 1;
+                }else{
+                    $lineno_ = $lineno_+1;
+                }
                 
                 // buat allocation
                 DB::table('debtor.dballoc')
@@ -553,7 +620,7 @@ class CreditNoteARController extends defaultController
                             'source' => 'AR',
                             'trantype' => 'CN',
                             'auditno' => $dbacthdr->auditno,
-                            'lineno_' => $key+1,
+                            'lineno_' => $lineno_,
                             'docsource' => $dbacthdr->source,
                             'doctrantype' => $dbacthdr->trantype,
                             'docauditno' => $dbacthdr->auditno,
@@ -608,12 +675,6 @@ class CreditNoteARController extends defaultController
                 ->update([
                     'outamount' => $outamount_hdr,
                 ]);
-                
-            // if($totalAllocAmount <= $amount_hdr){
-                
-            // }else{
-            //     throw new \Exception("Error exist.");
-            // }
             
             DB::commit();
             
@@ -670,7 +731,7 @@ class CreditNoteARController extends defaultController
                 // ->delete();
                 ->update([
                     'recstatus' => 'CANCELLED',
-                    'lineno_' => null,
+                    // 'lineno_' => null,
                 ]);
             
             $db_outamount = floatval($request->db_outamount);

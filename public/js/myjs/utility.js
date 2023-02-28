@@ -1145,7 +1145,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	function onClick(event){
 		var textfield = $(event.currentTarget).siblings("input[type='text']");
 
-		var optid = $(event.currentTarget).siblings("input[type='text']").attr("optid");
+		// var optid = $(event.currentTarget).siblings("input[type='text']").attr("optid");
+		var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 		if(optid!=null || optid!=undefined){
 			var id_optid = optid.substring(0,optid.search("_"));
 			event.data.data.id_optid = id_optid;
