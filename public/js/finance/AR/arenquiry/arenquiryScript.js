@@ -405,18 +405,8 @@ $(document).ready(function () {
 			buttons :butt1,
 		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
-
-	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam={
-		action:'maintable',
-		url:'./arenquiry/table',
-		//source:$('#db_source').val(),
-		//trantype:$('#db_trantype').val(),
-	}
-
-	/////////////////////parameter for saving url///////////////////////////////////////////////////////
-
-	//////////////////////////////////////////////padzero//////////////////////////////////////////////
+	
+	////////////////////////////////////////////padzero////////////////////////////////////////////
 	function padzero(cellvalue, options, rowObject){
 		let padzero = 5, str="";
 		while(padzero>0){
@@ -425,11 +415,19 @@ $(document).ready(function () {
 		}
 		return pad(str, cellvalue, true);
 	}
-
+	
 	function unpadzero(cellvalue, options, rowObject){
 		return cellvalue.substring(cellvalue.search(/[1-9]/));
 	}
 
+	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
+	var urlParam={
+		action:'maintable',
+		url:'./arenquiry/table',
+		//source:$('#db_source').val(),
+		//trantype:$('#db_trantype').val(),
+	}
+	
 	///////////////////////////////////////////////jqgrid///////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -437,7 +435,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
-			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap', canSearch: true },
+			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
@@ -477,7 +475,7 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c').hide();
-
+			
 			if(selrowData("#jqGrid").db_trantype=='CN'){	//CN
 				urlParam2_CN.source = selrowData("#jqGrid").db_source;
 				urlParam2_CN.trantype = selrowData("#jqGrid").db_trantype;
@@ -580,7 +578,7 @@ $(document).ready(function () {
 				getdata('RC',selrowData("#jqGrid").db_idno);
 				// refreshGrid("#jqGrid2_RC",urlParam2_RC,'add');
 				refreshGrid("#sysparam",urlParam_sys);
-
+				
 				// refreshGrid("#g_paymodecard",urlParam3);
 				// refreshGrid("#g_paymodebank",urlParam2);
 				// refreshGrid("#g_forex",urlParam4);
@@ -668,24 +666,24 @@ $(document).ready(function () {
 			{ label: 'AuditNo', name: 'auditno', hidden: true },
 			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true, editable:false },
 			{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true, editable:false },
-            { label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:deptcodeCNCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
-            { label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
-                editrules:{required: true,custom:true, custom_func:cust_rules},
-                formatter: showdetail,
-                edittype:'custom',	editoptions:
-                    {  
-                        custom_element:categoryCNCustomEdit,
-                        custom_value:galGridCustomValue 	
-                    },
-            },
+			{ label: 'Department', name: 'deptcode', width: 150, classes: 'wrap', canSearch: true, editable: false,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:deptcodeCNCustomEdit,
+						custom_value:galGridCustomValue
+					},
+			},
+			{ label: 'Category', name: 'category', width: 250, edittype:'text', classes: 'wrap', hidden:true, editable: false,
+				editrules:{required: true,custom:true, custom_func:cust_rules},
+				formatter: showdetail,
+				edittype:'custom',	editoptions:
+					{
+						custom_element:categoryCNCustomEdit,
+						custom_value:galGridCustomValue
+					},
+			},
 			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
 			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
@@ -693,7 +691,7 @@ $(document).ready(function () {
 				edittype:'custom',	editoptions:
 					{
 						custom_element:GSTCodeCNCustomEdit,
-						custom_value:galGridCustomValue 	
+						custom_value:galGridCustomValue
 					},
 			},
 			{ label: 'Amount Before GST', name: 'AmtB4GST', width: 90, classes: 'wrap', editable: false, align: "right", formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,} },
