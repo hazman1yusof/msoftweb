@@ -1347,7 +1347,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Qty <br> Delivered', name: 'qtydelivered', width: 120, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Qty <br> Delivered', name: 'qtydelivered', width: 130, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
@@ -1363,7 +1363,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'O/S <br> Quantity', name: 'qtyoutstand', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'O/S <br> Quantity', name: 'qtyoutstand', width: 130, align: 'right', classes: 'wrap', editable:true,	
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
@@ -1390,7 +1390,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 115, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 150, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1406,7 +1406,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Discount <br> Per Unit', name: 'amtdisc', width: 100, align: 'right', classes: 'wrap', 
+			{ label: 'Discount <br> Per Unit', name: 'amtdisc', width: 130, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -1422,7 +1422,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Total <br> GST Amount', name: 'tot_gst', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total <br> GST Amount', name: 'tot_gst', width: 110, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
 				editoptions:{
@@ -1501,7 +1501,7 @@ $(document).ready(function () {
 					});
 				}
 			});
-			//setjqgridHeight(data,'jqGrid3');
+			setjqgridHeight(data,'jqGrid3');
         	//showeditfunc.off().on();
 			calc_jq_height_onchange("gridDo");
 		},
@@ -1744,8 +1744,7 @@ $(document).ready(function () {
 	function setjqgridHeight(data,grid){
 		if(data.rows.length>=6){
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(500);
-		}else if(data.rows.length>=3){
-			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
+		}else if(data.rows.length>=3){		$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(300);
 		}else{
 			$('#gbox_'+grid+' div.ui-jqgrid-bdiv').height(200);
 		}
