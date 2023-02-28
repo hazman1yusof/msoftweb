@@ -230,7 +230,8 @@ class CreditNoteARController extends defaultController
                     ->where('trantype','CN')
                     ->where('auditno',$request->auditno)
                     ->where('recstatus','!=','CANCELLED');
-
+        // dump($dbacthdr->get());
+        // dump($dballoc->get());
         $return_array=[];
         if($dballoc->exists()){
             foreach ($dbacthdr->get() as $obj_dbacthdr) {
@@ -248,11 +249,14 @@ class CreditNoteARController extends defaultController
                         $obj_dbacthdr->auditno = $obj_dballoc->auditno;
                         $obj_dbacthdr->lineno_ = $obj_dballoc->lineno_;
                         $obj_dbacthdr->idno = $obj_dballoc->idno;
-
-                        array_push($return_array,$obj_dbacthdr);
+                        if(!in_array($obj_dbacthdr, $return_array)){
+                            array_push($return_array,$obj_dbacthdr);
+                        }
                     }else{
                         $obj_dbacthdr->can_alloc=true;
-                        array_push($return_array,$obj_dbacthdr);
+                        if(!in_array($obj_dbacthdr, $return_array)){
+                            array_push($return_array,$obj_dbacthdr);
+                        }
                     }
                 }
             }
@@ -597,7 +601,7 @@ class CreditNoteARController extends defaultController
                 $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                 $newoutamount_IV = floatval($outamount - $allocamount);
                 
-                if($allocamount == 0){
+                if($allocamount == 0 || $value['can_alloc'] == 'false'){
                     continue;
                 }
 
