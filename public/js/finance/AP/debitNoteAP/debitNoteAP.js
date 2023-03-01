@@ -217,12 +217,11 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		width: 900,
-		height: 200,
+		height: 300,
 		rowNum: 30,
 		pager: "#jqGridPager",
-
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			// calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
 

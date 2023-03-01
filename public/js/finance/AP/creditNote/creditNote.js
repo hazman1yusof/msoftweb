@@ -60,16 +60,19 @@ $(document).ready(function () {
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
+					alloc_button_status('initial');
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();
 					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
+					alloc_button_status('add');
 					break;
 				case state = 'view':
 					disableForm('#formdata');
 					$("#pg_jqGridPager2 table").hide();
+					alloc_button_status('add');
 					break;
 				}
 				if(oper!='view'){
@@ -259,7 +262,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		width: 900,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -327,7 +330,7 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			// calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
@@ -395,14 +398,14 @@ $(document).ready(function () {
 
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveAlloc, #saveDetailLabel").hide();
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#save_Alloc, #saveDetailLabel").hide();
 			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
 		}else if(hide){
 			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
-			$("#saveAlloc, #saveDetailLabel").show();
+			$("#save_Alloc, #saveDetailLabel").show();
 		}else{
 			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#saveAlloc,#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			$("#save_Alloc,#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
 
@@ -1237,7 +1240,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGridAlloc right & calculate balance ////////////////////////////////////////////////
-	addParamField('#jqGridAlloc',false,urlParam2_alloc,['checkbox','entrydate'])
+	addParamField('#jqGridAlloc',false,urlParam2_alloc,['checkbox','entrydate','can_alloc'])
 	jqgrid_label_align_right("#jqGridAlloc");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){
@@ -1311,7 +1314,8 @@ $(document).ready(function () {
 	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{	
 		add:false,
 		edit:false,
-		cancel: true,
+		cancel: false,
+		save:false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: { 
@@ -1358,16 +1362,42 @@ $(document).ready(function () {
 			}
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
-		id: "addAlloc",
+		id: "add_Alloc",
 		caption:"Add",cursor: "pointer",position: "last", 
 		buttonicon:"",
 		title:"Add Alloc"
 	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
-		id: "saveAlloc",
+		id: "save_Alloc",
 		caption:"Save",cursor: "pointer",position: "last", 
 		buttonicon:"",
 		title:"Save Alloc"
+	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
+		id: "cancel_Alloc",
+		caption:"Cancel",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Cancel",
+		onClickButton: function(){
+			refreshGrid("#jqGridAlloc",urlParam2_alloc);
+			alloc_button_status('add');
+		}
 	});
+
+	alloc_button_status('initial');
+	function alloc_button_status(status){
+		switch(status){
+			case 'initial':
+					$('#jqGridPagerAlloc #del_alloc,#jqGridPagerAlloc #add_Alloc,#jqGridPagerAlloc #save_Alloc').hide();
+					break;
+			case 'wait':
+					$('#jqGridPagerAlloc #del_alloc,#jqGridPagerAlloc #add_Alloc').hide();
+					$('#jqGridPagerAlloc #save_Alloc,#jqGridPagerAlloc #cancel_Alloc').show();
+					break;
+			case 'add':
+					$('#jqGridPagerAlloc #save_Alloc,#jqGridPagerAlloc #cancel_Alloc').hide();
+					$('#jqGridPagerAlloc #del_alloc,#jqGridPagerAlloc #add_Alloc').show();
+					break;
+		}
+	}
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
@@ -1495,7 +1525,7 @@ $(document).ready(function () {
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
-			$('#saveAlloc, #jqGridPagerAlloc').show();
+			alloc_button_status('wait');
 		});
 	});
 
@@ -1516,7 +1546,7 @@ $(document).ready(function () {
 		}
 	});
 	
-	$("#saveAlloc").click(function(){
+	$("#save_Alloc").click(function(){
 		var totamt = $('#apacthdr_amount').val();
 		var allocamt = 0;
 		$('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
@@ -1546,7 +1576,8 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#addAlloc").click(function(){
+	$("#add_Alloc").click(function(){
+		alloc_button_status('wait')
 		populate_alloc_table();
 	});
 
@@ -2005,6 +2036,7 @@ function populate_alloc_table(){
 		WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
 		WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
 		table_id: 'idno',
+		auditno:$('#apacthdr_auditno').val(),
 	};
 
 	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
@@ -2013,9 +2045,9 @@ function populate_alloc_table(){
 			myerrorIt_only($("#apacthdr_suppcode").val(),false);
 
 			data.rows.forEach(function(elem) {
-				let amount = 0;
+				let allocamount = 0;
 				if(elem['can_alloc'] == false){
-					amount = elem['amount'];
+					allocamount = elem['amount'];
 				}
 				
 				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,

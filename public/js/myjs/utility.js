@@ -1060,7 +1060,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.field=jqgrid_.colModel;
 	this.textfield=id;
 	this.ck_desc=1;
-	this.check_take_all_field=false;
+	if(dialog_.check_take_all_field == undefined){
+		this.check_take_all_field=false;
+	}else{
+		this.check_take_all_field=dialog_.check_take_all_field;
+	}
 	this.eventstat='off';
 	this.checkstat=checkstat;
 	this.ontabbing=false;
@@ -1220,14 +1224,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		var optid = (obj.urlParam.hasOwnProperty('optid'))? obj.urlParam.optid:null;
 
 		if(obj.checkstat!='none'){
-			// renull_search(event.data.data);
-			if(obj.dialog_.hasOwnProperty('after_check')){
-				obj.check(obj.errorField,idtopush,jqgrid,optid,undefined,function(){
-					obj.dialog_.after_check(obj);
-				});
-			}else{
 				obj.check(obj.errorField,idtopush,jqgrid,optid);
-			}
 		}
 	}
 
@@ -1586,8 +1583,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			}
 
-			if (after_check !== undefined) {
-				after_check(self,data);
+			if(self.dialog_.hasOwnProperty('after_check')){
+				self.dialog_.after_check(data,self,id);
 			}
 			
 		});

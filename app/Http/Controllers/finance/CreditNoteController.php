@@ -198,13 +198,15 @@ use Carbon\Carbon;
                     ->where('outamount','>',0)
                     ->where('source','AP')
                     ->whereIn('trantype',['IN','DN']);
+        // dump($apacthdr->get());
 
         $apalloc = DB::table('finance.apalloc')
                     ->where('compcode',session('compcode'))
-                    ->where('source','AP')
-                    ->where('trantype','AL')
-                    ->where('auditno',$request->auditno)
+                    ->where('docsource','AP')
+                    ->where('doctrantype','CN')
+                    ->where('docauditno',$request->auditno)
                     ->where('recstatus','!=','CANCELLED');
+        // dump($apalloc->get());
 
         $return_array=[];
         if($apalloc->exists()){
@@ -217,7 +219,7 @@ use Carbon\Carbon;
                     ){
                         $obj_apacthdr->can_alloc=false;
                         $obj_apacthdr->outamount = $obj_apalloc->outamount;
-                        $obj_apacthdr->amount = $obj_apalloc->amount;
+                        $obj_apacthdr->amount = $obj_apalloc->allocamount;
                         $obj_apacthdr->source = $obj_apalloc->source;
                         $obj_apacthdr->trantype = $obj_apalloc->trantype;
                         $obj_apacthdr->auditno = $obj_apalloc->auditno;
@@ -525,7 +527,7 @@ use Carbon\Carbon;
             //calculate total allocamount
             $totalAlloc = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$apacthdr->auditno)
+                ->where('auditno','=',$auditno_al)
                 ->where('source','=','AP')
                 ->where('trantype','=','AL')
                 ->where('recstatus','=','POSTED')
@@ -543,7 +545,7 @@ use Carbon\Carbon;
                 ->sum('amount');
            // dd($totalDtl);
             $newoutamt = floatval($totalDtl - $totalAlloc);
-            dd($newoutamt);
+            // dd($newoutamt);
 
             //then update to header
             DB::table('finance.apacthdr')

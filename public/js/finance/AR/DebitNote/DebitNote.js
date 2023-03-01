@@ -1148,7 +1148,7 @@ $(document).ready(function () {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group"><input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden"></div>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="GSTCode" type="text" class="form-control input-sm text-uppercase" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group"><input id="`+id_optid+`_gstpercent" name="gstpercent" type="hidden"></div>`);
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1585,6 +1585,14 @@ $(document).ready(function () {
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'OUTPUT'];
+			},
+			check_take_all_field:true,
+			after_check: function(data,obj,id){
+				var id_optid = id.substring(0,id.search("_"));
+				if(data.rows.length>0){
+					$(id_optid+'_gstpercent').val(data.rows[0].rate);
+					$(id_optid+'_AmtB4GST').trigger('blur');
+				}
 			}
 		},'urlParam','radio','tab'
 	);
