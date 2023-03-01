@@ -1560,7 +1560,7 @@ $(document).ready(function () {
 				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
 				var rows = data.rows;
 				var gridname = '#'+obj.gridname;
-
+				
 				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
 					rows.forEach(function(e,i){
 						if(e.taxcode.toUpperCase() == searchfor.toUpperCase().trim()){

@@ -215,7 +215,7 @@ class CreditNoteARController extends defaultController
     }
 
     public function get_alloc_when_edit(Request $request){
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('debtorcode',$request->filterVal[0])
                     ->where('compcode',session('compcode'))
@@ -223,7 +223,7 @@ class CreditNoteARController extends defaultController
                     ->where('outamount','>',0)
                     ->where('source','PB')
                     ->whereIn('trantype',['IN','DN']);
-
+        
         $dballoc = DB::table('debtor.dballoc')
                     ->where('compcode',session('compcode'))
                     ->where('source','AR')
@@ -263,12 +263,12 @@ class CreditNoteARController extends defaultController
         }else{
             $return_array = $dbacthdr->get();
         }
-
+        
         $responce = new stdClass();
         $responce->rows = $return_array;
-
+        
         return json_encode($responce);
-
+        
     }
     
     public function form(Request $request)
@@ -604,13 +604,13 @@ class CreditNoteARController extends defaultController
                 if($allocamount == 0 || $value['can_alloc'] == 'false'){
                     continue;
                 }
-
+                
                 $lineno_ = DB::table('debtor.dballoc') 
                                 ->where('compcode','=',session('compcode'))
                                 ->where('source','=','AR')
                                 ->where('trantype','=','CN')
                                 ->where('auditno','=',$dbacthdr->auditno)->max('lineno_');
-
+                
                 if($lineno_ == null){
                     $lineno_ = 1;
                 }else{
@@ -732,10 +732,8 @@ class CreditNoteARController extends defaultController
                 ->where('trantype','=',$request->trantype)
                 ->where('auditno','=',$request->auditno)
                 ->where('lineno_','=',$request->lineno_)
-                // ->delete();
                 ->update([
                     'recstatus' => 'CANCELLED',
-                    // 'lineno_' => null,
                 ]);
             
             $db_outamount = floatval($request->db_outamount);
