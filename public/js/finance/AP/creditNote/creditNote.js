@@ -1171,8 +1171,9 @@ $(document).ready(function () {
 			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
-			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
-		
+			{ label: 'can_alloc', name: 'can_alloc', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true, key: true},
+			
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -1200,25 +1201,24 @@ $(document).ready(function () {
 
 		gridComplete: function(){
 			
-		
 			fdl.set_array().reset();
 			if($('#apacthdr_recstatus').val() == 'POSTED' && oper == 'add'){
-				//calc bal
-				var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-				for (var i = 0; i < ids.length; i++) {
-					let data = $("#jqGridAlloc").jqGrid ('getRowData', ids[i]);
-					let balance = parseFloat(data.outamount) - parseFloat(data.allocamount);
-					$("#jqGridAlloc").jqGrid('setCell', ids[i], 'balance', balance);
-				}
+				// //calc bal
+				// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+				// for (var i = 0; i < ids.length; i++) {
+				// 	let data = $("#jqGridAlloc").jqGrid ('getRowData', ids[i]);
+				// 	let balance = parseFloat(data.outamount) - parseFloat(data.allocamount);
+				// 	$("#jqGridAlloc").jqGrid('setCell', ids[i], 'balance', balance);
+				// }
 				
 				calc_amtpaid_bal();
 				
-				var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-				for (var i = 0; i < ids.length; i++) {
-					$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+				// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+				// for (var i = 0; i < ids.length; i++) {
+				// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 
-					$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				}
+				// 	$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+				// }
 				
 			}
 
@@ -1247,24 +1247,6 @@ $(document).ready(function () {
 			return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;		
 		}
 	}
-
-	function calc_amtpaid(event){
-		let rowid = event.data.rowid;
-		let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
-		var val = $(this).val();
-		if(parseFloat(val) > parseFloat(data.outamount)){
-			$(this).val(data.outamount);
-			event.preventDefault();
-		}
-		if(val.match(/[^0-9\.]/)){
-			event.preventDefault();
-			$(this).val(val.slice(0,val.length-1));
-		}
-
-		var balance = parseFloat(data.outamount) - parseFloat($(this).val());
-		$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
-
-	}
 	
 	function formatterCheckbox(cellvalue, options, rowObject){
 		let lineno_ = cbselect.lineno_;
@@ -1287,12 +1269,12 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	console.log(rowid);
+        	// console.log(rowid);
 
-        	mycurrency2.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGridAlloc input[name='amount']"]);
+        	// mycurrency2.array.length = 0;
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGridAlloc input[name='amount']"]);
 
-			$("#jqGridAlloc input[name='amount'], #jqGridAlloc input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calc_amtpaid);
+			// $("#jqGridAlloc input[name='amount'], #jqGridAlloc input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calc_amtpaid);
 
         	// $("input[name='AmtB4GST']").keydown(function(e) {//when click tab at AmtB4GST, auto save
 			// 	var code = e.keyCode || e.which;
@@ -1300,7 +1282,7 @@ $(document).ready(function () {
 			// })
         },
         aftersavefunc: function (rowid, response, options) {
-        	$('#apacthdr_outamount').val(response.responseText);
+        	//$('#apacthdr_outamount').val(response.responseText);
         	if(addmore_jqgridAlloc.state==true)addmore_jqgridAlloc.more=true; //only addmore after save inline
         	refreshGrid('#jqGridAlloc',urlParam2_alloc,'save_alloc');
         }, 
@@ -1511,8 +1493,9 @@ $(document).ready(function () {
 				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
-			$('#saveAlloc').show();
+			$('#saveAlloc, #jqGridPagerAlloc').show();
 		});
 	});
 
@@ -1534,78 +1517,37 @@ $(document).ready(function () {
 	});
 	
 	$("#saveAlloc").click(function(){
-
-		var param={
-			url: './creditNote/form',
-			oper: 'save_alloc',
-			idno: $('#idno').val()
-		}
-		var obj={
-			_token : $('#_token').val(),
-			data_detail: $('#jqGridAlloc').jqGrid('getRowData')
-		}
-		
-		$.post( param.url+"?"+$.param(param),obj, function( data ) {
-		
-		},'json').fail(function(data) {
-		}).success(function(data){
-			$("#dialogForm").dialog('close');
+		var totamt = $('#apacthdr_amount').val();
+		var allocamt = 0;
+		$('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
+			var thisamt = $(this).val().trim();
+			allocamt = parseFloat(allocamt) + parseFloat(thisamt);
 		});
+
+		if(allocamt > totamt){
+			alert('Allocate amount cant exceed total amount');
+		}else{
+			var param={
+				url: './creditNote/form',
+				oper: 'save_alloc',
+				idno: $('#idno').val()
+			}
+			var obj={
+				_token : $('#_token').val(),
+				data_detail: $('#jqGridAlloc').jqGrid('getRowData')
+			}
+			
+			$.post( param.url+"?"+$.param(param),obj, function( data ) {
+			
+			},'json').fail(function(data) {
+			}).success(function(data){
+				$("#dialogForm").dialog('close');
+			});
+		}
 	});
 
 	$("#addAlloc").click(function(){
-			//$("#jqGridAlloc").jqGrid("clearGridData", true);
-		
-			var urlParam_alloc = {
-				action: 'get_value_default',
-				url: 'util/get_value_default',
-				field: [],
-				table_name: ['finance.apacthdr'],
-				filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
-				filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
-				WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-				WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-				table_id: 'idno',
-			};
-		
-			$.get("util/get_value_default?" + $.param(urlParam_alloc), function (data) {
-			}, 'json').done(function (data) {
-				if (!$.isEmptyObject(data.rows)) {
-					myerrorIt_only($("#apacthdr_suppcode").val(),false);
-		
-					data.rows.forEach(function(elem) {
-						$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
-							{	
-								idno:elem['idno'],
-								suppcode:elem['suppcode'],
-								allocdate:elem['recdate'],
-								trantype:elem['trantype'],
-								reference:elem['document'],
-								refamount:elem['amount'],
-								outamount:elem['outamount'],
-								allocamount: 0,
-								balance:elem['outamount'],
-							
-							}
-						);
-					});
-		
-					calc_amtpaid_bal();
-					
-					var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-					for (var i = 0; i < ids.length; i++) {
-						$("#jqGridAlloc").jqGrid('editRow',ids[i]);
-
-						$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-					}
-			
-				} else {
-					alert("This supplier doesnt have any invoice!");
-					$(dialog_suppcode.textfield).val('');
-					myerrorIt_only($("#apacthdr_suppcode").val(),false);
-				}
-			});
-		
+		populate_alloc_table();
 	});
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
@@ -1917,8 +1859,8 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus', 'taxtype'],
+				filterVal:['session.compcode','ACTIVE', 'Input']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1931,6 +1873,21 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.taxcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -2025,7 +1982,7 @@ function init_jq2(oper){
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 
 		if($('#apacthdr_suppcode').val() != ''){
-			populate_alloc_table();
+			//populate_alloc_table();
 		}
 
 	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
@@ -2039,8 +1996,8 @@ function populate_alloc_table(){
 	$("#jqGridAlloc").jqGrid("clearGridData", true);
 
 	var urlParam_alloc = {
-		action: 'get_value_default',
-		url: 'util/get_value_default',
+		action: 'get_alloc_when_edit',
+		url: 'creditNote/table',
 		field: [],
 		table_name: ['finance.apacthdr'],
 		filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
@@ -2050,27 +2007,49 @@ function populate_alloc_table(){
 		table_id: 'idno',
 	};
 
-	$.get("util/get_value_default?" + $.param(urlParam_alloc), function (data) {
+	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
 	}, 'json').done(function (data) {
 		if (!$.isEmptyObject(data.rows)) {
 			myerrorIt_only($("#apacthdr_suppcode").val(),false);
 
 			data.rows.forEach(function(elem) {
+				let amount = 0;
+				if(elem['can_alloc'] == false){
+					amount = elem['amount'];
+				}
+				
 				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 					{	
 						idno:elem['idno'],
+						source:elem['source'],
+						trantype:elem['trantype'],
+						auditno:elem['auditno'],
+						lineno_:elem['lineno_'],
+						can_alloc:elem['can_alloc'],
 						suppcode:elem['suppcode'],
 						allocdate:elem['recdate'],
 						trantype:elem['trantype'],
 						reference:elem['document'],
 						refamount:elem['amount'],
 						outamount:elem['outamount'],
-						allocamount: 0,
-						balance:elem['outamount'],
+						allocamount: allocamount,
+						balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
 					
 					}
 				);
 			});
+
+			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+			for (var i = 0; i < ids.length; i++) {
+				var rowdata = $("#jqGridAlloc").jqGrid('getRowData',ids[i]);
+				if(rowdata.can_alloc == 'false'){
+					continue;
+				}
+				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+
+				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
+			}
 
 			calc_amtpaid_bal();
 
@@ -2129,6 +2108,41 @@ function disable_gridpager(pager,hide=true){
 	}else{
 		$(pager+'_left > table').show();
 	}
+}
+
+function calc_amtpaid(event){
+	let rowid = event.data.rowid;
+	let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
+	var val = $(this).val();
+	if(parseFloat(val) > parseFloat(data.outamount)){
+		$(this).val(data.outamount);
+		event.preventDefault();
+	}
+	if(val.match(/[^0-9\.]/)){
+		event.preventDefault();
+		$(this).val(val.slice(0,val.length-1));
+	}
+	
+	var balance = parseFloat(data.outamount) - parseFloat($(this).val());
+	$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
+}
+
+function calc_amtpaid_tot(event){
+
+	var totamt = $('#apacthdr_amount').val();
+	var allocamt = 0;
+	$('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
+		var thisamt = $(this).val().trim();
+		allocamt = parseFloat(allocamt) + parseFloat(thisamt);
+	});
+
+	if(allocamt > totamt){
+		alert('Allocate amount cant exceed total amount');
+		myerrorIt_only($(this),true);
+	}else{
+		myerrorIt_only($(this),false);
+	}
+
 }
 
 function calc_amtpaid_bal(){

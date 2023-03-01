@@ -63,6 +63,8 @@ use Carbon\Carbon;
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_alloc_when_edit':
+                return $this->get_alloc_when_edit($request);
             default:
                 return 'error happen..';
         }
@@ -187,6 +189,61 @@ use Carbon\Carbon;
 
     }
 
+    public function get_alloc_when_edit(Request $request){
+
+        $apacthdr = DB::table('finance.apacthdr')
+                    ->where('suppcode',$request->filterVal[0])
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','!=','CANCELLED')
+                    ->where('outamount','>',0)
+                    ->where('source','AP')
+                    ->whereIn('trantype',['IN','DN']);
+
+        $apalloc = DB::table('finance.apalloc')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','AP')
+                    ->where('trantype','AL')
+                    ->where('auditno',$request->auditno)
+                    ->where('recstatus','!=','CANCELLED');
+
+        $return_array=[];
+        if($apalloc->exists()){
+            foreach ($apacthdr->get() as $obj_apacthdr) {
+                foreach ($apalloc->get() as $obj_apalloc) {
+                    if(
+                        $obj_apalloc->refsource == $obj_apacthdr->source
+                        && $obj_apalloc->reftrantype == $obj_apacthdr->trantype
+                        && $obj_apalloc->refauditno == $obj_apacthdr->auditno
+                    ){
+                        $obj_apacthdr->can_alloc=false;
+                        $obj_apacthdr->outamount = $obj_apalloc->outamount;
+                        $obj_apacthdr->amount = $obj_apalloc->amount;
+                        $obj_apacthdr->source = $obj_apalloc->source;
+                        $obj_apacthdr->trantype = $obj_apalloc->trantype;
+                        $obj_apacthdr->auditno = $obj_apalloc->auditno;
+                        $obj_apacthdr->lineno_ = $obj_apalloc->lineno_;
+                        $obj_apacthdr->idno = $obj_apalloc->idno;
+                        if(!in_array($obj_apacthdr, $return_array)){
+                            array_push($return_array,$obj_apacthdr);
+                        }
+                    }else{
+                        $obj_apacthdr->can_alloc=true;
+                        if(!in_array($obj_apacthdr, $return_array)){
+                            array_push($return_array,$obj_apacthdr);
+                        }
+                    }
+                }
+            }
+        }else{
+            $return_array = $apacthdr->get();
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $return_array;
+
+        return json_encode($responce);
+
+    }
 
     public function add(Request $request){
 
@@ -416,10 +473,21 @@ use Carbon\Carbon;
                 $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                 $newoutamount_IV = floatval($outamount - $allocamount);
 
-                if($allocamount == 0){
+                if($allocamount == 0 || $value['can_alloc'] == 'false'){
                     continue;
                 }
 
+                $lineno_ = DB::table('finance.apalloc') 
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=','AP')
+                            ->where('trantype','=','AL')
+                            ->where('auditno','=',$apacthdr->auditno)->max('lineno_');
+
+                if($lineno_ == null){
+                    $lineno_ = 1;
+                }else{
+                    $lineno_ = $lineno_+1;
+                }
                 DB::table('finance.apalloc')
                         ->insert([
                             'compcode' => session('compcode'),
@@ -427,7 +495,7 @@ use Carbon\Carbon;
                             'source' => 'AP',
                             'trantype' => 'AL',
                             'auditno' => $auditno_al,
-                            'lineno_' => $key+1,
+                            'lineno_' => $lineno_,
                             'docsource' => $apacthdr->source,
                             'doctrantype' => $apacthdr->trantype,
                             'docauditno' => $apacthdr->auditno,
@@ -463,7 +531,7 @@ use Carbon\Carbon;
                 ->where('recstatus','=','POSTED')
                 ->sum('allocamount');
 
-               // dd($allocamount);
+               //dd($totalAlloc);
             
             //calculate total amount from detail
             $totalDtl = DB::table('finance.apactdtl')
@@ -473,8 +541,9 @@ use Carbon\Carbon;
                 ->where('trantype','=','CN')
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
-            
+           // dd($totalDtl);
             $newoutamt = floatval($totalDtl - $totalAlloc);
+            dd($newoutamt);
 
             //then update to header
             DB::table('finance.apacthdr')
@@ -566,8 +635,8 @@ use Carbon\Carbon;
              ->where('lineno_','=',$request->lineno_)
              ->update([
                        'recstatus' => 'CANCELLED',
-                       'lineno_' => null,
-                     ]);
+                      // 'lineno_' => null,
+                    ]);
         
             DB::commit();
 
