@@ -340,7 +340,7 @@ class DebitNoteDetailController extends defaultController
                         'GSTCode' => strtoupper($value['GSTCode']),
                         'AmtB4GST' => $gstcode_obj->AmtB4GST,
                         'tot_gst' => $gstcode_obj->tot_gst,
-                        'amount' => $gstcode_obj->amount,
+                        'amount' => $gstcode_obj->tot_gst,
                         // 'category' => $value['category'],
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 

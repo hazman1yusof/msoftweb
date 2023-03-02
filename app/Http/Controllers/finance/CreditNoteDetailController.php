@@ -107,6 +107,9 @@ class CreditNoteDetailController extends defaultController
             //             'compcode' => session('compcode'),
             //         ]);
             // }
+            
+            //check utk gst
+            $gstcode_obj = $this->check_gstcode($request);
 
             $apacthdr = DB::table("finance.apacthdr")
                 ->where('idno','=',$request->idno)
@@ -133,12 +136,12 @@ class CreditNoteDetailController extends defaultController
                   'lineno_' => $li,
                   'source' => 'AP',
                   'trantype' => 'CN',
-                  'amount' => $request->amount,
-                  'taxamt' => $request->tot_gst,
-                  'GSTCode' => $request->GSTCode,
-                  'AmtB4GST' => $request->AmtB4GST,
-                  'deptcode' => $request->deptcode,
-                  'category' => $request->category,
+                  'amount' => floatval($gstcode_obj->amount),
+                  'taxamt' => floatval($gstcode_obj->tot_gst),
+                  'GSTCode' => strtoupper($request->GSTCode),
+                  'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
+                  'deptcode' => strtoupper($request->deptcode),
+                  'category' => strtoupper($request->category),
                   'adduser' => session('username'), 
                   'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                   'recstatus' => 'OPEN',
@@ -334,19 +337,21 @@ class CreditNoteDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
 
+                $gstcode_obj = $this->check_gstcode2($value);
+
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
                     ->update([
-                        'deptcode' => $value['deptcode'],
-                        'category' => $value['category'],
-                        'GSTCode' => $value['GSTCode'],
-                        'AmtB4GST' => $value['AmtB4GST'],
-                        'taxamt' => $value['tot_gst'],
-                        'amount' => $value['amount'],
+                        'deptcode' => strtoupper($value['deptcode']),
+                        'category' => strtoupper($value['category']),
+                        'GSTCode' => strtoupper($value['GSTCode']),
+                        'AmtB4GST' => $gstcode_obj->AmtB4GST,
+                        'taxamt' => $gstcode_obj->tot_gst,
+                        'amount' => $gstcode_obj->tot_gst,
                         'upduser' => session('username'), 
-                        'upduser' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     ]);
 
                 ///2. recalculate total amount
@@ -381,6 +386,58 @@ class CreditNoteDetailController extends defaultController
 
     }
 
+    public function check_gstcode(Request $request){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','OUTPUT')
+                    ->where('taxcode',$request->GSTCode);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$request->GSTCode.' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($request->AmtB4GST);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
+    }
+
+    public function check_gstcode2($value){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','OUTPUT')
+                    ->where('taxcode',$value['GSTCode']);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$value['GSTCode'].' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($value['AmtB4GST']);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
+    }
+    
     public function delete_dd(Request $request){
         DB::table('finance.apacthdr')
                 ->where('idno','=',$request->idno)

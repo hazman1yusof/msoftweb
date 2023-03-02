@@ -1935,6 +1935,14 @@ $(document).ready(function () {
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
+			},
+			check_take_all_field:true,
+			after_check: function(data,obj,id){
+				var id_optid = id.substring(0,id.search("_"));
+				if(data.rows.length>0){
+					$(id_optid+'_gstpercent').val(data.rows[0].rate);
+					$(id_optid+'_AmtB4GST').trigger('blur');
+				}
 			}
 		},'urlParam','radio','tab'
 	);
