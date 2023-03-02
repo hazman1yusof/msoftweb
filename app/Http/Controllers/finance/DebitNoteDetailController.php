@@ -170,10 +170,10 @@ class DebitNoteDetailController extends defaultController
         DB::beginTransaction();
         
         try {
-
+            
             //check utk gst
             $gstcode_obj = $this->check_gstcode($request);
-
+            
             $source = 'PB';
             $trantype = 'DN';
             $auditno = $request->auditno;
@@ -267,7 +267,7 @@ class DebitNoteDetailController extends defaultController
         try {
             
             $gstcode_obj = $this->check_gstcode($request);
-
+            
             ///1. update detail
             DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
@@ -277,8 +277,8 @@ class DebitNoteDetailController extends defaultController
                     'document'=> strtoupper($request->document),
                     'GSTCode'=> strtoupper($request->GSTCode),
                     'AmtB4GST' => $gstcode_obj->AmtB4GST,
-                    'tot_gst' => $gstcode_obj->AmtB4GST,
-                    'amount'=> $gstcode_obj->AmtB4GST,
+                    'tot_gst' => $gstcode_obj->tot_gst,
+                    'amount'=> $gstcode_obj->amount,
                     // 'category' => strtoupper($request->category),
                     // 'amtslstax' => $tot_gst,
                     'upduser'=> session('username'), 
@@ -327,7 +327,7 @@ class DebitNoteDetailController extends defaultController
         try {
             
             foreach ($request->dataobj as $key => $value) {
-
+                
                 $gstcode_obj = $this->check_gstcode2($value);
                 
                 ///1. update detail
@@ -436,24 +436,24 @@ class DebitNoteDetailController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
                     ->where('taxcode',$request->GSTCode);
-
+        
         if(!$gstcode->exists()){
             throw new \Exception('Tax Code '.$request->GSTCode.' doesnt exist', 500);
         }
-
+        
         $gstcode_ = $gstcode->first();
-
+        
         $rate = floatval($gstcode_->rate);
         $AmtB4GST = floatval($request->AmtB4GST);
         $tot_gst = $AmtB4GST * $rate / 100;
         $amount = $AmtB4GST + $tot_gst;
-
+        
         $responce = new stdClass();
         $responce->rate = $rate;
         $responce->AmtB4GST = $AmtB4GST;
         $responce->tot_gst = $tot_gst;
         $responce->amount = $amount;
-
+        
         return $responce;
     }
 
@@ -462,24 +462,24 @@ class DebitNoteDetailController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
                     ->where('taxcode',$value['GSTCode']);
-
+        
         if(!$gstcode->exists()){
             throw new \Exception('Tax Code '.$value['GSTCode'].' doesnt exist', 500);
         }
-
+        
         $gstcode_ = $gstcode->first();
-
+        
         $rate = floatval($gstcode_->rate);
         $AmtB4GST = floatval($value['AmtB4GST']);
         $tot_gst = $AmtB4GST * $rate / 100;
         $amount = $AmtB4GST + $tot_gst;
-
+        
         $responce = new stdClass();
         $responce->rate = $rate;
         $responce->AmtB4GST = $AmtB4GST;
         $responce->tot_gst = $tot_gst;
         $responce->amount = $amount;
-
+        
         return $responce;
     }
     

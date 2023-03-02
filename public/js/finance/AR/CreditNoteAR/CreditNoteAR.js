@@ -56,6 +56,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						alloc_button_status('initial');
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
@@ -64,11 +65,13 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						alloc_button_status('add');
 						break;
 					case state = 'view':
 						disableForm('#formdata');
 						$("#pg_jqGridPager2 table").hide();
 						$("#jqGridPagerAlloc").hide();
+						alloc_button_status('add');
 						break;
 				} if (oper != 'add') {
 					refreshGrid("#jqGridAlloc",urlParamAlloc);
@@ -246,7 +249,7 @@ $(document).ready(function () {
 		sortname:'db_idno',
 		sortorder:'desc',
 		width: 900,
-		height: 300,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
@@ -312,7 +315,7 @@ $(document).ready(function () {
 			cbselect.checkbox_function_on();
 		},
 		loadComplete:function(data){
-			calc_jq_height_onchange("jqGrid");
+			// calc_jq_height_onchange("jqGrid");
 		}
 	});
 
@@ -373,14 +376,14 @@ $(document).ready(function () {
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel,#save_alloc").hide();
 			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
 		}else if(hide){
 			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
-			$("#saveDetailLabel").show();
+			$("#saveDetailLabel,#save_alloc").show();
 		}else{
 			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll,#save_alloc").hide();
 		}
 	}
 
@@ -823,13 +826,13 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-		useColSpanStyle: false,
-		groupHeaders: [
-			{ startColumnName: 'description', numberOfColumns: 1, titleText: 'Item' },
-			// { startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item' },
-	  	]
-	});
+	// $("#jqGrid2").jqGrid('setGroupHeaders', {
+	// 	useColSpanStyle: false,
+	// 	groupHeaders: [
+	// 		{ startColumnName: 'description', numberOfColumns: 1, titleText: 'Item' },
+	// 		// { startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item' },
+	//   	]
+	// });
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -1221,7 +1224,7 @@ $(document).ready(function () {
 	function GSTCodeCustomEdit(val, opt) {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		var id_optid = opt.id.substring(0,opt.id.search("_"));
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a><input id="'+id_optid+'_gstpercent" name="gstpercent" type="hidden"></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="GSTCode" type="text" class="form-control input-sm text-uppercase" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a><input id="'+id_optid+'_gstpercent" name="gstpercent" type="hidden"></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1567,7 +1570,8 @@ $(document).ready(function () {
 	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{
 		add:false,
 		edit:false,
-		cancel: true,
+		cancel:false,
+		save:false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
@@ -1627,7 +1631,33 @@ $(document).ready(function () {
 		caption:"Save",cursor: "pointer",position: "last",
 		buttonicon:"",
 		title:"Save Alloc"
+	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
+		id: "cancel_alloc",
+		caption:"Cancel",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Cancel",
+		onClickButton: function(){
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
+			alloc_button_status('add');
+		}
 	});
+	
+	alloc_button_status('initial');
+	function alloc_button_status(status){
+		switch(status){
+			case 'initial':
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc,#jqGridPagerAlloc #save_alloc').hide();
+					break;
+			case 'wait':
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc').hide();
+					$('#jqGridPagerAlloc #save_alloc,#jqGridPagerAlloc #cancel_alloc').show();
+					break;
+			case 'add':
+					$('#jqGridPagerAlloc #save_alloc,#jqGridPagerAlloc #cancel_alloc').hide();
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc').show();
+					break;
+		}
+	}
 
 	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
 	$("#jqGridArAlloc").jqGrid({
@@ -1657,6 +1687,7 @@ $(document).ready(function () {
 	
 	////////////////////////////////////////////////add_alloc////////////////////////////////////////////////
 	$("#add_alloc").click(function(){
+		alloc_button_status('wait')
 		populate_alloc_table();
 	});
 	
@@ -1727,7 +1758,7 @@ $(document).ready(function () {
 				$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
 				$('#jqGridAlloc input#'+ids[i]+'_amount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
-			$('#save_alloc,#jqGridPagerAlloc').show();
+			alloc_button_status('wait');
 		});
 	});
 
@@ -1895,6 +1926,14 @@ $(document).ready(function () {
 			open: function(){
 				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'OUTPUT'];
+			},
+			check_take_all_field:true,
+			after_check: function(data,obj,id){
+				var id_optid = id.substring(0,id.search("_"));
+				if(data.rows.length>0){
+					$(id_optid+'_gstpercent').val(data.rows[0].rate);
+					$(id_optid+'_AmtB4GST').trigger('blur');
+				}
 			}
 		},'urlParam','radio','tab'
 	);

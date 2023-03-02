@@ -172,6 +172,9 @@ class CreditNoteARDetailController extends defaultController
         
         try {
             
+            //check utk gst
+            $gstcode_obj = $this->check_gstcode($request);
+            
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$request->idno);
             
@@ -199,23 +202,23 @@ class CreditNoteARDetailController extends defaultController
                     'auditno' => $dbacthdr_obj->auditno,
                     'lineno_' => $lineno_,
                     'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    // 'document'  => strtoupper($request->document),
-                    'amount' => $request->amount,
                     'mrn' => (!empty($dbacthdr_obj->mrn))?$dbacthdr_obj->mrn:null,
                     'episno' => (!empty($dbacthdr_obj->episno))?$dbacthdr_obj->episno:null,
                     'deptcode' => strtoupper($request->deptcode),
+                    'GSTCode' => strtoupper($request->GSTCode),
+                    'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
+                    'tot_gst' => floatval($gstcode_obj->tot_gst),
+                    'amount' => floatval($gstcode_obj->amount),
+                    // 'amtslstax' => $tot_gst,
+                    // 'document'  => strtoupper($request->document),
                     // 'category' => strtoupper($request->category),
-                    'paymode' => $dbacthdr_obj->paymode,
                     // 'grnno' => strtoupper($request->grnno),
-                    //'dorecno' => strtoupper($request->dorecno),
+                    // 'dorecno' => strtoupper($request->dorecno),
+                    'paymode' => $dbacthdr_obj->paymode,
+                    'recstatus' => 'POSTED',
                     'unit' => session('unit'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'POSTED',
-                    'GSTCode' => strtoupper($request->GSTCode),
-                    'AmtB4GST' => floatval($request->AmtB4GST),
-                   // 'amtslstax' => $tot_gst, 
-                    'tot_gst' => $request->tot_gst,
                     'lastuser' => session('username'), 
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur") 
                 ]);
@@ -238,14 +241,15 @@ class CreditNoteARDetailController extends defaultController
             echo $totalAmount;
             
             DB::commit();
-
+            
         } catch (\Exception $e) {
             
             DB::rollback();
             
             return response($e->getMessage(), 500);
-
+            
         }
+        
     }
 
     public function edit(Request $request){
@@ -253,7 +257,9 @@ class CreditNoteARDetailController extends defaultController
         DB::beginTransaction();
         
         try {
-
+            
+            $gstcode_obj = $this->check_gstcode($request);
+            
             ///1. update detail
             DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
@@ -263,9 +269,9 @@ class CreditNoteARDetailController extends defaultController
                 ->update([
                     'deptcode' => strtoupper($request->deptcode),
                     'GSTCode'=> strtoupper($request->GSTCode),
-                    'AmtB4GST' => $request->AmtB4GST,
-                    'tot_gst' => $request->tot_gst,
-                    'amount'=> $request->amount,
+                    'AmtB4GST' => $gstcode_obj->AmtB4GST,
+                    'tot_gst' => $gstcode_obj->tot_gst,
+                    'amount'=> $gstcode_obj->amount,
                     // 'category' => strtoupper($request->category),
                     // 'document'=> strtoupper($request->document),
                     // 'amtslstax' => $tot_gst,
@@ -303,8 +309,9 @@ class CreditNoteARDetailController extends defaultController
             DB::rollback();
             
             return response($e->getMessage(), 500);
-
+            
         }
+        
     }
 
     public function edit_all(Request $request){
@@ -312,8 +319,10 @@ class CreditNoteARDetailController extends defaultController
         DB::beginTransaction();
         
         try {
-
+            
             foreach ($request->dataobj as $key => $value) {
+                
+                $gstcode_obj = $this->check_gstcode2($value);
                 
                 ///1. update detail
                 DB::table('debtor.dbactdtl')
@@ -322,9 +331,9 @@ class CreditNoteARDetailController extends defaultController
                     ->update([
                         'deptcode' => $value['deptcode'],
                         'GSTCode' => strtoupper($value['GSTCode']),
-                        'AmtB4GST' => $value['AmtB4GST'],
-                        'tot_gst' => $value['tot_gst'],
-                        'amount' => $value['amount'],
+                        'AmtB4GST' => $gstcode_obj->AmtB4GST,
+                        'tot_gst' => $gstcode_obj->tot_gst,
+                        'amount' => $gstcode_obj->amount,
                         // 'document' => strtoupper($value['document']),
                         // 'category' => $value['category'],
                         'upduser' => session('username'), 
@@ -363,21 +372,21 @@ class CreditNoteARDetailController extends defaultController
             return response('Error'.$e, 500);
             
         }
-
+        
     }
 
     public function del(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             ///1. update detail
             DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
                 ->delete();
-
+            
             ///2. recalculate total amount
             $totalAmount = DB::table('debtor.dbactdtl')
                 ->where('compcode','=',session('compcode'))
@@ -386,11 +395,11 @@ class CreditNoteARDetailController extends defaultController
                 ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
-
+            
             if(empty($totalAmount)){
                 $totalAmount = 0.00;
             }
-
+            
             ///3. update total amount to header
             DB::table('debtor.dbacthdr')
                 ->where('compcode','=',session('compcode'))
@@ -400,39 +409,42 @@ class CreditNoteARDetailController extends defaultController
                 ->update([
                     'amount' => $totalAmount
                 ]);
-
+            
             echo $totalAmount;
-
+            
             DB::commit();
             return response($totalAmount,200);
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
-        }       
+            
+        }
+        
     }
 
     // public function add_alloc(Request $request){
-
+        
     //     DB::beginTransaction();
         
     //     try {
-
+            
     //         $dbacthdr = DB::table('debtor.dbacthdr')
     //             ->where('idno','=',$request->idno)
     //             ->first();
-
+            
     //         foreach ($request->data_detail as $key => $value){
     //             $dbacthdr_IV = DB::table('debtor.dbacthdr')
     //                     ->where('idno','=',$value['idno'])
     //                     ->first();
-
+                
     //             $outamount = floatval($value['outamount']);
     //             $balance = floatval($value['balance']);
     //             $allocamount = floatval($value['outamount']) - floatval($value['balance']);
     //             $newoutamount_IV = floatval($outamount - $allocamount);
-
+                
     //             DB::table('debtor.dballoc')
     //                     ->insert([                            
     //                         'compcode' => session('compcode'),
@@ -456,14 +468,14 @@ class CreditNoteARDetailController extends defaultController
     //                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
     //                         'recstatus' => 'OPEN'
     //                     ]);
-
+                
     //             $dbacthdr_IV = DB::table('debtor.dbacthdr')
     //                 ->where('idno','=',$value['idno'])
     //                 ->update([
     //                     'outamount' => $newoutamount_IV
     //                 ]);
     //         }
-
+            
     //         //calculate total amount from detail
     //         $totalAmount = DB::table('debtor.dballoc')
     //             ->where('compcode','=',session('compcode'))
@@ -472,34 +484,36 @@ class CreditNoteARDetailController extends defaultController
     //             ->where('trantype','=','CN')
     //             ->where('recstatus','!=','DELETE')
     //             ->sum('amount');
-
+                
     //         //then update to header
     //         DB::table('debtor.dbacthdr')
     //             ->where('idno','=',$request->idno)
     //             ->update([
     //                 'amount' => $totalAmount,
     //                 'outamount' => $totalAmount,
-    //             ]);  
-
+    //             ]);
+            
     //         DB::commit();
-
+            
     //         $responce = new stdClass();
     //         $responce->result = 'success';
-
+            
     //         return json_encode($responce);
-
+            
     //     } catch (\Exception $e) {
-
+            
     //         DB::rollback();
-
+            
     //         return response($e->getMessage(), 500);
+            
     //     }
+        
     // }
 
     // public function posted_single(Request $request){
-
+        
     //     DB::beginTransaction();
-
+        
     //     try {
             
     //         $dbacthdr = DB::table('debtor.dbacthdr')
@@ -532,13 +546,68 @@ class CreditNoteARDetailController extends defaultController
     //         $responce->result = 'success';
             
     //         return json_encode($responce);
-
+            
     //     } catch (\Exception $e) {
+            
     //         DB::rollback();
-
+            
     //         return response('Error'.$e, 500);
+            
     //     }
+        
     // }
+
+    public function check_gstcode(Request $request){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','OUTPUT')
+                    ->where('taxcode',$request->GSTCode);
+        
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$request->GSTCode.' doesnt exist', 500);
+        }
+        
+        $gstcode_ = $gstcode->first();
+        
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($request->AmtB4GST);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+        
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+        
+        return $responce;
+    }
+
+    public function check_gstcode2($value){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','OUTPUT')
+                    ->where('taxcode',$value['GSTCode']);
+        
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$value['GSTCode'].' doesnt exist', 500);
+        }
+        
+        $gstcode_ = $gstcode->first();
+        
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($value['AmtB4GST']);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+        
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+        
+        return $responce;
+    }
 
 }
 
