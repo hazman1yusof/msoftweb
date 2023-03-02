@@ -596,52 +596,32 @@ use Carbon\Carbon;
                 ->update([
                     'outamount' => $curr_outamthdr
                 ]);
-
-            //recalculate total allocamount
-            $totalAlloc = DB::table('finance.apalloc')
+            
+            //update status
+            DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
                 ->where('auditno','=',$request->auditno)
                 ->where('source','=',$request->source)
                 ->where('trantype','=',$request->trantype)
-                ->where('recstatus','=','POSTED')
-                ->sum('allocamount');
-        
-            //recalculate total amountdtl CN
-            $totalDtl = DB::table('finance.apactdtl')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$apalloc->docauditno)
-                ->where('source','=',$apalloc->docsource)
-                ->where('trantype','=',$apalloc->doctrantype)
-                ->where('recstatus','!=','DELETE')
-                ->sum('amount');
-            
-            $newoutamthdr = floatval($totalDtl - $totalAlloc);
+                ->where('lineno_','=',$request->lineno_)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                    ]);
 
-            //then update to header
+            $apacthdr_outamount = floatVal($request->apacthdr_outamount);
+            $newoutamthdr = floatval($apacthdr_outamount + $allocamt);
+
+            //then update to header CN
             DB::table('finance.apacthdr')
                 ->where('compcode','=',session('compcode'))
-                ->where('idno','=',$request->idno)
-                ->where('source','=',$request->source)
-                ->where('trantype','=',$request->trantype)
-                ->where('auditno','=',$request->auditno)
+                ->where('source','=',$apalloc->docsource)
+                ->where('trantype','=',$apalloc->doctrantype)
+                ->where('auditno','=',$apalloc->docauditno)
                 ->update([
                     'outamount' => $newoutamthdr
                 ]);
                 
-             //update status
-             DB::table('finance.apalloc')
-             ->where('compcode','=',session('compcode'))
-             ->where('auditno','=',$request->auditno)
-             ->where('source','=',$request->source)
-             ->where('trantype','=',$request->trantype)
-             ->where('lineno_','=',$request->lineno_)
-             ->update([
-                       'recstatus' => 'CANCELLED',
-                      // 'lineno_' => null,
-                    ]);
-        
             DB::commit();
-
 
             $responce = new stdClass();
            // $responce->newoutamthdr = $newoutamthdr;
