@@ -56,6 +56,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						alloc_button_status('initial');
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
@@ -64,11 +65,13 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						alloc_button_status('add');
 						break;
 					case state = 'view':
 						disableForm('#formdata');
 						$("#pg_jqGridPager2 table").hide();
 						$("#jqGridPagerAlloc").hide();
+						alloc_button_status('add');
 						break;
 				} if (oper != 'add') {
 					refreshGrid("#jqGridAlloc",urlParamAlloc);
@@ -373,14 +376,14 @@ $(document).ready(function () {
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel,#save_alloc").hide();
 			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
 		}else if(hide){
 			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
-			$("#saveDetailLabel").show();
+			$("#saveDetailLabel,#save_alloc").show();
 		}else{
 			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll,#save_alloc").hide();
 		}
 	}
 
@@ -1567,7 +1570,8 @@ $(document).ready(function () {
 	$("#jqGridAlloc").inlineNav('#jqGridPagerAlloc',{
 		add:false,
 		edit:false,
-		cancel: true,
+		cancel:false,
+		save:false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
@@ -1627,7 +1631,33 @@ $(document).ready(function () {
 		caption:"Save",cursor: "pointer",position: "last",
 		buttonicon:"",
 		title:"Save Alloc"
+	}).jqGrid('navButtonAdd',"#jqGridPagerAlloc",{
+		id: "cancel_alloc",
+		caption:"Cancel",cursor: "pointer",position: "last", 
+		buttonicon:"",
+		title:"Cancel",
+		onClickButton: function(){
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
+			alloc_button_status('add');
+		}
 	});
+	
+	alloc_button_status('initial');
+	function alloc_button_status(status){
+		switch(status){
+			case 'initial':
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc,#jqGridPagerAlloc #save_alloc').hide();
+					break;
+			case 'wait':
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc').hide();
+					$('#jqGridPagerAlloc #save_alloc,#jqGridPagerAlloc #cancel_alloc').show();
+					break;
+			case 'add':
+					$('#jqGridPagerAlloc #save_alloc,#jqGridPagerAlloc #cancel_alloc').hide();
+					$('#jqGridPagerAlloc #delete_alloc,#jqGridPagerAlloc #add_alloc').show();
+					break;
+		}
+	}
 
 	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
 	$("#jqGridArAlloc").jqGrid({
@@ -1657,6 +1687,7 @@ $(document).ready(function () {
 	
 	////////////////////////////////////////////////add_alloc////////////////////////////////////////////////
 	$("#add_alloc").click(function(){
+		alloc_button_status('wait')
 		populate_alloc_table();
 	});
 	
@@ -1727,7 +1758,7 @@ $(document).ready(function () {
 				$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
 				$('#jqGridAlloc input#'+ids[i]+'_amount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
-			$('#save_alloc,#jqGridPagerAlloc').show();
+			alloc_button_status('wait');
 		});
 	});
 
