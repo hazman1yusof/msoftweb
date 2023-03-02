@@ -1252,9 +1252,41 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 		
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
+
+		calculate_total_header();
 		
 		if(event.data != undefined){
 			event.data.currency.formatOn();//change format to currency on each calculation
+		}
+	}
+
+	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency2.formatOff();
+		
+		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
+		let gstpercent = parseFloat($(id_optid+"_gstpercent").val());
+		
+		var tot_gst = amntb4gst * (gstpercent / 100);
+		var amount = amntb4gst + tot_gst;
+		
+		$(id_optid+"_tot_gst").val(tot_gst);
+		
+		$(id_optid+"_amount").val(amount);
+
+		calculate_total_header();
+		
+		mycurrency2.formatOn();
+	}
+
+	function calculate_total_header(){
+		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
+		var totamt = 0;
+		rowids.forEach(function(e,i){
+			let amt = $('input#'+e+'_amount').val();
+			totamt = parseFloat(totamt)+parseFloat(amt);
+		});
+		if(!isNaN(totamt)){
+			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
 	}
 
@@ -1551,10 +1583,9 @@ $(document).ready(function () {
 					var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
-				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
 				let data=selrowData('#'+dialog_GSTCode.gridname);
-				
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
+				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
 			},
 			loadComplete: function(data,obj){
 				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
@@ -1589,9 +1620,10 @@ $(document).ready(function () {
 			check_take_all_field:true,
 			after_check: function(data,obj,id){
 				var id_optid = id.substring(0,id.search("_"));
-				if(data.rows.length>0){
+				if(data.rows.length>0 && !obj.ontabbing){
 					$(id_optid+'_gstpercent').val(data.rows[0].rate);
-					$(id_optid+'_AmtB4GST').trigger('blur');
+					calculate_line_totgst_and_totamt2(id_optid);
+					calc_jq_height_onchange("jqGrid2");
 				}
 			}
 		},'urlParam','radio','tab'
@@ -1751,5 +1783,5 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+1);
 }
