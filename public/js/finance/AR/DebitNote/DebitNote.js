@@ -237,7 +237,7 @@ $(document).ready(function () {
 		sortname:'db_idno',
 		sortorder:'desc',
 		width: 900,
-		height: 300,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
@@ -277,7 +277,7 @@ $(document).ready(function () {
 			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			// }
 			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
-
+			
 			if($('#jqGrid').data('inputfocus') == 'payer_search'){
 				$("#payer_search").focus();
 				$('#jqGrid').data('inputfocus','');
@@ -287,16 +287,16 @@ $(document).ready(function () {
 				$("#searchForm input[name=Stext]").focus();
 			}
 			empty_form();
-
+			
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
-
+			
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
 			cbselect.checkbox_function_on();
 		},
 		loadComplete:function(data){
-			calc_jq_height_onchange("jqGrid");
+			// calc_jq_height_onchange("jqGrid");
 		}
 	});
 
