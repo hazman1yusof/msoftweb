@@ -825,7 +825,7 @@ $(document).ready(function () {
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-			$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
+			//$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
@@ -927,8 +927,8 @@ $(document).ready(function () {
 
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_tot_gst","#"+ids[i]+"_AmtB4GST"]);
-				cari_gstpercent(ids[i]);
+		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_AmtB4GST","#"+ids[i]+"_tot_gst","#"+ids[i]+"_amount"]);
+				cari_gstpercent2(ids[i]);
 
 				dialog_deptcode.id_optid = ids[i];
 		        dialog_deptcode.check(errorField,ids[i]+"_deptcode","jqGrid2",null,
@@ -1027,10 +1027,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
-	// var amntb4gst = parseFloat($("input[id*='_AmtB4GST']").val());
-	// var amount = amntb4gst+(amntb4gst*(rate/100));//.toFixed(2);
-
-	function cari_gstpercent(id){
+	function cari_gstpercent2(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
 		let gstpercent = 0.00;
 		if(data.tot_gst != ''){
@@ -1058,28 +1055,41 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
-		console.log(id_optid);
-		console.log($("#jqGrid2 #"+id_optid+"_amount"));
+		
+		calculate_total_header();
 
 		if(event.data != undefined){
 			event.data.currency.formatOn();//change format to currency on each calculation
 		}
-
 	}
 
-	function calculate_edited_gst(event){
+	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency2.formatOff();
+		
+		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
+		let gstpercent = parseFloat($(id_optid+"_gstpercent").val());
+		
+		var tot_gst = amntb4gst * (gstpercent / 100);
+		var amount = amntb4gst + tot_gst;
+		
+		$(id_optid+"_tot_gst").val(tot_gst);
+		
+		$(id_optid+"_amount").val(amount);
 
-        mycurrency2.formatOff();
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
+		calculate_total_header();
+		
+		mycurrency2.formatOn();
+	}
 
-		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
-		let editedgst = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
-		var amount = amntb4gst + editedgst;
-
-		$("#jqGrid2 #"+id_optid+"_amount").val(amount)
-		if(event.data != undefined){
-			event.data.currency.formatOn();//change format to currency on each calculation
+	function calculate_total_header(){
+		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
+		var totamt = 0;
+		rowids.forEach(function(e,i){
+			let amt = $('input#'+e+'_amount').val();
+			totamt = parseFloat(totamt)+parseFloat(amt);
+		});
+		if(!isNaN(totamt)){
+			$('#apacthdr_amount').val(numeral(totamt).format('0,0.00'));
 		}
 	}
 
@@ -1283,6 +1293,8 @@ $(document).ready(function () {
 			// 	var code = e.keyCode || e.which;
 			// 	if (code == '9')$('#jqGridAlloc_ilsave').click();
 			// })
+			calculate_total_alloc();
+			calculate_outamount();
         },
         aftersavefunc: function (rowid, response, options) {
         	//$('#apacthdr_outamount').val(response.responseText);
@@ -1503,7 +1515,6 @@ $(document).ready(function () {
 	
 	
 	//////////////////////////////////////////saveAlloc & save////////////////////////////////////////////
-
 	$("#posted_button").click(function(){
 		var param={
 			url: './creditNote/form',
@@ -1518,6 +1529,7 @@ $(document).ready(function () {
 			disableForm('#formdata');
 			disable_gridpager('#jqGridPager2');
 			show_post_button(false);
+			$("#jqGrid2_ilcancel").click();
 
 			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
 			for (var i = 0; i < ids.length; i++) {
@@ -1615,8 +1627,7 @@ $(document).ready(function () {
 		dialog_GSTCode.on();
 
 		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-		$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
-		
+		//$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 		
 	}
 	
@@ -1681,7 +1692,7 @@ $(document).ready(function () {
 	var dialog_suppcode = new ordialog(
 		'suppcode','material.supplier','#apacthdr_suppcode',errorField,
 		{	colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Supplier Code',name:'SuppCode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Supplier Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -1690,7 +1701,8 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
-				$("#apacthdr_payto").val(data['suppcode']);
+				$("#apacthdr_payto").val(data['SuppCode']);
+				dialog_payto.check(errorField);
 
 				if($("#apacthdr_trantype").find(":selected").text() == 'Credit Note') {
 					
@@ -2151,6 +2163,29 @@ function disable_gridpager(pager,hide=true){
 	}
 }
 
+function calculate_total_alloc(){
+	var rowids = $('#jqGrid2').jqGrid('getDataIDs');
+	var totamt = 0;
+	rowids.forEach(function(e,i){
+		let amt = $('input#'+e+'_allocamount').val();
+		totamt = parseFloat(totamt)+parseFloat(amt);
+	});
+	if(!isNaN(totamt)){
+		$('#tot_Alloc').val(numeral(totamt).format('0,0.00'));
+	}
+}
+
+function calculate_outamount(){
+	var tot_alloc = $('#tot_Alloc').val();
+	var tot_dtl = $('#apacthdr_amount').val();
+
+	outamount = parseFloat(tot_dtl) - parseFloat(tot_alloc);
+	
+	if(!isNaN(outamount)){
+		$('#apacthdr_outamount').val(numeral(outamount).format('0,0.00'));
+	}
+}
+
 function calc_amtpaid(event){
 	let rowid = event.data.rowid;
 	let data = $('#jqGridAlloc').jqGrid ('getRowData', rowid);
@@ -2166,6 +2201,8 @@ function calc_amtpaid(event){
 	
 	var balance = parseFloat(data.outamount) - parseFloat($(this).val());
 	$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
+	calculate_total_alloc();
+	calculate_outamount();
 }
 
 function calc_amtpaid_tot(event){
@@ -2182,6 +2219,8 @@ function calc_amtpaid_tot(event){
 		myerrorIt_only($(this),true);
 	}else{
 		myerrorIt_only($(this),false);
+		calculate_total_alloc();
+		calculate_outamount();
 	}
 
 }
@@ -2197,5 +2236,7 @@ function calc_amtpaid_bal(){
 			$('#jqGridAlloc input#'+rowid+'_allocamount').val(0);
 			$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', data.outamount);
 		}
+		calculate_total_alloc();
+		calculate_outamount();
 	});
 }
