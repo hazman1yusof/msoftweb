@@ -439,7 +439,7 @@ $(document).ready(function () {
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
-			{ label: 'Document Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
 			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 12 },
@@ -561,6 +561,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			if(selrowData("#jqGrid").db_trantype=='CN'){ //CN
 				populateFormdata("#jqGrid","#dialogForm_CN","#formdata_CN",selRowId,'view');
+				$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
 				refreshGrid("#jqGrid2_CN",urlParam2_CN,'add');
 				
 				urlParam2_Alloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
@@ -685,7 +686,7 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'Document', name: 'document', width: 230, classes: 'wrap', hidden:true, editable: false },
-			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: false,
+			{ label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', editable: false,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
@@ -913,9 +914,9 @@ $(document).ready(function () {
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Document', name: 'document', width: 150, classes: 'wrap', editable: false },
+			{ label: 'Document', name: 'document', width: 120, classes: 'wrap', editable: false },
 			// { label: 'GST Code', name: 'GSTCode', width: 150, classes: 'wrap', editable: false },
-			{ label: 'GST Code', name: 'GSTCode', width: 100, classes: 'wrap', editable: true,
+			{ label: 'GST Code', name: 'GSTCode', width: 90, classes: 'wrap', editable: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},
 				formatter: showdetail,
 				edittype:'custom',	editoptions:
