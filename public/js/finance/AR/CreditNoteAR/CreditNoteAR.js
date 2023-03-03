@@ -24,7 +24,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#amount', '#db_amount']);
+	var mycurrency = new currencymode(['#amount', '#db_amount','#tot_alloc']);
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -281,9 +281,12 @@ $(document).ready(function () {
 			
 			$("#pdfgen1").attr('href','./CreditNoteAR/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			if_cancel_hide();
+
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
+			$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
+			mycurrency.formatOn();
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
@@ -1355,11 +1358,14 @@ $(document).ready(function () {
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-		var totamt = 0;
-		rowids.forEach(function(e,i){
+		var totamt = $('#amount_placeholder').val();
+
+		for(const e of rowids) {
 			let amt = $('input#'+e+'_amount').val();
 			totamt = parseFloat(totamt)+parseFloat(amt);
-		});
+			if(e.search("jq") >= 0)break;
+		}
+
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
@@ -1556,7 +1562,11 @@ $(document).ready(function () {
 		if(options.gid == "jqGridArAlloc"){
 			return '';
 		}else{
-			return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;		
+			if(parseFloat(rowObject.amount) > 0){
+				return '';
+			}else{
+				return `<input class='checkbox_jqgAlloc' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;	
+			}	
 		}
 	}
 
@@ -1639,11 +1649,13 @@ $(document).ready(function () {
 							}
 							$.post( "./CreditNoteAR/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()},
 							function( data ){
-							}).fail(function (data) {
+							},'json').fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
+								console.log(data);
 								// $('#db_amount').val(data);
-								// $('#amount').val(data);
+								$('#db_outamount').val(data.outamount);
+								$('#tot_alloc').val(parseFloat($('#db_amount').val()) - parseFloat($('#db_outamount').val()));
 								refreshGrid("#jqGridAlloc",urlParamAlloc);
 							});
 						}else{

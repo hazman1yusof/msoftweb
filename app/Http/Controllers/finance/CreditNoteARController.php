@@ -750,6 +750,11 @@ class CreditNoteARController extends defaultController
             
             DB::commit();
             
+            $responce = new stdClass();
+            $responce->outamount = $outamount_hdr;
+            
+            return json_encode($responce);
+            
         } catch (\Exception $e) {
             
             DB::rollback();

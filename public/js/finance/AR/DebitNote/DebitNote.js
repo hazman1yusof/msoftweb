@@ -264,6 +264,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
+			$('#amount_placeholder').val(selrowData("#jqGrid").db_amount);
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
@@ -829,6 +830,7 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$("#jqGrid2 input[name='deptcode']").focus().select();
 			errorField.length=0;
 			$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 			
@@ -854,7 +856,7 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
-			$('#db_unit').val(response.responseText);
+			$('#amount_placeholder').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -871,7 +873,11 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			// mycurrency_np.formatOff();
 			
-			// if(parseInt($('#jqGrid2 input[name="quantity"]').val()) <= 0)return false;
+			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
+				myerrorIt_only('#jqGrid2 input[name="amount"]');
+				alert('Amount cant be 0');
+				return false;
+			}
 			
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
@@ -1010,6 +1016,13 @@ $(document).ready(function () {
 				// console.log(retval);
 				if(retval[0]!= true){
 					alert(retval[1]);
+					mycurrency2.formatOn();
+					return false;
+				}
+
+				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
+					alert('Amount cant be 0');
+					mycurrency2.formatOn();
 					return false;
 				}
 				
@@ -1261,6 +1274,7 @@ $(document).ready(function () {
 	}
 
 	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency.formatOff();
 		mycurrency2.formatOff();
 		
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
@@ -1275,16 +1289,20 @@ $(document).ready(function () {
 		
 		calculate_total_header();
 		
+		mycurrency.formatOn();
 		mycurrency2.formatOn();
 	}
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-		var totamt = 0;
-		rowids.forEach(function(e,i){
+		var totamt = $('#amount_placeholder').val();
+
+		for(const e of rowids) {
 			let amt = $('input#'+e+'_amount').val();
 			totamt = parseFloat(totamt)+parseFloat(amt);
-		});
+			if(e.search("jq") >= 0)break;
+		}
+
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
