@@ -274,6 +274,11 @@ i.fa {
 						<div class="col-md-2">
 							<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 						</div>
+
+						<label class="col-md-3 control-label" for="tot_alloc">Total Allocate Amount</label>
+						<div class="col-md-2">
+							<input id="tot_alloc" name="tot_alloc" maxlength="10" class="form-control input-sm" rdonly>
+						</div>
 					</div>
 
 					<hr>
@@ -297,7 +302,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
 						<div class="col-md-7"> 
-							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="3" cols="55" maxlength="400" id="db_remark" ></textarea>
 						</div>
 					</div>
 

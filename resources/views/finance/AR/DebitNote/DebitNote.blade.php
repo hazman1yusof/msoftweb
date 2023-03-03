@@ -278,7 +278,7 @@ i.fa {
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_remark">Remarks</label> 
 						<div class="col-md-7"> 
-							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="5" cols="55" maxlength="400" id="db_remark" ></textarea>
+							<textarea class="form-control input-sm text-uppercase" name="db_remark" rows="3" cols="55" maxlength="400" id="db_remark" ></textarea>
 						</div>
 					</div>
 

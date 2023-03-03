@@ -1252,7 +1252,7 @@ $(document).ready(function () {
 		$("#"+id_optid+"_tot_gst").val(tot_gst);
 		
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
-
+		
 		calculate_total_header();
 		
 		if(event.data != undefined){
@@ -1272,7 +1272,7 @@ $(document).ready(function () {
 		$(id_optid+"_tot_gst").val(tot_gst);
 		
 		$(id_optid+"_amount").val(amount);
-
+		
 		calculate_total_header();
 		
 		mycurrency2.formatOn();
@@ -1458,7 +1458,7 @@ $(document).ready(function () {
 		'db_deptcode', 'sysdb.department', "#jqGrid2 input[name='deptcode']", errorField,
 		{
 			colModel: [
-				{ label: 'SectorCode', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Sector Code', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true },
 			],
 			urlParam: {
@@ -1474,6 +1474,21 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
 				$("#jqGrid2 #"+id_optid+"_document").focus().select();
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_deptcode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+				
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.deptcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1507,14 +1522,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE', 'AR', 'Debit Note']
 			},
 			ondblClickRow:function(){
-				$('#db_remark').focus();
+				$('#db_recstatus').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_remark').focus();
+					$('#db_recstatus').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
