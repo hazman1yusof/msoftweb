@@ -836,6 +836,7 @@ $(document).ready(function () {
 			$('#apacthdr_amount').val(response.responseText);
         	show_post_button();
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
+			$('#jqGrid2_iladd').click();
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
 	    	errorField.length=0;
@@ -1293,8 +1294,7 @@ $(document).ready(function () {
 			// 	var code = e.keyCode || e.which;
 			// 	if (code == '9')$('#jqGridAlloc_ilsave').click();
 			// })
-			calculate_total_alloc();
-			calculate_outamount();
+
         },
         aftersavefunc: function (rowid, response, options) {
         	//$('#apacthdr_outamount').val(response.responseText);
@@ -2164,7 +2164,7 @@ function disable_gridpager(pager,hide=true){
 }
 
 function calculate_total_alloc(){
-	var rowids = $('#jqGrid2').jqGrid('getDataIDs');
+	var rowids = $('#jqGridAlloc').jqGrid('getDataIDs');
 	var totamt = 0;
 	rowids.forEach(function(e,i){
 		let amt = $('input#'+e+'_allocamount').val();
