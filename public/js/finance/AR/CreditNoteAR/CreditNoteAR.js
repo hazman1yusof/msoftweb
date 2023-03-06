@@ -58,7 +58,6 @@ $(document).ready(function () {
 						rdonly('#formdata');
 						alloc_button_status('initial');
 						$('#amount_placeholder').val(0);
-						$('#tot_alloc').val(0);
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
