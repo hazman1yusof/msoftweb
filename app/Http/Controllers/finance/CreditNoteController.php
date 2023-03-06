@@ -481,9 +481,9 @@ use Carbon\Carbon;
 
                 $lineno_ = DB::table('finance.apalloc') 
                             ->where('compcode','=',session('compcode'))
-                            ->where('source','=','AP')
-                            ->where('trantype','=','AL')
-                            ->where('auditno','=',$apacthdr->auditno)->max('lineno_');
+                            ->where('docauditno','=',$apacthdr->auditno)
+                            ->where('docsource','=','AP')
+                            ->where('doctrantype','=','CN')->max('lineno_');
 
                 if($lineno_ == null){
                     $lineno_ = 1;
@@ -527,13 +527,11 @@ use Carbon\Carbon;
             //calculate total allocamount
             $totalAlloc = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$auditno_al)
-                ->where('source','=','AP')
-                ->where('trantype','=','AL')
+                ->where('docauditno','=',$apacthdr->auditno)
+                ->where('docsource','=','AP')
+                ->where('doctrantype','=','CN')
                 ->where('recstatus','=','POSTED')
                 ->sum('allocamount');
-
-               //dd($totalAlloc);
             
             //calculate total amount from detail
             $totalDtl = DB::table('finance.apactdtl')
@@ -543,9 +541,8 @@ use Carbon\Carbon;
                 ->where('trantype','=','CN')
                 ->where('recstatus','!=','DELETE')
                 ->sum('amount');
-           // dd($totalDtl);
+
             $newoutamt = floatval($totalDtl - $totalAlloc);
-            // dd($newoutamt);
 
             //then update to header
             DB::table('finance.apacthdr')

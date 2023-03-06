@@ -1,6 +1,9 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount', '#tot_Alloc']);
+var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
+
 $(document).ready(function () {
 
 	$("body").show();
@@ -26,8 +29,6 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#apacthdr_outamount', '#apacthdr_amount', '#tot_Alloc']);
-	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -1245,23 +1246,7 @@ $(document).ready(function () {
 			
 			fdl.set_array().reset();
 			if($('#apacthdr_recstatus').val() == 'POSTED' && oper == 'add'){
-				// //calc bal
-				// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-				// for (var i = 0; i < ids.length; i++) {
-				// 	let data = $("#jqGridAlloc").jqGrid ('getRowData', ids[i]);
-				// 	let balance = parseFloat(data.outamount) - parseFloat(data.allocamount);
-				// 	$("#jqGridAlloc").jqGrid('setCell', ids[i], 'balance', balance);
-				// }
-				
 				calc_amtpaid_bal();
-				
-				// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-				// for (var i = 0; i < ids.length; i++) {
-				// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
-
-				// 	$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				// }
-				
 			}
 
 			unsaved = false;
@@ -1395,7 +1380,8 @@ $(document).ready(function () {
 							},'json').fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
-								$('#apacthdr_outamount').val(data.outamount);
+								mycurrency.formatOff();
+								$('#apacthdr_outamount').val(data.newoutamthdr);
 								$('#tot_Alloc').val(parseFloat($('#apacthdr_amount').val()) - parseFloat($('#apacthdr_outamount').val()));
 								mycurrency.formatOn();
 								refreshGrid("#jqGridAlloc",urlParam2_alloc);
@@ -2227,6 +2213,7 @@ function disable_gridpager(pager,hide=true){
 }
 
 function calculate_total_alloc(){
+	mycurrency2.formatOff();
 	var rowids = $('#jqGridAlloc').jqGrid('getDataIDs');
 	var totamt = 0;
 	rowids.forEach(function(e,i){
@@ -2236,9 +2223,11 @@ function calculate_total_alloc(){
 	if(!isNaN(totamt)){
 		$('#tot_Alloc').val(numeral(totamt).format('0,0.00'));
 	}
+	mycurrency2.formatOn();
 }
 
 function calculate_outamount(){
+	mycurrency.formatOff();
 	var tot_alloc = $('#tot_Alloc').val();
 	var tot_dtl = $('#apacthdr_amount').val();
 
@@ -2247,6 +2236,7 @@ function calculate_outamount(){
 	if(!isNaN(outamount)){
 		$('#apacthdr_outamount').val(numeral(outamount).format('0,0.00'));
 	}
+	mycurrency.formatOn();
 }
 
 function calc_amtpaid(event){
