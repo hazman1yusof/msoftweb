@@ -636,7 +636,13 @@
 					  		<div class="col-md-3">
 								<input id="apacthdr_outamount" name="apacthdr_outamount" maxlength="12" class="form-control input-sm"> 
 		 					</div>
-
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="tot_Alloc">Total Alloc <br> Amount</label>  
+					  		<div class="col-md-3">
+								<input id="tot_Alloc" name="tot_Alloc" maxlength="12" class="form-control input-sm" rdonly> 
+		 					</div>
 					</div>
 				</form>
 				<div class="panel-body">

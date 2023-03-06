@@ -624,7 +624,7 @@ use Carbon\Carbon;
             DB::commit();
 
             $responce = new stdClass();
-           // $responce->newoutamthdr = $newoutamthdr;
+            $responce->newoutamthdr = $newoutamthdr;
 
             return json_encode($responce);
 

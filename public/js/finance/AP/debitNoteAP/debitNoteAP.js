@@ -258,7 +258,7 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
-			
+			$('#amount_placeholder').val(selrowData("#jqGrid").apacthdr_amount);
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				
@@ -774,7 +774,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-			//calc_jq_height_onchange("jqGrid2");
+			$("#jqGrid2 input[name='deptcode']").focus().select();
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
 			dialog_deptcode.on();//start binding event on jqgrid2
@@ -799,6 +799,7 @@ $(document).ready(function () {
         },
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_amount').val(response.responseText);
+			$('#amount_placeholder').val(response.responseText);
 			mycurrency.formatOn();
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
         	refreshGrid('#jqGrid2',urlParam2,'add');
@@ -811,10 +812,15 @@ $(document).ready(function () {
 	    	$("#jqGridPager2Delete").show();
         },
         beforeSaveRow: function(options, rowid) {
-
         	if(errorField.length>0)return false;
-
         	mycurrency2.formatOff();
+
+			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
+				myerrorIt_only('#jqGrid2 input[name="amount"]');
+				alert('Amount cant be 0');
+				return false;
+			}
+			
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			let editurl = "./DebitNoteAPDetail/form?"+
 				$.param({
@@ -932,6 +938,19 @@ $(document).ready(function () {
 		    for (var i = 0; i < ids.length; i++) {
 
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
+				let retval = check_cust_rules("#jqGrid2",data);
+				// console.log(retval);
+				if(retval[0]!= true){
+					alert(retval[1]);
+					mycurrency2.formatOn();
+					return false;
+				}
+
+				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
+					alert('Amount cant be 0');
+					mycurrency2.formatOn();
+					return false;
+				}
 
 		    	var obj = 
 		    	{
@@ -1027,6 +1046,7 @@ $(document).ready(function () {
 	}
 
 	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency.formatOff();
 		mycurrency2.formatOff();
 		
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
@@ -1041,16 +1061,20 @@ $(document).ready(function () {
 
 		calculate_total_header();
 		
+		mycurrency.formatOn();
 		mycurrency2.formatOn();
 	}
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-		var totamt = 0;
-		rowids.forEach(function(e,i){
+		var totamt = $('#amount_placeholder').val();
+
+		for(const e of rowids) {
 			let amt = $('input#'+e+'_amount').val();
 			totamt = parseFloat(totamt)+parseFloat(amt);
-		});
+			if(e.search("jq") >= 0)break;
+		}
+
 		if(!isNaN(totamt)){
 			$('#apacthdr_amount').val(numeral(totamt).format('0,0.00'));
 		}
@@ -1404,6 +1428,21 @@ $(document).ready(function () {
 				}
 				$("#jqGrid2 #"+id_optid+"_category").focus().select();
 			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_deptcode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.deptcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
+			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
@@ -1443,6 +1482,21 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
 				$("#jqGrid2 #"+id_optid+"_GSTCode").focus().select();
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_category").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.catcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1487,6 +1541,21 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
 				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
+			},
+			loadComplete: function(data,obj){
+				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
+				var rows = data.rows;
+				var gridname = '#'+obj.gridname;
+
+				if(searchfor != undefined && rows.length > 1 && obj.ontabbing){
+					rows.forEach(function(e,i){
+						if(e.taxcode.toUpperCase() == searchfor.toUpperCase().trim()){
+							let id = parseInt(i)+1;
+							$(gridname+' tr#'+id).click();
+							$(gridname+' tr#'+id).dblclick();
+						}
+					});
+				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;

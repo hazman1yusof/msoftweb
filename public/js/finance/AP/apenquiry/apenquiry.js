@@ -27,7 +27,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////// currency ///////////////////////////////
 	var fdl = new faster_detail_load();
-	var mycurrency =new currencymode(["#formdata_cn :input[name='apacthdr_amount']", "#formdata_cn :input[name='apacthdr_outamount']", "#formdata_dn :input[name='apacthdr_amount']", "#formdata_dn :input[name='apacthdr_outamount']", "#formdata_cna :input[name='apacthdr_amount']", "#formdata_pv :input[name='apacthdr_amount']", "#formdata_pd :input[name='apacthdr_amount']", "#formdata_in :input[name='apacthdr_amount']", "#formdata_in :input[name='apactdtl_outamt']"]);
+	var mycurrency =new currencymode(["#formdata_cn :input[name='apacthdr_amount']", "#formdata_cn :input[name='apacthdr_outamount']", "#formdata_cn :input[name='tot_Alloc']", "#formdata_dn :input[name='apacthdr_amount']", "#formdata_dn :input[name='apacthdr_outamount']", "#formdata_cna :input[name='apacthdr_amount']", "#formdata_pv :input[name='apacthdr_amount']", "#formdata_pd :input[name='apacthdr_amount']", "#formdata_in :input[name='apacthdr_amount']", "#formdata_in :input[name='apactdtl_outamt']"]);
 	var mycurrency2 =new currencymode(['#apacthdr_outamount', '#apacthdr_amount']);
 	////////////////////////////////////start dialog///////////////////////////////////////
 	var oper=null;
@@ -289,6 +289,7 @@ $(document).ready(function () {
 
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='CN'){
 				$('#jqGrid3_div_cn').show();
+				$('#tot_Alloc').val(parseFloat(selrowData("#jqGrid").apacthdr_amount) - parseFloat(selrowData("#jqGrid").apacthdr_outamount));
 				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				urlParam2_allocdtl.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				$("#jqGrid3_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_cn")[0].offsetWidth-$("#jqGrid3_div_cn")[0].offsetLeft));
@@ -1499,11 +1500,4 @@ $(document).ready(function () {
 			$('#grid_detail').show();
 		}
 
-		// if(($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CN')) {
-		// 	$('#cn_detail').show();
-		// 	$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn_c")[0].offsetWidth-$("#jqGrid2_cn_c")[0].offsetLeft-28));
-		// } else if (($("#dialogForm_cn [name=apacthdr_trantype]").val() == 'CNU')) {
-		// 	$('#cn_detail').hide();
-		// }
-		
 	}
