@@ -61,6 +61,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					alloc_button_status('initial');
+					$('#amount_placeholder').val(0);
 					break;
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").show();

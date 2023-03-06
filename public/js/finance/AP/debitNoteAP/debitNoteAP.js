@@ -56,6 +56,7 @@ $(document).ready(function () {
 					enableForm('#formdata');
 					rdonly('#formdata');
 					hideatdialogForm(true);
+					$('#amount_placeholder').val(0);
 					if ($('#apacthdr_trantype').val() == 'DN') {
 						$('#apacthdr_doctype').val('Others').hide();
 						$('#apacthdr_doctype').val('Supplier').hide();
