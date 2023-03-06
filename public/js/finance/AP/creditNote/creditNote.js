@@ -2231,7 +2231,7 @@ function calculate_total_alloc(){
 	var totamt = 0;
 	rowids.forEach(function(e,i){
 		let amt = $('input#'+e+'_allocamount').val();
-		totamt = parseFloat(totamt)+parseFloat(amt);
+		totamt = parseFloat(totamt) + parseFloat(amt);
 	});
 	if(!isNaN(totamt)){
 		$('#tot_Alloc').val(numeral(totamt).format('0,0.00'));
