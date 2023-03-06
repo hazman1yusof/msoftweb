@@ -1019,7 +1019,7 @@ $(document).ready(function () {
 					mycurrency2.formatOn();
 					return false;
 				}
-
+				
 				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
 					alert('Amount cant be 0');
 					mycurrency2.formatOn();
@@ -1296,13 +1296,13 @@ $(document).ready(function () {
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
 		var totamt = $('#amount_placeholder').val();
-
+		
 		for(const e of rowids) {
 			let amt = $('input#'+e+'_amount').val();
 			totamt = parseFloat(totamt)+parseFloat(amt);
 			if(e.search("jq") >= 0)break;
 		}
-
+		
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}

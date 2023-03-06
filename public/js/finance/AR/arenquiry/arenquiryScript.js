@@ -28,7 +28,7 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency =new currencymode(['#db_outamount', '#db_amount', "#formdata_DN input[name='db_amount']", "#formdata_CN input[name='db_amount']"]);
+	var mycurrency =new currencymode(['#db_outamount', '#db_amount', "#formdata_DN input[name='db_amount']", "#formdata_CN input[name='db_amount']", "#formdata_CN input[name='tot_alloc']"]);
 	var mycurrency2 =new currencymode(['#db_outamount', '#db_amount']);
 	var fdl = new faster_detail_load();
 	
@@ -220,6 +220,7 @@ $(document).ready(function () {
 				$("#jqGrid2_CN").jqGrid('setGridWidth', Math.floor($("#jqGrid2_CN_c")[0].offsetWidth - $("#jqGrid2_CN_c")[0].offsetLeft));
 				$("#jqGrid2_Alloc").jqGrid('setGridWidth', Math.floor($("#jqGrid2_Alloc_c")[0].offsetWidth - $("#jqGrid2_Alloc_c")[0].offsetLeft));
 				refreshGrid("#jqGrid2_CN",urlParam2_CN);
+				mycurrency.formatOn();
 				mycurrency.formatOnBlur();
 				disableForm('#formdata_CN');
 				$("#pg_jqGridPager2 table").hide();

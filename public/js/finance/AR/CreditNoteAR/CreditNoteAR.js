@@ -281,10 +281,10 @@ $(document).ready(function () {
 			
 			$("#pdfgen1").attr('href','./CreditNoteAR/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			if_cancel_hide();
-
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
+			$('#amount_placeholder').val(selrowData("#jqGrid").db_amount);
 			$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
 			mycurrency.formatOn();
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
@@ -917,6 +917,7 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
+			$("#jqGrid2 input[name='deptcode']").focus().select();
 			errorField.length=0;
 			$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 			
@@ -939,6 +940,7 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
+			$('#amount_placeholder').val(response.responseText);
 			show_post_button();
 			// $('#db_unit').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
@@ -955,6 +957,12 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			if(errorField.length>0)return false;
 			mycurrency2.formatOff();
+			
+			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
+				myerrorIt_only('#jqGrid2 input[name="amount"]');
+				alert('Amount cant be 0');
+				return false;
+			}
 			
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			
@@ -1086,11 +1094,19 @@ $(document).ready(function () {
 			for (var i = 0; i < ids.length; i++) {
 				// if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				// let retval = check_cust_rules("#jqGrid2",data);
-				// if(retval[0]!= true){
-				// 	alert(retval[1]);
-				// 	return false;
-				// }
+				let retval = check_cust_rules("#jqGrid2",data);
+				// console.log(retval);
+				if(retval[0]!= true){
+					alert(retval[1]);
+					mycurrency2.formatOn();
+					return false;
+				}
+				
+				if(parseInt($("#jqGrid2 input#"+ids[i]+"_amount").val()) == 0){
+					alert('Amount cant be 0');
+					mycurrency2.formatOn();
+					return false;
+				}
 				
 				// cust_rules()
 				
@@ -1339,6 +1355,7 @@ $(document).ready(function () {
 	}
 
 	function calculate_line_totgst_and_totamt2(id_optid) {
+		mycurrency.formatOff();
 		mycurrency2.formatOff();
 		
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
@@ -1353,19 +1370,20 @@ $(document).ready(function () {
 		
 		calculate_total_header();
 		
+		mycurrency.formatOn();
 		mycurrency2.formatOn();
 	}
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
 		var totamt = $('#amount_placeholder').val();
-
+		
 		for(const e of rowids) {
 			let amt = $('input#'+e+'_amount').val();
 			totamt = parseFloat(totamt)+parseFloat(amt);
 			if(e.search("jq") >= 0)break;
 		}
-
+		
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
@@ -1795,6 +1813,7 @@ $(document).ready(function () {
 			disable_gridpager('#jqGridPager2');
 			show_post_button(false);
 			$("#jqGrid2_ilcancel").click();
+			$("#jqGridAlloc input[name='checkbox']").show();
 			
 			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
 			for (var i = 0; i < ids.length; i++) {
@@ -2104,6 +2123,7 @@ $(document).ready(function () {
 							
 							calc_amtpaid_bal();
 							$('#posteddate').focus();
+							$("#jqGridAlloc input[name='checkbox']").hide();
 							
 						} else {
 							alert("This debtor doesnt have any invoice!");
