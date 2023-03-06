@@ -53,6 +53,7 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
+						$('#amount_placeholder').val(0);
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
@@ -1302,7 +1303,7 @@ $(document).ready(function () {
 			totamt = parseFloat(totamt)+parseFloat(amt);
 			if(e.search("jq") >= 0)break;
 		}
-		
+				
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}

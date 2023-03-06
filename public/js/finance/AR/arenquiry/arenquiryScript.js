@@ -563,6 +563,7 @@ $(document).ready(function () {
 			if(selrowData("#jqGrid").db_trantype=='CN'){ //CN
 				populateFormdata("#jqGrid","#dialogForm_CN","#formdata_CN",selRowId,'view');
 				$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
+				mycurrency.formatOn();
 				refreshGrid("#jqGrid2_CN",urlParam2_CN,'add');
 				
 				urlParam2_Alloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
