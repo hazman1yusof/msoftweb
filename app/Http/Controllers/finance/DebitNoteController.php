@@ -62,7 +62,6 @@ class DebitNoteController extends defaultController
                         'db.billdebtor AS db_billdebtor',
                         'db.approvedby AS db_approvedby',
                         'db.mrn AS db_mrn',
-                        'db.unit AS db_unit',
                         'db.termmode AS db_termmode',
                         'db.hdrtype AS db_hdrtype',
                         'db.source AS db_source',
@@ -247,7 +246,7 @@ class DebitNoteController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'unit' => strtoupper($request->db_deptcode),//department.sector
+                'unit' => session('unit'),
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'posteddate' => $request->posteddate,
@@ -297,7 +296,7 @@ class DebitNoteController extends defaultController
         
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
-            'unit' => strtoupper($request->db_deptcode),
+            'unit' => session('unit'),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
             'posteddate' => $request->posteddate,
@@ -463,6 +462,16 @@ class DebitNoteController extends defaultController
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            
+                DB::table('debtor.dbactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('source','=', $dbacthdr->source)
+                    ->where('trantype','=', $dbacthdr->trantype)
+                    ->where('auditno','=', $dbacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'POSTED'
                     ]);
                     
                 // $purreqhd = DB::table("material.purreqhd")

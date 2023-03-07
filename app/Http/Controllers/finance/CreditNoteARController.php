@@ -226,12 +226,14 @@ class CreditNoteARController extends defaultController
         
         $dballoc = DB::table('debtor.dballoc')
                     ->where('compcode',session('compcode'))
-                    ->where('source','AR')
-                    ->where('trantype','CN')
-                    ->where('auditno',$request->auditno)
+                    ->where('docsource','PB')
+                    ->where('doctrantype','CN')
+                    ->where('docauditno',$request->auditno)
                     ->where('recstatus','!=','CANCELLED');
+        
         // dump($dbacthdr->get());
         // dump($dballoc->get());
+
         $return_array=[];
         if($dballoc->exists()){
             foreach ($dbacthdr->get() as $obj_dbacthdr) {
@@ -328,7 +330,7 @@ class CreditNoteARController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'unit' => strtoupper($request->db_deptcode),//department.sector
+                'unit' => session('unit'),
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'posteddate' => $request->posteddate,
@@ -378,7 +380,7 @@ class CreditNoteARController extends defaultController
         
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
-            'unit' => strtoupper($request->db_deptcode),
+            'unit' => session('unit'),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
             'posteddate' => $request->posteddate,
@@ -592,6 +594,8 @@ class CreditNoteARController extends defaultController
                 ->first();
                 
             foreach ($request->data_detail as $key => $value){
+                $auditno_al = $this->defaultSysparam('AR','AL');
+                
                 $dbacthdr_IV = DB::table('debtor.dbacthdr')
                         ->where('idno','=',$value['idno'])
                         ->first();
@@ -607,9 +611,9 @@ class CreditNoteARController extends defaultController
                 
                 $lineno_ = DB::table('debtor.dballoc') 
                                 ->where('compcode','=',session('compcode'))
-                                ->where('source','=','AR')
-                                ->where('trantype','=','CN')
-                                ->where('auditno','=',$dbacthdr->auditno)->max('lineno_');
+                                ->where('docauditno','=',$dbacthdr->auditno)
+                                ->where('docsource','=','PB')
+                                ->where('doctrantype','=','CN')->max('lineno_');
                 
                 if($lineno_ == null){
                     $lineno_ = 1;
@@ -622,8 +626,8 @@ class CreditNoteARController extends defaultController
                         ->insert([                            
                             'compcode' => session('compcode'),
                             'source' => 'AR',
-                            'trantype' => 'CN',
-                            'auditno' => $dbacthdr->auditno,
+                            'trantype' => 'AL',
+                            'auditno' => $auditno_al,
                             'lineno_' => $lineno_,
                             'docsource' => $dbacthdr->source,
                             'doctrantype' => $dbacthdr->trantype,
@@ -656,9 +660,9 @@ class CreditNoteARController extends defaultController
             // calculate total amount from alloc
             $totalAllocAmount = DB::table('debtor.dballoc')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$dbacthdr->auditno)
-                ->where('source','=','AR')
-                ->where('trantype','=','CN')
+                ->where('docauditno','=',$dbacthdr->auditno)
+                ->where('docsource','=','PB')
+                ->where('doctrantype','=','CN')
                 ->where('recstatus','=','POSTED')
                 ->sum('amount');
             
@@ -705,10 +709,11 @@ class CreditNoteARController extends defaultController
                     
             $dballoc = DB::table('debtor.dballoc')
                     ->where('compcode','=',session('compcode'))
+                    ->where('idno','=',$request->idno)
+                    ->where('lineno_','=',$request->lineno_)
                     ->where('source','=',$request->source)
                     ->where('trantype','=',$request->trantype)
                     ->where('auditno','=',$request->auditno)
-                    ->where('lineno_','=',$request->lineno_)
                     ->first();
             
             $amount = floatval($dballoc->amount);
@@ -751,7 +756,7 @@ class CreditNoteARController extends defaultController
             DB::commit();
             
             $responce = new stdClass();
-            $responce->outamount = $outamount_hdr;
+            $responce->outamount_hdr = $outamount_hdr;
             
             return json_encode($responce);
             

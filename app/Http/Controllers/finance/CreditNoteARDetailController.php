@@ -215,7 +215,7 @@ class CreditNoteARDetailController extends defaultController
                     // 'grnno' => strtoupper($request->grnno),
                     // 'dorecno' => strtoupper($request->dorecno),
                     'paymode' => $dbacthdr_obj->paymode,
-                    'recstatus' => 'POSTED',
+                    'recstatus' => 'OPEN',
                     'unit' => session('unit'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

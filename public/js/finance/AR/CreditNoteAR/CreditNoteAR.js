@@ -1,6 +1,9 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+var mycurrency = new currencymode(['#amount', '#db_amount','#tot_alloc']);
+var mycurrency2 =new currencymode(['#db_amount', '#db_outamount']);
+
 $(document).ready(function () {
 	/////////////////////////////////////////validation//////////////////////////
 	$.validate({
@@ -24,7 +27,6 @@ $(document).ready(function () {
 	};
 
 	/////////////////////////////////// currency ///////////////////////////////
-	var mycurrency = new currencymode(['#amount', '#db_amount','#tot_alloc']);
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
@@ -1671,9 +1673,8 @@ $(document).ready(function () {
 							},'json').fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								console.log(data);
-								// $('#db_amount').val(data);
-								$('#db_outamount').val(data.outamount);
+								mycurrency.formatOff();
+								$('#db_outamount').val(data.outamount_hdr);
 								$('#tot_alloc').val(parseFloat($('#db_amount').val()) - parseFloat($('#db_outamount').val()));
 								refreshGrid("#jqGridAlloc",urlParamAlloc);
 							});
@@ -2410,6 +2411,7 @@ function show_post_button(show=true){
 }
 
 function calculate_total_alloc(){
+	mycurrency2.formatOff();
 	var rowids = $('#jqGridAlloc').jqGrid('getDataIDs');
 	var totamt = 0;
 	rowids.forEach(function(e,i){
@@ -2419,9 +2421,11 @@ function calculate_total_alloc(){
 	if(!isNaN(totamt)){
 		$('#tot_alloc').val(numeral(totamt).format('0,0.00'));
 	}
+	mycurrency2.formatOn();
 }
 
 function calculate_outamount(){
+	mycurrency.formatOff();
 	var tot_detail = $('#db_amount').val();
 	var tot_alloc = $('#tot_alloc').val();
 	
@@ -2430,6 +2434,7 @@ function calculate_outamount(){
 	if(!isNaN(outamount)){
 		$('#db_outamount').val(numeral(outamount).format('0,0.00'));
 	}
+	mycurrency.formatOn();
 }
 
 function calc_amtpaid(event){
