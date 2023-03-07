@@ -235,29 +235,38 @@ class CreditNoteARController extends defaultController
         // dump($dballoc->get());
 
         $return_array=[];
+        $got_array=[];
         if($dballoc->exists()){
             foreach ($dbacthdr->get() as $obj_dbacthdr) {
                 foreach ($dballoc->get() as $obj_dballoc) {
-                    if(
-                        $obj_dballoc->refsource == $obj_dbacthdr->source
-                        && $obj_dballoc->reftrantype == $obj_dbacthdr->trantype
-                        && $obj_dballoc->refauditno == $obj_dbacthdr->auditno
-                    ){
-                        $obj_dbacthdr->can_alloc=false;
-                        $obj_dbacthdr->outamount = $obj_dballoc->outamount;
-                        $obj_dbacthdr->amount = $obj_dballoc->amount;
-                        $obj_dbacthdr->source = $obj_dballoc->source;
-                        $obj_dbacthdr->trantype = $obj_dballoc->trantype;
-                        $obj_dbacthdr->auditno = $obj_dballoc->auditno;
-                        $obj_dbacthdr->lineno_ = $obj_dballoc->lineno_;
-                        $obj_dbacthdr->idno = $obj_dballoc->idno;
-                        if(!in_array($obj_dbacthdr, $return_array)){
-                            array_push($return_array,$obj_dbacthdr);
-                        }
-                    }else{
-                        $obj_dbacthdr->can_alloc=true;
-                        if(!in_array($obj_dbacthdr, $return_array)){
-                            array_push($return_array,$obj_dbacthdr);
+                    if(!in_array($obj_dbacthdr->idno,$got_array)){
+                        if(
+                            $obj_dballoc->refsource == $obj_dbacthdr->source
+                            && $obj_dballoc->reftrantype == $obj_dbacthdr->trantype
+                            && $obj_dballoc->refauditno == $obj_dbacthdr->auditno
+                        ){
+                            $obj_dbacthdr->can_alloc=false;
+                            $obj_dbacthdr->outamount = $obj_dballoc->outamount;
+                            $obj_dbacthdr->refamount = $obj_dballoc->refamount;
+                            $obj_dbacthdr->amount = $obj_dballoc->amount;
+                            $obj_dbacthdr->source = $obj_dballoc->source;
+                            $obj_dbacthdr->trantype = $obj_dballoc->trantype;
+                            $obj_dbacthdr->auditno = $obj_dballoc->auditno;
+                            $obj_dbacthdr->lineno_ = $obj_dballoc->lineno_;
+                            $obj_dbacthdr->idno = $obj_dballoc->idno;
+
+                            if(!in_array($obj_dbacthdr, $return_array)){
+                                array_push($return_array,$obj_dbacthdr);
+                            }
+
+                            array_push($got_array,$obj_dbacthdr->idno);
+                        }else{
+                            $obj_dbacthdr->refamount = $obj_dbacthdr->outamount;
+                            $obj_dbacthdr->can_alloc=true;
+
+                            if(!in_array($obj_dbacthdr, $return_array)){
+                                array_push($return_array,$obj_dbacthdr);
+                            }
                         }
                     }
                 }
