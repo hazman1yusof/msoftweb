@@ -118,6 +118,27 @@
 		background-color: #cae6f4 !important;
 	}
 
+	.myfieldset {
+	  border: 1px solid #ddd;
+	  margin-top: 1em;
+	  padding: 0px 12px;
+	}
+
+	.myfieldset h1 {
+	  font-size: 12px;
+	  text-align: center;
+	}
+
+	.myfieldset h1 span {
+	  display: inline;
+	  border: 1px solid #ddd;
+	  background: #fff;
+	  padding: 5px 10px;
+	  position: relative;
+	  top: -2em;
+      background-color: lightgrey;
+	}
+
 @endsection
 
 @section('body')
@@ -125,8 +146,8 @@
 	<!--***************************** Search + table ******************-->
 	<input type="hidden" name="curr_user" id="curr_user" value="{{Auth::user()->username}}">
 	<div class='row'>
-		<div class="header" id="SearchFormHeader" style="position: sticky;top: 0px;z-index: 3;">
-			<form id="searchForm" class="formclass" style='width:99%; position:relative; min-height: 120px'>
+		<div class="header" id="SearchFormHeader" >
+			<form id="searchForm" class="formclass" style='width:99%;'>
 				<fieldset>
 					<input id="csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token() }}">
 					<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
@@ -182,49 +203,53 @@
 								</div>
 							</div>
 						</div>
-
-						<div class="form-group" style="position: absolute; right: 10px;top: 8px; width: 35%">
-							<div class="col-md-6" style="">
-								<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
-							</div>
-							<div class="col-md-6" style="">
-								<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
-							</div>  
-							<div class="col-md-6" style="">
-								<p><img src="img/bedonly.png" height="10" width="14"></img> TOTAL BED: <span id="stat_totalbed"></span></p>
-							</div>
-
-						</div>
-
 					</div>
 				</fieldset> 
 			</form>
 		</div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default" style="margin-right:10px">
 		    <div class="panel-heading">Bed Management Setup Header</div>
 		    <div class="panel-body">
-		    	<div class='col-md-12' style="padding:0 0 15px 0">
+		    	<div class='col-md-12' style="padding:0px">
             		<table id="jqGrid" class="table table-striped"></table>
             		<div id="jqGridPager"></div>
         		</div>
+        		<!-- <div class="form-group" >
+					<div class="col-md-6" style="">
+						<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
+					</div>
+					<div class="col-md-6" style="">
+						<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
+					</div>  
+					<div class="col-md-6" style="">
+						<p><img src="img/bedonly.png" height="10" width="14"></img> TOTAL BED: <span id="stat_totalbed"></span></p>
+					</div>
+				</div> -->
 		    </div>
+		    <div class="row">
+				<div class="myfieldset">
+				  <h1><span>Bed Information</span></h1>
+				  <p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
+				</div>
+			</div>
 		</div>
+		
 	</div>
 
 	<div class='row'>
@@ -401,29 +426,29 @@
 		</div>
 	</div>
 
-		<div class='row'>
-			@include('hisdb.nursing.nursing')
-		</div>
+	<div class='row'>
+		@include('hisdb.nursing.nursing')
+	</div>
 
-		<div class='row'>
-			@include('hisdb.wardpanel.wardpanel')
-		</div>
+	<div class='row'>
+		@include('hisdb.wardpanel.wardpanel')
+	</div>
 
-		<div class='row'>
-			@include('hisdb.doctornote.doctornote')
-		</div>
+	<div class='row'>
+		@include('hisdb.doctornote.doctornote')
+	</div>
 
-		<div class='row'>
-			@include('hisdb.dietorder.dietorder')
-		</div>
-		
-		<div class='row'>
-			@include('hisdb.dischgsummary.dischgsummary')
-		</div>
+	<div class='row'>
+		@include('hisdb.dietorder.dietorder')
+	</div>
+	
+	<div class='row'>
+		@include('hisdb.dischgsummary.dischgsummary')
+	</div>
 
-		<div class='row'>
-			@include('hisdb.ordcom.ordcom')
-		</div>
+	<div class='row'>
+		@include('hisdb.ordcom.ordcom')
+	</div>
 
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
 		<div class='panel panel-info'>

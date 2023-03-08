@@ -1167,9 +1167,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				// $("#"+obj.gridname).jqGrid("clearGridData", true);
 				$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 				textfield.removeClass( "error" ).addClass( "valid" );
-				delay(function(){
+				// delay(function(){
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
-					},500);
+					// },500);
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
 			}
 
@@ -1253,9 +1253,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					textfield.removeClass( "error" ).addClass( "valid" );
-					delay(function(){
+					// delay(function(){
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
-					},500);
+					// },500);
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
 				}
 
@@ -1394,9 +1394,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					$(obj.textfield).removeClass( "error" ).addClass( "valid" );
-					delay(function(){
+					// delay(function(){
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
-					},500);
+					// },500);
 				}
 				var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
 				if($.inArray(idtopush,obj.errorField)!==-1 && obj.required){

@@ -59,7 +59,6 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						rdonly('#formdata');
 						alloc_button_status('initial');
-						$('#amount_placeholder').val(0);
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
@@ -287,7 +286,6 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
-			$('#amount_placeholder').val(selrowData("#jqGrid").db_amount);
 			$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
 			mycurrency.formatOn();
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
@@ -943,7 +941,6 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
-			$('#amount_placeholder').val(response.responseText);
 			show_post_button();
 			// $('#db_unit').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
@@ -1379,16 +1376,20 @@ $(document).ready(function () {
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-		var totamt = $('#amount_placeholder').val();
-		
-		for(const e of rowids) {
-			let amt = $('input#'+e+'_amount').val();
-			totamt = parseFloat(totamt)+parseFloat(amt);
-			if(e.search("jq") >= 0)break;
-		}
-		
+		var totamt = 0
+
+		rowids.forEach(function(e,i){
+			let amt = $('#jqGrid2 input#'+e+'_amount').val();
+			if(amt != undefined){
+				totamt = parseFloat(totamt)+parseFloat(amt);
+			}else{
+				let rowdata = $('#jqGrid2').jqGrid ('getRowData',e);
+				totamt = parseFloat(totamt)+parseFloat(rowdata.amount);
+			}
+		});
+
 		if(!isNaN(totamt)){
-			$('#db_amount').val(numeral(totamt).format('0,0.00'));
+			$('#apacthdr_amount').val(numeral(totamt).format('0,0.00'));
 		}
 	}
 
