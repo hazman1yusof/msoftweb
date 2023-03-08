@@ -2007,6 +2007,8 @@ $(document).ready(function () {
 				if(data.rows.length>0){
 					$(id_optid+'_gstpercent').val(data.rows[0].rate);
 					$(id_optid+'_AmtB4GST').trigger('blur');
+					calculate_line_totgst_and_totamt2(id_optid);
+					calc_jq_height_onchange("jqGrid2");
 				}
 			}
 		},'urlParam','radio','tab'

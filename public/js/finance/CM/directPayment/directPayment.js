@@ -892,7 +892,7 @@ $(document).ready(function () {
 
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 				let retval = check_cust_rules("#jqGrid2",data);
-				// console.log(retval);
+				 console.log(retval);
 				if(retval[0]!= true){
 					alert(retval[1]);
 					mycurrency2.formatOn();
