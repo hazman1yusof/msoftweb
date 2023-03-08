@@ -629,6 +629,7 @@ Route::get('/directPayment/table','finance\DirectPaymentController@table');
 Route::post('/directPayment/form','finance\DirectPaymentController@form');
 Route::get('/directPayment/form','finance\DirectPaymentController@form');
 Route::post('/directPaymentDetail/form','finance\DirectPaymentDetailController@form');
+Route::get('/directPaymentDetail/table','finance\DirectPaymentDetailController@table');
 
 //// Credit Debit Transaction ///
 Route::get('/creditDebitTrans','finance\CreditDebitTransController@show');

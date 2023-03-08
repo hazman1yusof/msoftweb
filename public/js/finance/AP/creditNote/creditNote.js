@@ -1556,7 +1556,7 @@ $(document).ready(function () {
 				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
+				//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
 			alloc_button_status('wait');
 		});
@@ -1580,14 +1580,17 @@ $(document).ready(function () {
 	});
 	
 	$("#save_Alloc").click(function(){
-		var totamt = $('#apacthdr_amount').val();
-		var allocamt = 0;
-		$('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
-			var thisamt = $(this).val().trim();
-			allocamt = parseFloat(allocamt) + parseFloat(thisamt);
-		});
+		mycurrency.formatOff();
+		mycurrency2.formatOff();
 
-		if(allocamt > totamt){
+		// var totamt = $('#apacthdr_amount').val();
+		// var allocamt = 0;
+		// $('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
+		// 	var thisamt = $(this).val().trim();
+		// 	allocamt = parseFloat(allocamt) + parseFloat(thisamt);
+		// });
+
+		if(parseFloat($('#apacthdr_outamount').val().trim()) < 0){
 			alert('Allocate amount cant exceed total amount');
 		}else{
 			var param={
@@ -1753,7 +1756,7 @@ $(document).ready(function () {
 										trantype:elem['trantype'],
 										allocdate:elem['recdate'],
 										reference:elem['document'],
-										refamount:elem['amount'],
+										refamount:elem['refamount'],
 										outamount:elem['outamount'],
 										allocamount: 0,
 										balance:elem['outamount'],
@@ -2133,7 +2136,7 @@ function populate_alloc_table(){
 						allocdate:elem['recdate'],
 						trantype:elem['trantype'],
 						reference:elem['document'],
-						refamount:elem['amount'],
+						refamount:elem['refamount'],
 						outamount:elem['outamount'],
 						allocamount: allocamount,
 						balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
@@ -2151,7 +2154,7 @@ function populate_alloc_table(){
 				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
+				//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
 
 			calc_amtpaid_bal();
@@ -2212,30 +2215,45 @@ function disable_gridpager(pager,hide=true){
 	}
 }
 
-function calculate_total_alloc(){
+function calculate_total_alloc(rowid){
 	mycurrency2.formatOff();
+	mycurrency.formatOff();
+
+	var tot_detail = $('#apacthdr_amount').val();
 	var rowids = $('#jqGridAlloc').jqGrid('getDataIDs');
-	var totamt = 0;
+	var tot_alloc = 0;
+
 	rowids.forEach(function(e,i){
 		let amt = $('input#'+e+'_allocamount').val();
-		totamt = parseFloat(totamt) + parseFloat(amt);
+		if(amt != undefined){
+			tot_alloc = parseFloat(tot_alloc)+parseFloat(amt);
+		}else{
+			let rowdata = $('#jqGridAlloc').jqGrid ('getRowData',e);
+			tot_alloc = parseFloat(tot_alloc)+parseFloat(rowdata.amount);
+		}
 	});
-	if(!isNaN(totamt)){
-		$('#tot_Alloc').val(numeral(totamt).format('0,0.00'));
+
+	if(!isNaN(tot_alloc)){
+		$('#tot_Alloc').val(numeral(tot_alloc).format('0,0.00'));
+
+		outamount = parseFloat(tot_detail) - parseFloat(tot_alloc);
+		if(!isNaN(outamount)){
+			$('#apacthdr_outamount').val(numeral(outamount).format('0,0.00'));
+
+			if(outamount < 0){
+				alert('Allocate amount cant exceed total amount');
+				if(rowid != undefined){
+					text_error1('input#'+rowid+'_allocamount');
+				}
+			}else{
+				if(rowid != undefined){
+					text_success1('input#'+rowid+'_allocamount');
+				}
+			}
+		}
 	}
+
 	mycurrency2.formatOn();
-}
-
-function calculate_outamount(){
-	mycurrency.formatOff();
-	var tot_alloc = $('#tot_Alloc').val();
-	var tot_dtl = $('#apacthdr_amount').val();
-
-	outamount = parseFloat(tot_dtl) - parseFloat(tot_alloc);
-	
-	if(!isNaN(outamount)){
-		$('#apacthdr_outamount').val(numeral(outamount).format('0,0.00'));
-	}
 	mycurrency.formatOn();
 }
 
@@ -2254,26 +2272,7 @@ function calc_amtpaid(event){
 	
 	var balance = parseFloat(data.outamount) - parseFloat($(this).val());
 	$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', balance);
-	calculate_total_alloc();
-	calculate_outamount();
-}
-
-function calc_amtpaid_tot(event){
-	var totamt = $('#apacthdr_amount').val();
-	var allocamt = 0;
-	$('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
-		var thisamt = $(this).val().trim();
-		allocamt = parseFloat(allocamt) + parseFloat(thisamt);
-	});
-
-	if(allocamt > totamt){
-		alert('Allocate amount cant exceed total amount');
-		myerrorIt_only($(this),true);
-	}else{
-		myerrorIt_only($(this),false);
-		calculate_total_alloc();
-		calculate_outamount();
-	}
+	calculate_total_alloc(rowid);
 }
 
 function calc_amtpaid_bal(){
@@ -2288,6 +2287,5 @@ function calc_amtpaid_bal(){
 			$("#jqGridAlloc").jqGrid('setCell', rowid, 'balance', data.outamount);
 		}
 		calculate_total_alloc();
-		calculate_outamount();
 	});
 }

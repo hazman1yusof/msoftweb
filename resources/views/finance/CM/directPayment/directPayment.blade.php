@@ -121,7 +121,7 @@ i.fa {
 </div>
 
 	<!-- ***************End Search + table ********************* -->
-		
+	<input id="amount_placeholder" name="amount_placeholder" type="hidden">
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:100%' id='formdata'>
 				{{ csrf_field() }}

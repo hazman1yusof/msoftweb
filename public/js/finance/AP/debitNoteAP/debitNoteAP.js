@@ -1289,8 +1289,8 @@ $(document).ready(function () {
 		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.idno','apdt.suppcode','apdt.allocdate','apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.refauditno','apdt.refsource','apdt.reftrantype'],
-		filterVal:['session.compcode', '', 'AP','DN']
+		filterCol:['apdt.compcode','apdt.refauditno','apdt.refsource','apdt.reftrantype', 'apdt.recstatus'],
+		filterVal:['session.compcode', '', 'AP','DN', 'POSTED']
 	};
 
 	$("#jqGridAlloc").jqGrid({

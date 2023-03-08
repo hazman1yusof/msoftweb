@@ -209,29 +209,36 @@ use Carbon\Carbon;
         // dump($apalloc->get());
 
         $return_array=[];
+        $got_array=[];
         if($apalloc->exists()){
             foreach ($apacthdr->get() as $obj_apacthdr) {
                 foreach ($apalloc->get() as $obj_apalloc) {
-                    if(
-                        $obj_apalloc->refsource == $obj_apacthdr->source
-                        && $obj_apalloc->reftrantype == $obj_apacthdr->trantype
-                        && $obj_apalloc->refauditno == $obj_apacthdr->auditno
-                    ){
-                        $obj_apacthdr->can_alloc=false;
-                        $obj_apacthdr->outamount = $obj_apalloc->outamount;
-                        $obj_apacthdr->amount = $obj_apalloc->allocamount;
-                        $obj_apacthdr->source = $obj_apalloc->source;
-                        $obj_apacthdr->trantype = $obj_apalloc->trantype;
-                        $obj_apacthdr->auditno = $obj_apalloc->auditno;
-                        $obj_apacthdr->lineno_ = $obj_apalloc->lineno_;
-                        $obj_apacthdr->idno = $obj_apalloc->idno;
-                        if(!in_array($obj_apacthdr, $return_array)){
-                            array_push($return_array,$obj_apacthdr);
-                        }
-                    }else{
-                        $obj_apacthdr->can_alloc=true;
-                        if(!in_array($obj_apacthdr, $return_array)){
-                            array_push($return_array,$obj_apacthdr);
+                    if(!in_array($obj_apacthdr->idno,$got_array)){
+                        if(
+                            $obj_apalloc->refsource == $obj_apacthdr->source
+                            && $obj_apalloc->reftrantype == $obj_apacthdr->trantype
+                            && $obj_apalloc->refauditno == $obj_apacthdr->auditno
+                        ){
+                            $obj_apacthdr->can_alloc=false;
+                            $obj_apacthdr->outamount = $obj_apalloc->outamount;
+                            $obj_apacthdr->refamount = $obj_apalloc->refamount;
+                            $obj_apacthdr->amount = $obj_apalloc->allocamount;
+                            $obj_apacthdr->source = $obj_apalloc->source;
+                            $obj_apacthdr->trantype = $obj_apalloc->trantype;
+                            $obj_apacthdr->auditno = $obj_apalloc->auditno;
+                            $obj_apacthdr->lineno_ = $obj_apalloc->lineno_;
+                            $obj_apacthdr->idno = $obj_apalloc->idno;
+
+                            if(!in_array($obj_apacthdr, $return_array)){
+                                array_push($return_array,$obj_apacthdr);
+                            }
+                            array_push($got_array,$obj_dbacthdr->idno);
+                        }else{
+                            $obj_dbacthdr->refamount = $obj_dbacthdr->outamount;
+                            $obj_apacthdr->can_alloc=true;
+                            if(!in_array($obj_apacthdr, $return_array)){
+                                array_push($return_array,$obj_apacthdr);
+                            }
                         }
                     }
                 }
@@ -695,17 +702,15 @@ use Carbon\Carbon;
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
-                // $apalloc = DB::table('finance.apalloc')
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('unit','=',session('unit'))
-                //     ->where('source','=', $apacthdr->source)
-                //     ->where('trantype','=', $apacthdr->trantype)
-                //     ->where('auditno','=', $apacthdr->auditno)
-                //     ->update([
-                //         'recstatus' => 'POSTED',
-                //         'lastuser' => session('username'),
-                //         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                //     ]);
+                DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('source','=', $apacthdr->source)
+                    ->where('trantype','=', $apacthdr->trantype)
+                    ->where('auditno','=', $apacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'POSTED'
+                    ]);
 
             }
 

@@ -358,6 +358,16 @@ use Carbon\Carbon;
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
+                
+                DB::table('finance.apactdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
+                    ->where('source','=', $apacthdr->source)
+                    ->where('trantype','=', $apacthdr->trantype)
+                    ->where('auditno','=', $apacthdr->auditno)
+                    ->update([
+                        'recstatus' => 'POSTED'
+                    ]);
             }
 
             DB::commit();

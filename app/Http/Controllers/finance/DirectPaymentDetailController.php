@@ -88,6 +88,12 @@ class DirectPaymentDetailController extends defaultController
         DB::beginTransaction();
 
         try {
+            //check utk gst
+            $gstcode_obj = $this->check_gstcode($request);
+        
+            $apacthdr = DB::table("finance.apacthdr")
+                ->where('idno','=',$request->idno)
+                ->first();
 
             $auditno = $request->auditno;
 
@@ -110,12 +116,12 @@ class DirectPaymentDetailController extends defaultController
                     'source' => 'CM',
                     'trantype' => 'DP',
                     'document' => strtoupper($request->document),
-                    'amount' => $request->amount,
-                    'taxamt' => $request->tot_gst,
-                    'GSTCode' => $request->GSTCode,
-                    'AmtB4GST' => $request->AmtB4GST,
-                    'category' => $request->category,
-                    'deptcode' => $request->deptcode,
+                    'amount' => floatval($gstcode_obj->amount),
+                    'taxamt' => floatval($gstcode_obj->tot_gst),
+                    'GSTCode' => strtoupper($request->GSTCode),
+                    'AmtB4GST' => floatval($gstcode_obj->AmtB4GST),
+                    'category' => strtoupper($request->category),
+                    'deptcode' => strtoupper($request->deptcode),
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN',
@@ -264,18 +270,20 @@ class DirectPaymentDetailController extends defaultController
 
             foreach ($request->dataobj as $key => $value) {
 
+                $gstcode_obj = $this->check_gstcode2($value);
+
                 ///1. update detail
                 DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'document' => strtoupper($value['document']),
-                        'deptcode' => $value['deptcode'],
-                        'category' => $value['category'],
-                        'GSTCode' => $value['GSTCode'],
-                        'AmtB4GST' => $value['AmtB4GST'],
-                        'taxamt' => $value['tot_gst'],
-                        'amount' => $value['amount'],
+                        'deptcode' => strtoupper($value['deptcode']),
+                        'category' => strtoupper($value['category']),
+                        'GSTCode' => strtoupper($value['GSTCode']),
+                        'AmtB4GST' => $gstcode_obj->AmtB4GST,
+                        'taxamt' => $gstcode_obj->tot_gst,
+                        'amount' => $gstcode_obj->amount,
                         'upduser' => session('username'), 
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                        
@@ -310,6 +318,58 @@ class DirectPaymentDetailController extends defaultController
             return response('Error'.$e, 500);
         }
 
+    }
+
+    public function check_gstcode(Request $request){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','Input')
+                    ->where('taxcode',$request->GSTCode);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$request->GSTCode.' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($request->AmtB4GST);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
+    }
+
+    public function check_gstcode2($value){
+        $gstcode = DB::table('hisdb.taxmast')
+                    ->where('compcode',session('compcode'))
+                    ->where('taxtype','Input')
+                    ->where('taxcode',$value['GSTCode']);
+
+        if(!$gstcode->exists()){
+            throw new \Exception('Tax Code '.$value['GSTCode'].' doesnt exist', 500);
+        }
+
+        $gstcode_ = $gstcode->first();
+
+        $rate = floatval($gstcode_->rate);
+        $AmtB4GST = floatval($value['AmtB4GST']);
+        $tot_gst = $AmtB4GST * $rate / 100;
+        $amount = $AmtB4GST + $tot_gst;
+
+        $responce = new stdClass();
+        $responce->rate = $rate;
+        $responce->AmtB4GST = $AmtB4GST;
+        $responce->tot_gst = $tot_gst;
+        $responce->amount = $amount;
+
+        return $responce;
     }
 
 }
