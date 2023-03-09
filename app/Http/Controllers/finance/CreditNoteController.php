@@ -792,7 +792,7 @@ use Carbon\Carbon;
                         'crcostcode' => $dept_obj->costcode,
                         'cracc' => $category_obj->expacct,
                         'amount' => $value->amount,
-                        'postdate' => $apacthdr_obj->entrydate,
+                        'postdate' => $apacthdr_obj->postdate,
                         'adduser' => $apacthdr_obj->adduser,
                         'adddate' => $apacthdr_obj->adddate,
                         'idno' => null
