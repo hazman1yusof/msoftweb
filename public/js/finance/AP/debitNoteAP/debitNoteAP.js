@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
 	
-	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	///////////////////////////////// trandate check date validate from period//////////////////////////
 	var actdateObj = new setactdate(["#apacthdr_recdate"]);
 	actdateObj.getdata().set();
 
@@ -103,7 +103,6 @@ $(document).ready(function () {
 						}
 					});
 				}
-				
 			},
 			close: function( event, ui ) {
 				//reset balik

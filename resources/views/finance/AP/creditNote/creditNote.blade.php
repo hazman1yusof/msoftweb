@@ -191,7 +191,6 @@ i.fa {
     </div>
 	<!-- ***************End Search + table ********************* -->
 
-	<input id="amount_placeholder" name="amount_placeholder" type="hidden">
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Credit Note Header

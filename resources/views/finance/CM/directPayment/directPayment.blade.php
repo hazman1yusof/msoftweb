@@ -121,7 +121,6 @@ i.fa {
 </div>
 
 	<!-- ***************End Search + table ********************* -->
-	<input id="amount_placeholder" name="amount_placeholder" type="hidden">
 		<div id="dialogForm" title="Add Form" >
 			<form class='form-horizontal' style='width:100%' id='formdata'>
 				{{ csrf_field() }}
@@ -179,7 +178,7 @@ i.fa {
 										<label class="col-md-2 control-label" for="cheqno" id="chg_label">Cheque No</label>  
 											<div class="col-md-3" id="cheqno_parent">
 												<div class='input-group'>
-													<input id="cheqno" name="cheqno" type="text" class="form-control input-sm">
+													<input id="cheqno" name="cheqno" type="text" class="form-control input-sm text-uppercase">
 														<a class='input-group-addon btn btn-primary' id="cheqno_a"><span class='fa fa-ellipsis-h' ></span></a>
 												</div>
 												<span id='cn' class="help-block"></span>

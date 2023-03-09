@@ -34,40 +34,6 @@ class DirectPaymentDetailController extends defaultController
         }
     }
 
-    public function table(Request $request)
-    {   
-        switch($request->action){
-            case 'get_table_dtl':
-                return $this->get_table_dtl($request);
-            default:
-                return 'error happen..';
-        }
-    }
-
-    public function get_table_dtl(Request $request){
-        $table = DB::table('finance.apactdtl as apactdtl')
-                    ->select('apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.taxamt AS tot_gst', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno', 'apactdtl.idno')
-                    ->where('source','=',$request->source)
-                    ->where('trantype','=',$request->trantype)
-                    ->where('auditno','=',$request->auditno)
-                    ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','<>','DELETE')
-                    ->orderBy('idno','desc');
-
-        //////////paginate/////////
-        $paginate = $table->paginate($request->rows);
-
-        $responce = new stdClass();
-        $responce->page = $paginate->currentPage();
-        $responce->total = $paginate->lastPage();
-        $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
-        $responce->sql = $table->toSql();
-        $responce->sql_bind = $table->getBindings();
-
-        return json_encode($responce);
-    }
-
     public function get_draccno($itemcode){
         $query = DB::table('material.category')
                 ->select('category.stockacct')
@@ -296,7 +262,6 @@ class DirectPaymentDetailController extends defaultController
         
     }
 
-
     public function edit_all(Request $request){
 
         DB::beginTransaction();
@@ -369,8 +334,17 @@ class DirectPaymentDetailController extends defaultController
 
         $rate = floatval($gstcode_->rate);
         $AmtB4GST = floatval($request->AmtB4GST);
-        $tot_gst = $AmtB4GST * $rate / 100;
-        $amount = $AmtB4GST + $tot_gst;
+        
+        $tot_gst_real = $request->tot_gst;
+        $tot_gst_rate = $AmtB4GST * $rate / 100;
+
+        if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
+            $amount = $AmtB4GST + $tot_gst_rate;
+            $tot_gst = $tot_gst_rate;
+        }else{
+            $amount = $AmtB4GST + $tot_gst_real;
+            $tot_gst = $tot_gst_real;
+        }
 
         $responce = new stdClass();
         $responce->rate = $rate;
@@ -395,8 +369,17 @@ class DirectPaymentDetailController extends defaultController
 
         $rate = floatval($gstcode_->rate);
         $AmtB4GST = floatval($value['AmtB4GST']);
-        $tot_gst = $AmtB4GST * $rate / 100;
-        $amount = $AmtB4GST + $tot_gst;
+
+        $tot_gst_real = floatval($value['tot_gst']);
+        $tot_gst_rate = $AmtB4GST * $rate / 100;
+
+        if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
+            $amount = $AmtB4GST + $tot_gst_rate;
+            $tot_gst = $tot_gst_rate;
+        }else{
+            $amount = $AmtB4GST + $tot_gst_real;
+            $tot_gst = $tot_gst_real;
+        }
 
         $responce = new stdClass();
         $responce->rate = $rate;

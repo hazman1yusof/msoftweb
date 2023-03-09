@@ -68,6 +68,7 @@ class DirectPaymentController extends defaultController
                         'ap.outamount AS outamount',
                         'ap.recstatus AS recstatus',
                         'ap.payto AS payto',
+                        'su.name AS supplier_name', 
                         'ap.recdate AS recdate',
                         'ap.category AS category',
                         'ap.remarks AS remarks',
@@ -83,6 +84,7 @@ class DirectPaymentController extends defaultController
                         'ap.bankcode AS bankcode',
                         'ap.TaxClaimable AS TaxClaimable',
                     )
+                    ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.payto')
                     ->where('ap.compcode','=', session('compcode'))
                     ->where('ap.source','=', 'CM')
                     ->where('ap.trantype', '=','DP');
@@ -165,11 +167,11 @@ class DirectPaymentController extends defaultController
             $idno = DB::table('finance.apacthdr')
                     ->insertGetId([
                         'auditno' => $auditno,
-                        'bankcode' => $request->bankcode,
+                        'bankcode' => strtoupper($request->bankcode),
                         'payto' => strtoupper($request->payto),
                         'actdate' => $request->actdate,
                         'amount' => $amount,
-                        'paymode' => $request->paymode,
+                        'paymode' => strtoupper($request->paymode),
                         'cheqno' => $request->cheqno,
                         'remarks' => strtoupper($request->remarks),
                         'TaxClaimable' => $request->TaxClaimable,
@@ -547,10 +549,10 @@ class DirectPaymentController extends defaultController
         $table = DB::table("finance.apacthdr");
 
         $array_update = [
-            'bankcode' => $request->bankcode,
-            'payto' => $request->payto,
+            'bankcode' => strtoupper($request->bankcode),
+            'payto' => strtoupper($request->payto),
             'actdate' => $request->actdate,
-            'paymode' => $request->paymode,
+            'paymode' => strtoupper($request->paymode),
             'cheqno' => $request->cheqno,
             'remarks' => strtoupper($request->remarks),
             'TaxClaimable' => $request->TaxClaimable,
