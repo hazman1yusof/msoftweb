@@ -376,7 +376,6 @@ use Carbon\Carbon;
                     'trantype' => 'CN',
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
-                    'postdate' => $request->apacthdr_postdate,
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
@@ -653,9 +652,11 @@ use Carbon\Carbon;
             DB::table('finance.apacthdr')
                 ->where('idno','=',$request->idno)
                 ->update([
+                    'postdate' => $apacthdr->recdate,
                     'recstatus' => 'POSTED',
                     'upduser' => session('username'),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'postuser' => session('username')
                 ]);
 
             DB::table('finance.apactdtl')
@@ -697,9 +698,11 @@ use Carbon\Carbon;
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->update([
+                        'postdate' => $apacthdr->recdate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postuser' => session('username')
                     ]);
 
                 DB::table('finance.apactdtl')

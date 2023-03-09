@@ -1451,6 +1451,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	function checkInput(errorField,idtopush,jqgrid=null,optid=null,before_check,after_check){
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 		
+		renull_search(this);
 		if (before_check !== undefined) {
 			renull_search(this);
 			before_check(self);

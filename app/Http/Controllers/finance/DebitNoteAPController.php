@@ -355,6 +355,7 @@ use Carbon\Carbon;
                     ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
+                        'postdate' => $request->recdate,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

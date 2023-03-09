@@ -119,24 +119,46 @@
 	}
 
 	.myfieldset {
-	  border: 1px solid #ddd;
-	  margin-top: 1em;
-	  padding: 0px 12px;
+	  	border: 1px solid lightblue;
+	    border-radius: 10px;
+	  	margin-top: 1em;
+	  	padding: 0px 12px;
 	}
 
 	.myfieldset h1 {
-	  font-size: 12px;
-	  text-align: center;
+	    font-size: 12px;
+		text-align: center;
+		margin:0px;
 	}
 
 	.myfieldset h1 span {
-	  display: inline;
-	  border: 1px solid #ddd;
-	  background: #fff;
-	  padding: 5px 10px;
-	  position: relative;
-	  top: -2em;
-      background-color: lightgrey;
+	    display: inline;
+	    border: 1px solid lightblue;
+	    border-radius: 10px;
+	    background: #fff;
+	    padding: 5px 10px;
+	    position: relative;
+	    top: -0.5em;
+	    background-color: #edfbff;
+	}
+	table.tableinfo{
+		margin: 0px 10px;
+	    border: lightblue solid 0.5px;
+	    border-top: #edfbff solid 0.5px;
+	    width: -webkit-fill-available;
+	    border-radius: 0px 0px 20px 20px;
+	    border-collapse: separate;
+	    background-color: #edfbff; 
+	}
+	table.tableinfo td{
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	table.tablebed{
+	    width: -webkit-fill-available;
+	}
+	table.tablebed td{
+		padding:10px 20px;
 	}
 
 @endsection
@@ -210,42 +232,80 @@
 
         <div class="panel panel-default" style="margin-right:10px">
 		    <div class="panel-heading">Bed Management Setup Header</div>
-		    <div class="panel-body">
+		    <div class="panel-body" style="padding-bottom: 0px;">
 		    	<div class='col-md-12' style="padding:0px">
             		<table id="jqGrid" class="table table-striped"></table>
             		<div id="jqGridPager"></div>
         		</div>
-        		<!-- <div class="form-group" >
-					<div class="col-md-6" style="">
-						<p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-bed" aria-hidden="true"></i> OCCUPIED: <span id="stat_occupied"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-female" aria-hidden="true"></i> HOUSEKEEPING: <span id="stat_housekeeping"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-gavel" aria-hidden="true"></i> MAINTENANCE: <span id="stat_maintenance"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-bullhorn" aria-hidden="true"></i> ISOLATED: <span id="stat_isolated"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-ban" aria-hidden="true"></i> RESERVE: <span id="stat_reserve"></span></p>
-					</div>
-					<div class="col-md-6" style="">
-						<p><i class="fa fa-times" aria-hidden="true"></i> DEACTIVE: <span id="stat_deactive"></span></p>
-					</div>  
-					<div class="col-md-6" style="">
-						<p><img src="img/bedonly.png" height="10" width="14"></img> TOTAL BED: <span id="stat_totalbed"></span></p>
-					</div>
-				</div> -->
+		    </div>
+
+		    <div class="row">
+			  	<table class="tableinfo"><tr>
+					<td align="center"><b> TOTAL BED: <span id="stat_totalbed"></b></span>
+				  	<td align="center">
+				  		<img src="img/bedonly.png" height="10" width="14"></img><b> VACANT: <span id="stat_vacant"></b></span>
+				  	</td>
+					<td align="center">
+						<i class="fa fa-bed" aria-hidden="true"></i><b> OCCUPIED: <span id="stat_occupied"></b></span>
+					</td>
+					<td align="center">
+						<i class="fa fa-female" aria-hidden="true"></i><b> HOUSEKEEPING: <span id="stat_housekeeping"></b></span>
+					</td>
+					<td align="center">
+						<i class="fa fa-gavel" aria-hidden="true"></i><b> MAINTENANCE: <span id="stat_maintenance"></b></span>
+					</td>
+					<td align="center">
+						<i class="fa fa-bullhorn" aria-hidden="true"></i><b> ISOLATED: <span id="stat_isolated"></b></span>
+					</td>
+					<td align="center">
+						<i class="fa fa-ban" aria-hidden="true"></i><b> RESERVE: <span id="stat_reserve"></b></span>
+					</td>
+					<td align="center">
+						<i class="fa fa-times" aria-hidden="true"></i><b> DEACTIVE: <span id="stat_deactive"></b></span>
+					</td>
+			  	</tr></table>
 		    </div>
 		    <div class="row">
 				<div class="myfieldset">
-				  <h1><span>Bed Information</span></h1>
-				  <p><img src="img/bedonly.png" height="10" width="14"></img> VACANT: <span id="stat_vacant"></span></p>
+				  	<h1><span>Bed Information</span></h1>
+				  	<table class="tablebed">
+				  	  <tr>
+						<td align="center">
+							<b>Bed Number</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>Bed Type</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>Bed Status</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>Room</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+			  		  </tr>
+				  	  <tr>
+						<td align="center">
+							<b>Ward</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>Statistic</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>MRN</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+						<td align="center">
+							<b>Name</b>
+							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
+						</td>
+			  		  </tr>
+			  		</table>
 				</div>
 			</div>
 		</div>
