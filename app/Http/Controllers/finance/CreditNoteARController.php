@@ -233,7 +233,7 @@ class CreditNoteARController extends defaultController
         
         // dump($dbacthdr->get());
         // dump($dballoc->get());
-
+        
         $return_array=[];
         $got_array=[];
         if($dballoc->exists()){
@@ -254,16 +254,16 @@ class CreditNoteARController extends defaultController
                             $obj_dbacthdr->auditno = $obj_dballoc->auditno;
                             $obj_dbacthdr->lineno_ = $obj_dballoc->lineno_;
                             $obj_dbacthdr->idno = $obj_dballoc->idno;
-
+                            
                             if(!in_array($obj_dbacthdr, $return_array)){
                                 array_push($return_array,$obj_dbacthdr);
                             }
-
+                            
                             array_push($got_array,$obj_dbacthdr->idno);
                         }else{
                             $obj_dbacthdr->refamount = $obj_dbacthdr->outamount;
                             $obj_dbacthdr->can_alloc=true;
-
+                            
                             if(!in_array($obj_dbacthdr, $return_array)){
                                 array_push($return_array,$obj_dbacthdr);
                             }

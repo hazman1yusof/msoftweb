@@ -776,7 +776,7 @@ $(document).ready(function () {
 		loadComplete: function(data){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
+				$('#jqGrid2').jqGrid('setSelection', "1");
 			}
 			
 			setjqgridHeight(data,'jqGrid2');			
@@ -1377,7 +1377,7 @@ $(document).ready(function () {
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
 		var totamt = 0
-
+		
 		rowids.forEach(function(e,i){
 			let amt = $('#jqGrid2 input#'+e+'_amount').val();
 			if(amt != undefined){
@@ -1387,9 +1387,9 @@ $(document).ready(function () {
 				totamt = parseFloat(totamt)+parseFloat(rowdata.amount);
 			}
 		});
-
+		
 		if(!isNaN(totamt)){
-			$('#apacthdr_amount').val(numeral(totamt).format('0,0.00'));
+			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
 	}
 
@@ -1547,7 +1547,7 @@ $(document).ready(function () {
 		loadComplete: function(data){
 			if(addmore_jqGrid3.more == true){$('#jqGridAlloc_iladd').click();}
 			else{
-				$('#jqGridAlloc').jqGrid ('setSelection', "1");
+				$('#jqGridAlloc').jqGrid('setSelection', "1");
 			}
 			
 			addmore_jqGrid3.edit = true;
@@ -2015,6 +2015,7 @@ $(document).ready(function () {
 					$(id_optid+'_gstpercent').val(data.rows[0].rate);
 					calculate_line_totgst_and_totamt2(id_optid);
 					calc_jq_height_onchange("jqGrid2");
+					$(id_optid+"_AmtB4GST").focus().select();
 				}
 			}
 		},'urlParam','radio','tab'

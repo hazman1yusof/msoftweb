@@ -53,7 +53,6 @@ $(document).ready(function () {
 						hideatdialogForm(true);
 						enableForm('#formdata');
 						rdonly('#formdata');
-						$('#amount_placeholder').val(0);
 						//$("#purreqhd_reqdept").val($("#x").val());
 						break;
 					case state = 'edit':
@@ -265,7 +264,6 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
-			$('#amount_placeholder').val(selrowData("#jqGrid").db_amount);
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}else{
@@ -730,7 +728,7 @@ $(document).ready(function () {
 			/// console.log(addmore_jqgrid2); ///
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
-				$('#jqGrid2').jqGrid ('setSelection', "1");
+				$('#jqGrid2').jqGrid('setSelection', "1");
 			}
 			
 			setjqgridHeight(data,'jqGrid2');			
@@ -857,7 +855,6 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			$('#db_amount').val(response.responseText);
-			$('#amount_placeholder').val(response.responseText);
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1296,14 +1293,18 @@ $(document).ready(function () {
 
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
-		var totamt = $('#amount_placeholder').val();
+		var totamt = 0
 		
-		for(const e of rowids) {
-			let amt = $('input#'+e+'_amount').val();
-			totamt = parseFloat(totamt)+parseFloat(amt);
-			if(e.search("jq") >= 0)break;
-		}
-				
+		rowids.forEach(function(e,i){
+			let amt = $('#jqGrid2 input#'+e+'_amount').val();
+			if(amt != undefined){
+				totamt = parseFloat(totamt)+parseFloat(amt);
+			}else{
+				let rowdata = $('#jqGrid2').jqGrid ('getRowData',e);
+				totamt = parseFloat(totamt)+parseFloat(rowdata.amount);
+			}
+		});
+		
 		if(!isNaN(totamt)){
 			$('#db_amount').val(numeral(totamt).format('0,0.00'));
 		}
@@ -1658,6 +1659,7 @@ $(document).ready(function () {
 					$(id_optid+'_gstpercent').val(data.rows[0].rate);
 					calculate_line_totgst_and_totamt2(id_optid);
 					calc_jq_height_onchange("jqGrid2");
+					$(id_optid+"_AmtB4GST").focus().select();
 				}
 			}
 		},'urlParam','radio','tab'
