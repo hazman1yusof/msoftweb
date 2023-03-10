@@ -507,33 +507,6 @@ $(document).ready(function () {
 
 	}
 
-	///////////check postdate for allocation///////////////////
-	//$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
-
-	function checkdateAlloc(nkreturn=false){
-		var apacthdr_postdateHdr = $("#formdata :input[name='apacthdr_postdate']").val();
-		var apacthdr_postdateAlloc = $("#jqGridAlloc :input[name='allocdate']").val();
-
-		console.log(apacthdr_postdateHdr);
-		console.log(apacthdr_postdateAlloc);
-		
-		$(".noti ol").empty();
-		var failmsg=[];
-
-		if(moment(apacthdr_postdateAlloc).isBefore(apacthdr_postdateHdr)){
-			failmsg.push("Alloc Date cannot be lower than Post date");
-		}
-
-		if(failmsg.length){
-			failmsg.forEach(function(element){
-				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
-			});
-			if(nkreturn)return false;
-		}else{
-			if(nkreturn)return true;
-		}
-
-	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
@@ -1627,6 +1600,7 @@ $(document).ready(function () {
 				//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
 			alloc_button_status('wait');
+			populate_alloc_table();
 		});
 	});
 
@@ -1799,23 +1773,21 @@ $(document).ready(function () {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 
 					var urlParam_alloc = {
-						action: 'get_table_alloc',
-						url:'./creditNote/table',
-						payto: $('#apacthdr_suppcode').val(),
-						//field: [],//$('#apacthdr_postdate').val().isBefore("#formdata :input[name='apacthdr_postdate']").val() (moment(apacthdr_postdate).isBefore("#formdata :input[name='apacthdr_postdate']"))
-						// table_name: ['finance.apacthdr'],
-						// filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount', ],
-						// filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0',],
-						// WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-						// WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-						// table_id: 'idno',
+						action: 'get_value_default',
+						url: 'util/get_value_default',
+						field: [],
+						table_name: ['finance.apacthdr'],
+						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+						table_id: 'idno',
 					};
 
-					$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
+					$.get("util/get_value_default?" + $.param(urlParam_alloc), function (data) {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_suppcode.textfield,false);
-							checkdateAlloc();
 							data.rows.forEach(function(elem) {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{	
@@ -2183,6 +2155,7 @@ function populate_alloc_table(){
 		WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
 		table_id: 'idno',
 		auditno:$('#apacthdr_auditno').val(),
+		postdate:$('#apacthdr_postdate').val(),
 	};
 
 	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {

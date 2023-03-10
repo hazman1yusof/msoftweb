@@ -31,7 +31,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period//////////////////////////
-	var actdateObj = new setactdate(["#apacthdr_recdate"]);
+	var actdateObj = new setactdate(["#apacthdr_postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -194,7 +194,8 @@ $(document).ready(function () {
 		{ label: 'Pay To', name: 'apacthdr_payto', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
 		{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+		{ label: 'Post Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden: true,},
+		{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 		{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
 		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
@@ -454,16 +455,16 @@ $(document).ready(function () {
 	});
 	
 	///////////check postdate & docdate///////////////////
-	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
+	$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
 
 	function checkdate(nkreturn=false){
-		var apacthdr_recdate = $('#apacthdr_recdate').val();
+		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
 
 		$(".noti ol").empty();
 		var failmsg=[];
 
-		if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
+		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
 			failmsg.push("Post Date cannot be lower than Document date");
 		}
 
@@ -1393,14 +1394,14 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_supplier.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
 				dialog_payto.check(errorField);
-				$('#apacthdr_recdate').focus();
+				$('#apacthdr_postdate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#apacthdr_recdate').focus();
+					$('#apacthdr_postdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
