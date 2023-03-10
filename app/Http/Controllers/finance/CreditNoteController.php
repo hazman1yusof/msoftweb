@@ -65,6 +65,8 @@ use Carbon\Carbon;
                 return $this->maintable($request);
             case 'get_alloc_when_edit':
                 return $this->get_alloc_when_edit($request);
+            case 'get_table_alloc':
+                return $this->get_table_alloc($request);
             default:
                 return 'error happen..';
         }
@@ -252,6 +254,63 @@ use Carbon\Carbon;
 
         return json_encode($responce);
 
+    }
+
+    public function get_table_alloc(Request $request){
+        $table = DB::table('finance.apacthdr AS ap')
+                ->select(
+                    'ap.compcode AS apacthdr_compcode',
+                    'ap.auditno AS apacthdr_auditno',
+                    'ap.trantype AS apacthdr_trantype',
+                    'ap.doctype AS apacthdr_doctype',
+                    'ap.suppcode AS apacthdr_suppcode',
+                    'su.name AS supplier_name', 
+                    'ap.actdate AS apacthdr_actdate',
+                    'ap.postdate AS apacthdr_postdate',
+                    'ap.document AS apacthdr_document',
+                    'ap.cheqno AS apacthdr_cheqno',
+                    'ap.deptcode AS apacthdr_deptcode',
+                    'ap.amount AS apacthdr_amount',
+                    'ap.outamount AS apacthdr_outamount',
+                    'ap.recstatus AS apacthdr_recstatus',
+                    'ap.payto AS apacthdr_payto',
+                    'ap.recdate AS apacthdr_recdate',
+                    'ap.category AS apacthdr_category',
+                    'ap.remarks AS apacthdr_remarks',
+                    'ap.adduser AS apacthdr_adduser',
+                    'ap.adddate AS apacthdr_adddate',
+                    'ap.upduser AS apacthdr_upduser',
+                    'ap.upddate AS apacthdr_upddate',
+                    'ap.source AS apacthdr_source',
+                    'ap.idno AS apacthdr_idno',
+                    'ap.unit AS apacthdr_unit',
+                    'ap.pvno AS apacthdr_pvno',
+                    'ap.paymode AS apacthdr_paymode',
+                    'ap.bankcode AS apacthdr_bankcode',
+                )
+                ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
+                ->where('ap.payto','=',$request->apacthdr_suppcode)
+                ->where('ap.compcode','=', session('compcode'))
+                ->where('ap.recstatus','=','POSTED')
+                ->where('ap.outamount','=','>.0')
+                ->whereIn('ap.source', ['AP','DF','CF','TX'])
+                ->whereIn('ap.trantype', ['IN','DN'])
+                ->orderBy('ap.idno','DESC');
+
+
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
     }
 
     public function add(Request $request){

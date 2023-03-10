@@ -1794,29 +1794,28 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#apacthdr_payto").val(data['SuppCode']);
 				dialog_payto.check(errorField);
-				
-				
 
 				if($("#apacthdr_trantype").find(":selected").text() == 'Credit Note') {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 
 					var urlParam_alloc = {
-						action: 'get_value_default',
-						url: 'util/get_value_default',
-						field: [],//$('#apacthdr_postdate').val().isBefore("#formdata :input[name='apacthdr_postdate']").val() (moment(apacthdr_postdate).isBefore("#formdata :input[name='apacthdr_postdate']"))
-						table_name: ['finance.apacthdr'],
-						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount', 'apacthdr.postdate'],
-						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0', moment().isBefore("#jqGridAlloc :input[name='allocdate']")],
-						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-						table_id: 'idno',
+						action: 'get_table_alloc',
+						url:'./creditNote/table',
+						payto: $('#apacthdr_suppcode').val(),
+						//field: [],//$('#apacthdr_postdate').val().isBefore("#formdata :input[name='apacthdr_postdate']").val() (moment(apacthdr_postdate).isBefore("#formdata :input[name='apacthdr_postdate']"))
+						// table_name: ['finance.apacthdr'],
+						// filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount', ],
+						// filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0',],
+						// WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+						// WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+						// table_id: 'idno',
 					};
 
-					$.get("util/get_value_default?" + $.param(urlParam_alloc), function (data) {
+					$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_suppcode.textfield,false);
-							//checkdateAlloc();
+							checkdateAlloc();
 							data.rows.forEach(function(elem) {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{	
