@@ -790,8 +790,6 @@ $(document).ready(function () {
 
 			$("#jqGrid2 input[name='AmtB4GST'],#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-			// $("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
-
         	$("input[name='amount']").keydown(function(e) {//when click tab at document, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -1031,22 +1029,32 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
-		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let amntb4gst = parseFloat($("#jqGrid2 #"+id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
-		
-		var tot_gst_real = parseFloat($("#"+id_optid+"_tot_gst").val());
-		var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 		var amount = 0;
 
-		if(tot_gst_real == tot_gst_rate || tot_gst_real==0){
-			amount = amntb4gst + tot_gst_rate;
-			tot_gst = tot_gst_rate;
+		console.log(gstpercent);
+
+		if(gstpercent == 0){
+			$("#jqGrid2  #"+id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
 		}else{
-			amount = amntb4gst + tot_gst_real;
-			tot_gst = tot_gst_real;
+			$("#jqGrid2 #"+id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
+
 		}
 
-		$("#"+id_optid+"_tot_gst").val(tot_gst);
+		$("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
 
@@ -1062,22 +1070,28 @@ $(document).ready(function () {
 		
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($(id_optid+"_gstpercent").val());
-		
-		// var tot_gst = amntb4gst * (gstpercent / 100);
-		// var amount = amntb4gst + tot_gst;
-
-		var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
-		var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 		var amount = 0;
+		console.log(gstpercent);
 
-		if(tot_gst_real == tot_gst_rate || tot_gst_real==0){
-			amount = amntb4gst + tot_gst_rate;
-			tot_gst = tot_gst_rate;
+		if(gstpercent == 0){
+			$(id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
 		}else{
-			amount = amntb4gst + tot_gst_real;
-			tot_gst = tot_gst_real;
+			$(id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
+
 		}
-		
+
 		$(id_optid+"_tot_gst").val(tot_gst);
 		
 		$(id_optid+"_amount").val(amount);
@@ -1280,7 +1294,6 @@ $(document).ready(function () {
 		dialog_GSTCode.on();
 		
 		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST'], #jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-		// $("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 		
 	}
 
@@ -1580,6 +1593,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_GSTCode.gridname);
 				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['rate']);
 				$("#jqGrid2 #"+id_optid+"_AmtB4GST").focus().select();
+				calculate_line_totgst_and_totamt2("#jqGrid2 #"+id_optid);
 			},
 			loadComplete: function(data,obj){
 				var searchfor = $("#jqGrid2 input#"+obj.id_optid+"_GSTCode").val()
