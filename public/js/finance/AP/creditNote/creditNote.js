@@ -32,7 +32,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#apacthdr_actdate"]);
+	var actdateObj = new setactdate(["#apacthdr_actdate", "#apacthdr_postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -479,21 +479,49 @@ $(document).ready(function () {
 	});
 
 	///////////check postdate & docdate///////////////////
-	$('#apacthdr_actdate').on('changeDate', function (ev) {
-        $('#apacthdr_cheqdate').change(apacthdr_actdate);
-    }); 
+	// $('#apacthdr_actdate').on('changeDate', function (ev) {
+    //     $('#apacthdr_cheqdate').change(apacthdr_actdate);
+    // }); 
 
-	$("#apacthdr_cheqdate,#apacthdr_actdate").blur(checkdate);
+	$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
 
 	function checkdate(nkreturn=false){
-		var apacthdr_cheqdate = $('#apacthdr_cheqdate').val();
+		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
 		
 		$(".noti ol").empty();
 		var failmsg=[];
 
-		if(moment(apacthdr_cheqdate).isBefore(apacthdr_actdate)){
+		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
 			failmsg.push("Post Date cannot be lower than Document date");
+		}
+
+		if(failmsg.length){
+			failmsg.forEach(function(element){
+				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+			});
+			if(nkreturn)return false;
+		}else{
+			if(nkreturn)return true;
+		}
+
+	}
+
+	///////////check postdate for allocation///////////////////
+	//$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
+
+	function checkdateAlloc(nkreturn=false){
+		var apacthdr_postdateHdr = $("#formdata :input[name='apacthdr_postdate']").val();
+		var apacthdr_postdateAlloc = $("#jqGridAlloc :input[name='allocdate']").val();
+
+		console.log(apacthdr_postdateHdr);
+		console.log(apacthdr_postdateAlloc);
+		
+		$(".noti ol").empty();
+		var failmsg=[];
+
+		if(moment(apacthdr_postdateAlloc).isBefore(apacthdr_postdateHdr)){
+			failmsg.push("Alloc Date cannot be lower than Post date");
 		}
 
 		if(failmsg.length){
@@ -1170,6 +1198,9 @@ $(document).ready(function () {
 			{ label: 'Document Date', name: 'allocdate', width: 80, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
+			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
+			},
 			{ label: 'Document No', name: 'reference', width: 60, classes: 'wrap',},
 			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap'},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
@@ -1764,6 +1795,7 @@ $(document).ready(function () {
 				$("#apacthdr_payto").val(data['SuppCode']);
 				dialog_payto.check(errorField);
 				
+				
 
 				if($("#apacthdr_trantype").find(":selected").text() == 'Credit Note') {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
@@ -1771,10 +1803,10 @@ $(document).ready(function () {
 					var urlParam_alloc = {
 						action: 'get_value_default',
 						url: 'util/get_value_default',
-						field: [],
+						field: [],//$('#apacthdr_postdate').val().isBefore("#formdata :input[name='apacthdr_postdate']").val() (moment(apacthdr_postdate).isBefore("#formdata :input[name='apacthdr_postdate']"))
 						table_name: ['finance.apacthdr'],
-						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
-						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount', 'apacthdr.postdate'],
+						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0', moment().isBefore("#jqGridAlloc :input[name='allocdate']")],
 						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
 						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
 						table_id: 'idno',
@@ -1784,7 +1816,7 @@ $(document).ready(function () {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_suppcode.textfield,false);
-
+							//checkdateAlloc();
 							data.rows.forEach(function(elem) {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{	
@@ -1792,6 +1824,7 @@ $(document).ready(function () {
 										suppcode:elem['suppcode'],
 										trantype:elem['trantype'],
 										allocdate:elem['recdate'],
+										postdate:elem['postdate'],
 										reference:elem['document'],
 										refamount:elem['refamount'],
 										outamount:elem['outamount'],
@@ -2174,6 +2207,7 @@ function populate_alloc_table(){
 						can_alloc:elem['can_alloc'],
 						suppcode:elem['suppcode'],
 						allocdate:elem['recdate'],
+						postdate:elem['postdate'],
 						trantype:elem['trantype'],
 						reference:elem['document'],
 						refamount:elem['refamount'],
