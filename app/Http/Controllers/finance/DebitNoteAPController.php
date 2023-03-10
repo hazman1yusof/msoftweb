@@ -98,7 +98,6 @@ use Carbon\Carbon;
                         'ap.recstatus AS apacthdr_recstatus',
                         'ap.payto AS apacthdr_payto',
                         'ap.recdate AS apacthdr_recdate',
-                        'ap.postdate AS apacthdr_postdate',
                         'ap.category AS apacthdr_category',
                         'ap.remarks AS apacthdr_remarks',
                         'ap.adduser AS apacthdr_adduser',
@@ -239,7 +238,7 @@ use Carbon\Carbon;
                 'trantype' => $request->apacthdr_trantype,
                 'doctype' => $request->apacthdr_doctype,
                 'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_postdate,
+                'recdate' => $request->apacthdr_recdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
@@ -357,7 +356,7 @@ use Carbon\Carbon;
                     ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postdate' => $apacthdr->recdate,
                         'postuser' => session('username'),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")

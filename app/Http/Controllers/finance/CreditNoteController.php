@@ -672,7 +672,7 @@ use Carbon\Carbon;
             $apactdtl_get = $apactdtl_obj->get();
 
             foreach ($apactdtl_get as $key => $value){
-                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
+                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate); //check postdate period 
 
                 $category_obj = $this->gltran_fromcategory($value->category);
                 $dept_obj = $this->gltran_fromdept($value->deptcode);

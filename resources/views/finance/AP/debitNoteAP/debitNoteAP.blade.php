@@ -257,7 +257,7 @@ i.fa {
 
 						<label class="col-md-2 control-label" for="apacthdr_postdate">Post Date</label>  
 							<div class="col-md-3">
-								<input id="apacthdr_postdate" name="apacthdr_postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" rdonly>
+								<input id="apacthdr_postdate" name="apacthdr_postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
 					</div>
 
