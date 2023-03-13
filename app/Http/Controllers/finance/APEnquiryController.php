@@ -80,6 +80,8 @@ class APEnquiryController extends defaultController
                         'ap.recstatus AS apacthdr_recstatus',
                         'ap.payto AS apacthdr_payto',
                         'ap.recdate AS apacthdr_recdate',
+                        'ap.postdate AS apacthdr_postdate',
+                        'ap.postuser AS apacthdr_postuser',
                         'ap.category AS apacthdr_category',
                         'ap.remarks AS apacthdr_remarks',
                         'ap.adduser AS apacthdr_adduser',
@@ -240,7 +242,8 @@ class APEnquiryController extends defaultController
                             'al.outamount',
                             'al.recstatus',
                             'al.bankcode',
-                            'al.allocdate'
+                            'al.allocdate',
+                            'ap.postdate'
                         )
                         ->join('finance.apacthdr as ap', function($join) use ($request){
                                     $join = $join->on('al.docsource', '=', 'ap.source')
@@ -272,7 +275,8 @@ class APEnquiryController extends defaultController
                             'al.allocamount',
                             'al.outamount',
                             'al.recstatus',
-                            'al.allocdate'
+                            'al.allocdate',
+                            'ap.postdate'
                            
                         )
                         ->join('finance.apacthdr as ap', function($join) use ($request){

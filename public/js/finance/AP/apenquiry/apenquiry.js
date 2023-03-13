@@ -765,7 +765,7 @@ $(document).ready(function () {
 	var urlParam2_allocdtl={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['apdt.suppcode', 'apdt.allocdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.compcode', 'apdt.source', 'apdt.trantype', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno', 'apdt.auditno', 'apdt.lineno_', 'apdt.idno'],
+		field:['apdt.suppcode', 'apdt.allocdate', 'apdt.postdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.compcode', 'apdt.source', 'apdt.trantype', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno', 'apdt.auditno', 'apdt.lineno_', 'apdt.idno'],
 		table_name:['finance.apalloc AS apdt'],
 		table_id:'lineno_',
 		filterCol:['apdt.compcode','apdt.docauditno','apdt.docsource','apdt.doctrantype', 'apdt.recstatus'],
@@ -778,6 +778,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap',formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Post Date', name: 'postdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
 			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
@@ -911,7 +912,7 @@ $(document).ready(function () {
 			{ label: 'Invoice Amount', name: 'amount', width: 30, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Bank Code', name: 'bankcode', width: 60, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Status', name: 'recstatus', width: 25, classes: 'wrap',},
-			{ label: 'Post Date', name: 'recdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post Date', name: 'postdate', width: 30, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 		
 		],
 		shrinkToFit: true,
