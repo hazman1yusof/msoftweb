@@ -455,6 +455,11 @@ class DebitNoteController extends defaultController
                 if($dbacthdr->amount == 0){
                     throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);
                 }
+
+                $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
+                if($yearperiod->status == 'C'){
+                    throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                }
                     
                 $this->gltran($value);
                 

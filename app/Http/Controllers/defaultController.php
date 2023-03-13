@@ -722,10 +722,12 @@ abstract class defaultController extends Controller{
 
                 $datefr = new DateTime($arrvalue['datefr'.$x]);
                 $dateto = new DateTime($arrvalue['dateto'.$x]);
+                $status = $arrvalue['periodstatus'.$x];
                 if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
                     $responce = new stdClass();
                     $responce->year = $year;
                     $responce->period = $period;
+                    $responce->status = $status;
                     return $responce;
                 }
             }
@@ -750,10 +752,12 @@ abstract class defaultController extends Controller{
 
                 $datefr = new DateTime($arrvalue['datefr'.$x]);
                 $dateto = new DateTime($arrvalue['dateto'.$x]);
+                $status = $arrvalue['periodstatus'.$x];
                 if (($datefr <= $seldate) &&  ($dateto >= $seldate)){
                     $responce = new stdClass();
                     $responce->year = $year;
                     $responce->period = $period;
+                    $responce->status = $status;
                     return $responce;
                 }
             }
