@@ -1033,8 +1033,6 @@ $(document).ready(function () {
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
 		var amount = 0;
 
-		console.log(gstpercent);
-
 		if(gstpercent == 0){
 			$("#jqGrid2  #"+id_optid+"_tot_gst").prop('disabled',true);
 			tot_gst = 0;
@@ -1044,7 +1042,7 @@ $(document).ready(function () {
 			var tot_gst_real = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
 			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 
-			if(tot_gst_real == tot_gst_rate){
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
 				amount = amntb4gst + tot_gst_rate;
 				tot_gst = tot_gst_rate;
 			}else{
@@ -1071,7 +1069,6 @@ $(document).ready(function () {
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($(id_optid+"_gstpercent").val());
 		var amount = 0;
-		console.log(gstpercent);
 
 		if(gstpercent == 0){
 			$(id_optid+"_tot_gst").prop('disabled',true);
@@ -1082,14 +1079,13 @@ $(document).ready(function () {
 			var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
 			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 
-			if(tot_gst_real == tot_gst_rate){
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
 				amount = amntb4gst + tot_gst_rate;
 				tot_gst = tot_gst_rate;
 			}else{
 				amount = amntb4gst + tot_gst_real;
 				tot_gst = tot_gst_real;
 			}
-
 		}
 
 		$(id_optid+"_tot_gst").val(tot_gst);

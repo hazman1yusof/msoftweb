@@ -91,6 +91,7 @@ use Carbon\Carbon;
                         'ap.suppcode AS apacthdr_suppcode',
                         'su.name AS supplier_name', 
                         'ap.actdate AS apacthdr_actdate',
+                        'ap.postdate AS apacthdr_postdate',
                         'ap.document AS apacthdr_document',
                         'ap.deptcode AS apacthdr_deptcode',
                         'ap.amount AS apacthdr_amount',
@@ -238,7 +239,8 @@ use Carbon\Carbon;
                 'trantype' => $request->apacthdr_trantype,
                 'doctype' => $request->apacthdr_doctype,
                 'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_recdate,
+                'recdate' => $request->apacthdr_postdate,
+                'postdate' => $request->apacthdr_postdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
@@ -322,16 +324,15 @@ use Carbon\Carbon;
 
         try {
             //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
+            $table = $table->where('idno','=',$request->apacthdr_idno);
             $table->update($array_update);
 
             DB::commit();
 
             $responce = new stdClass();
             $responce->auditno = $request->apacthdr_auditno;
-            $responce->idno = $request->idno;
+            $responce->idno = $request->apacthdr_idno;
             echo json_encode($responce);
-
             
         } catch (\Exception $e) {
             DB::rollback();
@@ -349,6 +350,10 @@ use Carbon\Carbon;
                 $apacthdr = DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->first();
+
+                if($apacthdr->amount == 0){
+                    throw new \Exception('Debit Note auditno: '.$apacthdr->auditno.' amount cant be zero', 500);
+                }
                     
                 $this->gltran($idno);
 
@@ -356,7 +361,7 @@ use Carbon\Carbon;
                     ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
-                        'postdate' => $apacthdr->recdate,
+                        'recdate' => $apacthdr->postdate,
                         'postuser' => session('username'),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -377,7 +382,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
       
@@ -435,7 +440,7 @@ use Carbon\Carbon;
                 ->delete();
 
             foreach ($apactdtl_get as $key => $value){
-                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
+                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
                 $category_obj = $this->gltran_fromcategory($value->category);
                 $dept_obj = $this->gltran_fromdept($value->deptcode);
@@ -493,7 +498,7 @@ use Carbon\Carbon;
             $apactdtl_get = $apactdtl_obj->get();
 
             foreach ($apactdtl_get as $key => $value){
-                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
+                $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
                 $category_obj = $this->gltran_fromcategory($value->category);
                 $dept_obj = $this->gltran_fromdept($value->deptcode);
@@ -516,7 +521,7 @@ use Carbon\Carbon;
                         'crcostcode' => $supp_obj->costcode,
                         'cracc' => $supp_obj->glaccno,
                         'amount' => $value->amount,
-                        'postdate' => $apacthdr_obj->actdate,
+                        'postdate' => $apacthdr_obj->postdate,
                         'adduser' => $apacthdr_obj->adduser,
                         'adddate' => $apacthdr_obj->adddate,
                         'idno' => null
