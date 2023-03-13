@@ -10,8 +10,8 @@ use DateTime;
 use Carbon\Carbon;
 
 class arenquiryController extends defaultController
-{   
-
+{
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -40,7 +40,7 @@ class arenquiryController extends defaultController
     }
 
     public function maintable(Request $request){
-
+        
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
                         'db.compcode AS db_compcode',
@@ -88,16 +88,16 @@ class arenquiryController extends defaultController
                     ->where('db.compcode','=',session('compcode'))
                     ->where('db.source','=','PB');
                     // ->where('db.trantype','=','IN','DN',);
-
+        
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
-
+        
         if(!empty($request->filterdate)){
             $table = $table->where('db.entrydate','>=',$request->filterdate[0]);
             $table = $table->where('db.entrydate','<=',$request->filterdate[1]);
         }
-
+        
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'db_invno'){
                 $table = $table->Where(function ($table) use ($request) {
@@ -125,11 +125,10 @@ class arenquiryController extends defaultController
                     });
             }          
         }
-
+        
         if(!empty($request->sidx)){
-
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
-
+            
             if(count($pieces)==1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
@@ -142,9 +141,9 @@ class arenquiryController extends defaultController
         }else{
             $table = $table->orderBy('db.idno','DESC');
         }
-
+        
         $paginate = $table->paginate($request->rows);
-
+        
         foreach ($paginate->items() as $key => $value) {
             $dbactdtl = DB::table('debtor.dbactdtl')
                         ->where('source','=',$value->db_source)
@@ -168,9 +167,9 @@ class arenquiryController extends defaultController
                 $value->unallocated = true;
             }
         }
-
+        
         //////////paginate/////////
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -179,26 +178,28 @@ class arenquiryController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
-
+        
         return json_encode($responce);
-
+        
     }
 
     public function populate_rc(Request $request){
-            $table = DB::table('debtor.dbacthdr')
-                            ->where('idno','=',$request->idno);
-
-            $table = DB::table('debtor.dbacthdr')
-                    ->select($this->fixPost($request->field,"_"))
-                    ->leftjoin('hisdb.pat_mast', function($join) use ($request){
-                        $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
-                                    ->where('pat_mast.compcode','=',session('compcode'));
-                    })->where('dbacthdr.idno','=',$request->idno);
-
-            $responce = new stdClass();
-            $responce->rows = $table->first();
-
-            return json_encode($responce);
+        
+        $table = DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno);
+        
+        $table = DB::table('debtor.dbacthdr')
+                ->select($this->fixPost($request->field,"_"))
+                ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+                    $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+                                ->where('pat_mast.compcode','=',session('compcode'));
+                })->where('dbacthdr.idno','=',$request->idno);
+        
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+        
+        return json_encode($responce);
+        
     }
 
     public function form(Request $request)
@@ -324,6 +325,7 @@ class arenquiryController extends defaultController
     }
 
     public function get_table_dtl(Request $request){
+        
         $table = DB::table('debtor.dbactdtl')
                     ->where('source','=','PB')
                     ->where('trantype','=','CN')
@@ -331,10 +333,10 @@ class arenquiryController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus','<>','DELETE')
                     ->orderBy('idno','desc');
-
+        
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -342,8 +344,9 @@ class arenquiryController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
-
+        
         return json_encode($responce);
+        
     }
 
 }

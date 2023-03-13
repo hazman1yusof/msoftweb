@@ -447,15 +447,15 @@ class DebitNoteController extends defaultController
         try{
             
             foreach ($request->idno_array as $value){
-
+                
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->first();
-
+                
                 if($dbacthdr->amount == 0){
                     throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);
                 }
-
+                
                 $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
                 if($yearperiod->status == 'C'){
                     throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);

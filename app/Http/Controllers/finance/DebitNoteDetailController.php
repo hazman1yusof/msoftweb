@@ -9,8 +9,8 @@ use DB;
 use Carbon\Carbon;
 
 class DebitNoteDetailController extends defaultController
-{   
-
+{
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -432,6 +432,7 @@ class DebitNoteDetailController extends defaultController
     }
 
     public function check_gstcode(Request $request){
+        
         $gstcode = DB::table('hisdb.taxmast')
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
@@ -455,9 +456,11 @@ class DebitNoteDetailController extends defaultController
         $responce->amount = $amount;
         
         return $responce;
+        
     }
 
     public function check_gstcode2($value){
+        
         $gstcode = DB::table('hisdb.taxmast')
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
@@ -481,6 +484,7 @@ class DebitNoteDetailController extends defaultController
         $responce->amount = $amount;
         
         return $responce;
+        
     }
     
 }

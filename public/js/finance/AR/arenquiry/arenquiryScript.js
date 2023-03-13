@@ -755,7 +755,7 @@ $(document).ready(function () {
 	var urlParam2_Alloc={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
+		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.posteddate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
 		table_name:['debtor.dballoc AS alloc'],
 		table_id:'lineno_',
 		filterCol:['alloc.compcode','alloc.docauditno','alloc.docsource','alloc.doctrantype','alloc.recstatus'],
@@ -770,6 +770,9 @@ $(document).ready(function () {
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
+			},
+			{ label: 'Posted Date', name: 'posteddate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap' },
