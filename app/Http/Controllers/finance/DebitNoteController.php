@@ -249,8 +249,7 @@ class DebitNoteController extends defaultController
                 'unit' => session('unit'),
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
-                'posteddate' => $request->posteddate,
-                'entrydate' => $request->posteddate,
+                'entrydate' => $request->db_entrydate,
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 'paymode' => strtoupper($request->db_paymode),
@@ -299,8 +298,7 @@ class DebitNoteController extends defaultController
             'unit' => session('unit'),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
-            'posteddate' => $request->posteddate,
-            'entrydate' => $request->posteddate,
+            'entrydate' => $request->db_entrydate,
             'hdrtype' => strtoupper($request->db_hdrtype),
             'paymode' => strtoupper($request->db_paymode),
             'mrn' => $request->db_mrn,
@@ -449,16 +447,21 @@ class DebitNoteController extends defaultController
         try{
             
             foreach ($request->idno_array as $value){
-                
+
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->first();
+
+                if($dbacthdr->amount == 0){
+                    throw new \Exception('Debit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);
+                }
                     
                 $this->gltran($value);
                 
                 DB::table('debtor.dbacthdr')
                     ->where('idno','=',$value)
                     ->update([
+                        'posteddate' => $dbacthdr->entrydate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")

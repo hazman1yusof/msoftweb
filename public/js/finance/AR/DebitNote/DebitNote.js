@@ -28,7 +28,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#posteddate"],true);
+	var actdateObj = new setactdate(["#db_entrydate"],true);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -220,7 +220,7 @@ $(document).ready(function () {
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
+			{ label: 'Posted Date', name: 'db_posteddate',hidden: true },
 			{ label: 'Department Code', name: 'db_deptcode', width: 15, hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
@@ -1542,14 +1542,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE', 'AR', 'Debit Note']
 			},
 			ondblClickRow:function(){
-				$('#db_recstatus').focus();
+				$('#db_approveddate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_recstatus').focus();
+					$('#db_approveddate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1678,14 +1678,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				$('#posteddate').focus();
+				$('#db_entrydate').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#posteddate').focus();
+					$('#db_entrydate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}

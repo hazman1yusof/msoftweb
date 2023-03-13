@@ -448,17 +448,6 @@ class DebitNoteDetailController extends defaultController
         $tot_gst = $AmtB4GST * $rate / 100;
         $amount = $AmtB4GST + $tot_gst;
         
-        // $tot_gst_real = $request->tot_gst;
-        // $tot_gst_rate = $AmtB4GST * $rate / 100;
-        
-        // if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
-        //     $amount = $AmtB4GST + $tot_gst_rate;
-        //     $tot_gst = $tot_gst_rate;
-        // }else{
-        //     $amount = $AmtB4GST + $tot_gst_real;
-        //     $tot_gst = $tot_gst_real;
-        // }
-        
         $responce = new stdClass();
         $responce->rate = $rate;
         $responce->AmtB4GST = $AmtB4GST;
@@ -484,17 +473,6 @@ class DebitNoteDetailController extends defaultController
         $AmtB4GST = floatval($value['AmtB4GST']);
         $tot_gst = $AmtB4GST * $rate / 100;
         $amount = $AmtB4GST + $tot_gst;
-        
-        // $tot_gst_real = floatval($value['tot_gst']);
-        // $tot_gst_rate = $AmtB4GST * $rate / 100;
-        
-        // if($tot_gst_real == $tot_gst_rate || $tot_gst_real==0){
-        //     $amount = $AmtB4GST + $tot_gst_rate;
-        //     $tot_gst = $tot_gst_rate;
-        // }else{
-        //     $amount = $AmtB4GST + $tot_gst_real;
-        //     $tot_gst = $tot_gst_real;
-        // }
         
         $responce = new stdClass();
         $responce->rate = $rate;
