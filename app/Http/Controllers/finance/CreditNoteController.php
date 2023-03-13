@@ -195,7 +195,7 @@ use Carbon\Carbon;
                     ->where('suppcode',$request->filterVal[0])
                     ->where('compcode',session('compcode'))
                     ->where('recstatus','=','POSTED')
-                    ->where('postdate','<',$request->postdate)
+                    ->where('postdate','<=',$request->postdate)
                     ->where('outamount','>',0)
                     ->where('source', ['AP','DF','CF','TX'])
                     ->whereIn('trantype', ['IN','DN']);
@@ -555,7 +555,7 @@ use Carbon\Carbon;
             DB::table('finance.apacthdr')
                 ->where('idno','=',$request->idno)
                 ->update([
-                    'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'postdate' => $apacthdr->actdate,
                     'recstatus' => 'POSTED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -601,7 +601,7 @@ use Carbon\Carbon;
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno)
                     ->update([
-                        'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postdate' => $apacthdr->actdate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),

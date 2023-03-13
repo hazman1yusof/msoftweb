@@ -106,7 +106,9 @@ use Carbon\Carbon;
                         'ap.upddate AS apacthdr_upddate',
                         'ap.source AS apacthdr_source',
                         'ap.idno AS apacthdr_idno',
-                        'ap.unit AS apacthdr_unit'
+                        'ap.unit AS apacthdr_unit',
+                        'ap.postdate AS apacthdr_postdate',
+                        'ap.postuser AS apacthdr_postuser'
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')
                     ->where('ap.compcode','=', session('compcode'))
@@ -238,7 +240,7 @@ use Carbon\Carbon;
                 'trantype' => $request->apacthdr_trantype,
                 'doctype' => $request->apacthdr_doctype,
                 'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_recdate,
+                'recdate' => $request->apacthdr_postdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
@@ -299,7 +301,7 @@ use Carbon\Carbon;
             'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'postdate' => $request->apacthdr_postdate,
+            //'postdate' => $request->apacthdr_postdate,
             'actdate' => $request->apacthdr_actdate,
             // 'amount' => $request->apacthdr_amount,
             // 'outamount' => $request->apacthdr_amount,
@@ -356,7 +358,7 @@ use Carbon\Carbon;
                     ->where('idno','=',$idno)
                     ->update([
                         'recstatus' => 'POSTED',
-                        'postdate' => $apacthdr->recdate,
+                        'postdate' => $apacthdr->actdate,
                         'postuser' => session('username'),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
