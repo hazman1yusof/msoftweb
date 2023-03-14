@@ -194,6 +194,58 @@ class DebitNoteController extends defaultController
         return json_encode($responce);
         
     }
+    
+    public function get_alloc_table(Request $request){
+        
+        $table = DB::table('debtor.dballoc as dc')
+                        ->select(
+                            'dc.debtorcode as debtorcode',
+                            'da.entrydate as entrydate',
+                            'da.posteddate as posteddate',
+                            'dc.allocdate as allocdate',
+                            'dc.recptno as recptno',
+                            'dc.trantype as trantype',
+                            'dc.refamount as refamount',
+                            'dc.outamount as outamount',
+                            'dc.amount as amount',
+                            'dc.balance as balance',
+                            'dc.compcode as compcode',
+                            'dc.source as source',
+                            'dc.auditno as auditno',
+                            'dc.lineno_ as lineno_',
+                            'dc.docsource as docsource',
+                            'dc.doctrantype as doctrantype',
+                            'dc.docauditno as docauditno',
+                            'dc.refsource as refsource',
+                            'dc.reftrantype as reftrantype',
+                            'dc.refauditno as refauditno',
+                            'dc.idno as idno'
+                        )
+                        ->join('debtor.dbacthdr as da', function($join) use ($request){
+                                    $join = $join->on('dc.refsource', '=', 'da.source')
+                                        ->on('dc.reftrantype', '=', 'da.trantype')
+                                        ->on('dc.refauditno', '=', 'da.auditno');
+                        })
+                        ->where('dc.compcode','=',session('compcode'))
+                        ->where('dc.refsource','=',$request->source)
+                        ->where('dc.reftrantype','=',$request->trantype)
+                        ->where('dc.refauditno','=',$request->auditno)
+                        ->where('dc.recstatus','=',"POSTED");
+        
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        
+        return json_encode($responce);
+        
+    }
 
     public function form(Request $request)
     {

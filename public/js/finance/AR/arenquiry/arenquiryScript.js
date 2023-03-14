@@ -565,10 +565,10 @@ $(document).ready(function () {
 				$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
 				mycurrency.formatOn();
 				refreshGrid("#jqGrid2_CN",urlParam2_CN,'add');
-				
-				urlParam2_Alloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
-				urlParam2_Alloc.filterVal[2]=selrowData("#jqGrid").db_source;
-				urlParam2_Alloc.filterVal[3]=selrowData("#jqGrid").db_trantype;
+
+				urlParam2_Alloc.source=selrowData("#jqGrid").db_source;
+				urlParam2_Alloc.trantype=selrowData("#jqGrid").db_trantype;
+				urlParam2_Alloc.auditno=selrowData("#jqGrid").db_auditno;
 				refreshGrid("#jqGrid2_Alloc",urlParam2_Alloc,'add');
 			}else if(selrowData("#jqGrid").db_trantype=='DN'){ //DN
 				populateFormdata("#jqGrid", "#dialogForm_DN", "#formdata_DN", selRowId, 'view', '');
@@ -753,13 +753,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////parameter for jqGrid2_Alloc url////////////////////////////////////////////////
 	var urlParam2_Alloc={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.posteddate','alloc.recptno','alloc.refamount','alloc.amount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
-		table_name:['debtor.dballoc AS alloc'],
-		table_id:'lineno_',
-		filterCol:['alloc.compcode','alloc.docauditno','alloc.docsource','alloc.doctrantype','alloc.recstatus'],
-		filterVal:['session.compcode', '', '', '','POSTED']
+		action: 'get_alloc_table',
+		url:'CreditNoteAR/table',
+		source:'',
+		trantype:'',
+		auditno:'',
 	};
 
 	////////////////////////////////////////////////jqGrid2_Alloc////////////////////////////////////////////////
@@ -769,7 +767,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
-			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
+			{ label: 'Document Date', name: 'entrydate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Posted Date', name: 'posteddate', width: 100, classes: 'wrap',

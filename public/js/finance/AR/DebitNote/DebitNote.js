@@ -257,9 +257,9 @@ $(document).ready(function () {
 			$("#pdfgen1").attr('href','./DebitNote/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 			if_cancel_hide();
 			
-			urlParamAlloc.filterVal[1]=selrowData("#jqGrid").db_auditno;
-			urlParamAlloc.filterVal[2]=selrowData("#jqGrid").db_source;
-			urlParamAlloc.filterVal[3]=selrowData("#jqGrid").db_trantype;
+			urlParamAlloc.source=selrowData("#jqGrid").db_source;
+			urlParamAlloc.trantype=selrowData("#jqGrid").db_trantype;
+			urlParamAlloc.auditno=selrowData("#jqGrid").db_auditno;
 			refreshGrid("#jqGridArAlloc",urlParamAlloc);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -1353,13 +1353,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////parameter for jqGridArAlloc url////////////////////////////////////////////////
 	var urlParamAlloc={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['alloc.compcode','alloc.source','alloc.trantype','alloc.auditno','alloc.lineno_','alloc.debtorcode','alloc.allocdate','alloc.posteddate','alloc.recptno','alloc.refamount','alloc.amount','alloc.outamount','alloc.balance','alloc.docsource','alloc.doctrantype','alloc.docauditno','alloc.refsource','alloc.reftrantype','alloc.refauditno','alloc.idno'],
-		table_name:['debtor.dballoc AS alloc'],
-		table_id:'lineno_',
-		filterCol:['alloc.compcode','alloc.refauditno','alloc.refsource','alloc.reftrantype','alloc.recstatus'],
-		filterVal:['session.compcode', '', '','','POSTED']
+		action: 'get_alloc_table',
+		url:'DebitNote/table',
+		source:'',
+		trantype:'',
+		auditno:'',
 	};
 
 	////////////////////////////////////////////////jqGridArAlloc////////////////////////////////////////////////
@@ -1368,10 +1366,13 @@ $(document).ready(function () {
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
-			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap',
+			{ label: 'Document Date', name: 'entrydate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Posted Date', name: 'posteddate', width: 100, classes: 'wrap',
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
+			},
+			{ label: 'Alloc Date', name: 'allocdate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap' },
