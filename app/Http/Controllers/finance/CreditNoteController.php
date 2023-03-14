@@ -65,6 +65,8 @@ use Carbon\Carbon;
                 return $this->maintable($request);
             case 'get_alloc_when_edit':
                 return $this->get_alloc_when_edit($request);
+            case 'get_alloc_table':
+                return $this->get_alloc_table($request);
             default:
                 return 'error happen..';
         }
@@ -256,6 +258,61 @@ use Carbon\Carbon;
 
     }
 
+    public function get_alloc_table(Request $request){
+        
+        $table = DB::table('finance.apalloc as al')
+                        ->select(
+                            'al.refauditno as auditno',
+                            'al.reftrantype as trantype',
+                            'al.refsource as source',
+                            'al.lineno_',
+                            'al.idno',
+                            'al.suppcode',
+                            'al.allocdate as allocdate',
+                            'al.reference',
+                            'al.refamount',
+                            'al.outamount',
+                            'al.allocamount',
+                            'al.balance',
+                            'al.doctrantype',
+                            'al.docsource',
+                            'al.docauditno',
+                            'al.recstatus',
+                            'ap.actdate as actdate',
+                            'ap.postdate as postdate',
+                            'ap.recdate',
+                            'ap.document',
+                            'ap.recstatus',
+                            'ap.amount',
+                        )
+                        ->join('finance.apacthdr as ap', function($join) use ($request){
+                                    $join = $join->on('al.docsource', '=', 'ap.source')
+                                        ->on('al.doctrantype', '=', 'ap.trantype')
+                                        ->on('al.docauditno', '=', 'ap.auditno');
+                        })
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.docsource','=',$request->source)
+                        ->where('al.doctrantype','=',$request->trantype)
+                        ->where('al.docauditno','=',$request->auditno)
+                        ->where('al.recstatus','=','POSTED')
+                        ->orderBy('al.idno','DESC');
+        
+       //////////paginate/////////
+       $paginate = $table->paginate($request->rows);
+
+       $responce = new stdClass();
+       $responce->page = $paginate->currentPage();
+       $responce->total = $paginate->lastPage();
+       $responce->records = $paginate->total();
+       $responce->rows = $paginate->items();
+       $responce->sql = $table->toSql();
+       $responce->sql_bind = $table->getBindings();
+       $responce->sql_query = $this->getQueries($table);
+
+       return json_encode($responce);
+        
+    }
+
     public function add(Request $request){
 
         if(!empty($request->fixPost)){
@@ -419,7 +476,7 @@ use Carbon\Carbon;
                             'refauditno' => $apacthdr_IV->auditno,
                             'refamount' => $apacthdr_IV->amount,
                             'allocdate' => $apacthdr->actdate,
-                            'postdate' => $apacthdr_IV->postdate,
+                           // 'postdate' => $apacthdr_IV->postdate,
                             'reference' => $value['reference'],
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,

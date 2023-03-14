@@ -27,6 +27,8 @@ use Carbon\Carbon;
         switch($request->action){
             case 'maintable':
                 return $this->maintable($request);
+            case 'get_alloc_table':
+                return $this->get_alloc_table($request);
             default:
                 return 'error happen..';
         }
@@ -184,6 +186,61 @@ use Carbon\Carbon;
 
         return json_encode($responce);
 
+    }
+
+    public function get_alloc_table(Request $request){
+        
+        $table = DB::table('finance.apalloc as al')
+                        ->select(
+                            'al.docauditno as auditno',
+                            'al.doctrantype as trantype',
+                            'al.docsource as source',
+                            'al.lineno_',
+                            'al.idno',
+                            'al.suppcode',
+                            'al.allocdate as allocdate',
+                            'al.reference',
+                            'al.refamount',
+                            'al.outamount',
+                            'al.allocamount',
+                            'al.balance',
+                            'al.reftrantype',
+                            'al.refsource',
+                            'al.refauditno',
+                            'al.recstatus',
+                            'ap.actdate as actdate',
+                            'ap.postdate as postdate',
+                            'ap.recdate',
+                            'ap.document',
+                            'ap.recstatus',
+                            'ap.amount',
+                        )
+                        ->join('finance.apacthdr as ap', function($join) use ($request){
+                                    $join = $join->on('al.refsource', '=', 'ap.source')
+                                        ->on('al.reftrantype', '=', 'ap.trantype')
+                                        ->on('al.refauditno', '=', 'ap.auditno');
+                        })
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.refsource','=',$request->source)
+                        ->where('al.reftrantype','=',$request->trantype)
+                        ->where('al.refauditno','=',$request->auditno)
+                        ->where('al.recstatus','=','POSTED')
+                        ->orderBy('al.idno','DESC');
+        
+       //////////paginate/////////
+       $paginate = $table->paginate($request->rows);
+
+       $responce = new stdClass();
+       $responce->page = $paginate->currentPage();
+       $responce->total = $paginate->lastPage();
+       $responce->records = $paginate->total();
+       $responce->rows = $paginate->items();
+       $responce->sql = $table->toSql();
+       $responce->sql_bind = $table->getBindings();
+       $responce->sql_query = $this->getQueries($table);
+
+       return json_encode($responce);
+        
     }
 
     public function form(Request $request)
