@@ -76,6 +76,7 @@ class CreditNoteARController extends defaultController
                         'db.upddate AS db_upddate',
                         'db.reference AS db_reference',
                         'db.paymode AS db_paymode',
+                        'db.unallocated AS db_trantype2',
                         
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
@@ -224,6 +225,7 @@ class CreditNoteARController extends defaultController
                     ->where('recstatus','!=','CANCELLED')
                     ->where('outamount','>',0)
                     ->where('source','PB')
+                    ->where('posteddate','<=',$request->posteddate)
                     ->whereIn('trantype',['IN','DN']);
         
         $dballoc = DB::table('debtor.dballoc')
@@ -411,6 +413,8 @@ class CreditNoteARController extends defaultController
                 // 'approveddate' => $request->db_approveddate,
                 'reference' => $request->db_reference,
                 'paymode' => $request->db_paymode,
+                'unallocated' => $request->db_trantype2,
+                
             ];
             
             //////////where//////////
@@ -453,7 +457,8 @@ class CreditNoteARController extends defaultController
             'orderno' => strtoupper($request->db_orderno),
             'ponum' => strtoupper($request->db_ponum),
             'remark' => strtoupper($request->db_remark),
-            'approvedby' => $request->approvedby
+            'approvedby' => $request->approvedby,
+            'unallocated' => $request->db_trantype2,
         ];
         
         try {
@@ -713,7 +718,6 @@ class CreditNoteARController extends defaultController
                             'debtorcode' => $dbacthdr->debtorcode,
                             'payercode' => $dbacthdr->payercode,
                             'allocdate' => $dbacthdr->posteddate,
-                            'posteddate' => $dbacthdr_IV->posteddate,
                             'recptno' => $request->recptno,
                             'amount' => $allocamount,
                             'outamount' => $outamount,

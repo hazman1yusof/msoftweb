@@ -226,13 +226,14 @@ i.fa {
 					<input id="db_idno" name="db_idno" type="hidden">
 					<input id="db_source" name="db_source" type="hidden">
 					<input id="db_trantype" name="db_trantype" type="hidden">
+					<input id="db_posteddate" name="db_posteddate" type="hidden">
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
 						<div class="col-md-2">
 							<select id="db_trantype2" name="db_trantype2" class="form-control" data-validation="required">
-								<option value = "CN">Credit Note</option>
-								<option value = "CNU">Credit Note Unallocated</option>
+								<option value = "1">Credit Note</option>
+								<option value = "0">Credit Note Unallocated</option>
 							</select>
 						</div>
 

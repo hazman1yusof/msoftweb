@@ -243,6 +243,7 @@ $(document).ready(function () {
 			{ label: 'Reference', name: 'db_reference', width: 10, hidden: true },
 			{ label: 'Pay Mode', name: 'db_paymode', width: 10, hidden: true },
 			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true },
+			{ label: 'db_trantype2', name: 'db_trantype2', width: 50, classes: 'wrap', hidden:false },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -451,7 +452,7 @@ $(document).ready(function () {
 		}
 		saveParam.oper = selfoper;
 		
-		if($('#db_trantype2').val() == 'CNU'){
+		if($('#db_trantype2').val() == '0'){
 			obj.unallocated = true;
 		}else{
 			let data_detail = $('#jqGridAlloc').jqGrid('getRowData');
@@ -1836,7 +1837,7 @@ $(document).ready(function () {
 	
 	////////////////////////////////////////////////add_alloc////////////////////////////////////////////////
 	$("#add_alloc").click(function(){
-		alloc_button_status('wait')
+		alloc_button_status('wait');
 		populate_alloc_table();
 	});
 	
@@ -1902,13 +1903,14 @@ $(document).ready(function () {
 			show_post_button(false);
 			$("#jqGrid2_ilcancel").click();
 			$("#jqGridAlloc input[name='checkbox']").show();
+			populate_alloc_table();
 			
-			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-			for (var i = 0; i < ids.length; i++) {
-				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+			// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+			// for (var i = 0; i < ids.length; i++) {
+			// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 				
-				$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-			}
+			// 	$('#jqGridAlloc input#'+ids[i]+'_amount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+			// }
 			alloc_button_status('wait');
 		});
 	});
@@ -2177,8 +2179,8 @@ $(document).ready(function () {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 					
 					var param = {
-						action: 'get_value_default',
-						url: 'util/get_value_default',
+						action: 'get_alloc_when_edit',
+						url:'CreditNoteAR/table',
 						field: [],
 						table_name: ['debtor.dbacthdr'],
 						filterCol: ['dbacthdr.debtorcode', 'dbacthdr.compcode', 'dbacthdr.recstatus', 'dbacthdr.outamount','dbacthdr.source'],
@@ -2186,9 +2188,11 @@ $(document).ready(function () {
 						WhereInCol: ['dbacthdr.trantype'],
 						WhereInVal: [['IN','DN']],
 						table_id: 'idno',
+						auditno:$('#db_auditno').val(),
+						posteddate:$('#db_entrydate').val(),
 					};
 					
-					$.get("util/get_value_default?" + $.param(param), function (data) {
+					$.get("./CreditNoteAR/table?" + $.param(param), function (data) {
 						
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
@@ -2197,15 +2201,17 @@ $(document).ready(function () {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{
 										idno:elem['idno'],
-										debtorcode:elem['debtorcode'],
+										source:elem['source'],
 										trantype:elem['trantype'],
+										auditno:elem['auditno'],
+										lineno_:elem['lineno_'],
+										can_alloc:elem['can_alloc'],
+										debtorcode:elem['debtorcode'],
 										entrydate:elem['entrydate'],
 										posteddate:elem['posteddate'],
 										recptno:elem['recptno'],
 										refamount:elem['refamount'],
 										outamount:elem['outamount'],
-										amount: 0,
-										balance:elem['outamount'],
 									}
 								);
 							});
@@ -2215,7 +2221,7 @@ $(document).ready(function () {
 							$("#jqGridAlloc input[name='checkbox']").hide();
 							
 						} else {
-							alert("This debtor doesnt have any invoice!");
+							alert("This debtor doesnt have any invoice until date: "+$('#db_entrydate').val());
 							$(dialog_CustomerSO.textfield).val('');
 							myerrorIt_only(dialog_CustomerSO.textfield,true);
 						}
@@ -2371,9 +2377,9 @@ function init_jq(oper){
 	if(oper != 'add'){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
-			$("#db_trantype2").val('CNU');
+			$("#db_trantype2").val('0');
 		}else{
-			$("#db_trantype2").val('CN');
+			$("#db_trantype2").val('1');
 		}
 	}
 
@@ -2425,6 +2431,7 @@ function populate_alloc_table(){
 		WhereInVal: [['IN','DN']],
 		table_id: 'idno',
 		auditno:$('#db_auditno').val(),
+		posteddate:$('#db_entrydate').val(),
 	};
 
 	$.get("./CreditNoteAR/table?" + $.param(urlParam_alloc), function (data) {
