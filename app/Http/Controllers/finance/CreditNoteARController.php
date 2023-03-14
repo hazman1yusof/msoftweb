@@ -32,6 +32,8 @@ class CreditNoteARController extends defaultController
                 return $this->maintable($request);
             case 'get_alloc_when_edit':
                 return $this->get_alloc_when_edit($request);
+            case 'get_alloc_table':
+                return $this->get_alloc_table($request);
             default:
                 return 'error happen..';
         }
@@ -282,6 +284,58 @@ class CreditNoteARController extends defaultController
         
     }
     
+    public function get_alloc_table(Request $request){
+        
+        $table = DB::table('debtor.dballoc as dc')
+                        ->select(
+                            'dc.debtorcode as debtorcode',
+                            'da.entrydate as entrydate',
+                            'da.posteddate as posteddate',
+                            'dc.allocdate as allocdate',
+                            'dc.recptno as recptno',
+                            'dc.trantype as trantype',
+                            'dc.refamount as refamount',
+                            'dc.outamount as outamount',
+                            'dc.amount as amount',
+                            'dc.balance as balance',
+                            'dc.compcode as compcode',
+                            'dc.source as source',
+                            'dc.auditno as auditno',
+                            'dc.lineno_ as lineno_',
+                            'dc.docsource as docsource',
+                            'dc.doctrantype as doctrantype',
+                            'dc.docauditno as docauditno',
+                            'dc.refsource as refsource',
+                            'dc.reftrantype as reftrantype',
+                            'dc.refauditno as refauditno',
+                            'dc.idno as idno'
+                        )
+                        ->join('debtor.dbacthdr as da', function($join) use ($request){
+                                    $join = $join->on('dc.docsource', '=', 'da.source')
+                                        ->on('dc.doctrantype', '=', 'da.trantype')
+                                        ->on('dc.docauditno', '=', 'da.auditno');
+                        })
+                        ->where('dc.compcode','=',session('compcode'))
+                        ->where('dc.docsource','=',$request->source)
+                        ->where('dc.doctrantype','=',$request->trantype)
+                        ->where('dc.docauditno','=',$request->auditno)
+                        ->where('dc.recstatus','=',"POSTED");
+        
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        
+        return json_encode($responce);
+        
+    }
+    
     public function form(Request $request)
     {
         DB::enableQueryLog();
@@ -342,8 +396,7 @@ class CreditNoteARController extends defaultController
                 'unit' => session('unit'),
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
-                'posteddate' => $request->posteddate,
-                'entrydate' => $request->posteddate,
+                'entrydate' => $request->db_entrydate,
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
                 // 'mrn' => strtoupper($request->db_mrn),
@@ -392,8 +445,7 @@ class CreditNoteARController extends defaultController
             'unit' => session('unit'),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
-            'posteddate' => $request->posteddate,
-            'entrydate' => $request->posteddate,
+            'entrydate' => $request->db_entrydate,
             'hdrtype' => strtoupper($request->db_hdrtype),
             'mrn' => strtoupper($request->db_mrn),
             //'termdays' => strtoupper($request->db_termdays),
@@ -545,12 +597,22 @@ class CreditNoteARController extends defaultController
                 $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('idno','=',$idno)
                     ->first();
+                    
+                if($dbacthdr->amount == 0){
+                    throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);
+                }
+                
+                $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
+                if($yearperiod->status == 'C'){
+                    throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                }
                 
                 $this->gltran($idno);
                 
                 DB::table('debtor.dbacthdr')
                     ->where('idno','=',$idno)
                     ->update([
+                        'posteddate' => $dbacthdr->entrydate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -586,7 +648,7 @@ class CreditNoteARController extends defaultController
             
             DB::rollback();
             
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
             
         }
         
@@ -598,6 +660,7 @@ class CreditNoteARController extends defaultController
         
         try {
             
+            // FROM CN
             $dbacthdr = DB::table('debtor.dbacthdr')
                 ->where('idno','=',$request->idno)
                 ->first();
@@ -605,6 +668,7 @@ class CreditNoteARController extends defaultController
             foreach ($request->data_detail as $key => $value){
                 $auditno_al = $this->defaultSysparam('AR','AL');
                 
+                // FROM DN
                 $dbacthdr_IV = DB::table('debtor.dbacthdr')
                         ->where('idno','=',$value['idno'])
                         ->first();
@@ -649,6 +713,7 @@ class CreditNoteARController extends defaultController
                             'debtorcode' => $dbacthdr->debtorcode,
                             'payercode' => $dbacthdr->payercode,
                             'allocdate' => $dbacthdr->posteddate,
+                            'posteddate' => $dbacthdr_IV->posteddate,
                             'recptno' => $request->recptno,
                             'amount' => $allocamount,
                             'outamount' => $outamount,
@@ -788,12 +853,22 @@ class CreditNoteARController extends defaultController
             $dbacthdr = DB::table('debtor.dbacthdr')
                 ->where('idno','=',$request->idno)
                 ->first();
+                    
+            if($dbacthdr->amount == 0){
+                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' amount cant be zero', 500);
+            }
+            
+            $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
+            if($yearperiod->status == 'C'){
+                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+            }
             
             $this->gltran($request->idno);
             
             DB::table('debtor.dbacthdr')
                 ->where('idno','=',$request->idno)
                 ->update([
+                    'posteddate' => $dbacthdr->entrydate,
                     'recstatus' => 'POSTED',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -820,7 +895,7 @@ class CreditNoteARController extends defaultController
             
             DB::rollback();
             
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
             
         }
         

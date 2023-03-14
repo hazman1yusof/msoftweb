@@ -9,8 +9,8 @@ use DB;
 use Carbon\Carbon;
 
 class CreditNoteARDetailController extends defaultController
-{   
-
+{
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -70,7 +70,7 @@ class CreditNoteARDetailController extends defaultController
         $responce->sql_bind = $table->getBindings();
         
         return json_encode($responce);
-
+        
     }
    
     public function get_itemcode_price(Request $request){
@@ -558,6 +558,7 @@ class CreditNoteARDetailController extends defaultController
     // }
 
     public function check_gstcode(Request $request){
+        
         $gstcode = DB::table('hisdb.taxmast')
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
@@ -581,9 +582,11 @@ class CreditNoteARDetailController extends defaultController
         $responce->amount = $amount;
         
         return $responce;
+        
     }
 
     public function check_gstcode2($value){
+        
         $gstcode = DB::table('hisdb.taxmast')
                     ->where('compcode',session('compcode'))
                     ->where('taxtype','OUTPUT')
@@ -607,6 +610,7 @@ class CreditNoteARDetailController extends defaultController
         $responce->amount = $amount;
         
         return $responce;
+        
     }
 
 }
