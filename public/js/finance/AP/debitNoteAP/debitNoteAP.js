@@ -234,7 +234,11 @@ $(document).ready(function () {
 			urlParam2.trantype = selrowData("#jqGrid").apacthdr_trantype;
 			urlParam2.auditno = selrowData("#jqGrid").apacthdr_auditno;
 
-			urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			urlParam2_alloc.source = selrowData("#jqGrid").apacthdr_source;
+			urlParam2_alloc.trantype = selrowData("#jqGrid").apacthdr_trantype;
+			urlParam2_alloc.auditno = selrowData("#jqGrid").apacthdr_auditno;
+
+			//urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
 
 			if(rowid != null) {
@@ -1331,13 +1335,11 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////jqGridAlloc////////////////////////////////////////////////
 	var urlParam2_alloc={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.idno','apdt.suppcode','apdt.allocdate','apdt.postdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno'],
-		table_name:['finance.apalloc AS apdt'],
-		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.refauditno','apdt.refsource','apdt.reftrantype', 'apdt.recstatus'],
-		filterVal:['session.compcode', '', 'AP','DN', 'POSTED']
+		action:'get_alloc_table',
+		url:'./debitNoteAP/table',
+		source:'',
+		trantype:'',
+		auditno: ''
 	};
 
 	$("#jqGridAlloc").jqGrid({
@@ -1350,8 +1352,9 @@ $(document).ready(function () {
 			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
 			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, 
 			{ label: 'Creditor', name: 'suppcode', width: 130, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Document Date', name: 'actdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Alloc Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
 			{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false, formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2},editrules:{required: false},editoptions:{readonly: "readonly"}},

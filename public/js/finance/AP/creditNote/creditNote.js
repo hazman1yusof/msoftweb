@@ -284,7 +284,10 @@ $(document).ready(function () {
 			$('#docnodepan').text(selrowData("#jqGrid").apacthdr_document);
 			$('#idno').val(selrowData("#jqGrid").apacthdr_idno);
 
-			urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+			urlParam2_alloc.source = selrowData("#jqGrid").apacthdr_source;
+			urlParam2_alloc.trantype = selrowData("#jqGrid").apacthdr_trantype;
+			urlParam2_alloc.auditno = selrowData("#jqGrid").apacthdr_auditno;
+			//urlParam2_alloc.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 			refreshGrid("#jqGridAPAlloc",urlParam2_alloc);
 
 			urlParam2.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
@@ -1163,13 +1166,11 @@ $(document).ready(function () {
 
 	/////////////////////////////parameter for jqGridAlloc url///////////////////////////////////////////////
 	var urlParam2_alloc={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['apdt.compcode','apdt.source','apdt.reference','apdt.trantype','apdt.auditno','apdt.lineno_','apdt.deptcode','apdt.category','apdt.document', 'apdt.AmtB4GST', 'apdt.GSTCode', 'apdt.amount', 'apdt.outamount', 'apdt.allocamount','apdt.balance', 'apdt.dorecno', 'apdt.grnno'],
-		table_name:['finance.apalloc AS apdt'],
-		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.docauditno','apdt.docsource','apdt.doctrantype', 'apdt.recstatus'],
-		filterVal:['session.compcode', '', 'AP','CN', '<>.CANCELLED']
+		action:'get_alloc_table',
+		url:'./creditNote/table',
+		source:'',
+		trantype:'',
+		auditno: ''
 	};
 
 	var addmore_jqgridAlloc={more:false,state:false,edit:true} // if addmore is true, add after refresh jqGridAlloc, state true kalu kosong
@@ -1180,12 +1181,9 @@ $(document).ready(function () {
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document Date', name: 'allocdate', width: 80, classes: 'wrap',
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
-			},
-			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap',
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
-			},
+			{ label: 'Document Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Alloc Date', name: 'allocdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}, hidden:true},
 			{ label: 'Document No', name: 'reference', width: 60, classes: 'wrap',},
 			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap'},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
@@ -1740,7 +1738,85 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqGridAPAlloc////////////////////////////////////////////////
 	$("#jqGridAPAlloc").jqGrid({
 		datatype: "local",
-		colModel: $("#jqGridAlloc").jqGrid('getGridParam','colModel'),
+		colModel: [
+			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
+			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Document Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Alloc Date', name: 'allocdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Document No', name: 'reference', width: 60, classes: 'wrap',},
+			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap'},
+			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+						element.style.textAlign = 'right';
+						$(element).keypress(function(e){
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+							}
+						});
+					}
+				},
+			},
+			{ label: 'O/S Amount', name: 'outamount', width: 80, align: 'right', classes: 'wrap', editable:false,	
+				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editrules:{required: false},editoptions:{readonly: "readonly"},
+			},
+			{ label: 'Amount Paid', name: 'allocamount', width: 80, classes: 'wrap', 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: true,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'Balance', name: 'balance', width: 80, classes: 'wrap', hidden:false, 
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+				editable: false,
+				align: "right",
+				editrules:{required: true},edittype:"text",
+				editoptions:{
+					readonly: "readonly",
+					maxlength: 12,
+					dataInit: function(element) {
+					element.style.textAlign = 'right';
+						$(element).keypress(function(e){					
+							if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+							return false;
+						}
+					});
+					}
+				},
+			},
+			{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
+			{ label: 'can_alloc', name: 'can_alloc', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true, key: true},
+			
+		],
 		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
@@ -1806,7 +1882,7 @@ $(document).ready(function () {
 										idno:elem['idno'],
 										suppcode:elem['suppcode'],
 										trantype:elem['trantype'],
-										allocdate:elem['recdate'],
+										actdate:elem['actdate'],
 										postdate:elem['postdate'],
 										reference:elem['document'],
 										refamount:elem['refamount'],
@@ -2190,7 +2266,7 @@ function populate_alloc_table(){
 						lineno_:elem['lineno_'],
 						can_alloc:elem['can_alloc'],
 						suppcode:elem['suppcode'],
-						allocdate:elem['recdate'],
+						actdate:elem['actdate'],
 						postdate:elem['postdate'],
 						trantype:elem['trantype'],
 						reference:elem['document'],

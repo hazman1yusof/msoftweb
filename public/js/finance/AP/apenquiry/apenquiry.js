@@ -291,7 +291,10 @@ $(document).ready(function () {
 				$('#jqGrid3_div_cn').show();
 				$('#tot_Alloc').val(parseFloat(selrowData("#jqGrid").apacthdr_amount) - parseFloat(selrowData("#jqGrid").apacthdr_outamount));
 				urlParam2_cn.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
-				urlParam2_allocdtl.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
+				urlParam2_allocdtl.source = selrowData("#jqGrid").apacthdr_source;
+				urlParam2_allocdtl.trantype = selrowData("#jqGrid").apacthdr_trantype;
+				urlParam2_allocdtl.auditno = selrowData("#jqGrid").apacthdr_auditno;
+				//urlParam2_allocdtl.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				$("#jqGrid3_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_cn")[0].offsetWidth-$("#jqGrid3_div_cn")[0].offsetLeft));
 				refreshGrid("#jqGrid3_cn",urlParam2_cn);
 			}
@@ -763,13 +766,11 @@ $(document).ready(function () {
 	//CN ALLOC
 
 	var urlParam2_allocdtl={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:['apdt.suppcode', 'apdt.allocdate', 'apdt.postdate', 'apdt.reference', 'apdt.refamount', 'apdt.outamount', 'apdt.allocamount', 'apdt.balance', 'apdt.compcode', 'apdt.source', 'apdt.trantype', 'apdt.docsource', 'apdt.doctrantype', 'apdt.docauditno', 'apdt.reftrantype', 'apdt.refsource', 'apdt.refauditno', 'apdt.auditno', 'apdt.lineno_', 'apdt.idno'],
-		table_name:['finance.apalloc AS apdt'],
-		table_id:'lineno_',
-		filterCol:['apdt.compcode','apdt.docauditno','apdt.docsource','apdt.doctrantype', 'apdt.recstatus'],
-		filterVal:['session.compcode', '', 'AP','CN', '<>.CANCELLED']
+		action:'get_alloc_table',
+		url:'./creditNote/table',
+		source:'',
+		trantype:'',
+		auditno: ''
 	};
 
 	$("#jqGridAlloc").jqGrid({
@@ -777,7 +778,7 @@ $(document).ready(function () {
 		editurl: "./creditNoteDetail/form",
 		colModel: [
 			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap',formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Document Date', name: 'allocdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Document Date', name: 'actdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 100, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Document No', name: 'reference', width: 100, classes: 'wrap',},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap', formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}, editable: false, align: "right"},
