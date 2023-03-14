@@ -202,7 +202,6 @@ use Carbon\Carbon;
                     ->where('outamount','>',0)
                     ->where('source', ['AP','DF','CF','TX'])
                     ->whereIn('trantype', ['IN','DN']);
-        // dump($apacthdr->get());
 
         $apalloc = DB::table('finance.apalloc')
                     ->where('compcode',session('compcode'))

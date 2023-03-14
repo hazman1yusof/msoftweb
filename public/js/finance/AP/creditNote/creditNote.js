@@ -1601,16 +1601,17 @@ $(document).ready(function () {
 			show_post_button(false);
 			$("#jqGrid2_ilcancel").click();
 			$("#jqGridAlloc input[name='checkbox']").show();
-
-			var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-			for (var i = 0; i < ids.length; i++) {
-				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
-
-				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
-			}
-			alloc_button_status('wait');
 			populate_alloc_table();
+
+			// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
+			// for (var i = 0; i < ids.length; i++) {
+			// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
+
+			// 	$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
+			// 	//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
+			// }
+			alloc_button_status('wait');
+			
 		});
 	});
 
@@ -1861,8 +1862,8 @@ $(document).ready(function () {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 
 					var urlParam_alloc = {
-						action: 'get_value_default',
-						url: 'util/get_value_default',
+						action: 'get_alloc_when_edit',
+						url: 'creditNote/table',
 						field: [],
 						table_name: ['finance.apacthdr'],
 						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
@@ -1870,9 +1871,11 @@ $(document).ready(function () {
 						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
 						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
 						table_id: 'idno',
+						auditno:$('#apacthdr_auditno').val(),
+						postdate:$('#apacthdr_postdate').val(),
 					};
 
-					$.get("util/get_value_default?" + $.param(urlParam_alloc), function (data) {
+					$.get("creditNote/table?" + $.param(urlParam_alloc), function (data) {
 					}, 'json').done(function (data) {
 						if (!$.isEmptyObject(data.rows)) {
 							myerrorIt_only(dialog_suppcode.textfield,false);
@@ -1880,15 +1883,18 @@ $(document).ready(function () {
 								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
 									{	
 										idno:elem['idno'],
-										suppcode:elem['suppcode'],
+										source:elem['source'],
 										trantype:elem['trantype'],
+										auditno:elem['auditno'],
+										lineno_:elem['lineno_'],
+										can_alloc:elem['can_alloc'],
+										suppcode:elem['suppcode'],
 										actdate:elem['actdate'],
 										postdate:elem['postdate'],
+										trantype:elem['trantype'],
 										reference:elem['document'],
 										refamount:elem['refamount'],
-										outamount:elem['outamount'],
-										allocamount: 0,
-										balance:elem['outamount'],
+										outamount:elem['outamount']
 									
 									}
 								);
@@ -1898,7 +1904,7 @@ $(document).ready(function () {
 							$("#jqGridAlloc input[name='checkbox']").hide();
 
 						} else {
-							alert("This supplier doesnt have any invoice!");
+							alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
 							$(dialog_suppcode.textfield).val('');
 							myerrorIt_only(dialog_suppcode.textfield,true);
 						}
