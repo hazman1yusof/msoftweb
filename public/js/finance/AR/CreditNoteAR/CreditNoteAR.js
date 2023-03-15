@@ -354,7 +354,10 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
-			$('#add_alloc').click();
+			
+			// if(selrowData('#jqGrid').db_unallocated == '1'){
+			// 	populate_alloc_table();
+			// }
 			
 			if(selrowData('#jqGrid').db_recstatus == 'POSTED'){
 				disableForm('#formdata');
