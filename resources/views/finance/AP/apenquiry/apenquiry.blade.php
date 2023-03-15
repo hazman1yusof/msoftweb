@@ -565,9 +565,9 @@
 								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 
-				  		<label class="col-md-2 control-label" for="apacthdr_pvno">PV No</label>  
+						<label class="col-md-2 control-label" for="apacthdr_postdate">Post Date</label>  
 				  			<div class="col-md-2">
-								<input id="apacthdr_pvno" name="apacthdr_pvno" type="text" class="form-control input-sm text-uppercase" maxlength="30">
+								<input id="apacthdr_postdate" name="apacthdr_postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
 
 				  		<label class="col-md-2 control-label" for="apacthdr_auditno">Audit No</label>  
@@ -577,11 +577,11 @@
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
+						<label class="col-md-2 control-label" for="apacthdr_unallocated">Transaction Type</label> 
 							<div class="col-md-2">
-							  	<select id="apacthdr_trantype" name="apacthdr_trantype" class="form-control" data-validation="required">
-							       <option value = "CN">Credit Note</option>
-							       <option value = "CNU">Credit Note Unallocated</option>
+							  	<select id="apacthdr_unallocated" name="apacthdr_unallocated" class="form-control" data-validation="required">
+							       <option value = "1">Credit Note</option>
+							       <option value = "0">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 

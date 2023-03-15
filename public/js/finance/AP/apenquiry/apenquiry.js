@@ -254,7 +254,7 @@ $(document).ready(function () {
 			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
+			{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -1483,20 +1483,20 @@ $(document).ready(function () {
 		if(oper != 'view'){
 			var unallocated = selrowData('#jqGrid').unallocated;
 			if(unallocated == 'true'){
-				$("#apacthdr_trantype").val('CNU');
+				$("#apacthdr_unallocated").val('0');
 			}
 			else{
-				$("#apacthdr_trantype").val('CN');
+				$("#apacthdr_unallocated").val('1');
 			}
 		}
 
-		if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+		if(($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note')) {
 			$('#save').hide();
 			$('#alloc_detail').show();
 			$('#grid_detail').show();
 			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft-28));
 			$("#jqGrid2_cn").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_cn")[0].offsetWidth-$("#jqGrid2_cn")[0].offsetLeft));
-		} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
+		} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) { 
 			$('#save').hide();
 			$('#alloc_detail').hide();
 			$('#grid_detail').show();

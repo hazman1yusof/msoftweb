@@ -222,11 +222,11 @@ i.fa {
 					</div>
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_trantype">Transaction Type</label> 
+						<label class="col-md-2 control-label" for="apacthdr_unallocated">Transaction Type</label> 
 							<div class="col-md-2">
-							  	<select id="apacthdr_trantype" name=apacthdr_trantype class="form-control" data-validation="required">
-							       <option value = "CN">Credit Note</option>
-							       <option value = "CNU">Credit Note Unallocated</option>
+							  	<select id="apacthdr_unallocated" name=apacthdr_unallocated class="form-control" data-validation="required">
+							       <option value = "1">Credit Note</option>
+							       <option value = "0">Credit Note Unallocated</option>
 							    </select>
 						  	</div>
 

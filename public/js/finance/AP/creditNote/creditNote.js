@@ -254,7 +254,7 @@ $(document).ready(function () {
 		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
 
 	],
@@ -417,7 +417,7 @@ $(document).ready(function () {
 
 	////////////////////selected///////////////
 
-	$('#apacthdr_trantype').on('change', function() {
+	$('#apacthdr_unallocated').on('change', function() {
 		init_jq2(oper);
 	});
 	
@@ -519,7 +519,7 @@ $(document).ready(function () {
 		}
 		saveParam.oper=selfoper;
 
-		if($('#apacthdr_trantype').val() == 'CNU'){
+		if($('#apacthdr_unallocated').val() == '0'){
 			obj.unallocated = true;
 		}else{
 			let data_detail = $('#jqGridAlloc').jqGrid('getRowData');
@@ -1024,7 +1024,7 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
-				if($("#apacthdr_trantype").find(":selected").text() == 'Credit Note'){
+				if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note'){
         			show_post_button();
 				}
 				$('#apacthdr_amount').val(data);
@@ -1858,7 +1858,7 @@ $(document).ready(function () {
 				$("#apacthdr_payto").val(data['SuppCode']);
 				dialog_payto.check(errorField);
 
-				if($("#apacthdr_trantype").find(":selected").text() == 'Credit Note') {
+				if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note') {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 
 					var urlParam_alloc = {
@@ -1891,7 +1891,6 @@ $(document).ready(function () {
 										suppcode:elem['suppcode'],
 										actdate:elem['actdate'],
 										postdate:elem['postdate'],
-										trantype:elem['trantype'],
 										reference:elem['document'],
 										refamount:elem['refamount'],
 										outamount:elem['outamount']
@@ -1909,7 +1908,7 @@ $(document).ready(function () {
 							myerrorIt_only(dialog_suppcode.textfield,true);
 						}
 					});
-				} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) {
+				} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 					$('#apacthdr_payto').focus();
 				}
@@ -2199,17 +2198,17 @@ function init_jq(oper){
 	if(oper != 'add'){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
-			$("#apacthdr_trantype").val('CNU');
+			$("#apacthdr_unallocated").val('0');
 		}
 	}
 
-	if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+	if(($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
 		$('#alloc_detail').show();
 		$('#grid_detail').show();
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) { 
 		$('#save').hide();
 		$('#alloc_detail').hide();
 		$('#grid_detail').show();
@@ -2217,7 +2216,7 @@ function init_jq(oper){
 }
 
 function init_jq2(oper){
-	if(($("#apacthdr_trantype").find(":selected").text() == 'Credit Note')) {
+	if(($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
 		$('#alloc_detail').show();
 		$('#grid_detail').show();
@@ -2228,7 +2227,7 @@ function init_jq2(oper){
 			//populate_alloc_table();
 		}
 
-	} else if (($("#apacthdr_trantype").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) { 
 		$('#save').hide();
 		$('#alloc_detail').hide();
 		$('#grid_detail').show();
@@ -2274,7 +2273,6 @@ function populate_alloc_table(){
 						suppcode:elem['suppcode'],
 						actdate:elem['actdate'],
 						postdate:elem['postdate'],
-						trantype:elem['trantype'],
 						reference:elem['document'],
 						refamount:elem['refamount'],
 						outamount:elem['outamount'],
