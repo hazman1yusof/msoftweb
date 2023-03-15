@@ -76,7 +76,7 @@ class CreditNoteARController extends defaultController
                         'db.upddate AS db_upddate',
                         'db.reference AS db_reference',
                         'db.paymode AS db_paymode',
-                        'db.unallocated AS db_trantype2',
+                        'db.unallocated AS db_unallocated',
                         
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
@@ -413,7 +413,7 @@ class CreditNoteARController extends defaultController
                 // 'approveddate' => $request->db_approveddate,
                 'reference' => $request->db_reference,
                 'paymode' => $request->db_paymode,
-                'unallocated' => $request->db_trantype2,
+                'unallocated' => $request->db_unallocated,
                 
             ];
             
@@ -458,7 +458,7 @@ class CreditNoteARController extends defaultController
             'ponum' => strtoupper($request->db_ponum),
             'remark' => strtoupper($request->db_remark),
             'approvedby' => $request->approvedby,
-            'unallocated' => $request->db_trantype2,
+            'unallocated' => $request->db_unallocated,
         ];
         
         try {

@@ -242,8 +242,8 @@ $(document).ready(function () {
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 			{ label: 'Reference', name: 'db_reference', width: 10, hidden: true },
 			{ label: 'Pay Mode', name: 'db_paymode', width: 10, hidden: true },
-			{ label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden:true },
-			{ label: 'db_trantype2', name: 'db_trantype2', width: 50, classes: 'wrap', hidden:false },
+			{ label: 'unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
+			// { label: 'db_unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -392,7 +392,7 @@ $(document).ready(function () {
 		}
 	}
 
-	$('#db_trantype2').on('change', function() {
+	$('#db_unallocated').on('change', function() {
 		init_jq2(oper);
 	});
 
@@ -452,7 +452,7 @@ $(document).ready(function () {
 		}
 		saveParam.oper = selfoper;
 		
-		if($('#db_trantype2').val() == '0'){
+		if($('#db_unallocated').val() == '0'){
 			obj.unallocated = true;
 		}else{
 			let data_detail = $('#jqGridAlloc').jqGrid('getRowData');
@@ -1141,7 +1141,7 @@ $(document).ready(function () {
 			}).fail(function(data) {
 				// alert(dialog,data.responseText);
 			}).done(function(data){
-				if($("#db_trantype2").find(":selected").text() == 'Credit Note'){
+				if($("#db_unallocated").find(":selected").text() == 'Credit Note'){
 					show_post_button();
 				}
 				$('#db_amount').val(data);
@@ -2174,7 +2174,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_CustomerSO.gridname);
 				$("#db_debtorcode").val(data['debtorcode']);
 				
-				if($("#db_trantype2").find(":selected").text() == 'Credit Note') {
+				if($("#db_unallocated").find(":selected").text() == 'Credit Note') {
 					
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 					
@@ -2226,7 +2226,7 @@ $(document).ready(function () {
 							myerrorIt_only(dialog_CustomerSO.textfield,true);
 						}
 					});
-				} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) {
+				} else if (($("#db_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
 					$("#jqGridAlloc").jqGrid("clearGridData", true);
 					$('#db_reference').focus();
 				}
@@ -2377,20 +2377,20 @@ function init_jq(oper){
 	if(oper != 'add'){
 		var unallocated = selrowData('#jqGrid').unallocated;
 		if(unallocated == 'true'){
-			$("#db_trantype2").val('0');
+			$("#db_unallocated").val('0');
 		}else{
-			$("#db_trantype2").val('1');
+			$("#db_unallocated").val('1');
 		}
 	}
 
-	if(($("#db_trantype2").find(":selected").text() == 'Credit Note')) {
+	if(($("#db_unallocated").find(":selected").text() == 'Credit Note')) {
 		// $('#save').hide();
 		$('#grid_alloc').show();
 		$('#grid_dtl').show();
 		$('#jqGridPagerAlloc').show();
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGridAlloc_c")[0].offsetWidth-$("#jqGridAlloc_c")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
-	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) {
+	} else if (($("#db_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
 		// $('#save').hide();
 		$('#grid_alloc').hide();
 		$('#grid_dtl').show();
@@ -2400,7 +2400,7 @@ function init_jq(oper){
 }
 
 function init_jq2(oper){
-	if(($("#db_trantype2").find(":selected").text() == 'Credit Note')) {
+	if(($("#db_unallocated").find(":selected").text() == 'Credit Note')) {
 		// $('#save').hide();
 		$('#grid_alloc').show();
 		$('#grid_dtl').show();
@@ -2410,7 +2410,7 @@ function init_jq2(oper){
 		if($('#db_debtorcode').val() != ''){
 			// populate_alloc_table();
 		}
-	} else if (($("#db_trantype2").find(":selected").text() == 'Credit Note Unallocated')) { 
+	} else if (($("#db_unallocated").find(":selected").text() == 'Credit Note Unallocated')) { 
 		// $('#save').hide();
 		$('#grid_alloc').hide();
 		$('#grid_dtl').show();
