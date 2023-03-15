@@ -242,8 +242,8 @@ $(document).ready(function () {
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
 			{ label: 'Reference', name: 'db_reference', width: 10, hidden: true },
 			{ label: 'Pay Mode', name: 'db_paymode', width: 10, hidden: true },
-			{ label: 'unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
-			// { label: 'db_unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
+			// { label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'db_unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -354,6 +354,7 @@ $(document).ready(function () {
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
+			$('#add_alloc').click();
 			
 			if(selrowData('#jqGrid').db_recstatus == 'POSTED'){
 				disableForm('#formdata');
@@ -2374,14 +2375,14 @@ function calc_jq_height_onchange(jqgrid){
 }
 
 function init_jq(oper){
-	if(oper != 'add'){
-		var unallocated = selrowData('#jqGrid').unallocated;
-		if(unallocated == 'true'){
-			$("#db_unallocated").val('0');
-		}else{
-			$("#db_unallocated").val('1');
-		}
-	}
+	// if(oper != 'add'){
+	// 	var unallocated = selrowData('#jqGrid').unallocated;
+	// 	if(unallocated == 'true'){
+	// 		$("#db_unallocated").val('0');
+	// 	}else{
+	// 		$("#db_unallocated").val('1');
+	// 	}
+	// }
 
 	if(($("#db_unallocated").find(":selected").text() == 'Credit Note')) {
 		// $('#save').hide();

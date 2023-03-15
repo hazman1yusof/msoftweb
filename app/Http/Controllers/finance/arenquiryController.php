@@ -82,7 +82,8 @@ class arenquiryController extends defaultController
                         'db.tillcode AS db_tillcode',
                         'db.tillno AS db_tillno',
                         'db.recptno AS db_recptno',
-                        'db.paymode AS db_paymode'
+                        'db.paymode AS db_paymode',
+                        'db.unallocated AS db_unallocated',
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode','=',session('compcode'))

@@ -464,8 +464,8 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
 			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
-			{ label: 'unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
-			// { label: 'db_unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden:true },
+			// { label: 'unallocated', name: 'unallocated', width: 50, classes: 'wrap', hidden: true },
+			{ label: 'db_unallocated', name: 'db_unallocated', width: 50, classes: 'wrap', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -2178,14 +2178,14 @@ function enabledPill(){
 }
 
 function init_jq2(oper){
-	if(oper != 'add'){
-		var unallocated = selrowData('#jqGrid').unallocated;
-		if(unallocated == 'true'){
-			$("#formdata_CN select[name='db_unallocated']").val('0');
-		}else{
-			$("#formdata_CN select[name='db_unallocated']").val('1');
-		}
-	}
+	// if(oper != 'add'){
+	// 	var unallocated = selrowData('#jqGrid').unallocated;
+	// 	if(unallocated == 'true'){
+	// 		$("#formdata_CN select[name='db_unallocated']").val('0');
+	// 	}else{
+	// 		$("#formdata_CN select[name='db_unallocated']").val('1');
+	// 	}
+	// }
 
 	if(($("#formdata_CN select[name='db_unallocated']").find(":selected").text() == 'Credit Note')) {
 		// $('#save').hide();
