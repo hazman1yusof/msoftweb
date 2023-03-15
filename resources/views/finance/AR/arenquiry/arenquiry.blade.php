@@ -224,11 +224,11 @@
 					<input id="db_trantype" name="db_trantype" type="hidden">
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="db_trantype2">Transaction Type</label> 
+						<label class="col-md-2 control-label" for="db_unallocated">Transaction Type</label> 
 						<div class="col-md-2">
-							<select id="db_trantype2" name="db_trantype2" class="form-control" data-validation="required">
-								<option value = "CN">Credit Note</option>
-								<option value = "CNU">Credit Note Unallocated</option>
+							<select id="db_unallocated" name="db_unallocated" class="form-control" data-validation="required">
+								<option value = "1">Credit Note</option>
+								<option value = "0">Credit Note Unallocated</option>
 							</select>
 						</div>
 
