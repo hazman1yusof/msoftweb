@@ -100,16 +100,38 @@ $(document).ready(function () {
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
+	////////////////////padzero///////////////////
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 5, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+
+	function searchClick2(grid,form,urlParam){
+		$(form+' [name=Stext]').on( "keyup", function() {
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+				// $('#auditno').text("");//tukar kat depan tu
+				refreshGrid("#jqGrid3",null,"kosongkan");
+			}, 500 );
+		});
+
+		$(form+' [name=Scol]').on( "change", function() {
+			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			// $('#auditno').text("");//tukar kat depan tu
+			refreshGrid("#jqGrid3",null,"kosongkan");
+		});
+	}
+
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
-		// action:'get_table_default',
-		// url:'util/get_table_default',
-		// field:'',
-		// table_name:'finance.apacthdr',
-		// table_id:'auditno',
-		// filterCol: ['trantype', 'compcode'],
-		// filterVal: [$('#adjustment').val(), 'session.compcode'],
-		// sort_idno: 'true'
 		action:'maintable',
 		url:'./creditDebitTrans/table',
 		trantype:$('#adjustment').val(),
@@ -123,7 +145,6 @@ $(document).ready(function () {
 		oper:oper,
 		table_name:'finance.apacthdr',
 		table_id:'idno',
-		//saveip:'true',
 		checkduplicate:'false',
 	};
 		
@@ -133,7 +154,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},
 			{ label: 'Trantype', name: 'trantype', width: 13},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', checked: true, canSearch: true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true},
+			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap', canSearch: true},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', align:'right', formatter:'currency'},
@@ -157,7 +178,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 350,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function(rowid, selected) {
@@ -207,7 +228,7 @@ $(document).ready(function () {
 				}
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 			
 	});
@@ -260,6 +281,11 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
+
+			if(selrowData("#jqGrid").recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", id:"jqGridplus", position: "first",

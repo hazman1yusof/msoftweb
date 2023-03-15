@@ -478,7 +478,6 @@ use Carbon\Carbon;
                             'refauditno' => $apacthdr_IV->auditno,
                             'refamount' => $apacthdr_IV->amount,
                             'allocdate' => $apacthdr->actdate,
-                           // 'postdate' => $apacthdr_IV->postdate,
                             'reference' => $value['reference'],
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,

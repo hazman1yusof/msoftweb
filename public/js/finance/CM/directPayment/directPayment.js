@@ -257,7 +257,7 @@ $(document).ready(function () {
 				//empty_form()
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 			
 	});
@@ -1135,22 +1135,30 @@ $(document).ready(function () {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
 
-		let amntb4gst = parseFloat($("#"+id_optid+"_AmtB4GST").val());
+		let amntb4gst = parseFloat($("#jqGrid2 #"+id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($("#jqGrid2 #"+id_optid+"_gstpercent").val());
-		
-		var tot_gst_real = parseFloat($("#"+id_optid+"_tot_gst").val());
-		var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 		var amount = 0;
 
-		if(tot_gst_real == tot_gst_rate || tot_gst_real==0){
-			amount = amntb4gst + tot_gst_rate;
-			tot_gst = tot_gst_rate;
+		if(gstpercent == 0){
+			$("#jqGrid2  #"+id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
 		}else{
-			amount = amntb4gst + tot_gst_real;
-			tot_gst = tot_gst_real;
+			$("#jqGrid2 #"+id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($("#jqGrid2 #"+id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
+
 		}
 
-		$("#"+id_optid+"_tot_gst").val(tot_gst);
+		$("#jqGrid2 #"+id_optid+"_tot_gst").val(tot_gst);
 
 		$("#jqGrid2 #"+id_optid+"_amount").val(amount);
 
@@ -1167,22 +1175,26 @@ $(document).ready(function () {
 		
 		let amntb4gst = parseFloat($(id_optid+"_AmtB4GST").val());
 		let gstpercent = parseFloat($(id_optid+"_gstpercent").val());
-		
-		// var tot_gst = amntb4gst * (gstpercent / 100);
-		// var amount = amntb4gst + tot_gst;
-
-		var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
-		var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
 		var amount = 0;
 
-		if(tot_gst_real == tot_gst_rate || tot_gst_real==0){
-			amount = amntb4gst + tot_gst_rate;
-			tot_gst = tot_gst_rate;
+		if(gstpercent == 0){
+			$(id_optid+"_tot_gst").prop('disabled',true);
+			tot_gst = 0;
+			amount = amntb4gst;
 		}else{
-			amount = amntb4gst + tot_gst_real;
-			tot_gst = tot_gst_real;
+			$(id_optid+"_tot_gst").prop('disabled',false);
+			var tot_gst_real = parseFloat($(id_optid+"_tot_gst").val());
+			var tot_gst_rate = parseFloat(amntb4gst * (gstpercent / 100));
+
+			if(tot_gst_real == tot_gst_rate || tot_gst_real == 0){
+				amount = amntb4gst + tot_gst_rate;
+				tot_gst = tot_gst_rate;
+			}else{
+				amount = amntb4gst + tot_gst_real;
+				tot_gst = tot_gst_real;
+			}
 		}
-		
+
 		$(id_optid+"_tot_gst").val(tot_gst);
 		
 		$(id_optid+"_amount").val(amount);
@@ -1193,7 +1205,6 @@ $(document).ready(function () {
 		mycurrency2.formatOn();
 	}
 
-	
 	function calculate_total_header(){
 		var rowids = $('#jqGrid2').jqGrid('getDataIDs');
 		var totamt = 0

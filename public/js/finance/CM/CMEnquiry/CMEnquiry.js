@@ -123,7 +123,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		width: 900,
-		height: 400,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -159,7 +159,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 		
 	});

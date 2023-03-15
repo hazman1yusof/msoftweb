@@ -254,7 +254,7 @@ $(document).ready(function () {
 		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:false},
 		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
 
 	],
@@ -374,6 +374,14 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
 
+			// if($("#apacthdr_unallocated").val('1')){
+			// 	$("#add_Alloc").click();
+			// }
+
+			if(selrowData("#jqGrid").apacthdr_unallocated == '1'){
+				$("#add_Alloc").click();
+			}
+			
 			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
@@ -2195,12 +2203,12 @@ $(document).ready(function () {
 });
 
 function init_jq(oper){
-	if(oper != 'add'){
-		var unallocated = selrowData('#jqGrid').unallocated;
-		if(unallocated == 'true'){
-			$("#apacthdr_unallocated").val('0');
-		}
-	}
+	// if(oper != 'add'){
+	// 	var unallocated = selrowData('#jqGrid').unallocated;
+	// 	if(unallocated == 'true'){
+	// 		$("#apacthdr_unallocated").val('0');
+	// 	}
+	// }
 
 	if(($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
@@ -2208,6 +2216,7 @@ function init_jq(oper){
 		$('#grid_detail').show();
 		$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_Alloc")[0].offsetWidth-$("#jqGrid_Alloc")[0].offsetLeft-28));
 		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
+
 	} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) { 
 		$('#save').hide();
 		$('#alloc_detail').hide();

@@ -93,7 +93,8 @@ class APEnquiryController extends defaultController
                         'ap.unit AS apacthdr_unit',
                         'ap.pvno AS apacthdr_pvno', //search
                         'ap.paymode AS apacthdr_paymode',
-                        'ap.bankcode AS apacthdr_bankcode'
+                        'ap.bankcode AS apacthdr_bankcode',
+                        'ap.unallocated AS apacthdr_unallocated'
                         
                     )
                     ->leftJoin('material.supplier as su', 'su.SuppCode', '=', 'ap.suppcode')

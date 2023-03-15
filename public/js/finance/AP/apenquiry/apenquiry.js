@@ -172,7 +172,7 @@ $(document).ready(function () {
 				dialog_suppcodeCN.check(errorField);
 				dialog_paytoCN.check(errorField);
 				dialog_categoryCN.check(errorField);
-				init_jq2_cn(oper);
+				init_jq2_cn();
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -1484,9 +1484,6 @@ $(document).ready(function () {
 			var unallocated = selrowData('#jqGrid').unallocated;
 			if(unallocated == 'true'){
 				$("#apacthdr_unallocated").val('0');
-			}
-			else{
-				$("#apacthdr_unallocated").val('1');
 			}
 		}
 
