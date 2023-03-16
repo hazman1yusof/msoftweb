@@ -285,6 +285,10 @@ i.fa {
 
 					<hr/>
 				</form>
+				
+				<div class="panel-body">
+				   	<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+			    </div>
 			</div>
 		</div>
 			
@@ -301,9 +305,9 @@ i.fa {
 				</form>
 			</div>
 
-			<div class="panel-body">
+			<!-- <div class="panel-body">
 				<div class="noti" style="color:red"></div>
-			</div>
+			</div> -->
 		</div>
 				
 		<div id="dialog_remarks" title="Remarks">

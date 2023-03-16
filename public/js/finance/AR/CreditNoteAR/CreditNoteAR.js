@@ -448,6 +448,33 @@ $(document).ready(function () {
 			
 		});
 	});
+	
+	//////////////////////////////check docdate//////////////////////////////
+	$("#db_entrydate").blur(checkdate);
+
+	function checkdate(nkreturn=false){
+		
+		var db_entrydate = $('#db_entrydate').val();
+		
+		text_success1('#db_entrydate')
+		$("#dialogForm .noti ol").empty();
+		var failmsg=[];
+		
+		if(moment(db_entrydate).isAfter(moment())){
+			failmsg.push("Date cannot be higher than today");
+			text_error1('#db_entrydate')
+		}
+		
+		if(failmsg.length){
+			failmsg.forEach(function(element){
+				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
+			});
+			if(nkreturn)return false;
+		}else{
+			if(nkreturn)return true;
+		}
+		
+	}
 
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form, selfoper, saveParam, obj, needrefresh){
@@ -606,8 +633,8 @@ $(document).ready(function () {
 		},{
 			title: "Select Customer",
 			open: function () {
-				customer_search.urlParam.filterCol = ['recstatus'];
-				customer_search.urlParam.filterVal = ['ACTIVE'];
+				customer_search.urlParam.filterCol = ['compcode','recstatus'];
+				customer_search.urlParam.filterVal = ['session.compcode','ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1266,9 +1293,9 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
-
+		
 		errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			mycurrency.formatOn();
 			unsaved = false;
@@ -1948,8 +1975,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Paymode",
 			open: function(){
-				dialog_paymodeAR.urlParam.filterCol=['recstatus', 'compcode', 'source', 'paytype'],
-				dialog_paymodeAR.urlParam.filterVal=['ACTIVE', 'session.compcode', 'AR', 'Credit Note'];
+				dialog_paymodeAR.urlParam.filterCol=['compcode','recstatus', 'source', 'paytype'],
+				dialog_paymodeAR.urlParam.filterVal=['session.compcode','ACTIVE', 'AR', 'Credit Note'];
 				}
 			},'urlParam','radio','tab'
 		);
@@ -2003,8 +2030,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Department Code",
 			open: function(){
-				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_deptcode.urlParam.filterCol=['compcode','recstatus'];
+				dialog_deptcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2095,8 +2122,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
-				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'OUTPUT'];
+				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus','taxtype'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE','OUTPUT'];
 			},
 			check_take_all_field:true,
 			after_check: function(data,obj,id){
@@ -2248,8 +2275,8 @@ $(document).ready(function () {
 		}, {
 			title: "Select Customer",
 			open: function(){
-				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
-				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+				dialog_CustomerSO.urlParam.filterCol=['compcode','recstatus'];
+				dialog_CustomerSO.urlParam.filterVal=['session.compcode','ACTIVE'];
 			}
 		},'urlParam','radio','tab'
 	);
