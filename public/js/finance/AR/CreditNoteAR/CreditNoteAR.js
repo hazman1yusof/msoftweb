@@ -286,6 +286,8 @@ $(document).ready(function () {
 			if_cancel_hide();
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
+			$(this).data('lastselrow',rowid);
+			
 			let stat = selrowData("#jqGrid").db_recstatus;
 			$('#tot_alloc').val(parseFloat(selrowData("#jqGrid").db_amount) - parseFloat(selrowData("#jqGrid").db_outamount));
 			mycurrency.formatOn();
@@ -297,10 +299,13 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
+			
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			
 			if($('#jqGrid').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();

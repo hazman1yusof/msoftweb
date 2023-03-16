@@ -263,6 +263,8 @@ $(document).ready(function () {
 			refreshGrid("#jqGridArAlloc",urlParamAlloc);
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
+			$(this).data('lastselrow',rowid);
+			
 			let stat = selrowData("#jqGrid").db_recstatus;
 			if(stat=='OPEN' || stat=='INCOMPLETED'){
 				$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -273,10 +275,13 @@ $(document).ready(function () {
 		gridComplete: function () {
 			refreshGrid("#jqGrid3",null,"kosongkan");
 			$('#but_cancel_jq,#but_post_jq').hide();
-			// if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {    //highlight 1st record
-			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			// }
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+			}
 			
 			if($('#jqGrid').data('inputfocus') == 'payer_search'){
 				$("#payer_search").focus();
