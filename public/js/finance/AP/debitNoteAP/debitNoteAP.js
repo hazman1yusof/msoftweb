@@ -184,35 +184,35 @@ $(document).ready(function () {
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
-	datatype: "local",
-	colModel: [
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
-		{ label: 'Audit <br>No', name: 'apacthdr_auditno', width: 13, classes: 'wrap',formatter: padzero, unformat: unpadzero},
-		{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
-		{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
-		{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Pay To', name: 'apacthdr_payto', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-		{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
-		{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Rec Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden: true,},
-		{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
-		{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
-		{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
-		{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
-		{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25 , classes: 'wrap', align: 'right', formatter:'currency'},
-		{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
-		{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
-		{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
-		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
-		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:true},
+		datatype: "local",
+		colModel: [
+			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
+			{ label: 'Audit <br>No', name: 'apacthdr_auditno', width: 13, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
+			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Pay To', name: 'apacthdr_payto', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
+			{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Rec Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden: true,},
+			{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
+			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25 , classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
+			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
+			{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
+			{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:true},
 
-	],
+		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -262,6 +262,7 @@ $(document).ready(function () {
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			$(this).data('lastselrow',rowid);
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
@@ -278,10 +279,12 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) { //highlight 1st record
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){

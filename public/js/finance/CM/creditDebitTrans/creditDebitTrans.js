@@ -1339,8 +1339,8 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus', 'taxtype'],
+				filterVal:['session.compcode','ACTIVE', 'Input']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){

@@ -375,7 +375,7 @@ use Carbon\Carbon;
         ];
 
         foreach ($field as $key => $value) {
-            if($value == 'remarks' || $value == 'document'){
+            if($value == 'remarks' || $value == 'document' || $value == 'amount' || $value == 'outamount'){
                 continue;
             }
             $array_update[$value] = $request[$request->field[$key]];

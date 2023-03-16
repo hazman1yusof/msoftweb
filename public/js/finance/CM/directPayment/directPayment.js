@@ -1509,8 +1509,8 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus','taxtype'],
+				filterVal:['session.compcode','ACTIVE','Input']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1551,8 +1551,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
-				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
+				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus','taxtype'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE','Input'];
 			},
 			check_take_all_field:true,
 			after_check: function(data,obj,id){
