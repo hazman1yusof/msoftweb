@@ -247,15 +247,15 @@ $(document).ready(function () {
 		{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
 		{ label: 'upddate', name: 'apacthdr_upddate', width: 90, hidden:true, classes: 'wrap'},
-		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:'true'},
-		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:'true', key:true},
-		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:'true'},
+		{ label: 'source', name: 'apacthdr_source', width: 40, hidden:true},
+		{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
+		{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
 		{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
 		{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 		{ label: 'cheqno', name: 'apacthdr_cheqno', width: 50, classes: 'wrap', hidden:true},
-		{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:false},
-		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:'true'},
+		{ label: 'unallocated', name: 'apacthdr_unallocated', width: 50, classes: 'wrap', hidden:true},
+		{ label: 'compcode', name: 'apacthdr_compcode', width: 40, hidden:true},
 
 	],
 		autowidth:true,
@@ -374,13 +374,9 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
 
-			// if($("#apacthdr_unallocated").val('1')){
+			// if(selrowData("#jqGrid").apacthdr_unallocated == '1'){
 			// 	$("#add_Alloc").click();
 			// }
-
-			if(selrowData("#jqGrid").apacthdr_unallocated == '1'){
-				$("#add_Alloc").click();
-			}
 			
 			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
 				disableForm('#formdata');
