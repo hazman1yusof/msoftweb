@@ -313,6 +313,10 @@ i.fa {
 					<button type="button" id='posted_button' class='btn btn-primary btn-sm pull-right' style='margin: 0.2%;'>Posted</button>
 
 				</form>
+				
+				<div class="panel-body">
+				   	<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
+			    </div>
 			</div>
 		</div>
 			
@@ -329,9 +333,9 @@ i.fa {
 				</form>
 			</div>
 
-			<div class="panel-body">
+			<!-- <div class="panel-body">
 				<div class="noti" style="color:red"></div>
-			</div>
+			</div> -->
 		</div>
 			
 		<div class='panel panel-info' id="grid_alloc">
@@ -347,9 +351,9 @@ i.fa {
 				</form>
 			</div>
 
-			<div class="panel-body">
+			<!-- <div class="panel-body">
 				<div class="noti" style="color:red"></div>
-			</div>
+			</div> -->
 		</div>
 				
 		<div id="dialog_remarks" title="Remarks">
