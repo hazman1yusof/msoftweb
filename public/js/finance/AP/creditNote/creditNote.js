@@ -496,11 +496,25 @@ $(document).ready(function () {
 		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
 		
-		$(".noti ol").empty();
+		text_success1('#apacthdr_postdate')
+		text_success1('#apacthdr_actdate')
+		$("#dialogForm .noti ol").empty();
 		var failmsg=[];
 
 		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
-			failmsg.push("Post Date cannot be lower than Document date");
+			failmsg.push("Post Date cannot be lower than Doc date");
+			text_error1('#apacthdr_postdate')
+			text_error1('#apacthdr_actdate')
+		}
+
+		if(moment(apacthdr_postdate).isAfter(moment())){
+			failmsg.push("Post Date cannot be higher than today");
+			text_error1('#apacthdr_postdate')
+		}
+
+		if(moment(apacthdr_actdate).isAfter(moment())){
+			failmsg.push("Doc Date cannot be higher than today");
+			text_error1('#apacthdr_actdate')
 		}
 
 		if(failmsg.length){
@@ -1626,7 +1640,7 @@ $(document).ready(function () {
 		dialog_suppcode.off();
 		dialog_payto.off();
 		errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {

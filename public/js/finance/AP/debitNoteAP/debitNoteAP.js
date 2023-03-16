@@ -114,7 +114,7 @@ $(document).ready(function () {
 				$("#formdata a").off();
 				dialog_supplier.off();
 				dialog_payto.off();
-				$(".noti").empty();
+				$(".noti ol").empty();
 				$("#refresh_jqGrid").click();
 				refreshGrid("#jqGrid2",null,"kosongkan");
 				errorField.length=0;
@@ -465,11 +465,25 @@ $(document).ready(function () {
 		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
 
-		$(".noti ol").empty();
+		text_success1('#apacthdr_postdate')
+		text_success1('#apacthdr_actdate')
+		$("#dialogForm .noti ol").empty();
 		var failmsg=[];
 
 		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
-			failmsg.push("Post Date cannot be lower than Document date");
+			failmsg.push("Post Date cannot be lower than Doc date");
+			text_error1('#apacthdr_postdate')
+			text_error1('#apacthdr_actdate')
+		}
+
+		if(moment(apacthdr_postdate).isAfter(moment())){
+			failmsg.push("Post Date cannot be higher than today");
+			text_error1('#apacthdr_postdate')
+		}
+
+		if(moment(apacthdr_actdate).isAfter(moment())){
+			failmsg.push("Doc Date cannot be higher than today");
+			text_error1('#apacthdr_actdate')
 		}
 
 		if(failmsg.length){
@@ -1253,7 +1267,7 @@ $(document).ready(function () {
 		dialog_supplier.off();
 		dialog_payto.off();
 		errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {
@@ -1270,7 +1284,7 @@ $(document).ready(function () {
 		dialog_payto.on();
 		enableForm('#formdata');
 		rdonly('#formdata');
-		$(".noti").empty();
+		$(".noti ol").empty();
 		refreshGrid("#jqGrid2",urlParam2);
 		errorField.length=0;
 	});
@@ -1522,8 +1536,8 @@ $(document).ready(function () {
 				{label:'source',name:'source',width:400,classes:'pointer', hidden:true},
 			],
 			urlParam: {
-				filterCol:['recstatus', 'compcode'],
-				filterVal:['ACTIVE', 'session.compcode']
+				filterCol:['recstatus', 'compcode','source','povalidate'],
+				filterVal:['ACTIVE', 'session.compcode','CR','0']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1579,8 +1593,8 @@ $(document).ready(function () {
 				{label:'Tax Rate',name:'rate',width:200,classes:'pointer'},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
+				filterCol:['compcode','recstatus','taxtype'],
+				filterVal:['session.compcode','ACTIVE','Input']
 			},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1622,8 +1636,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
-				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
-				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
+				dialog_GSTCode.urlParam.filterCol=['compcode','recstatus','taxtype'];
+				dialog_GSTCode.urlParam.filterVal=['session.compcode','ACTIVE','Input'];
 			},
 			check_take_all_field:true,
 			after_check: function(data,obj,id){
