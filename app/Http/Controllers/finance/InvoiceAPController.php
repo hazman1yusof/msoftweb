@@ -55,6 +55,7 @@ use Carbon\Carbon;
                         'ap.recstatus AS apacthdr_recstatus',
                         'ap.payto AS apacthdr_payto',
                         'ap.recdate AS apacthdr_recdate',
+                        'ap.postdate AS apacthdr_postdate',
                         'ap.category AS apacthdr_category',
                         'ap.remarks AS apacthdr_remarks',
                         'ap.adduser AS apacthdr_adduser',
@@ -335,7 +336,8 @@ use Carbon\Carbon;
                 'auditno' => $auditno,
                 'trantype' => $request->apacthdr_trantype,
                 'doctype' => $request->apacthdr_doctype,
-                'recdate' => $request->apacthdr_recdate,
+                'recdate' => $request->apacthdr_postdate,
+                'postdate' => $request->apacthdr_postdate,
                 'suppgroup' => $suppgroup,
                 'document' => strtoupper($request->apacthdr_document),
                 'category' => strtoupper($request->apacthdr_category),
@@ -391,13 +393,15 @@ use Carbon\Carbon;
             'unit' => session('unit'),
             'compcode' => session('compcode'),
             'doctype' => $request->apacthdr_doctype,
-            'recdate' => $request->apacthdr_recdate,
+            'postdate' => $request->apacthdr_postdate,
+            'actdate' => $request->apacthdr_actdate,
+            'recdate' => $request->apacthdr_postdate,
             'document' => strtoupper($request->apacthdr_document),
             'category' => strtoupper($request->apacthdr_category),
             'remarks' => strtoupper($request->apacthdr_remarks),
+            'outamount' => $request->apacthdr_amount,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'outamount' => $request->apacthdr_amount,
         ];
 
         foreach ($field as $key => $value) {
@@ -444,6 +448,10 @@ use Carbon\Carbon;
                     ->where('trantype','=',$apacthdr->trantype)
                     ->where('auditno','=', $auditno);
 
+                $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
+                    if($yearperiod->status == 'C'){
+                        throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                    }
                 $this->check_outamt($apacthdr,$apactdtl);
 
                 $this->gltran($auditno);
@@ -462,6 +470,8 @@ use Carbon\Carbon;
                     ->where('auditno','=',$auditno)
                     ->update([
                         'recstatus' => 'POSTED',
+                        'recdate' => $apacthdr->postdate,
+                        'postuser' => session('username'),
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -558,7 +568,7 @@ use Carbon\Carbon;
                             ->first();
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
+        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
         $debit_obj = $this->gltran_fromdept($apacthdr_obj->deptcode,$apacthdr_obj->category);
         $credit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode);
@@ -574,6 +584,7 @@ use Carbon\Carbon;
                 'source' => $apacthdr_obj->source,
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
+                'postdate' => $apacthdr_obj->postdate,
                 'description' => $supp_obj->SuppCode.'</br>'.$supp_obj->Name, //suppliercode + suppliername
                 'postdate' => $apacthdr_obj->recdate,
                 'year' => $yearperiod->year,
@@ -657,7 +668,7 @@ use Carbon\Carbon;
                             ->first();
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->actdate);
+        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
         $debit_obj = $this->gltran_fromdept($apacthdr_obj->deptcode,$apacthdr_obj->category);
         $credit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode);

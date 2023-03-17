@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#apacthdr_recdate"]);
+	var actdateObj = new setactdate(["#apacthdr_postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -219,7 +219,8 @@ $(document).ready(function () {
 			{ label: 'Creditor Name', name: 'supplier_name', width: 40, classes: 'wrap text-uppercase', checked: true, hidden:true},
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase',canSearch: true, hidden:true},
 			{ label: 'Document<br/> Date', name: 'apacthdr_actdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Post<br/> Date', name: 'apacthdr_recdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post<br/> Date', name: 'apacthdr_postdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Rec<br/> Date', name: 'apacthdr_recdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
 			{ label: 'Document No', name: 'apacthdr_document', width: 30, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 20, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
@@ -247,7 +248,7 @@ $(document).ready(function () {
 		// sortname:'apacthdr_idno',
 		// sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 
@@ -257,8 +258,7 @@ $(document).ready(function () {
 			} else {
 				$('#jqGrid3_c,#gridDo_c,#gridPV_c').show();
 			}
-
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
 
@@ -266,20 +266,6 @@ $(document).ready(function () {
 			$('#save').hide();
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			let scope = $("#recstatus_use").val();
-
-			// if (stat == "CANCELLED" && scope == "cancel") {
-			// 	$('#but_reopen_jq').show();
-			// 	$('#but_cancel_jq').hide();
-			// 	$('td#glyphicon-plus,td#glyphicon-edit').hide();
-			// } else if (stat == "POSTED" && scope == "cancel") {
-			// 	$('#but_cancel_jq').show();
-			// 	$('td#glyphicon-plus,td#glyphicon-edit').hide();
-			// } else if (stat == "OPEN" || stat == "POSTED" && scope.toUpperCase() == 'all') {
-			// 	$('#but_cancel_jq').show();
-			// 	$('#but_post_jq').show();
-			// } else {
-			
-			// }
 
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
@@ -301,6 +287,7 @@ $(document).ready(function () {
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			$(this).data('lastselrow',rowid);
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			
 			if(stat=='POSTED'){
@@ -311,23 +298,18 @@ $(document).ready(function () {
 
 				if (rowid != null) {
 					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
-	
-					// if (rowData['apacthdr_doctype'] == 'Supplier') {
-					// 	$('#save').hide();
-					// 	$('#ap_detail').show();
-					// } else {
-					// 	$('#save').show();
-					// 	$('#ap_detail').hide();
-					// }
 				}
 			}
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
 				$("#creditor_search").focus();
@@ -515,17 +497,31 @@ $(document).ready(function () {
 	});
 	
 	///////////check postdate & docdate///////////////////
-	$("#apacthdr_recdate,#apacthdr_actdate").blur(checkdate);
+	$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
 
 	function checkdate(nkreturn=false){
-		var apacthdr_recdate = $('#apacthdr_recdate').val();
+		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
 
-		$(".noti2 ol").empty();
+		text_success1('#apacthdr_postdate')
+		text_success1('#apacthdr_actdate')
+		$("#dialogForm .noti2 ol").empty();
 		var failmsg=[];
 
-		if(moment(apacthdr_recdate).isBefore(apacthdr_actdate)){
-			failmsg.push("Post Date cannot be lower than Document date");
+		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
+			failmsg.push("Post Date cannot be lower than Doc date");
+			text_error1('#apacthdr_postdate')
+			text_error1('#apacthdr_actdate')
+		}
+
+		if(moment(apacthdr_postdate).isAfter(moment())){
+			failmsg.push("Post Date cannot be higher than today");
+			text_error1('#apacthdr_postdate')
+		}
+
+		if(moment(apacthdr_actdate).isAfter(moment())){
+			failmsg.push("Doc Date cannot be higher than today");
+			text_error1('#apacthdr_actdate')
 		}
 
 		if(failmsg.length){
@@ -806,7 +802,7 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1227,8 +1223,8 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
-			setjqgridHeight(data,'jqGrid3');
-			calc_jq_height_onchange("jqGrid3");
+			//setjqgridHeight(data,'jqGrid3');
+			//calc_jq_height_onchange("jqGrid3");
 		},
 		onSelectRow: function(data, rowid, selected) {
 
@@ -1280,8 +1276,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPagerpv",
 		loadComplete: function(data){
-			setjqgridHeight(data,'jqgridpv');
-			calc_jq_height_onchange("jqgridpv");
+			// setjqgridHeight(data,'jqgridpv');
+			// calc_jq_height_onchange("jqgridpv");
 		},
 		onSelectRow: function(data, rowid, selected) {
 		},
@@ -1501,9 +1497,9 @@ $(document).ready(function () {
 					});
 				}
 			});
-			setjqgridHeight(data,'jqGrid3');
-        	//showeditfunc.off().on();
-			calc_jq_height_onchange("gridDo");
+			// setjqgridHeight(data,'jqGrid3');
+        	// //showeditfunc.off().on();
+			// calc_jq_height_onchange("gridDo");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -1876,5 +1872,5 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+1);
 }

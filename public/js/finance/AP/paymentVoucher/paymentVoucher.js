@@ -288,6 +288,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			$(this).data('lastselrow',rowid);
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
@@ -301,10 +302,13 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$("#searchForm input[name=Stext]").focus();
 
 				if($('#jqGrid').data('inputfocus') == 'creditor_search'){
 				$("#creditor_search").focus();
@@ -483,17 +487,31 @@ $(document).ready(function () {
         $('#apacthdr_cheqdate').change(apacthdr_actdate);
     }); 
 
-	$("#apacthdr_cheqdate,#apacthdr_actdate").blur(checkdate);
+	$("#apacthdr_postdate,#apacthdr_actdate").blur(checkdate);
 
 	function checkdate(nkreturn=false){
-		var apacthdr_cheqdate = $('#apacthdr_cheqdate').val();
+		var apacthdr_postdate = $('#apacthdr_postdate').val();
 		var apacthdr_actdate = $('#apacthdr_actdate').val();
-		
-		$(".noti ol").empty();
+
+		text_success1('#apacthdr_postdate')
+		text_success1('#apacthdr_actdate')
+		$("#dialogForm .noti ol").empty();
 		var failmsg=[];
 
-		if(moment(apacthdr_cheqdate).isBefore(apacthdr_actdate)){
-			failmsg.push("Post Date cannot be lower than Document date");
+		if(moment(apacthdr_postdate).isBefore(apacthdr_actdate)){
+			failmsg.push("Post Date cannot be lower than Doc date");
+			text_error1('#apacthdr_postdate')
+			text_error1('#apacthdr_actdate')
+		}
+
+		if(moment(apacthdr_postdate).isAfter(moment())){
+			failmsg.push("Post Date cannot be higher than today");
+			text_error1('#apacthdr_postdate')
+		}
+
+		if(moment(apacthdr_actdate).isAfter(moment())){
+			failmsg.push("Doc Date cannot be higher than today");
+			text_error1('#apacthdr_actdate')
 		}
 
 		if(failmsg.length){

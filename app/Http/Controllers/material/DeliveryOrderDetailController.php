@@ -277,7 +277,7 @@ class DeliveryOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate' => $this->chgDate($request->expdate), 
-                    'batchno' => $request->batchno, 
+                    'batchno' => strtoupper($request->batchno), 
                     'recstatus' => 'OPEN', 
                     'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit'),
@@ -353,7 +353,7 @@ class DeliveryOrderDetailController extends defaultController
                     'upduser'=> session('username'), 
                     'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                     'expdate'=> $this->chgDate($request->expdate),  
-                    'batchno'=> $request->batchno, 
+                    'batchno'=> strtoupper($request->batchno), 
                     'remarks'=> strtoupper($request->remarks),
                     'unit' => session('unit')
                 ]);
@@ -424,7 +424,7 @@ class DeliveryOrderDetailController extends defaultController
                         'upduser'=> session('username'), 
                         'upddate'=> Carbon::now("Asia/Kuala_Lumpur"), 
                         'expdate'=> $this->chgDate($value['expdate']),  
-                        'batchno'=> $value['batchno'],
+                        'batchno'=> strtoupper($value['batchno']),
                         'remarks'=> strtoupper($value['remarks']),
                         'unit' => session('unit')
                     ]);

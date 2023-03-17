@@ -123,12 +123,6 @@ i.fa {
 					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="soft_cancel" style="display: none;">CANCEL</button>
 				</div>
-
-				<!-- <div id="div_for_but_post" class="col-md-3 col-md-offset-7" style="text-align: end;">
-					<button type="button" class="btn btn-primary btn-sm" id="but_post_jq" data-oper="posted" style="display: none;">POST</button>
-					<button type="button" class="btn btn-default btn-sm" id="but_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
-				</div> -->
-
 			</fieldset> 
 		</form>
 
@@ -264,11 +258,12 @@ i.fa {
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
-
-				  		<label class="col-md-2 control-label" for="apacthdr_recdate">Post Date</label>  
+							  
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_recdate" name="apacthdr_recdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
+				  		
 					</div>
 
 					<div class="form-group">
@@ -280,11 +275,12 @@ i.fa {
 							  	</div>
 							  	<span class="help-block"></span>
 						  	</div>
-
-				  		<label class="col-md-2 control-label" for="apacthdr_actdate">Document Date</label>  
+						
+						<label class="col-md-2 control-label" for="apacthdr_postdate">Post Date</label>  
 				  			<div class="col-md-3">
-								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input id="apacthdr_postdate" name="apacthdr_postdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
+				  		
 					</div>
 
 					<div class="form-group">
@@ -337,7 +333,7 @@ i.fa {
 
 				</form>
 				<div class="panel-body">
-				<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
+					<div class="noti2" style="font-size: bold; color: red"><ol></ol></div>
 			</div>
 			</div>
 		</div>
