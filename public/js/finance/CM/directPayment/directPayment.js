@@ -194,7 +194,7 @@ $(document).ready(function () {
 		],
 		autowidth:true,
 		shrinkToFit: true,
-        multiSort: true,
+		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
 		sortname:'idno',
@@ -213,14 +213,15 @@ $(document).ready(function () {
 			}else if (recstatus == "CANCELLED"){
 				$('#but_cancel_jq,#but_post_jq').hide();			
 			}
-
+			
 			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 		},
-
 		ondblClickRow: function(rowid, iRow, iCol, e){
-		let stat = selrowData("#jqGrid").recstatus;
+			$(this).data('lastselrow',rowid);
+		
+			let stat = selrowData("#jqGrid").recstatus;
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
 				$('#save').hide();
@@ -230,31 +231,35 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 			$('#but_cancel_jq,#but_post_jq').hide();
-				if (oper == 'add' || oper == null) {
-					$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-				}
-				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+			}
+			
+			$("#searchForm input[name=Stext]").focus();
+			
+			if($('#jqGrid').data('inputfocus') == 'bankcode_search'){
+				$("#bankcode_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#bankcode_search_hb').text('');
+				removeValidationClass(['#bankcode_search']);
+				
+			}else if($('#jqGrid').data('inputfocus') == 'creditor_search'){
+				$("#creditor_search").focus();
+				$('#jqGrid').data('inputfocus','');
+				$('#creditor_search_hb').text('');
+				removeValidationClass(['#creditor_search']);
+				
+			}else{
 				$("#searchForm input[name=Stext]").focus();
-
-				if($('#jqGrid').data('inputfocus') == 'bankcode_search'){
-					$("#bankcode_search").focus();
-					$('#jqGrid').data('inputfocus','');
-					$('#bankcode_search_hb').text('');
-					removeValidationClass(['#bankcode_search']);
-
-				}else if($('#jqGrid').data('inputfocus') == 'creditor_search'){
-					$("#creditor_search").focus();
-					$('#jqGrid').data('inputfocus','');
-					$('#creditor_search_hb').text('');
-					removeValidationClass(['#creditor_search']);
-
-				}else{
-					$("#searchForm input[name=Stext]").focus();
-				}
-
-				fdl.set_array().reset();
-				populate_form(selrowData("#jqGrid"));
-				//empty_form()
+			}
+			
+			fdl.set_array().reset();
+			populate_form(selrowData("#jqGrid"));
+			//empty_form()
 		},
 		loadComplete: function(){
 			//calc_jq_height_onchange("jqGrid");

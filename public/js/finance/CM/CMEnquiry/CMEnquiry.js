@@ -128,26 +128,34 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#jqGrid3_div_ft,#jqGrid3_div_dp').hide();
-
+			
 			if(selrowData("#jqGrid").apacthdr_trantype=='DP'){
 				$('#jqGrid3_div_dp').show();
 				urlParam2_dp.filterVal[1]=selrowData("#jqGrid").apacthdr_auditno;
 				$("#jqGrid3_dp").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_dp")[0].offsetWidth-$("#jqGrid3_div_dp")[0].offsetLeft));
 				refreshGrid("#jqGrid3_dp",urlParam2_dp);
-
+				
 			}else if(selrowData("#jqGrid").apacthdr_trantype=='FT'){
 				$('#jqGrid3_div_ft').show();
 				urlParam3_ft.filterVal[3] = selrowData("#jqGrid").apacthdr_idno;
 				$("#jqGrid3_ft").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_div_ft")[0].offsetWidth-$("#jqGrid3_div_ft")[0].offsetLeft));
 				refreshGrid("#jqGrid3_ft",urlParam3_ft);
 			}
-
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			$(this).data('lastselrow',rowid);
+		
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function(){
+			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($(this).data('lastselrow'));
+				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+			}
+			
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
 				$("#creditor_search").focus();
 				$('#jqGrid').data('inputfocus','');
