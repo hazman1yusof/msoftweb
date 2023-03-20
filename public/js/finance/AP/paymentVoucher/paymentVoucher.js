@@ -801,12 +801,12 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGrid2');
+			//setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = true;
 			addmore_jqgrid2.more = false; //reset
 		
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 			
 		},
 
