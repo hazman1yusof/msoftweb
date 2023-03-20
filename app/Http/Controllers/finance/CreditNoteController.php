@@ -619,7 +619,7 @@ use Carbon\Carbon;
 
             $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
             if($yearperiod->status == 'C'){
-                throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period, 500);
             }
 
             $this->gltran($request->idno);

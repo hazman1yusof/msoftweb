@@ -1202,13 +1202,13 @@ $(document).ready(function () {
 		editurl: "./creditNoteDetail/form",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
-			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Creditor', name: 'suppcode', width: 180, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Document <br> Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Alloc Date', name: 'allocdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}, hidden:true},
-			{ label: 'Document No', name: 'reference', width: 60, classes: 'wrap',},
-			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap'},
-			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+			{ label: 'Document No', name: 'reference', width: 95, classes: 'wrap',},
+			{ label: 'Type', name: 'trantype', width: 30, classes: 'wrap'},
+			{ label: 'Amount', name: 'refamount', width: 90, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
 				align: "right",
@@ -1226,11 +1226,11 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'O/S Amount', name: 'outamount', width: 80, align: 'right', classes: 'wrap', editable:false,	
+			{ label: 'O/S Amount', name: 'outamount', width: 90, align: 'right', classes: 'wrap', editable:false,	
 				formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Amount Paid', name: 'allocamount', width: 80, classes: 'wrap', 
+			{ label: 'Amount Paid', name: 'allocamount', width: 90, classes: 'wrap', 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: true,
 				align: "right",
@@ -1247,7 +1247,7 @@ $(document).ready(function () {
 					}
 				},
 			},
-			{ label: 'Balance', name: 'balance', width: 80, classes: 'wrap', hidden:false, 
+			{ label: 'Balance', name: 'balance', width: 90, classes: 'wrap', hidden:false, 
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
 				align: "right",
@@ -1287,8 +1287,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
+		sortname: 'actdate',
+		sortorder: "asc",
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
 			if(addmore_jqgridAlloc.more == true){$('#jqGridAlloc_iladd').click();}
@@ -1644,6 +1644,8 @@ $(document).ready(function () {
 		dialog_suppcode.off();
 		dialog_payto.off();
 		errorField.length = 0;
+		populate_alloc_table_save();
+
 		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
@@ -1763,12 +1765,12 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
-			{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
-			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Creditor', name: 'suppcode', width: 180, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Document <br> Date', name: 'actdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
+			{ label: 'Post Date', name: 'postdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Alloc Date', name: 'allocdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
-			{ label: 'Document No', name: 'reference', width: 60, classes: 'wrap',},
-			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap'},
+			{ label: 'Document No', name: 'reference', width: 80, classes: 'wrap',},
+			{ label: 'Type', name: 'trantype', width: 30, classes: 'wrap'},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
@@ -1845,8 +1847,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
+		sortname: 'actdate',
+		sortorder: "asc",
 		pager: "#jqGridPagerAPAlloc",
 		loadComplete: function(data){
 			//calc_jq_height_onchange("jqGridAPAlloc");
@@ -2319,6 +2321,66 @@ function populate_alloc_table(){
 			}
 
 			calc_amtpaid_bal();
+
+		} else {
+			alert("This supplier doesnt have any invoice!");
+			$(dialog_suppcode.textfield).val('');
+			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+		}
+	});
+}
+
+function populate_alloc_table_save(){
+	$("#jqGridAlloc").jqGrid("clearGridData", true);
+
+	var urlParam_alloc = {
+		action: 'get_alloc_when_edit',
+		url: 'creditNote/table',
+		field: [],
+		table_name: ['finance.apacthdr'],
+		filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+		filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+		WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+		WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+		table_id: 'idno',
+		auditno:$('#apacthdr_auditno').val(),
+		postdate:$('#apacthdr_postdate').val(),
+	};
+
+	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
+	}, 'json').done(function (data) {
+		if (!$.isEmptyObject(data.rows)) {
+			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+
+			data.rows.forEach(function(elem) {
+				let allocamount = 0;
+				if(elem['can_alloc'] == false){
+					allocamount = elem['amount'];
+				}
+				
+				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
+					{	
+						idno:elem['idno'],
+						source:elem['source'],
+						trantype:elem['trantype'],
+						auditno:elem['auditno'],
+						lineno_:elem['lineno_'],
+						can_alloc:elem['can_alloc'],
+						suppcode:elem['suppcode'],
+						actdate:elem['actdate'],
+						postdate:elem['postdate'],
+						reference:elem['document'],
+						refamount:elem['refamount'],
+						outamount:elem['outamount'],
+						allocamount: allocamount,
+						balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
+					
+					}
+				);
+			});
+
+			calc_amtpaid_bal();
+			$("#jqGridAlloc input[name='checkbox']").hide();
 
 		} else {
 			alert("This supplier doesnt have any invoice!");
