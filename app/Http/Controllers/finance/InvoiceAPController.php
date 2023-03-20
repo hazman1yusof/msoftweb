@@ -208,7 +208,7 @@ use Carbon\Carbon;
                     ->where('suppcode','=',$request->suppcode)
                   //  ->where('prdept','=',$request->prdept)
                     ->where('recstatus','=','POSTED')
-                    ->whereDate('trandate','<=',$request->recdate)
+                    ->whereDate('trandate','<=',$request->postdate)
                     ->whereNull('invoiceno');
 
 

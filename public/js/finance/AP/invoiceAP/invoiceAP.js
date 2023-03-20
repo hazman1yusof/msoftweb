@@ -927,6 +927,7 @@ $(document).ready(function () {
 							},'json').fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
+								$('#apacthdr_amount').val(data.totalAmount);
 								$('#apactdtl_outamt').val(data.totalAmount);
 								mycurrency.formatOn();
 								refreshGrid("#jqGrid2",urlParam2,'add');
@@ -1326,7 +1327,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'UOM Code', name: 'uomcode', width: 120, classes: 'wrap', editable:true,
+			{ label: 'UOM Code', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:uomcodeCustomEdit,
@@ -1334,7 +1335,7 @@ $(document).ready(function () {
 						    },
 			},
 			{
-				label: 'PO UOM', name: 'pouom', width: 120, classes: 'wrap', editable: true,
+				label: 'PO UOM', name: 'pouom', width: 130, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -1441,7 +1442,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry <br> Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Expiry <br> Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
                     dataInit: function (element) {
@@ -1456,7 +1457,7 @@ $(document).ready(function () {
                     }
                 }
 			},
-			{ label: 'Batch No', name: 'batchno', width: 100, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 120, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
@@ -1671,7 +1672,7 @@ $(document).ready(function () {
 				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'},
 				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
-				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency'},
+				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency', align:'right'},
 				{label:'Purchase Dept',name:'prdept',width:300,classes:'pointer', hidden:false},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
@@ -1707,7 +1708,7 @@ $(document).ready(function () {
 				dialog_document.urlParam.url = "./invoiceAP/table";
 				dialog_document.urlParam.action = "document";
 				dialog_document.urlParam.suppcode =  $("#apacthdr_suppcode").val();
-				dialog_document.urlParam.recdate =  $("#apacthdr_recdate").val();
+				dialog_document.urlParam.postdate =  $("#apacthdr_postdate").val();
 
 			}
 		},'none'

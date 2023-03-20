@@ -276,14 +276,15 @@ class InvoiceAPDetailController extends defaultController
                 ->sum('amount');
 
           
-            ///3. update total amount to header
-            // DB::table('finance.apacthdr')
-            //     ->where('compcode','=',session('compcode'))
-            //     ->where('auditno','=',$request->auditno)
-            //     ->update([
-            //         'outamount' => $totalAmount
+            //3. update total amount to header
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$request->auditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount
                   
-            //     ]);
+                ]);
 
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
@@ -367,7 +368,7 @@ class InvoiceAPDetailController extends defaultController
                     ->where('suppcode','=',$apacthdr->suppcode)
                     ->first();
 
-        if($delordhd->trandate > $apacthdr->recdate){
+        if($delordhd->trandate > $apacthdr->postdate){
             throw new \Exception("DO date greater than Invoice date");
         }
     }
