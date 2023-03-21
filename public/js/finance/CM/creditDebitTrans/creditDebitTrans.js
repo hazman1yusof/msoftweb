@@ -81,7 +81,18 @@ $(document).ready(function () {
 				dialog_bankcode.check(errorField);
 			}
 		},
-
+		beforeClose: function(event, ui){
+			mycurrency.formatOff();
+			if(unsaved){
+				event.preventDefault();
+				bootbox.confirm("Are you sure want to leave without save?", function(result){
+					if (result == true) {
+						unsaved = false;
+						$("#dialogForm").dialog('close');
+					}
+				});
+			}
+		},
 		close: function( event, ui ) {
 			addmore_jqgrid2.state = false;
 			addmore_jqgrid2.more = false;
@@ -200,8 +211,6 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$(this).data('lastselrow',rowid);
-		
 			let stat = selrowData("#jqGrid").recstatus;
 			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
@@ -214,11 +223,13 @@ $(document).ready(function () {
 			empty_formCDT();
 			$('#but_cancel_jq,#but_post_jq').hide();
 			
-			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
-				$("#jqGrid").setSelection($(this).data('lastselrow'));
-				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
 			
 			$("#searchForm input[name=Stext]").focus();
@@ -273,6 +284,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2);
 		},
@@ -283,6 +295,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 

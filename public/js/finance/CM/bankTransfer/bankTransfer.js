@@ -120,6 +120,18 @@ $(document).ready(function () {
 				dialog_bankcodeto.check(errorField);
 			}
 		},
+		beforeClose: function(event, ui){
+			mycurrency.formatOff();
+			if(unsaved){
+				event.preventDefault();
+				bootbox.confirm("Are you sure want to leave without save?", function(result){
+					if (result == true) {
+						unsaved = false;
+						$("#dialogForm").dialog('close');
+					}
+				});
+			}
+		},
 		close: function( event, ui ) {
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata');
@@ -194,16 +206,41 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager td[title='Edit Selected Row']").click();
+			let stat = selrowData("#jqGrid").recstatus;
+			if(stat=='POSTED'){
+				$("#jqGridPager td[title='View Selected Row']").click();
+				
+				
+			}else if (stat == 'OPEN'){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+
+				if (rowid != null) {
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+
+				}
+			}
 		},
 		gridComplete: function(){
-			if(oper == 'add'){
+			// if(oper == 'add'){
+			// 	$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			// 	$("#saveBut").show();
+			// 	$("#canBut").show();
+			// }
+
+			// $('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			// $("#searchForm input[name=Stext]").focus();
+
+			//$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				$("#saveBut").show();
 				$("#canBut").show();
+			}else{
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
-
-			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 
 			if($('#jqGrid').data('inputfocus') == 'bankcode_search'){
@@ -461,6 +498,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='view';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -470,6 +508,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			oper='edit';
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			recstatusDisable();
 		}, 

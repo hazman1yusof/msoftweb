@@ -261,7 +261,6 @@ $(document).ready(function () {
 			//calc_jq_height_onchange("jqGrid");
 		},
 		onSelectRow:function(rowid, selected){
-
 			$('#error_infront').text('');
 			$('#save').hide();
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
@@ -287,7 +286,6 @@ $(document).ready(function () {
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$(this).data('lastselrow',rowid);
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			
 			if(stat=='POSTED'){
@@ -303,11 +301,13 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq, #but_post_jq, #but_reopen_jq').hide();
-			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) { 
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
-				$("#jqGrid").setSelection($(this).data('lastselrow'));
-				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
 			$("#searchForm input[name=Stext]").focus();
 
@@ -349,6 +349,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2,'add');
 		},
@@ -359,6 +360,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2,'add');
 
