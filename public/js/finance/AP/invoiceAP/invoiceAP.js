@@ -839,11 +839,6 @@ $(document).ready(function () {
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 			dialog_document.on();//start binding event on jqgrid2
 
-			$("input[name='grnno']").keydown(function(e) {//when click tab at batchno, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid2_ilsave').click();
-			});
-
         	mycurrency2.array.length = 0;
 			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amount']"]);
 

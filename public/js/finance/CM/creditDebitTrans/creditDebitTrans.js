@@ -369,9 +369,8 @@ $(document).ready(function () {
 
 			unsaved = false;
 			hideatdialogForm(false);
-			
+			addmore_jqgrid2.state = true;
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
 				$('#jqGrid2_iladd').click();
 			}
 			if(selfoper=='add'){
@@ -677,6 +676,8 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+        	$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
+        	errorField.length=0;
 			$("#jqGrid2 input[name='deptcode']").focus().select();
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -737,8 +738,9 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
         },
         afterrestorefunc : function( response ) {
+			errorField.length=0;
 			hideatdialogForm(false);
-			$('#jqGrid2').jqGrid ('setSelection', "1");
+			// $('#jqGrid2').jqGrid ('setSelection', "1");
 	    }
     };
 
