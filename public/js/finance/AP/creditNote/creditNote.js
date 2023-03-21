@@ -298,7 +298,6 @@ $(document).ready(function () {
 			if_cancel_hide();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$(this).data('lastselrow',rowid);
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			$('#tot_Alloc').val(parseFloat(selrowData("#jqGrid").apacthdr_amount) - parseFloat(selrowData("#jqGrid").apacthdr_outamount));
 			mycurrency.formatOn();
@@ -314,11 +313,13 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq').hide();
-			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) { 
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
-				$("#jqGrid").setSelection($(this).data('lastselrow'));
-				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
 			$("#searchForm input[name=Stext]").focus();
 			empty_form();
@@ -363,6 +364,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
@@ -374,6 +376,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
 			refreshGrid("#jqGridAlloc",urlParam2_alloc);
