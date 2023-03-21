@@ -44,6 +44,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				duplicate_documentno = false;
 				unsaved = false;
 				actdateObj.getdata().set();
 				counter_save=0;
@@ -1231,8 +1232,9 @@ $(document).ready(function () {
 
 	///////////Validation for document number////////////////////////////////////////////////////////
 	
+	var duplicate_documentno = false;
 	$("#apacthdr_document").blur(function(){
-		if(oper == 'add'){
+		if(oper != 'view'){
 			var id = "#apacthdr_document";
 			var id2 = "apacthdr_document";
 			var param={
@@ -1243,8 +1245,8 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document','recstatus'];
-			param.filterVal = [$("#apacthdr_document").val(),'<>.CANCELLED'];
+			param.filterCol = ['document','recstatus','idno'];
+			param.filterVal = [$("#apacthdr_document").val(),'<>.CANCELLED','<>.'+$('#apacthdr_idno').val()];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
@@ -1254,6 +1256,7 @@ $(document).ready(function () {
 						errorField.splice($.inArray(id2,errorField), 1);
 					}
 					myerrorIt_only(id,false);
+					duplicate_documentno = false;
 				} else {
 					bootbox.alert("Duplicate Document No");
 					$( id ).removeClass( "valid" ).addClass( "error" );
@@ -1262,10 +1265,20 @@ $(document).ready(function () {
 					}
 					myerrorIt_only(id,true);
 					$(id).data('show_error','Duplicate Document No');
+					duplicate_documentno = true;
 				}
 			});
 		}
 	});
+
+	function checkduplicate(){
+		var id = "#apacthdr_document";
+		if(duplicate_documentno){
+			bootbox.alert("Duplicate Document No");
+			return false;
+		}
+		return true;
+	}
 
 	////////////////////saveheader & savedetail//////////////////////////////////
 	$("#saveDetailLabel").click(function () {
@@ -1275,7 +1288,7 @@ $(document).ready(function () {
 		dialog_supplier.off();
 		dialog_payto.off();
 		errorField.length = 0;
-		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkduplicate() && checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {

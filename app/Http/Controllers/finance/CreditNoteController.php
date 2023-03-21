@@ -210,7 +210,6 @@ use Carbon\Carbon;
                     ->where('doctrantype','CN')
                     ->where('docauditno',$request->auditno)
                     ->where('recstatus','!=','CANCELLED');
-        // dump($apalloc->get());
 
         $return_array=[];
         $got_array=[];
@@ -323,49 +322,53 @@ use Carbon\Carbon;
             //$idno = $request->table_id;
         }
 
+
         DB::beginTransaction();
         try {
         
+            $this->checkduplicate_docno('add', $request);
+
             $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
 
-                $table = DB::table("finance.apacthdr");
+            $table = DB::table("finance.apacthdr");
 
-                $array_insert = [
-                    'source' => 'AP',
-                    'auditno' => $auditno,
-                    'trantype' => 'CN',
-                    'unallocated' => $request->apacthdr_unallocated,
-                    'actdate' => $request->apacthdr_actdate,
-                    'recdate' => $request->apacthdr_postdate,
-                    'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $request->apacthdr_pvno,
-                    'doctype' => $request->apacthdr_doctype,
-                    'document' => strtoupper($request->apacthdr_document),
-                    'remarks' => strtoupper($request->apacthdr_remarks),
-                    'suppcode' => $request->apacthdr_suppcode,
-                    'payto' => $request->apacthdr_payto,
-                    'amount' => $request->apacthdr_amount,
-                    'outamount' => $request->apacthdr_amount,
-                    'compcode' => session('compcode'),
-                    'unit' => session('unit'),
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'entryuser' => session('username'),
-                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'OPEN'
-                ];
+            $array_insert = [
+                'source' => 'AP',
+                'auditno' => $auditno,
+                'trantype' => 'CN',
+                'unallocated' => $request->apacthdr_unallocated,
+                'actdate' => $request->apacthdr_actdate,
+                'recdate' => $request->apacthdr_postdate,
+                'postdate' => $request->apacthdr_postdate,
+                'pvno' => $request->apacthdr_pvno,
+                'doctype' => $request->apacthdr_doctype,
+                'document' => strtoupper($request->apacthdr_document),
+                'remarks' => strtoupper($request->apacthdr_remarks),
+                'suppcode' => $request->apacthdr_suppcode,
+                'payto' => $request->apacthdr_payto,
+                'amount' => $request->apacthdr_amount,
+                'outamount' => $request->apacthdr_amount,
+                'compcode' => session('compcode'),
+                'unit' => session('unit'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'entryuser' => session('username'),
+                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'OPEN'
+            ];
 
-                $idno_apacthdr = $table->insertGetId($array_insert);
+            $idno_apacthdr = $table->insertGetId($array_insert);
 
-                $responce = new stdClass();
-                $responce->auditno = $auditno;
-                $responce->idno = $idno_apacthdr;
-                echo json_encode($responce);
+            $responce = new stdClass();
+            $responce->auditno = $auditno;
+            $responce->idno = $idno_apacthdr;
+            echo json_encode($responce);
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-            return response('Error'.$e, 500);
+
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -382,31 +385,34 @@ use Carbon\Carbon;
 
         DB::beginTransaction();
 
-        $table = DB::table("finance.apacthdr");
-
-        $array_update = [
-            'unit' => session('unit'),
-            'compcode' => session('compcode'),
-            'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'postdate' => $request->apacthdr_postdate,
-            'actdate' => $request->apacthdr_actdate,
-            'recdate' => $request->apacthdr_postdate,
-            'unallocated' => $request->apacthdr_unallocated,
-            // 'amount' => $request->apacthdr_amount,
-            // 'outamount' => $request->apacthdr_amount,
-            'remarks' => $request->apacthdr_remarks,
-            'pvno' => $request->apacthdr_pvno,
-            'doctype' => $request->apacthdr_doctype,
-            'suppcode' => strtoupper($request->apacthdr_suppcode),
-            'deptcode' => strtoupper($request->apacthdr_deptcode),
-            'document' => strtoupper($request->apacthdr_document),
-            'paymode' => strtoupper($request->apacthdr_paymode),
-            'remarks' => strtoupper($request->apacthdr_remarks),
-            
-        ];
-
         try {
+
+            $this->checkduplicate_docno('edit', $request);
+            $table = DB::table("finance.apacthdr");
+
+            $array_update = [
+                'unit' => session('unit'),
+                'compcode' => session('compcode'),
+                'upduser' => session('username'),
+                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'postdate' => $request->apacthdr_postdate,
+                'actdate' => $request->apacthdr_actdate,
+                'recdate' => $request->apacthdr_postdate,
+                'unallocated' => $request->apacthdr_unallocated,
+                // 'amount' => $request->apacthdr_amount,
+                // 'outamount' => $request->apacthdr_amount,
+                'remarks' => $request->apacthdr_remarks,
+                'pvno' => $request->apacthdr_pvno,
+                'doctype' => $request->apacthdr_doctype,
+                'suppcode' => strtoupper($request->apacthdr_suppcode),
+                'deptcode' => strtoupper($request->apacthdr_deptcode),
+                'document' => strtoupper($request->apacthdr_document),
+                'paymode' => strtoupper($request->apacthdr_paymode),
+                'remarks' => strtoupper($request->apacthdr_remarks),
+                
+            ];
+
+        
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
@@ -421,7 +427,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         } 
     }
 
@@ -970,6 +976,26 @@ use Carbon\Carbon;
                 ->first();
 
         return $obj;
+    }
+
+    public function checkduplicate_docno($oper,$request){
+
+        if($oper == 'edit'){
+            $obj = DB::table("finance.apacthdr")
+                ->where('compcode','=',session('compcode'))
+                ->where('document','=',$request->apacthdr_document)
+                ->where('recstatus','!=','CANCELLED')
+                ->where('idno','!=',$request->idno);
+        }else{
+            $obj = DB::table("finance.apacthdr")
+                ->where('compcode','=',session('compcode'))
+                ->where('document','=',$request->apacthdr_document)
+                ->where('recstatus','!=','CANCELLED');
+        }
+
+        if($obj->exists()){
+            throw new \Exception('duplicate_docno', 500);
+        }
     }
 
 }

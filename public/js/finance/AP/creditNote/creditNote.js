@@ -44,6 +44,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				duplicate_documentno = false;
         		show_post_button(false);
 				parent_close_disabled(true);
 				actdateObj.getdata().set();
@@ -88,6 +89,7 @@ $(document).ready(function () {
 					dialog_payto.check(errorField);
 				}
 				init_jq(oper);
+				calc_jq_height_onchange("jqGrid2");
 			},
 			beforeClose: function(event, ui){
 				if(unsaved){
@@ -555,7 +557,9 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseText);
+			if(data.responseText != 'duplicate_docno'){
+				alert(data.responseText);
+			}
 		}).done(function (data) {
 
 			hideatdialogForm(false);
@@ -1575,8 +1579,9 @@ $(document).ready(function () {
 		check_suppcode_duplicate();
 	});
 
+	var duplicate_documentno = false;
 	function check_suppcode_duplicate(){
-		if(oper == 'add' && $("#apacthdr_document").val().trim() != ''){
+		if(oper != 'view'){
 			var id = "#apacthdr_document";
 			var id2 = "apacthdr_document";
 			var param={
@@ -1587,8 +1592,8 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document', 'recstatus'];
-			param.filterVal = [$("#apacthdr_document").val(), '<>.CANCELLED'];
+			param.filterCol = ['document', 'recstatus','idno'];
+			param.filterVal = [$("#apacthdr_document").val(),'<>.CANCELLED','<>.'+$('#idno').val()];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
@@ -1598,6 +1603,7 @@ $(document).ready(function () {
 						errorField.splice($.inArray(id2,errorField), 1);
 					}
 					myerrorIt_only(id,false);
+					duplicate_documentno = false;
 				} else {
 					bootbox.alert("Duplicate Document No");
 					$( id ).removeClass( "valid" ).addClass( "error" );
@@ -1606,11 +1612,20 @@ $(document).ready(function () {
 					}
 					myerrorIt_only(id,true);
 					$(id).data('show_error','Duplicate Document No');
+					duplicate_documentno = true;
 				}
 			});
 		}
 	}
-	
+
+	function checkduplicate(){
+		var id = "#apacthdr_document";
+		if(duplicate_documentno){
+			bootbox.alert("Duplicate Document No");
+			return false;
+		}
+		return true;
+	}
 	
 	//////////////////////////////////////////saveAlloc & save////////////////////////////////////////////
 	$("#posted_button").click(function(){
@@ -1620,9 +1635,15 @@ $(document).ready(function () {
 			idno: $('#idno').val()
 		}
 
-		$.get( param.url+"?"+$.param(param), function( data ) {
-		
-		},'json').done(function(data) {
+		var obj ={
+			_token : $('#_token').val(),
+		}
+
+		$.post( param.url+"?"+$.param(param),obj, function( data ) {
+			
+		},'json').fail(function(data) {
+			alert(data.responseText);
+		}).success(function(data){
 			$('#apacthdr_recstatus').val('POSTED');
 			disableForm('#formdata');
 			disable_gridpager('#jqGridPager2');
@@ -1630,16 +1651,7 @@ $(document).ready(function () {
 			$("#jqGrid2_ilcancel").click();
 			$("#jqGridAlloc input[name='checkbox']").show();
 			populate_alloc_table();
-
-			// var ids = $("#jqGridAlloc").jqGrid('getDataIDs');
-			// for (var i = 0; i < ids.length; i++) {
-			// 	$("#jqGridAlloc").jqGrid('editRow',ids[i]);
-
-			// 	$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-			// 	//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
-			// }
 			alloc_button_status('wait');
-			
 		});
 	});
 
@@ -1652,7 +1664,7 @@ $(document).ready(function () {
 		errorField.length = 0;
 		populate_alloc_table_save();
 
-		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkduplicate() && checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {
@@ -1934,8 +1946,8 @@ $(document).ready(function () {
 
 						} else {
 							alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
-							$(dialog_suppcode.textfield).val('');
-							myerrorIt_only(dialog_suppcode.textfield,true);
+							$('#apacthdr_suppcode').val('');
+							myerrorIt_only('#apacthdr_suppcode',true);
 						}
 					});
 				} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
@@ -2330,7 +2342,7 @@ function populate_alloc_table(){
 
 		} else {
 			alert("This supplier doesnt have any invoice!");
-			$(dialog_suppcode.textfield).val('');
+			$('#apacthdr_suppcode').val('');
 			myerrorIt_only($("#apacthdr_suppcode").val(),false);
 		}
 	});
@@ -2390,7 +2402,7 @@ function populate_alloc_table_save(){
 
 		} else {
 			alert("This supplier doesnt have any invoice!");
-			$(dialog_suppcode.textfield).val('');
+			$('#apacthdr_suppcode').val('');
 			myerrorIt_only($("#apacthdr_suppcode").val(),false);
 		}
 	});
