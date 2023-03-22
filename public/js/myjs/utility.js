@@ -1029,12 +1029,20 @@ function setactdate(target,cantmorethantoday = false){
 
 		if(!moment(value).isBetween(actdateObj.lowestdate,actdateObj.highestdate, null, '[]')){
 			alert('Date not in accounting period setup');
-			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
+			delay(function(){
+				text_error1(currentTarget);
+				$(currentTarget).data('error','Date not in accounting period setup');
+			}, 500 );
 		}else if(!permission){
 			alert('Accounting Period Has been Closed');
-			$(currentTarget).val('').addClass( "error" ).removeClass( "valid" );
-		} //Accounting Period Has been Closed
-			//Date not in accounting period setup
+			delay(function(){
+				text_error1(currentTarget);
+				$(currentTarget).data('error','Accounting Period Has been Closed');
+			}, 500 );
+		}else{
+			text_success1(currentTarget)
+			$(currentTarget).data('error','none');
+		}
 	}
 }
 
@@ -1591,7 +1599,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 
 			if(self.dialog_.hasOwnProperty('after_check')){
-				self.dialog_.after_check(data,self,id);
+				self.dialog_.after_check(data,self,id,fail);
 			}
 			
 		});

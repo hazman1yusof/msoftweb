@@ -32,7 +32,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#apacthdr_actdate", "#apacthdr_postdate"]);
+	var actdateObj = new setactdate(["#apacthdr_postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -47,7 +47,6 @@ $(document).ready(function () {
 				duplicate_documentno = false;
         		show_post_button(false);
 				parent_close_disabled(true);
-				actdateObj.getdata().set();
 				unsaved = false;
 				errorField.length=0;
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
@@ -526,6 +525,12 @@ $(document).ready(function () {
 			text_error1('#apacthdr_actdate')
 		}
 
+		if($('#apacthdr_postdate').data('error') != undefined && $('#apacthdr_postdate').data('error') != 'none' && nkreturn==true){
+			failmsg.push($('#apacthdr_postdate').data('error'));
+			text_error1('#apacthdr_postdate');
+			$('#apacthdr_postdate').focus();
+		}
+
 		if(failmsg.length){
 			failmsg.forEach(function(element){
 				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
@@ -566,6 +571,8 @@ $(document).ready(function () {
 			addmore_jqgrid2.state = true;
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				$('#jqGrid2_iladd').click();
+			}else{
+        		show_post_button();
 			}
 			
 			if(selfoper=='add'){
@@ -891,7 +898,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 
 			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
-				myerrorIt_only('#jqGrid2 input[name="amount"]');
+				myerrorIt_only2('#jqGrid2 input[name="amount"]');
 				alert('Amount cant be 0');
 				return false;
 			}
@@ -1602,7 +1609,7 @@ $(document).ready(function () {
 					if($.inArray(id2,errorField)!==-1){
 						errorField.splice($.inArray(id2,errorField), 1);
 					}
-					myerrorIt_only(id,false);
+					myerrorIt_only2(id,false);
 					duplicate_documentno = false;
 				} else {
 					bootbox.alert("Duplicate Document No");
@@ -1610,7 +1617,7 @@ $(document).ready(function () {
 					if($.inArray(id2,errorField)===-1){
 						errorField.push( id2 );
 					}
-					myerrorIt_only(id,true);
+					myerrorIt_only2(id,true);
 					$(id).data('show_error','Duplicate Document No');
 					duplicate_documentno = true;
 				}
@@ -1714,6 +1721,7 @@ $(document).ready(function () {
 
 	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
 	$("#saveHeaderLabel").click(function(){
+		show_post_button(false)
 		emptyFormdata(errorField,'#formdata2');
 		hideatdialogForm(true);
 		dialog_suppcode.on();
@@ -1900,60 +1908,60 @@ $(document).ready(function () {
 				$("#apacthdr_payto").val(data['SuppCode']);
 				dialog_payto.check(errorField);
 
-				if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note') {
-					$("#jqGridAlloc").jqGrid("clearGridData", true);
+				// if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note') {
+				// 	$("#jqGridAlloc").jqGrid("clearGridData", true);
 
-					var urlParam_alloc = {
-						action: 'get_alloc_when_edit',
-						url: 'creditNote/table',
-						field: [],
-						table_name: ['finance.apacthdr'],
-						filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
-						filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
-						WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-						WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-						table_id: 'idno',
-						auditno:$('#apacthdr_auditno').val(),
-						postdate:$('#apacthdr_postdate').val(),
-					};
+				// 	var urlParam_alloc = {
+				// 		action: 'get_alloc_when_edit',
+				// 		url: 'creditNote/table',
+				// 		field: [],
+				// 		table_name: ['finance.apacthdr'],
+				// 		filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+				// 		filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+				// 		WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+				// 		WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+				// 		table_id: 'idno',
+				// 		auditno:$('#apacthdr_auditno').val(),
+				// 		postdate:$('#apacthdr_postdate').val(),
+				// 	};
 
-					$.get("creditNote/table?" + $.param(urlParam_alloc), function (data) {
-					}, 'json').done(function (data) {
-						if (!$.isEmptyObject(data.rows)) {
-							myerrorIt_only(dialog_suppcode.textfield,false);
-							data.rows.forEach(function(elem) {
-								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
-									{	
-										idno:elem['idno'],
-										source:elem['source'],
-										trantype:elem['trantype'],
-										auditno:elem['auditno'],
-										lineno_:elem['lineno_'],
-										can_alloc:elem['can_alloc'],
-										suppcode:elem['suppcode'],
-										actdate:elem['actdate'],
-										postdate:elem['postdate'],
-										reference:elem['document'],
-										refamount:elem['refamount'],
-										outamount:elem['outamount']
+				// 	$.get("creditNote/table?" + $.param(urlParam_alloc), function (data) {
+				// 	}, 'json').done(function (data) {
+				// 		if (!$.isEmptyObject(data.rows)) {
+				// 			myerrorIt_only2(dialog_suppcode.textfield,false);
+				// 			data.rows.forEach(function(elem) {
+				// 				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
+				// 					{	
+				// 						idno:elem['idno'],
+				// 						source:elem['source'],
+				// 						trantype:elem['trantype'],
+				// 						auditno:elem['auditno'],
+				// 						lineno_:elem['lineno_'],
+				// 						can_alloc:elem['can_alloc'],
+				// 						suppcode:elem['suppcode'],
+				// 						actdate:elem['actdate'],
+				// 						postdate:elem['postdate'],
+				// 						reference:elem['document'],
+				// 						refamount:elem['refamount'],
+				// 						outamount:elem['outamount']
 									
-									}
-								);
-							});
+				// 					}
+				// 				);
+				// 			});
 
-							calc_amtpaid_bal();
-							$("#jqGridAlloc input[name='checkbox']").hide();
+				// 			calc_amtpaid_bal();
+				// 			$("#jqGridAlloc input[name='checkbox']").hide();
 
-						} else {
-							alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
-							$('#apacthdr_suppcode').val('');
-							myerrorIt_only('#apacthdr_suppcode',true);
-						}
-					});
-				} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
-					$("#jqGridAlloc").jqGrid("clearGridData", true);
-					$('#apacthdr_payto').focus();
-				}
+				// 		} else {
+				// 			alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
+				// 			$('#apacthdr_suppcode').val('');
+				// 			myerrorIt_only2('#apacthdr_suppcode',true);
+				// 		}
+				// 	});
+				// } else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
+				// 	$("#jqGridAlloc").jqGrid("clearGridData", true);
+				// 	$('#apacthdr_payto').focus();
+				// }
 			},
 		
 			gridComplete: function(obj){
@@ -1971,6 +1979,13 @@ $(document).ready(function () {
 			open: function(){
 				dialog_suppcode.urlParam.filterCol=['recstatus','compcode'];
 				dialog_suppcode.urlParam.filterVal=['ACTIVE','session.compcode'];
+			},
+			after_check: function(data,obj,id,fail){
+				if(!fail){
+					let SuppCode = data.rows[0].SuppCode;
+					$("#apacthdr_payto").val(SuppCode);
+					dialog_payto.check(errorField);
+				}
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2297,7 +2312,7 @@ function populate_alloc_table(){
 	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
 	}, 'json').done(function (data) {
 		if (!$.isEmptyObject(data.rows)) {
-			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+			myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 
 			data.rows.forEach(function(elem) {
 				let allocamount = 0;
@@ -2341,9 +2356,9 @@ function populate_alloc_table(){
 			calc_amtpaid_bal();
 
 		} else {
-			alert("This supplier doesnt have any invoice!");
-			$('#apacthdr_suppcode').val('');
-			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+			// alert("This supplier doesnt have any invoice!");
+			// $('#apacthdr_suppcode').val('');
+			// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 		}
 	});
 }
@@ -2368,7 +2383,7 @@ function populate_alloc_table_save(){
 	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
 	}, 'json').done(function (data) {
 		if (!$.isEmptyObject(data.rows)) {
-			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+			myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 
 			data.rows.forEach(function(elem) {
 				let allocamount = 0;
@@ -2401,9 +2416,9 @@ function populate_alloc_table_save(){
 			$("#jqGridAlloc input[name='checkbox']").hide();
 
 		} else {
-			alert("This supplier doesnt have any invoice!");
-			$('#apacthdr_suppcode').val('');
-			myerrorIt_only($("#apacthdr_suppcode").val(),false);
+			// alert("This supplier doesnt have any invoice!");
+			// $('#apacthdr_suppcode').val('');
+			// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 		}
 	});
 }

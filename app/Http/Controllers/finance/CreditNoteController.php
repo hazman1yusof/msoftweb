@@ -399,6 +399,8 @@ use Carbon\Carbon;
                 'actdate' => $request->apacthdr_actdate,
                 'recdate' => $request->apacthdr_postdate,
                 'unallocated' => $request->apacthdr_unallocated,
+                'suppcode' => $request->apacthdr_suppcode,
+                'payto' => $request->apacthdr_payto,
                 // 'amount' => $request->apacthdr_amount,
                 // 'outamount' => $request->apacthdr_amount,
                 'remarks' => $request->apacthdr_remarks,

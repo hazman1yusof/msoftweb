@@ -197,7 +197,7 @@ i.fa {
 				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
 			</div>
 			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
+				<form class='form-horizontal' style='width:99%' id='formdata' autocomplete="off">
 					{{ csrf_field() }}
 					<input id="apacthdr_source" name="apacthdr_source" type="hidden" value="AP">
 					<!-- <input id="apacthdr_trantype" name="apacthdr_trantype" type="hidden"> -->
@@ -205,7 +205,7 @@ i.fa {
 					<input id="idno" name="idno" type="hidden">
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="apacthdr_actdate">Date</label>  
+						<label class="col-md-2 control-label" for="apacthdr_actdate">Doc Date</label>  
 				  			<div class="col-md-2">
 								<input id="apacthdr_actdate" name="apacthdr_actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
