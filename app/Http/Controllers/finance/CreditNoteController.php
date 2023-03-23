@@ -325,7 +325,9 @@ use Carbon\Carbon;
 
         DB::beginTransaction();
         try {
-        
+
+            $this->check_alloc_exists($request);
+
             $this->checkduplicate_docno('add', $request);
 
             $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
@@ -386,7 +388,7 @@ use Carbon\Carbon;
         DB::beginTransaction();
 
         try {
-
+            $this->check_alloc_exists($request);
             $this->checkduplicate_docno('edit', $request);
             $table = DB::table("finance.apacthdr");
 
@@ -997,6 +999,22 @@ use Carbon\Carbon;
 
         if($obj->exists()){
             throw new \Exception('duplicate_docno', 500);
+        }
+    }
+
+    public function check_alloc_exists(Request $request){
+
+        $apacthdr = DB::table('finance.apacthdr')
+                ->where('suppcode',$request->filterVal[0])
+                ->where('compcode',session('compcode'))
+                ->where('recstatus','=','POSTED')
+                ->where('postdate','<=',$request->apacthdr_postdate)
+                ->where('outamount','>',0)
+                ->where('source', ['AP','DF','CF','TX'])
+                ->whereIn('trantype', ['IN','DN']);
+
+        if(!$apacthdr->exists()){
+            throw new \Exception('This supplier doesnt have any invoice until postdate: '.Carbon::parse($request->apacthdr_postdate)->format('d-m-Y'), 500);
         }
     }
 

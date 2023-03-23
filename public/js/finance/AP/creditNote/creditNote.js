@@ -2418,7 +2418,7 @@ function populate_alloc_table_save(){
 				$("#jqGridAlloc input[name='checkbox']").hide();
 
 			} else {
-				alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
+				// alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
 				// alert("This supplier doesnt have any invoice!");
 				// $('#apacthdr_suppcode').val('');
 				//myerrorIt_only2('#apacthdr_suppcode',true);
