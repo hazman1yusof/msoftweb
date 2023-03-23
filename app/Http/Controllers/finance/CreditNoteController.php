@@ -322,51 +322,88 @@ use Carbon\Carbon;
             //$idno = $request->table_id;
         }
 
-
         DB::beginTransaction();
         try {
 
-            $this->check_alloc_exists($request);
+            $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
 
-            $this->checkduplicate_docno('add', $request);
+            if($apacthdr->unallocated == '1') {
+                $this->check_alloc_exists($request);
+                $this->checkduplicate_docno('add', $request);
 
-            $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
+                $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
 
-            $table = DB::table("finance.apacthdr");
+                $table = DB::table("finance.apacthdr");
 
-            $array_insert = [
-                'source' => 'AP',
-                'auditno' => $auditno,
-                'trantype' => 'CN',
-                'unallocated' => $request->apacthdr_unallocated,
-                'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_postdate,
-                'postdate' => $request->apacthdr_postdate,
-                'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
-                'document' => strtoupper($request->apacthdr_document),
-                'remarks' => strtoupper($request->apacthdr_remarks),
-                'suppcode' => $request->apacthdr_suppcode,
-                'payto' => $request->apacthdr_payto,
-                'amount' => $request->apacthdr_amount,
-                'outamount' => $request->apacthdr_amount,
-                'compcode' => session('compcode'),
-                'unit' => session('unit'),
-                'adduser' => session('username'),
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'entryuser' => session('username'),
-                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                'recstatus' => 'OPEN'
-            ];
+                $array_insert = [
+                    'source' => 'AP',
+                    'auditno' => $auditno,
+                    'trantype' => 'CN',
+                    'unallocated' => $request->apacthdr_unallocated,
+                    'actdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'postdate' => $request->apacthdr_postdate,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'document' => strtoupper($request->apacthdr_document),
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    'amount' => $request->apacthdr_amount,
+                    'outamount' => $request->apacthdr_amount,
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entryuser' => session('username'),
+                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN'
+                ];
 
-            $idno_apacthdr = $table->insertGetId($array_insert);
+            } else if($apacthdr->unallocated == '0'){
 
-            $responce = new stdClass();
-            $responce->auditno = $auditno;
-            $responce->idno = $idno_apacthdr;
-            echo json_encode($responce);
+                $this->checkduplicate_docno('add', $request);
 
-            DB::commit();
+                $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
+
+                $table = DB::table("finance.apacthdr");
+
+                $array_insert = [
+                    'source' => 'AP',
+                    'auditno' => $auditno,
+                    'trantype' => 'CN',
+                    'unallocated' => $request->apacthdr_unallocated,
+                    'actdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'postdate' => $request->apacthdr_postdate,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'document' => strtoupper($request->apacthdr_document),
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    'amount' => $request->apacthdr_amount,
+                    'outamount' => $request->apacthdr_amount,
+                    'compcode' => session('compcode'),
+                    'unit' => session('unit'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entryuser' => session('username'),
+                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN'
+                ];
+            }
+                $idno_apacthdr = $table->insertGetId($array_insert);
+
+                $responce = new stdClass();
+                $responce->auditno = $auditno;
+                $responce->idno = $idno_apacthdr;
+                echo json_encode($responce);
+
+                DB::commit();
+            
         } catch (\Exception $e) {
             DB::rollback();
 
@@ -388,35 +425,70 @@ use Carbon\Carbon;
         DB::beginTransaction();
 
         try {
-            $this->check_alloc_exists($request);
-            $this->checkduplicate_docno('edit', $request);
-            $table = DB::table("finance.apacthdr");
+            $apacthdr = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
+            //dd($apacthdr);
 
-            $array_update = [
-                'unit' => session('unit'),
-                'compcode' => session('compcode'),
-                'upduser' => session('username'),
-                'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'postdate' => $request->apacthdr_postdate,
-                'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_postdate,
-                'unallocated' => $request->apacthdr_unallocated,
-                'suppcode' => $request->apacthdr_suppcode,
-                'payto' => $request->apacthdr_payto,
-                // 'amount' => $request->apacthdr_amount,
-                // 'outamount' => $request->apacthdr_amount,
-                'remarks' => $request->apacthdr_remarks,
-                'pvno' => $request->apacthdr_pvno,
-                'doctype' => $request->apacthdr_doctype,
-                'suppcode' => strtoupper($request->apacthdr_suppcode),
-                'deptcode' => strtoupper($request->apacthdr_deptcode),
-                'document' => strtoupper($request->apacthdr_document),
-                'paymode' => strtoupper($request->apacthdr_paymode),
-                'remarks' => strtoupper($request->apacthdr_remarks),
-                
-            ];
+            if($apacthdr->unallocated == '1') {
 
-        
+                $this->check_alloc_exists($request);
+                $this->checkduplicate_docno('edit', $request);
+                $table = DB::table("finance.apacthdr");
+
+                $array_update = [
+                    'unit' => session('unit'),
+                    'compcode' => session('compcode'),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'postdate' => $request->apacthdr_postdate,
+                    'actdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'unallocated' => $request->apacthdr_unallocated,
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    // 'amount' => $request->apacthdr_amount,
+                    // 'outamount' => $request->apacthdr_amount,
+                    'remarks' => $request->apacthdr_remarks,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'suppcode' => strtoupper($request->apacthdr_suppcode),
+                    'deptcode' => strtoupper($request->apacthdr_deptcode),
+                    'document' => strtoupper($request->apacthdr_document),
+                    'paymode' => strtoupper($request->apacthdr_paymode),
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    
+                ];
+
+            } else if($apacthdr->unallocated == '0'){
+                $this->checkduplicate_docno('edit', $request);
+                $table = DB::table("finance.apacthdr");
+
+                $array_update = [
+                    'unit' => session('unit'),
+                    'compcode' => session('compcode'),
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'postdate' => $request->apacthdr_postdate,
+                    'actdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'unallocated' => $request->apacthdr_unallocated,
+                    'suppcode' => $request->apacthdr_suppcode,
+                    'payto' => $request->apacthdr_payto,
+                    // 'amount' => $request->apacthdr_amount,
+                    // 'outamount' => $request->apacthdr_amount,
+                    'remarks' => $request->apacthdr_remarks,
+                    'pvno' => $request->apacthdr_pvno,
+                    'doctype' => $request->apacthdr_doctype,
+                    'suppcode' => strtoupper($request->apacthdr_suppcode),
+                    'deptcode' => strtoupper($request->apacthdr_deptcode),
+                    'document' => strtoupper($request->apacthdr_document),
+                    'paymode' => strtoupper($request->apacthdr_paymode),
+                    'remarks' => strtoupper($request->apacthdr_remarks),
+                    
+                ];
+            }
+
             //////////where//////////
             $table = $table->where('idno','=',$request->idno);
             $table->update($array_update);
@@ -629,7 +701,7 @@ use Carbon\Carbon;
 
             $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
             if($yearperiod->status == 'C'){
-                throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period, 500);
+                throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
             }
 
             $this->gltran($request->idno);
@@ -684,7 +756,7 @@ use Carbon\Carbon;
 
                 $yearperiod = defaultController::getyearperiod_($apacthdr->postdate);
                 if($yearperiod->status == 'C'){
-                    throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                    throw new \Exception('Credit Note auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
                 }
 
                 $this->gltran($idno);
@@ -920,35 +992,6 @@ use Carbon\Carbon;
         }
     }
 
-    // public function gltran_fromsupp($suppcode,$trantype){
-
-    //     if($trantype == 'CN'){
-    //         $obj = DB::table("material.supplier")
-    //             ->select('costcode','glaccno')
-    //             ->where('compcode','=',session('compcode'))
-    //             ->where('suppcode','=',$suppcode)
-    //             ->first();
-    //     }else{
-    //         $obj = DB::table("material.supplier")
-    //             ->select('Advccode as costcode','AdvGlaccno as glaccno')
-    //             ->where('compcode','=',session('compcode'))
-    //             ->where('suppcode','=',$suppcode)
-    //             ->first();
-    //     }
-
-    //     return $obj;
-    // }
-
-    // public function gltran_frompaymode($paymode,$source){
-    //     $obj = DB::table('debtor.paymode')
-    //             ->select('ccode as glccode','glaccno')
-    //             ->where('compcode','=',session('compcode'))
-    //             ->where('source','=',$source)
-    //             ->where('paymode','=',$paymode)
-    //             ->first();
-
-    //     return $obj;
-    // }
 
     public function gltran_fromdept($deptcode){
         $obj = DB::table('sysdb.department')

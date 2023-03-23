@@ -1670,7 +1670,7 @@ $(document).ready(function () {
 		dialog_payto.off();
 		errorField.length = 0;
 		populate_alloc_table_save();
-		show_post_button(true);
+		//show_post_button(true);
 
 		if(checkduplicate() && checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
@@ -1685,13 +1685,6 @@ $(document).ready(function () {
 	$("#save_Alloc").click(function(){
 		mycurrency.formatOff();
 		mycurrency2.formatOff();
-
-		// var totamt = $('#apacthdr_amount').val();
-		// var allocamt = 0;
-		// $('#jqGridAlloc input[name=allocamount]').each(function(i, obj) {
-		// 	var thisamt = $(this).val().trim();
-		// 	allocamt = parseFloat(allocamt) + parseFloat(thisamt);
-		// });
 
 		if(parseFloat($('#apacthdr_outamount').val().trim()) < 0){
 			alert('Allocate amount cant exceed total amount');
@@ -1754,7 +1747,6 @@ $(document).ready(function () {
 		dialog_GSTCode.on();
 
 		$("#jqGrid2 input[name='amount'], #jqGrid2 input[name='AmtB4GST'], #jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
-		//$("#jqGrid2 input[name='tot_gst']").on('blur',{currency: mycurrency2},calculate_edited_gst);
 		
 	}
 	
@@ -1791,7 +1783,6 @@ $(document).ready(function () {
 	$("#jqGridAPAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
-			//{ label: ' ', name: 'checkbox', width: 20, formatter: checkbox_jqg2},
 			{ label: 'Creditor', name: 'suppcode', width: 180, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document <br> Date', name: 'actdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
@@ -2253,12 +2244,6 @@ $(document).ready(function () {
 });
 
 function init_jq(oper){
-	// if(oper != 'add'){
-	// 	var unallocated = selrowData('#jqGrid').unallocated;
-	// 	if(unallocated == 'true'){
-	// 		$("#apacthdr_unallocated").val('0');
-	// 	}
-	// }
 
 	if(($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note')) {
 		$('#save').hide();
@@ -2351,15 +2336,11 @@ function populate_alloc_table(){
 				$("#jqGridAlloc").jqGrid('editRow',ids[i]);
 
 				$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('keyup',{rowid:ids[i]},calc_amtpaid);
-				//$('#jqGridAlloc input#'+ids[i]+'_allocamount').on('blur',{rowid:ids[i]},calc_amtpaid_tot);
 			}
 
 			calc_amtpaid_bal();
 
 		} else {
-			// alert("This supplier doesnt have any invoice!");
-			// $('#apacthdr_suppcode').val('');
-			// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 		}
 	});
 }
@@ -2418,10 +2399,6 @@ function populate_alloc_table_save(){
 				$("#jqGridAlloc input[name='checkbox']").hide();
 
 			} else {
-				// alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
-				// alert("This supplier doesnt have any invoice!");
-				// $('#apacthdr_suppcode').val('');
-				//myerrorIt_only2('#apacthdr_suppcode',true);
 			}
 		});
 
