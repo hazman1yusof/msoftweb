@@ -853,8 +853,8 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 30,
-		sortname: 'lineno_',
-		sortorder: "desc",
+		sortname: 'entrydate',
+		sortorder: "asc",
 		pager: "#jqGridPager2_Alloc",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid2_Alloc");

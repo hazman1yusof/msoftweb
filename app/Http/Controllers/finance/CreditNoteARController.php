@@ -864,7 +864,7 @@ class CreditNoteARController extends defaultController
             
             $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
             if($yearperiod->status == 'C'){
-                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period, 500);
             }
             
             $this->gltran($request->idno);

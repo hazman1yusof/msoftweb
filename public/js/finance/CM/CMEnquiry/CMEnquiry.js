@@ -143,17 +143,17 @@ $(document).ready(function () {
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$(this).data('lastselrow',rowid);
-		
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;
 			$("#jqGridPager td[title='View Selected Row']").click();
 		},
 		gridComplete: function(){
-			if (oper == 'add' || oper == null || $(this).data('lastselrow') == undefined) {
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
-				$("#jqGrid").setSelection($(this).data('lastselrow'));
-				$('#jqGrid tr#'+$(this).data('lastselrow')).focus();
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
 			
 			if($('#jqGrid').data('inputfocus') == 'creditor_search'){
@@ -202,6 +202,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			if(selrowData("#jqGrid").apacthdr_trantype=='FT'){
 				// populateFormdata("#jqGrid", "#dialogForm_ft", "#formdata_ft", selRowId, 'view', '');
 				getdata('FT',selrowData("#jqGrid").apacthdr_idno);
