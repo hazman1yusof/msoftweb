@@ -235,9 +235,9 @@ use Carbon\Carbon;
                             if(!in_array($obj_apacthdr, $return_array)){
                                 array_push($return_array,$obj_apacthdr);
                             }
-                            array_push($got_array,$obj_dbacthdr->idno);
+                            array_push($got_array,$obj_apacthdr->idno);
                         }else{
-                            $obj_dbacthdr->refamount = $obj_dbacthdr->outamount;
+                            $obj_apacthdr->refamount = $obj_apacthdr->outamount;
                             $obj_apacthdr->can_alloc=true;
                             if(!in_array($obj_apacthdr, $return_array)){
                                 array_push($return_array,$obj_apacthdr);

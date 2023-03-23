@@ -572,7 +572,7 @@ $(document).ready(function () {
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
 				$('#jqGrid2_iladd').click();
 			}else{
-        		show_post_button();
+        		show_post_button(true);
 			}
 			
 			if(selfoper=='add'){
@@ -878,7 +878,7 @@ $(document).ready(function () {
         },
         aftersavefunc: function (rowid, response, options) {
 			$('#apacthdr_amount').val(response.responseText);
-        	show_post_button();
+        	show_post_button(true);
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
 			$('#jqGrid2_iladd').click();
         	refreshGrid('#jqGrid2',urlParam2,'add');
@@ -1064,7 +1064,7 @@ $(document).ready(function () {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
 				if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note'){
-        			show_post_button();
+        			show_post_button(true);
 				}
 				$('#apacthdr_amount').val(data);
 				// $('#amount').val(data);
@@ -1218,7 +1218,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./creditNoteDetail/form",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
+			{ label: ' ', name: 'checkbox', width: 18, formatter: checkbox_jqg2},
 			{ label: 'Creditor', name: 'suppcode', width: 180, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document <br> Date', name: 'actdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 80, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
@@ -1670,6 +1670,7 @@ $(document).ready(function () {
 		dialog_payto.off();
 		errorField.length = 0;
 		populate_alloc_table_save();
+		show_post_button(true);
 
 		if(checkduplicate() && checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
@@ -1790,7 +1791,7 @@ $(document).ready(function () {
 	$("#jqGridAPAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 13, formatter: checkbox_jqg2},
+			//{ label: ' ', name: 'checkbox', width: 20, formatter: checkbox_jqg2},
 			{ label: 'Creditor', name: 'suppcode', width: 180, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document <br> Date', name: 'actdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
 			{ label: 'Post Date', name: 'postdate', width: 75, classes: 'wrap', formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}},
@@ -2364,63 +2365,71 @@ function populate_alloc_table(){
 }
 
 function populate_alloc_table_save(){
-	$("#jqGridAlloc").jqGrid("clearGridData", true);
+	if($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note') {
+		$("#jqGridAlloc").jqGrid("clearGridData", true);
 
-	var urlParam_alloc = {
-		action: 'get_alloc_when_edit',
-		url: 'creditNote/table',
-		field: [],
-		table_name: ['finance.apacthdr'],
-		filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
-		filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
-		WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
-		WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
-		table_id: 'idno',
-		auditno:$('#apacthdr_auditno').val(),
-		postdate:$('#apacthdr_postdate').val(),
-	};
+		var urlParam_alloc = {
+			action: 'get_alloc_when_edit',
+			url: 'creditNote/table',
+			field: [],
+			table_name: ['finance.apacthdr'],
+			filterCol: ['apacthdr.payto', 'apacthdr.compcode', 'apacthdr.recstatus', 'apacthdr.outamount'],
+			filterVal: [$("#apacthdr_suppcode").val(), 'session.compcode', 'POSTED', '>.0'],
+			WhereInCol: ['apacthdr.source', 'apacthdr.trantype'],
+			WhereInVal: [['AP','DF','CF','TX'],['IN','DN']],
+			table_id: 'idno',
+			auditno:$('#apacthdr_auditno').val(),
+			postdate:$('#apacthdr_postdate').val(),
+		};
 
-	$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
-	}, 'json').done(function (data) {
-		if (!$.isEmptyObject(data.rows)) {
-			myerrorIt_only2($("#apacthdr_suppcode").val(),false);
+		$.get("./creditNote/table?" + $.param(urlParam_alloc), function (data) {
+		}, 'json').done(function (data) {
+			if (!$.isEmptyObject(data.rows)) {
+				myerrorIt_only2($("#apacthdr_suppcode").val(),false);
 
-			data.rows.forEach(function(elem) {
-				let allocamount = 0;
-				if(elem['can_alloc'] == false){
-					allocamount = elem['amount'];
-				}
-				
-				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
-					{	
-						idno:elem['idno'],
-						source:elem['source'],
-						trantype:elem['trantype'],
-						auditno:elem['auditno'],
-						lineno_:elem['lineno_'],
-						can_alloc:elem['can_alloc'],
-						suppcode:elem['suppcode'],
-						actdate:elem['actdate'],
-						postdate:elem['postdate'],
-						reference:elem['document'],
-						refamount:elem['refamount'],
-						outamount:elem['outamount'],
-						allocamount: allocamount,
-						balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
-					
+				data.rows.forEach(function(elem) {
+					let allocamount = 0;
+					if(elem['can_alloc'] == false){
+						allocamount = elem['amount'];
 					}
-				);
-			});
+					
+					$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
+						{	
+							idno:elem['idno'],
+							source:elem['source'],
+							trantype:elem['trantype'],
+							auditno:elem['auditno'],
+							lineno_:elem['lineno_'],
+							can_alloc:elem['can_alloc'],
+							suppcode:elem['suppcode'],
+							actdate:elem['actdate'],
+							postdate:elem['postdate'],
+							reference:elem['document'],
+							refamount:elem['refamount'],
+							outamount:elem['outamount'],
+							allocamount: allocamount,
+							balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
+						
+						}
+					);
+				});
 
-			calc_amtpaid_bal();
-			$("#jqGridAlloc input[name='checkbox']").hide();
+				calc_amtpaid_bal();
+				$("#jqGridAlloc input[name='checkbox']").hide();
 
-		} else {
-			// alert("This supplier doesnt have any invoice!");
-			// $('#apacthdr_suppcode').val('');
-			// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
-		}
-	});
+			} else {
+				alert("This supplier doesnt have any invoice until postdate: "+$('#apacthdr_postdate').val());
+				// alert("This supplier doesnt have any invoice!");
+				// $('#apacthdr_suppcode').val('');
+				//myerrorIt_only2('#apacthdr_suppcode',true);
+			}
+		});
+
+	} else if (($("#apacthdr_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {	
+		$("#jqGridAlloc").jqGrid("clearGridData", true);
+		$('#apacthdr_payto').focus();
+		//myerrorIt_only2('#apacthdr_suppcode',true);
+	}
 }
 
 function populate_form(obj){

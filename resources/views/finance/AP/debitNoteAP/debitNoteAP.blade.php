@@ -207,7 +207,7 @@ i.fa {
 				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
 			</div>
 			<div class="panel-body" style="position: relative;">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
+				<form class='form-horizontal' style='width:99%' id='formdata' autocomplete="off">
 					{{ csrf_field() }}
 					
 					<input id="auditno" name="auditno" type="hidden">

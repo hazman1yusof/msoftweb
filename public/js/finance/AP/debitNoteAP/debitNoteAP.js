@@ -46,7 +46,7 @@ $(document).ready(function () {
 			open: function (event, ui) {
 				duplicate_documentno = false;
 				unsaved = false;
-				actdateObj.getdata().set();
+				//actdateObj.getdata().set();
 				counter_save=0;
 				parent_close_disabled(true);
 				mycurrency.formatOnBlur();
@@ -492,6 +492,12 @@ $(document).ready(function () {
 			text_error1('#apacthdr_actdate')
 		}
 
+		if($('#apacthdr_postdate').data('error') != undefined && $('#apacthdr_postdate').data('error') != 'none' && nkreturn==true){
+			failmsg.push($('#apacthdr_postdate').data('error'));
+			text_error1('#apacthdr_postdate');
+			$('#apacthdr_postdate').focus();
+		}
+
 		if(failmsg.length){
 			failmsg.forEach(function(element){
 				$('#dialogForm .noti ol').prepend('<li>'+element+'</li>');
@@ -842,7 +848,7 @@ $(document).ready(function () {
         	mycurrency2.formatOff();
 
 			if(parseInt($('#jqGrid2 input[name="amount"]').val()) == 0){
-				myerrorIt_only('#jqGrid2 input[name="amount"]');
+				myerrorIt_only2('#jqGrid2 input[name="amount"]');
 				alert('Amount cant be 0');
 				return false;
 			}
@@ -1255,7 +1261,7 @@ $(document).ready(function () {
 					if($.inArray(id2,errorField)!==-1){
 						errorField.splice($.inArray(id2,errorField), 1);
 					}
-					myerrorIt_only(id,false);
+					myerrorIt_only2(id,false);
 					duplicate_documentno = false;
 				} else {
 					bootbox.alert("Duplicate Document No");
@@ -1263,7 +1269,7 @@ $(document).ready(function () {
 					if($.inArray(id2,errorField)===-1){
 						errorField.push( id2 );
 					}
-					myerrorIt_only(id,true);
+					myerrorIt_only2(id,true);
 					$(id).data('show_error','Duplicate Document No');
 					duplicate_documentno = true;
 				}
@@ -1459,9 +1465,16 @@ $(document).ready(function () {
 			open: function(){
 				dialog_supplier.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_supplier.urlParam.filterVal=['ACTIVE', 'session.compcode']
+			},
+			after_check: function(data,obj,id,fail){
+				if(!fail){
+					let SuppCode = data.rows[0].SuppCode;
+					$("#apacthdr_payto").val(SuppCode);
+					dialog_payto.check(errorField);
 				}
-			},'urlParam','radio','tab'
-		);
+			}
+		},'urlParam','radio','tab'
+	);
 	dialog_supplier.makedialog(true);
 
 	var dialog_payto = new ordialog(
