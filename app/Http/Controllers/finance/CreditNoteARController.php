@@ -381,6 +381,8 @@ class CreditNoteARController extends defaultController
         
         try {
             
+            $this->check_alloc_exists($request);
+            
             $auditno = $this->recno('PB','CN');
             // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
             
@@ -441,6 +443,8 @@ class CreditNoteARController extends defaultController
     public function edit(Request $request){
         
         DB::beginTransaction();
+        
+        $this->check_alloc_exists($request);
         
         $table = DB::table("debtor.dbacthdr");
         
@@ -1169,6 +1173,23 @@ class CreditNoteARController extends defaultController
                 ->first();
 
         return $obj;
+    }
+
+    public function check_alloc_exists(Request $request){
+        
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                    ->where('debtorcode',$request->filterVal[0])
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','!=','CANCELLED')
+                    ->where('outamount','>',0)
+                    ->where('source','PB')
+                    ->where('entrydate','<=',$request->db_entrydate)
+                    ->whereIn('trantype',['IN','DN']);
+                    
+        if(!$dbacthdr->exists()){
+            throw new \Exception('This debtor doesnt have any invoice until date: '.Carbon::parse($request->db_entrydate)->format('d-m-Y'), 500);
+        }
+        
     }
 
 }
