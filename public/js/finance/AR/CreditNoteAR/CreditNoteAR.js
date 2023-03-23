@@ -499,8 +499,8 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseJSON.message);
-			$('.noti').text(data.responseJSON.message);
+			alert(data.responseText);
+			// $('.noti').text(data.responseJSON.message);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false);
 			unsaved = false;

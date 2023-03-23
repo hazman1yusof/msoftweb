@@ -444,28 +444,28 @@ class CreditNoteARController extends defaultController
         
         DB::beginTransaction();
         
-        $this->check_alloc_exists($request);
-        
-        $table = DB::table("debtor.dbacthdr");
-        
-        $array_update = [
-            'deptcode' => strtoupper($request->db_deptcode),
-            'unit' => session('unit'),
-            'debtorcode' => strtoupper($request->db_debtorcode),
-            'payercode' => strtoupper($request->db_debtorcode),
-            'entrydate' => $request->db_entrydate,
-            'hdrtype' => strtoupper($request->db_hdrtype),
-            'mrn' => strtoupper($request->db_mrn),
-            //'termdays' => strtoupper($request->db_termdays),
-            'termmode' => strtoupper($request->db_termmode),
-            'orderno' => strtoupper($request->db_orderno),
-            'ponum' => strtoupper($request->db_ponum),
-            'remark' => strtoupper($request->db_remark),
-            'approvedby' => $request->approvedby,
-            'unallocated' => $request->db_unallocated,
-        ];
-        
         try {
+
+            $this->check_alloc_exists($request);
+            
+            $table = DB::table("debtor.dbacthdr");
+            
+            $array_update = [
+                'deptcode' => strtoupper($request->db_deptcode),
+                'unit' => session('unit'),
+                'debtorcode' => strtoupper($request->db_debtorcode),
+                'payercode' => strtoupper($request->db_debtorcode),
+                'entrydate' => $request->db_entrydate,
+                'hdrtype' => strtoupper($request->db_hdrtype),
+                'mrn' => strtoupper($request->db_mrn),
+                //'termdays' => strtoupper($request->db_termdays),
+                'termmode' => strtoupper($request->db_termmode),
+                'orderno' => strtoupper($request->db_orderno),
+                'ponum' => strtoupper($request->db_ponum),
+                'remark' => strtoupper($request->db_remark),
+                'approvedby' => $request->approvedby,
+                'unallocated' => $request->db_unallocated,
+            ];
             
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
@@ -1178,7 +1178,7 @@ class CreditNoteARController extends defaultController
     public function check_alloc_exists(Request $request){
         
         $dbacthdr = DB::table('debtor.dbacthdr')
-                    ->where('debtorcode',$request->filterVal[0])
+                    ->where('debtorcode',$request->db_debtorcode)
                     ->where('compcode',session('compcode'))
                     ->where('recstatus','!=','CANCELLED')
                     ->where('outamount','>',0)
