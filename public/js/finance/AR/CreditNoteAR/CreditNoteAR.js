@@ -2579,9 +2579,9 @@ function populate_alloc_table_save(){
 			$("#jqGridAlloc input[name='checkbox']").hide();
 			
 		} else {
-			alert("This debtor doesnt have any invoice!");
-			$(dialog_CustomerSO.textfield).val('');
-			myerrorIt_only($("#db_debtorcode").val(),false);
+			// alert("This debtor doesnt have any invoice!");
+			// $(dialog_CustomerSO.textfield).val('');
+			// myerrorIt_only($("#db_debtorcode").val(),false);
 		}
 	});
 }
