@@ -358,7 +358,7 @@
 
 					<div class="form-group">
 						<label class="col-md-2 control-label" for="db_debtorcode">Debtor</label>	 
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class='input-group'>
 								<input id="db_debtorcode" name="db_debtorcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
@@ -366,7 +366,7 @@
 							<span class="help-block"></span>
 						</div>
 
-						<label class="col-md-2 control-label" for="db_entrydate">Date</label>  
+						<label class="col-md-3 control-label" for="db_entrydate">Date</label>  
 						<div class="col-md-2">
 							<input id="db_entrydate" name="db_entrydate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
 						</div>
