@@ -204,8 +204,11 @@ use PDF;
             
             $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
             $ALauditno = $this->defaultSysparam('AP','AL');
+
             
             if ($request->apacthdr_trantype == 'PV'){
+
+                $this->checkduplicate_docno('add', $request);
 
                 $table = DB::table("finance.apacthdr");
             
@@ -246,6 +249,18 @@ use PDF;
                     $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                     $newoutamount_IV = floatval($outamount - $allocamount);
 
+                    $lineno_ = DB::table('finance.apalloc') 
+                        ->where('compcode','=',session('compcode'))
+                        ->where('docauditno','=',$auditno)
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')->max('lineno_');
+
+                    if($lineno_ == null){
+                        $lineno_ = 1;
+                    }else{
+                        $lineno_ = $lineno_+1;
+                    }
+
                     DB::table('finance.apalloc')
                         ->insert([
                             'compcode' => session('compcode'),
@@ -253,7 +268,7 @@ use PDF;
                             'source' => 'AP',
                             'trantype' => 'AL',
                             'auditno' => $ALauditno,
-                            'lineno_' => $key+1,
+                            'lineno_' => $lineno_,
                             'docsource' => $request->apacthdr_source,
                             'doctrantype' => $request->apacthdr_trantype,
                             'docauditno' => $auditno,
@@ -309,6 +324,9 @@ use PDF;
                 echo json_encode($responce);
             
             } else if ($request->apacthdr_trantype == 'PD'){
+
+                $this->checkduplicate_docno('add', $request);
+
                 $table = DB::table("finance.apacthdr");
             
                 $array_insert = [
@@ -316,7 +334,8 @@ use PDF;
                     'auditno' => $auditno,
                     'trantype' => $request->apacthdr_trantype,
                     'actdate' => $request->apacthdr_actdate,
-                    // 'recdate' => $request->apacthdr_actdate,
+                    'recdate' => $request->apacthdr_postdate,
+                    'postdate' => $request->apacthdr_postdate,
                     'pvno' => $request->apacthdr_pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
@@ -325,7 +344,6 @@ use PDF;
                     'cheqno' => $request->apacthdr_cheqno,
                     'cheqdate' => $request->apacthdr_cheqdate,
                     'remarks' => strtoupper($request->apacthdr_remarks),
-                    'recdate' => $request->apacthdr_recdate,
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
@@ -373,6 +391,7 @@ use PDF;
         if ($request->apacthdr_trantype == 'PV'){
             
             DB::beginTransaction();
+            $this->checkduplicate_docno('edit', $request);
 
             $table = DB::table("finance.apacthdr");
 
@@ -383,7 +402,8 @@ use PDF;
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'pvno' => $request->apacthdr_pvno,
                 'doctype' => $request->apacthdr_doctype,
-                'recdate' => $request->apacthdr_recdate,
+                'recdate' => $request->apacthdr_postdate,
+                'postdate' => $request->apacthdr_postdate,
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
                 'document' => strtoupper($request->apacthdr_document),
                 'paymode' => strtoupper($request->apacthdr_paymode),
@@ -414,7 +434,7 @@ use PDF;
                                 // 'lineno_' => $key+1,
                                 // 'docsource' => 'AP',
                                 // 'doctrantype' => 'PV',
-                                'docauditno' => $request->auditno,
+                                'docauditno' => $request->apacthdr_auditno,
                                 'refsource' => $request->source,
                                 'reftrantype' => $request->trantype,
                             // 'refauditno' => $apacthdr_IV->auditno,
@@ -435,7 +455,7 @@ use PDF;
                 //calculate total amount from detail
                 $totalAmount = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$auditno)
+                ->where('auditno','=',$request->auditno)
                 ->where('recstatus','!=','DELETE')
                 ->sum('allocamount');
     
@@ -483,6 +503,7 @@ use PDF;
 
             DB::beginTransaction();
 
+            $this->checkduplicate_docno('edit', $request);
             $table = DB::table("finance.apacthdr");
 
             $array_update = [
@@ -491,7 +512,8 @@ use PDF;
                 'pvno' => $request->apacthdr_pvno,
                 // 'doctype' => $request->apacthdr_doctype,
                 'actdate' => $request->apacthdr_actdate,
-                'recdate' => $request->apacthdr_recdate,
+                'recdate' => $request->apacthdr_postdate,
+                'postdate' => $request->apacthdr_postdate,
                 'amount' => $request->apacthdr_amount,
                 'suppcode' => strtoupper($request->apacthdr_suppcode),
                 'payto' => strtoupper($request->apacthdr_payto),
@@ -530,6 +552,11 @@ use PDF;
                     ->where('idno','=',$idno_obj['idno'])
                     ->first();
 
+                $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
+                if($yearperiod->status == 'C'){
+                    throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
+                }
+
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
                     ->update([
@@ -560,7 +587,7 @@ use PDF;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -866,6 +893,26 @@ use PDF;
         }
 
         return $obj;
+    }
+
+    public function checkduplicate_docno($oper,$request){
+
+        if($oper == 'edit'){
+            $obj = DB::table("finance.apacthdr")
+                ->where('compcode','=',session('compcode'))
+                ->where('document','=',$request->apacthdr_document)
+                ->where('recstatus','!=','CANCELLED')
+                ->where('idno','!=',$request->idno);
+        }else{
+            $obj = DB::table("finance.apacthdr")
+                ->where('compcode','=',session('compcode'))
+                ->where('document','=',$request->apacthdr_document)
+                ->where('recstatus','!=','CANCELLED');
+        }
+
+        if($obj->exists()){
+            throw new \Exception('duplicate_docno', 500);
+        }
     }
 
     public function showpdf(Request $request){

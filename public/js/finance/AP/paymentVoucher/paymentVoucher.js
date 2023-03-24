@@ -42,6 +42,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				duplicate_documentno = false;
 				parent_close_disabled(true);
 				unsaved = false;
 				errorField.length=0;
@@ -259,7 +260,7 @@ $(document).ready(function () {
 		// sortname:'apacthdr_idno',
 		// sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -332,7 +333,7 @@ $(document).ready(function () {
 			cbselect.show_hide_table();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
@@ -535,7 +536,6 @@ $(document).ready(function () {
 			obj={};
 		}
 		saveParam.oper=selfoper;
-
 
 		let data_detail = $('#jqGrid2').jqGrid ('getRowData');
 		obj.data_detail = data_detail;
@@ -793,7 +793,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce:false,
 		width: 1150,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		sortname: 'lineno_',
 		sortorder: "desc",
@@ -1031,8 +1031,9 @@ $(document).ready(function () {
 		check_suppcode_duplicate();
 	});
 
+	var duplicate_documentno = false;
 	function check_suppcode_duplicate(){
-		if(oper == 'add' && $("#apacthdr_document").val().trim() != ''){
+		if(oper != 'view'){
 			var id = "#apacthdr_document";
 			var id2 = "apacthdr_document";
 			var param={
@@ -1043,8 +1044,8 @@ $(document).ready(function () {
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document', 'recstatus'];
-			param.filterVal = [$("#apacthdr_document").val(), '<>.CANCELLED'];
+			param.filterCol = ['document', 'recstatus', 'idno'];
+			param.filterVal = [$("#apacthdr_document").val(), '<>.CANCELLED','<>.'+$('#idno').val()];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
@@ -1053,21 +1054,30 @@ $(document).ready(function () {
 					if($.inArray(id2,errorField)!==-1){
 						errorField.splice($.inArray(id2,errorField), 1);
 					}
-					myerrorIt_only(id,false);
+					myerrorIt_only2(id,false);
+					duplicate_documentno = false;
 				} else {
 					bootbox.alert("Duplicate Document No");
 					$( id ).removeClass( "valid" ).addClass( "error" );
 					if($.inArray(id2,errorField)===-1){
 						errorField.push( id2 );
 					}
-					myerrorIt_only(id,true);
+					myerrorIt_only2(id,true);
 					$(id).data('show_error','Duplicate Document No');
+					duplicate_documentno = true;
 				}
 			});
 		}
 	}
 	
-	
+	function checkduplicate(){
+		var id = "#apacthdr_document";
+		if(duplicate_documentno){
+			bootbox.alert("Duplicate Document No");
+			return false;
+		}
+		return true;
+	}
 	//////////////////////////////////////////saveDetailLabel & save////////////////////////////////////////////
 	$("#save").click(function(){
 		unsaved = false;
@@ -1327,8 +1337,6 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(){
 				if (($('#apacthdr_trantype').val()=="PV")) {
-					//alert($('#apacthdr_trantype').val())
-
 					$("#jqGrid2").jqGrid("clearGridData", true);
 
 					let data=selrowData('#'+dialog_suppcode.gridname);
