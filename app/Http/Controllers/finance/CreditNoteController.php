@@ -428,7 +428,6 @@ use Carbon\Carbon;
             $apacthdr = DB::table('finance.apacthdr')
                         ->where('idno','=',$request->idno)
                         ->first();
-            //dd($apacthdr);
 
             if($apacthdr->unallocated == '1') {
 
@@ -461,6 +460,7 @@ use Carbon\Carbon;
                 ];
 
             } else if($apacthdr->unallocated == '0'){
+                
                 $this->checkduplicate_docno('edit', $request);
                 $table = DB::table("finance.apacthdr");
 
