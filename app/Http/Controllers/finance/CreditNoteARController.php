@@ -377,47 +377,95 @@ class CreditNoteARController extends defaultController
         
         DB::beginTransaction();
         
-        $table = DB::table("debtor.dbacthdr");
-        
         try {
             
-            $this->check_alloc_exists($request);
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //             ->where('idno','=',$request->idno)
+            //             ->first();
             
-            $auditno = $this->recno('PB','CN');
-            // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
+            if($request->db_unallocated == '1') {
             
-            $array_insert = [
-                'source' => 'PB',
-                'trantype' => 'CN',
-                'auditno' => $auditno,
-                'compcode' => session('compcode'),
-                'adduser' => session('username'),
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'recstatus' => 'OPEN',
-                'lineno_' => 1,
-                // 'invno' => $invno,
-                'deptcode' => strtoupper($request->db_deptcode),
-                'unit' => session('unit'),
-                'debtorcode' => strtoupper($request->db_debtorcode),
-                'payercode' => strtoupper($request->db_debtorcode),
-                'entrydate' => $request->db_entrydate,
-                'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                'hdrtype' => strtoupper($request->db_hdrtype),
-                // 'mrn' => strtoupper($request->db_mrn),
-                // 'billno' => $invno,
-                'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
-                //'termdays' => strtoupper($request->db_termdays),
-                'termmode' => strtoupper($request->db_termmode),
-                'orderno' => strtoupper($request->db_orderno),
-                'ponum' => strtoupper($request->db_ponum),
-                'remark' => strtoupper($request->db_remark),
-                'approvedby' => $request->db_approvedby,
-                // 'approveddate' => $request->db_approveddate,
-                'reference' => $request->db_reference,
-                'paymode' => $request->db_paymode,
-                'unallocated' => $request->db_unallocated,
+                $this->check_alloc_exists($request);
                 
-            ];
+                $auditno = $this->recno('PB','CN');
+                // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
+                
+                $table = DB::table("debtor.dbacthdr");
+                
+                $array_insert = [
+                    'source' => 'PB',
+                    'trantype' => 'CN',
+                    'auditno' => $auditno,
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN',
+                    'lineno_' => 1,
+                    // 'invno' => $invno,
+                    'deptcode' => strtoupper($request->db_deptcode),
+                    'unit' => session('unit'),
+                    'debtorcode' => strtoupper($request->db_debtorcode),
+                    'payercode' => strtoupper($request->db_debtorcode),
+                    'entrydate' => $request->db_entrydate,
+                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'hdrtype' => strtoupper($request->db_hdrtype),
+                    // 'mrn' => strtoupper($request->db_mrn),
+                    // 'billno' => $invno,
+                    'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
+                    //'termdays' => strtoupper($request->db_termdays),
+                    'termmode' => strtoupper($request->db_termmode),
+                    'orderno' => strtoupper($request->db_orderno),
+                    'ponum' => strtoupper($request->db_ponum),
+                    'remark' => strtoupper($request->db_remark),
+                    'approvedby' => $request->db_approvedby,
+                    // 'approveddate' => $request->db_approveddate,
+                    'reference' => $request->db_reference,
+                    'paymode' => $request->db_paymode,
+                    'unallocated' => $request->db_unallocated,
+                    
+                ];
+                
+            } else if($request->db_unallocated == '0'){
+                
+                $auditno = $this->recno('PB','CN');
+                // $auditno = str_pad($auditno, 5, "0", STR_PAD_LEFT);
+                
+                $table = DB::table("debtor.dbacthdr");
+                
+                $array_insert = [
+                    'source' => 'PB',
+                    'trantype' => 'CN',
+                    'auditno' => $auditno,
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'OPEN',
+                    'lineno_' => 1,
+                    // 'invno' => $invno,
+                    'deptcode' => strtoupper($request->db_deptcode),
+                    'unit' => session('unit'),
+                    'debtorcode' => strtoupper($request->db_debtorcode),
+                    'payercode' => strtoupper($request->db_debtorcode),
+                    'entrydate' => $request->db_entrydate,
+                    'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'hdrtype' => strtoupper($request->db_hdrtype),
+                    // 'mrn' => strtoupper($request->db_mrn),
+                    // 'billno' => $invno,
+                    'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
+                    //'termdays' => strtoupper($request->db_termdays),
+                    'termmode' => strtoupper($request->db_termmode),
+                    'orderno' => strtoupper($request->db_orderno),
+                    'ponum' => strtoupper($request->db_ponum),
+                    'remark' => strtoupper($request->db_remark),
+                    'approvedby' => $request->db_approvedby,
+                    // 'approveddate' => $request->db_approveddate,
+                    'reference' => $request->db_reference,
+                    'paymode' => $request->db_paymode,
+                    'unallocated' => $request->db_unallocated,
+                    
+                ];
+                
+            }
             
             //////////where//////////
             // $table = $table->where('idno','=',$request->idno);
@@ -445,27 +493,56 @@ class CreditNoteARController extends defaultController
         DB::beginTransaction();
         
         try {
-
-            $this->check_alloc_exists($request);
             
-            $table = DB::table("debtor.dbacthdr");
+            // $dbacthdr = DB::table('debtor.dbacthdr')
+            //             ->where('idno','=',$request->idno)
+            //             ->first();
             
-            $array_update = [
-                'deptcode' => strtoupper($request->db_deptcode),
-                'unit' => session('unit'),
-                'debtorcode' => strtoupper($request->db_debtorcode),
-                'payercode' => strtoupper($request->db_debtorcode),
-                'entrydate' => $request->db_entrydate,
-                'hdrtype' => strtoupper($request->db_hdrtype),
-                'mrn' => strtoupper($request->db_mrn),
-                //'termdays' => strtoupper($request->db_termdays),
-                'termmode' => strtoupper($request->db_termmode),
-                'orderno' => strtoupper($request->db_orderno),
-                'ponum' => strtoupper($request->db_ponum),
-                'remark' => strtoupper($request->db_remark),
-                'approvedby' => $request->approvedby,
-                'unallocated' => $request->db_unallocated,
-            ];
+            if($request->db_unallocated == '1') {
+            
+                $this->check_alloc_exists($request);
+                
+                $table = DB::table("debtor.dbacthdr");
+                
+                $array_update = [
+                    'deptcode' => strtoupper($request->db_deptcode),
+                    'unit' => session('unit'),
+                    'debtorcode' => strtoupper($request->db_debtorcode),
+                    'payercode' => strtoupper($request->db_debtorcode),
+                    'entrydate' => $request->db_entrydate,
+                    'hdrtype' => strtoupper($request->db_hdrtype),
+                    'mrn' => strtoupper($request->db_mrn),
+                    //'termdays' => strtoupper($request->db_termdays),
+                    'termmode' => strtoupper($request->db_termmode),
+                    'orderno' => strtoupper($request->db_orderno),
+                    'ponum' => strtoupper($request->db_ponum),
+                    'remark' => strtoupper($request->db_remark),
+                    'approvedby' => $request->approvedby,
+                    'unallocated' => $request->db_unallocated,
+                ];
+                
+            } else if($request->db_unallocated == '0'){
+                
+                $table = DB::table("debtor.dbacthdr");
+                
+                $array_update = [
+                    'deptcode' => strtoupper($request->db_deptcode),
+                    'unit' => session('unit'),
+                    'debtorcode' => strtoupper($request->db_debtorcode),
+                    'payercode' => strtoupper($request->db_debtorcode),
+                    'entrydate' => $request->db_entrydate,
+                    'hdrtype' => strtoupper($request->db_hdrtype),
+                    'mrn' => strtoupper($request->db_mrn),
+                    //'termdays' => strtoupper($request->db_termdays),
+                    'termmode' => strtoupper($request->db_termmode),
+                    'orderno' => strtoupper($request->db_orderno),
+                    'ponum' => strtoupper($request->db_ponum),
+                    'remark' => strtoupper($request->db_remark),
+                    'approvedby' => $request->approvedby,
+                    'unallocated' => $request->db_unallocated,
+                ];
+                
+            }
             
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
@@ -613,7 +690,7 @@ class CreditNoteARController extends defaultController
                 
                 $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
                 if($yearperiod->status == 'C'){
-                    throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period.' status: '.$yearperiod->status, 500);
+                    throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
                 }
                 
                 $this->gltran($idno);
@@ -868,7 +945,7 @@ class CreditNoteARController extends defaultController
             
             $yearperiod = defaultController::getyearperiod_($dbacthdr->entrydate);
             if($yearperiod->status == 'C'){
-                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, year: '.$yearperiod->year.' month: '.$yearperiod->period, 500);
+                throw new \Exception('Credit Note auditno: '.$dbacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
             }
             
             $this->gltran($request->idno);

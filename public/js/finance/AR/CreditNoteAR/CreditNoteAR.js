@@ -2212,62 +2212,62 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_CustomerSO.gridname);
 				$("#db_debtorcode").val(data['debtorcode']);
 				
-				if($("#db_unallocated").find(":selected").text() == 'Credit Note') {
+				// if($("#db_unallocated").find(":selected").text() == 'Credit Note') {
 					
-					$("#jqGridAlloc").jqGrid("clearGridData", true);
+				// 	$("#jqGridAlloc").jqGrid("clearGridData", true);
 					
-					var param = {
-						action: 'get_alloc_when_edit',
-						url:'CreditNoteAR/table',
-						field: [],
-						table_name: ['debtor.dbacthdr'],
-						filterCol: ['dbacthdr.debtorcode', 'dbacthdr.compcode', 'dbacthdr.recstatus', 'dbacthdr.outamount','dbacthdr.source'],
-						filterVal: [$("#db_debtorcode").val(), 'session.compcode', 'POSTED', '>.0','PB'],
-						WhereInCol: ['dbacthdr.trantype'],
-						WhereInVal: [['IN','DN']],
-						table_id: 'idno',
-						auditno:$('#db_auditno').val(),
-						posteddate:$('#db_entrydate').val(),
-					};
+				// 	var param = {
+				// 		action: 'get_alloc_when_edit',
+				// 		url:'CreditNoteAR/table',
+				// 		field: [],
+				// 		table_name: ['debtor.dbacthdr'],
+				// 		filterCol: ['dbacthdr.debtorcode', 'dbacthdr.compcode', 'dbacthdr.recstatus', 'dbacthdr.outamount','dbacthdr.source'],
+				// 		filterVal: [$("#db_debtorcode").val(), 'session.compcode', 'POSTED', '>.0','PB'],
+				// 		WhereInCol: ['dbacthdr.trantype'],
+				// 		WhereInVal: [['IN','DN']],
+				// 		table_id: 'idno',
+				// 		auditno:$('#db_auditno').val(),
+				// 		posteddate:$('#db_entrydate').val(),
+				// 	};
 					
-					$.get("./CreditNoteAR/table?" + $.param(param), function (data) {
+				// 	$.get("./CreditNoteAR/table?" + $.param(param), function (data) {
 						
-					}, 'json').done(function (data) {
-						if (!$.isEmptyObject(data.rows)) {
-							myerrorIt_only(dialog_CustomerSO.textfield,false);
-							data.rows.forEach(function(elem) {
-								$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
-									{
-										idno:elem['idno'],
-										source:elem['source'],
-										trantype:elem['trantype'],
-										auditno:elem['auditno'],
-										lineno_:elem['lineno_'],
-										can_alloc:elem['can_alloc'],
-										debtorcode:elem['debtorcode'],
-										entrydate:elem['entrydate'],
-										posteddate:elem['posteddate'],
-										recptno:elem['recptno'],
-										refamount:elem['refamount'],
-										outamount:elem['outamount'],
-									}
-								);
-							});
+				// 	}, 'json').done(function (data) {
+				// 		if (!$.isEmptyObject(data.rows)) {
+				// 			myerrorIt_only(dialog_CustomerSO.textfield,false);
+				// 			data.rows.forEach(function(elem) {
+				// 				$("#jqGridAlloc").jqGrid('addRowData', elem['idno'] ,
+				// 					{
+				// 						idno:elem['idno'],
+				// 						source:elem['source'],
+				// 						trantype:elem['trantype'],
+				// 						auditno:elem['auditno'],
+				// 						lineno_:elem['lineno_'],
+				// 						can_alloc:elem['can_alloc'],
+				// 						debtorcode:elem['debtorcode'],
+				// 						entrydate:elem['entrydate'],
+				// 						posteddate:elem['posteddate'],
+				// 						recptno:elem['recptno'],
+				// 						refamount:elem['refamount'],
+				// 						outamount:elem['outamount'],
+				// 					}
+				// 				);
+				// 			});
 							
-							calc_amtpaid_bal();
-							$('#db_reference').focus();
-							$("#jqGridAlloc input[name='checkbox']").hide();
+				// 			calc_amtpaid_bal();
+				// 			$('#db_reference').focus();
+				// 			$("#jqGridAlloc input[name='checkbox']").hide();
 							
-						} else {
-							alert("This debtor doesnt have any invoice until date: "+$('#db_entrydate').val());
-							$(dialog_CustomerSO.textfield).val('');
-							myerrorIt_only(dialog_CustomerSO.textfield,true);
-						}
-					});
-				} else if (($("#db_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
-					$("#jqGridAlloc").jqGrid("clearGridData", true);
-					$('#db_reference').focus();
-				}
+				// 		} else {
+				// 			alert("This debtor doesnt have any invoice until date: "+$('#db_entrydate').val());
+				// 			$(dialog_CustomerSO.textfield).val('');
+				// 			myerrorIt_only(dialog_CustomerSO.textfield,true);
+				// 		}
+				// 	});
+				// } else if (($("#db_unallocated").find(":selected").text() == 'Credit Note Unallocated')) {
+				// 	$("#jqGridAlloc").jqGrid("clearGridData", true);
+				// 	$('#db_reference').focus();
+				// }
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -2519,9 +2519,9 @@ function populate_alloc_table(){
 			calc_amtpaid_bal();
 			
 		} else {
-			alert("This debtor doesnt have any invoice!");
-			$(dialog_CustomerSO.textfield).val('');
-			myerrorIt_only($("#db_debtorcode").val(),false);
+			// alert("This debtor doesnt have any invoice!");
+			// $(dialog_CustomerSO.textfield).val('');
+			// myerrorIt_only($("#db_debtorcode").val(),false);
 		}
 	});
 }
