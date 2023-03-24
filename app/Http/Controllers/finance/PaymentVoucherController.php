@@ -31,6 +31,8 @@ use PDF;
                 return $this->maintable($request);
             case 'get_alloc_table':
                 return $this->get_alloc_table($request);
+            case 'get_alloc_when_edit':
+                return $this->get_alloc_when_edit($request);
             default:
                 return 'error happen..';
         }
@@ -160,6 +162,71 @@ use PDF;
 
     }
 
+    public function get_alloc_when_edit(Request $request){
+
+        $apacthdr = DB::table('finance.apacthdr')
+                    ->where('suppcode',$request->payto)
+                    ->where('compcode',session('compcode'))
+                    ->where('recstatus','=','POSTED')
+                    // ->where('postdate','<=',$request->postdate)
+                    ->where('outamount','>',0)
+                    ->where('source', ['AP','DF','CF','TX'])
+                    ->whereIn('trantype', ['IN','DN']);
+
+        $apalloc = DB::table('finance.apalloc')
+                    ->where('compcode',session('compcode'))
+                    ->where('docsource','AP')
+                    ->where('doctrantype','PV')
+                    ->where('docauditno',$request->auditno)
+                    ->where('recstatus','!=','CANCELLED');
+
+        $return_array=[];
+        $got_array=[];
+        if($apalloc->exists()){
+            foreach ($apacthdr->get() as $obj_apacthdr) {
+                foreach ($apalloc->get() as $obj_apalloc) {
+                    if(!in_array($obj_apacthdr->idno,$got_array)){
+                        if(
+                            $obj_apalloc->refsource == $obj_apacthdr->source
+                            && $obj_apalloc->reftrantype == $obj_apacthdr->trantype
+                            && $obj_apalloc->refauditno == $obj_apacthdr->auditno
+                        ){
+
+                            $obj_apacthdr->can_alloc=true;
+                            $obj_apacthdr->outamount = $obj_apalloc->outamount;
+                            $obj_apacthdr->refamount = $obj_apalloc->refamount;
+                            $obj_apacthdr->amount = $obj_apalloc->allocamount;
+                            $obj_apacthdr->source = $obj_apalloc->source;
+                            $obj_apacthdr->trantype = $obj_apalloc->trantype;
+                            $obj_apacthdr->auditno = $obj_apalloc->auditno;
+                            $obj_apacthdr->lineno_ = $obj_apalloc->lineno_;
+                            // $obj_apacthdr->idno = $obj_apalloc->idno;
+
+                            if(!in_array($obj_apacthdr, $return_array)){
+                                array_push($return_array,$obj_apacthdr);
+                            }
+                            array_push($got_array,$obj_apacthdr->idno);
+                        }else{
+                            $obj_apacthdr->refamount = $obj_apacthdr->outamount;
+                            $obj_apacthdr->can_alloc=true;
+                            if(!in_array($obj_apacthdr, $return_array)){
+                                array_push($return_array,$obj_apacthdr);
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            $return_array = $apacthdr->get();
+        }
+
+        $responce = new stdClass();
+        $responce->rows = $return_array;
+
+        return json_encode($responce);
+
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -203,7 +270,6 @@ use PDF;
         try {
             
             $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
-            $ALauditno = $this->defaultSysparam('AP','AL');
 
             
             if ($request->apacthdr_trantype == 'PV'){
@@ -240,6 +306,7 @@ use PDF;
                 $idno_apacthdr = $table->insertGetId($array_insert);
 
                 foreach ($request->data_detail as $key => $value){
+                    $ALauditno = $this->defaultSysparam('AP','AL');
 
                     $apacthdr_IV = DB::table('finance.apacthdr')
                                 ->where('idno','=',$value['idno'])
@@ -295,16 +362,15 @@ use PDF;
                                 ->update([
                                     'outamount' => $newoutamount_IV
                                 ]);
-
                 }
 
                 //calculate total amount from detail
                 $totalAmount = DB::table('finance.apalloc')
                     ->where('compcode','=',session('compcode'))
                     ->where('unit','=',session('unit'))
-                    ->where('source','=','AP')
-                    ->where('trantype','=','AL')
-                    ->where('auditno','=',$ALauditno)
+                    ->where('docsource','=','AP')
+                    ->where('doctrantype','=','PV')
+                    ->where('docauditno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('allocamount');
                 
@@ -415,82 +481,74 @@ use PDF;
 
             try {
 
-                // $idno = $table->insertGetId($array_insert);
-                // foreach ($request->data_detail as $key => $value) {
-                //     $idno = $value['idno'];
+                $idno = $request->idno;
+                $table->where('idno','=',$idno)->update($array_update);
+                $apacthdr_ = DB::table('finance.apacthdr')
+                                ->where('idno','=',$idno)
+                                ->first();
 
+                foreach ($request->data_detail as $key => $value) {
                     $apacthdr_IV = DB::table('finance.apacthdr')
-                                    ->where('idno','=',$idno)
-                                    ->first();
+                                ->where('idno','=',$value['idno'])
+                                ->first();
+
+                    $outamount = floatval($value['outamount']);
+                    $allocamount = floatval($value['outamount']) - floatval($value['balance']);
+                    $newoutamount_IV = floatval($outamount - $allocamount);
 
                     DB::table('finance.apalloc')
                             ->where('compcode','=',session('compcode'))
                             ->where('auditno','=',$request->auditno)
                             ->where('lineno_','=',$request->lineno_)
                             ->update([
-                                
+                                'allocamount' => $allocamount,
+                                'outamount' => $outamount,
                                 // 'source' => 'AP',
                                 // 'trantype' => 'PV',
                                 // 'lineno_' => $key+1,
                                 // 'docsource' => 'AP',
                                 // 'doctrantype' => 'PV',
-                                'docauditno' => $request->apacthdr_auditno,
-                                'refsource' => $request->source,
-                                'reftrantype' => $request->trantype,
-                            // 'refauditno' => $apacthdr_IV->auditno,
-                                'refamount' => $request->amount,
-                            //  'allocdate' => $this->turn_date($value['allocdate']),
-                                'reference' => $request->reference,
-                                'allocamount' => floatval($request['outamount']) - floatval($request['balance']),
-                                'outamount' => floatval($request['outamount']),
-                                'paymode' => $request->apacthdr_paymode,
-                                'bankcode' => $request->apacthdr_bankcode,
-                                'suppcode' => $request->apacthdr_suppcode,
+                            //     'docauditno' => $request->apacthdr_auditno,
+                            //     'refsource' => $request->source,
+                            //     'reftrantype' => $request->trantype,
+                            // // 'refauditno' => $apacthdr_IV->auditno,
+                            //     'refamount' => $request->amount,
+                            // //  'allocdate' => $this->turn_date($value['allocdate']),
+                            //     'reference' => $request->reference,
+                            //     'allocamount' => floatval($request['outamount']) - floatval($request['balance']),
+                            //     'outamount' => floatval($request['outamount']),
+                            //     'paymode' => $request->apacthdr_paymode,
+                            //     'bankcode' => $request->apacthdr_bankcode,
+                            //     'suppcode' => $request->apacthdr_suppcode,
                                 'lastuser' => session('username'),
                                 'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                                 'recstatus' => 'OPEN'
                             ]);
-                //}
+
+
+                    $apacthdr_IV = DB::table('finance.apacthdr')
+                                ->where('idno','=',$value['idno'])
+                                ->update([
+                                    'outamount' => $newoutamount_IV
+                                ]);
+                }
 
                 //calculate total amount from detail
                 $totalAmount = DB::table('finance.apalloc')
-                ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->where('recstatus','!=','DELETE')
-                ->sum('allocamount');
-    
-    
-                //then update to header
-                DB::table('finance.apacthdr')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$apacthdr_IV->auditno)
-                    ->where('source','=', 'AP')
-                    ->where('trantype','=', 'PV')
-                    ->update([
-                        'amount' => $totalAmount,
-                        'outamount' => '0',
-                        'recstatus' => 'OPEN'
-                    
-                    ]);
+                    ->where('unit','=',session('unit'))
+                    ->where('docsource','=','AP')
+                    ->where('doctrantype','=','PV')
+                    ->where('docauditno','=',$apacthdr_->auditno)
+                    ->where('recstatus','!=','DELETE')
+                    ->sum('allocamount');
                 
                 DB::table('finance.apacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$auditno)
-                    ->where('source','=', 'AP')
-                    ->where('trantype','=', 'PV')
+                    ->where('idno','=',$idno)
                     ->update([
                         'amount' => $totalAmount,
-                        'outamount' => '0',
                         'recstatus' => 'OPEN'
-                    
                     ]);
-    
-                DB::table('finance.apacthdr')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$auditno)
-                    ->update([
-                        'outamount' => $value['outamount'] - $value['allocamount']
-                    ]);    
 
                 DB::commit();
             } catch (\Exception $e) {
