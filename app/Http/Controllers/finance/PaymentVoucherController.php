@@ -192,10 +192,10 @@ use PDF;
                             && $obj_apalloc->refauditno == $obj_apacthdr->auditno
                         ){
 
-                            $obj_apacthdr->can_alloc=true;
+                            $obj_apacthdr->can_alloc=false;
                             $obj_apacthdr->outamount = $obj_apalloc->outamount;
                             $obj_apacthdr->refamount = $obj_apalloc->refamount;
-                            $obj_apacthdr->amount = $obj_apalloc->allocamount;
+                            $obj_apacthdr->allocamount = $obj_apalloc->allocamount;
                             $obj_apacthdr->source = $obj_apalloc->source;
                             $obj_apacthdr->trantype = $obj_apalloc->trantype;
                             $obj_apacthdr->auditno = $obj_apalloc->auditno;
@@ -241,6 +241,8 @@ use PDF;
                 return $this->posted($request);break;
             case 'cancel':
                 return $this->cancel($request);break;
+            case 'del_alloc':
+                return $this->del_alloc($request);break;
             default:
                 return 'error happen..';
         }
@@ -492,6 +494,8 @@ use PDF;
                                 ->first();
 
                 foreach ($request->data_detail as $key => $value) {
+                    $ALauditno = $this->defaultSysparam('AP','AL');
+
                     $apacthdr_IV = DB::table('finance.apacthdr')
                                 ->where('idno','=',$value['idno'])
                                 ->first();
@@ -500,35 +504,51 @@ use PDF;
                     $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                     $newoutamount_IV = floatval($outamount - $allocamount);
 
-                    DB::table('finance.apalloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('auditno','=',$request->auditno)
-                            ->where('lineno_','=',$request->lineno_)
-                            ->update([
-                                'allocamount' => $allocamount,
-                                'outamount' => $outamount,
-                                // 'source' => 'AP',
-                                // 'trantype' => 'PV',
-                                // 'lineno_' => $key+1,
-                                // 'docsource' => 'AP',
-                                // 'doctrantype' => 'PV',
-                            //     'docauditno' => $request->apacthdr_auditno,
-                            //     'refsource' => $request->source,
-                            //     'reftrantype' => $request->trantype,
-                            // // 'refauditno' => $apacthdr_IV->auditno,
-                            //     'refamount' => $request->amount,
-                            // //  'allocdate' => $this->turn_date($value['allocdate']),
-                            //     'reference' => $request->reference,
-                            //     'allocamount' => floatval($request['outamount']) - floatval($request['balance']),
-                            //     'outamount' => floatval($request['outamount']),
-                            //     'paymode' => $request->apacthdr_paymode,
-                            //     'bankcode' => $request->apacthdr_bankcode,
-                            //     'suppcode' => $request->apacthdr_suppcode,
-                                'lastuser' => session('username'),
-                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'recstatus' => 'OPEN'
-                            ]);
+                    if($allocamount == 0 || $value['can_alloc'] == 'false'){
+                        continue;
+                    }
 
+                    $lineno_ = DB::table('finance.apalloc') 
+                        ->where('compcode','=',session('compcode'))
+                        ->where('docauditno','=',$apacthdr_->auditno)
+                        ->where('docsource','=','AP')
+                        ->where('doctrantype','=','PV')->max('lineno_');
+
+                    if($lineno_ == null){
+                        $lineno_ = 1;
+                    }else{
+                        $lineno_ = $lineno_+1;
+                    }
+
+                    DB::table('finance.apalloc')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'unit' => session('unit'),
+                            'source' => 'AP',
+                            'trantype' => 'AL',
+                            'auditno' => $ALauditno,
+                            'lineno_' => $lineno_,
+                            'docsource' => $apacthdr_->source,
+                            'doctrantype' => $apacthdr_->trantype,
+                            'docauditno' => $apacthdr_->auditno,
+                            'refsource' => $apacthdr_IV->source,
+                            'reftrantype' => $apacthdr_IV->trantype,
+                            'refauditno' => $apacthdr_IV->auditno,
+                            'refamount' => $apacthdr_IV->amount,
+                            // 'allocdate' => $request->apacthdr_actdate,//blank
+                            'reference' => $value['reference'],
+                            'allocamount' => $allocamount,
+                            'outamount' => $outamount,
+                            'balance' => $value['balance'],
+                            'paymode' => $request->apacthdr_paymode,
+                            'cheqdate' => $request->apacthdr_cheqdate,
+                            // 'recdate' => $request->apacthdr_recdate,
+                            'bankcode' => $request->apacthdr_bankcode,
+                            'suppcode' => $request->apacthdr_suppcode,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'recstatus' => 'OPEN'
+                        ]);
 
                     $apacthdr_IV = DB::table('finance.apacthdr')
                                 ->where('idno','=',$value['idno'])
@@ -544,7 +564,7 @@ use PDF;
                     ->where('docsource','=','AP')
                     ->where('doctrantype','=','PV')
                     ->where('docauditno','=',$apacthdr_->auditno)
-                    ->where('recstatus','!=','DELETE')
+                    ->where('recstatus','!=','CANCELLED')
                     ->sum('allocamount');
                 
                 DB::table('finance.apacthdr')
@@ -555,6 +575,12 @@ use PDF;
                     ]);
 
                 DB::commit();
+
+
+                $responce = new stdClass();
+                $responce->result = 'success';
+
+                return json_encode($responce);
             } catch (\Exception $e) {
                 DB::rollback();
 
@@ -760,6 +786,89 @@ use PDF;
            
     }
 
+    public function del_alloc(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $apalloc = DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->first();
+                
+
+            $allocamt = floatval($apalloc->allocamount);
+            $balance = floatval($apalloc->balance);
+            $curr_outamthdr = floatval($allocamt + $balance);
+
+            //update alloc amount asal IN/DN
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$apalloc->refauditno)
+                ->where('source','=',$apalloc->refsource)
+                ->where('trantype','=',$apalloc->reftrantype)
+                ->update([
+                    'outamount' => $curr_outamthdr
+                ]);
+            
+            //update status
+            DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED',
+                    ]);
+
+            //calculate total amount from detail
+            $totalAmount = DB::table('finance.apalloc')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('docsource','=',$apalloc->docsource)
+                ->where('doctrantype','=',$apalloc->doctrantype)
+                ->where('docauditno','=',$apalloc->docauditno)
+                ->where('recstatus','!=','CANCELLED')
+                ->sum('allocamount');
+            
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('source','=',$apalloc->docsource)
+                ->where('trantype','=',$apalloc->doctrantype)
+                ->where('auditno','=',$apalloc->docauditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'recstatus' => 'OPEN'
+                ]);
+
+            // $apacthdr_outamount = floatVal($request->apacthdr_outamount);
+            // $newoutamthdr = floatval($apacthdr_outamount + $allocamt);
+
+            // //then update to header CN
+            // DB::table('finance.apacthdr')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('source','=',$apalloc->docsource)
+            //     ->where('trantype','=',$apalloc->doctrantype)
+            //     ->where('auditno','=',$apalloc->docauditno)
+            //     ->update([
+            //         'outamount' => $newoutamthdr
+            //     ]);
+                
+            DB::commit();
+
+            $responce = new stdClass();
+            $responce->newoutamthdr = $totalAmount;
+
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+        
+    }
+
     public function get_alloc_table(Request $request){
         $alloc_table = DB::table('finance.apalloc')
                             ->where('compcode','=', session('compcode'))
@@ -767,7 +876,8 @@ use PDF;
                             ->where('trantype','=', 'AL')
                             ->where('docsource','=', 'AP')
                             ->where('doctrantype','=', 'PV')
-                            ->where('docauditno','=', $request->apacthdr_auditno);
+                            ->where('docauditno','=', $request->apacthdr_auditno)
+                            ->where('recstatus','!=','CANCELLED');
 
         $paginate = $alloc_table->paginate($request->rows);
 

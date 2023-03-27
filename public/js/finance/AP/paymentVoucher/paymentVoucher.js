@@ -373,8 +373,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
-			// refreshGrid("#jqGrid2",urlParam2);
-			populate_alloc_table();
+			refreshGrid("#jqGrid2",urlParam2);
 
 			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
 				disableForm('#formdata');
@@ -551,8 +550,7 @@ $(document).ready(function () {
 			
 		},'json').fail(function (data) {
 			alert(data.responseText);
-		}).done(function (data) {
-
+		}).success(function (data) {
 			hideatdialogForm(false);
 			
 			// if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
@@ -863,7 +861,15 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid2");
 
 	function checkbox_jqg2(cellvalue, options, rowObject){
-		return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;
+		if(options.gid == "jqGridAPAlloc"){
+			return '';
+		}else{
+			if(parseFloat(rowObject.allocamount) > 0){
+				return '';
+			}else{
+				return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;	
+			}
+		}
 	}
 	
 	function formatterCheckbox(cellvalue, options, rowObject){
@@ -887,7 +893,6 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	console.log(rowid);
 
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -958,7 +963,7 @@ $(document).ready(function () {
 				    callback: function (result) {
 				    	if(result == true){
 				    		param={
-				    			action: 'paymentVoucher_save',
+				    			action: 'del_alloc',
 								idno: selrowData('#jqGrid2').idno,
 								lineno_: selrowData('#jqGrid2').lineno_,
 								auditno: selrowData('#jqGrid2').auditno,
@@ -966,16 +971,16 @@ $(document).ready(function () {
 								trantype: selrowData('#jqGrid2').trantype,
 								//apacthdr_outamount: selrowData('#jqGrid2').apacthdr_outamount,
 				    		}
-				    		$.post( "./paymentVoucher_save/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()}, 
+				    		$.post( "./paymentVoucher/form?"+$.param(param),{oper:'del_alloc',"_token": $("#_token").val()}, 
 							function( data ){
 							},'json').fail(function(data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function(data){
 								mycurrency.formatOff();
-								$('#apacthdr_outamount').val(data.newoutamthdr);
+								$('#apacthdr_amount').val(data.newoutamthdr);
 								// $('#tot_Alloc').val(parseFloat($('#apacthdr_amount').val()) - parseFloat($('#apacthdr_outamount').val()));
 								mycurrency.formatOn();
-								refreshGrid("#jqGridAlloc",urlParam2);
+								refreshGrid("#jqGrid2",urlParam2);
 							});
 				    	}else{
         					//$("#jqGridPager2EditAll").show();
@@ -988,7 +993,11 @@ $(document).ready(function () {
 		id: "add_Alloc",
 		caption:"Add",cursor: "pointer",position: "last", 
 		buttonicon:"",
-		title:"Add Alloc"
+		title:"Add Alloc",
+		onClickButton: function(){
+			alloc_button_status('wait')
+			populate_alloc_table();
+		}
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveDetailLabel",
 		caption:"Save",cursor: "pointer",position: "last", 
@@ -1000,7 +1009,7 @@ $(document).ready(function () {
 		buttonicon:"",
 		title:"Cancel",
 		onClickButton: function(){
-			refreshGrid("#jqGridAlloc",urlParam2);
+			refreshGrid("#jqGrid2",urlParam2);
 			alloc_button_status('add');
 		}
 	// }).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -1789,7 +1798,7 @@ function populate_alloc_table(){
 				data.rows.forEach(function(elem) {
 					let allocamount = 0;
 					if(elem['can_alloc'] == false){
-						allocamount = elem['amount'];
+						allocamount = elem['allocamount'];
 					}
 
 					$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
@@ -1802,7 +1811,7 @@ function populate_alloc_table(){
 							outamount:elem['outamount'],
 							allocamount: allocamount,
 							balance:parseFloat(elem['outamount']) - parseFloat(allocamount),
-						
+							can_alloc:elem['can_alloc']
 						}
 					);
 				});
