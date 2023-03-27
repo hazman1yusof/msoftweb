@@ -153,7 +153,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Payment Voucher Detail</h5>
+					<h5>Allocation</h5>
 				</div>
 			</div>
 			<div id="jqGrid3_panel" class="panel-collapse collapse">
@@ -353,7 +353,7 @@ i.fa {
 			
 
 		<div class='panel panel-info' id="pvpd_detail">
-			<div class="panel-heading">Payment Voucher/Deposit Detail</div>
+			<div class="panel-heading">Allocation</div>
 				<div class="panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
 						<div id="jqGrid2_c" class='col-md-12'>

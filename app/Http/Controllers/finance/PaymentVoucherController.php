@@ -200,7 +200,7 @@ use PDF;
                             $obj_apacthdr->trantype = $obj_apalloc->trantype;
                             $obj_apacthdr->auditno = $obj_apalloc->auditno;
                             $obj_apacthdr->lineno_ = $obj_apalloc->lineno_;
-                            // $obj_apacthdr->idno = $obj_apalloc->idno;
+                             $obj_apacthdr->idno = $obj_apalloc->idno;
 
                             if(!in_array($obj_apacthdr, $return_array)){
                                 array_push($return_array,$obj_apacthdr);
@@ -315,6 +315,10 @@ use PDF;
                     $outamount = floatval($value['outamount']);
                     $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                     $newoutamount_IV = floatval($outamount - $allocamount);
+
+                    if($allocamount == 0 || $value['can_alloc'] == 'false'){
+                        continue;
+                    }
 
                     $lineno_ = DB::table('finance.apalloc') 
                         ->where('compcode','=',session('compcode'))
