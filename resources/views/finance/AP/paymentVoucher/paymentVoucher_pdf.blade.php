@@ -93,7 +93,8 @@ hr {
 							<tr >
 								<td> <!-- invoice date -->
 									@foreach ($apalloc as $obj)
-									<p>{{$obj->allocdate}}</p>
+									<p>{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->allocdate)->format('d-m-Y')}}</p>
+									<!-- <p>{{$obj->allocdate}}</p> -->
 									@endforeach
 								</td>
 								<td> <!-- invoice no -->

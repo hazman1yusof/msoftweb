@@ -315,6 +315,7 @@ use PDF;
                                 ->first();
 
                     $outamount = floatval($value['outamount']);
+                    $balance = floatval($value['balance']);
                     $allocamount = floatval($value['outamount']) - floatval($value['balance']);
                     $newoutamount_IV = floatval($outamount - $allocamount);
 
@@ -353,6 +354,7 @@ use PDF;
                             'reference' => $value['reference'],
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,
+                            'balance' => $balance,
                             'paymode' => $request->apacthdr_paymode,
                             'cheqdate' => $request->apacthdr_cheqdate,
                             // 'recdate' => $request->apacthdr_recdate,
@@ -648,10 +650,11 @@ use PDF;
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
                     ->update([
-                        'recdate' => $idno_obj['date'],
+                        'recdate' => $apacthdr->postdate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
-                        'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'postuser' => session('username')
                     ]);
 
                 $this->gltran($idno_obj['idno']);
@@ -663,8 +666,8 @@ use PDF;
                     ->where('doctrantype','=', $apacthdr->trantype)
                     ->where('docauditno','=', $apacthdr->auditno)
                     ->update([
-                        'allocdate' => $idno_obj['date'],
-                        'recstatus' => 'POSTED',
+                        'allocdate' => $apacthdr->postdate,
+                       // 'recstatus' => 'POSTED',
                         'lastuser' => session('username'),
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -811,7 +814,7 @@ use PDF;
                 ->update([
                     'outamount' => $curr_outamthdr
                 ]);
-            
+            //dd($request->idno);
             //update status
             DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
@@ -897,7 +900,7 @@ use PDF;
                             ->first();
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->recdate);
+        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
         $credit_obj = $this->gltran_frombank($apacthdr_obj->bankcode);
         $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode,$apacthdr_obj->trantype);
@@ -914,7 +917,7 @@ use PDF;
                 'trantype' => $apacthdr_obj->trantype,
                 'reference' => $apacthdr_obj->document,
                 'description' => $apacthdr_obj->bankcode.'</br>'.$apacthdr_obj->cheqno,
-                'postdate' => $apacthdr_obj->recdate,
+                'postdate' => $apacthdr_obj->postdate,
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
                 'drcostcode' => $debit_obj->costcode,
@@ -990,7 +993,7 @@ use PDF;
                             ->first();
 
         //amik yearperiod dari delordhd
-        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->recdate);
+        $yearperiod = defaultController::getyearperiod_($apacthdr_obj->postdate);
 
         $credit_obj = $this->gltran_frombank($apacthdr_obj->bankcode);
         $debit_obj = $this->gltran_fromsupp($apacthdr_obj->suppcode,$apacthdr_obj->trantype);
@@ -1108,8 +1111,8 @@ use PDF;
 
         $apalloc = DB::table('finance.apalloc')
             ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
-
-            ->where('auditno','=',$auditno)
+            ->where('docauditno','=',$auditno)
+            ->where('recstatus', '!=', 'CANCELLED')
             ->get();
 
 

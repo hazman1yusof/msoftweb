@@ -447,13 +447,13 @@ $(document).ready(function () {
 
 		for (var i = 0; i < ids.length; i++) {
 			var data = $('#jqGrid_selection').jqGrid('getRowData',ids[i]);
-			if(data.apacthdr_recdate == ''){
+			if(data.apacthdr_postdate == ''){
 				alert("Please insert Post Date");
 				return false;
 			}
 	    	idno_array.push({
 	    		idno:data.apacthdr_idno,
-	    		date:data.apacthdr_recdate
+	    		date:data.apacthdr_postdate
 	    	});
 	    }
 	    
