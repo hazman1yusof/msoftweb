@@ -775,24 +775,6 @@ class DebitNoteController extends defaultController
                     ->where('t.auditno','=',$auditno)
                     ->get();
         
-        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
-                    ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
-                    'u.description as uom_desc', 
-                    'd.debtorcode as debt_debtcode','d.name as debt_name', 
-                    'm.description as chgmast_desc')
-                    ->leftJoin('hisdb.chgmast as m', 'b.chggroup', '=', 'm.chgcode')
-                    // ->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-                    ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-                    ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-                    ->where('auditno','=',$auditno)
-                    ->get();
-        
-        $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
-                    ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
-                    ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
-                    ->where('auditno','=',$auditno)
-                    ->get();
-        
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
@@ -822,10 +804,10 @@ class DebitNoteController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        $pdf = PDF::loadView('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','dbactdtl','totamt_eng','company','sysparam','title'));
+        $pdf = PDF::loadView('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
         return $pdf->stream();
         
-        return view('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','dbactdtl','totamt_eng','company','sysparam','title'));
+        return view('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','title','dbactdtl','company','sysparam','totamt_eng'));
         
     }
     

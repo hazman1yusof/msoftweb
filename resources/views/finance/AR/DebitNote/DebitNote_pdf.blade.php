@@ -24,6 +24,11 @@ hr {
     border:none;
 }
 
+.tab {
+    display: inline-block;
+    margin-left: 50px;
+}
+
 @endsection
 
 @section('body')
@@ -42,46 +47,22 @@ hr {
                     </div>
                 </div>
                 <hr>
-                <!-- <div class="card">
-                    <div class="card-body">
-                        <p>Debtor Code: {{$dbacthdr->debtorcode}}</p>
-                    </div>
-                </div> -->
-                <div class="container">
-                    <!-- <div class="row">
-                        <div class="col-md-8">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p class="card-text">Name: {{$dbacthdr->debt_name}}</p>
-                                    <p class="card-text">Address: {{$dbacthdr->cust_address1}} 
-                                    <br>{{$dbacthdr->cust_address2}} {{$dbacthdr->cust_address3}} {{$dbacthdr->cust_address4}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <p class="card-text">Document No: DN-{{$dbacthdr->auditno}}</p>
-                                    <p class="card-text">Date: {{$dbacthdr->entrydate}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <table class="table table-borderless tdnoborder">
-                        <tr ><td><p>Debtor Code: {{$dbacthdr->debtorcode}}</p></td></tr>
-                        <tr>
-                            <td width="70%">
-                                <p class="card-text">Name: {{$dbacthdr->debt_name}}</p>
-                                <p class="card-text">Address: {{$dbacthdr->cust_address1}} 
-                                <br>{{$dbacthdr->cust_address2}} {{$dbacthdr->cust_address3}} {{$dbacthdr->cust_address4}}</p>
-                            </td>
-                            <td>
-                                <p class="card-text">Document No: DN-{{$dbacthdr->auditno}}</p>
-                                <p class="card-text">Date: {{$dbacthdr->entrydate}}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+                <table class="table table-borderless tdnoborder">
+                    <tr><td><p>Debtor Code: {{$dbacthdr->debtorcode}}</p></td></tr>
+                    <tr>
+                        <td width="70%">
+                            <p>Name: {{$dbacthdr->debt_name}}</p>
+                            <p>Address: {{$dbacthdr->cust_address1}} <br> 
+                                        <span class="tab"> {{$dbacthdr->cust_address2}} <br> 
+                                        {{$dbacthdr->cust_address3}} <br> 
+                                        {{$dbacthdr->cust_address4}}</p>
+                        </td>
+                        <td>
+                            <p>Document No: DN-{{$dbacthdr->auditno}}</p>
+                            <p>Date: {{$dbacthdr->entrydate}}</p>
+                        </td>
+                    </tr>
+                </table>
                 <hr>
                 <div class="products p-2">
                     <table class="table table-borderless">
@@ -92,14 +73,16 @@ hr {
                                 <td><b>AMOUNT</b></td>
                             </tr>
                             <tr>
-                                <!-- Remark -->
+                                <!-- REMARKS,DEPT,DATE -->
 								<td colspan="6">
-									<p>Remark: {{$dbacthdr->remark}}</p>
+									<p>REMARKS: {{$dbacthdr->remark}}</p>
                                     @foreach ($dbactdtl as $obj)
                                     <p>{{$obj->dept_description}} &nbsp; &nbsp; {{$obj->entrydate}}</p>
                                     @endforeach
 								</td>
-                                <td> <!-- amount -->
+                                <!-- AMOUNT -->
+                                <td>
+                                    <br>
                                     @foreach ($dbactdtl as $obj)
                                         <p>{{number_format($obj->amount,2)}}</p>
                                     @endforeach
@@ -131,7 +114,11 @@ hr {
                             <p>3. All cheque / money order should be crossed and payable to <br> 
                                 &nbsp; {{$company->name}} / ACCOUNT NO: {{$sysparam->pvalue2}}.
                             </p>
-                            <p></p>
+                            <p>4. This invoice must be paid within 14 days after its date of issue.</p>
+                            <p>5. Please ignore this invoice if payment has been made.</p>
+                            <p>6. Please inform us with payment proof for EFT / direct payment.</p>
+                            <br>
+                            <p>THIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.</p>
                         </div>
                     </div>
                 </div>
