@@ -861,8 +861,8 @@ class SalesOrderController extends defaultController
         }
 
         $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
-        return $pdf->stream();      
-
+    
+        return $pdf->stream();
         
         return view('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     }

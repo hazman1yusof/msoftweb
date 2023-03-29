@@ -20,6 +20,10 @@ hr {
     font-size: 14px
 }
 
+.tdnoborder td{
+    border:none;
+}
+
 @endsection
 
 @section('body')
@@ -38,13 +42,13 @@ hr {
                     </div>
                 </div>
                 <hr>
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-body">
                         <p>Debtor Code: {{$dbacthdr->debtorcode}}</p>
                     </div>
-                </div>
+                </div> -->
                 <div class="container">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-8">
                             <div class="card">
                                 <div class="card-body">
@@ -62,7 +66,21 @@ hr {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+                    <table class="table table-borderless tdnoborder">
+                        <tr ><td><p>Debtor Code: {{$dbacthdr->debtorcode}}</p></td></tr>
+                        <tr>
+                            <td width="70%">
+                                <p class="card-text">Name: {{$dbacthdr->debt_name}}</p>
+                                <p class="card-text">Address: {{$dbacthdr->cust_address1}} 
+                                <br>{{$dbacthdr->cust_address2}} {{$dbacthdr->cust_address3}} {{$dbacthdr->cust_address4}}</p>
+                            </td>
+                            <td>
+                                <p class="card-text">Document No: DN-{{$dbacthdr->auditno}}</p>
+                                <p class="card-text">Date: {{$dbacthdr->entrydate}}</p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <hr>
                 <div class="products p-2">
@@ -111,7 +129,7 @@ hr {
                             <p>1. Please quote document number when making payments.</p>
                             <p>2. Recipient Copy is to be returned with payment.</p>
                             <p>3. All cheque / money order should be crossed and payable to <br> 
-                                &nbsp; {{$company->name}} / ACCOUNT NO: .
+                                &nbsp; {{$company->name}} / ACCOUNT NO: {{$sysparam->pvalue2}}.
                             </p>
                             <p></p>
                         </div>

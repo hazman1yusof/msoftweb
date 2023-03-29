@@ -46,6 +46,7 @@
           word-wrap: break-word;
           margin: 0.3em;
         }
+       @yield('style')
     </style>
 
     <title>@yield('title')</title>

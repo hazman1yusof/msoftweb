@@ -14,6 +14,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate: function ($form) {
 			if (errorField.length > 0) {
+				console.log(errorField);
 				show_errors(errorField,'#formdata');
 				return [{
 					element: $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
@@ -71,13 +72,13 @@ $(document).ready(function () {
 				}if (oper != 'add') {
 					dialog_deptcode.check(errorField);
 					dialog_billtypeSO.check(errorField);
-					dialog_mrn.check(errorField);
+					// dialog_mrn.check(errorField);
 					dialog_CustomerSO.check(errorField);
 					// dialog_approvedbySO.check(errorField);
 				} if (oper != 'view') {
 					dialog_deptcode.on();
 					dialog_billtypeSO.on();
-					dialog_mrn.on();
+					// dialog_mrn.on();
 					dialog_CustomerSO.on();
 					// dialog_approvedbySO.on();
 				}
@@ -105,7 +106,7 @@ $(document).ready(function () {
 				$("#formdata a").off();
 				dialog_deptcode.off();
 				dialog_billtypeSO.off();
-				dialog_mrn.off();
+				// dialog_mrn.off();
 				dialog_CustomerSO.off();
 				// dialog_approvedbySO.off();
 				$(".noti").empty();
@@ -860,7 +861,7 @@ $(document).ready(function () {
 		beforeSubmit: function (postdata, rowid) {
 			dialog_deptcode.check(errorField);
 			dialog_billtypeSO.check(errorField);
-			dialog_mrn.check(errorField);
+			// dialog_mrn.check(errorField);
 			dialog_CustomerSO.check(errorField);
 			// dialog_approvedbySO.check(errorField);
 		}
@@ -1329,7 +1330,7 @@ $(document).ready(function () {
 		unsaved = false;
 		dialog_deptcode.off();
 		dialog_billtypeSO.off();
-		dialog_mrn.off();
+		// dialog_mrn.off();
 		dialog_CustomerSO.off();
 		// dialog_approvedbySO.off();
 
@@ -1344,7 +1345,7 @@ $(document).ready(function () {
 			dialog_billtypeSO.on();
 			dialog_CustomerSO.on();
 			// dialog_approvedbySO.on();
-			dialog_mrn.on();
+			// dialog_mrn.on();
 		}
 	});
 
@@ -1356,7 +1357,7 @@ $(document).ready(function () {
 		dialog_billtypeSO.on();
 		dialog_CustomerSO.on();
 		// dialog_approvedbySO.on();
-		dialog_mrn.on();
+		// dialog_mrn.on();
 
 		enableForm('#formdata');
 		rdonly('#formdata');
@@ -1604,14 +1605,14 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE','1']
 			},
 			ondblClickRow: function () {
-				$('#db_mrn').focus();
+				// $('#db_mrn').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_mrn').focus();
+					// $('#db_mrn').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1626,39 +1627,39 @@ $(document).ready(function () {
 	);
 	dialog_billtypeSO.makedialog();
 
-	var dialog_mrn = new ordialog(
-		'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
-		{
-			colModel: [
-				{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
-				{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
-			],
-			urlParam: {
-				filterCol:['compcode','ACTIVE'],
-				filterVal:['session.compcode','1']
-			},
-			ondblClickRow: function () {
-				$('#db_termdays').focus();
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#db_termdays').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		}, {
-			title: "Select MRN",
-			open: function(){
-				dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
-				dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
-			}
-		},'none','radio','tab'
-	);
-	dialog_mrn.makedialog();
+	// var dialog_mrn = new ordialog(
+	// 	'dialog_mrn', 'hisdb.pat_mast', '#db_mrn', errorField,
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'MRN', name: 'MRN', width: 200, classes: 'pointer', canSearch: true, or_search: true , formatter: padzero, unformat: unpadzero },
+	// 			{ label: 'Name', name: 'name', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','ACTIVE'],
+	// 			filterVal:['session.compcode','1']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			$('#db_termdays').focus();
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#db_termdays').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	}, {
+	// 		title: "Select MRN",
+	// 		open: function(){
+	// 			dialog_mrn.urlParam.filterCol=['recstatus', 'ACTIVE'];
+	// 			dialog_mrn.urlParam.filterVal=['ACTIVE', '1'];
+	// 		}
+	// 	},'none','radio','tab'
+	// );
+	// dialog_mrn.makedialog();
 
 	// var dialog_approvedbySO = new ordialog(
 	// 	'approvedby',['material.authorise'],"#db_approvedby",errorField,

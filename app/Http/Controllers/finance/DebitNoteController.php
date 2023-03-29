@@ -802,7 +802,7 @@ class DebitNoteController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('source','=','HIS')
                     ->where('trantype','=','BANK')
-                    ->get();
+                    ->first();
         
         $totamount_expld = explode(".", (float)$dbacthdr->amount);
         
