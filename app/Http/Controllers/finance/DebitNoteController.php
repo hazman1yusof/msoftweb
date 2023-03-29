@@ -743,68 +743,92 @@ class DebitNoteController extends defaultController
             }
         }
     }
-
+    
     public function showpdf(Request $request){
+        
         $auditno = $request->auditno;
         if(!$auditno){
             abort(404);
         }
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m')
-            ->select('h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
-            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-
-            ->where('auditno','=',$auditno)
-            ->first();
-
-        if ( $dbacthdr->recstatus == "OPEN") {
-            $title = "DRAFT INVOICE";
-        } elseif ( $dbacthdr->recstatus == "POSTED"){
-            $title = " INVOICE";
+                    ->select('h.idno', 'h.compcode', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.entrydate', 'h.debtortype', 'h.debtorcode', 'h.remark', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
+                    ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
+                    ->where('h.compcode',session('compcode'))
+                    ->where('h.source','=','PB')
+                    ->where('h.trantype','=','DN')
+                    ->where('h.auditno','=',$auditno)
+                    ->first();
+        
+        if ($dbacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($dbacthdr->recstatus == "POSTED"){
+            $title = "DEBIT NOTE";
         }
-
+        
+        $dbactdtl = DB::table('debtor.dbactdtl as t')
+                    ->select('t.idno', 't.compcode', 't.source', 't.trantype', 't.auditno', 't.lineno_', 't.entrydate', 't.document', 't.amount', 't.paymode', 't.deptcode', 't.recstatus', 't.GSTCode', 't.AmtB4GST', 't.unit', 't.tot_gst', 'd.description as dept_description')
+                    ->leftJoin('sysdb.department as d', 't.deptcode', '=', 'd.deptcode')
+                    ->where('t.compcode',session('compcode'))
+                    ->where('t.source','=','PB')
+                    ->where('t.trantype','=','DN')
+                    ->where('t.auditno','=',$auditno)
+                    ->get();
+        
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
-            'u.description as uom_desc', 
-            'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc')
-            ->leftJoin('hisdb.chgmast as m', 'b.chggroup', '=', 'm.chgcode')
-            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-
-            ->where('auditno','=',$auditno)
-            ->get();
-
+                    ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
+                    'u.description as uom_desc', 
+                    'd.debtorcode as debt_debtcode','d.name as debt_name', 
+                    'm.description as chgmast_desc')
+                    ->leftJoin('hisdb.chgmast as m', 'b.chggroup', '=', 'm.chgcode')
+                    // ->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
+                    ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
+                    ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
+                    ->where('auditno','=',$auditno)
+                    ->get();
+        
         $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
-            ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
-
-            ->where('auditno','=',$auditno)
-            ->get();
-
+                    ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
+                    ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
+                    ->where('auditno','=',$auditno)
+                    ->get();
+        
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-
-        $totamount_expld = explode(".", (float)$dbacthdr->amount);
-
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
-
-        if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        }
-
-        $pdf = PDF::loadView('finance.DebitNote.DebitNote_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
-        return $pdf->stream();      
-
         
-        return view('finance.DebitNote.DebitNote_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        $sysparam = DB::table('sysdb.sysparam')
+                    ->select('pvalue2')
+                    ->where('compcode',session('compcode'))
+                    ->where('source','=','HIS')
+                    ->where('trantype','=','BANK')
+                    ->get();
+        
+        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])." RINGGIT ";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        $pdf = PDF::loadView('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','dbactdtl','totamt_eng','company','sysparam','title'));
+        return $pdf->stream();
+        
+        return view('finance.AR.DebitNote.DebitNote_pdf',compact('dbacthdr','dbactdtl','totamt_eng','company','sysparam','title'));
+        
     }
-
+    
     public function gltran_fromdept($deptcode){
         $obj = DB::table('sysdb.department')
                 ->select('costcode')
