@@ -29,6 +29,10 @@ hr {
     margin-left: 50px;
 }
 
+.tab2 {
+    margin-left: 15px;
+}
+
 @endsection
 
 @section('body')
@@ -93,13 +97,12 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                                <td colspan="8">
-                                    <p><b>Ringgit Malaysia</b></p>
-                                    <p><i>{{$totamt_eng}}</i></p>
+                                <td colspan="7"></td>
+                                <td colspan="3">
+                                    <p><b><span class="tab">Total</b></p>
                                 </td>
                                 <td colspan="2">
-                                    <p><b>Total Amount</b></p>
-                                    <p>{{number_format($dbacthdr->amount,2)}}</p>
+                                    <p><span class="tab2">{{number_format($dbacthdr->amount,2)}}</p>
                                 </td>
                             </tr>		
                         </tbody>
