@@ -25,11 +25,23 @@ hr {
 }
 
 .tab {
-    display: inline-block;
-    margin-left: 50px;
+    margin-left: 39px;
 }
 
 .tab2 {
+    margin-left: 27px;
+}
+
+.tab3 {
+    display: inline-block;
+    margin-left: 88px;
+}
+
+.tab4 {
+    margin-left: 50px;
+}
+
+.tab5 {
     margin-left: 15px;
 }
 
@@ -52,18 +64,19 @@ hr {
                 </div>
                 <hr>
                 <table class="table table-borderless tdnoborder">
-                    <tr><td><p>Debtor Code: {{$dbacthdr->debtorcode}}</p></td></tr>
+                    <tr><td><p>Debtor Code &nbsp; : &nbsp; {{$dbacthdr->debtorcode}}</p></td></tr>
                     <tr>
                         <td width="70%">
-                            <p>Name: {{$dbacthdr->debt_name}}</p>
-                            <p>Address: {{$dbacthdr->cust_address1}} <br> 
-                                        <span class="tab"> {{$dbacthdr->cust_address2}} <br> 
+                            <p>Name <span class="tab"> : &nbsp; {{$dbacthdr->debt_name}}</p>
+                            <p>Address <span class="tab2"> : &nbsp; {{$dbacthdr->cust_address1}} <br> 
+                                        <span class="tab3"> {{$dbacthdr->cust_address2}} <br> 
                                         {{$dbacthdr->cust_address3}} <br> 
-                                        {{$dbacthdr->cust_address4}}</p>
+                                        {{$dbacthdr->cust_address4}} 
+                            </p>
                         </td>
                         <td>
-                            <p>Document No: DN-{{$dbacthdr->auditno}}</p>
-                            <p>Date: {{$dbacthdr->entrydate}}</p>
+                            <p>Document No &nbsp; : &nbsp; DN-{{$dbacthdr->auditno}}</p>
+                            <p>Date <span class="tab4"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
                         </td>
                     </tr>
                 </table>
@@ -81,7 +94,7 @@ hr {
 								<td colspan="6">
 									<p>REMARKS: {{$dbacthdr->remark}}</p>
                                     @foreach ($dbactdtl as $obj)
-                                    <p>{{$obj->dept_description}} &nbsp; &nbsp; {{$obj->entrydate}}</p>
+                                    <p>{{$obj->dept_description}} &nbsp; &nbsp; ({{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}})</p>
                                     @endforeach
 								</td>
                                 <!-- AMOUNT -->
@@ -94,15 +107,16 @@ hr {
                             </tr>					
                         </tbody>
                     </table>
-                    <table class="table table-borderless">
+                    <hr>
+                    <table class="table table-borderless tdnoborder">
                         <tbody>
                             <tr>
                                 <td colspan="7"></td>
                                 <td colspan="3">
-                                    <p><b><span class="tab">Total</b></p>
+                                    <p><b><span class="tab3">Total</b></p>
                                 </td>
                                 <td colspan="2">
-                                    <p><span class="tab2">{{number_format($dbacthdr->amount,2)}}</p>
+                                    <p><span class="tab5">{{number_format($dbacthdr->amount,2)}}</p>
                                 </td>
                             </tr>		
                         </tbody>
@@ -110,12 +124,12 @@ hr {
                     <hr>
                     <div class="card">
                         <div class="card-body">
-                            <p>Print Date/Time/User: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}} &nbsp; {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} &nbsp; BY {{session('username')}}</p>
+                            <p>Print Date/Time/User:&nbsp; {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s')}} BY: {{session('username')}}</p>
                             <p>Note:</p>
                             <p>1. Please quote document number when making payments.</p>
                             <p>2. Recipient Copy is to be returned with payment.</p>
                             <p>3. All cheque / money order should be crossed and payable to <br> 
-                                &nbsp; {{$company->name}} / ACCOUNT NO: {{$sysparam->pvalue2}}.
+                                &nbsp; &nbsp; {{$company->name}} / ACCOUNT NO: {{$sysparam->pvalue2}}.
                             </p>
                             <p>4. This invoice must be paid within 14 days after its date of issue.</p>
                             <p>5. Please ignore this invoice if payment has been made.</p>
