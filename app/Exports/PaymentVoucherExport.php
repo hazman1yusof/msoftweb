@@ -17,11 +17,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\FromQuery;
+// use Maatwebsite\Excel\Concerns\FromQuery;FromQuery,
 use DateTime;
 use Carbon\Carbon;
 
-class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting, FromQuery, FromCollection
+class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidths, WithColumnFormatting,  FromCollection
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -40,37 +40,43 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
 
     public function collection()
     {
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->select('auditno', 'trantype', 'actdate','suppcode','document')
-                        ->whereBetween('actdate',[$this->datefr,$this->dateto])
+        $apacthdr = DB::table('finance.apacthdr as h')
+                        ->select('h.auditno as AUDITNO', 'h.trantype as TT', 'h.actdate as ACTDATE', 'h.suppcode as SUPPCODE', 's.Name as NAME', 'h.document as DOCUMENT')
+                        ->whereBetween('h.actdate',[$this->datefr,$this->dateto])
+                        ->leftJoin('material.supplier as s', function($join){
+                            $join = $join->on('s.SuppCode', '=', 'h.suppcode');
+                            $join = $join->on('s.compcode', '=', 'h.compcode');
+                        })
+                        ->where('h.compcode','=',session('compcode'))
+                        ->where('h.trantype','=','PV')
+                        ->orWhere('h.trantype','=','PD')
+                        ->orderBy('h.auditno','DESC')
                         ->get();
-
         return $apacthdr;
     }
 
-    public function query()
-    {
+    // public function query()
+    // {
 
-        $apacthdr_obj = DB::table('finance.apacthdr')
-                    ->select('apacthdr.auditno', 'apacthdr.trantype', 'apacthdr.actdate', 'apacthdr.suppcode', 'supplier.Name', 'apacthdr.document')
-                    ->whereBetween('apacthdr.actdate',[$this->datefr,$this->dateto])
-                    ->leftJoin('material.supplier', function($join){
-                        $join = $join->on('supplier.SuppCode', '=', 'apacthdr.suppcode');
-                        $join = $join->on('supplier.compcode', '=', 'apacthdr.compcode');
-                    })
-                    ->where('apacthdr.compcode','=',session('compcode'))
-                    ->where('apacthdr.trantype','=','PV')
-                    ->orWhere('apacthdr.trantype','=','PD')
-                    ->orderBy('apacthdr.auditno','DESC');
+    //     $apacthdr_obj = DB::table('finance.apacthdr')
+    //                 ->select('apacthdr.auditno', 'apacthdr.trantype', 'apacthdr.actdate', 'apacthdr.suppcode', 'supplier.Name', 'apacthdr.document')
+    //                 ->whereBetween('apacthdr.actdate',[$this->datefr,$this->dateto])
+    //                 ->leftJoin('material.supplier', function($join){
+    //                     $join = $join->on('supplier.SuppCode', '=', 'apacthdr.suppcode');
+    //                     $join = $join->on('supplier.compcode', '=', 'apacthdr.compcode');
+    //                 })
+    //                 ->where('apacthdr.compcode','=',session('compcode'))
+    //                 ->where('apacthdr.trantype','=','PV')
+    //                 ->orWhere('apacthdr.trantype','=','PD')
+    //                 ->orderBy('apacthdr.auditno','DESC');
 
-        return $apacthdr_obj;
-    }
-
+    //     return $apacthdr_obj;
+    // }
 
     public function headings(): array
     {
         return [
-            'Auditno','TT', 'Actdate','Suppcode', 'Name', 'Document', 
+            'AUDITNO','TT', 'ACTDATE','SUPPCODE', 'NAME', 'DOCUMENT', 
         ];
     }
 
@@ -82,32 +88,20 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
             'C' => 15,
             'D' => 15,
             'E' => 40, 
-            'D' => 15,
+            'F' => 15,
                
         ];
     }
-
-    // public function map($apacthdr): array
-    // {
-    //     return [
-           
-    //       //  Date::dateTimeToExcel($apacthdr->Carbon::now("Asia/Kuala_Lumpur")),
-    //     ];
-    // }
 
     public function columnFormats(): array
     {
         return [
            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-
         ];
     }
 
-
     public function registerEvents(): array
     {
-
-
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting
@@ -126,6 +120,15 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
                     ],
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_RIGHT
+                    ]
+                ];
+
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
                     ]
                 ];
 
@@ -150,10 +153,8 @@ class PaymentVoucherExport implements  WithEvents, WithHeadings, WithColumnWidth
                 // assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
-
+                $event->sheet->getStyle('A7:F7')->applyFromArray($style_columnheader);
             },
         ];
     }
-
-
 }

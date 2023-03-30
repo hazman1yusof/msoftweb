@@ -17,11 +17,13 @@
 
 	    <tr>
 	      <td colspan="5" rowspan="4" style="padding: 0">
-	      		<p><b>Address To:</b></p>
-				<p>{{$company->address1}}</p>
-	      		<p>{{$company->address2}}</p>
-	      		<p>{{$company->address3}}</p>
-	      		<p>{{$company->address4}}</p>
+		  		<p><b>Address To.</b></p> <br>
+				<p>{{$supplier->SuppCode}}</p>
+				<p>{{$supplier->Name}}</p>
+	      		<p>{{$supplier->Addr1}}</p>
+	      		<p>{{$supplier->Addr2}}</p>
+	      		<p>{{$supplier->Addr3}}</p>
+	      		<p>{{$supplier->Addr4}}</p>
 	      </td>
 	      <td colspan="2"><b>Purchase No.</b></td>
 		  <td colspan="3">{{$purordhd->prdept}}{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}</td>

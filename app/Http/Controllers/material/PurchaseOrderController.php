@@ -937,6 +937,11 @@ class PurchaseOrderController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
 
+        $supplier = DB::table('material.supplier')
+            ->where('compcode','=',session('compcode'))
+            ->where('SuppCode','=',$purordhd->suppcode)
+            ->first();
+
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
@@ -947,11 +952,11 @@ class PurchaseOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company'));
+        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier'));
         return $pdf->stream();      
 
         
-        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company'));
+        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier'));
     }
 
      // public function toGetAllpurreqhd($recno){

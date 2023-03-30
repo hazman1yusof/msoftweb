@@ -85,8 +85,6 @@ class SupplierExport implements FromCollection, WithEvents, WithHeadings, WithCo
 
     public function registerEvents(): array
     {
-
-
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting

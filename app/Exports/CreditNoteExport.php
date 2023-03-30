@@ -39,10 +39,11 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
 
     public function collection()
     {
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->select('auditno','actdate','suppcode','document','deptcode')
-                        ->whereBetween('actdate',[$this->datefr,$this->dateto])
-                        ->get();
+        $apacthdr = DB::table('finance.apacthdr as h')
+                    ->select('h.auditno as AUDITNO','h.actdate as ACTDATE','h.suppcode as SUPPCODE','s.name as NAME','h.document as DOCUMENT','h.deptcode as DEPTCODE')
+                    ->leftJoin('material.supplier as s', 's.SuppCode', '=', 'h.suppcode')
+                    ->whereBetween('h.actdate',[$this->datefr,$this->dateto])
+                    ->get();
 
         return $apacthdr;
     }
@@ -50,7 +51,7 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
     public function headings(): array
     {
         return [
-            'Auditno','Actdate','Suppcode','Document','Deptcode'
+            'AUDITNO','ACTDATE','SUPPCODE','NAME','DOCUMENT','DEPTCODE'
         ];
     }
 
@@ -59,11 +60,11 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
         return [
             'A' => 15,
             'B' => 10,    
-            'C' => 30,
-            'D' => 20,
+            'C' => 10,
+            'D' => 30,
             'E' => 30, 
-            'D' => 20,
-               
+            'F' => 20,
+            'G' => 20,
         ];
     }
 
@@ -97,6 +98,15 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
                     ]
                 ];
 
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
+                    ]
+                ];
+
                 // at row 1, insert 2 rows
                 $event->sheet->insertNewRowBefore(1, 6);
 
@@ -118,15 +128,7 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
                 // assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
-
-                // $drawing = new Drawing();
-                // $drawing->setName('Logo');
-                // $drawing->setDescription('This is my logo');
-                // $drawing->setPath(public_path('/img/logo.jpg'));
-                // $drawing->setHeight(80);
-                // $drawing->setCoordinates('E1');
-                // $drawing->setOffsetX(40);
-                // $drawing->setWorksheet($event->sheet->getDelegate());
+                $event->sheet->getStyle('A7:F7')->applyFromArray($style_columnheader);
 
             },
         ];

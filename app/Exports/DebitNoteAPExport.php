@@ -12,7 +12,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-//use Maatwebsite\Excel\Concerns\WithMapping;, WithMapping
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -40,10 +39,11 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
 
     public function collection()
     {
-        $apacthdr = DB::table('finance.apacthdr')
-                        ->select('auditno','actdate','suppcode','document','deptcode')
-                        ->whereBetween('actdate',[$this->datefr,$this->dateto])
-                        ->get();
+        $apacthdr = DB::table('finance.apacthdr as h')
+                    ->select('h.auditno as AUDITNO','h.actdate as ACTDATE','h.suppcode as SUPPCODE','s.name as NAME','h.document as DOCUMENT','h.deptcode as DEPTCODE')
+                    ->leftJoin('material.supplier as s', 's.SuppCode', '=', 'h.suppcode')
+                    ->whereBetween('h.actdate',[$this->datefr,$this->dateto])
+                    ->get();
 
         return $apacthdr;
     }
@@ -51,7 +51,7 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
     public function headings(): array
     {
         return [
-            'Auditno','Actdate','Suppcode','Document','Deptcode'
+            'AUDITNO','ACTDATE','SUPPCODE','NAME','DOCUMENT','DEPTCODE'
         ];
     }
 
@@ -60,39 +60,24 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
         return [
             'A' => 15,
             'B' => 10,    
-            'C' => 30,
-            'D' => 20,
+            'C' => 10,
+            'D' => 30,
             'E' => 30, 
-            'D' => 20,
+            'F' => 20,
+            'G' => 20,
                
         ];
     }
 
-    // public function map($apacthdr): array
-    // {
-    //     return [
-           
-    //       //  Date::dateTimeToExcel($apacthdr->Carbon::now("Asia/Kuala_Lumpur")),
-    //     ];
-    // }
-
     public function columnFormats(): array
     {
         return [
-            
-            //  'B1' => 'dd-mm-yyyy',
-           // 'F2' => NumberFormat::FORMAT_DATE_DDMMYYYY,
            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-
-          
         ];
     }
 
-
     public function registerEvents(): array
     {
-
-
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting
@@ -111,6 +96,15 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
                     ],
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_RIGHT
+                    ]
+                ];
+
+                $style_columnheader = [
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER
                     ]
                 ];
 
@@ -135,6 +129,7 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
                 // assign cell styles
                 $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
                 $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
+                $event->sheet->getStyle('A7:F7')->applyFromArray($style_columnheader);
 
                 // $drawing = new Drawing();
                 // $drawing->setName('Logo');
@@ -148,6 +143,4 @@ class DebitNoteAPExport implements FromCollection, WithEvents, WithHeadings, Wit
             },
         ];
     }
-
-
 }

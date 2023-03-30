@@ -961,6 +961,7 @@ class PurchaseRequestController extends defaultController
 
     public function showpdf(Request $request){
         $recno = $request->recno;
+        
         if(!$recno){
             abort(404);
         }
@@ -968,7 +969,7 @@ class PurchaseRequestController extends defaultController
         $purreqhd = DB::table('material.purreqhd')
             ->where('recno','=',$recno)
             ->first();
-
+            
         $purreqdt = DB::table('material.purreqdt AS prdt', 'material.productmaster AS p', 'material.uom as u')
             ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
@@ -980,6 +981,11 @@ class PurchaseRequestController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
+        $supplier = DB::table('material.supplier')
+            ->where('compcode','=',session('compcode'))
+            ->where('SuppCode','=',$purreqhd->suppcode)
+            ->first();
+
         $totamount_expld = explode(".", (float)$purreqhd->totamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
@@ -990,11 +996,11 @@ class PurchaseRequestController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
+        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier'));
         return $pdf->stream();      
 
         
-        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company'));
+        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier'));
     }
 
     function sendemail($data){

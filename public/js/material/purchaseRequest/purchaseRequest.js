@@ -241,7 +241,7 @@ $(document).ready(function () {
 		sortname:'purreqhd_idno',
 		sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
@@ -287,10 +287,14 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
-			if (oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null) {
+			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) { 
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}else{
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
 			}
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 			populate_form(selrowData("#jqGrid"));
 			fdl.set_array().reset();
@@ -299,9 +303,8 @@ $(document).ready(function () {
 			cbselect.refresh_seltbl();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
-
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
@@ -322,6 +325,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2", urlParam2);
 		},
@@ -332,6 +336,7 @@ $(document).ready(function () {
 		onClickButton: function () {
 			oper = 'edit';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
 		},
@@ -844,7 +849,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		
 		gridComplete: function(){
@@ -1583,7 +1588,7 @@ $(document).ready(function () {
 			});
 
 			setjqgridHeight(data,'jqGrid3');
-			calc_jq_height_onchange("jqGrid3");
+			//calc_jq_height_onchange("jqGrid3");
 		},
 	
 		gridComplete: function(){
