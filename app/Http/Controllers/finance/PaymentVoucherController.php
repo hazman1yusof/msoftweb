@@ -350,8 +350,9 @@ use PDF;
                             'reftrantype' => $apacthdr_IV->trantype,
                             'refauditno' => $apacthdr_IV->auditno,
                             'refamount' => $apacthdr_IV->amount,
-                            // 'allocdate' => $request->apacthdr_actdate,//blank
+                            'allocdate' => $request->apacthdr_actdate,//blank
                             'reference' => $value['reference'],
+                            'remarks' => strtoupper($value['remarks']),
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,
                             'balance' => $balance,
@@ -539,6 +540,7 @@ use PDF;
                             'refamount' => $apacthdr_IV->amount,
                             // 'allocdate' => $request->apacthdr_actdate,//blank
                             'reference' => $value['reference'],
+                            'remarks' => strtoupper($value['remarks']),
                             'allocamount' => $allocamount,
                             'outamount' => $outamount,
                             'balance' => $value['balance'],

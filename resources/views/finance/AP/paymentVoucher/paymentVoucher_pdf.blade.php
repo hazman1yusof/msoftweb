@@ -35,7 +35,7 @@ hr {
 						<p style="text-align:center">{{$company->address2}}{{$company->address3}}</p>
 						<p style="text-align:center">{{$company->address4}}</p>
 					</div>
-                </div>
+                <!-- </div> -->
                 <hr>
                 <div class="table-responsive p-2">
                     <table class="table table-borderless">
@@ -199,7 +199,7 @@ hr {
 									<p><b>Printed Date:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}</p>
 									<p><b>Printed Time:</b> {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}</p>
 									<p><b>Printed By:</b> {{session('username')}}</p>
-								</td>
+								<!-- </td> -->
 							</tr>
 							</tr>
                         </tbody>

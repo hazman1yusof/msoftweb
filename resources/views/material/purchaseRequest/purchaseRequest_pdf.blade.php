@@ -1,4 +1,5 @@
 @extends('layouts.pdflayout')
+
 @section('title','Purchase Request')
 
 @section('body')
@@ -6,12 +7,12 @@
 	  <tbody>
 
 	  	<tr>
-	      <td colspan="5">
-	      	<img src="{{public_path().$company->logo1}}" height="75px">
-	      </td>
-	      <td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
-	      		<p><h2>Purchase Request</h2></p>
-	      </td>
+			<td colspan="5">
+			<img src="./img/MSLetterHead.jpg" height="75px">
+			</td>
+			<td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
+					<p><h2>Purchase Request</h2></p>
+			</td>
 	    </tr>
 
 	    <tr>
@@ -31,7 +32,7 @@
 	      <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$purreqhd->purreqdt)->format('d-m-Y')}}</td>
 	    </tr>
 	    <tr>
-	      <td colspan="2"><b>Contract No.</b></td>
+	      <td colspan="2"><b>Contact No.</b></td>
 	      <td colspan="3"></td>
 	    </tr>
 	    <tr>
@@ -74,9 +75,9 @@
 	    			<p>{{number_format($obj->unitprice,2)}}</p>
 	    		@endforeach
 	    	</td>
-	    	<td> <!-- amount -->
+	    	<td> <!-- tax amount -->
 	    		@foreach ($purreqdt as $obj)
-	    			<p>{{number_format($obj->amount,2)}}</p>
+	    			<p>{{number_format($obj->tot_gst,2)}}</p>
 	    		@endforeach
 	    	</td>
 	    	<td> <!-- amount -->

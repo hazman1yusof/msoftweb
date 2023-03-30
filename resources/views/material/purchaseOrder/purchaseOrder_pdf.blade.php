@@ -1,36 +1,38 @@
 @extends('layouts.pdflayout')
 
+@section('title','Purchase Order')
 
 @section('body')
 	<table class="table table-bordered">
 	  <tbody>
 
 	  	<tr>
-	      <td colspan="5">
-	      	<img src="./img/MSLetterHead.jpg" height="75px">
-	      </td>
-	      <td colspan="5" style="text-align: center;">
-	      		<p><h2>Purchase Order</h2></p>
-	      </td>
+			<td colspan="5">
+				<img src="./img/MSLetterHead.jpg" height="75px">
+			</td>
+			<td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
+					<p><h2>Purchase Order</h2></p>
+			</td>
 	    </tr>
 
 	    <tr>
 	      <td colspan="5" rowspan="4" style="padding: 0">
-	      		<p><b>Address To.</b></p>
-	    		<p>1</p>
-	    		<p>2</p>
-	    		<p>3</p>
-	    		<p>4</p>
-	    		<p>5</p>
+	      		<p><b>Address To:</b></p>
+				<p>{{$company->address1}}</p>
+	      		<p>{{$company->address2}}</p>
+	      		<p>{{$company->address3}}</p>
+	      		<p>{{$company->address4}}</p>
 	      </td>
 	      <td colspan="2"><b>Purchase No.</b></td>
-	      <td colspan="3">{{$purordhd->purordno}}</td>
+		  <td colspan="3">{{$purordhd->prdept}}{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}</td>
+	      <!-- <td colspan="3">{{$purordhd->purordno}}</td> -->
 	    </tr>
 	    <tr>
 	      <td colspan="2"><b>Purchase Date</b></td>
+		  <td colspan="3">{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}</td>
 	    </tr>
 	    <tr>
-	      <td colspan="2"><b>Contract No.</b></td>
+	      <td colspan="2"><b>Contact No.</b></td>
 	      <td colspan="3"></td>
 	    </tr>
 	    <tr>
@@ -73,9 +75,9 @@
 	    			<p>{{number_format($obj->unitprice,2)}}</p>
 	    		@endforeach
 	    	</td>
-	    	<td> <!-- amount -->
+	    	<td> <!-- tax amount -->
 	    		@foreach ($purorddt as $obj)
-	    			<p>{{number_format($obj->amount,2)}}</p>
+	    			<p>{{number_format($obj->tot_gst,2)}}</p>
 	    		@endforeach
 	    	</td>
 	    	<td> <!-- amount -->

@@ -12,7 +12,6 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
-//use Maatwebsite\Excel\Concerns\WithMapping;, WithMapping
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -68,31 +67,15 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
         ];
     }
 
-    // public function map($apacthdr): array
-    // {
-    //     return [
-           
-    //       //  Date::dateTimeToExcel($apacthdr->Carbon::now("Asia/Kuala_Lumpur")),
-    //     ];
-    // }
-
     public function columnFormats(): array
     {
         return [
-            
-            //  'B1' => 'dd-mm-yyyy',
-           // 'F2' => NumberFormat::FORMAT_DATE_DDMMYYYY,
            'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-
-          
         ];
     }
 
-
     public function registerEvents(): array
     {
-
-
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting
@@ -148,6 +131,4 @@ class CreditNoteExport implements FromCollection, WithEvents, WithHeadings, With
             },
         ];
     }
-
-
 }

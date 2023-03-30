@@ -982,11 +982,11 @@ class PurchaseRequestController extends defaultController
 
         $totamount_expld = explode(".", (float)$purreqhd->totamount);
 
-        $totamt_bm_rm = $this->convertNumberToWord($totamount_expld[0])." RINGGIT ";
+        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         $totamt_bm = $totamt_bm_rm." SAHAJA";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWord($totamount_expld[1])." SEN";
+            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 

@@ -679,6 +679,7 @@ Route::post('/debitNoteAP/form','finance\DebitNoteAPController@form');
 Route::get('/debitNoteAP/form','finance\DebitNoteAPController@form');
 Route::post('/DebitNoteAPDetail/form','finance\DebitNoteAPDetailController@form');
 Route::get('/DebitNoteAPDetail/table','finance\DebitNoteAPDetailController@table');
+Route::get('/debitNoteAP/showpdf','finance\DebitNoteAPController@showpdf');
 
 //// Debit Note AP - report  ///
 Route::get('/debitNoteAP_Report','finance\DebitNoteAP_ReportController@show');

@@ -721,6 +721,7 @@ $(document).ready(function () {
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
+			{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,
@@ -1194,17 +1195,93 @@ $(document).ready(function () {
 	
 	////////////////////////////////////////////////jqgrid3//////////////////////////////////////////////
 
-	function setcolmodelforjqg3(){
-		var clone = $.extend({}, $("#jqGrid2").jqGrid('getGridParam','colModel'));
-		var arrayclone = Object.values(clone);
-		arrayclone.splice(0,1);
+	// function setcolmodelforjqg3(){
+	// 	var clone = $.extend({}, $("#jqGrid2").jqGrid('getGridParam','colModel'));
+	// 	var arrayclone = Object.values(clone);
+	// 	arrayclone.splice(0,1);
 
-		return arrayclone;
-	}
+	// 	return arrayclone;
+	// }
 
 	$("#jqGrid3").jqGrid({
 		datatype: "local",
-		colModel: setcolmodelforjqg3(),
+		colModel: [
+		{ label: 'Creditor', name: 'suppcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+		{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
+		},
+		{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
+		{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
+		{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
+			formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+			editable: false,
+			align: "right",
+			editrules:{required: true},edittype:"text",
+			editoptions:{
+				readonly: "readonly",
+				maxlength: 12,
+				dataInit: function(element) {
+					element.style.textAlign = 'right';
+					$(element).keypress(function(e){
+						if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+						return false;
+						}
+					});
+				}
+			},
+		},
+		{ label: 'O/S Amount', name: 'outamount', width: 100, align: 'right', classes: 'wrap', editable:false,	
+			formatter: 'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+			editrules:{required: false},editoptions:{readonly: "readonly"},
+		},
+		{ label: 'Amount Paid', name: 'allocamount', width: 100, classes: 'wrap', 
+			formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+			editable: true,
+			align: "right",
+			editrules:{required: true},edittype:"text",
+			editoptions:{
+				maxlength: 12,
+				dataInit: function(element) {
+				element.style.textAlign = 'right';
+					$(element).keypress(function(e){					
+						if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+						return false;
+					}
+				});
+				}
+			},
+		},
+		{ label: 'Balance', name: 'balance', width: 100, classes: 'wrap', hidden:false, 
+			formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
+			editable: false,
+			align: "right",
+			editrules:{required: true},edittype:"text",
+			editoptions:{
+				readonly: "readonly",
+				maxlength: 12,
+				dataInit: function(element) {
+				element.style.textAlign = 'right';
+					$(element).keypress(function(e){					
+						if ((e.which != 46 || $(this).val().indexOf('.') != -1) && (e.which < 48 || e.which > 57)) {
+						return false;
+					}
+				});
+				}
+			},
+		},
+		{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'source', name: 'source', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'trantype', name: 'trantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'docsource', name: 'docsource', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'doctrantype', name: 'doctrantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'docauditno', name: 'docauditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'reftrantype', name: 'reftrantype', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'refsource', name: 'refsource', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'refauditno', name: 'refauditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'auditno', name: 'auditno', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'Line No', name: 'lineno_', width: 80, classes: 'wrap', hidden:true}, 
+		{ label: 'can_alloc', name: 'can_alloc', width: 20, classes: 'wrap', hidden:true},
+		{ label: 'idno', name: 'idno', width: 80, classes: 'wrap', hidden:true}, ],
 		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
@@ -1393,6 +1470,7 @@ $(document).ready(function () {
 					$("#jqGrid2 input[name='reference']").val(data['document']);
 					$("#jqGrid2 input[name='refamount']").val(data['amount']);
 					$("#jqGrid2 input[name='outamount']").val(data['outamount']);
+					$("#jqGrid2 input[name='remarks']").val(data['remarks']);
 
 					var urlParam_ = {
 						action: 'get_value_default',
@@ -1420,6 +1498,7 @@ $(document).ready(function () {
 										reference:elem['document'],
 										refamount:elem['amount'],
 										outamount:elem['outamount'],
+										remarks:elem['remarks'],
 										allocamount: 0,
 										balance:elem['outamount'],
 									

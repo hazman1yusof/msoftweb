@@ -204,7 +204,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Debit Note AP Header
-				<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
+			<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
 			</div>
 			<div class="panel-body" style="position: relative;">
 				<form class='form-horizontal' style='width:99%' id='formdata' autocomplete="off">
@@ -343,8 +343,8 @@ i.fa {
 	</script>
 
 	<script src="js/finance/AP/debitNoteAP/debitNoteAP.js"></script>
-	<!-- <script src="js/finance/AP/debitNoteAP/pdfgen.js"></script>
+	<!-- <script src="js/finance/AP/debitNoteAP/pdfgen.js"></script>-->
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
-	<script src="plugins/pdfmake/vfs_fonts.js"></script> -->
+	<script src="plugins/pdfmake/vfs_fonts.js"></script> 
 	
 @endsection

@@ -293,8 +293,6 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'purordhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purordhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purordhd_reopenby', width: 40, hidden:true},
-
-
 			{ label: 'requestby', name: 'purordhd_requestby', width: 90, hidden: true },
 			{ label: 'requestdate', name: 'purordhd_requestdate', width: 90, hidden: true },
 			{ label: 'supportby', name: 'purordhd_supportby', width: 90, hidden: true },
@@ -302,9 +300,7 @@ $(document).ready(function () {
 			{ label: 'verifiedby', name: 'purordhd_verifiedby', width: 90, hidden: true },
 			{ label: 'verifieddate', name: 'purordhd_verifieddate', width: 90, hidden: true },
 			{ label: 'approvedby', name: 'purordhd_approvedby', width: 90, hidden: true },
-			{ label: 'approveddate', name: 'purordhd_approveddate', width: 40, hidden: true},			
-
-
+			{ label: 'approveddate', name: 'purordhd_approveddate', width: 40, hidden: true},	
 			{ label: 'reopendate', name: 'purordhd_reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purordhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purordhd_canceldate', width: 40, hidden:true},
