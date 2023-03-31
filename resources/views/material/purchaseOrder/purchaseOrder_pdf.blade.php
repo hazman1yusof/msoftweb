@@ -10,14 +10,14 @@
 			<td colspan="5">
 				<img src="./img/MSLetterHead.jpg" height="75px">
 			</td>
-			<td colspan="5" style="font-size:16px;text-align: center;padding-top: 40px">
+			<td colspan="5" style="font-size:16px;text-align: center;padding-top: 25px">
 					<p><h2>Purchase Order</h2></p>
 			</td>
 	    </tr>
 
 	    <tr>
 	      <td colspan="5" rowspan="4" style="padding: 0">
-		  		<p><b>Address To.</b></p> <br>
+		  		<p><b>Address To:</b></p> <br>
 				<p>{{$supplier->SuppCode}}</p>
 				<p>{{$supplier->Name}}</p>
 	      		<p>{{$supplier->Addr1}}</p>

@@ -363,6 +363,26 @@ $(document).ready(function () {
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
 			refreshGrid("#jqGrid2",urlParam2);
+
+			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+				$('#apacthdr_amount').prop('readonly',true);
+				dialog_bankcode.off();
+				dialog_paymode.off();
+				dialog_cheqno.off();
+				dialog_suppcode.off();
+				dialog_payto.off();
+			} else if(selrowData("#jqGrid").apacthdr_recstatus == 'CANCELLED'){
+				$('#save').hide();
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+				dialog_bankcode.off();
+				dialog_paymode.off();
+				dialog_cheqno.off();
+				dialog_suppcode.off();
+				dialog_payto.off();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", id:"glyphicon-edit", position: "first",
@@ -378,6 +398,21 @@ $(document).ready(function () {
 			if(selrowData("#jqGrid").apacthdr_recstatus == 'POSTED'){
 				disableForm('#formdata');
 				$("#pg_jqGridPager2 table").hide();
+				$('#apacthdr_amount').prop('readonly',true);
+				dialog_bankcode.off();
+				dialog_paymode.off();
+				dialog_cheqno.off();
+				dialog_suppcode.off();
+				dialog_payto.off();
+			} else if(selrowData("#jqGrid").apacthdr_recstatus == 'CANCELLED'){
+				$('#save').hide();
+				disableForm('#formdata');
+				$("#pg_jqGridPager2 table").hide();
+				dialog_bankcode.off();
+				dialog_paymode.off();
+				dialog_cheqno.off();
+				dialog_suppcode.off();
+				dialog_payto.off();
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {

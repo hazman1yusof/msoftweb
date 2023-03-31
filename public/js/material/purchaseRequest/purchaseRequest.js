@@ -1362,9 +1362,7 @@ $(document).ready(function () {
 					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
 					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
 					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>
-
-			`);
+				</div>`);
 	}
 	function taxcodeCustomEdit(val,opt){
 		val = getEditVal(val);

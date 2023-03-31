@@ -303,6 +303,7 @@ use PDF;
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'OPEN',
                     'amount' => $request->apacthdr_amount,
+                    'outamount' => $request->apacthdr_amount,
                 ];
 
                 $idno_apacthdr = $table->insertGetId($array_insert);
@@ -704,32 +705,31 @@ use PDF;
                             ->where('docauditno','=',$apacthdr->auditno)
                             ->where('recstatus','!=','CANCELLED')
                             ->get();
-
+                            
                 $sum_allocamount = 0;
 
-                foreach($apalloc  as $value){
+                foreach($apalloc as $value){
                     $value = (array)$value;
                     $sum_allocamount = $sum_allocamount + $value['allocamount'];
-
+                    
                     $refapacthdr = DB::table('finance.apacthdr')
                                     ->where('compcode','=',session('compcode'))
                                     ->where('unit','=',session('unit'))
                                     ->where('source','=',$value['refsource'])
                                     ->where('trantype','=',$value['reftrantype'])
                                     ->where('auditno','=',$value['refauditno']);
-
+                                    
                     $refapacthdr
                         ->update([
                             'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
                         ]);
-
+                        
                     DB::table('finance.apalloc')
                         ->where('idno','=',$value['idno'])
                         ->update([
                             'allocamount' => 0,
                             'recstatus' => 'CANCELLED',
                         ]);
-                
                 }
 
                 DB::table('finance.apacthdr')
