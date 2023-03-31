@@ -24,27 +24,6 @@ hr {
     border:none;
 }
 
-.tab2 {
-    margin-left: 27px;
-}
-
-.tab3 {
-    display: inline-block;
-    margin-left: 88px;
-}
-
-.tab4 {
-    margin-left: 50px;
-}
-
-.tab5 {
-    margin-left: 36px;
-}
-
-.tab7 {
-    margin-left: 38px;
-}
-
 @endsection
 
 @section('body')
@@ -68,19 +47,19 @@ hr {
                         <td width="70%">
                             <p>Debtor Code &nbsp; : &nbsp; {{$dbacthdr->debtorcode}}</p>
                             <p>Debtor Name &nbsp;: &nbsp; {{$dbacthdr->debt_name}}</p>
-                            <p>Address <span class="tab2"> : &nbsp; {{$dbacthdr->cust_address1}} <br> 
-                                        <span class="tab3"> {{$dbacthdr->cust_address2}} <br> 
+                            <p>Address <span style="margin-left: 27px;"> : &nbsp; {{$dbacthdr->cust_address1}} <br> 
+                                        <span style="display: inline-block; margin-left: 88px;"> {{$dbacthdr->cust_address2}} <br> 
                                         {{$dbacthdr->cust_address3}} <br> 
                                         {{$dbacthdr->cust_address4}} 
                             </p>
                         </td>
                         <td>
-                            <p>C/N No <span class="tab5"> : &nbsp; CN-{{str_pad($dbacthdr->auditno, 5, "0", STR_PAD_LEFT)}}</p>
-                            <p>Date <span class="tab4"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
-                            <p>Time <span class="tab4">: &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrytime)->format('H:i:s')}}</p>
-                            <p>Cashier <span class="tab5">: &nbsp; {{$dbacthdr->entryuser}}</p>
-                            <p>C/N By <span class="tab5"> : &nbsp; {{$dbacthdr->paymode}}</p>
-                            <p>Amount <span class="tab5">: &nbsp; {{$dbacthdr->amount}}</p>
+                            <p>C/N No <span style="margin-left: 36px;"> : &nbsp; CN-{{str_pad($dbacthdr->auditno, 5, "0", STR_PAD_LEFT)}}</p>
+                            <p>Date <span style="margin-left: 50px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
+                            <p>Time <span style="margin-left: 47px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrytime)->format('H:i:s')}}</p>
+                            <p>Cashier <span style="margin-left: 34px;"> : &nbsp; {{$dbacthdr->entryuser}}</p>
+                            <p>C/N By <span style="margin-left: 37px;"> : &nbsp; {{$dbacthdr->paymode}}</p>
+                            <p>Amount <span style="margin-left: 33px;"> : &nbsp; {{$dbacthdr->amount}}</p>
                         </td>
                     </tr>
                 </table>
@@ -90,19 +69,19 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                                <td><b>DESCRIPTION</b></td>
-                                <td><b>PARTICULAR</b></td>
+                                <td colspan ="3"><b>DESCRIPTION</b></td>
+                                <td colspan ="4"><b>PARTICULAR</b></td>
                                 <td><b>AMOUNT</b></td>
                             </tr>
                             <tr>
                                 <!-- DESCRIPTION -->
-								<td>
+								<td colspan ="3">
                                     @foreach ($dballoc as $obj)
                                     <p>{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}</p>
                                     @endforeach
 								</td>
                                 <!-- PARTICULAR -->
-								<td>
+								<td colspan ="4">
                                     @if ($dballoc_dtl->reftrantype == 'DN')
                                         <p>{{$dbacthdr->remark}}</p>
                                     @elseif ($dballoc_dtl->reftrantype == 'IN')
@@ -122,33 +101,10 @@ hr {
                 <hr>
                 <div class="card">
                     <div class="card-body">
-                        <p>Reference <span style="margin-left: 29px;"> :&nbsp; {{$dbacthdr->reference}}</p>
-                        <p>Remark <span style="margin-left: 38px;"> :&nbsp; {{$dbacthdr->remark}}</p>
-                        <p>Print Date/Time :&nbsp; {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s')}}</p>
+                        <p>Reference <span style="margin-left: 29px;"> : &nbsp; {{$dbacthdr->reference}}</p>
+                        <p>Remark <span style="margin-left: 38px;"> : &nbsp; {{$dbacthdr->remark}}</p>
+                        <p>Print Date/Time : &nbsp; {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s')}}</p>
                     </div>
-                </div>
-                <div class="products p-2">
-                    <table class="table table-borderless">
-                        <tbody>
-                            <tr>
-                                <td width="12%">
-                                    <p>Reference</p>
-                                    <p>Remark</p>
-                                    <p>Print Date/Time</p>
-                                </td>
-                                <td width="3%">
-                                    <p>:</p>
-                                    <p>:</p>
-                                    <p>:</p>
-                                </td>
-                                <td width="60%">
-                                    <p>{{$dbacthdr->reference}}</p>
-                                    <p>{{$dbacthdr->remark}}</p>
-                                    <p>{{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s')}}</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
             <!-- </div> -->

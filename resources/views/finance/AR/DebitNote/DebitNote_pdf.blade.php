@@ -24,27 +24,6 @@ hr {
     border:none;
 }
 
-.tab {
-    margin-left: 39px;
-}
-
-.tab2 {
-    margin-left: 27px;
-}
-
-.tab3 {
-    display: inline-block;
-    margin-left: 88px;
-}
-
-.tab4 {
-    margin-left: 50px;
-}
-
-.tab5 {
-    margin-left: 15px;
-}
-
 @endsection
 
 @section('body')
@@ -67,16 +46,16 @@ hr {
                     <tr><td><p>Debtor Code &nbsp; : &nbsp; {{$dbacthdr->debtorcode}}</p></td></tr>
                     <tr>
                         <td width="70%">
-                            <p>Name <span class="tab"> : &nbsp; {{$dbacthdr->debt_name}}</p>
-                            <p>Address <span class="tab2"> : &nbsp; {{$dbacthdr->cust_address1}} <br> 
-                                        <span class="tab3"> {{$dbacthdr->cust_address2}} <br> 
+                            <p>Name <span style="margin-left: 39px;"> : &nbsp; {{$dbacthdr->debt_name}}</p>
+                            <p>Address <span style="margin-left: 27px;"> : &nbsp; {{$dbacthdr->cust_address1}} <br> 
+                                        <span style="display: inline-block; margin-left: 88px;"> {{$dbacthdr->cust_address2}} <br> 
                                         {{$dbacthdr->cust_address3}} <br> 
                                         {{$dbacthdr->cust_address4}} 
                             </p>
                         </td>
                         <td>
-                            <p>Document No &nbsp; : &nbsp; DN-{{$dbacthdr->auditno}}</p>
-                            <p>Date <span class="tab4"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
+                            <p>Document No &nbsp; : &nbsp; DN-{{str_pad($dbacthdr->auditno, 5, "0", STR_PAD_LEFT)}}</p>
+                            <p>Date <span style="margin-left: 50px;"> : &nbsp; {{\Carbon\Carbon::parse($dbacthdr->entrydate)->format('d/m/Y')}}</p>
                         </td>
                     </tr>
                 </table>
@@ -113,10 +92,10 @@ hr {
                             <tr>
                                 <td colspan="7"></td>
                                 <td colspan="3">
-                                    <p><b><span class="tab3">Total</b></p>
+                                    <p><b><span style="margin-left: 88px;">Total</b></p>
                                 </td>
                                 <td colspan="2">
-                                    <p><span class="tab5">{{number_format($dbacthdr->amount,2)}}</p>
+                                    <p><span style="margin-left: 15px;">{{number_format($dbacthdr->amount,2)}}</p>
                                 </td>
                             </tr>		
                         </tbody>

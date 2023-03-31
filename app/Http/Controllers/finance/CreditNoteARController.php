@@ -1221,7 +1221,7 @@ class CreditNoteARController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-                    
+        
         $totamount_expld = explode(".", (float)$dbacthdr->amount);
         
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
