@@ -1,6 +1,6 @@
 @extends('layouts.pdflayout')
 
-@section('title','Debit Note')
+@section('title','Debit Note AR')
 
 @section('style')
 

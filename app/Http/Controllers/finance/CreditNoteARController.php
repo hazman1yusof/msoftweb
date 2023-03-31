@@ -408,6 +408,7 @@ class CreditNoteARController extends defaultController
                     'payercode' => strtoupper($request->db_debtorcode),
                     'entrydate' => $request->db_entrydate,
                     'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'entryuser' => session('username'),
                     'hdrtype' => strtoupper($request->db_hdrtype),
                     // 'mrn' => strtoupper($request->db_mrn),
                     // 'billno' => $invno,
@@ -1159,68 +1160,93 @@ class CreditNoteARController extends defaultController
             }
         }
     }
-
+    
     public function showpdf(Request $request){
+        
         $auditno = $request->auditno;
         if(!$auditno){
             abort(404);
         }
-
-        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m')
-            ->select('h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
-            ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-
-            ->where('auditno','=',$auditno)
-            ->first();
-
-        if ( $dbacthdr->recstatus == "OPEN") {
-            $title = "DRAFT INVOICE";
-        } elseif ( $dbacthdr->recstatus == "POSTED"){
-            $title = " INVOICE";
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'hisdb.pat_mast as p')
+                    ->select('h.idno', 'h.compcode', 'h.trantype', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.entrydate', 'h.entrytime', 'h.entryuser', 'h.reference', 'h.paymode', 'h.debtortype', 'h.debtorcode', 'h.remark', 'h.mrn', 'h.adduser', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'p.MRN as pt_mrn', 'p.Episno as pt_episno', 'p.Name as pt_name')
+                    ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
+                    ->leftJoin('hisdb.pat_mast as p', 'h.mrn', '=', 'p.MRN')
+                    // ->leftJoin('debtor.debtormast as m', function($join) use ($request){
+                    //             $join = $join->on('m.debtorcode', '=', 'h.debtorcode')
+                    //                         ->on('m.compcode', '=', session('compcode'));
+                    // })
+                    // ->leftJoin('hisdb.pat_mast as p', function($join) use ($request){
+                    //             $join = $join->on('p.MRN', '=', 'h.mrn')
+                    //                         ->on('p.CompCode', '=', session('compcode'));
+                    // })
+                    ->where('h.compcode',session('compcode'))
+                    ->where('h.source','=','PB')
+                    ->where('h.trantype','=','CN')
+                    ->where('h.auditno','=',$auditno)
+                    ->first();
+        
+        $dballoc = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr')
+                    ->join('debtor.dbacthdr as h', function($join) use ($request){
+                                $join = $join->on('a.docsource', '=', 'h.source')
+                                            ->on('a.doctrantype', '=', 'h.trantype')
+                                            ->on('a.docauditno', '=', 'h.auditno');
+                    })
+                    ->where('a.compcode',session('compcode'))
+                    ->where('a.docsource','=','PB')
+                    ->where('a.doctrantype','=','CN')
+                    ->where('a.docauditno','=',$auditno)
+                    ->get();
+        
+        $dballoc_dtl = DB::table('debtor.dballoc as a', 'debtor.dbacthdr as h')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.mrn', 'a.episno', 'a.amount', 'a.outamount', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.adddate', 'a.adduser', 'a.recstatus', 'a.idno', 'h.entrydate as entrydate_hdr')
+                    ->join('debtor.dbacthdr as h', function($join) use ($request){
+                                $join = $join->on('a.docsource', '=', 'h.source')
+                                            ->on('a.doctrantype', '=', 'h.trantype')
+                                            ->on('a.docauditno', '=', 'h.auditno');
+                    })
+                    ->where('a.compcode',session('compcode'))
+                    ->where('a.docsource','=','PB')
+                    ->where('a.doctrantype','=','CN')
+                    ->where('a.docauditno','=',$auditno)
+                    ->first();
+        
+        if ($dbacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($dbacthdr->recstatus == "POSTED"){
+            $title = "CREDIT NOTE";
         }
-
-        $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
-            'u.description as uom_desc', 
-            'd.debtorcode as debt_debtcode','d.name as debt_name', 
-            'm.description as chgmast_desc')
-            ->leftJoin('hisdb.chgmast as m', 'b.chggroup', '=', 'm.chgcode')
-            //->leftJoin('material.productmaster as p', 'b.description', '=', 'p.description')
-            ->leftJoin('material.uom as u', 'b.uom', '=', 'u.uomcode')
-            ->leftJoin('debtor.debtormast as d', 'b.debtorcode', '=', 'd.debtorcode')
-
-            ->where('auditno','=',$auditno)
-            ->get();
-
-        $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
-            ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.auditno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus', 'm.description as chgmast_desc')
-            ->leftJoin('hisdb.chgmast as m', 'b.description', '=', 'm.description')
-
-            ->where('auditno','=',$auditno)
-            ->get();
-
+        
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-
+                    
         $totamount_expld = explode(".", (float)$dbacthdr->amount);
-
-        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
-
-        if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        }
-
-        $pdf = PDF::loadView('finance.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
-        return $pdf->stream();      
-
         
-        return view('finance.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])." RINGGIT ";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        $pdf = PDF::loadView('finance.AR.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
+        return $pdf->stream();
+        
+        return view('finance.AR.CreditNoteAR.CreditNoteAR_pdf',compact('dbacthdr','dballoc','dballoc_dtl','title','company','totamt_eng'));
+        
     }
-
+    
     public function gltran_fromdept($deptcode){
         $obj = DB::table('sysdb.department')
                 ->select('costcode')
