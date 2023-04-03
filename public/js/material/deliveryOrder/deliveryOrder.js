@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#trandate"]);
+	var actdateObj = new setactdate(["#delordhd_trandate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
@@ -719,11 +719,11 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./deliveryOrderDetail/form",
 		colModel: [
-		 	{ label: 'compcode', name: 'compcode', width: 20, frozen:true, classes: 'wrap', hidden:true},
-		 	{ label: 'recno', name: 'recno', width: 20, frozen:true, classes: 'wrap', hidden:true},
-			{ label: 'No', name: 'lineno_', width: 50, frozen:true, classes: 'wrap', editable:false},
+		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
+		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
+			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', frozen:true, width: 250, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Price Code', name: 'pricecode', width: 130, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -992,13 +992,13 @@ $(document).ready(function () {
  //    });
 
 
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-  	useColSpanStyle: false, 
-	  groupHeaders:[
-		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-	  ]
-	})
+	// $("#jqGrid2").jqGrid('setGroupHeaders', {
+  	// useColSpanStyle: false, 
+	//   groupHeaders:[
+	// 	{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+	// 	{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	//   ]
+	// })
 
     //  try {
     //     var p = $grid.jqGrid("getGridParam"), tid = $.jgrid.jqID(p.id), colModel = p.colModel, i, n = colModel.length, cm,
@@ -2056,15 +2056,16 @@ $(document).ready(function () {
 				$('#delordhd_invoiceno').focus();//focus ni xjadis
 			},
 			gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#delordhd_invoiceno').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+    			calc_jq_height_onchange("jqGrid2");
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#delordhd_invoiceno').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		},{
 			title:"Select Creditor",
 			open: function(){
@@ -2090,6 +2091,7 @@ $(document).ready(function () {
 				$('#delordhd_credcode').focus();
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2118,22 +2120,23 @@ $(document).ready(function () {
 				{label:'Unit',name:'sector'},
 			],
 			urlParam: {
-						filterCol:['recstatus','compcode','sector'],
-						filterVal:['ACTIVE', 'session.compcode', 'session.unit']
-					},
-					ondblClickRow: function () {
-						$('#depglacc').focus();
-					},
-					gridComplete: function(obj){
-						var gridname = '#'+obj.gridname;
-						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-							$(gridname+' tr#1').click();
-							$(gridname+' tr#1').dblclick();
-							$('#depglacc').focus();
-						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-							$('#'+obj.dialogname).dialog('close');
-						}
-					}
+				filterCol:['recstatus','compcode','sector'],
+				filterVal:['ACTIVE', 'session.compcode', 'session.unit']
+			},
+			ondblClickRow: function () {
+				$('#depglacc').focus();
+			},
+			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#depglacc').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
 		}, {
 			title: "Select Request Department",
 			open: function(){
@@ -2168,6 +2171,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_itemcode").focus().select();
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
@@ -2255,6 +2259,7 @@ $(document).ready(function () {
 
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
@@ -2378,6 +2383,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_pouom").focus().select();
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
@@ -2477,6 +2483,7 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_qtydelivered").focus().select();
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
@@ -2530,6 +2537,7 @@ $(document).ready(function () {
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
+        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();

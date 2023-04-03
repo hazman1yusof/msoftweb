@@ -117,7 +117,7 @@ $(document).ready(function () {
 	dialog_uomcode.makedialog();
 
 	var dialog_subcategory = new ordialog(
-		'subcatcode','material.subcategory','#subcatcode',errorField,
+		'subcatcode','material.subcategory','#subcatcode','errorField',
 		{	colModel:[
 				{label:'Department Code',name:'subcatcode',width:100,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
@@ -145,7 +145,7 @@ $(document).ready(function () {
 				dialog_subcategory.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_subcategory.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
 			}
-		},'urlParam','radio','notab',false
+		},'urlParam','radio','tab'
 	);
 	dialog_subcategory.makedialog();
 
@@ -743,7 +743,7 @@ $(document).ready(function () {
 				dialog_pouom.check(errorField);
 				dialog_suppcode.check(errorField);
 				dialog_mstore.check(errorField);
-				dialog_subcategory.check(errorField);
+				// dialog_subcategory.check(errorField);
 				dialog_taxCode.check(errorField);	
 				dialog_chgclass.check(errorField);
 				dialog_chgtype.check(errorField);
@@ -1030,7 +1030,7 @@ $(document).ready(function () {
 			dialog_pouom.on();
 			dialog_suppcode.on();
 			dialog_mstore.on();
-			dialog_subcategory.on();
+			// dialog_subcategory.on();
 			dialog_taxCode.on();
 			dialog_chgclass.on();
 			dialog_chgtype.on();

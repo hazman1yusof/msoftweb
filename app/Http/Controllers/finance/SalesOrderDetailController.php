@@ -682,7 +682,7 @@ class SalesOrderDetailController extends defaultController
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $billsum_obj->unitprice,
             'productcat' => $product->first()->productcat,
-            'isudept' => $dbacthdr->deptcode,
+            'issdept' => $dbacthdr->deptcode,
             'reqdept' => $dbacthdr->deptcode,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'trantype' => 'DS',

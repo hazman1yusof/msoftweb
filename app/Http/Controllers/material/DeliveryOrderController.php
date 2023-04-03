@@ -440,15 +440,6 @@ class DeliveryOrderController extends defaultController
                             'recstatus' => $status
                         ]);
 
-
-                        $pohd_obj = DB::table('material.purordhd')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('purordno','=',$value->srcdocno);
-
-                        $pohd_obj->update([
-                            'recstatus' => $status
-                        ]);
-
                         //update qtyoutstand utk suma DO pulak 
                         DB::table('material.delorddt')
                             ->where('compcode','=',session('compcode'))
@@ -469,7 +460,7 @@ class DeliveryOrderController extends defaultController
             }
 
             $queries = DB::getQueryLog();
-            dump($queries);
+            // dump($queries);
 
 
             DB::commit();
@@ -1226,31 +1217,36 @@ class DeliveryOrderController extends defaultController
                 ->where('compcode', '=', session('compcode'))
                 ->update(['recstatus'  => 'POSTED']);
 
-        // if(!empty($do_hd->srcdocno)){
-        //     $do_dt = DB::table('material.delorddt')
-        //             ->where('recno', '=', $delordhd_obj->recno)
-        //             ->where('compcode', '=', session('compcode'))
-        //             ->where('recstatus', '<>', 'DELETE')
-        //             ->get();
+        if(!empty($do_hd->srcdocno)){
+            // $do_dt = DB::table('material.delorddt')
+            //         ->where('recno', '=', $delordhd_obj->recno)
+            //         ->where('compcode', '=', session('compcode'))
+            //         ->where('recstatus', '<>', 'DELETE')
+            //         ->get();
 
-        //     $partial = false;
+            // $partial = false;
             
-        //     foreach ($do_dt as $key => $dodt) {
-        //         if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
-        //             $partial = true;
-        //         }
-        //     }
+            // foreach ($do_dt as $key => $dodt) {
+            //     if(floatval($dodt->qtydelivered) < floatval($dodt->qtyorder)){
+            //         $partial = true;
+            //     }
+            // }
 
-        //     if($partial == true){
-        //         $recstatus = 'PARTIAL';
-        //     }else{
-        //         $recstatus = 'COMPLETED';
-        //     }
+            $podt_obj = DB::table('material.purorddt')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('purordno','=',$do_hd->srcdocno)
+                            ->where('recstatus','!=','COMPLETED');
 
-        //     $po_hd = DB::table('material.purordhd')
-        //             ->where('purordno', '=', $do_hd->srcdocno)
-        //             ->update(['recstatus'  => $recstatus]);
-        // }
+            if($podt_obj->exists()){
+                $recstatus = 'PARTIAL';
+            }else{
+                $recstatus = 'COMPLETED';
+            }
+
+            $po_hd = DB::table('material.purordhd')
+                    ->where('purordno', '=', $do_hd->srcdocno)
+                    ->update(['recstatus'  => $recstatus]);
+        }
     }
 }
 

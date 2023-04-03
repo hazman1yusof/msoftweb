@@ -54,6 +54,7 @@ class AuthorizationDetailController extends defaultController
                             ->where('authorid','=',$authorid_)
                             ->where('trantype','=',$request->dtl_trantype)
                             ->where('recstatus','=',$request->dtl_recstatus)
+                            ->where('cando','!=','DEACTIVE')
                             ->exists();
             }else{
                 $duplicate = DB::table('material.authdtl')

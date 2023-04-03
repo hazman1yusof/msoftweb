@@ -1268,15 +1268,6 @@ $(document).ready(function () {
 				    }
 			    );
 
-		    //     dialog_pouom.id_optid = ids[i];
-		    //     dialog_pouom.check(errorField,ids[i]+"_pouom","jqGrid2",null,
-		    //     	function(self){
-			   //      	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			   //      },function(self){
-						// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			   //      }
-			   //  );
-
 			    dialog_uomcode.id_optid = ids[i];
 		        dialog_uomcode.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
 		        	function(self){
@@ -1801,7 +1792,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	var dialog_reqdept = new ordialog(
-		'reqdept', 'sysdb.department', '#purordhd_reqdept', errorField,
+		'reqdept', 'sysdb.department', '#purordhd_reqdept', 'errorField',
 		{
 			colModel: [
 				{ label: 'Department', name: 'deptcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
@@ -2352,7 +2343,7 @@ $(document).ready(function () {
 					dialog_itemcode.urlParam.fixPost = "true";
 					dialog_itemcode.urlParam.table_id = "none_";
 					dialog_itemcode.urlParam.filterCol = ['s.compcode', 's.year', 's.deptcode', 's.unit'];
-					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_reqdept').val(),'session.unit'];
+					dialog_itemcode.urlParam.filterVal = ['on.p.compcode', moment($('#purordhd_purdate').val()).year(), $('#purordhd_deldept').val(),'session.unit'];
 					dialog_itemcode.urlParam.join_type = ['LEFT JOIN','LEFT JOIN','LEFT JOIN'];
 					dialog_itemcode.urlParam.join_onCol = ['s.itemcode','p.taxcode','u.uomcode'];
 					dialog_itemcode.urlParam.join_onVal = ['p.itemcode','t.taxcode','s.uomcode'];
@@ -2370,53 +2361,6 @@ $(document).ready(function () {
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);
 	dialog_itemcode.makedialog(false);
-	// dialog_itemcode._init_func(function(self){
-
-	// 	$(self.textfield).keyup(function(event){
-
-	// 		if($(this).val().length >= 9){
-
-	// 			let optid = $(this).attr("optid")
-	// 			let id_optid = optid.substring(0,optid.search("_"));
-	// 			let itemcode = $(this).val();
-
-	// 			self.urlParam.searchCol=['p_itemcode'];
-	// 			self.urlParam.searchVal=['%'+itemcode+'%'];
-
-	// 			$('#jqgrid2_itemcode_refresh').val(1);
-	// 			$("#"+self.gridname).jqGrid('setGridParam',{ loadComplete: function(data){ 
-	// 				if(data.records>0 && $('#jqgrid2_itemcode_refresh').val()==1){
-	// 					var data_ = data.rows[0];
-
-	// 					if(data_.hasOwnProperty("p_itemcode")){
-
-	// 						$("#jqGrid2 #"+id_optid+"_description").val(data_['p_description']);
-	// 						$("#jqGrid2 #"+id_optid+"_uomcode").val(data_['p_uomcode']);
-	// 						$("#jqGrid2 #"+id_optid+"_taxcode").val(data_['p_TaxCode']);
-	// 						$("#jqGrid2 #"+id_optid+"_rate").val(data_['t_rate']);
-	// 						$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data_['u_convfactor']);
-	// 						$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data_['t_rate']);
-
-	// 						if($("input#"+id_optid+"_pricecode").val() != 'MS'){
-	// 							dialog_uomcode.urlParam.filterVal[1] = data_['p_itemcode'];
-	// 						}
-
-	// 						$("#jqGrid2 #"+id_optid+"_qtydelivered").focus().select();
-	// 					}
-
-	// 				}else if(data.records==0 && $('#jqgrid2_itemcode_refresh').val()==1){
-	// 					alert('Incorrect itemcode inserted')
-	// 					$(self.textfield).select();
-	// 				}
-
-	// 				$('#jqgrid2_itemcode_refresh').val(0);
-	// 			}});
-
-	// 			refreshGrid("#"+self.gridname,self.urlParam);
-	// 		}
-
-	// 	});
-	// });
 
 	var dialog_uomcode = new ordialog(
 		'uom',['material.stockloc AS s','material.uom AS u'],"#jqGrid2 input[name='uomcode']",errorField,
@@ -2511,7 +2455,7 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.fixPost="true";
 					dialog_uomcode.urlParam.table_id="none_";
 					dialog_uomcode.urlParam.filterCol=['s.compcode','s.itemcode','s.deptcode','s.year'];
-					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input#"+obj_.id_optid+"_itemcode").val(),$('#purordhd_reqdept').val(),moment($('#purordhd_purdate').val()).year()];
+					dialog_uomcode.urlParam.filterVal=['session.compcode',$("#jqGrid2 input#"+obj_.id_optid+"_itemcode").val(),$('#purordhd_deldept').val(),moment($('#purordhd_purdate').val()).year()];
 					dialog_uomcode.urlParam.join_type=['LEFT JOIN'];
 					dialog_uomcode.urlParam.join_onCol=['s.uomcode'];
 					dialog_uomcode.urlParam.join_onVal=['u.uomcode'];
@@ -2535,7 +2479,7 @@ $(document).ready(function () {
 	dialog_uomcode.makedialog(false);
 
 	var dialog_pouom = new ordialog(
-		'pouom', ['material.uom '], "#jqGrid2 input[name='pouom']", errorField,
+		'pouom', ['material.uom '], "#jqGrid2 input[name='pouom']", 'errorField',
 		{
 			colModel:
 			[
