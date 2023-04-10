@@ -163,24 +163,24 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" hideOne frozeOnEdit>
 						</div>
 
 					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" hideOne frozeOnEdit>
 						  	</div>
 				</div>    
 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 						<div class="col-md-3">
-						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm"  hideOne frozeOnEdit>
 						</div>
 
 					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
 						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" hideOne frozeOnEdit>
+							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" hideOne frozeOnEdit>
 						  	</div>
 				</div>      
 			</form>

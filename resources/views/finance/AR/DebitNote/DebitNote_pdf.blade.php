@@ -64,8 +64,7 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                                <td colspan="3"><b>DOCUMENT/DETAILS</b></td>
-                                <td colspan="3"><b>REMARKS</b></td>
+                                <td colspan="6"><b>DOCUMENT/DETAILS <span style="margin-left: 85px;"> REMARKS</b></td>
                                 <td><b>AMOUNT</b></td>
                             </tr>
                             <tr>
@@ -80,7 +79,7 @@ hr {
                                 <td>
                                     <br>
                                     @foreach ($dbactdtl as $obj)
-                                        <p>{{number_format($obj->amount,2)}}</p>
+                                        <p style="text-align: right;">{{number_format($obj->amount,2)}}</p>
                                     @endforeach
                                 </td>
                             </tr>					
@@ -92,10 +91,10 @@ hr {
                             <tr>
                                 <td colspan="7"></td>
                                 <td colspan="3">
-                                    <p><b><span style="margin-left: 88px;">Total</b></p>
+                                    <p><b><span style="margin-left: 80px;">Total</b></p>
                                 </td>
-                                <td colspan="2">
-                                    <p><span style="margin-left: 15px;">{{number_format($dbacthdr->amount,2)}}</p>
+                                <td>
+                                    <p style="text-align: right;">{{number_format($dbacthdr->amount,2)}}</p>
                                 </td>
                             </tr>		
                         </tbody>

@@ -69,19 +69,19 @@ hr {
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                                <td colspan ="3"><b>DESCRIPTION</b></td>
-                                <td colspan ="4"><b>PARTICULAR</b></td>
+                                <td colspan="3"><b>DESCRIPTION</b></td>
+                                <td colspan="4"><b>PARTICULAR</b></td>
                                 <td><b>AMOUNT</b></td>
                             </tr>
                             <tr>
                                 <!-- DESCRIPTION -->
-								<td colspan ="3">
+								<td colspan="3">
                                     @foreach ($dballoc as $obj)
                                     <p>{{$obj->reftrantype}}-{{str_pad($obj->refauditno, 5, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->entrydate_hdr)->format('d/m/Y')}}</p>
                                     @endforeach
 								</td>
                                 <!-- PARTICULAR -->
-								<td colspan ="4">
+								<td colspan="4">
                                     @if ($dballoc_dtl->reftrantype == 'DN')
                                         <p>{{$dbacthdr->remark}}</p>
                                     @elseif ($dballoc_dtl->reftrantype == 'IN')
@@ -91,7 +91,7 @@ hr {
                                 <!-- AMOUNT -->
                                 <td>
                                     @foreach ($dballoc as $obj)
-                                        <p>{{number_format($obj->amount,2)}}</p>
+                                        <p style="text-align: right;">{{number_format($obj->amount,2)}}</p>
                                     @endforeach
                                 </td>
                             </tr>

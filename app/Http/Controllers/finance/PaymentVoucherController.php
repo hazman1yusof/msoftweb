@@ -707,6 +707,8 @@ use PDF;
                             ->get();
                             
                 $sum_allocamount = 0;
+                $balance = floatval($apacthdr->outamount);
+                //dd($balance);
 
                 foreach($apalloc as $value){
                     $value = (array)$value;
@@ -718,7 +720,6 @@ use PDF;
                                     ->where('source','=',$value['refsource'])
                                     ->where('trantype','=',$value['reftrantype'])
                                     ->where('auditno','=',$value['refauditno']);
-                                    
                     $refapacthdr
                         ->update([
                             'outamount' => floatval($refapacthdr->first()->outamount) + floatval($value['allocamount'])
