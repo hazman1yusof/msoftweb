@@ -859,7 +859,7 @@ class SalesOrderController extends defaultController
             $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
-
+        
         $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     
         return $pdf->stream();

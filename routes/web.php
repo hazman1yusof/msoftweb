@@ -231,13 +231,21 @@ Route::post('/doctor_maintenance/save_session','hisdb\DoctorMaintenanceControlle
 Route::post('/doctor_maintenance/save_bgleave','hisdb\DoctorMaintenanceController@save_bgleave');
 Route::post('/doctor_maintenance/save_colorph','hisdb\DoctorMaintenanceController@save_colorph');
 
-//// doctor_maintenance setup page ///
+//// rsc_maintenance setup page ///
 Route::get('/rsc_maintenance','hisdb\rscMaintenanceController@show');
 Route::get('/rsc_maintenance/table','hisdb\rscMaintenanceController@table');
 Route::post('/rsc_maintenance/form','hisdb\rscMaintenanceController@form');
 Route::post('/rsc_maintenance/save_session','hisdb\rscMaintenanceController@save_session');
 Route::post('/rsc_maintenance/save_bgleave','hisdb\rscMaintenanceController@save_bgleave');
 Route::post('/rsc_maintenance/save_colorph','hisdb\rscMaintenanceController@save_colorph');
+
+//// ot_maintenance setup page ///
+Route::get('/ot_maintenance','hisdb\otMaintenanceController@show');
+Route::get('/ot_maintenance/table','hisdb\otMaintenanceController@table');
+Route::post('/ot_maintenance/form','hisdb\otMaintenanceController@form');
+Route::post('/ot_maintenance/save_session','hisdb\otMaintenanceController@save_session');
+Route::post('/ot_maintenance/save_bgleave','hisdb\otMaintenanceController@save_bgleave');
+Route::post('/ot_maintenance/save_colorph','hisdb\otMaintenanceController@save_colorph');
 
 //// Admission Source setup page ///
 Route::get('/admissrc','setup\AdmisSrcController@show');
