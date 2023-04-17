@@ -1704,6 +1704,7 @@ $(document).ready(function () {
 			$.post( param.url+"?"+$.param(param),obj, function( data ) {
 			
 			},'json').fail(function(data) {
+				alert(data.responseText);
 			}).success(function(data){
 				$("#dialogForm").dialog('close');
 			});

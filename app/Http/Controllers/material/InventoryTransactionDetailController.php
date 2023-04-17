@@ -129,7 +129,7 @@ class InventoryTransactionDetailController extends defaultController
                             ->where('trantype','=',$request->trantype)
                             ->first();
 
-            if($issuetype == 'Transfer'){
+            if(strtoupper($issuetype->isstype) == 'TRANSFER'){
                 $stockloc_obj = DB::table('material.StockLoc')
                         ->where('StockLoc.CompCode','=',session('compcode'))
                         ->where('StockLoc.DeptCode','=',$request->sndrcv)
@@ -159,7 +159,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $this->chgDate($request->expdate),  
+                    'expdate'=> $request->expdate,  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -221,7 +221,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $this->chgDate($request->expdate),  
+                    'expdate'=> $request->expdate,  
                     'batchno' => $request->batchno, 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks
@@ -283,7 +283,7 @@ class InventoryTransactionDetailController extends defaultController
                         'amount' => $value['amount'],
                         'adduser' => session('username'), 
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                        'expdate'=> $this->chgDate($request->expdate),  
+                        'expdate'=> $request->expdate,  
                         'batchno' => strtoupper($value['batchno']), 
                         'recstatus' => 'OPEN'
                     ]);
@@ -387,7 +387,7 @@ class InventoryTransactionDetailController extends defaultController
                     'amount' => $request->amount,
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
-                    'expdate'=> $this->chgDate($request->expdate),  
+                    'expdate'=> $request->expdate,  
                     'batchno' => strtoupper($request->batchno), 
                     'recstatus' => 'OPEN', 
                     'remarks' => $request->remarks

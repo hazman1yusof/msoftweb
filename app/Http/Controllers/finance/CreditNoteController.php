@@ -604,6 +604,10 @@ use Carbon\Carbon;
                 ->update([
                     'outamount' => $newoutamt
                 ]);
+
+            if($newoutamt < 0){
+                throw new \Exception('Total allocation amount exceed total amount', 500);
+            }
             
             DB::commit();
 
@@ -614,7 +618,7 @@ use Carbon\Carbon;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -627,13 +631,8 @@ use Carbon\Carbon;
             $apalloc = DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->where('source','=',$request->source)
-                ->where('trantype','=',$request->trantype)
-                ->where('auditno','=',$request->auditno)
-                ->where('lineno_','=',$request->lineno_)
                 ->first();
                 
-
             $allocamt = floatval($apalloc->allocamount);
             $balance = floatval($apalloc->balance);
             $curr_outamthdr = floatval($allocamt + $balance);
@@ -651,10 +650,7 @@ use Carbon\Carbon;
             //update status
             DB::table('finance.apalloc')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$request->auditno)
-                ->where('source','=',$request->source)
-                ->where('trantype','=',$request->trantype)
-                ->where('lineno_','=',$request->lineno_)
+                ->where('idno','=',$request->idno)
                 ->update([
                     'recstatus' => 'CANCELLED',
                     ]);

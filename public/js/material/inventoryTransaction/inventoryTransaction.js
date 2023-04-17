@@ -477,25 +477,23 @@ $(document).ready(function () {
 	}
 
 	function expdate_stat(isstype,crdbfl){
-		switch(isstype){
-			case 'Transfer':
+		dialog_expdate.off();
+		switch(isstype.toUpperCase()){
+			case 'TRANSFER':
 				dialog_expdate.on();
 				break;
-			case 'Adjustment':
+			case 'ADJUSTMENT':
 				caseCrdbfl(crdbfl);
 				break;
-			case 'Loan':
+			case 'LOAN':
 				caseCrdbfl(crdbfl);
-				break;
-			default:
-				dialog_expdate.off();
 				break;
 		}
 
 		function caseCrdbfl(crdbfl){
-			if(crdbfl=='In'){
-				dialog_expdate.off()}
-			else{
+			if(crdbfl.toUpperCase()=='IN'){
+				dialog_expdate.off()
+			}else{
 				dialog_expdate.on();
 			}
 		}
@@ -907,7 +905,6 @@ $(document).ready(function () {
 			
 		},
 		afterShowForm: function (rowid) {
-		    $("#expdate").datepicker();
 		},
 		beforeSubmit: function(postdata, rowid){ 
 			dialog_itemcode.check(errorField);
