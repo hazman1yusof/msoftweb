@@ -251,7 +251,12 @@ Route::post('/ot_maintenance/save_colorph','hisdb\otMaintenanceController@save_c
 Route::get('/otmanagement','hisdb\OTManagementController@index');
 Route::get('/otmanagement/table','hisdb\OTManagementController@table');
 Route::post('/otmanagement/form','hisdb\OTManagementController@form');
-Route::post('/otmanagement_transaction_save', "hisdb\OTManagementController@transaction_save");
+// Route::post('/otmanagement_transaction_save', "hisdb\OTManagementController@transaction_save");
+
+//// OT Management_div page ////
+Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
+Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
+Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
 
 //// Admission Source setup page ///
 Route::get('/admissrc','setup\AdmisSrcController@show');
