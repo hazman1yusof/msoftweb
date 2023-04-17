@@ -53,28 +53,28 @@
     <input id="sel_date" name="sel_date" value="{{ \Carbon\Carbon::now()->toDateString() }}" type="hidden">
     <input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
     
-    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="mgmt_panel">
-        <div class="panel-heading clearfix collapsed" id="toggle_mgmt">
-            <b>NAME: <span id="name_show_mgmt"></span></b><br>
-            MRN: <span id="mrn_show_mgmt"></span>
-            SEX: <span id="sex_show_mgmt"></span>
-            DOB: <span id="dob_show_mgmt"></span>
-            AGE: <span id="age_show_mgmt"></span>
-            RACE: <span id="race_show_mgmt"></span>
-            RELIGION: <span id="religion_show_mgmt"></span><br>
-            OCCUPATION: <span id="occupation_show_mgmt"></span>
-            CITIZENSHIP: <span id="citizenship_show_mgmt"></span>
-            AREA: <span id="area_show_mgmt"></span> 
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otmgmt_div_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_otmgmt_div">
+            <b>NAME: <span id="name_show_otmgmt_div"></span></b><br>
+            MRN: <span id="mrn_show_otmgmt_div"></span>
+            SEX: <span id="sex_show_otmgmt_div"></span>
+            DOB: <span id="dob_show_otmgmt_div"></span>
+            AGE: <span id="age_show_otmgmt_div"></span>
+            RACE: <span id="race_show_otmgmt_div"></span>
+            RELIGION: <span id="religion_show_otmgmt_div"></span><br>
+            OCCUPATION: <span id="occupation_show_otmgmt_div"></span>
+            CITIZENSHIP: <span id="citizenship_show_otmgmt_div"></span>
+            AREA: <span id="area_show_otmgmt_div"></span> 
 
-            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_mgmt"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_mgmt"></i >  
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i >  
 
             <div style="position: absolute;
                             padding: 0 0 0 0;
                             right: 0px;
                             top: 0px;
                             z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_mgmt">
+                <button class="ui icon tertiary button refreshbtn_otmgmt_div">
                     <i class="sync alternate icon"></i>
                 </button>
             </div> 
@@ -87,7 +87,7 @@
             </div>
         </div>
         
-        <div id="tab_mgmt" class="panel-collapse collapse">
+        <div id="tab_otmgmt_div" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
                 @include('hisdb.otmanagement.otmanagement_div')
             </div>
