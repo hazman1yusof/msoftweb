@@ -153,10 +153,18 @@ class HomeController extends Controller
                 }
                 else
                 {
-                    $this->_menu_str .= "
-                    <li>
-                        <a href='#' aria-expanded='false' class='main' style='padding-left:".$this->tab($this->_x)."'><span class='fa " .$rowX->condition3 ." fa-2x' style='padding-right:5px'></span><span class='lilabel'>". $rowX->programname ."</span><span class='glyphicon arrow'></span></a>
-                        <ul aria-expanded='false'>";
+                    if($rowX->condition2=='img'){
+                        $this->_menu_str .= "
+                        <li>
+                            <a href='#' aria-expanded='false' class='main' style='padding-left:".$this->tab($this->_x)."'><img src='./img/".$rowX->condition3."' class='iconmetis'></img><span class='lilabel'>". $rowX->programname ."</span><span class='glyphicon arrow'></span></a>
+                            <ul aria-expanded='false'>";
+                    }else{
+
+                        $this->_menu_str .= "
+                        <li>
+                            <a href='#' aria-expanded='false' class='main' style='padding-left:".$this->tab($this->_x)."'><span class='fa " .$rowX->condition3 ." fa-2x' style='padding-right:5px'></span><span class='lilabel'>". $rowX->programname ."</span><span class='glyphicon arrow'></span></a>
+                            <ul aria-expanded='false'>";
+                    }
                 }
 
                 $query = DB::table('sysdb.programtab as a')
@@ -186,7 +194,7 @@ class HomeController extends Controller
                 }
 
                 if($class == 'main'){
-                    $this->_menu_str .= "<li><a style='padding-left:".$this->tab($this->_x)."' title='".$rowX->programname."' class='clickable' programid='".$rowX->programid."' targetURL='".$url."' newtab='true'><span class='fa " .$rowX->condition3 ." fa-2x' style='padding-right:5px'></span><span class='lilabel'>".$rowX->programname."</span></a></li>"; 
+                    $this->_menu_str .= "<li><a style='padding-left:".$this->tab($this->_x)."' title='".$rowX->programname."' class='clickable' programid='".$rowX->programid."' targetURL='".$url."' newtab='true'><span class='fa " .$rowX->condition3 ." fa-2x' style='padding-right:5px'></span><span class='lilabel'>".$rowX->programname."</span></a></li>";
                 }else{
                     $this->_menu_str .= "<li><a style='padding-left:".$this->tab($this->_x)."' title='".$rowX->programname."' class='clickable' programid='".$rowX->programid."' targetURL='".$url."'><span class='lilabel'>".$rowX->programname."</span></a></li>";    
                 }

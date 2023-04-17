@@ -1996,6 +1996,15 @@ function SmoothScrollToTop(){
   });
 }
 
+function ordialog_buang_error_shj(id,errorField){
+	if($.inArray(id,errorField)!==-1){
+		errorField.splice($.inArray(id,errorField), 1);
+	}
+	$( '#'+id ).parent().parent().removeClass( "has-error" );
+	$( '#'+id ).removeClass( "error" );
+	$( '#'+id ).parent().next('span.help-block').text('');
+}
+
 function myerrorIt(id,errorField,fail){
 	if(!fail){
 		if($.inArray(id,errorField)!==-1){

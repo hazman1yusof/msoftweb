@@ -1352,6 +1352,8 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
+				ordialog_buang_error_shj('apacthdr_cheqno',errorField);
+
 				let data=selrowData('#'+dialog_paymode.gridname);
 				$('#apacthdr_cheqno').prop('readonly',false);
 				switch(data.paymode){

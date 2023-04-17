@@ -502,7 +502,6 @@ Route::post('/apptrsc_rsc/addEvent','hisdb\Appointment_rscController@addEvent');
 Route::post('/apptrsc_rsc/editEvent','hisdb\Appointment_rscController@editEvent');
 Route::post('/apptrsc_rsc/delEvent','hisdb\Appointment_rscController@delEvent');
 
-
 //////////////////////////////finance setup///////////////////////////////////////
 
 //// debtortype ////

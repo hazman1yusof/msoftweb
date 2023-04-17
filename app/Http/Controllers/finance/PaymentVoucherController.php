@@ -276,7 +276,7 @@ use PDF;
             
             if ($request->apacthdr_trantype == 'PV'){
 
-                $this->checkduplicate_docno('add', $request);
+                // $this->checkduplicate_docno('add', $request);
 
                 $table = DB::table("finance.apacthdr");
             
@@ -401,7 +401,7 @@ use PDF;
             
             } else if ($request->apacthdr_trantype == 'PD'){
 
-                $this->checkduplicate_docno('add', $request);
+                // $this->checkduplicate_docno('add', $request);
 
                 $table = DB::table("finance.apacthdr");
             
@@ -467,7 +467,7 @@ use PDF;
         if ($request->apacthdr_trantype == 'PV'){
             
             DB::beginTransaction();
-            $this->checkduplicate_docno('edit', $request);
+            // $this->checkduplicate_docno('edit', $request);
 
             $table = DB::table("finance.apacthdr");
 
@@ -596,7 +596,7 @@ use PDF;
 
             DB::beginTransaction();
 
-            $this->checkduplicate_docno('edit', $request);
+            // $this->checkduplicate_docno('edit', $request);
             $table = DB::table("finance.apacthdr");
 
             $array_update = [
@@ -1075,21 +1075,23 @@ use PDF;
 
     public function checkduplicate_docno($oper,$request){
 
-        if($oper == 'edit'){
-            $obj = DB::table("finance.apacthdr")
-                ->where('compcode','=',session('compcode'))
-                ->where('document','=',$request->apacthdr_document)
-                ->where('recstatus','!=','CANCELLED')
-                ->where('idno','!=',$request->idno);
-        }else{
-            $obj = DB::table("finance.apacthdr")
-                ->where('compcode','=',session('compcode'))
-                ->where('document','=',$request->apacthdr_document)
-                ->where('recstatus','!=','CANCELLED');
-        }
+        if(!empty($request->apacthdr_document)){
+            if($oper == 'edit'){
+                $obj = DB::table("finance.apacthdr")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('document','=',$request->apacthdr_document)
+                    ->where('recstatus','!=','CANCELLED')
+                    ->where('idno','!=',$request->idno);
+            }else{
+                $obj = DB::table("finance.apacthdr")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('document','=',$request->apacthdr_document)
+                    ->where('recstatus','!=','CANCELLED');
+            }
 
-        if($obj->exists()){
-            throw new \Exception('duplicate_docno', 500);
+            if($obj->exists()){
+                throw new \Exception('duplicate_docno', 500);
+            }
         }
     }
 

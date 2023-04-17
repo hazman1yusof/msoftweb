@@ -505,7 +505,7 @@ use Carbon\Carbon;
 
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=', $auditno)
+                    ->where('auditno','=', $request->auditno)
                     ->update([
                         'recstatus' => 'CANCELLED'
                     ]);
@@ -532,7 +532,7 @@ use Carbon\Carbon;
 
                 $apactdtl = DB::table('finance.apactdtl')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=', $auditno)
+                    ->where('auditno','=', $request->auditno)
                     ->update([
                         'recstatus' => 'CANCELLED'
                     ]);
@@ -718,20 +718,26 @@ use Carbon\Carbon;
 
     public function gltran_fromdept($deptcode,$catcode){
 
-        $ccode_obj = DB::table("sysdb.department")
+        // $ccode_obj = DB::table("sysdb.department")
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('deptcode','=',$deptcode)
+        //             ->first();
+
+        $ccode_obj = DB::table("sysdb.sysparam")
                     ->where('compcode','=',session('compcode'))
-                    ->where('deptcode','=',$deptcode)
+                    ->where('source','=','AP')
+                    ->where('trantype','=','ACC')
                     ->first();
 
-        $draccno_obj = DB::table("material.category")
-                        ->where('compcode','=',session('compcode'))
-                        ->where('catcode','=',$catcode)
-                        ->where('source','=','CR')
-                        ->first();
+        // $draccno_obj = DB::table("material.category")
+        //                 ->where('compcode','=',session('compcode'))
+        //                 ->where('catcode','=',$catcode)
+        //                 ->where('source','=','CR')
+        //                 ->first();
         
         $responce = new stdClass();
-        $responce->drcostcode = $ccode_obj->costcode;
-        $responce->draccno = $draccno_obj->expacct;
+        $responce->drcostcode = $ccode_obj->pvalue1;
+        $responce->draccno = $ccode_obj->pvalue2;
         return $responce;
     }
 

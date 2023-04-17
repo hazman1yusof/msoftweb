@@ -46,6 +46,8 @@ $(document).ready(function () {
 
 	if(Class2 == 'DOC'){
 		$('#Scol').val('Doctor')
+	}else if(Class2 == 'OT'){
+		$('#Scol').val('Operation Theater')
 	}else{
 		$('#Scol').val('Resource')
 	}
