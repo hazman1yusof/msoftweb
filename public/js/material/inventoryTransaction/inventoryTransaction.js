@@ -230,7 +230,7 @@ $(document).ready(function () {
 		sortname:'idno',
 		sortorder:'desc',
 		width: 900,
-		height: 200,
+		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
@@ -872,7 +872,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -981,6 +981,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
+			//calc_jq_height_onchange("jqGrid2");
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -997,7 +998,6 @@ $(document).ready(function () {
 			// $("input[name='gstpercent']").val('0')//reset gst to 0
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
 			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
-			
 	
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
 
@@ -1807,6 +1807,7 @@ $(document).ready(function () {
 				$("#jqGrid2 input[name='netprice']").val(data['p_avgcost']);
 				$("#jqGrid2 input[name='convfactoruomcodetrdept']").val(data['u_convfactor']);
 				$("#jqGrid2 input[name='qtyonhand']").val(data['s_qtyonhand']);
+				$("#jqGrid2 input[name='uomcoderecv']").val(data['s_uomcode']);
 
 				dialog_uomcodetrdept.urlParam.filterVal=['session.compcode',$('#txndept').val(),$("#jqGrid2 input[name='itemcode']").val(),moment($('#trandate').val()).year()];
 				dialog_uomcodetrdept.check(errorField);
