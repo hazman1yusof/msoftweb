@@ -280,7 +280,7 @@ $(document).ready(function () {
 			//empty_form();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
