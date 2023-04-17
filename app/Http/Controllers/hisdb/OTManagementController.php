@@ -84,7 +84,7 @@ class OTManagementController extends defaultController
                 
                 $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))
                                                 ->where('apptbook.Type','=','OT')
-                                                ->where('apptbook.surgery_date' ,'=', $request->filterVal[0]);
+                                                ->where('apptbook.apptdateto' ,'=', $request->filterVal[0]);
                 
                 if(!empty($request->sidx)){
                     $table_apptbook = $table_apptbook->orderBy($request->sidx, $request->sord);
