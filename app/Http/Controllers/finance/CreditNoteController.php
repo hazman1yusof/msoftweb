@@ -1031,24 +1031,26 @@ use Carbon\Carbon;
             $obj = DB::table("finance.apacthdr")
                 ->where('compcode','=',session('compcode'))
                 ->where('document','=',$request->apacthdr_document)
+                ->where('trantype','=','CN')
                 ->where('recstatus','!=','CANCELLED')
                 ->where('idno','!=',$request->idno);
         }else{
             $obj = DB::table("finance.apacthdr")
                 ->where('compcode','=',session('compcode'))
                 ->where('document','=',$request->apacthdr_document)
+                ->where('trantype','=','CN')
                 ->where('recstatus','!=','CANCELLED');
         }
 
         if($obj->exists()){
-            throw new \Exception('duplicate_docno', 500);
+            throw new \Exception('Duplicate DO No', 500);
         }
     }
 
     public function check_alloc_exists(Request $request){
 
         $apacthdr = DB::table('finance.apacthdr')
-                ->where('suppcode',$request->filterVal[0])
+                ->where('suppcode',$request->apacthdr_suppcode)
                 ->where('compcode',session('compcode'))
                 ->where('recstatus','=','POSTED')
                 ->where('postdate','<=',$request->apacthdr_postdate)

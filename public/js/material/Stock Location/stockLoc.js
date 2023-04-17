@@ -397,7 +397,6 @@ $(document).ready(function () {
 	dialog_itemcode.makedialog();
 	dialog_itemcode.on();
 
-
 	var dialog_uomcode = new ordialog(
 		'uomcodeS', ['material.product as p', 'material.uom as u'], "#uomcodeS", errorField,
 		{
@@ -408,9 +407,15 @@ $(document).ready(function () {
 				{label:'Unit',name:'p_unit',classes:'pointer'},
 			],
 			urlParam: {
-						filterCol:['compcode','recstatus'],
-						filterVal:['session.compcode','ACTIVE']
-					},
+					filterCol:['p.itemcode','p.compcode','p.unit'],
+					filterVal:[$("#itemcodeS").val(),'session.compcode','session.unit'],
+					join_type:['LEFT JOIN'],
+					join_onCol:['p.uomcode'],
+					join_onVal:['u.uomcode'],
+					join_filterCol:[['p.compcode on =']],
+					join_filterVal:[['u.compcode']]
+
+				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);
 				$("#uomcodeS").val(data['p_uomcode']);
@@ -430,7 +435,7 @@ $(document).ready(function () {
 		}, {
 			title: "Select Uom",
 			open: function () {
-				dialog_uomcode.urlParam.fixPost = true;
+				dialog_uomcode.urlParam.fixPost = "true";
 				dialog_uomcode.urlParam.table_id = "uomcode";
 				dialog_uomcode.urlParam.filterCol = ['p.itemcode','p.compcode','p.unit'];
 				dialog_uomcode.urlParam.filterVal = [$("#itemcodeS").val(),'session.compcode','session.unit'];

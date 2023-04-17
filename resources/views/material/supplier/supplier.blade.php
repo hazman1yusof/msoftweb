@@ -189,7 +189,7 @@ i.fa {
 				  		<label class="col-md-2 control-label" for="Advccode">Advance Cost Code</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+									<input id="Advccode" name="Advccode" type="text" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
@@ -198,7 +198,7 @@ i.fa {
 				 		<label class="col-md-2 control-label" for="AdvGlaccno">Advance GL Account No</label>  
 				  			<div class="col-md-3">
 					  			<div class='input-group'>
-									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" >
+									<input id="AdvGlaccno" name="AdvGlaccno" type="text" class="form-control input-sm text-uppercase">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>

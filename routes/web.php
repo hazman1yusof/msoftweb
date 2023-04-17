@@ -247,6 +247,12 @@ Route::post('/ot_maintenance/save_session','hisdb\otMaintenanceController@save_s
 Route::post('/ot_maintenance/save_bgleave','hisdb\otMaintenanceController@save_bgleave');
 Route::post('/ot_maintenance/save_colorph','hisdb\otMaintenanceController@save_colorph');
 
+//// OT Management page ////
+Route::get('/otmanagement','hisdb\OTManagementController@index');
+Route::get('/otmanagement/table','hisdb\OTManagementController@table');
+Route::post('/otmanagement/form','hisdb\OTManagementController@form');
+Route::post('/otmanagement_transaction_save', "hisdb\OTManagementController@transaction_save");
+
 //// Admission Source setup page ///
 Route::get('/admissrc','setup\AdmisSrcController@show');
 Route::get('/admissrc/table','setup\AdmisSrcController@table');
@@ -854,12 +860,6 @@ Route::post('/casenote/new_occup_form','hisdb\CaseNoteController@new_occup_form'
 Route::post('/casenote/new_title_form','hisdb\CaseNoteController@new_title_form');
 Route::post('/casenote/new_areacode_form','hisdb\CaseNoteController@new_areacode_form');
 Route::post('/casenote/new_relationship_form','hisdb\CaseNoteController@new_relationship_form');
-
-//// OT Management page ////
-Route::get('/otmanagement','hisdb\OTManagementController@index');
-Route::get('/otmanagement/table','hisdb\OTManagementController@table');
-Route::post('/otmanagement/form','hisdb\OTManagementController@form');
-Route::post('/otmanagement_transaction_save', "hisdb\OTManagementController@transaction_save");
 
 ///////////////////Fixed Asset setup////////////////////////////////////
 

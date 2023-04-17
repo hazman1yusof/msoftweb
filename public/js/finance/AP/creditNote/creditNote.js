@@ -410,7 +410,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox','apacthdr_compcode']);
+	addParamField('#jqGrid', false, saveParam, ['apacthdr_idno','apacthdr_auditno','apacthdr_adduser','apacthdr_adddate','apacthdr_upduser','apacthdr_upddate','apacthdr_recstatus','supplier_name', 'apacthdr_unit', 'Checkbox','apacthdr_compcode', 'apacthdr_postdate']);
 	
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -562,7 +562,7 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			if(data.responseText != 'duplicate_docno'){
+			if(data.responseText != 'Duplicate DO No'){
 				alert(data.responseText);
 			}
 		}).done(function (data) {
@@ -1582,9 +1582,9 @@ $(document).ready(function () {
 
 	///////////Validation for document number////////////////////////////////////////////////////////
 	
-	$("#apacthdr_document").blur(function(){
-		check_suppcode_duplicate();
-	});
+	// $("#apacthdr_document").blur(function(){
+	// 	check_suppcode_duplicate();
+	// });
 
 	var duplicate_documentno = false;
 	function check_suppcode_duplicate(){
@@ -1595,12 +1595,12 @@ $(document).ready(function () {
 				func:'getDocNo',
 				action:'get_value_default',
 				url: 'util/get_value_default',
-				field:['document'],
+				field:['document', 'trantype'],
 				table_name:'finance.apacthdr'
 			}
 
-			param.filterCol = ['document', 'recstatus','idno'];
-			param.filterVal = [$("#apacthdr_document").val(),'<>.CANCELLED','<>.'+$('#idno').val()];
+			param.filterCol = ['document', 'trantype', 'recstatus','idno'];
+			param.filterVal = [$("#apacthdr_document").val(),'CN','<>.CANCELLED','<>.'+$('#idno').val()];
 
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			
@@ -1615,7 +1615,7 @@ $(document).ready(function () {
 					bootbox.alert("Duplicate Document No");
 					$( id ).removeClass( "valid" ).addClass( "error" );
 					if($.inArray(id2,errorField)===-1){
-						errorField.push( id2 );
+						errorField.push( id2);
 					}
 					myerrorIt_only2(id,true);
 					$(id).data('show_error','Duplicate Document No');
@@ -1627,6 +1627,7 @@ $(document).ready(function () {
 
 	function checkduplicate(){
 		var id = "#apacthdr_document";
+		var id2 = "#apacthdr_trantype";
 		if(duplicate_documentno){
 			bootbox.alert("Duplicate Document No");
 			return false;
@@ -1657,6 +1658,7 @@ $(document).ready(function () {
 			show_post_button(false);
 			$("#jqGrid2_ilcancel").click();
 			$("#jqGridAlloc input[name='checkbox']").show();
+			$("#jqGridAlloc input[name='allocamount']").focus().select();
 			populate_alloc_table();
 			alloc_button_status('wait');
 		});
@@ -1670,9 +1672,9 @@ $(document).ready(function () {
 		dialog_payto.off();
 		errorField.length = 0;
 		populate_alloc_table_save();
-		//show_post_button(true);
+		//show_post_button(true);//checkduplicate() && 
 
-		if(checkduplicate() && checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
+		if(checkdate(true) && $('#formdata').isValid({requiredFields:''},conf,true)){
 			saveHeader("#formdata",oper,saveParam);
 			unsaved = false;
 		} else {
