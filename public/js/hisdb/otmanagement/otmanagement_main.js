@@ -413,17 +413,17 @@ $(document).ready(function () {
 			if(!$('#tab_doctornote').hasClass('in')){
 				$('#toggle_doctornote').click();
 			}
-			gotobtm("#tab_doctornote",'#save_doctorNote','#cancel_doctorNote');
+			// gotobtm("#tab_doctornote",'#save_doctorNote','#cancel_doctorNote');
 		}else if(!$('#save_dieteticCareNotes').is(':disabled')){
 			if(!$('#tab_diet').hasClass('in')){
 				$('#toggle_diet').click();
 			}
-			gotobtm("#tab_diet",'#save_diet','#cancel_diet');
+			// gotobtm("#tab_diet",'#save_diet','#cancel_diet');
 		}else if(!$('#save_phys_ncase').is(':disabled')){
 			if(!$('#tab_phys').hasClass('in')){
 				$('#toggle_phys').click();
 			}
-			gotobtm("#save_phys_ncase",'#save_phys_ncase','#cancel_phys_ncase');
+			// gotobtm("#save_phys_ncase",'#save_phys_ncase','#cancel_phys_ncase');
 		}else{
 			return false;
 		}
