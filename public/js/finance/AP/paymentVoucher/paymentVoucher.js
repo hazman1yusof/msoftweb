@@ -31,7 +31,7 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#apacthdr_actdate"]);
+	var actdateObj = new setactdate(["#apacthdr_postdate"]);
 	actdateObj.getdata().set();
 
 	////////////////////////////////////start dialog//////////////////////////////////////
