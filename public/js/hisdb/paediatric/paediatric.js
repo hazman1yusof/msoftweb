@@ -447,7 +447,7 @@ function populate_paediatric(obj){
 	//panel header
 	$('#name_show_paediatric').text(obj.Name);
 	$('#mrn_show_paediatric').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_paediatric').text((obj.Sex).toUpperCase());
+	$('#sex_show_paediatric').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_paediatric').text(dob_chg(obj.DOB));
 	$('#age_show_paediatric').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_paediatric').text(if_none(obj.raceDesc).toUpperCase());

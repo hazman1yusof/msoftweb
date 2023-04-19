@@ -298,7 +298,7 @@ function emptyFormdata_div(div,except){
 	$( div+' input' ).removeClass( "error" );
 	$( div+' textarea' ).removeClass( "error" );
 
-	$(div+' .help-block').html('');
+	$( div+' span.help-block').text('');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			$(value).val(temp[index]);

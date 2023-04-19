@@ -630,19 +630,19 @@ function populate_ordcom_currpt(obj){
 	$("#episno_ordcom").val(obj.Episno);
 	urlParam_ordcom.mrn = obj.MRN;
 	urlParam_ordcom.episno = obj.Episno;
-	refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
+	// refreshGrid('#jqGrid_ordcom',urlParam_ordcom,'add');
 
-	// document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
+	// // document.getElementById('showOrdcom_curpt').style.display = 'inline'; //to show hidden data
 
-	var saveParam={	
-        action:'get_table_ordcom',	
-	}	
+	// var saveParam={	
+    //     action:'get_table_ordcom',	
+	// }	
 	
-    var postobj={	
-    	_token : $('#csrf_token').val(),	
-    	mrn:obj.MRN,	
-    	episno:obj.Episno	
-	};	
+    // var postobj={	
+    // 	_token : $('#csrf_token').val(),	
+    // 	mrn:obj.MRN,	
+    // 	episno:obj.Episno	
+	// };	
 	
 }
 

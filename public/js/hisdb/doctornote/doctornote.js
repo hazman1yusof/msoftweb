@@ -428,7 +428,7 @@ function populate_doctorNote_currpt(obj){
 	//panel header
 	$('#name_show_doctorNote').text(obj.Name);
 	$('#mrn_show_doctorNote').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_doctorNote').text((obj.Sex).toUpperCase());
+	$('#sex_show_doctorNote').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_doctorNote').text(dob_chg(obj.DOB));
 	$('#age_show_doctorNote').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_doctorNote').text(if_none(obj.raceDesc).toUpperCase());
@@ -455,10 +455,10 @@ function populate_doctorNote_currpt(obj){
 
     button_state_doctorNote('add');
 
-    docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
-		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
-		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
-    });
+    // docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
+	// 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
+	// 	$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
+    // });
 }
 
 //screen emergency//

@@ -211,7 +211,7 @@ class PatmastController extends defaultController
 
             $table_patm = $table_patm
                         ->where('Active','=','1')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->whereBetween('MRN',$mrn_range);
 
 
@@ -2337,8 +2337,8 @@ class PatmastController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'occupcode' => intval($idno) + 1,
-                    'description' => $request->occup_desc,
-                    'recstatus' => 'A',
+                    'description' => strtoupper($request->occup_desc),
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
@@ -2359,14 +2359,14 @@ class PatmastController extends defaultController
         try {
             
             if($this->default_duplicate('hisdb.title','Code',$request->title_code)>0){
-                throw new \Exception("Username already exist");
+                throw new \Exception("Title Code already exist");
             }
 
             DB::table('hisdb.title')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'Code' => $request->title_code,
-                    'description' => $request->title_desc,
+                    'Code' => strtoupper($request->title_code),
+                    'description' => strtoupper($request->title_desc),
                     'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -2391,13 +2391,13 @@ class PatmastController extends defaultController
             //     throw new \Exception("Areacode already exist");
             // }
 
-            $idno = DB::table('hisdb.areacode')->max('idno');
+            $areacode = DB::table('hisdb.areacode')->max('areacode');
 
             DB::table('hisdb.areacode')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'areacode' => intval($idno) + 1,
-                    'description' => $request->areacode_desc,
+                    'areacode' => intval($areacode) + 1,
+                    'description' => strtoupper($request->areacode_desc),
                     'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

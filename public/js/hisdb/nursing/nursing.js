@@ -146,13 +146,11 @@ $(document).ready(function () {
     });
 
 	$('#jqGridTriageInfo_panel').on('shown.bs.collapse', function () {
-		SmoothScrollTo("#jqGridTriageInfo_panel", 500)	
-		sticky_docnotetbl(on=true);
-		textare_init_triage();
+		SmoothScrollTo("#jqGridTriageInfo_panel", 500);
+		populate_triage_currpt_getdata();
 	});
 
 	$('#jqGridTriageInfo_panel').on('hidden.bs.collapse', function () {
-		sticky_docnotetbl(on=true);
 	});
 
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
@@ -437,7 +435,6 @@ $(document).ready(function () {
 			$('#p_error').text('');
 
 			let data = $('#jqGridAddNotesTriage').jqGrid ('getRowData', rowid);
-			console.log(data);
 
 			let editurl = "./nursing/form?"+
 				$.param({
@@ -889,11 +886,13 @@ function populate_triage(obj,rowdata){
 
 //screen current patient//
 function populate_triage_currpt(obj){
+	$("#jqGridTriageInfo_panel").collapse('hide');
+	button_state_ti('empty');
 	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_triage').text((obj.Sex).toUpperCase());
+	$('#sex_show_triage').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_triage').text(dob_chg(obj.DOB));
 	$('#age_show_triage').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_triage').text(if_none(obj.raceDesc).toUpperCase());
@@ -917,16 +916,20 @@ function populate_triage_currpt(obj){
 
 	// document.getElementById('showTriage_curpt').style.display = 'inline';
 
-	var saveParam={
+	
+}
+
+function  populate_triage_currpt_getdata(){
+	var urlparam={
         action:'get_table_triage',
     }
     var postobj={
     	_token : $('#csrf_token').val(),
-    	mrn:obj.MRN,
-    	episno:obj.Episno
+    	mrn:$("#mrn_ti").val(),
+    	episno:$("#episno_ti").val()
     };
 
-    $.post( "./nursing/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./nursing/form?"+$.param(urlparam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -951,7 +954,6 @@ function populate_triage_currpt(obj){
         }
 
     });
-	
 }
 
 //screen case note//

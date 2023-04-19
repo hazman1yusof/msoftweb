@@ -263,7 +263,7 @@ var Global = function () {
                 $.post( './pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                     $("#new_areacode_form").trigger('reset');
                     selecter.ajax.reload()
-                    $('#mdl_add_new_title').modal('hide');
+                    $('#mdl_add_new_areacode').modal('hide');
                 }).fail(function(data) {
                     alert(data.responseText);
                 }).success(function(data){

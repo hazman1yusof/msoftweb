@@ -880,5 +880,9 @@ abstract class defaultController extends Controller{
         }
     }
 
+    public function mypaginate($table,$rows){
+        dd($table);
+    }
+
 
 }

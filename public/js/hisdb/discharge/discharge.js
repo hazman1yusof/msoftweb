@@ -204,7 +204,7 @@ function populate_discharge_currpt(obj){
 	//panel header	
 	$('#name_show_discharge').text(obj.Name);
 	$('#mrn_show_discharge').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_discharge').text((obj.Sex).toUpperCase());
+	$('#sex_show_discharge').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_discharge').text(dob_chg(obj.DOB));
 	$('#age_show_discharge').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_discharge').text(if_none(obj.raceDesc).toUpperCase());
@@ -219,28 +219,28 @@ function populate_discharge_currpt(obj){
 
 	// document.getElementById('showdischarge_curpt').style.display = 'inline'; //to show hidden data
 
-	var tableParam={	
-        action:'get_table_discharge',
-        mrn:obj.MRN,
-        episno:obj.Episno
-	}
+	// var tableParam={	
+    //     action:'get_table_discharge',
+    //     mrn:obj.MRN,
+    //     episno:obj.Episno
+	// }
 
-	$.get( "./discharge/table?"+$.param(tableParam), function( data ) {
+	// $.get( "./discharge/table?"+$.param(tableParam), function( data ) {
 			
-	},'json').done(function(data) {
-		if(data.data.bed != null || data.data.bed != undefined){
-			$('div#jqGrid_discharge_panel #bedtype_discharge').val(data.data.bed.bedtype);
-			$('div#jqGrid_discharge_panel #bedtype_text_discharge').val(data.data.bed.description);
-			$('div#jqGrid_discharge_panel #bed_discharge').val(data.data.bed.bednum);
-			$('div#jqGrid_discharge_panel #room_discharge').val(data.data.bed.room);
-		}
+	// },'json').done(function(data) {
+	// 	if(data.data.bed != null || data.data.bed != undefined){
+	// 		$('div#jqGrid_discharge_panel #bedtype_discharge').val(data.data.bed.bedtype);
+	// 		$('div#jqGrid_discharge_panel #bedtype_text_discharge').val(data.data.bed.description);
+	// 		$('div#jqGrid_discharge_panel #bed_discharge').val(data.data.bed.bednum);
+	// 		$('div#jqGrid_discharge_panel #room_discharge').val(data.data.bed.room);
+	// 	}
 
-		if(data.data.episode != null || data.data.episode != undefined ){
-			$('div#jqGrid_discharge_panel #regdate_discharge').val(data.data.episode.reg_date);
-			$('div#jqGrid_discharge_panel #regby_discharge').val(data.data.episode.adduser);
-			$('div#jqGrid_discharge_panel #regtime_discharge').val(data.data.episode.reg_time);
-		}
-	});
+	// 	if(data.data.episode != null || data.data.episode != undefined ){
+	// 		$('div#jqGrid_discharge_panel #regdate_discharge').val(data.data.episode.reg_date);
+	// 		$('div#jqGrid_discharge_panel #regby_discharge').val(data.data.episode.adduser);
+	// 		$('div#jqGrid_discharge_panel #regtime_discharge').val(data.data.episode.reg_time);
+	// 	}
+	// });
 	
 }
 

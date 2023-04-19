@@ -489,7 +489,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <small for="nok_addr1_pat">Address</small>
-                                                <input id="nok_addr1_pat" name="nok_addr1_pat" type="text" class="form-control" data-validation="required" style="margin-bottom: 2px">
+                                                <input id="nok_addr1_pat" name="nok_addr1_pat" type="text" class="form-control" style="margin-bottom: 2px">
                                                 <input id="nok_addr2_pat" name="nok_addr2_pat" type="text" class="form-control" style="margin-bottom: 2px">
                                                 <input id="nok_addr3_pat" name="nok_addr3_pat" type="text" class="form-control">
                                             </div>
@@ -498,7 +498,7 @@
                                         <div class="form-group">
                                             <div class="col-md-3">
                                                 <small for="nok_postcode_pat">Postcode</small>
-                                                <input id="nok_postcode_pat" name="nok_postcode_pat" type="text" class="form-control" data-validation="required">
+                                                <input id="nok_postcode_pat" name="nok_postcode_pat" type="text" class="form-control">
                                             </div>
 
                                             <div class="col-md-offset-3 col-md-6">
@@ -519,19 +519,19 @@
 
                                             <div class="col-md-6">
                                                 <small for="nok_telo_pat">Tel (O)</small>
-                                                <input id="nok_telo_pat" name="nok_telo_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                                <input id="nok_telo_pat" name="nok_telo_pat" type="text" class="form-control" rdonly>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <div class="col-md-6">
                                                 <small for="nok_telhp_pat">Tel (H/P)</small>
-                                                <input id="nok_telhp_pat" name="nok_telhp_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                                <input id="nok_telhp_pat" name="nok_telhp_pat" type="text" class="form-control" rdonly>
                                             </div>
 
                                             <div class="col-md-offset-3 col-md-3">
                                                 <small for="nok_ext_pat">Ext</small>
-                                                <input id="nok_ext_pat" name="nok_ext_pat" type="text" class="form-control" data-validation="required" rdonly>
+                                                <input id="nok_ext_pat" name="nok_ext_pat" type="text" class="form-control"  rdonly>
                                             </div>
                                         </div>
 

@@ -123,8 +123,8 @@ class ProductController extends defaultController
                     ->where('p.groupcode','=',$groupcode);
 
         $table = $table->leftjoin('hisdb.chgmast as cm', function($join){
-                            $join = $join->where('cm.compcode', '=', session('compcode'));
-                           // $join = $join->where('cm.unit','=',session('unit'));
+                            $join = $join->where('cm.compcode', '=', 'p.compcode');
+                            $join = $join->where('cm.unit','=',session('unit'));
                             $join = $join->on('cm.chgcode', '=', 'p.itemcode');
                             $join = $join->on('cm.uom', '=', 'p.uomcode');
                         });
@@ -193,7 +193,9 @@ class ProductController extends defaultController
             $table = $table->orderBy('p.idno','desc');
         }
 
+
         //////////paginate/////////
+        // $mypaginate = $this->mypaginate($table,$request->rows);
         $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();

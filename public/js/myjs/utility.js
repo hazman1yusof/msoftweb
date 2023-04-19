@@ -1085,7 +1085,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
 		filterCol:jqgrid_.urlParam.filterCol,filterVal:jqgrid_.urlParam.filterVal,
-		join_onCol:jqgrid_.urlParam.join_onCol,join_onVal:jqgrid_.urlParam.join_onVal,
+		join_type:jqgrid_.urlParam.join_type,join_onCol:jqgrid_.urlParam.join_onCol,join_onVal:jqgrid_.urlParam.join_onVal,
 		join_filterCol:jqgrid_.urlParam.join_filterCol,join_filterVal:jqgrid_.urlParam.join_filterVal,
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
@@ -1495,8 +1495,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}else if(this.checkstat=='none' && value == ''){
 			return false;
 		}else{
-
+			console.log(this.urlParam);
 			param=Object.assign({},this.urlParam);
+			console.log(param);
 
 			if(optid!=null){
 				var id_optid = idtopush.substring(0,idtopush.search("_"));
@@ -1763,6 +1764,16 @@ function faster_detail_load(){
 						});
 
 						localStorage.setItem(storage_name,json);
+					}else{
+						let desc = '';
+						let now = moment();
+
+						var json = JSON.stringify({
+							'description':desc,
+							'timestamp': now
+						});
+
+						localStorage.setItem(storage_name,json);
 					}
 				});
 			}else{
@@ -1787,10 +1798,10 @@ function faster_detail_load(){
 			this.array.push(obj_stored);
 
 			//remove storage after 7 days
-            let moment_stored = obj_stored.json.timestamp;
-            if(moment().diff(moment(moment_stored),'days') > 7){
-                localStorage.removeItem(storage_name);
-            }
+            // let moment_stored = obj_stored.json.timestamp;
+            // if(moment().diff(moment(moment_stored),'days') > 7){
+            //     localStorage.removeItem(storage_name);
+            // }
 		}
 	}
 	this.set_array = function(except){

@@ -23,10 +23,15 @@ $(document).ready(function () {
 	var urlParam_nok_pat = {
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field: '',
-		table_name: 'hisdb.nok_ec',
-		filterCol:['compcode','episno','mrn'],
-		filterVal:['session.compcode',$("#txt_pat_episno").val(),$("#pat_mrn").val()],
+		field: ['n.idno','n.mrn','n.episno','n.name','n.relationshipcode','r.Description','n.address1','n.address2','n.address3','n.postcode','n.tel_h','n.tel_hp','n.tel_o','n.tel_o_ext'],
+		table_name: ['hisdb.nok_ec AS n','hisdb.relationship AS r'],
+		join_onCol : ['r.relationshipcode'],
+        join_onVal : ['n.relationshipcode'],
+        join_type: ['LEFT JOIN'],
+        join_filterCol : [['r.compcode =']],
+        join_filterVal : [['session.compcode']],
+		filterCol:['n.compcode','n.mrn'],
+		filterVal:['session.compcode',$("#pat_mrn").val()],
 	}
 
 	$("#jqGrid_nok_pat").jqGrid({
@@ -37,6 +42,7 @@ $(document).ready(function () {
             { label: 'episno', name: 'episno', hidden: true },
             { label: 'Name', name: 'name', width: 80 },
             { label: 'Relatecode', name: 'relationshipcode', hidden: true  },
+            { label: 'Relationship', name: 'Description', hidden: false  , width: 50 },
             { label: 'address1', name: 'address1' , hidden: true },
             { label: 'address2', name: 'address2' , hidden: true },
             { label: 'address3', name: 'address3' , hidden: true },
@@ -59,6 +65,7 @@ $(document).ready(function () {
 			populate_nok_pat(selrowData("#jqGrid_nok_pat"));
 		},
 		loadComplete: function(){
+			emptyFormdata_div('#form_nok_pat');
 			$('#jqGrid_nok_pat_ilsave,#jqGrid_nok_pat_ilcancel').hide();
 
 			let reccount = $('#jqGrid_nok_pat').jqGrid('getGridParam', 'reccount');
@@ -87,11 +94,11 @@ $(document).ready(function () {
 		},
 	});
 
-	addParamField('#jqGrid_nok_pat', false, urlParam_nok_pat);
+	// addParamField('#jqGrid_nok_pat', false, urlParam_nok_pat);
 
 	$("#tabNok_pat").on("shown.bs.collapse", function(){
 		$("#jqGrid_nok_pat").jqGrid ('setGridWidth', Math.floor($("#jqGrid_nok_pat_c")[0].offsetWidth-$("#jqGrid_nok_pat_c")[0].offsetLeft-0));
-		urlParam_nok_pat.filterCol = ['compcode','episno','mrn'],
+		urlParam_nok_pat.filterCol = ['n.compcode','n.episno','n.mrn'],
 		urlParam_nok_pat.filterVal = ['session.compcode',$("#txt_pat_episno").val(),$("#pat_mrn").val()]
 		refreshGrid("#jqGrid_nok_pat", urlParam_nok_pat);
 	});
@@ -105,7 +112,7 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','A']
+				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
 				// $(search_relate_pat.textfield).parent().next().html('');
@@ -114,7 +121,7 @@ $(document).ready(function () {
 			title: "Select Bed Type search",
 			open: function () {
 				search_relate_pat.urlParam.filterCol=['compcode', 'recstatus'];
-				search_relate_pat.urlParam.filterVal=['session.compcode', 'A'];
+				search_relate_pat.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 
 				$('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
 				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");

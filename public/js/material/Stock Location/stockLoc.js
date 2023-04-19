@@ -207,7 +207,9 @@ $(document).ready(function () {
 	}  
 
 	function TrxType(cellvalue, options, rowObject){
-		if(cellvalue.toUpperCase() == 'TR'){
+		if(cellvalue==null || cellvalue==undefined){
+			return '';
+		}else if(cellvalue.toUpperCase() == 'TR'){
 			return 'STOCK';
 		}else if(cellvalue.toUpperCase() == 'IS'){
 			return 'ISSUED';
@@ -358,6 +360,7 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_itemcode.gridname);
+				dialog_uomcode.urlParam.filterVal[0] = data['itemcode'];
 				$("#uomcodeS").val(data['uomcode']);
 				$('#uomcodeS').focus();
 			},
@@ -374,7 +377,6 @@ $(document).ready(function () {
 		},{
 			title:"Select Item",
 			open: function(){
-				console.log($('#Class2').val());
 				if ($('#Class2').val().trim()  == 'Pharmacy') { 
 					dialog_itemcode.urlParam.filterCol=['Class', 'recstatus','compcode','unit'];
 					dialog_itemcode.urlParam.filterVal=['Pharmacy', 'ACTIVE','session.compcode','session.unit'];
@@ -407,6 +409,7 @@ $(document).ready(function () {
 				{label:'Unit',name:'p_unit',classes:'pointer'},
 			],
 			urlParam: {
+					fixPost:"true",
 					filterCol:['p.itemcode','p.compcode','p.unit'],
 					filterVal:[$("#itemcodeS").val(),'session.compcode','session.unit'],
 					join_type:['LEFT JOIN'],
@@ -414,7 +417,6 @@ $(document).ready(function () {
 					join_onVal:['u.uomcode'],
 					join_filterCol:[['p.compcode on =']],
 					join_filterVal:[['u.compcode']]
-
 				},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_uomcode.gridname);

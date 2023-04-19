@@ -789,8 +789,8 @@
     </div>
 </div>
 
-<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" >
-    <div class="modal-dialog smallmodal">
+<div id="mdl_new_gl" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog mediummodal">
         <form class="form-horizontal" id="glform">
             <div class="modal-content">
                 <div class="modal-header label-info">

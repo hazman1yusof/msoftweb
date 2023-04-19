@@ -132,74 +132,62 @@ class Appointment_rscController extends defaultController
         DB::beginTransaction();
 
         try {
+            if($request->Class2 == 'OT'){
 
-            // $case = DB::table('hisdb.casetype')
-            //         ->where('case_code','=',$request->case)
-            //         ->where('compcode','=',session('compcode'))
-            //         ->first();
+                $apptidno = DB::table('hisdb.apptbook')->insertGetId([
+                    'compcode'    => session('compcode'),
+                    'title'       => $request->patname.' - '.$request->telhp.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                    'loccode'     => $request->doctor,
+                    'icnum'       => $request->icnum,
+                    'mrn'         => $request->mrn,
+                    'pat_name'    => $request->patname,
+                    'apptdatefr'  => $request->apptdatefr_day,
+                    'apptdateto'  => $request->apptdatefr_day,
+                    'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                    'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                    'telno'       => $request->telh,
+                    'apptstatus'  => $request->status,
+                    'telhp'       => $request->telhp,
+                    'remarks'     => $request->remarks,
+                    'ot_room'     => $request->doctor,
+                    'surgery_date'=> $request->surgery_date,
+                    'op_unit'     => strtoupper($request->op_unit),
+                    'oper_type'   => strtoupper($request->oper_type),
+                    'oper_status' => strtoupper($request->oper_status),
+                    'recstatus'   => 'A',
+                    'adduser'     => session('username'),
+                    'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'    => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'type'        => $request->Class2
+                ]);
 
-            $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
-            $apptidno = DB::table('hisdb.apptbook')->insertGetId([
-                'title'       => $request->patname.' - '.$request->telhp.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
-                'loccode'     => $request->doctor,
-                'icnum'       => $request->icnum,
-                'mrn'         => $request->mrn,
-                'pat_name'    => $request->patname,
-                'start'       => $request->apptdatefr_day.' '.$request->start_time,
-                'end'         => $request->apptdatefr_day.' '.$request->end_time,
-                'telno'       => $request->telh,
-                'apptstatus'  => $request->status,
-                'telhp'       => $request->telhp,
-                // 'case_code'   => $request->case,
-                // 'case_desc'   => $case->description,
-                'remarks'     => $request->remarks,
-                'recstatus'   => 'A',
-                'adduser'     => session('username'),
-                'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
-                'lastuser'    => session('username'),
-                'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
-                'type'        => 'RSC'
-            ]);
+            }else{
 
-            // if($request->mrn != ''){
-            //     $pat_mast = DB::table("hisdb.pat_mast")
-            //             ->where("compcode",'=',session('compcode'))
-            //             ->where("mrn",'=',$request->mrn)
-            //             ->first();
+                $apptidno = DB::table('hisdb.apptbook')->insertGetId([
+                    'compcode'    => session('compcode'),
+                    'title'       => $request->patname.' - '.$request->telhp.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                    'loccode'     => $request->doctor,
+                    'icnum'       => $request->icnum,
+                    'mrn'         => $request->mrn,
+                    'pat_name'    => $request->patname,
+                    'apptdatefr'  => $request->apptdatefr_day,
+                    'apptdateto'  => $request->apptdatefr_day,
+                    'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                    'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                    'telno'       => $request->telh,
+                    'apptstatus'  => $request->status,
+                    'telhp'       => $request->telhp,
+                    'remarks'     => $request->remarks,
+                    'recstatus'   => 'A',
+                    'adduser'     => session('username'),
+                    'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'    => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'type'        => $request->Class2
+                ]);
+            }
 
-            //     $mrn = ltrim($request->mrn, '0');
-            // }else{
-            //     $mrn = '00000';
-            // }
-
-            //add preepisode
-            // DB::table("hisdb.pre_episode")
-            //     ->insert([
-            //         "compcode" => session('compcode'),
-            //         "apptidno" => $apptidno,
-            //         "mrn" => $mrn,
-            //         "episno" => 0,
-            //         "case_code" => $request->case,
-            //         "admdoctor" => $request->doctor,
-            //         "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
-            //         "adduser" => session('username'),
-            //         'Newic'    => $request->icnum,
-            //         'Name'    => $request->patname,
-            //         'telhp'    => $request->telhp,
-            //         'telno'    => $request->telh,
-            //         'apptdate' => $request->apptdatefr_day
-            //     ]);
-
-            //edit no telefon dkt patmast
-            // if($mrn != '00000'){
-            //     DB::table('hisdb.pat_mast')
-            //         ->where('compcode','=',session('compcode'))
-            //         ->where("mrn",'=',$mrn)
-            //         ->update([
-            //             'telhp'    => $request->telhp,
-            //             'telh'    => $request->telh,
-            //         ]);
-            // }
 
             DB::commit();
 
@@ -220,29 +208,23 @@ class Appointment_rscController extends defaultController
         try {
 
             if(!empty($request->event_drop)){
-                
 
-                //tgk preepisode kalau dah ada episno xperlu update
-                $pre_episode = DB::table("hisdb.pre_episode")
-                    ->where("apptidno",'=',$request->idno);
-                    
-                if($pre_episode->exists()){
+                $apptbook = DB::table('hisdb.apptbook')
+                    ->where('compcode',session('compcode'))
+                    ->where('loccode',$request->loccode)
+                    ->where('start',$request->start);
 
-                    $pre_episode_obj = $pre_episode->first();
-                    if($pre_episode_obj->episno == 0){
-                        DB::table('hisdb.apptbook')
-                            ->where('idno','=',$request->idno)
-                            ->update([
-                                'start'       => $request->start,
-                                'end'         => $request->end
-                            ]);
-
-                        $pre_episode->update([
-                            'apptdate' => $request->start
+                if(!$apptbook->exists()){
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'apptdatefr'  => $request->start,
+                            'apptdateto'  => $request->end,
+                            'start'       => $request->start,
+                            'end'         => $request->end
                         ]);
-                    }
                 }
-                
+
             }else if(!empty($request->type) && $request->type=='transfer'){
 
                 foreach ($request->arraytd as $key => $value) {
@@ -255,73 +237,58 @@ class Appointment_rscController extends defaultController
                 }
 
             }else{
-                $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
 
-                // $case = DB::table('hisdb.casetype')
-                //     ->where('case_code','=',$request->case)
-                //     ->where('compcode','=',session('compcode'))
-                //     ->first();
 
-                DB::table('hisdb.apptbook')
-                    ->where('idno','=',$request->idno)
-                    ->update([
-                        'title'       => $request->patname.' - '.$request->telhp.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
-                        'loccode'     => $request->doctor,
-                        'mrn'         => $request->mrn,
-                        'icnum'       => $request->icnum,
-                        'pat_name'    => $request->patname,
-                        'start'       => $request->apptdatefr_day.' '.$request->start_time,
-                        'end'         => $request->apptdatefr_day.' '.$request->end_time,
-                        'telno'       => $request->telh,
-                        'apptstatus'  => $request->status,
-                        'recstatus'   => 'A',
-                        'telhp'       => $request->telhp,
-                        // 'case_code'   => $request->case,
-                        // 'case_desc'   => $case->description,
-                        'remarks'     => $request->remarks,
-                        'lastuser'    => session('username'),
-                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
-
-                // if($request->mrn != ''){
-                //     $pat_mast = DB::table("hisdb.pat_mast")
-                //             ->where("compcode",'=',session('compcode'))
-                //             ->where("mrn",'=',$request->mrn)
-                //             ->first();
-
-                //     $mrn = ltrim($request->mrn, '0');
-                //     $episno = intval($pat_mast->Episno) + 1;
-                // }else{
-                //     $mrn = '00000';
-                //     $episno = 0;
-                // }
-
-                // DB::table("hisdb.pre_episode")
-                //     ->where("apptidno",'=',$request->idno)
-                //     ->update([
-                //         "compcode" => session('compcode'),
-                //         "case_code" => $request->case,
-                //         "admdoctor" => $request->doctor,
-                //         "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
-                //         "adduser" => session('username'),
-                //         'Newic'    => $request->icnum,
-                //         'Name'    => $request->patname,
-                //         'telhp'    => $request->telhp,
-                //         'telno'    => $request->telh,
-                //         'apptdate' => $request->apptdatefr_day
-                //     ]);
-
-                //edit no telefon dkt patmast
-                // if($mrn != '00000'){
-                //     DB::table('hisdb.pat_mast')
-                //         ->where('compcode','=',session('compcode'))
-                //         ->where("mrn",'=',$mrn)
-                //         ->update([
-                //             'telhp'    => $request->telhp,
-                //             'telh'    => $request->telh,
-                //         ]);
-                // }
-
+                if($request->Class2 == 'OT'){
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'compcode'    => session('compcode'),
+                            'title'       => $request->patname.' - '.$request->telhp.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                            'loccode'     => $request->doctor,
+                            'mrn'         => $request->mrn,
+                            'icnum'       => $request->icnum,
+                            'pat_name'    => $request->patname,
+                            'apptdatefr'  => $request->apptdatefr_day,
+                            'apptdateto'  => $request->apptdatefr_day,
+                            'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                            'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                            'telno'       => $request->telh,
+                            'apptstatus'  => $request->status,
+                            'recstatus'   => 'A',
+                            'telhp'       => $request->telhp,
+                            'remarks'     => $request->remarks,
+                            'ot_room'     => strtoupper($request->doctor),
+                            'surgery_date'=> $request->surgery_date,
+                            'op_unit'     => strtoupper($request->op_unit),
+                            'oper_type'   => strtoupper($request->oper_type),
+                            'oper_status' => strtoupper($request->oper_status),
+                            'lastuser'    => session('username'),
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }else{
+                    DB::table('hisdb.apptbook')
+                        ->where('idno','=',$request->idno)
+                        ->update([
+                            'compcode'=> session('compcode'),
+                            'title'       => $request->patname.' - '.$request->telhp.' - '.substr(preg_replace("/\s+/", " ", $request->remarks), 0, 30),
+                            'loccode'     => $request->doctor,
+                            'mrn'         => $request->mrn,
+                            'icnum'       => $request->icnum,
+                            'pat_name'    => $request->patname,
+                            'apptdatefr'  => $request->apptdatefr_day,
+                            'apptdateto'  => $request->apptdatefr_day,
+                            'start'       => $request->apptdatefr_day.' '.$request->start_time,
+                            'end'         => $request->apptdatefr_day.' '.$request->end_time,
+                            'telno'       => $request->telh,
+                            'apptstatus'  => $request->status,
+                            'recstatus'   => 'A',
+                            'telhp'       => $request->telhp,
+                            'remarks'     => $request->remarks,
+                            'lastuser'    => session('username'),
+                            'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
+                        ]);
+                }
             }
 
             DB::commit();

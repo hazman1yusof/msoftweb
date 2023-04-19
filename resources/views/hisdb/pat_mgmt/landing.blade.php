@@ -76,6 +76,9 @@
 		.smallmodal{
 			width: 40% !important; margin: auto !important;margin-top:10% !important;
 		}
+		.mediummodal{
+			width: 90% !important; margin: auto !important;margin-top:10% !important;
+		}
 		.smallmodal > .modal-content{
 			border: 3px solid darkblue !important;min-height: fit-content !important;
 		}

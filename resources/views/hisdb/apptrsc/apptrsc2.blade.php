@@ -130,6 +130,21 @@ i.fa {
 	<!--  margin-right: 5px; -->
 }
 
+div.myhr_div{
+    width: 100%;
+    height: 12px;
+    border-bottom: 1px solid #eeeeee;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+span.myhr_span{
+	font-size: 15px;
+    background-color: #eeeeee;
+    padding: 2px 10px;
+    border-radius: 8px;
+}
+
 @endsection
 
 @section('title', 'Booking')
@@ -212,7 +227,7 @@ i.fa {
 		<div id="dialogForm" title="Add Form">
 			<div class="panel panel-info">
 				<div class="panel-heading">Booking Header</div>
-					<form action={{url('apptrsc/addEvent')}} method="post" class="form-horizontal" style="width: 99%" id="addForm" >
+					<form action={{url('apptrsc/addEvent')}} method="post" class="form-horizontal" style="" id="addForm" >
 					{{csrf_field()}}
 					<input type="hidden" name="idno" id="idno">
 						<div class="panel-body" style="position: relative;" >
@@ -225,15 +240,31 @@ i.fa {
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">MRN</label>
 								<div class="col-md-4">
+
+								@if(Request::get('TYPE') == 'OT')
+									<div class="input-group">
+										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly data-validation="required">
+										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class='help-block'></span>
+								@else
 									<div class="input-group">
 										<input type="text" class="form-control input-sm" placeholder="MRN No" id="mrn" name="mrn" maxlength="12" readonly value="@if(!empty($pat_info)){{$pat_info->MRN}} @endif">
 										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class='help-block'></span>
+								@endif
+
 								</div>
+								@if(Request::get('TYPE') == 'OT')
+								<div class="col-md-4">
+									<input type="text" class="form-control input-sm" placeholder="Name" id="patname" name="patname" value="@if(!empty($pat_info)){{$pat_info->Name}} @endif" readonly>
+								</div>
+								@else
 								<div class="col-md-4">
 									<input type="text" class="form-control input-sm" data-validation="required" placeholder="Name" id="patname" name="patname" value="@if(!empty($pat_info)){{$pat_info->Name}} @endif" @if(!empty($pat_info)){{'readonly'}} @endif>
 								</div>
+								@endif
 							</div>
 							<div class="form-group">
 								<label for="title" class="col-md-2 control-label">I/C No.</label>
@@ -287,8 +318,35 @@ i.fa {
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="remarks">Remarks</label>   
 									<div class="col-md-8">
-										<textarea rows="5" id='remarks' name='remarks' class="form-control input-sm" ></textarea>
+										<textarea rows="3" id='remarks' name='remarks' class="form-control input-sm" ></textarea>
 									</div>
+							</div>
+
+							<div class="myhr_div">
+							  <span class="myhr_span">
+							    Operation Theater
+							  </span>
+							</div>
+
+							<div class="form-group">
+								<label for="telhp" class="col-md-2 control-label">Surgery Date</label>
+								<div class="col-md-3">
+									<input type="date" class="form-control input-sm" placeholder="Surgery Date" id="surgery_date" name="surgery_date">
+								</div>
+								<label for="telhp" class="col-md-2 control-label">OP Unit</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="OP Unit" id="op_unit" name="op_unit">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="telhp" class="col-md-2 control-label">Operation Type</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="Operation Type" id="oper_type" name="oper_type">
+								</div>
+								<label for="telhp" class="col-md-2 control-label">Operation Status</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control input-sm" placeholder="Operation Status" id="oper_status" name="oper_status">
+								</div>
 							</div>
 							<hr>
 							<div class="form-group">

@@ -52,10 +52,6 @@ $(document).ready(function () {
 		$('#Scol').val('Resource')
 	}
 
-	$("td.fc-event-container a").click(function(){
-		console.log($(this));
-	});
-
 	var dialog_name = new ordialog(
 		'resourcecode', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='resourcecode']", errorField,
         {
@@ -101,7 +97,7 @@ $(document).ready(function () {
 
 				var event_apptbook = {
 					id: 'apptbook',
-					url: "apptrsc/getEvent",
+					url: "apptrsc_rsc/getEvent",
 					type: 'GET',
 					data: {
 						type: 'apptbook',
@@ -111,7 +107,7 @@ $(document).ready(function () {
 
 				var event_appt_leave = {
 					id: 'appt_leave',
-					url: "apptrsc/getEvent",
+					url: "apptrsc_rsc/getEvent",
 					type: 'GET',
 					data: {
 						type: 'appt_leave',
@@ -163,55 +159,55 @@ $(document).ready(function () {
 		}
 	}
 
-	$('#selecting_doctor').click(function(){
-		$(dialog_name.textfield).off('blur',onBlur);
-		$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
-		$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
-		$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
+	// $('#selecting_doctor').click(function(){
+	// 	$(dialog_name.textfield).off('blur',onBlur);
+	// 	$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
+	// 	$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
+	// 	$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
-		let data = selrowData('#' + dialog_name.gridname);
-		let interval = data['a_intervaltime'];
-		let apptsession = $("#grid_session").jqGrid('getRowData');
-		$('.fc-myCustomButton-button').show();
+	// 	let data = selrowData('#' + dialog_name.gridname);
+	// 	let interval = data['a_intervaltime'];
+	// 	let apptsession = $("#grid_session").jqGrid('getRowData');
+	// 	$('.fc-myCustomButton-button').show();
 
-		td_from.addSessionInterval(interval,apptsession);
-		td_to.addSessionInterval(interval,apptsession);
-		session_field.addSessionInterval(interval,apptsession);
+	// 	td_from.addSessionInterval(interval,apptsession);
+	// 	td_to.addSessionInterval(interval,apptsession);
+	// 	session_field.addSessionInterval(interval,apptsession);
 
-		var event_apptbook = {
-			id: 'apptbook',
-			url: "apptrsc/getEvent",
-			type: 'GET',
-			data: {
-				type: 'apptbook',
-				drrsc: $('#resourcecode').val()
-			}
-		}
+	// 	var event_apptbook = {
+	// 		id: 'apptbook',
+	// 		url: "apptrsc_rsc/getEvent",
+	// 		type: 'GET',
+	// 		data: {
+	// 			type: 'apptbook',
+	// 			drrsc: $('#resourcecode').val()
+	// 		}
+	// 	}
 
-		var event_appt_leave = {
-			id: 'appt_leave',
-			url: "apptrsc/getEvent",
-			type: 'GET',
-			data: {
-				type: 'appt_leave',
-				drrsc: $('#resourcecode').val()
-			},
-			color: $('#ALCOLOR').val(),
-        	rendering: 'background'
-		}
+	// 	var event_appt_leave = {
+	// 		id: 'appt_leave',
+	// 		url: "apptrsc_rsc/getEvent",
+	// 		type: 'GET',
+	// 		data: {
+	// 			type: 'appt_leave',
+	// 			drrsc: $('#resourcecode').val()
+	// 		},
+	// 		color: $('#ALCOLOR').val(),
+    //     	rendering: 'background'
+	// 	}
 
-		$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
-		$('#calendar').fullCalendar( 'removeEventSource', 'appt_leave');
-		$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
-		$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
+	// 	$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
+	// 	$('#calendar').fullCalendar( 'removeEventSource', 'appt_leave');
+	// 	$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
+	// 	$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
 
-		parent_change_title('Reserve of '+data['a_description']);
+	// 	parent_change_title('Reserve of '+data['a_description']);
 
-		$(dialog_name.textfield).focus();
-		$("#"+dialog_name.dialogname).dialog( "close" );
-		$("#"+dialog_name.gridname).jqGrid("clearGridData", true);
-		$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
-	});
+	// 	$(dialog_name.textfield).focus();
+	// 	$("#"+dialog_name.dialogname).dialog( "close" );
+	// 	$("#"+dialog_name.gridname).jqGrid("clearGridData", true);
+	// 	$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
+	// });
 
 	// $("#grid_session").jqGrid({
 	// 	datatype: "local",
@@ -282,19 +278,17 @@ $(document).ready(function () {
 				dialog_mrn.urlParam.filterCol = ['compcode'];
 				dialog_mrn.urlParam.filterVal = ['session.compcode'];
 			},
-		}, 'urlParam'
+		},'urlParam','radio','tab'
 	);
-	dialog_mrn.makedialog(false);
+	dialog_mrn.makedialog(true);
+	// if ($("#patname").val() == 'OT') {
+	// }
 
-	if ( !$("#patname").is('[readonly]') ) {
-		dialog_mrn.on();
-	}
-
-	$("#addForm input[name='patname']").blur(function(){
-		if($("#addForm input[name='mrn']").val() == ''){
-			$("#addForm input[name='icnum']").prop('readonly',false);
-		}
-	});
+	// $("#addForm input[name='patname']").blur(function(){
+	// 	if($("#addForm input[name='mrn']").val() == ''){
+	// 		$("#addForm input[name='icnum']").prop('readonly',false);
+	// 	}
+	// });
 
 	var dialog_doctor = new ordialog(
 		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
@@ -348,7 +342,7 @@ $(document).ready(function () {
 
 	$("#dialogForm").dialog({
 		autoOpen: false,
-		width: 10 / 10 * $(window).width(),
+		width: 9.5 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
 			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
@@ -513,7 +507,7 @@ $(document).ready(function () {
 	});
 	
 	$('#calendar').fullCalendar({
-		aspectRatio:  1.5,
+		aspectRatio:  2.7,
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
@@ -542,7 +536,9 @@ $(document).ready(function () {
   			if(view.name == 'agendaDay'){
   				$(".fc-myCustomButton-button").data( "start", start );
   				var events = $('#calendar').fullCalendar('clientEvents');
-				$(".fc-myCustomButton-button").show();
+  				if($('#resourcecode').val() != ''){
+					$(".fc-myCustomButton-button").show();
+  				}
 				events.forEach(function(elem,id){
 					if(elem.allDay){
 						let elem_end = (elem.end==null)?elem.start:elem.end;
@@ -565,7 +561,9 @@ $(document).ready(function () {
 			$('#calendar').fullCalendar( 'gotoDate', start )
 			$(".fc-myCustomButton-button").data( "start", start );
 			var events = $('#calendar').fullCalendar( 'clientEvents');
-			$(".fc-myCustomButton-button").show();
+			if($('#resourcecode').val() != ''){
+				$(".fc-myCustomButton-button").show();
+			}
 			events.forEach(function(elem,id){
 				if(elem.allDay){
 					let elem_end = (elem.end==null)?elem.start:elem.end;
@@ -577,7 +575,6 @@ $(document).ready(function () {
 			if(!start.isSameOrAfter(moment().subtract(1, 'days'))){
 				$(".fc-myCustomButton-button").hide();
 			}
-
 		},
 		eventRender: function(event, element) {
 			if(event.source.id == "apptbook"){
@@ -609,8 +606,11 @@ $(document).ready(function () {
 					$('#status').val(event.apptstatus);
 					$('#idno').val(event.idno);
 					$('#lastuser').val(event.lastuser);
+					$('#surgery_date').val(event.surgery_date);
+					$('#op_unit').val(event.op_unit);
+					$('#oper_type').val(event.oper_type);
+					$('#oper_status').val(event.oper_status);
 					$('#lastupdate').val(event.lastupdate);
-
 					$('#delete_but,#new_episode').show();
 
 					$("#dialogForm").dialog('open');
@@ -669,7 +669,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("apptrsc_rsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -686,7 +686,7 @@ $(document).ready(function () {
 				'_token': $('#csrf_token').val()
 			};
 
-			$.post("apptrsc/editEvent",param, function (data) {
+			$.post("apptrsc_rsc/editEvent",param, function (data) {
 
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
@@ -702,7 +702,7 @@ $(document).ready(function () {
 			},
 			{	
 				id:'appt_ph',
-				url:'apptrsc/getEvent',
+				url:'apptrsc_rsc/getEvent',
 				type:'GET',
 				data:{
 					type:'appt_ph'
@@ -722,7 +722,8 @@ $(document).ready(function () {
 		var url = (oper == 'add')?"apptrsc_rsc/addEvent":"apptrsc_rsc/editEvent";
 
 		if( $('#addForm').isValid({requiredFields: ''}, conf, true) ) {
-			$.post(url, $("#addForm").serialize(), function (data) {
+			let postobj = {Class2:$('#Class2').val()}
+			$.post(url, $("#addForm").serialize()+'&'+$.param(postobj) , function (data) {
 			}).fail(function (data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function (data) {
@@ -733,7 +734,8 @@ $(document).ready(function () {
 	});
 
 	$('#delete_but').click(function(){
-		$.post("apptrsc/delEvent", $("#addForm").serialize(), function (data) {
+		let postobj = {Class2:$('#Class2').val()}
+		$.post("apptrsc_rsc/delEvent", $("#addForm").serialize()+'&'+$.param(postobj), function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -838,7 +840,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "apptrsc_rsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -865,7 +867,7 @@ $(document).ready(function () {
 				drrsc: $('#resourcecode').val()
 			}
 
-			$.get( "apptrsc/getEvent"+"?"+$.param(param), function( data ) {
+			$.get( "apptrsc_rsc/getEvent"+"?"+$.param(param), function( data ) {
 			
 			},'json').done(function(data) {
 				if(!$.isEmptyObject(data)){
@@ -914,7 +916,7 @@ $(document).ready(function () {
 			"arraytd":arraytd
 		}
 
-		$.post("apptrsc/editEvent?type=transfer", obj, function (data) {
+		$.post("apptrsc_rsc/editEvent?type=transfer", obj, function (data) {
 		}).fail(function (data) {
 			//////////////////errorText(dialog,data.responseText);
 		}).done(function (data) {
@@ -1153,7 +1155,7 @@ $(document).ready(function () {
             var postobj = {_token:_token,idno:idno,apptbook_idno:apptbook_idno,MRN:mrn};
         }
 
-        $.post( "apptrsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
+        $.post( "apptrsc_rsc/form?"+$.param(saveParam), $("#frm_patient_info").serialize()+'&'+$.param(postobj) , function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');
@@ -1219,7 +1221,7 @@ var epis_desc_show = new loading_desc_epis([
 
 function populate_new_episode_by_mrn_apptrsc(mrn){
 	var param={
-		url:'./apptrsc/table',
+		url:'./apptrsc_rsc/table',
         action:'populate_new_episode_by_mrn_apptrsc',
         mrn:mrn
     };
