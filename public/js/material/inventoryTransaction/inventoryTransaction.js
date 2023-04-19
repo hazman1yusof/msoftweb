@@ -1640,7 +1640,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid3");
+			//calc_jq_height_onchange("jqGrid3");
 		},
 	});
 	
