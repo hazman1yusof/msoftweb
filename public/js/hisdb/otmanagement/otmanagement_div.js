@@ -11,6 +11,7 @@ $(document).ready(function () {
     
     $("button.refreshbtn_otmgmt_div").click(function(){
         populate_otmgmt_div(selrowData('#jqGrid'));
+
     });
     
     $("#new_otmgmt_div").click(function(){
@@ -92,7 +93,7 @@ conf = {
 
 button_state_otmgmt_div('empty');
 function button_state_otmgmt_div(state){
-    empty_transaction('add');
+    // empty_transaction('add');
     switch(state){
         case 'empty':
             $("#toggle_doctorNote").removeAttr('data-toggle');
@@ -121,7 +122,6 @@ function button_state_otmgmt_div(state){
             $('#new_otmgmt_div,#edit_otmgmt_div,#save_otmgmt_div,#cancel_otmgmt_div').attr('disabled',true);
             break;
     }
-
 }
 
 function empty_otmgmt_div(){
@@ -155,7 +155,7 @@ function populate_otmgmt_div(obj){
     $('#dob_show_otmgmt_div').text(dob_chg(obj.DOB));
     $('#age_show_otmgmt_div').text(dob_age(obj.DOB)+' (YRS)');
     $('#race_show_otmgmt_div').text(if_none(obj.RaceCode).toUpperCase());
-    $('#religion_show_otmgmt_div').text(if_none(obj.religion).toUpperCase());
+    $('#religion_show_otmgmt_div').text(if_none(obj.Religion).toUpperCase());
     $('#occupation_show_otmgmt_div').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_otmgmt_div').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otmgmt_div').text(if_none(obj.AreaCode).toUpperCase());
@@ -165,7 +165,6 @@ function populate_otmgmt_div(obj){
     $("#episno_otmgmt_div").val(obj.Episno);
     
     button_state_otmgmt_div('add');
-
 }
 
 function autoinsert_rowdata(form,rowData){

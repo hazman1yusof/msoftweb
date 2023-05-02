@@ -16,6 +16,8 @@
     <div class="ui teal segment" style="padding: 10px 10px 30px 30px;">
         <form id="form_otmgmt_div" class="ui form">
             <div class="ui grid">
+                <input id="mrn_otmgmt_div" name="mrn_otmgmt_div" type="hidden">
+                <input id="episno_otmgmt_div" name="episno_otmgmt_div" type="hidden">
 
                 <div class="eight wide column">
                     <div class="ui segments">
@@ -232,55 +234,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <div class="eight wide column">
-                    <div class="ui segments">
-                        <div class="ui segment">
-
-                            <div class="inline fields">
-                                <div class="field">
-                                    <label>Appt on</label>
-                                    <input id="operdate" name="operdate" type="date">
-                                </div>
-
-                                <div class="field">
-                                    <label>Time</label>
-                                    <input id="timestarted" name="timestarted" type="time">
-                                </div>
-
-                                <div class="field">
-                                    <label>Status</label>
-                                    <input id="status" name="status" type="text">
-                                </div>
-                            </div>
-
-                            <div class="field">
-                                <label>Procedure</label>
-                                <textarea id="procedure" name="procedure" type="text" rows="4"></textarea>
-                            </div>
-
-                            <div class="field">
-                                <label>Remarks</label>
-                                <textarea id="remarks" name="remarks" type="text" rows="4"></textarea>
-                            </div>
-
-                            <div class="field">
-                                <label>Diagnosis</label>
-                                <textarea id="diagnosis" name="diagnosis" type="text" rows="4" ></textarea>
-                            </div>
-                        
-                        </div>
-                    </div>
-                </div>
-
-                <div class="eight wide column">
-                    <div class="ui segments">
-                        <div class="ui segment">
-                        
-                        </div>
-                    </div>
-                </div> -->
-
             </div>
         </form>
     </div>

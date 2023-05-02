@@ -69,7 +69,10 @@ class OTManagementController extends defaultController
         
         $table_apptbook = DB::table('hisdb.apptbook')
                     ->select(['apptbook.idno','apptbook.compcode','apptbook.mrn','apptbook.pat_name','apptbook.Type','apptbook.episno','apptbook.ot_room',
-                    'apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status']);
+                    'apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status'
+                    // ,'pat_mast.Name','pat_mast.MRN','pat_mast.Episno',
+                    // 'pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode','pat_mast.Citizencode','pat_mast.AreaCode'
+                    ]);
                 
                 $table_apptbook = $table_apptbook->leftJoin('nursing.otmanage', function($join) use ($request){
                         $join = $join->on('otmanage.mrn', '=', 'apptbook.mrn');
@@ -80,7 +83,11 @@ class OTManagementController extends defaultController
                         //                     ->orWhere('episode.episstatus','!=','C');
                         //         }
                         // );
-                });
+                })
+                // ->leftJoin('hisdb.pat_mast', function($join) use ($request){
+                //     $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn');
+                // })
+                ;
                 
                 $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))
                                                 ->where('apptbook.Type','=','OT')

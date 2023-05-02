@@ -35,6 +35,17 @@ class OTManagement_divController extends defaultController
     {
         DB::enableQueryLog();
         switch($request->action){
+            case 'save_table_otmgmt_div':
+            
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);
+                    case 'edit':
+                        return $this->edit($request);
+                    default:
+                        return 'error happen..';
+                }
+            
             default:
                 return 'error happen..';
         }
@@ -45,6 +56,37 @@ class OTManagement_divController extends defaultController
         DB::beginTransaction();
         
         try {
+            
+            DB::table('nursing.otmanage')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_otmgmt_div,
+                        'episno' => $request->episno_otmgmt_div,
+                        'admdate' => $request->admdate,
+                        'admtime' => $request->admtime,
+                        'ward' => $request->ward,
+                        'operdate' => $request->operdate,
+                        'timestarted' => $request->timestarted,
+                        'timeended' => $request->timeended,
+                        'hoursutilized' => $request->hoursutilized,
+                        'serialno' => $request->serialno,
+                        'recstatus' => $request->recstatus,
+                        'natureoper' => $request->natureoper,
+                        'specimen' => $request->specimen,
+                        'remarks' => $request->remarks,
+                        'procedure' => $request->procedure,
+                        'diagnosis' => $request->diagnosis,
+                        'electiveemgc' => $request->electiveemgc,
+                        'classification' => $request->classification,
+                        'anaesthtype' => $request->anaesthtype,
+                        'otno' => $request->otno,
+                        'firstscrubnrs' => $request->firstscrubnrs,
+                        'secondscrubnrs' => $request->secondscrubnrs,
+                        'gaassistant' => $request->gaassistant,
+                        'circulator' => $request->circulator,
+                        'adduser'  => session('username'),
+                        'adddate'  => $Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
             
             DB::commit();
             
@@ -67,6 +109,37 @@ class OTManagement_divController extends defaultController
         DB::beginTransaction();
         
         try {
+            
+            DB::table('nursing.otmanage')
+                ->where('mrn','=',$request->mrn_otmgmt_div)
+                ->where('episno','=',$request->episno_otmgmt_div)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'admdate' => $request->admdate,
+                    'admtime' => $request->admtime,
+                    'ward' => $request->ward,
+                    'operdate' => $request->operdate,
+                    'timestarted' => $request->timestarted,
+                    'timeended' => $request->timeended,
+                    'hoursutilized' => $request->hoursutilized,
+                    'serialno' => $request->serialno,
+                    'recstatus' => $request->recstatus,
+                    'natureoper' => $request->natureoper,
+                    'specimen' => $request->specimen,
+                    'remarks' => $request->remarks,
+                    'procedure' => $request->procedure,
+                    'diagnosis' => $request->diagnosis,
+                    'electiveemgc' => $request->electiveemgc,
+                    'classification' => $request->classification,
+                    'anaesthtype' => $request->anaesthtype,
+                    'otno' => $request->otno,
+                    'firstscrubnrs' => $request->firstscrubnrs,
+                    'secondscrubnrs' => $request->secondscrubnrs,
+                    'gaassistant' => $request->gaassistant,
+                    'circulator' => $request->circulator,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
             
             // $queries = DB::getQueryLog();
             // dump($queries);

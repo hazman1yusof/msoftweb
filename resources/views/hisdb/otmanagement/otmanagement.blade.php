@@ -139,6 +139,8 @@
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy.js') }}"></script>
     <script type="text/javascript" src="{{ asset('patientcare/js/physioterapy_ncase.js') }}"></script> -->
     <!-- <script type="text/javascript" src="{{ asset('patientcare/js/doctornote_main.js') }}"></script> -->
+    <script type="text/javascript" src="js/myjs/utility.js"></script>
     <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_main.js"></script>
+    <script type="text/javascript" src="js/hisdb/otmanagement/otmanagement_div.js"></script>
 
 @endsection
