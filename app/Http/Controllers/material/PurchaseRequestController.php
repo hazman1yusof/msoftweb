@@ -127,6 +127,8 @@ class PurchaseRequestController extends defaultController
             $responce->recno = 0;
             $responce->idno = $idno;
             $responce->totalAmount = $totalAmount;
+            $responce->adduser = session('username');
+            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
             echo json_encode($responce);
 
             DB::commit();
@@ -179,6 +181,8 @@ class PurchaseRequestController extends defaultController
 
             $responce = new stdClass();
             $responce->totalAmount = $request->purreqhd_totamount;
+            $responce->upduser = session('username');
+            $responce->upddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
             echo json_encode($responce);
 
             DB::commit();

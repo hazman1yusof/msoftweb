@@ -158,7 +158,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
-						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
@@ -170,7 +170,7 @@
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
 						<div class="col-md-3">
-						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
 					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  

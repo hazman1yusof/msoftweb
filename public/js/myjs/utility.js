@@ -1508,7 +1508,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			param.action="get_value_default";
 			param.url='util/get_value_default';
 
-			if(this.urlParam.hasOwnProperty('url_chk')){
+			if(this.urlParam.hasOwnProperty('url_chk') && this.urlParam.url_chk != undefined && this.urlParam.url_chk != null && this.urlParam.url_chk != ''){
 				param.url = this.urlParam.url_chk;
 				param.action= this.urlParam.action_chk;
 			}
