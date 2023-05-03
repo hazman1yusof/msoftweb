@@ -73,7 +73,8 @@ class OTManagementController extends defaultController
                     'pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode','pat_mast.Citizencode','pat_mast.AreaCode']);
                 
                 $table_apptbook = $table_apptbook->leftJoin('hisdb.pat_mast', function($join) use ($request){
-                        $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn');
+                        $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn')
+                                    ->on('pat_mast.compcode', '=', 'apptbook.compcode');
                 });
                 
                 $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))

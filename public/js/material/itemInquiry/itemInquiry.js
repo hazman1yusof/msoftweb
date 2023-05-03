@@ -262,13 +262,16 @@ $(document).ready(function () {
      
 
 	function TrxType(cellvalue, options, rowObject){
-		if(cellvalue.toUpperCase() == 'TR'){
-			return 'STOCK';
-		}else if(cellvalue.toUpperCase() == 'IS'){
-			return 'ISSUED';
-		}else{
-			return cellvalue;
+		if(cellvalue != null || cellvalue != undefined ){
+			if(cellvalue.toUpperCase() == 'TR'){
+				return 'STOCK';
+			}else if(cellvalue.toUpperCase() == 'IS'){
+				return 'ISSUED';
+			}else{
+				return cellvalue;
+			}
 		}
+		return '';
 	}
 
 	function un_TrxType(cellvalue, options, rowObject){

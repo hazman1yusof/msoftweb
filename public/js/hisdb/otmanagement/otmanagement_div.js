@@ -9,11 +9,6 @@ $(document).ready(function () {
     
     disableForm('#form_otmgmt_div');
     
-    $("button.refreshbtn_otmgmt_div").click(function(){
-        populate_otmgmt_div(selrowData('#jqGrid'));
-        
-    });
-    
     $("#new_otmgmt_div").click(function(){
         $('#cancel_otmgmt_div').data('oper','add');
         button_state_otmgmt_div('wait');
@@ -35,9 +30,8 @@ $(document).ready(function () {
     $("#save_otmgmt_div").click(function(){
         if( $('#form_otmgmt_div').isValid({requiredFields: ''}, conf, true) ) {
             saveForm_otmgmt_div(function(data){
-                emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
+                // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
                 disableForm('#form_otmgmt_div');
-                
             });
         }else{
             enableForm('#form_otmgmt_div');
@@ -47,11 +41,11 @@ $(document).ready(function () {
     });
     
     $("#cancel_otmgmt_div").click(function(){
-        emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
+        // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
         disableForm('#form_otmgmt_div');
         button_state_otmgmt_div($(this).data('oper'));
+        getdata_otmgmt();
         // dialog_mrn_edit.off();
-        
     });
     
     // to format number input to two decimal places (0.00)
@@ -125,9 +119,9 @@ function button_state_otmgmt_div(state){
 }
 
 function empty_otmgmt_div(){
-    emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
+    emptyFormdata_div("#form_otmgmt_div");
     button_state_otmgmt_div('empty');
-    
+
     // panel header
     $('#name_show_otmgmt_div').text('');
     $('#mrn_show_otmgmt_div').text('');
@@ -146,8 +140,6 @@ function empty_otmgmt_div(){
 }
 
 function populate_otmgmt_div(obj){
-    emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
-    
     // panel header
     $('#name_show_otmgmt_div').text(obj.Name);
     $('#mrn_show_otmgmt_div').text(("0000000" + obj.MRN).slice(-7));
@@ -163,29 +155,6 @@ function populate_otmgmt_div(obj){
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val(obj.MRN);
     $("#episno_otmgmt_div").val(obj.Episno);
-    
-    var urlparam={
-        action:'get_table_otmanage',
-    }
-    
-    var postobj={
-        _token : $('#_token').val(),
-        mrn:obj.mrn,
-        episno:obj.episno
-    };
-    
-    $.post( "./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).success(function(data){
-        if(!$.isEmptyObject(data)){
-            button_state_otmgmt_div('edit');
-            autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
-        }else{
-            button_state_otmgmt_div('add');
-        }
-    });
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -263,21 +232,50 @@ function saveForm_otmgmt_div(callback){
         
     },'json').done(function(data) {
         callback(data);
+        button_state_otmgmt_div('edit');
     }).fail(function(data){
         callback(data);
+        button_state_otmgmt_div($(this).data('oper'));
     });
 }
 
 $('#tab_otmgmt_div').on('shown.bs.collapse', function () {
     SmoothScrollTo('#tab_otmgmt_div', 300);
-    // datable_medication.columns.adjust();
-    // $('div#docnote_date_tbl_sticky').show();
-    // $("#jqGrid_trans").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trans_c")[0].offsetWidth-$("#jqGrid_trans_c")[0].offsetLeft-14));
+    if($('#mrn_otmgmt_div').val() != ''){
+        getdata_otmgmt();
+    }
 });
 
+
 $('#tab_otmgmt_div').on('hide.bs.collapse', function () {
-    // $('div#docnote_date_tbl_sticky').hide();
+    emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
+    button_state_otmgmt_div('empty');
 });
+
+function getdata_otmgmt(){
+    var urlparam={
+        action:'get_table_otmanage',
+    }
+    
+    var postobj={
+        _token : $('#_token').val(),
+        mrn:$('#mrn_otmgmt_div').val(),
+        episno:$("#episno_otmgmt_div").val()
+    };
+    
+    $.post( "./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).done(function(data){
+        if(!$.isEmptyObject(data)){
+            button_state_otmgmt_div('edit');
+            autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+        }else{
+            button_state_otmgmt_div('add');
+        }
+    });
+}
 
 function check_same_usr_edit(data){
     let same = true;

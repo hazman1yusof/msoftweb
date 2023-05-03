@@ -888,7 +888,6 @@ function populate_triage(obj,rowdata){
 function populate_triage_currpt(obj){
 	$("#jqGridTriageInfo_panel").collapse('hide');
 	button_state_ti('empty');
-	emptyFormdata(errorField,"#formTriageInfo");
 	//panel header
 	$('#name_show_triage').text(obj.Name);
 	$('#mrn_show_triage').text(("0000000" + obj.MRN).slice(-7));
@@ -920,6 +919,10 @@ function populate_triage_currpt(obj){
 }
 
 function  populate_triage_currpt_getdata(){
+	emptyFormdata(errorField,"#formTriageInfo",["#mrn_ti","#episno_ti"]);
+	$(dialog_tri_col.textfield).removeClass("red").removeClass("yellow").removeClass("green");
+	$(dialog_tri_col.textfield).next().removeClass("red").removeClass("yellow").removeClass("green");
+
 	var urlparam={
         action:'get_table_triage',
     }
@@ -934,7 +937,7 @@ function  populate_triage_currpt_getdata(){
     },'json').fail(function(data) {
         alert('there is an error');
     }).success(function(data){
-    	if(!$.isEmptyObject(data)){
+    	if(!emptyobj_(data.triage)){
 			if(!emptyobj_(data.triage))autoinsert_rowdata("#formTriageInfo",data.triage);
 			if(!emptyobj_(data.triage_gen))autoinsert_rowdata("#formTriageInfo",data.triage_gen);
 			if(!emptyobj_(data.triage_regdate))autoinsert_rowdata("#formTriageInfo",data.triage_regdate);
@@ -944,6 +947,7 @@ function  populate_triage_currpt_getdata(){
 			refreshGrid('#jqGridAddNotesTriage',urlParam_AddNotesTriage,'addNotes_triage');
 			button_state_ti('edit');
 			textare_init_triage();
+			dialog_tri_col.check('errorField');
         }else{
 			button_state_ti('add');
 			refreshGrid('#jqGridExamTriage',urlParam_ExamTriage,'kosongkan');
@@ -1194,9 +1198,10 @@ var dialog_tri_col = new ordialog(
 		],
 		urlParam: {
 			url:'./sysparam_triage_color',
+			url_chk:'./sysparam_triage_color_chk',
 			filterCol:['recstatus','compcode'],
 			filterVal:['ACTIVE', 'session.compcode']
-			},
+		},
 		ondblClickRow:function(event){
 
 			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
@@ -1211,7 +1216,7 @@ var dialog_tri_col = new ordialog(
 							.removeClass( "yellow" )
 							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
+			$(dialog_tri_col.textfield).parent().next('span.help-block').text('');
 		},
 		onSelectRow:function(rowid, selected){
 			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
@@ -1244,6 +1249,24 @@ var dialog_tri_col = new ordialog(
 		open: function(){
 			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
 			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+		},
+		after_check:function(data,self,id,fail){
+			if(!fail){
+				let desc = data.rows[0].description;
+				$(self.textfield).val(desc);
+				$(self.textfield)
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass(desc);
+
+				$(self.textfield).next()
+								.removeClass( "red" )
+								.removeClass( "yellow" )
+								.removeClass( "green" )
+								.addClass(desc);
+				$(self.textfield).parent().next('span.help-block').text('');
+			}
 		},
 		width:5/10 * $(window).width()
 	},'urlParam','radio','tab','table'

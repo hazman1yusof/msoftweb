@@ -182,7 +182,7 @@ class SysparamController extends Controller
 					$object->colorcode = '<input type="radio" name="colorcode_select"> '.$value;
 					break;
 			}
-			$object->description = $value;
+			$object->description = trim($value);
 			$rows[$key] = $object;
 		}
 
@@ -192,6 +192,30 @@ class SysparamController extends Controller
         $responce->records = 4;
         $responce->rows = $rows;
 
+        return json_encode($responce);
+    }
+
+    public function sysparam_triage_color_chk(Request $request){
+		$sysparam = DB::table('sysdb.sysparam')
+	        	->where('compcode','=',session('compcode'))
+	        	->where('source','=','HIS')
+	        	->where('trantype','=','DISCSTATUS')
+	        	->first();
+
+		$pvalue1 = explode(",",$sysparam->pvalue1);
+		$retval = '';
+		foreach ($pvalue1 as $key => $value) {
+			if(strtoupper(trim($value)) == strtoupper($request->filterVal[2])){
+				$retval = trim($value);
+				break;
+			}
+		}
+
+		$object = new stdClass();
+		$object->description = $retval;
+
+        $responce = new stdClass();
+        $responce->rows[0] = $object;
         return json_encode($responce);
     }
 

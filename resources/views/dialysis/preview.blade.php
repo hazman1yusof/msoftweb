@@ -39,30 +39,9 @@
 
 @section('content')
 
-<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-<input type="hidden" name="mrn" id="mrn" value="{{$user->MRN}}">
-<input id="app_url" name="app_url" type="hidden" value="{{ env('APP_URL') }}">
-<input id="url" name="url" type="hidden" value="{{url('')}}">
-
 <div class='row' style="padding-top: 15px">
 	<div class="panel panel-default">
 	    <div class="panel-body">
-
-	    	<div id="bio">
-			  <div class="row" style="margin: 0; padding: 0;">
-			  		<span class="col-md-1">Name: </span>
-			  		<span id="bioname">{{$user->Name}}</span>
-			  </div>
-			  <div class="row" style="margin: 0; padding: 0;">
-			  		<span class="col-md-1">IC: </span>
-			  		<span id="bioic">{{$user->Newic}} </span>
-			  </div>
-			  <div class="row" style="margin: 0; padding: 0;">
-			  		<span class="col-md-1">DOB: </span>
-			  		<span id="biodob">{{$user->DOB}}</span> (<span id="bioage"></span> years)
-			  </div>
-			</div>
-			
 			<table class="ui celled table" id='tablePreview'>
 				<thead>
 					<tr>

@@ -87,7 +87,7 @@ input.uppercase {
 		});
 	</script>
 	
-	<script src="js/finance/FA/location/locationScript.js"></script>
+	<!-- <script src="js/finance/FA/location/locationScript.js"></script> -->
 
 	<script src="js/setup/addresstype/addresstype.js"></script>
 	

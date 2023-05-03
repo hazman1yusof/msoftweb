@@ -13,7 +13,7 @@
         </div>
     </div>
     
-    <div class="ui teal segment" style="padding: 10px 10px 30px 30px;">
+    <div class="ui segment" style="padding: 10px 10px 30px 30px;">
         <form id="form_otmgmt_div" class="ui form">
             <div class="ui grid">
                 <input id="mrn_otmgmt_div" name="mrn_otmgmt_div" type="hidden">

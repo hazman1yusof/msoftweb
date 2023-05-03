@@ -118,12 +118,9 @@ $(document).ready(function () {
 			height: 365,
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
-				if(checkifedited()){
-					return false;
-				}
-				// empty_userfile();
 				$('button#timer_stop').click();
-				populate_otmgmt_div(selrowData('#jqGrid'));
+    			populate_otmgmt_div(selrowData('#jqGrid'));
+				// populate_otmgmt_div(selrowData('#jqGrid'));
 				// urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				// urlParam_trans.episno = selrowData('#jqGrid').Episno;
 				// urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -174,14 +171,14 @@ $(document).ready(function () {
 				// empty_currphys();
 				// empty_formNursing();
 				
-				let discharge_btn_data = $('#discharge_btn').data('idno');
-				if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
-					if(!$("button#timer_play").hasClass("disabled")){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
-				}else{
-					$("#jqGrid").setSelection(discharge_btn_data);
-				}
+				// let discharge_btn_data = $('#discharge_btn').data('idno');
+				// if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
+				// 	if(!$("button#timer_play").hasClass("disabled")){
+				// 		$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				// 	}
+				// }else{
+				// 	$("#jqGrid").setSelection(discharge_btn_data);
+				// }
 			},
 		});
 	}else{
@@ -217,37 +214,9 @@ $(document).ready(function () {
 			height: 365,
 			rowNum: 30,
 			onSelectRow:function(rowid, selected){
-				if(checkifedited()){
-					return false;
-				}
-				// empty_userfile();
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
-				// urlParam_trans.mrn = selrowData('#jqGrid').MRN;
-				// urlParam_trans.episno = selrowData('#jqGrid').Episno;
-				// urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
-				// urlParam_trans_diet.episno = selrowData('#jqGrid').Episno;
-				// urlParam_trans_phys.mrn = selrowData('#jqGrid').MRN;
-				// urlParam_trans_phys.episno = selrowData('#jqGrid').Episno;
-				// addmore_onadd = false;
-				// addmore_onadd_phys = false;
-				// addmore_onadd_diet = false;
-				// refreshGrid("#jqGrid_trans", urlParam_trans);
-				// refreshGrid("#jqGrid_trans_diet", urlParam_trans_diet);
-				// refreshGrid("#jqGrid_trans_phys", urlParam_trans_phys);
-				// populate_currDoctorNote(selrowData('#jqGrid'));
-				// populate_triage_currpt(selrowData('#jqGrid'));
-				// populate_dieteticCareNotes_currpt(selrowData('#jqGrid'));
-				// populate_userfile(selrowData('#jqGrid'));
-				// populate_phys(selrowData('#jqGrid'));
-				
-				// if(selrowData('#jqGrid').e_ordercomplete){ //kalau dah completed
-				// 	$('#checkbox_completed').prop('disabled',true);
-				// 	$('#checkbox_completed').prop('checked', true);
-				// }else{//kalau belum completed
-				// 	$('#checkbox_completed').prop('disabled',false);
-				// 	$('#checkbox_completed').prop('checked', false);
-				// }
+				// populate_otmgmt_div(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -267,14 +236,14 @@ $(document).ready(function () {
 				// empty_currphys();
 				// empty_formNursing();
 				
-				let discharge_btn_data = $('#discharge_btn').data('idno');
-				if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
-					if(!$("button#timer_play").hasClass("disabled")){
-						$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-					}
-				}else{
-					$("#jqGrid").setSelection(discharge_btn_data);
-				}
+				// let discharge_btn_data = $('#discharge_btn').data('idno');
+				// if(discharge_btn_data == undefined || discharge_btn_data == 'none'){
+				// 	if(!$("button#timer_play").hasClass("disabled")){
+				// 		$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				// 	}
+				// }else{
+				// 	$("#jqGrid").setSelection(discharge_btn_data);
+				// }
 			},
 		});
 	}

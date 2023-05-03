@@ -23,7 +23,7 @@ class UserMaintenanceController extends defaultController
     }
 
     public function duplicate($check){
-        return $this->table->where($this->duplicateCode,'=',$check)->count();
+        return $this->table->where('compcode',session('compcode'))->where($this->duplicateCode,'=',$check)->count();
     }
 
     public function show(Request $request)

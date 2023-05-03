@@ -16,7 +16,7 @@
         </div>
         
         <div class="eleven wide tablet eleven wide computer right floated column" style="margin:0px;" id="jqgrid_div">
-            <div class="ui teal segment jqgridsegment" style="padding-bottom: 40px;">
+            <div class="ui segment jqgridsegment" style="padding-bottom: 40px;">
                 <div class="if_tablet left floated" style="display:none;">
                     <div class="ui calendar" id="button_calendar">
                         <button class="ui teal mini icon button">
@@ -67,17 +67,7 @@
             AREA: <span id="area_show_otmgmt_div"></span> 
 
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i >  
-
-            <div style="position: absolute;
-                            padding: 0 0 0 0;
-                            right: 0px;
-                            top: 0px;
-                            z-index: 1000;">
-                <button class="ui icon tertiary button refreshbtn_otmgmt_div">
-                    <i class="sync alternate icon"></i>
-                </button>
-            </div> 
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i > 
             <div style="position: absolute;
                             padding: 0 0 0 0;
                             right: 50px;

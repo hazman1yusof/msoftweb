@@ -1081,6 +1081,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		fixPost:jqgrid_.urlParam.fixPost,
 		action:'get_table_default',
 		url:geturl(jqgrid_.urlParam),
+		url_chk:jqgrid_.urlParam.url_chk,
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
@@ -1495,9 +1496,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}else if(this.checkstat=='none' && value == ''){
 			return false;
 		}else{
-			console.log(this.urlParam);
 			param=Object.assign({},this.urlParam);
-			console.log(param);
 
 			if(optid!=null){
 				var id_optid = idtopush.substring(0,idtopush.search("_"));
@@ -1885,35 +1884,35 @@ function my_remark_Function() {
 	}
 }
 
-$.jgrid.extend({
-    setColWidth: function (iCol, newWidth, adjustGridWidth) {
-        return this.each(function () {
-            var $self = $(this), grid = this.grid, p = this.p, colName, colModel = p.colModel, i, nCol;
-            if (typeof iCol === "string") {
-                // the first parametrer is column name instead of index
-                colName = iCol;
-                for (i = 0, nCol = colModel.length; i < nCol; i++) {
-                    if (colModel[i].name === colName) {
-                        iCol = i;
-                        break;
-                    }
-                }
-                if (i >= nCol) {
-                    return; // error: non-existing column name specified as the first parameter
-                }
-            } else if (typeof iCol !== "number") {
-                return; // error: wrong parameters
-            }
-            grid.resizing = { idx: iCol };
-            grid.headers[iCol].newWidth = newWidth;
-            grid.newWidth = p.tblwidth + newWidth - grid.headers[iCol].width;
-            grid.dragEnd();   // adjust column width
-            if (adjustGridWidth !== false) {
-                $self.jqGrid("setGridWidth", grid.newWidth, false); // adjust grid width too
-            }
-        });
-    }
-});
+// $.jgrid.extend({
+//     setColWidth: function (iCol, newWidth, adjustGridWidth) {
+//         return this.each(function () {
+//             var $self = $(this), grid = this.grid, p = this.p, colName, colModel = p.colModel, i, nCol;
+//             if (typeof iCol === "string") {
+//                 // the first parametrer is column name instead of index
+//                 colName = iCol;
+//                 for (i = 0, nCol = colModel.length; i < nCol; i++) {
+//                     if (colModel[i].name === colName) {
+//                         iCol = i;
+//                         break;
+//                     }
+//                 }
+//                 if (i >= nCol) {
+//                     return; // error: non-existing column name specified as the first parameter
+//                 }
+//             } else if (typeof iCol !== "number") {
+//                 return; // error: wrong parameters
+//             }
+//             grid.resizing = { idx: iCol };
+//             grid.headers[iCol].newWidth = newWidth;
+//             grid.newWidth = p.tblwidth + newWidth - grid.headers[iCol].width;
+//             grid.dragEnd();   // adjust column width
+//             if (adjustGridWidth !== false) {
+//                 $self.jqGrid("setGridWidth", grid.newWidth, false); // adjust grid width too
+//             }
+//         });
+//     }
+// });
 
 
 function seemoreFunction(dots,more,morebtn,callback) {

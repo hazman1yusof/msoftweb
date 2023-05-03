@@ -56,6 +56,7 @@ Route::post('/user_maintenance/form','setup\UserMaintenanceController@form');
 Route::get('/sysparam_bed_status','SysparamController@sysparam_bed_status');
 Route::get('/sysparam_stat','SysparamController@sysparam_stat');
 Route::get('/sysparam_triage_color','SysparamController@sysparam_triage_color');
+Route::get('/sysparam_triage_color_chk','SysparamController@sysparam_triage_color_chk');
 Route::get('/sysparam_recstatus','SysparamController@sysparam_recstatus');
 
 ///////////////file setup//////////////////////////////////////////////////
@@ -330,6 +331,11 @@ Route::post('/bedmanagement/form','setup\BedManagementController@form');
 Route::get('/bedmanagement/statistic','setup\BedManagementController@statistic');
 
 ////////////////////////////////inventory setup///////////////////////////////////////////////////////////
+
+//// inventory Request setup page ///
+Route::get('/quotation','material\QuotationController@show');
+Route::get('/quotation/table','material\QuotationController@table');
+Route::post('/quotation/form','material\QuotationController@form');
 
 //// inventory Request setup page ///
 Route::get('/inventoryRequest','material\InventoryRequestController@show');
