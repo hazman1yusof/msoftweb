@@ -296,7 +296,7 @@
 				{{ csrf_field() }}
 				<input id="idno" name="idno" type="hidden">
 
-				<input id="TYPE" name="TYPE" type="hidden"  value="RSC">
+				<input id="TYPE" name="TYPE" type="hidden" value="OT">
 
 	            <div class="form-group">
 					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
