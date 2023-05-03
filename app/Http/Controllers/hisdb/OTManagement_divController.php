@@ -45,6 +45,9 @@ class OTManagement_divController extends defaultController
                     default:
                         return 'error happen..';
                 }
+                
+            case 'get_table_otmanage':
+                return $this->get_table_otmanage($request);
             
             default:
                 return 'error happen..';
@@ -85,7 +88,7 @@ class OTManagement_divController extends defaultController
                         'gaassistant' => $request->gaassistant,
                         'circulator' => $request->circulator,
                         'adduser'  => session('username'),
-                        'adddate'  => $Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             
             DB::commit();
@@ -158,6 +161,24 @@ class OTManagement_divController extends defaultController
             
         }
         
+    }
+    
+    public function get_table_otmanage(Request $request){
+        
+        $otmanage_obj = DB::table('nursing.otmanage')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
+                    
+        $responce = new stdClass();
+        
+        if($otmanage_obj->exists()){
+            $otmanage_obj = $otmanage_obj->first();
+            $responce->otmanage = $otmanage_obj;
+        }
+        
+        return json_encode($responce);
+    
     }
     
 }

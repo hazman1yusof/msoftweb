@@ -53,19 +53,19 @@
                             <div class="ui grid">
                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                     <label>Oper Date</label>
-                                    <input id="operdate" name="operdate" type="text">
+                                    <input id="operdate" name="operdate" type="date">
                                 </div>
 
                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                     <label>Time Started</label>
-                                    <input id="timestarted" name="timestarted" type="text">
+                                    <input id="timestarted" name="timestarted" type="time">
                                 </div>
                             </div>
 
                             <div class="ui grid">
                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                     <label>Time Ended</label>
-                                    <input id="timeended" name="timeended" type="text">
+                                    <input id="timeended" name="timeended" type="time">
                                 </div>
 
                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
@@ -100,7 +100,7 @@
                                             <div class="ui grid">
                                                 <div class="field five wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Serial No.</label>
-                                                    <input id="serialno" name="serialno" type="text">
+                                                    <input id="serialno" name="serialno" type="number">
                                                 </div>
 
                                                 <div class="field five wide column" style="margin:0px; padding: 3px 14px 0px 14px;">

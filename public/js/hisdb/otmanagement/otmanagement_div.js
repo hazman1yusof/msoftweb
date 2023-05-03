@@ -11,7 +11,7 @@ $(document).ready(function () {
     
     $("button.refreshbtn_otmgmt_div").click(function(){
         populate_otmgmt_div(selrowData('#jqGrid'));
-
+        
     });
     
     $("#new_otmgmt_div").click(function(){
@@ -21,7 +21,7 @@ $(document).ready(function () {
         rdonly('#form_otmgmt_div');
         // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
         // dialog_mrn_edit.on();
-
+        
     });
     
     $("#edit_otmgmt_div").click(function(){
@@ -29,7 +29,7 @@ $(document).ready(function () {
         enableForm('#form_otmgmt_div');
         rdonly('#form_otmgmt_div');
         // dialog_mrn_edit.on();
-
+        
     });
     
     $("#save_otmgmt_div").click(function(){
@@ -43,7 +43,7 @@ $(document).ready(function () {
             enableForm('#form_otmgmt_div');
             rdonly('#form_otmgmt_div');
         }
-
+        
     });
     
     $("#cancel_otmgmt_div").click(function(){
@@ -51,7 +51,7 @@ $(document).ready(function () {
         disableForm('#form_otmgmt_div');
         button_state_otmgmt_div($(this).data('oper'));
         // dialog_mrn_edit.off();
-
+        
     });
     
     // to format number input to two decimal places (0.00)
@@ -72,7 +72,7 @@ $(document).ready(function () {
             }
         }, 0);
     });
-
+    
 });
 
 var errorField = [];
@@ -164,7 +164,28 @@ function populate_otmgmt_div(obj){
     $('#mrn_otmgmt_div').val(obj.MRN);
     $("#episno_otmgmt_div").val(obj.Episno);
     
-    button_state_otmgmt_div('add');
+    var urlparam={
+        action:'get_table_otmanage',
+    }
+    
+    var postobj={
+        _token : $('#_token').val(),
+        mrn:obj.mrn,
+        episno:obj.episno
+    };
+    
+    $.post( "./otmanagement_div/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+        if(!$.isEmptyObject(data)){
+            button_state_otmgmt_div('edit');
+            autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+        }else{
+            button_state_otmgmt_div('add');
+        }
+    });
 }
 
 function autoinsert_rowdata(form,rowData){

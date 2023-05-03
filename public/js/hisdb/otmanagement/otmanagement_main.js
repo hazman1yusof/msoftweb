@@ -101,16 +101,16 @@ $(document).ready(function () {
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
 				{ label: 'Epis. No', name: 'episno', width: 5, align: 'right', classes: 'wrap', hidden:true },
-				// { label: 'Name', name: 'Name', hidden: true },
-				// { label: 'MRN', name: 'MRN', hidden: true },
-				// { label: 'Episno', name: 'Episno', hidden: true },
-				// { label: 'Sex', name: 'Sex', hidden: true },
-				// { label: 'DOB', name: 'DOB', hidden: true },
-				// { label: 'RaceCode', name: 'RaceCode', hidden: true },
-				// { label: 'Religion', name: 'Religion', hidden: true },
-				// { label: 'OccupCode', name: 'OccupCode', hidden: true },
-				// { label: 'Citizencode', name: 'Citizencode', hidden: true },
-				// { label: 'AreaCode', name: 'AreaCode', hidden: true },
+				{ label: 'Name', name: 'Name', hidden: true },
+				{ label: 'MRN', name: 'MRN', hidden: true },
+				{ label: 'Episno', name: 'Episno', hidden: true },
+				{ label: 'Sex', name: 'Sex', hidden: true },
+				{ label: 'DOB', name: 'DOB', hidden: true },
+				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
+				{ label: 'Religion', name: 'Religion', hidden: true },
+				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
+				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
+				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
 			],
 			autowidth: true,
 			viewrecords: true,
@@ -123,7 +123,7 @@ $(document).ready(function () {
 				}
 				// empty_userfile();
 				$('button#timer_stop').click();
-				// populate_otmgmt_div(selrowData('#jqGrid'));
+				populate_otmgmt_div(selrowData('#jqGrid'));
 				// urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				// urlParam_trans.episno = selrowData('#jqGrid').Episno;
 				// urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -164,7 +164,7 @@ $(document).ready(function () {
 				// hide_tran_button_diet(true);
 				// hide_tran_button_phys(true);
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
-				// empty_otmgmt_div();
+				empty_otmgmt_div();
 				// empty_currDoctorNote();
 				// empty_transaction();
 				// empty_transaction_diet();
@@ -198,16 +198,16 @@ $(document).ready(function () {
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
 				{ label: 'Epis. No', name: 'episno', width: 5, align: 'right', classes: 'wrap', hidden:true },
-				// { label: 'Name', name: 'Name', hidden: true },
-				// { label: 'MRN', name: 'MRN', hidden: true },
-				// { label: 'Episno', name: 'Episno', hidden: true },
-				// { label: 'Sex', name: 'Sex', hidden: true },
-				// { label: 'DOB', name: 'DOB', hidden: true },
-				// { label: 'RaceCode', name: 'RaceCode', hidden: true },
-				// { label: 'Religion', name: 'Religion', hidden: true },
-				// { label: 'OccupCode', name: 'OccupCode', hidden: true },
-				// { label: 'Citizencode', name: 'Citizencode', hidden: true },
-				// { label: 'AreaCode', name: 'AreaCode', hidden: true },
+				{ label: 'Name', name: 'Name', hidden: true },
+				{ label: 'MRN', name: 'MRN', hidden: true },
+				{ label: 'Episno', name: 'Episno', hidden: true },
+				{ label: 'Sex', name: 'Sex', hidden: true },
+				{ label: 'DOB', name: 'DOB', hidden: true },
+				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
+				{ label: 'Religion', name: 'Religion', hidden: true },
+				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
+				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
+				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
 			],
 			autowidth: true,
 			viewrecords: true,
@@ -222,7 +222,7 @@ $(document).ready(function () {
 				}
 				// empty_userfile();
 				$('button#timer_stop').click();
-				// populate_otmgmt_div(selrowData('#jqGrid'));
+				populate_otmgmt_div(selrowData('#jqGrid'));
 				// urlParam_trans.mrn = selrowData('#jqGrid').MRN;
 				// urlParam_trans.episno = selrowData('#jqGrid').Episno;
 				// urlParam_trans_diet.mrn = selrowData('#jqGrid').MRN;
@@ -257,7 +257,7 @@ $(document).ready(function () {
 				// hide_tran_button_diet(true);
 				// hide_tran_button_phys(true);
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
-				// empty_otmgmt_div();
+				empty_otmgmt_div();
 				// empty_currDoctorNote();
 				// empty_transaction();
 				// empty_transaction_diet();
@@ -278,7 +278,7 @@ $(document).ready(function () {
 			},
 		});
 	}
-
+	
 	// $("#jqGrid").jqGrid('setGroupHeaders', {
 	// 	useColSpanStyle: true,
 	// 	groupHeaders:[
@@ -286,7 +286,7 @@ $(document).ready(function () {
 	// 	]
 	// });
 	addParamField('#jqGrid',true,urlParam,['action']);
-
+	
 	//////////////////////////////////////////start grid pager//////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -500,5 +500,5 @@ $(document).ready(function () {
 				// code block
 		}
 	}
-
+	
 });
