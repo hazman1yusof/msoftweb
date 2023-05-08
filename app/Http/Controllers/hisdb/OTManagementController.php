@@ -36,7 +36,8 @@ class OTManagementController extends defaultController
     public function form(Request $request)
     {
         switch($request->action){
-            
+            case 'edit_header_ot':
+                return $this->edit_header_ot($request);
         }
     }
     
@@ -61,7 +62,12 @@ class OTManagementController extends defaultController
         //         Auth::login($user->first());
         //     }
         // }
-        return view('hisdb.otmanagement.otmanagement');
+
+        $otstatus = DB::table('hisdb.otstatus')
+                    ->select('code','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
+        return view('hisdb.otmanagement.otmanagement',compact('otstatus'));
         
     }
     
@@ -198,6 +204,16 @@ class OTManagementController extends defaultController
         
         return $events = $this->getEvent($apptbook);
         
+    }
+
+    public function edit_header_ot(Request $request){
+        DB::table('hisdb.apptbook')
+            ->where('idno',$request->idno)
+            ->update([
+                'op_unit' => $request->op_unit,
+                'oper_type' => $request->oper_type,
+                'oper_status' => $request->oper_status,
+            ]);
     }
     
 }

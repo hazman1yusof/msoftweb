@@ -273,20 +273,20 @@ span.myhr_span{
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="start" class="col-md-2 control-label">Appt Date</label>
+								<label for="start" class="col-md-2 control-label">Resource Date</label>
 								<div class="col-md-3">
 									<input type="date" class="form-control input-sm" placeholder="Start Date" id="apptdatefr_day" name="apptdatefr_day" data-validation="required"  min="{{Carbon\Carbon::now()->format('Y-m-d')}}">	
 								</div>
-
-								<label for="start" class="col-md-2 control-label">Appt Time</label>
+							</div>
+							<div class="form-group">
+								<label for="start_time" class="col-md-2 control-label">Time Start</label>
 								<div class="col-md-3">
-									<div class="input-group">
-										<input type="text" class="form-control input-sm" placeholder="Start Time" id="start_time" name="start_time" maxlength="12" data-validation="required">
-										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
-									</div>
-									<span class='help-block'></span>
+									<input type="time" class="form-control input-sm" placeholder="Time Start" id="start_time" name="start_time"  data-validation="required">	
 								</div>
-								<input type="hidden" id="end_time" name="end_time">
+								<label for="end_time" class="col-md-2 control-label">Time End</label>
+								<div class="col-md-3">
+									<input type="time" class="form-control input-sm" placeholder="Time End" id="end_time" name="end_time"  data-validation="required">	
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="telh" class="col-md-2 control-label">Tel No</label>
@@ -322,6 +322,7 @@ span.myhr_span{
 									</div>
 							</div>
 
+							@if(Request::get('TYPE') == 'OT')
 							<div class="myhr_div">
 							  <span class="myhr_span">
 							    Operation Theater
@@ -329,32 +330,43 @@ span.myhr_span{
 							</div>
 
 							<div class="form-group">
-								<label for="telhp" class="col-md-2 control-label">Surgery Date</label>
+								<label for="op_unit" class="col-md-2 control-label">OP Unit</label>
 								<div class="col-md-3">
-									<input type="date" class="form-control input-sm" placeholder="Surgery Date" id="surgery_date" name="surgery_date">
+									<div class="input-group">
+										<input type="text" class="form-control input-sm" placeholder="OP Unit" id="op_unit" name="op_unit">
+										<a class="input-group-addon btn btn-primary"><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class='help-block'></span>
 								</div>
-								<label for="telhp" class="col-md-2 control-label">OP Unit</label>
+								<label for="oper_type" class="col-md-2 control-label">Operation Type</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="OP Unit" id="op_unit" name="op_unit">
+									<select name="oper_type" id="oper_type" class="form-control input-sm">
+										<option value=""></option>
+										<option value="MAJOR">MAJOR</option>	
+										<option value="MINOR">MINOR</option>
+									</select>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="telhp" class="col-md-2 control-label">Operation Type</label>
+								<label for="oper_status" class="col-md-2 control-label">Operation Status</label>
 								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Operation Type" id="oper_type" name="oper_type">
-								</div>
-								<label for="telhp" class="col-md-2 control-label">Operation Status</label>
-								<div class="col-md-3">
-									<input type="text" class="form-control input-sm" placeholder="Operation Status" id="oper_status" name="oper_status">
+									<select name="oper_status" id="oper_status" class="form-control input-sm">
+										<option value=""></option>
+										@foreach($otstatus as $obj)
+											<option value="{{$obj->code}}">{{$obj->description}}</option>
+										@endforeach
+									</select>
 								</div>
 							</div>
+							@endif
+							
 							<hr>
 							<div class="form-group">
-								<label for="telh" class="col-md-2 control-label">Last User</label>
+								<label for="lastuser" class="col-md-2 control-label">Last User</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" id="lastuser" name="lastuser" readonly>	
 								</div>
-								<label for="telh" class="col-md-2 control-label">Last Update</label>
+								<label for="lastupdate" class="col-md-2 control-label">Last Update</label>
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" id="lastupdate" name="lastupdate" readonly>	
 								</div>

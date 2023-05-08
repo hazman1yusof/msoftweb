@@ -3,6 +3,16 @@
 @section('style')
 @endsection
 
+@section('header')
+    <script>
+        var otstatus_arr = [
+            @foreach($otstatus as $obj)
+                { desc:'{{$obj->description}}' },
+            @endforeach
+        ]
+    </script>
+@endsection
+
 @section('content')
     
     <input type="hidden" id="curr_user" value="{{ Auth::user()->username }}">

@@ -2,6 +2,12 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+var urlParam = {
+	action: 'get_table_operRecList',
+	url: './otmanagement/table',
+	filterVal : [moment().format("YYYY-MM-DD")]
+}
+
 $(document).ready(function () {
 	
 	$('#calendar').fullCalendar({
@@ -56,12 +62,6 @@ $(document).ready(function () {
 		]
 	});
 	
-	var urlParam = {
-		action: 'get_table_operRecList',
-		url: './otmanagement/table',
-		filterVal : [moment().format("YYYY-MM-DD")]
-	}
-	
 	var istablet = $(window).width() <= 1024;
 	// istablet =  true;
 	
@@ -94,10 +94,10 @@ $(document).ready(function () {
 				{ label: 'Patient Name', name: 'pat_name', width: 20, classes: 'wrap' },
 				{ label: 'OT Room', name: 'ot_room', width: 20, classes: 'wrap' },
 				{ label: 'Surgery Date', name: 'surgery_date', width: 13, classes: 'wrap' },
-				{ label: 'OP Unit', name: 'op_unit', width: 20, classes: 'wrap' },
-				{ label: 'Operation Type', name: 'oper_type', width: 13, classes: 'wrap' },
+				{ label: 'Unit', name: 'op_unit', width: 20, classes: 'wrap' },
+				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap' },
 				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap' },
-				{ label: 'Action', width: 15, classes: 'wrap' },
+				{ label: 'Action', width: 15, classes: 'wrap' , formatter: actionformatter},
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
 				{ label: 'Epis. No', name: 'episno', width: 5, align: 'right', classes: 'wrap', hidden:true },
@@ -179,6 +179,7 @@ $(document).ready(function () {
 				// }else{
 				// 	$("#jqGrid").setSelection(discharge_btn_data);
 				// }
+				init_editbtn_top();
 			},
 		});
 	}else{
@@ -188,10 +189,19 @@ $(document).ready(function () {
 				{ label: 'Patient Name', name: 'pat_name', width: 20, classes: 'wrap' },
 				{ label: 'OT Room', name: 'ot_room', width: 20, classes: 'wrap' },
 				{ label: 'Surgery Date', name: 'surgery_date', width: 13, classes: 'wrap' },
-				{ label: 'OP Unit', name: 'op_unit', width: 20, classes: 'wrap' },
-				{ label: 'Operation Type', name: 'oper_type', width: 13, classes: 'wrap' },
-				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap' },
-				{ label: 'Action', width: 15, classes: 'wrap' },
+				{ label: 'Unit', name: 'op_unit', width: 20, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:op_unitCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
+				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap', editable:true,
+							edittype:"select", editoptions:{value:"MAJOR:MAJOR;MINOR:MINOR"}
+				},
+				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap', editable:true,
+							edittype:'select', editoptions:getoper_status()
+				},
+				{ label: 'Action', width: 15, classes: 'wrap', formatter: actionformatter },
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
 				{ label: 'Epis. No', name: 'episno', width: 5, align: 'right', classes: 'wrap', hidden:true },
@@ -216,6 +226,7 @@ $(document).ready(function () {
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
+				$("#jqGrid").data('lastidno',rowid);
 				// populate_otmgmt_div(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -244,6 +255,10 @@ $(document).ready(function () {
 				// }else{
 				// 	$("#jqGrid").setSelection(discharge_btn_data);
 				// }
+				init_editbtn_top();
+				if(!$("button#timer_play").hasClass("disabled")){
+					$("#jqGrid").setSelection($("#jqGrid").data('lastidno'));
+				}
 			},
 		});
 	}
@@ -471,3 +486,80 @@ $(document).ready(function () {
 	}
 	
 });
+
+function actionformatter(cellvalue, options, rowObject){
+	var retbut = `<div class="mini ui icon buttons" id=editbuttop_`+rowObject.idno+`>`
+	  	retbut += 	  `<button type='button' class="ui blue button editbuttop" data-idno='`+rowObject.idno+`'>`
+		retbut += 	    `<i class="edit icon"></i>`
+		retbut += 	  `</button>`
+		retbut += 	  `<button type='button' class="ui red button" data-idno='`+rowObject.idno+`'>`
+		retbut += 	    `<i class="eraser icon"></i>`
+		retbut += 	  `</button></div>`;
+
+		retbut += `<div class="mini ui icon buttons" id='waitbuttop_`+rowObject.idno+`' style='display:none'>`
+	  	retbut += 	  `<button type='button' class="ui green button savebuttop" data-idno='`+rowObject.idno+`'>`
+		retbut += 	    `<i class="check icon"></i>`
+		retbut += 	  `</button>`
+		retbut += 	  `<button type='button' class="ui yellow button cancelbuttop" data-idno='`+rowObject.idno+`'>`
+		retbut += 	    `<i class="times icon"></i>`
+		retbut += 	  `</button></div>`;
+	return retbut;
+}
+
+function init_editbtn_top(){
+	$('button.editbuttop').on('click',function(e){
+		var idno = $(this).data('idno');
+		$('div#editbuttop_'+idno).hide();
+		$('div#waitbuttop_'+idno).show();
+
+		$("#jqGrid").jqGrid('editRow',idno);
+	});
+	$('button.savebuttop').on('click',function(e){
+		var idno = $(this).data('idno');
+
+		var obj={
+			_token: $('#_token').val(),
+			idno: idno,
+			op_unit: $('#jqGrid input[name=op_unit]').val(),
+			oper_type: $('#jqGrid select[name=oper_type]').val(),
+			oper_status: $('#jqGrid select[name=oper_status]').val()
+		}
+
+		$.post( "./otmanagement/form?action=edit_header_ot",obj, function( data ){
+		}).fail(function(data) {
+			refreshGrid("#jqGrid", urlParam,'edit');
+		}).done(function(data){
+			refreshGrid("#jqGrid", urlParam,'edit');
+		});
+
+		$('div#editbuttop_'+idno).show();
+		$('div#waitbuttop_'+idno).hide();
+	});
+	$('button.cancelbuttop').on('click',function(e){
+		var idno = $(this).data('idno');
+		refreshGrid("#jqGrid", urlParam,'edit');
+	});
+}
+
+function op_unitCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="op_unit" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+}
+
+function galGridCustomValue (elem, operation, value){
+	if(operation == 'get') {
+		return $(elem).find("input").val();
+	} 
+	else if(operation == 'set') {
+		$('input',elem).val(value);
+	}
+}
+
+function getoper_status(){
+	var string_value = "";
+	otstatus_arr.forEach(function(e,i){
+		string_value+=e.desc+':'+e.desc+';';
+	});
+	return {value:string_value.slice(0,-1)};
+	return {value:"MAJOR:MAJOR;MINOR:MINOR"};
+}
