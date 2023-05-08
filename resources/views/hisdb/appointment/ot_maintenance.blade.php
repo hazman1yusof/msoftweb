@@ -295,7 +295,6 @@
 			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
 				{{ csrf_field() }}
 				<input id="idno" name="idno" type="hidden">
-
 				<input id="TYPE" name="TYPE" type="hidden"  value="OT">
 
 	            <div class="form-group">

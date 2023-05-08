@@ -74,10 +74,10 @@
             RELIGION: <span id="religion_show_otmgmt_div"></span><br>
             OCCUPATION: <span id="occupation_show_otmgmt_div"></span>
             CITIZENSHIP: <span id="citizenship_show_otmgmt_div"></span>
-            AREA: <span id="area_show_otmgmt_div"></span> 
-
+            AREA: <span id="area_show_otmgmt_div"></span>
+            
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
-            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i > 
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
             <div style="position: absolute;
                             padding: 0 0 0 0;
                             right: 50px;

@@ -32,6 +32,7 @@ $(document).ready(function () {
             saveForm_otmgmt_div(function(data){
                 // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
                 disableForm('#form_otmgmt_div');
+
             });
         }else{
             enableForm('#form_otmgmt_div');
@@ -46,6 +47,7 @@ $(document).ready(function () {
         button_state_otmgmt_div($(this).data('oper'));
         getdata_otmgmt();
         // dialog_mrn_edit.off();
+
     });
     
     // to format number input to two decimal places (0.00)
@@ -90,29 +92,29 @@ function button_state_otmgmt_div(state){
     // empty_transaction('add');
     switch(state){
         case 'empty':
-            $("#toggle_doctorNote").removeAttr('data-toggle');
+            $("#toggle_otmgmt_div").removeAttr('data-toggle');
             $('#cancel_otmgmt_div').data('oper','add');
             $('#new_otmgmt_div,#save_otmgmt_div,#cancel_otmgmt_div,#edit_otmgmt_div').attr('disabled',true);
             break;
         case 'add':
-            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#toggle_otmgmt_div").attr('data-toggle','collapse');
             $('#cancel_otmgmt_div').data('oper','add');
-            $("#new_otmgmt_div,#current,#past").attr('disabled',false);
+            $("#new_otmgmt_div").attr('disabled',false);
             $('#save_otmgmt_div,#cancel_otmgmt_div,#edit_otmgmt_div').attr('disabled',true);
             break;
         case 'edit':
-            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#toggle_otmgmt_div").attr('data-toggle','collapse');
             $('#cancel_otmgmt_div').data('oper','edit');
             $("#edit_otmgmt_div").attr('disabled',false);
             $('#save_otmgmt_div,#cancel_otmgmt_div,#new_otmgmt_div').attr('disabled',true);
             break;
         case 'wait':
-            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#toggle_otmgmt_div").attr('data-toggle','collapse');
             $("#save_otmgmt_div,#cancel_otmgmt_div").attr('disabled',false);
             $('#edit_otmgmt_div,#new_otmgmt_div').attr('disabled',true);
             break;
         case 'disableAll':
-            $("#toggle_doctorNote").attr('data-toggle','collapse');
+            $("#toggle_otmgmt_div").attr('data-toggle','collapse');
             $('#new_otmgmt_div,#edit_otmgmt_div,#save_otmgmt_div,#cancel_otmgmt_div').attr('disabled',true);
             break;
     }
@@ -121,7 +123,7 @@ function button_state_otmgmt_div(state){
 function empty_otmgmt_div(){
     emptyFormdata_div("#form_otmgmt_div");
     button_state_otmgmt_div('empty');
-
+    
     // panel header
     $('#name_show_otmgmt_div').text('');
     $('#mrn_show_otmgmt_div').text('');
@@ -241,11 +243,11 @@ function saveForm_otmgmt_div(callback){
 
 $('#tab_otmgmt_div').on('shown.bs.collapse', function () {
     SmoothScrollTo('#tab_otmgmt_div', 300);
+    
     if($('#mrn_otmgmt_div').val() != ''){
         getdata_otmgmt();
     }
 });
-
 
 $('#tab_otmgmt_div').on('hide.bs.collapse', function () {
     emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
