@@ -6,10 +6,10 @@
                     right: 40px;
                     top: 9px;
                     z-index: 2;">
-            <button class="ui button" id="new_otmgmt_div"><span class="fa fa-plus-square-o"></span> New</button>
-            <button class="ui button" id="edit_otmgmt_div"><span class="fa fa-edit fa-lg"></span> Edit</button>
-            <button class="ui button" id="save_otmgmt_div"><span class="fa fa-save fa-lg"></span> Save</button>
-            <button class="ui button" id="cancel_otmgmt_div"><span class="fa fa-ban fa-lg"></span> Cancel</button>
+            <button class="ui button" id="new_otmgmt_div"><span class="fa fa-plus-square-o"></span>New</button>
+            <button class="ui button" id="edit_otmgmt_div"><span class="fa fa-edit fa-lg"></span>Edit</button>
+            <button class="ui button" id="save_otmgmt_div"><span class="fa fa-save fa-lg"></span>Save</button>
+            <button class="ui button" id="cancel_otmgmt_div"><span class="fa fa-ban fa-lg"></span>Cancel</button>
         </div>
     </div>
     

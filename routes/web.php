@@ -259,6 +259,20 @@ Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
 Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
 Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
 
+//// OT Status setup page ///
+Route::get('/ot_status','hisdb\OTStatusController@show');
+Route::get('/ot_status/table','hisdb\OTStatusController@table');
+Route::post('/ot_status/form','hisdb\OTStatusController@form');
+Route::get('/ot_status/form','hisdb\OTStatusController@form');
+// Route::post('/otstatusdetail/form','hisdb\OTStatusDetailController@form');
+
+//// OT Type setup page ///
+Route::get('/ot_type','hisdb\OTTypeController@show');
+Route::get('/ot_type/table','hisdb\OTTypeController@table');
+Route::post('/ot_type/form','hisdb\OTTypeController@form');
+Route::get('/ot_type/form','hisdb\OTTypeController@form');
+// Route::post('/ot_typedetail/form','hisdb\OTTypeDetailController@form');
+
 //// Admission Source setup page ///
 Route::get('/admissrc','setup\AdmisSrcController@show');
 Route::get('/admissrc/table','setup\AdmisSrcController@table');
