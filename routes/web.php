@@ -208,6 +208,11 @@ Route::get('/doctor/table','setup\DoctorController@table');
 Route::post('/doctor/form','setup\DoctorController@form');
 Route::post('/doctorContribution/form','setup\DoctorContributionController@form');
 
+//// computer id setup page ///
+Route::get('/computerid','setup\ComputeridController@show');
+Route::get('/computerid/table','setup\ComputeridController@table');
+Route::post('/computerid/form','setup\ComputeridController@form');
+
 //// receipt AR setup page ///
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');

@@ -330,7 +330,7 @@ span.myhr_span{
 							</div>
 
 							<div class="form-group">
-								<label for="op_unit" class="col-md-2 control-label">OP Unit</label>
+								<label for="op_unit" class="col-md-2 control-label">Unit</label>
 								<div class="col-md-3">
 									<div class="input-group">
 										<input type="text" class="form-control input-sm" placeholder="OP Unit" id="op_unit" name="op_unit">
