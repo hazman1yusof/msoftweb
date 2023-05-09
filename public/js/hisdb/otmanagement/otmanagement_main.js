@@ -414,6 +414,30 @@ $(document).ready(function () {
 	}
 	
 });
+var dialog_op_unit = new ordialog(
+	'op_unit', 'hisdb.discipline', "#jqGrid input[name='op_unit']", 'errorField',
+	{
+		colModel: [
+			{	label: 'Code', name: 'code', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+			{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+		],
+		urlParam: {
+			filterCol : ['compcode'],
+			filterVal : ['session.compcode'],
+		},
+		ondblClickRow: function () {
+			
+		}
+	},
+	{
+		title: "Select Case",
+		open: function () {
+			dialog_op_unit.urlParam.filterCol = ['compcode'];
+			dialog_op_unit.urlParam.filterVal = ['session.compcode'];
+		},
+	},'urlParam','radio','tab'
+);
+dialog_op_unit.makedialog(false);
 
 function actionformatter(cellvalue, options, rowObject){
 	var retbut = `<div class="mini ui icon buttons" id=editbuttop_`+rowObject.idno+`>`
@@ -441,6 +465,7 @@ function init_editbtn_top(){
 		$('div#waitbuttop_'+idno).show();
 
 		$("#jqGrid").jqGrid('editRow',idno);
+		dialog_op_unit.on();
 	});
 	$('button.savebuttop').on('click',function(e){
 		var idno = $(this).data('idno');
