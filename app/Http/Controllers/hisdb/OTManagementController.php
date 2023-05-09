@@ -75,12 +75,24 @@ class OTManagementController extends defaultController
         
         $table_apptbook = DB::table('hisdb.apptbook')
                     ->select(['apptbook.idno','apptbook.compcode','apptbook.mrn','apptbook.pat_name','apptbook.Type','apptbook.episno','apptbook.ot_room',
-                    'apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status','pat_mast.Name','pat_mast.MRN','pat_mast.Episno',
-                    'pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode','pat_mast.Citizencode','pat_mast.AreaCode']);
+                    'apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status','apptbook.height','apptbook.weight','pat_mast.Name',
+                    'pat_mast.MRN','pat_mast.Episno','pat_mast.Newic','pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode',
+                    'pat_mast.Citizencode','pat_mast.AreaCode','apptresrc.resourcecode','apptresrc.description as ot_description','discipline.code',
+                    'discipline.description as unit_description','otmanage.diagnosis','otmanage.procedure']);
                 
                 $table_apptbook = $table_apptbook->leftJoin('hisdb.pat_mast', function($join) use ($request){
                         $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn')
                                     ->on('pat_mast.compcode', '=', 'apptbook.compcode');
+                })
+                ->leftJoin('hisdb.apptresrc', function($join) use ($request){
+                    $join = $join->on('apptresrc.resourcecode', '=', 'apptbook.ot_room');
+                })
+                ->leftJoin('hisdb.discipline', function($join) use ($request){
+                    $join = $join->on('discipline.code', '=', 'apptbook.op_unit');
+                })
+                ->leftJoin('nursing.otmanage', function($join) use ($request){
+                    $join = $join->on('otmanage.mrn', '=', 'apptbook.mrn')
+                                ->on('otmanage.compcode', '=', 'apptbook.compcode');
                 });
                 
                 $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))
@@ -205,15 +217,19 @@ class OTManagementController extends defaultController
         return $events = $this->getEvent($apptbook);
         
     }
-
+    
     public function edit_header_ot(Request $request){
+        
         DB::table('hisdb.apptbook')
             ->where('idno',$request->idno)
             ->update([
                 'op_unit' => $request->op_unit,
                 'oper_type' => $request->oper_type,
                 'oper_status' => $request->oper_status,
+                'height' => $request->height,
+                'weight' => $request->weight,
             ]);
+    
     }
     
 }

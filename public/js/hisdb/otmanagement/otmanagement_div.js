@@ -127,7 +127,10 @@ function empty_otmgmt_div(){
     // panel header
     $('#name_show_otmgmt_div').text('');
     $('#mrn_show_otmgmt_div').text('');
+    $('#icpssprt_show_otmgmt_div').text('');
     $('#sex_show_otmgmt_div').text('');
+    $('#height_show_otmgmt_div').text('');
+    $('#weight_show_otmgmt_div').text('');
     $('#dob_show_otmgmt_div').text('');
     $('#age_show_otmgmt_div').text('');
     $('#race_show_otmgmt_div').text('');
@@ -135,6 +138,10 @@ function empty_otmgmt_div(){
     $('#occupation_show_otmgmt_div').text('');
     $('#citizenship_show_otmgmt_div').text('');
     $('#area_show_otmgmt_div').text('');
+    $('#ward_show_otmgmt_div').text('');
+    $('#diagnosis_show_otmgmt_div').text('');
+    $('#procedure_show_otmgmt_div').text('');
+    $('#unit_show_otmgmt_div').text('');
     
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val('');
@@ -145,7 +152,10 @@ function populate_otmgmt_div(obj){
     // panel header
     $('#name_show_otmgmt_div').text(obj.Name);
     $('#mrn_show_otmgmt_div').text(("0000000" + obj.MRN).slice(-7));
+    $('#icpssprt_show_otmgmt_div').text(obj.Newic);
     $('#sex_show_otmgmt_div').text(if_none(obj.Sex).toUpperCase());
+    $('#height_show_otmgmt_div').text(obj.height+' (CM)');
+    $('#weight_show_otmgmt_div').text(obj.weight+' (KG)');
     $('#dob_show_otmgmt_div').text(dob_chg(obj.DOB));
     $('#age_show_otmgmt_div').text(dob_age(obj.DOB)+' (YRS)');
     $('#race_show_otmgmt_div').text(if_none(obj.RaceCode).toUpperCase());
@@ -153,6 +163,10 @@ function populate_otmgmt_div(obj){
     $('#occupation_show_otmgmt_div').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_otmgmt_div').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otmgmt_div').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_otmgmt_div').text(obj.ward);
+    $('#diagnosis_show_otmgmt_div').text(obj.diagnosis);
+    $('#procedure_show_otmgmt_div').text(obj.procedure);
+    $('#unit_show_otmgmt_div').text(obj.op_unit);
     
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val(obj.MRN);

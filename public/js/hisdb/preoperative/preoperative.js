@@ -129,7 +129,10 @@ function empty_preoperative(){
     // panel header
     $('#name_show_preoperative').text('');
     $('#mrn_show_preoperative').text('');
+    $('#icpssprt_show_preoperative').text('');
     $('#sex_show_preoperative').text('');
+    $('#height_show_preoperative').text('');
+    $('#weight_show_preoperative').text('');
     $('#dob_show_preoperative').text('');
     $('#age_show_preoperative').text('');
     $('#race_show_preoperative').text('');
@@ -137,6 +140,10 @@ function empty_preoperative(){
     $('#occupation_show_preoperative').text('');
     $('#citizenship_show_preoperative').text('');
     $('#area_show_preoperative').text('');
+    $('#ward_show_preoperative').text('');
+    $('#diagnosis_show_preoperative').text('');
+    $('#procedure_show_preoperative').text('');
+    $('#unit_show_preoperative').text('');
     
     // form_preoperative
     $('#mrn_preoperative').val('');
@@ -147,7 +154,10 @@ function populate_preoperative(obj){
     // panel header
     $('#name_show_preoperative').text(obj.Name);
     $('#mrn_show_preoperative').text(("0000000" + obj.MRN).slice(-7));
+    $('#icpssprt_show_preoperative').text(obj.Newic);
     $('#sex_show_preoperative').text(if_none(obj.Sex).toUpperCase());
+    $('#height_show_preoperative').text(obj.height+' (CM)');
+    $('#weight_show_preoperative').text(obj.weight+' (KG)');
     $('#dob_show_preoperative').text(dob_chg(obj.DOB));
     $('#age_show_preoperative').text(dob_age(obj.DOB)+' (YRS)');
     $('#race_show_preoperative').text(if_none(obj.RaceCode).toUpperCase());
@@ -155,6 +165,10 @@ function populate_preoperative(obj){
     $('#occupation_show_preoperative').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_preoperative').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_preoperative').text(if_none(obj.AreaCode).toUpperCase());
+    // $('#ward_show_preoperative').text(obj.ward);
+    $('#diagnosis_show_preoperative').text(obj.diagnosis);
+    $('#procedure_show_preoperative').text(obj.procedure);
+    $('#unit_show_preoperative').text(obj.op_unit);
     
     // form_preoperative
     $('#mrn_preoperative').val(obj.MRN);

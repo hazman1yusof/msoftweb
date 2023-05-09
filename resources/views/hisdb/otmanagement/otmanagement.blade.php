@@ -67,14 +67,21 @@
         <div class="panel-heading clearfix collapsed" id="toggle_otmgmt_div">
             <b>NAME: <span id="name_show_otmgmt_div"></span></b><br>
             MRN: <span id="mrn_show_otmgmt_div"></span>
+            IC NO./PASSPORT: <span id="icpssprt_show_otmgmt_div"></span>
             SEX: <span id="sex_show_otmgmt_div"></span>
+            HEIGHT: <span id="height_show_otmgmt_div"></span>
+            WEIGHT: <span id="weight_show_otmgmt_div"></span>
             DOB: <span id="dob_show_otmgmt_div"></span>
             AGE: <span id="age_show_otmgmt_div"></span>
             RACE: <span id="race_show_otmgmt_div"></span>
-            RELIGION: <span id="religion_show_otmgmt_div"></span><br>
+            RELIGION: <span id="religion_show_otmgmt_div"></span>
             OCCUPATION: <span id="occupation_show_otmgmt_div"></span>
-            CITIZENSHIP: <span id="citizenship_show_otmgmt_div"></span>
+            CITIZENSHIP: <span id="citizenship_show_otmgmt_div"></span><br>
             AREA: <span id="area_show_otmgmt_div"></span>
+            WARD: <span id="ward_show_otmgmt_div"></span>
+            DIAGNOSIS: <span id="diagnosis_show_otmgmt_div"></span>
+            PLANNED PROCEDURE: <span id="procedure_show_otmgmt_div"></span>
+            UNIT/DISCIPLINE: <span id="unit_show_otmgmt_div"></span>
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
@@ -98,14 +105,21 @@
         <div class="panel-heading clearfix collapsed" id="toggle_preoperative">
             <b>NAME: <span id="name_show_preoperative"></span></b><br>
             MRN: <span id="mrn_show_preoperative"></span>
+            IC NO./PASSPORT: <span id="icpssprt_show_preoperative"></span>
             SEX: <span id="sex_show_preoperative"></span>
+            HEIGHT: <span id="height_show_preoperative"></span>
+            WEIGHT: <span id="weight_show_preoperative"></span>
             DOB: <span id="dob_show_preoperative"></span>
             AGE: <span id="age_show_preoperative"></span>
             RACE: <span id="race_show_preoperative"></span>
-            RELIGION: <span id="religion_show_preoperative"></span><br>
+            RELIGION: <span id="religion_show_preoperative"></span>
             OCCUPATION: <span id="occupation_show_preoperative"></span>
-            CITIZENSHIP: <span id="citizenship_show_preoperative"></span>
+            CITIZENSHIP: <span id="citizenship_show_preoperative"></span><br>
             AREA: <span id="area_show_preoperative"></span>
+            WARD: <span id="ward_show_preoperative"></span>
+            DIAGNOSIS: <span id="diagnosis_show_preoperative"></span>
+            PLANNED PROCEDURE: <span id="procedure_show_preoperative"></span>
+            UNIT/DISCIPLINE: <span id="unit_show_preoperative"></span>
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i>

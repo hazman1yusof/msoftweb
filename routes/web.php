@@ -264,6 +264,11 @@ Route::get('/otmanagement_div','hisdb\OTManagement_divController@show');
 Route::get('/otmanagement_div/table','hisdb\OTManagement_divController@table');
 Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
 
+//// Preoperative page ////
+Route::get('/preoperative','hisdb\PreoperativeController@show');
+Route::get('/preoperative/table','hisdb\PreoperativeController@table');
+Route::post('/preoperative/form','hisdb\PreoperativeController@form');
+
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
 Route::get('/ot_status/table','hisdb\OTStatusController@table');

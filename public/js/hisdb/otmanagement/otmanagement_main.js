@@ -92,18 +92,41 @@ $(document).ready(function () {
 			datatype: "local",
 			colModel: [
 				{ label: 'Patient Name', name: 'pat_name', width: 20, classes: 'wrap' },
-				{ label: 'OT Room', name: 'ot_room', width: 20, classes: 'wrap' },
-				{ label: 'Surgery Date', name: 'surgery_date', width: 13, classes: 'wrap' },
-				{ label: 'Unit', name: 'op_unit', width: 20, classes: 'wrap' },
-				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap' },
-				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap' },
-				{ label: 'Action', width: 15, classes: 'wrap' , formatter: actionformatter},
+				{ label: 'OT Room', name: 'ot_description', width: 15, classes: 'wrap' },
+				{ label: 'Surgery Date', name: 'surgery_date', width: 15, classes: 'wrap', formatter:dateFormatter2, unformat:dateUNFormatter2 },
+				{ label: 'op_unit', name: 'op_unit', hidden: true },
+				{ label: 'Unit', name: 'unit_description', width: 20, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:op_unitCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
+				{ label: 'Type', name: 'oper_type', width: 13, classes: 'wrap', editable:true,
+							edittype:"select", editoptions:{value:"MAJOR:MAJOR;MINOR:MINOR"}
+				},
+				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap', editable:true,
+							edittype:'select', editoptions:getoper_status()
+				},
+				{ label: 'Height (cm)', name: 'height', width: 12, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:heightCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
+				{ label: 'Weight (kg)', name: 'weight', width: 12, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:weightCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
+				{ label: 'Action', width: 15, classes: 'wrap', formatter: actionformatter },
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
 				{ label: 'Epis. No', name: 'episno', width: 5, align: 'right', classes: 'wrap', hidden:true },
 				{ label: 'Name', name: 'Name', hidden: true },
 				{ label: 'MRN', name: 'MRN', hidden: true },
 				{ label: 'Episno', name: 'Episno', hidden: true },
+				{ label: 'Newic', name: 'Newic', hidden: true },
 				{ label: 'Sex', name: 'Sex', hidden: true },
 				{ label: 'DOB', name: 'DOB', hidden: true },
 				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
@@ -111,6 +134,8 @@ $(document).ready(function () {
 				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
 				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
 				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
+				{ label: 'diagnosis', name: 'diagnosis', hidden: true },
+				{ label: 'procedure', name: 'procedure', hidden: true },
 			],
 			autowidth: true,
 			viewrecords: true,
@@ -135,9 +160,10 @@ $(document).ready(function () {
 			datatype: "local",
 			colModel: [
 				{ label: 'Patient Name', name: 'pat_name', width: 20, classes: 'wrap' },
-				{ label: 'OT Room', name: 'ot_room', width: 20, classes: 'wrap' },
-				{ label: 'Surgery Date', name: 'surgery_date', width: 13, classes: 'wrap' },
-				{ label: 'Unit', name: 'op_unit', width: 20, classes: 'wrap', editable:true,
+				{ label: 'OT Room', name: 'ot_description', width: 15, classes: 'wrap' },
+				{ label: 'Surgery Date', name: 'surgery_date', width: 15, classes: 'wrap', formatter:dateFormatter2, unformat:dateUNFormatter2 },
+				{ label: 'op_unit', name: 'op_unit', hidden: true },
+				{ label: 'Unit', name: 'unit_description', width: 20, classes: 'wrap', editable:true,
 							edittype:'custom',	editoptions:
 						    {  custom_element:op_unitCustomEdit,
 						       custom_value:galGridCustomValue 	
@@ -149,6 +175,18 @@ $(document).ready(function () {
 				{ label: 'Status', name: 'oper_status', width: 13, classes: 'wrap', editable:true,
 							edittype:'select', editoptions:getoper_status()
 				},
+				{ label: 'Height (cm)', name: 'height', width: 12, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:heightCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
+				{ label: 'Weight (kg)', name: 'weight', width: 12, classes: 'wrap', editable:true,
+							edittype:'custom',	editoptions:
+						    {  custom_element:weightCustomEdit,
+						       custom_value:galGridCustomValue 	
+						    }, 
+				},
 				{ label: 'Action', width: 15, classes: 'wrap', formatter: actionformatter },
 				{ label: 'idno', name: 'idno', hidden: true, key:true },
 				{ label: 'mrn', name: 'mrn', width: 7, classes: 'wrap', formatter: padzero, unformat: unpadzero, checked: true, hidden:true },
@@ -156,6 +194,7 @@ $(document).ready(function () {
 				{ label: 'Name', name: 'Name', hidden: true },
 				{ label: 'MRN', name: 'MRN', hidden: true },
 				{ label: 'Episno', name: 'Episno', hidden: true },
+				{ label: 'Newic', name: 'Newic', hidden: true },
 				{ label: 'Sex', name: 'Sex', hidden: true },
 				{ label: 'DOB', name: 'DOB', hidden: true },
 				{ label: 'RaceCode', name: 'RaceCode', hidden: true },
@@ -163,6 +202,8 @@ $(document).ready(function () {
 				{ label: 'OccupCode', name: 'OccupCode', hidden: true },
 				{ label: 'Citizencode', name: 'Citizencode', hidden: true },
 				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
+				{ label: 'diagnosis', name: 'diagnosis', hidden: true },
+				{ label: 'procedure', name: 'procedure', hidden: true },
 			],
 			autowidth: true,
 			viewrecords: true,
@@ -458,6 +499,15 @@ function actionformatter(cellvalue, options, rowObject){
 	return retbut;
 }
 
+function dateFormatter2(cellvalue, options, rowObject){
+	if(cellvalue == null) return '';
+	return moment(cellvalue).format("DD/MM/YYYY") + '</br>' + `<span data-original=`+cellvalue+`><span>`;
+}
+
+function dateUNFormatter2(cellvalue, options, rowObject){
+	return $(rowObject).children('span').data('original');
+}
+
 function init_editbtn_top(){
 	$('button.editbuttop').on('click',function(e){
 		var idno = $(this).data('idno');
@@ -475,7 +525,9 @@ function init_editbtn_top(){
 			idno: idno,
 			op_unit: $('#jqGrid input[name=op_unit]').val(),
 			oper_type: $('#jqGrid select[name=oper_type]').val(),
-			oper_status: $('#jqGrid select[name=oper_status]').val()
+			oper_status: $('#jqGrid select[name=oper_status]').val(),
+			height: $('#jqGrid input[name=height]').val(),
+			weight: $('#jqGrid input[name=weight]').val(),
 		}
 
 		$.post( "./otmanagement/form?action=edit_header_ot",obj, function( data ){
@@ -497,6 +549,16 @@ function init_editbtn_top(){
 function op_unitCustomEdit(val,opt){
 	var val = getEditVal(val);
 	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="op_unit" type="text" class="form-control input-sm" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+}
+
+function heightCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="height" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value="'+val+'" style="z-index: 0"><span class="input-group-addon" style="padding:2px;">cm</span>');
+}
+
+function weightCustomEdit(val,opt){
+	var val = getEditVal(val);
+	return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="weight" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onkeypress="if(this.value.length==6) return false;" value="'+val+'" style="z-index: 0"><span class="input-group-addon" style="padding:2px;">kg</span>');
 }
 
 function galGridCustomValue (elem, operation, value){
