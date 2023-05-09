@@ -57,10 +57,7 @@ $(document).ready(function () {
         {
             colModel: [
                 { label: 'Resource Code', name: 'resourcecode', width: 20, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'intervaltim', name: 'intervaltime', hidden:true},
-				{ label: 'start', name: 'start', hidden:true},
-				{ label: 'end', name: 'end', hidden:true},
+				{ label: 'Description', name: 'description', width: 40, classes: 'pointer', canSearch: true, or_search: true }
             ],
             urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -78,7 +75,6 @@ $(document).ready(function () {
 				$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
 
 				let data = selrowData('#' + dialog_name.gridname);
-				let interval = data['intervaltime'];
 				$('.fc-myCustomButton-button').show();
 
 				var apptsession=[
@@ -91,9 +87,9 @@ $(document).ready(function () {
 					{days: 'SATURDAY', timefr1: data.start, timeto1: '12:00:00', timefr2: '12:00:00', timeto2: data.end},
 				]
 
-				td_from.addSessionInterval(interval,apptsession);
-				td_to.addSessionInterval(interval,apptsession);
-				session_field.addSessionInterval(interval,apptsession);
+				// td_from.addSessionInterval(interval,apptsession);
+				// td_to.addSessionInterval(interval,apptsession);
+				session_field.addSessionInterval(apptsession);
 
 				var event_apptbook = {
 					id: 'apptbook',
@@ -159,95 +155,6 @@ $(document).ready(function () {
 		}
 	}
 
-	// $('#selecting_doctor').click(function(){
-	// 	$(dialog_name.textfield).off('blur',onBlur);
-	// 	$(dialog_name.textfield).val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
-	// 	$(dialog_name.textfield).parent().next().html(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[1]]);
-	// 	$('#transfer_doctor_from').val(selrowData("#"+dialog_name.gridname)[getfield(dialog_name.field)[0]]);
-
-	// 	let data = selrowData('#' + dialog_name.gridname);
-	// 	let interval = data['a_intervaltime'];
-	// 	let apptsession = $("#grid_session").jqGrid('getRowData');
-	// 	$('.fc-myCustomButton-button').show();
-
-	// 	td_from.addSessionInterval(interval,apptsession);
-	// 	td_to.addSessionInterval(interval,apptsession);
-	// 	session_field.addSessionInterval(interval,apptsession);
-
-	// 	var event_apptbook = {
-	// 		id: 'apptbook',
-	// 		url: "apptrsc_rsc/getEvent",
-	// 		type: 'GET',
-	// 		data: {
-	// 			type: 'apptbook',
-	// 			drrsc: $('#resourcecode').val()
-	// 		}
-	// 	}
-
-	// 	var event_appt_leave = {
-	// 		id: 'appt_leave',
-	// 		url: "apptrsc_rsc/getEvent",
-	// 		type: 'GET',
-	// 		data: {
-	// 			type: 'appt_leave',
-	// 			drrsc: $('#resourcecode').val()
-	// 		},
-	// 		color: $('#ALCOLOR').val(),
-    //     	rendering: 'background'
-	// 	}
-
-	// 	$('#calendar').fullCalendar( 'removeEventSource', 'apptbook');
-	// 	$('#calendar').fullCalendar( 'removeEventSource', 'appt_leave');
-	// 	$('#calendar').fullCalendar( 'addEventSource', event_apptbook);
-	// 	$('#calendar').fullCalendar( 'addEventSource', event_appt_leave);
-
-	// 	parent_change_title('Reserve of '+data['a_description']);
-
-	// 	$(dialog_name.textfield).focus();
-	// 	$("#"+dialog_name.dialogname).dialog( "close" );
-	// 	$("#"+dialog_name.gridname).jqGrid("clearGridData", true);
-	// 	$(dialog_name.textfield).on('blur',{data:dialog_name,errorField:errorField},onBlur);
-	// });
-
-	// $("#grid_session").jqGrid({
-	// 	datatype: "local",
-	// 	colModel: [
- //            { label: 'Day', name: 'days', width: 80, classes: 'pointer' },
- //            { label: 'From Morning', name: 'timefr1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter},
- //            { label: 'To Morning', name: 'timeto1', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
- //            { label: 'From Evening', name: 'timefr2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
- //            { label: 'To Evening', name: 'timeto2', width: 100, classes: 'pointer', formatter: timeFormatter, unformat: timeUNFormatter },
- //        ],
-	// 	autowidth:true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,
-	// 	pager: "#grid_session_pager",
-	// 	ondblClickRow: function(rowid, iRow, iCol, e){
-	// 	},
-	// });
-
-	// var dialog_case = new ordialog(
-	// 	'case', 'hisdb.casetype', "#dialogForm input[name='case']", errorField,
-	// 	{
-	// 		colModel: [
-	// 			{ label: 'Case Code', name: 'case_code', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-	// 			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
-	// 		],
-	// 		urlParam: {
-	// 			filterCol : ['grpcasetype','compcode'],
-	// 			filterVal : ['REGISTER','session.compcode'],
-
-	// 		},
-	// 	},
-	// 	{
-	// 		title: "Select Case",
- //            width: 10/10 * $(window).width(),
-	// 		open: function () {
-	// 			dialog_case.urlParam.filterCol = ['grpcasetype','compcode'];
-	// 			dialog_case.urlParam.filterVal = ['REGISTER','session.compcode'];
-	// 		},
-	// 	}, 'urlParam'
-	// );
-	// dialog_case.makedialog(true);
-
 	var dialog_mrn = new ordialog(
 		'mrn', 'hisdb.pat_mast', "#dialogForm input[name='mrn']", errorField,
 		{
@@ -281,14 +188,31 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_mrn.makedialog(true);
-	// if ($("#patname").val() == 'OT') {
-	// }
 
-	// $("#addForm input[name='patname']").blur(function(){
-	// 	if($("#addForm input[name='mrn']").val() == ''){
-	// 		$("#addForm input[name='icnum']").prop('readonly',false);
-	// 	}
-	// });
+	var dialog_op_unit = new ordialog(
+		'op_unit', 'hisdb.discipline', "#dialogForm input[name='op_unit']", 'errorField',
+		{
+			colModel: [
+				{	label: 'Code', name: 'code', width: 100, classes: 'pointer', canSearch: true, or_search: true },
+				{	label: 'Description', name: 'description', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol : ['compcode'],
+				filterVal : ['session.compcode'],
+			},
+			ondblClickRow: function () {
+				$('#oper_type').focus().select();
+			}
+		},
+		{
+			title: "Select Case",
+			open: function () {
+				dialog_mrn.urlParam.filterCol = ['compcode'];
+				dialog_mrn.urlParam.filterVal = ['session.compcode'];
+			},
+		},'urlParam','radio','tab'
+	);
+	dialog_op_unit.makedialog(true);
 
 	var dialog_doctor = new ordialog(
 		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
@@ -346,7 +270,7 @@ $(document).ready(function () {
 		modal: true,
 		open: function(event,ui){
 			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-			session_field.clear().ready().set();
+			// session_field.clear().ready().set();
 
 			$("#addForm input[name='icnum']").prop('readonly',true);
 		},
@@ -402,7 +326,7 @@ $(document).ready(function () {
 		this.fr_start;
 		this.events=[];
 
-		this.addSessionInterval = function(interval,apptsession){
+		this.addSessionInterval = function(apptsession){
 			this.apptsession = apptsession;
 
 			let temp_bussHour=[];
@@ -425,7 +349,7 @@ $(document).ready(function () {
 			   	businessHours: temp_bussHour
 			});
 
-			this.interval = interval;
+			// this.interval = interval;
 			return this;
 		}
 
@@ -503,10 +427,11 @@ $(document).ready(function () {
 	}
 
 	$("#apptdatefr_day,#apptdateto_day").change(function(){
-		session_field.clear().ready().set();
+		// session_field.clear().ready().set();
 	});
 	
 	$('#calendar').fullCalendar({
+		eventStartEditable: false,
 		aspectRatio:  2.7,
 		header: {
 			left: 'prev,next today myCustomButton',
@@ -578,6 +503,8 @@ $(document).ready(function () {
 		},
 		eventRender: function(event, element) {
 			if(event.source.id == "apptbook"){
+			    event.startEditable    = false;
+			    event.durationEditable = false;
 				element.attr('data-toggle','tooltip')
 				element.attr('data-placement','bottom')
 				let mrn_ = (event.mrn == null)?'00000':pad('0000000',event.mrn,true);
@@ -597,8 +524,12 @@ $(document).ready(function () {
 					$('#icnum').val(event.icnum);
 					$('#patname').val(event.pat_name);
 					$('#apptdatefr_day').val(event.start.format('YYYY-MM-DD'));
-					$('#start_time').val(event.start.format('HH:mm:ss'));
-					$('#end_time').val(event.end.format('HH:mm:ss'));
+					if(event.start != '' || event.start != undefined || event.start != null){
+						$('#start_time').val(event.start.format('HH:mm:ss'));
+					}
+					if(event.end != '' || event.end != undefined || event.end != null){
+						$('#end_time').val(event.end.format('HH:mm:ss'));
+					}
 					$('#telh').val(event.telno);
 					$('#telhp').val(event.telhp);
 					$('#case').val(event.case_code);
@@ -606,7 +537,6 @@ $(document).ready(function () {
 					$('#status').val(event.apptstatus);
 					$('#idno').val(event.idno);
 					$('#lastuser').val(event.lastuser);
-					$('#surgery_date').val(event.surgery_date);
 					$('#op_unit').val(event.op_unit);
 					$('#oper_type').val(event.oper_type);
 					$('#oper_status').val(event.oper_status);
@@ -634,6 +564,8 @@ $(document).ready(function () {
 			if(event.source.rendering == 'background'){
 				element.append(event.title);
 			}
+
+		  return element;     
 		},
 		eventAfterAllRender: function(view){
 			var events = $('#calendar').fullCalendar( 'clientEvents');

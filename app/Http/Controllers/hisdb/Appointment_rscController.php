@@ -28,7 +28,12 @@ class Appointment_rscController extends defaultController
                     ->where('source','=','HIS')
                     ->where('trantype','=','ALCOLOR')
                     ->first();
-        
+
+        $otstatus = DB::table('hisdb.otstatus')
+                    ->select('code','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
+
         if(Auth::user()->groupid == "patient"){
             $pat_info = DB::table('hisdb.pat_mast')
                     ->where('loginid','=',Auth::user()->username)
@@ -37,7 +42,7 @@ class Appointment_rscController extends defaultController
             return view('hisdb.apptrsc.apptrsc2',compact('ALCOLOR','pat_info'));
         }
 
-        return view('hisdb.apptrsc.apptrsc2',compact('ALCOLOR'));
+        return view('hisdb.apptrsc.apptrsc2',compact('ALCOLOR','otstatus'));
     }
 
     public function table(Request $request)
@@ -150,7 +155,7 @@ class Appointment_rscController extends defaultController
                     'telhp'       => $request->telhp,
                     'remarks'     => $request->remarks,
                     'ot_room'     => $request->doctor,
-                    'surgery_date'=> $request->surgery_date,
+                    'surgery_date'=> $request->apptdatefr_day,
                     'op_unit'     => strtoupper($request->op_unit),
                     'oper_type'   => strtoupper($request->oper_type),
                     'oper_status' => strtoupper($request->oper_status),
@@ -259,7 +264,6 @@ class Appointment_rscController extends defaultController
                             'telhp'       => $request->telhp,
                             'remarks'     => $request->remarks,
                             'ot_room'     => strtoupper($request->doctor),
-                            'surgery_date'=> $request->surgery_date,
                             'op_unit'     => strtoupper($request->op_unit),
                             'oper_type'   => strtoupper($request->oper_type),
                             'oper_status' => strtoupper($request->oper_status),

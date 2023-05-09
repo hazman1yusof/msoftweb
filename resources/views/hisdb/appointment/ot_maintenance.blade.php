@@ -295,8 +295,7 @@
 			<form class='form-horizontal' style='width:89%' id='resourceformdata'>
 				{{ csrf_field() }}
 				<input id="idno" name="idno" type="hidden">
-
-				<input id="TYPE" name="TYPE" type="hidden" value="OT">
+				<input id="TYPE" name="TYPE" type="hidden"  value="OT">
 
 	            <div class="form-group">
 					<label class="col-md-2 control-label" for="resourcecode">Resource Code</label>
@@ -309,27 +308,6 @@
 						<input type="text" name="description" id="description" class="form-control input-sm text-uppercase" data-validation="required">
 					</div>
 				</div>
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="intervaltime">Time interval</label>
-					<div class="col-md-4">
-						<input type="number" name="intervaltime" id="intervaltime" class="form-control input-sm text-uppercase" data-validation="required">
-					</div>
-
-					<label class="col-md-2 control-label" for="start">Start Time</label>
-					<div class="col-md-4">
-						<input type="time" name="start" id="start" class="form-control input-sm text-uppercase" data-validation="required">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="col-md-2 control-label" for="end">End Time</label>
-					<div class="col-md-4">
-						<input type="time" name="end" id="end" class="form-control input-sm text-uppercase" data-validation="required">
-					</div>
-				</div>
-
-					
 			</form>
 		</div>
 
