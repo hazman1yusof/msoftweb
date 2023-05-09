@@ -54,13 +54,20 @@ class OTStatusController extends defaultController
             //     throw new \Exception("record duplicate");
             // }
 
-            DB::table('hisdb.otstatus')
-                ->insert([  
+            $idno = DB::table('hisdb.otstatus')
+                ->insertGetId([  
                     'compcode' => session('compcode'),
                     'code' => $request->code,
                     'description' => strtoupper($request->description),
+                    'recstatus' => 'ACTIVE',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table('hisdb.otstatus')
+                ->where('idno',$idno)
+                ->update([
+                    'code' => $idno
                 ]);
 
              DB::commit();
@@ -80,6 +87,7 @@ class OTStatusController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([  
                     'description' => strtoupper($request->description),
+                    'recstatus' => 'ACTIVE',
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 

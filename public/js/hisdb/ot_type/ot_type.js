@@ -51,6 +51,7 @@ $(document).ready(function () {
 			{ label: 'Code', name: 'code', width: 30, editable: false },
 			{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'idno', name: 'idno', width:10, hidden: true, key:true },
+			{ label: 'Recstatus', name: 'recstatus', width:10,},
 		],
 		autowidth: true,
 		multiSort: true,
@@ -93,7 +94,7 @@ $(document).ready(function () {
 	});
 
 	function check_cust_rules(rowid){
-		var chk = ['code','description'];
+		var chk = ['description'];
 		chk.forEach(function(e,i){
 			var val = $("#jqGrid input[name='"+e+"']").val();
 			if(val.trim().length <= 0){
@@ -146,7 +147,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			console.log(data);
 
-			// check_cust_rules();
+			check_cust_rules();
 
 			let editurl = "./ot_type/form?"+
 				$.param({
@@ -202,7 +203,7 @@ $(document).ready(function () {
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
-			// check_cust_rules();
+			check_cust_rules();
 
 			let editurl = "./ot_type/form?"+
 				$.param({
