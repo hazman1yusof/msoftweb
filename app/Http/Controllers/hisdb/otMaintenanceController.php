@@ -53,21 +53,24 @@ class otMaintenanceController extends defaultController
 
     public function form(Request $request)
     {   
-        switch($request->oper){
-            case 'add':
-                if(!$this->my_duplicate($request)){
-                    return $this->defaultAdd($request);
-                }else{
-                    return response('Duplicate Resoruce Code', 500);
+        switch($request->action){
+            case 'ot_maintenance_save':
+                switch($request->oper){
+                    case 'add':
+                        if(!$this->my_duplicate($request)){
+                            return $this->add($request);
+                        }else{
+                            return response('Duplicate Resoruce Code', 500);
+                        }
+                    case 'edit':
+                        if(!$this->my_duplicate($request)){
+                            return $this->edit($request);
+                        }else{
+                            return response('Duplicate Resoruce Code', 500);
+                        }
+                    case 'del':
+                        return $this->del($request);
                 }
-            case 'edit':
-                if(!$this->my_duplicate($request)){
-                    return $this->defaultEdit($request);
-                }else{
-                    return response('Duplicate Resoruce Code', 500);
-                }
-            case 'del':
-                return $this->defaultDel($request);
             default:
                 return 'error happen..';
         }
@@ -92,6 +95,69 @@ class otMaintenanceController extends defaultController
                 ->exists();
 
         }
+    }
+
+    public function add(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            $idno = DB::table('hisdb.apptresrc')
+                ->insertGetId([  
+                    'compcode' => session('compcode'),
+                    'resourcecode' => $request->code,
+                    'description' => strtoupper($request->description),
+                    'TYPE' => 'OT',
+                    'recstatus' => 'ACTIVE',
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table('hisdb.apptresrc')
+                ->where('idno',$idno)
+                ->update([
+                    'resourcecode' => $idno
+                ]);
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        try {
+
+            DB::table('hisdb.apptresrc')
+                ->where('idno','=',$request->idno)
+                ->update([  
+                    'description' => strtoupper($request->description),
+                    'recstatus' => 'ACTIVE',
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function del(Request $request){
+
+        DB::table('hisdb.apptresrc')
+            ->where('idno','=',$request->idno)
+            ->update([  
+                'recstatus' => 'DEACTIVE',
+                'lastuser' => session('username')
+            ]);
+
     }
 
     public function save_session(Request $request){

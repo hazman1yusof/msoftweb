@@ -159,6 +159,8 @@ class Appointment_rscController extends defaultController
                     'op_unit'     => strtoupper($request->op_unit),
                     'oper_type'   => strtoupper($request->oper_type),
                     'oper_status' => strtoupper($request->oper_status),
+                    'diagnosis' => $request->diagnosis,
+                    'procedure' => $request->procedure,
                     'recstatus'   => 'A',
                     'adduser'     => session('username'),
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
@@ -267,6 +269,8 @@ class Appointment_rscController extends defaultController
                             'op_unit'     => strtoupper($request->op_unit),
                             'oper_type'   => strtoupper($request->oper_type),
                             'oper_status' => strtoupper($request->oper_status),
+                            'diagnosis' => $request->diagnosis,
+                            'procedure' => $request->procedure,
                             'lastuser'    => session('username'),
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                         ]);

@@ -214,6 +214,8 @@ $(document).ready(function () {
 	);
 	dialog_op_unit.makedialog(true);
 
+	$()
+
 	var dialog_doctor = new ordialog(
 		'dialog_doctor', ['hisdb.apptresrc AS a', 'hisdb.doctor AS d'], "input[name='transfer_doctor']", errorField,
         {
@@ -540,6 +542,8 @@ $(document).ready(function () {
 					$('#op_unit').val(event.op_unit);
 					$('#oper_type').val(event.oper_type);
 					$('#oper_status').val(event.oper_status);
+					$('#diagnosis').text(event.diagnosis);
+					$('#procedure').text(event.procedure);
 					$('#lastupdate').val(event.lastupdate);
 					$('#delete_but,#new_episode').show();
 
@@ -1135,6 +1139,9 @@ $(document).ready(function () {
 	//hide at the episode
 	$('#div_doctor,#div_bed,#div_nok,#div_payer,#div_deposit').hide();
 
+	init_icd_but();
+	init_mma_but();
+
 });
 
 var lastelement; //utk tahu last edit mrn T.T
@@ -1217,3 +1224,183 @@ function populate_new_episode_by_mrn_apptrsc(mrn){
 ]);
 
 epis_desc_show.load_desc();
+
+
+function init_icd_but(){
+	var gridname = 'icd_grid';
+	var dialogname = 'icd_dialog'
+	var title = 'Pick ICD';
+	var unique = 'icd_apptrsc';
+	var textare = 'diagnosis';
+	var urlParam = {
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field:'',
+		table_name:'hisdb.diagtab',
+		table_id:'idno',
+		filterCol:['type'],
+		filterVal:['icd-10']
+	}
+
+	var dialog = "<div id='"+dialogname+"' title='"+title+"'><div class='panel panel-default'><div class='panel-heading'><form id='checkForm_"+unique+"' class='form-inline'><div class='form-group'><b>Search: </b><div id='Dcol_"+unique+"' name='Dcol_"+unique+"'></div></div><div class='form-group' style='width:70%' id='Dparentdiv_"+unique+"'><input id='Dtext_"+unique+"' name='Dtext_"+unique+"' type='search' style='width:100%' placeholder='Search here ...' class='form-control text-uppercase' autocomplete='off'></div></form></div><div class=panel-body><div id='"+gridname+"_c' class='col-xs-12' align='center'><table id='"+gridname+"' class='table table-striped'></table><div id='"+gridname+"Pager'></div></div></div></div></div>";
+
+	$("html").append(dialog);
+
+	$("#"+dialogname).dialog({
+		autoOpen: false,
+		width:  7/10 * $(window).width(),
+		modal: true,
+		open: function(event, ui){
+			$("#"+gridname).jqGrid ('setGridWidth', Math.floor($("#"+gridname+"_c")[0].offsetWidth-$("#"+gridname+"_c")[0].offsetLeft));
+		},
+		close: function( event, ui ){
+			$("#Dtext_"+unique).val('')
+		},
+	});
+
+	$("#"+gridname).jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Code', name: 'icdcode', width: 30, canSearch:true , checked:true},
+            { label: 'Description', name: 'description', width: 80, classes: 'pointer', canSearch:true },
+        ],
+		autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,hoverrows:false,
+		pager: "#"+gridname+"Pager",
+		onSelectRow:function(rowid, selected){
+
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$('#'+textare).html(selrowData("#"+gridname).icdcode+'&NewLine;'+selrowData("#"+gridname).description);
+			$("#"+dialogname).dialog( "close" );
+		},
+		loadComplete: function(data) {
+
+	    },
+		gridComplete: function() {
+
+	    },
+	});
+	othDialog_radio_btnicd(gridname,unique);
+
+	$('#btn_icd').click(function(){
+		urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
+		refreshGrid("#"+gridname,urlParam);
+		$("#"+dialogname).dialog( "open" );
+	});
+
+
+	$("#Dtext_"+unique).on('keyup',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
+	$("#Dcol_"+unique).on('change',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
+
+
+}
+
+function init_mma_but(){
+	var gridname = 'mma_grid';
+	var dialogname = 'mma_dialog'
+	var title = 'Pick MMA';
+	var unique = 'mma_apptrsc';
+	var textare = 'procedure';
+	var urlParam = {
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field:'',
+		table_name:'hisdb.mmamaster',
+		table_id:'idno'
+	}
+
+	var dialog = "<div id='"+dialogname+"' title='"+title+"'><div class='panel panel-default'><div class='panel-heading'><form id='checkForm_"+unique+"' class='form-inline'><div class='form-group'><b>Search: </b><div id='Dcol_"+unique+"' name='Dcol_"+unique+"'></div></div><div class='form-group' style='width:70%' id='Dparentdiv_"+unique+"'><input id='Dtext_"+unique+"' name='Dtext_"+unique+"' type='search' style='width:100%' placeholder='Search here ...' class='form-control text-uppercase' autocomplete='off'></div></form></div><div class=panel-body><div id='"+gridname+"_c' class='col-xs-12' align='center'><table id='"+gridname+"' class='table table-striped'></table><div id='"+gridname+"Pager'></div></div></div></div></div>";
+
+	$("html").append(dialog);
+
+	$("#"+dialogname).dialog({
+		autoOpen: false,
+		width:  7/10 * $(window).width(),
+		modal: true,
+		open: function(event, ui){
+			$("#"+gridname).jqGrid ('setGridWidth', Math.floor($("#"+gridname+"_c")[0].offsetWidth-$("#"+gridname+"_c")[0].offsetLeft));
+		},
+		close: function( event, ui ){
+			$("#Dtext_"+unique).val('')
+		},
+	});
+
+	$("#"+gridname).jqGrid({
+		datatype: "local",
+		colModel: [
+            { label: 'Code', name: 'mmacode', width: 30, canSearch:true , checked:true},
+            { label: 'Description', name: 'description', width: 80, classes: 'pointer', canSearch:true },
+        ],
+		autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,hoverrows:false,
+		pager: "#"+gridname+"Pager",
+		onSelectRow:function(rowid, selected){
+
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$('#'+textare).html(selrowData("#"+gridname).mmacode+'&NewLine;'+selrowData("#"+gridname).description);
+			$("#"+dialogname).dialog( "close" );
+		},
+		loadComplete: function(data) {
+
+	    },
+		gridComplete: function() {
+
+	    },
+	});
+	othDialog_radio_btnicd(gridname,unique);
+
+	$('#btn_mma').click(function(){
+		urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
+		refreshGrid("#"+gridname,urlParam);
+		$("#"+dialogname).dialog( "open" );
+	});
+
+
+	$("#Dtext_"+unique).on('keyup',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
+	$("#Dcol_"+unique).on('change',{unique:unique,gridname:gridname,urlParam:urlParam},onChange_btnicd);
+
+
+}
+
+function othDialog_radio_btnicd(gridname,unique){
+	$.each($("#"+gridname).jqGrid('getGridParam','colModel'), function( index, value ) {
+		if(value['canSearch']){
+			if(value['checked']){
+				$("#Dcol_"+unique+"").append("<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"' checked>"+value['label']+"</input></label>" );
+			}else{
+				$("#Dcol_"+unique+"").append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+value['name']+"' >"+value['label']+"</input></label>" );
+			}
+		}
+	});
+}
+
+function onChange_btnicd(event){
+	let unique = event.data.unique;
+	let gridname = event.data.gridname;
+	let urlParam = event.data.urlParam;
+
+	let Dtext=$("#Dtext_"+unique).val().trim();
+	if(Dtext.length == 1){
+		return false;
+	}
+	var Dcol=$("#Dcol_"+unique+" input:radio[name=dcolr]:checked").val();
+
+	let split = Dtext.split(" "),searchCol=[],searchVal=[];
+	$.each(split, function( index, value ) {
+		searchCol.push(Dcol);
+		searchVal.push('%'+value+'%');
+	});
+	if(event.type=="keyup" && Dtext != ''){
+		delay(function(){
+			urlParam.searchCol=searchCol;
+			urlParam.searchVal=searchVal;
+			refreshGrid("#"+gridname,urlParam);
+		},500);
+	}else if(event.type=="change" && Dtext != ''){
+		urlParam.searchCol=searchCol;
+		urlParam.searchVal=searchVal;
+		refreshGrid("#"+gridname,urlParam);
+	}else{
+		refreshGrid("#"+gridname,urlParam);
+	}
+}

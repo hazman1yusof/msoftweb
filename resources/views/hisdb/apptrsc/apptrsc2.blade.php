@@ -145,6 +145,12 @@ span.myhr_span{
     border-radius: 8px;
 }
 
+button#btn_icd,button#btn_mma{
+	bottom: -35px;
+    position: absolute;
+    right: 10px;
+}
+
 @endsection
 
 @section('title', 'Booking')
@@ -356,6 +362,21 @@ span.myhr_span{
 											<option value="{{$obj->code}}">{{$obj->description}}</option>
 										@endforeach
 									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="procedure" class="col-md-2 control-label" style="position: relative;">Procedure
+									<button class="btn btn-primary" type="button" id="btn_mma"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> MMA</button>
+								</label>
+								<div class="col-md-3">
+									<textarea id="procedure" name="procedure" class="form-control input-sm" rows="5"></textarea>
+								</div>
+								<label for="diagnosis" class="col-md-2 control-label" style="position: relative;">Diagnosis 
+									<button class="btn btn-primary" type="button" id="btn_icd"><span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span> ICD</button>
+								</label>
+								<div class="col-md-3">
+									<textarea id="diagnosis" name="diagnosis" class="form-control input-sm" rows="5"></textarea>
 								</div>
 							</div>
 							@endif
