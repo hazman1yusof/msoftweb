@@ -48,7 +48,7 @@ $(document).ready(function () {
 		editurl: "./ot_type/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Code', name: 'code', width: 30, editable: false },
+			{ label: 'Code', name: 'code', width: 30, editable: false, hidden: true },
 			{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
 			{ label: 'idno', name: 'idno', width:10, hidden: true, key:true },
 			{ label: 'Recstatus', name: 'recstatus', width:10 },
