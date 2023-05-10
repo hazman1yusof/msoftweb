@@ -54,15 +54,15 @@
                                             <td>2</td>
                                             <td>
                                                 <div>
-                                                    <div style="width: 45%;float: left;">
-                                                        <!-- <input type="checkbox" name="vehicle1" value="Bike">
+                                                    <!-- <div style="width: 45%;float: left;">
+                                                        <input type="checkbox" name="vehicle1" value="Bike">
                                                         <label for="vehicle1"> I have a bike</label><br>
                                                         <input type="checkbox" name="vehicle2" value="Car">
                                                         <label for="vehicle2"> I have a car</label><br>
                                                         <input type="checkbox" name="vehicle3" value="Boat">
-                                                        <label for="vehicle3"> I have a boat</label><br><br> -->
-                                                    </div>
-                                                    <div style="width: 45%;float: right;">Test</div>
+                                                        <label for="vehicle3"> I have a boat</label><br><br>
+                                                    </div> -->
+                                                    <!-- <div style="width: 45%;float: right;">Test</div> -->
                                                 </div>
                                             </td>
                                             <td><input type="checkbox" name="" value=""></td>

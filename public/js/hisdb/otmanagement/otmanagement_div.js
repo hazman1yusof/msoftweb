@@ -32,7 +32,7 @@ $(document).ready(function () {
             saveForm_otmgmt_div(function(data){
                 // emptyFormdata_div("#form_otmgmt_div",['#mrn_otmgmt_div','#episno_otmgmt_div']);
                 disableForm('#form_otmgmt_div');
-
+                
             });
         }else{
             enableForm('#form_otmgmt_div');
@@ -47,7 +47,7 @@ $(document).ready(function () {
         button_state_otmgmt_div($(this).data('oper'));
         getdata_otmgmt();
         // dialog_mrn_edit.off();
-
+        
     });
     
     // to format number input to two decimal places (0.00)

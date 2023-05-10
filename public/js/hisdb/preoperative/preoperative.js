@@ -34,7 +34,7 @@ $(document).ready(function () {
             saveForm_preoperative(function(data){
                 // emptyFormdata_div("#form_preoperative",['#mrn_preoperative','#episno_preoperative']);
                 disableForm('#form_preoperative');
-
+                
             });
         }else{
             enableForm('#form_preoperative');
@@ -49,7 +49,7 @@ $(document).ready(function () {
         button_state_preoperative($(this).data('oper'));
         getdata_preoperative();
         // dialog_mrn_edit.off();
-
+        
     });
     
     // to format number input to two decimal places (0.00)
