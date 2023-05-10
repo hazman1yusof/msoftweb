@@ -5,13 +5,13 @@ var editedRow=0;
 $(document).ready(function () {
 	$("body").show();
 	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
-	/////////////////////////validation//////////////////////////
+	/////////////////////////validation/////////////////////////
 	$.validate({
 		language : {
 			requiredFields: ''
 		},
 	});
-
+	
 	var errorField = [];
 	conf = {
 		onValidate: function ($form) {
@@ -23,10 +23,10 @@ $(document).ready(function () {
 			}
 		},
 	};
-
+	
 	var fdl = new faster_detail_load();
 	var err_reroll = new err_reroll('#jqGrid',['code', 'description']);
-
+	
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
 		action: 'get_table_default',
@@ -38,10 +38,10 @@ $(document).ready(function () {
 		filterVal:['session.compcode'],
 		sort_idno: true,
 	}
-
+	
 	/////////////////////parameter for saving url/////////////////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
-
+	
 	/////////////////////////////////// jqgrid ///////////////////////////////////////////////////
 	$("#jqGrid").jqGrid({
 		datatype: "local",
@@ -49,9 +49,9 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Code', name: 'code', width: 30, editable: false },
-			{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
 			{ label: 'idno', name: 'idno', width:10, hidden: true, key:true },
-			{ label: 'Recstatus', name: 'recstatus', width:10,},
+			{ label: 'Recstatus', name: 'recstatus', width:10 },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -75,7 +75,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
 				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
-
+			
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			if(err_reroll.error == true){
 				err_reroll.reroll();
@@ -89,10 +89,10 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}			
+			}
 		},
 	});
-
+	
 	function check_cust_rules(rowid){
 		var chk = ['description'];
 		chk.forEach(function(e,i){
@@ -104,7 +104,7 @@ $(document).ready(function () {
 			}
 		})
 	}
-
+	
 	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
 	var myEditOptions = {
 		keys: true,
@@ -112,13 +112,13 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$('#jqGrid').data('lastselrow','none');	
+			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
 			});
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
@@ -126,7 +126,7 @@ $(document).ready(function () {
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
-			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
+			// if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			addmore_jqgrid.more = true; //state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
@@ -134,7 +134,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			var data = JSON.parse(response.responseText)
-			//$('#p_error').text(response.responseText);
+			// $('#p_error').text(response.responseText);
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;
@@ -143,11 +143,12 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
-
+			
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-
+			// console.log(data);
+			
 			check_cust_rules();
-
+			
 			let editurl = "./ot_status/form?"+
 				$.param({
 					action: 'ot_status_save',
@@ -162,7 +163,7 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
+	
 	//////////////////////////////////////////myEditOptions_edit////////////////////////////////////////////////
 	var myEditOptions_edit = {
 		keys: true,
@@ -175,8 +176,8 @@ $(document).ready(function () {
 			$("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
 			});
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
@@ -185,25 +186,24 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
+			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
-
+			
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
 			// console.log(data);
-
+			
 			check_cust_rules();
-
+			
 			let editurl = "./ot_status/form?"+
 				$.param({
 					action: 'ot_status_save',
@@ -218,13 +218,13 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
+	
 	//////////////////////////////////////////jqGridPager inline////////////////////////////////////////////////
 	$("#jqGrid").inlineNav('#jqGridPager', {
 		add: true,
 		edit: true,
 		cancel: true,
-		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
 			addRowParams: myEditOptions
@@ -275,18 +275,17 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid", urlParam);
 		},
 	});
-
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
+	
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	//toogleSearch('#sbut1', '#searchForm', 'on');
+	// toogleSearch('#sbut1', '#searchForm', 'on');
 	populateSelect2('#jqGrid', '#searchForm');
 	searchClick2('#jqGrid', '#searchForm', urlParam);
-
+	
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
-
+	// addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	
 	function err_reroll(jqgridname,data_array){
 		this.jqgridname = jqgridname;
 		this.data_array = data_array;
@@ -294,11 +293,10 @@ $(document).ready(function () {
 		this.errormsg = 'asdsds';
 		this.old_data;
 		this.reroll=function(){
-
 			$('#p_error').text(this.errormsg);
 			var self = this;
 			$(this.jqgridname+"_iladd").click();
-
+			
 			this.data_array.forEach(function(item,i){
 				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
 			});

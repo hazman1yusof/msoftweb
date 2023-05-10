@@ -11,33 +11,33 @@ input.uppercase {
 @endsection
 
 @section('body')
-
+	
 	<!--***************************** Search + table ******************-->
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
 				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
-
+				
 				<div class='col-md-12' style="padding:0 0 15px 0;">
-					<div class="form-group"> 
+					<div class="form-group">
 						<div class="col-md-2">
-							<label class="control-label" for="Scol">Search By : </label>  
+							<label class="control-label" for="Scol">Search By : </label>
 							<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
 						</div>
-
+						
 						<div class="col-md-5">
-							<label class="control-label"></label>  
+							<label class="control-label"></label>
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
 						
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-					  		<p id="p_error"></p>
-					  	</div>
+							<p id="p_error"></p>
+						</div>
 					</div>
 				</div>
-			</fieldset> 
+			</fieldset>
 		</form>
-
+		
 		<div class="panel panel-default">
 			<div class="panel-heading">OT Type Header</div>
 			<div class="panel-body">
@@ -49,11 +49,11 @@ input.uppercase {
 		</div>
 	</div>
 	<!-- ***************End Search + table ********************* -->
-
+	
 @endsection
 
-
 @section('scripts')
+	
 	<script type="text/javascript">
 		$(document).ready(function () {
 			if(!$("table#jqGrid").is("[tabindex]")){
@@ -65,10 +65,9 @@ input.uppercase {
 						$('td#input_jqGridPager input.ui-pg-input.form-control').focus();
 						$("table#jqGrid").data('enter',false);
 					}
-
 				});
 			}
-
+			
 			function onfocus_pageof(){
 				$(this).keydown(function(e){
 					var code = e.keyCode || e.which;
@@ -77,7 +76,7 @@ input.uppercase {
 						$('input[name=Stext]').focus();
 					}
 				});
-
+				
 				$(this).keyup(function(e) {
 					var code = e.keyCode || e.which;
 					if (code == '13'){
@@ -87,7 +86,7 @@ input.uppercase {
 			}
 		});
 	</script>
-
+	
 	<script src="js/hisdb/ot_type/ot_type.js"></script>
 	
 @endsection
