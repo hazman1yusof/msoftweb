@@ -1108,9 +1108,9 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
         	//calc_jq_height_onchange("jqGrid2");
-			//$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
+			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
-			//$("#jqGrid2 input[name='pricecode']").focus().select();
+			$("#jqGrid2 input[name='pricecode']").focus().select();
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	// if($('#delordhd_srcdocno').val()!='' && $("#jqGrid2_iladd").css('display') == 'none' ){
