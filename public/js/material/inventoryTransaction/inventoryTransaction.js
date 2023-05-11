@@ -576,12 +576,16 @@ $(document).ready(function () {
 				$('#docno').val(data.docno);
 				$('#amount').val(data.totalAmount);
 				$('#idno').val(data.idno);//just save idno for edit later
+				$('#adduser').val(data.adduser);
+				$('#adddate').val(data.adddate);
 				
 				urlParam2.filterVal[0] = data.recno; 
 				urlParam2.join_filterCol = [['ivt.uomcode on =', 's.deptcode no = ','s.year no ='],[]];
 				urlParam2.join_filterVal = [['s.uomcode',$('#txndept').val(),moment($('#trandate').val()).year()],[]];
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
+				$('#upduser').val(data.upduser);
+				$('#upddate').val(data.upddate);
 			}
 			refreshGrid('#jqGrid2', urlParam2);
 			disableForm('#formdata');

@@ -392,6 +392,10 @@ use PDF;
                         'recstatus' => 'OPEN'
                     ]);
 
+                if($allocamount > $outamount){
+                    throw new \Exception('Amount paid exceed outamount', 500);
+                }
+
                 $responce = new stdClass();
                 $responce->auditno = $auditno;
                 $responce->idno = $idno_apacthdr;
@@ -444,7 +448,7 @@ use PDF;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response('Error'.$e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }

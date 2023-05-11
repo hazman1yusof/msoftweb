@@ -1587,6 +1587,7 @@ $(document).ready(function () {
 		$("#jqGrid2").jqGrid('setRowData', id_optid ,{amount:amount});
 		$("#jqGrid2").jqGrid('setRowData', id_optid ,{netunitprice:netunitprice});
 
+		///new
 		var all_totamt=0;
 		$.each($("#jqGrid2 input[name=totamount]"), function (index, value) {
 			all_totamt = parseFloat(all_totamt) + parseFloat($(this).val());
