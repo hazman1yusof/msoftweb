@@ -62,23 +62,34 @@ class OTManagementController extends defaultController
         //         Auth::login($user->first());
         //     }
         // }
-
+        
         $otstatus = DB::table('hisdb.otstatus')
                     ->select('code','description')
                     ->where('compcode','=',session('compcode'))
                     ->get();
+        
         return view('hisdb.otmanagement.otmanagement',compact('otstatus'));
         
     }
     
     public function get_table_operRecList($request){
         
+        $episode = DB::table('hisdb.episode')
+                        ->select('episode.episno', 'episode.ward')
+                        ->leftJoin('hisdb.apptbook', 'apptbook.mrn', '=', 'episode.mrn')
+                        ->where('episode.compcode','=',session('compcode'))
+                        ->where('episode.reg_date','<=','apptbook.surgery_date')
+                        ->first();
+        
+        dd($episode);
+        
         $table_apptbook = DB::table('hisdb.apptbook')
-                    ->select(['apptbook.idno','apptbook.compcode','apptbook.mrn','apptbook.pat_name','apptbook.Type','apptbook.episno','apptbook.ot_room',
-                    'apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status','apptbook.height','apptbook.weight','pat_mast.Name',
-                    'pat_mast.MRN','pat_mast.Episno','pat_mast.Newic','pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode',
-                    'pat_mast.Citizencode','pat_mast.AreaCode','apptresrc.resourcecode','apptresrc.description as ot_description','discipline.code',
-                    'discipline.description as unit_description','otmanage.diagnosis','otmanage.procedure']);
+                    ->select(['apptbook.idno','apptbook.compcode','apptbook.icnum','apptbook.mrn','apptbook.pat_name','apptbook.Type','apptbook.episno',
+                    'apptbook.ot_room','apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status','apptbook.procedure as appt_prcdure',
+                    'apptbook.diagnosis as appt_diag','apptbook.height','apptbook.weight','pat_mast.Name','pat_mast.MRN','pat_mast.Episno','pat_mast.Newic',
+                    'pat_mast.Sex','pat_mast.DOB','pat_mast.RaceCode','pat_mast.Religion','pat_mast.OccupCode','pat_mast.Citizencode','pat_mast.AreaCode',
+                    'apptresrc.resourcecode','apptresrc.description as ot_description','discipline.code','discipline.description as unit_description',
+                    'otmanage.diagnosis as ot_diag','otmanage.procedure as ot_prcdure']);
                 
                 $table_apptbook = $table_apptbook->leftJoin('hisdb.pat_mast', function($join) use ($request){
                         $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn')

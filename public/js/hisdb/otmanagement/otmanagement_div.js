@@ -150,9 +150,9 @@ function empty_otmgmt_div(){
 
 function populate_otmgmt_div(obj){
     // panel header
-    $('#name_show_otmgmt_div').text(obj.Name);
-    $('#mrn_show_otmgmt_div').text(("0000000" + obj.MRN).slice(-7));
-    $('#icpssprt_show_otmgmt_div').text(obj.Newic);
+    $('#name_show_otmgmt_div').text(obj.pat_name);
+    $('#mrn_show_otmgmt_div').text(("0000000" + obj.mrn).slice(-7));
+    $('#icpssprt_show_otmgmt_div').text(obj.icnum);
     $('#sex_show_otmgmt_div').text(if_none(obj.Sex).toUpperCase());
     $('#height_show_otmgmt_div').text(obj.height+' (CM)');
     $('#weight_show_otmgmt_div').text(obj.weight+' (KG)');
@@ -164,13 +164,13 @@ function populate_otmgmt_div(obj){
     $('#citizenship_show_otmgmt_div').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otmgmt_div').text(if_none(obj.AreaCode).toUpperCase());
     // $('#ward_show_otmgmt_div').text(obj.ward);
-    $('#diagnosis_show_otmgmt_div').text(obj.diagnosis);
-    $('#procedure_show_otmgmt_div').text(obj.procedure);
+    $('#diagnosis_show_otmgmt_div').text(obj.appt_diag);
+    $('#procedure_show_otmgmt_div').text(obj.appt_prcdure);
     $('#unit_show_otmgmt_div').text(obj.op_unit);
     
     // form_otmgmt_div
-    $('#mrn_otmgmt_div').val(obj.MRN);
-    $("#episno_otmgmt_div").val(obj.Episno);
+    $('#mrn_otmgmt_div').val(obj.mrn);
+    $("#episno_otmgmt_div").val(obj.episno);
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -287,8 +287,12 @@ function getdata_otmgmt(){
         if(!$.isEmptyObject(data)){
             button_state_otmgmt_div('edit');
             autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+            // $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
+            // $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
         }else{
             button_state_otmgmt_div('add');
+            // $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
+            // $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
         }
     });
 }
