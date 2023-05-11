@@ -68,6 +68,19 @@ $(document).ready(function () {
 
 	});
 
+	$("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
+		
+	});
+
+    $("#jqGridWard_panel").on("hide.bs.collapse", function(){
+    	$("#jqGridWard_panel > div").scrollTop(0);
+    });
+
+	$('#jqGridWard_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#jqGridWard_panel", 500);
+		populate_nursAssessment_currpt_getdata();
+	});
+
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
@@ -547,7 +560,7 @@ function populate_nursAssessment_currpt(obj){
 	//panel header
 	$('#name_show_ward').text(obj.Name);
 	$('#mrn_show_ward').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_ward').text((obj.Sex).toUpperCase());
+	$('#sex_show_ward').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_ward').text(dob_chg(obj.DOB));
 	$('#age_show_ward').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_ward').text(if_none(obj.raceDesc).toUpperCase());
@@ -558,14 +571,18 @@ function populate_nursAssessment_currpt(obj){
 
 	$("#mrn_ward").val(obj.MRN);
 	$("#episno_ward").val(obj.Episno);
+	
+}
 
+function  populate_nursAssessment_currpt_getdata(){
+	emptyFormdata(errorField,"#formWard",["#mrn_ward","#episno_ward"]);
 	var saveParam={
         action:'get_table_ward',
     }
     var postobj={
     	_token : $('#csrf_token').val(),
-    	mrn:obj.MRN,
-    	episno:obj.Episno
+    	mrn:$("#mrn_ward").val(),
+    	episno:$("#episno_ward").val()
 
     };
 
@@ -599,7 +616,6 @@ function populate_nursAssessment_currpt(obj){
         }
 
     });
-	
 }
 
 function autoinsert_rowdata(form,rowData){

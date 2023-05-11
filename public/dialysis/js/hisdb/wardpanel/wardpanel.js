@@ -504,7 +504,7 @@ function populate_nursAssessment_currpt(obj){
 	//panel header
 	$('#name_show_ward').text(obj.Name);
 	$('#mrn_show_ward').text(("0000000" + obj.MRN).slice(-7));
-	$('#sex_show_ward').text((obj.Sex).toUpperCase());
+	$('#sex_show_ward').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_ward').text(dob_chg(obj.DOB));
 	$('#age_show_ward').text(dob_age(obj.DOB)+' (YRS)');
 	$('#race_show_ward').text(if_none(obj.raceDesc).toUpperCase());

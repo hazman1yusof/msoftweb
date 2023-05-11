@@ -48,7 +48,7 @@ $(document).ready(function () {
 		editurl: "./ot_maintenance/form",
 		colModel: [
             { label: 'idno', name: 'idno', hidden: true, key:true},
-			{ label: 'Code', name: 'resourcecode', width: 30, classes: 'wrap', canSearch: false},						
+			{ label: 'Code', name: 'resourcecode', width: 30, classes: 'wrap', hidden: true},						
 		    { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 		    { label: 'Recstatus', name: 'recstatus', width: 20, classes: 'wrap'},
 		    { label: 'Type', name: 'TYPE', width: 20, classes: 'wrap', hidden:true}

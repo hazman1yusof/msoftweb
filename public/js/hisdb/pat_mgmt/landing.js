@@ -235,32 +235,52 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        if($('#curpat').val() == 'true' && $('#user_billing').val() == '1'){
-            populate_ordcom_currpt(rows[bootgrid_last_rowid]);
-        }
-
+        
         if($('#curpat').val() == 'true'){
-            populate_triage_currpt(rows[bootgrid_last_rowid]);
-            populate_antenatal(rows[bootgrid_last_rowid]);
-            populate_paediatric(rows[bootgrid_last_rowid]);
-            populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
-            populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
-        }
 
-        if($('#epistycode').val() == 'IP'){
-            populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
-        }
+            if($('#epistycode').val() == 'OP'){
+                if($('#user_doctor').val() == '1'){
+                    populate_triage_currpt(rows[bootgrid_last_rowid]);
+                    populate_antenatal(rows[bootgrid_last_rowid]);
+                    populate_paediatric(rows[bootgrid_last_rowid]);
+                    populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
+                    populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
+                }else if($('#user_nurse').val() == '1'){
+                    populate_triage_currpt(rows[bootgrid_last_rowid]);
+                }
 
-        if(rows[bootgrid_last_rowid].PatStatus == 1 && $('#curpat').val() == 'true'){
-            populate_discharge_currpt(rows[bootgrid_last_rowid]);
-        }
+                if($('#user_billing').val() == '1'){
+                    populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+                }
 
-        if(rows[bootgrid_last_rowid].pregnant == 1){
-            $('#antenatal_row,#jqGridAntenatal_c').show();
-            $('#nursing_row,#jqGridTriageInfo_c').hide();
-        }else{
-            $('#nursing_row,#jqGridTriageInfo_c').show();
-            $('#antenatal_row,#jqGridAntenatal_c').hide();
+            }else if($('#epistycode').val() == 'IP'){
+                if($('#user_doctor').val() == '1'){
+                    populate_triage_currpt(rows[bootgrid_last_rowid]);
+                    populate_antenatal(rows[bootgrid_last_rowid]);
+                    populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
+                    populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
+                    populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
+                }else if($('#user_nurse').val() == '1'){
+                    populate_triage_currpt(rows[bootgrid_last_rowid]);
+                    populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
+                }
+
+                if($('#user_billing').val() == '1'){
+                populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+                }
+            }
+
+            if(rows[bootgrid_last_rowid].PatStatus == 1 ){
+                populate_discharge_currpt(rows[bootgrid_last_rowid]);
+            }
+
+            if(rows[bootgrid_last_rowid].pregnant == 1){
+                $('#antenatal_row,#jqGridAntenatal_c').show();
+                $('#nursing_row,#jqGridTriageInfo_c').hide();
+            }else{
+                $('#nursing_row,#jqGridTriageInfo_c').show();
+                $('#antenatal_row,#jqGridAntenatal_c').hide();
+            }
         }
     });
     var bootgrid_last_rowid = 0;

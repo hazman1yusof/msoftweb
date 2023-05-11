@@ -212,6 +212,7 @@ $(document).ready(function () {
 				{ label: 'AreaCode', name: 'AreaCode', hidden: true },
 				{ label: 'ot_diag', name: 'ot_diag', hidden: true },
 				{ label: 'ot_prcdure', name: 'ot_prcdure', hidden: true },
+				{ label: 'ward', name: 'ward', hidden: true },
 			],
 			autowidth: true,
 			viewrecords: true,

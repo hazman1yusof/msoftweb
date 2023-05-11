@@ -164,9 +164,7 @@
             episno_ = 0;
         }
 
-        // if(episno_ > 0){
-        //     get_epis_other_data(rowdata.MRN);
-        // }
+        
 
         if(rowdata.PatStatus == 1){
             $("#episode_oper").val('edit');
@@ -180,6 +178,8 @@
 
             $('#hid_epis_dept').val($('#userdeptcode').val());
             $('#txt_epis_dept').val($('#userdeptdesc').val());
+
+            get_epis_other_data(parseInt(episno_) + 1);
 
             // $('#txt_epis_dept').blur();
 

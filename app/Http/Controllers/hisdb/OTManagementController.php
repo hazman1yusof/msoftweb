@@ -73,16 +73,7 @@ class OTManagementController extends defaultController
     }
     
     public function get_table_operRecList($request){
-        
-        $episode = DB::table('hisdb.episode')
-                        ->select('episode.episno', 'episode.ward')
-                        ->leftJoin('hisdb.apptbook', 'apptbook.mrn', '=', 'episode.mrn')
-                        ->where('episode.compcode','=',session('compcode'))
-                        ->where('episode.reg_date','<=','apptbook.surgery_date')
-                        ->first();
-        
-        dd($episode);
-        
+
         $table_apptbook = DB::table('hisdb.apptbook')
                     ->select(['apptbook.idno','apptbook.compcode','apptbook.icnum','apptbook.mrn','apptbook.pat_name','apptbook.Type','apptbook.episno',
                     'apptbook.ot_room','apptbook.surgery_date','apptbook.op_unit','apptbook.oper_type','apptbook.oper_status','apptbook.procedure as appt_prcdure',
@@ -91,33 +82,68 @@ class OTManagementController extends defaultController
                     'apptresrc.resourcecode','apptresrc.description as ot_description','discipline.code','discipline.description as unit_description',
                     'otmanage.diagnosis as ot_diag','otmanage.procedure as ot_prcdure']);
                 
-                $table_apptbook = $table_apptbook->leftJoin('hisdb.pat_mast', function($join) use ($request){
-                        $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn')
-                                    ->on('pat_mast.compcode', '=', 'apptbook.compcode');
-                })
-                ->leftJoin('hisdb.apptresrc', function($join) use ($request){
-                    $join = $join->on('apptresrc.resourcecode', '=', 'apptbook.ot_room');
-                })
-                ->leftJoin('hisdb.discipline', function($join) use ($request){
-                    $join = $join->on('discipline.code', '=', 'apptbook.op_unit');
-                })
-                ->leftJoin('nursing.otmanage', function($join) use ($request){
-                    $join = $join->on('otmanage.mrn', '=', 'apptbook.mrn')
-                                ->on('otmanage.compcode', '=', 'apptbook.compcode');
-                });
-                
-                $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))
-                                                ->where('apptbook.Type','=','OT')
-                                                ->where('apptbook.apptdateto' ,'=', $request->filterVal[0]);
-                
-                if(!empty($request->sidx)){
-                    $table_apptbook = $table_apptbook->orderBy($request->sidx, $request->sord);
-                }else{
-                    $table_apptbook = $table_apptbook->orderBy('apptbook.idno', 'desc');
-                }
+        $table_apptbook = $table_apptbook->leftJoin('hisdb.pat_mast', function($join) use ($request){
+                $join = $join->on('pat_mast.MRN', '=', 'apptbook.mrn')
+                            ->on('pat_mast.compcode', '=', 'apptbook.compcode');
+        })
+        // ->leftJoin('hisdb.episode', function($join) use ($request){
+        //         $join = $join->on('episode.MRN', '=', 'apptbook.mrn')
+        //                     ->on('episode.compcode', '=', 'apptbook.compcode')
+        //                     ->where('episode.reg_date', '=', $request->filterVal[0]);
+        //                     // ->where('episode.episno', '=', 'pat_mast.Episno');
+        //                     // ->where('episode.episactive', '=', '1');
+        // })
+        // ->leftJoin('hisdb.bed', function($join) use ($request){
+        //         $join = $join->where('bed.bednum', '=', 'episode.bed')
+        //                     ->on('bed.compcode', '=', 'episode.compcode');
+        // })
+        ->leftJoin('hisdb.apptresrc', function($join) use ($request){
+            $join = $join->on('apptresrc.resourcecode', '=', 'apptbook.ot_room');
+        })
+        ->leftJoin('hisdb.discipline', function($join) use ($request){
+            $join = $join->on('discipline.code', '=', 'apptbook.op_unit');
+        })
+        ->leftJoin('nursing.otmanage', function($join) use ($request){
+            $join = $join->on('otmanage.mrn', '=', 'apptbook.mrn')
+                        ->on('otmanage.compcode', '=', 'apptbook.compcode');
+        });
+        
+        $table_apptbook = $table_apptbook->where('apptbook.compcode','=',session('compcode'))
+                                        ->where('apptbook.Type','=','OT')
+                                        ->where('apptbook.surgery_date' ,'=', $request->filterVal[0]);
+        
+        if(!empty($request->sidx)){
+            $table_apptbook = $table_apptbook->orderBy($request->sidx, $request->sord);
+        }else{
+            $table_apptbook = $table_apptbook->orderBy('apptbook.idno', 'desc');
+        }
         
         //////////paginate//////////
         $paginate = $table_apptbook->paginate($request->rows);
+
+        foreach ($paginate as $key => $value) {
+            $latest_epis = DB::table('hisdb.episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$value->mrn)
+                                ->where('reg_date','<=',$request->filterVal[0])
+                                ->orderBy('episno', 'desc');
+
+            if($latest_epis->exists()){
+                $latest_epis_first =  $latest_epis->first();
+                $value->latest_episno = $latest_epis_first->episno;
+
+                $bed = DB::table('hisdb.bed')
+                            ->where('compcode',session('compcode'))
+                            ->where('bed.mrn', '=', $latest_epis_first->mrn)
+                            ->where('bed.episno', '=', $latest_epis_first->episno)
+                            ->where('bed.recstatus', '=', 'ACTIVE');
+
+                if($bed->exists()){
+                    $bed_first = $bed->first();
+                    $value->ward = $bed_first->ward;
+                }
+            }
+        }
         
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();

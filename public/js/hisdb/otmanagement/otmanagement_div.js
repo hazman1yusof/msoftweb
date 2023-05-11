@@ -163,7 +163,7 @@ function populate_otmgmt_div(obj){
     $('#occupation_show_otmgmt_div').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_otmgmt_div').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otmgmt_div').text(if_none(obj.AreaCode).toUpperCase());
-    // $('#ward_show_otmgmt_div').text(obj.ward);
+    $('#ward_show_otmgmt_div').text(obj.ward);
     $('#diagnosis_show_otmgmt_div').text(obj.appt_diag);
     $('#procedure_show_otmgmt_div').text(obj.appt_prcdure);
     $('#unit_show_otmgmt_div').text(obj.op_unit);
@@ -286,13 +286,13 @@ function getdata_otmgmt(){
     }).done(function(data){
         if(!$.isEmptyObject(data)){
             button_state_otmgmt_div('edit');
-            autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
-            // $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
-            // $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
+            // autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+            $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
+            $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{
             button_state_otmgmt_div('add');
-            // $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
-            // $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
+            $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
+            $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
         }
     });
 }

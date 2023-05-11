@@ -170,10 +170,10 @@ class OTManagement_divController extends defaultController
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
         
-        // $apptbook_obj = DB::table('hisdb.apptbook')
-        //             ->where('compcode','=',session('compcode'))
-        //             ->where('mrn','=',$request->mrn)
-        //             ->where('episno','=',$request->episno);
+        $apptbook_obj = DB::table('hisdb.apptbook')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('episno','=',$request->episno);
                     
         $responce = new stdClass();
         
@@ -182,10 +182,10 @@ class OTManagement_divController extends defaultController
             $responce->otmanage = $otmanage_obj;
         }
         
-        // if($apptbook_obj->exists()){
-        //     $apptbook_obj = $apptbook_obj->first();
-        //     $responce->apptbook = $apptbook_obj;
-        // }
+        if($apptbook_obj->exists()){
+            $apptbook_obj = $apptbook_obj->first();
+            $responce->apptbook = $apptbook_obj;
+        }
         
         return json_encode($responce);
     
