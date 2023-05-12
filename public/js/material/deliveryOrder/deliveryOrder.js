@@ -391,7 +391,7 @@ $(document).ready(function () {
 			errorField.length = 0;
 		},
 		loadComplete: function(){
-			calc_jq_height_onchange("jqGrid");
+			//calc_jq_height_onchange("jqGrid");
 		},
 		
 	});
@@ -933,7 +933,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2");
+			//calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1881,6 +1881,8 @@ $(document).ready(function () {
 
 		event.data.currency.formatOn();//change format to currency on each calculation
 		mycurrency_np.formatOn();
+		mycurrency2.formatOn();
+		mycurrency.formatOn();
 		
 		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 	}
@@ -1914,7 +1916,7 @@ $(document).ready(function () {
 
 			setjqgridHeight(data,'jqGrid3');
 			$('#jqGrid3').jqGrid ('setSelection', "1");
-			calc_jq_height_onchange("jqGrid3");
+			//calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
