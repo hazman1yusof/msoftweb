@@ -170,7 +170,8 @@ function populate_otmgmt_div(obj){
     
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val(obj.mrn);
-    $("#episno_otmgmt_div").val(obj.episno);
+    $("#episno_otmgmt_div").val(obj.latest_episno);
+    $('#ward').val(obj.ward);
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -286,13 +287,15 @@ function getdata_otmgmt(){
     }).done(function(data){
         if(!$.isEmptyObject(data)){
             button_state_otmgmt_div('edit');
-            // autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
-            $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
-            $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
+            autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
+            autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
+            autoinsert_rowdata("#form_otmgmt_div",data.episode);
+            // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
+            // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{
             button_state_otmgmt_div('add');
-            $('#form_otmgmt_div textarea#procedure').text(data.apptbook.procedure);
-            $('#form_otmgmt_div textarea#diagnosis').text(data.apptbook.diagnosis);
+            // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
+            // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }
     });
 }

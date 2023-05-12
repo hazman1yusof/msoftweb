@@ -77,8 +77,6 @@ class OTManagement_divController extends defaultController
                         'natureoper' => $request->natureoper,
                         'specimen' => $request->specimen,
                         'remarks' => $request->remarks,
-                        'procedure' => $request->procedure,
-                        'diagnosis' => $request->diagnosis,
                         'electiveemgc' => $request->electiveemgc,
                         'classification' => $request->classification,
                         'anaesthtype' => $request->anaesthtype,
@@ -90,6 +88,17 @@ class OTManagement_divController extends defaultController
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
+            
+            DB::table('hisdb.apptbook')
+                ->where('mrn','=',$request->mrn_otmgmt_div)
+                ->where('Type','=','OT')
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'procedure' => $request->procedure,
+                    'diagnosis' => $request->diagnosis,
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
             
             DB::commit();
             
@@ -113,36 +122,93 @@ class OTManagement_divController extends defaultController
         
         try {
             
-            DB::table('nursing.otmanage')
-                ->where('mrn','=',$request->mrn_otmgmt_div)
-                ->where('episno','=',$request->episno_otmgmt_div)
-                ->where('compcode','=',session('compcode'))
-                ->update([
-                    'admdate' => $request->admdate,
-                    'admtime' => $request->admtime,
-                    'ward' => $request->ward,
-                    'operdate' => $request->operdate,
-                    'timestarted' => $request->timestarted,
-                    'timeended' => $request->timeended,
-                    'hoursutilized' => $request->hoursutilized,
-                    'serialno' => $request->serialno,
-                    'recstatus' => $request->recstatus,
-                    'natureoper' => $request->natureoper,
-                    'specimen' => $request->specimen,
-                    'remarks' => $request->remarks,
-                    'procedure' => $request->procedure,
-                    'diagnosis' => $request->diagnosis,
-                    'electiveemgc' => $request->electiveemgc,
-                    'classification' => $request->classification,
-                    'anaesthtype' => $request->anaesthtype,
-                    'otno' => $request->otno,
-                    'firstscrubnrs' => $request->firstscrubnrs,
-                    'secondscrubnrs' => $request->secondscrubnrs,
-                    'gaassistant' => $request->gaassistant,
-                    'circulator' => $request->circulator,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
+            $otmanage = DB::table('nursing.otmanage')
+                        ->where('mrn','=',$request->mrn_otmgmt_div)
+                        ->where('episno','=',$request->episno_otmgmt_div)
+                        ->where('compcode','=',session('compcode'));
+            
+            if(!$otmanage->exists()){
+                
+                DB::table('nursing.otmanage')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn_otmgmt_div,
+                            'episno' => $request->episno_otmgmt_div,
+                            'admdate' => $request->admdate,
+                            'admtime' => $request->admtime,
+                            'ward' => $request->ward,
+                            'operdate' => $request->operdate,
+                            'timestarted' => $request->timestarted,
+                            'timeended' => $request->timeended,
+                            'hoursutilized' => $request->hoursutilized,
+                            'serialno' => $request->serialno,
+                            'recstatus' => $request->recstatus,
+                            'natureoper' => $request->natureoper,
+                            'specimen' => $request->specimen,
+                            'remarks' => $request->remarks,
+                            'electiveemgc' => $request->electiveemgc,
+                            'classification' => $request->classification,
+                            'anaesthtype' => $request->anaesthtype,
+                            'otno' => $request->otno,
+                            'firstscrubnrs' => $request->firstscrubnrs,
+                            'secondscrubnrs' => $request->secondscrubnrs,
+                            'gaassistant' => $request->gaassistant,
+                            'circulator' => $request->circulator,
+                            'adduser'  => session('username'),
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        ]);
+                
+                DB::table('hisdb.apptbook')
+                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('Type','=','OT')
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'procedure' => $request->procedure,
+                        'diagnosis' => $request->diagnosis,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+                
+            }else{
+                
+                $otmanage
+                    ->update([
+                        'admdate' => $request->admdate,
+                        'admtime' => $request->admtime,
+                        'ward' => $request->ward,
+                        'operdate' => $request->operdate,
+                        'timestarted' => $request->timestarted,
+                        'timeended' => $request->timeended,
+                        'hoursutilized' => $request->hoursutilized,
+                        'serialno' => $request->serialno,
+                        'recstatus' => $request->recstatus,
+                        'natureoper' => $request->natureoper,
+                        'specimen' => $request->specimen,
+                        'remarks' => $request->remarks,
+                        'electiveemgc' => $request->electiveemgc,
+                        'classification' => $request->classification,
+                        'anaesthtype' => $request->anaesthtype,
+                        'otno' => $request->otno,
+                        'firstscrubnrs' => $request->firstscrubnrs,
+                        'secondscrubnrs' => $request->secondscrubnrs,
+                        'gaassistant' => $request->gaassistant,
+                        'circulator' => $request->circulator,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+                
+                DB::table('hisdb.apptbook')
+                    ->where('mrn','=',$request->mrn_otmgmt_div)
+                    ->where('Type','=','OT')
+                    ->where('compcode','=',session('compcode'))
+                    ->update([
+                        'procedure' => $request->procedure,
+                        'diagnosis' => $request->diagnosis,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+                
+            }
             
             // $queries = DB::getQueryLog();
             // dump($queries);
@@ -171,10 +237,17 @@ class OTManagement_divController extends defaultController
                     ->where('episno','=',$request->episno);
         
         $apptbook_obj = DB::table('hisdb.apptbook')
+                    ->select('procedure', 'diagnosis')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn);
+                    // ->where('episno','=',$request->episno);
+                    
+        $episode_obj = DB::table('hisdb.episode')
+                    ->select('reg_date as admdate', 'reg_time as admtime')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-                    
+        
         $responce = new stdClass();
         
         if($otmanage_obj->exists()){
@@ -185,6 +258,11 @@ class OTManagement_divController extends defaultController
         if($apptbook_obj->exists()){
             $apptbook_obj = $apptbook_obj->first();
             $responce->apptbook = $apptbook_obj;
+        }
+        
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->first();
+            $responce->episode = $episode_obj;
         }
         
         return json_encode($responce);
