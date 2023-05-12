@@ -60,7 +60,7 @@
       <input type="hidden" id="myurl" name="myurl" value="">
       <input type="hidden" id="computerid" name="computerid" >
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>
-      <div id="computerid_warning" class="alert alert-danger" role="alert">Computer ID are not set yet, please ask admin to set your computer id</div>
+      <div id="computerid_warning" class="alert alert-danger" role="alert" style="display:none;">Computer ID are not set yet, please ask admin to set your computer id</div>
     </form>
 
   </div> 
