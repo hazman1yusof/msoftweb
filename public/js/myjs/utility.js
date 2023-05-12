@@ -241,6 +241,7 @@ function selrowData(grid){
 function emptyFormdata(errorField,form,except=[]){
 	var temp=[];
 	except.push(form+' input[name="_token"]');
+	except.push('#computerid');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -260,6 +261,7 @@ function emptyFormdata(errorField,form,except=[]){
 function emptyFormdata_div(div,except=[]){
 	var temp=[];
 	except.push(div+' input[name="_token"]');
+	except.push('#computerid');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -2097,6 +2099,15 @@ function show_errors(errorField,form){
 			}
 		}
 	});
+}
+
+function computerid_set(computerid){
+	var computerid_val = localStorage.getItem('computerid');
+	if(!computerid_val){
+		alert('Computer ID are not set yet!');
+	}else{
+		$(computerid).val(computerid_val);
+	}
 }
 
 $(document).ready(function () {

@@ -234,8 +234,9 @@ button#btn_icd,button#btn_mma{
 			<div class="panel panel-info">
 				<div class="panel-heading">Booking Header</div>
 					<form action={{url('apptrsc/addEvent')}} method="post" class="form-horizontal" style="" id="addForm" >
-					{{csrf_field()}}
-					<input type="hidden" name="idno" id="idno">
+						{{csrf_field()}}
+						<input type="hidden" name="idno" id="idno">
+						<input type="hidden" name="computerid" id="computerid">
 						<div class="panel-body" style="position: relative;" >
 							<div class="form-group">
 								<label for="Doctor" class="col-md-2 control-label">Resource</label>
@@ -391,17 +392,6 @@ button#btn_icd,button#btn_mma{
 								<div class="col-md-3">
 									<input type="text" class="form-control input-sm" id="lastupdate" name="lastupdate" readonly>	
 								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
-								<div class="col-md-3">
-									<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" readonly>
-								</div>
-
-								<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
-								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" readonly>
-								</div>
 							</div> 
 						</div>
 						<div class="panel-footer">
@@ -491,5 +481,6 @@ button#btn_icd,button#btn_mma{
 
 	
 	<script src="js/hisdb/apptrsc/apptrsc2.js"></script>
+	<script src="{{ asset('js/myjs/utility.js') }}"></script>
 
 @endsection

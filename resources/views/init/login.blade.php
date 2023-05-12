@@ -22,6 +22,13 @@
       height: 100vh;
       width: 100vw;
     }
+
+    #computerid_warning{
+      margin-top: 10px;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
     
   </style>
 </head>
@@ -51,7 +58,9 @@
           @endforeach
       </select>
       <input type="hidden" id="myurl" name="myurl" value="">
+      <input type="hidden" id="computerid" name="computerid" >
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>
+      <div id="computerid_warning" class="alert alert-danger" role="alert">Computer ID are not set yet, please ask admin to set your computer id</div>
     </form>
 
   </div> 
@@ -84,7 +93,16 @@
           }
         });
 
+        
+
     });
+
+    var computerid_val = localStorage.getItem('computerid');
+    if(!computerid_val){
+      $('#computerid_warning').show();
+    }else{
+      $('#computerid').val(computerid_val);
+    }
 
     // function signing_in()
     // {

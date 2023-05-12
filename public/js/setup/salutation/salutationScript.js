@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -116,7 +115,8 @@ function check_cust_rules(rowid){
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -153,13 +153,12 @@ function check_cust_rules(rowid){
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
 
 			check_cust_rules();
 
 			let editurl = "./salutation/form?"+
 				$.param({
-					action: 'salutation_save',
+					action: 'salutation_save'
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -176,7 +175,8 @@ function check_cust_rules(rowid){
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
@@ -213,7 +213,7 @@ function check_cust_rules(rowid){
 
 			let editurl = "./salutation/form?"+
 				$.param({
-					action: 'salutation_save',
+					action: 'salutation_save'
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},

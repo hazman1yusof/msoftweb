@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		form : '#addForm',
@@ -271,13 +270,10 @@ $(document).ready(function () {
 		width: 9.5 / 10 * $(window).width(),
 		modal: true,
 		open: function(event,ui){
-			set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
-			// session_field.clear().ready().set();
-
 			$("#addForm input[name='icnum']").prop('readonly',true);
 		},
 		close: function( event, ui ){
-			emptyFormdata(errorField,'#addForm');
+			emptyFormdata(errorField,'#addForm',['#computerid']);
 			$('#delete_but,#new_episode').hide();
 		}		
 	});
