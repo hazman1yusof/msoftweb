@@ -162,6 +162,7 @@ class Appointment_rscController extends defaultController
                     'diagnosis' => $request->diagnosis,
                     'procedure' => $request->procedure,
                     'recstatus'   => 'A',
+                    'computerid'   => $request->computerid,
                     'adduser'     => session('username'),
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'    => session('username'),
@@ -187,6 +188,7 @@ class Appointment_rscController extends defaultController
                     'telhp'       => $request->telhp,
                     'remarks'     => $request->remarks,
                     'recstatus'   => 'A',
+                    'computerid'   => $request->computerid,
                     'adduser'     => session('username'),
                     'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastuser'    => session('username'),
@@ -271,6 +273,7 @@ class Appointment_rscController extends defaultController
                             'oper_status' => strtoupper($request->oper_status),
                             'diagnosis' => $request->diagnosis,
                             'procedure' => $request->procedure,
+                            'computerid'   => $request->computerid,
                             'lastuser'    => session('username'),
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
@@ -293,6 +296,7 @@ class Appointment_rscController extends defaultController
                             'recstatus'   => 'A',
                             'telhp'       => $request->telhp,
                             'remarks'     => $request->remarks,
+                            'computerid'   => $request->computerid,
                             'lastuser'    => session('username'),
                             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                         ]);

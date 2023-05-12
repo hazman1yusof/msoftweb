@@ -147,6 +147,7 @@ class AppointmentController extends Controller
                 'case_desc'   => $case->description,
                 'remarks'     => $request->remarks,
                 'recstatus'   => 'A',
+                'computerid'   => $request->computerid,
                 'adduser'     => 'system',
                 'adddate'     => Carbon::now("Asia/Kuala_Lumpur"),
                 'lastuser'    => 'system',
@@ -210,6 +211,7 @@ class AppointmentController extends Controller
                 }
 
             }else{
+                dd('sd');
                 $mrn_ = ($request->mrn == '')? '00000': $request->mrn;
                 DB::table('apptbook')
                 ->where('idno','=',$request->idno)
@@ -228,6 +230,7 @@ class AppointmentController extends Controller
                     'case_code'   => $request->case,
                     'case_desc'   => $case->description,
                     'remarks'     => $request->remarks,
+                    'computerid'   => $request->computerid,
                     'lastuser'    => 'system',
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")
                 ]);

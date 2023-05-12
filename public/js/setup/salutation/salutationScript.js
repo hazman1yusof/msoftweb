@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -47,13 +46,13 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},		
-			{ label: 'Code', name: 'Code', width: 10, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Code', name: 'Code', width: 50, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
 			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-			{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-			{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'adduser', name: 'adduser', width: 90, hidden:false},
+			{ label: 'adddate', name: 'adddate', width: 90, hidden:false},
+			{ label: 'upduser', name: 'upduser', width: 90, hidden:false},
+			{ label: 'upddate', name: 'upddate', width: 90, hidden:false},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden:false},
 			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 			cellattr: function(rowid, cellvalue)
@@ -116,7 +115,8 @@ function check_cust_rules(rowid){
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -153,13 +153,12 @@ function check_cust_rules(rowid){
 			if(errorField.length>0)return false;
 
 			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
 
 			check_cust_rules();
 
 			let editurl = "./salutation/form?"+
 				$.param({
-					action: 'salutation_save',
+					action: 'salutation_save'
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -176,7 +175,8 @@ function check_cust_rules(rowid){
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
@@ -213,7 +213,7 @@ function check_cust_rules(rowid){
 
 			let editurl = "./salutation/form?"+
 				$.param({
-					action: 'salutation_save',
+					action: 'salutation_save'
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
