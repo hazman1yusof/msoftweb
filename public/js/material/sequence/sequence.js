@@ -5,7 +5,7 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -76,7 +76,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_dept.on();
 				dialog_trantype.on();
 			}
@@ -135,7 +134,7 @@ $(document).ready(function () {
 			{ label: 'Description', name: 'description', classes: 'wrap', width: 80,checked:true,  canSearch: true},
 			{ label: 'Sequence No', name: 'seqno', classes: 'wrap', width: 25, align: 'right'},
 			{ label: 'Days For Backdated', name: 'backday', classes: 'wrap', width: 25, align: 'right'},
-			{ label: 'Add User', name: 'adduser', width: 30,hidden:true },
+			{ label: 'Add User', name: 'adduser', width: 30,hidden:true},
 			{ label: 'Add Date', name: 'adddate', width: 90,hidden:true},
 			{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
 			{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
@@ -143,9 +142,7 @@ $(document).ready(function () {
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
         multiSort: true,

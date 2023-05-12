@@ -402,6 +402,7 @@ abstract class defaultController extends Controller{
             	'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
                 'recstatus' => 'ACTIVE'
             ];
 
@@ -441,6 +442,7 @@ abstract class defaultController extends Controller{
         	'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+            'lastcomputerid' => $request->computerid,
             'recstatus' => 'ACTIVE'
         ];
 
@@ -512,6 +514,7 @@ abstract class defaultController extends Controller{
             $table->update([
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
                 'recstatus' => 'DEACTIVE',
             ]);
 
