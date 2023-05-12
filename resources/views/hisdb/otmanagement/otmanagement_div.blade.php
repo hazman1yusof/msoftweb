@@ -27,17 +27,17 @@
                             <div class="ui grid">
                                 <div class="field five wide column">
                                     <label>Adm Date</label>
-                                    <input id="admdate" name="admdate" type="date">
+                                    <input id="admdate" name="admdate" type="date" rdonly>
                                 </div>
 
                                 <div class="field five wide column">
                                     <label>Adm Time</label>
-                                    <input id="admtime" name="admtime" type="time">
+                                    <input id="admtime" name="admtime" type="time" rdonly>
                                 </div>
 
                                 <div class="field six wide column">
                                     <label>Ward</label>
-                                    <input id="ward" name="ward" type="text">
+                                    <input id="ward" name="ward" type="text" rdonly>
                                 </div>
                             </div>
 
@@ -112,31 +112,31 @@
                                             <div class="ui grid">
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Nature of Operation</label>
-                                                    <textarea id="natureoper" name="natureoper" rows="4" ></textarea>
+                                                    <textarea id="natureoper" name="natureoper" rows="4"></textarea>
                                                 </div>
 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>Specimen</label>
-                                                    <textarea id="specimen" name="specimen" rows="4" ></textarea>
+                                                    <textarea id="specimen" name="specimen" rows="4"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="ui grid">
                                                 <div class="field sixteen wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>Remarks</label>
-                                                    <textarea id="remarks" name="remarks" rows="4" ></textarea>
+                                                    <textarea id="remarks" name="remarks" rows="4"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="ui grid">
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Procedure</label>
-                                                    <textarea id="procedure" name="procedure" rows="4" ></textarea>
+                                                    <textarea id="procedure" name="procedure" rows="4"></textarea>
                                                 </div>
 
                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                     <label>Diagnosis</label>
-                                                    <textarea id="diagnosis" name="diagnosis" rows="4" ></textarea>
+                                                    <textarea id="diagnosis" name="diagnosis" rows="4"></textarea>
                                                 </div>
                                             </div>
                                             
