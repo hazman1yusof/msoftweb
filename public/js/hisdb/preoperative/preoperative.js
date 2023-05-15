@@ -52,6 +52,26 @@ $(document).ready(function () {
         
     });
     
+    // $("#side_op_na").change(function(){
+    //     $('input[name="side_op_mark"]').removeAttr("checked");
+    // });
+    
+    $("#side_op_na").click(function(){
+        if($('#side_op_na').is(":checked")){
+            $("input[name='side_op_mark']").each(function(){
+                if($(this).val() !== "1"){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='side_op_mark']").click(function(){
+        if($(this).is(':checked')){
+            $("#side_op_na").prop("checked", false);
+        }
+    })
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function() {
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -152,9 +172,9 @@ function empty_preoperative(){
 
 function populate_preoperative(obj){
     // panel header
-    $('#name_show_preoperative').text(obj.Name);
-    $('#mrn_show_preoperative').text(("0000000" + obj.MRN).slice(-7));
-    $('#icpssprt_show_preoperative').text(obj.Newic);
+    $('#name_show_preoperative').text(obj.pat_name);
+    $('#mrn_show_preoperative').text(("0000000" + obj.mrn).slice(-7));
+    $('#icpssprt_show_preoperative').text(obj.icnum);
     $('#sex_show_preoperative').text(if_none(obj.Sex).toUpperCase());
     $('#height_show_preoperative').text(obj.height+' (CM)');
     $('#weight_show_preoperative').text(obj.weight+' (KG)');
@@ -165,14 +185,15 @@ function populate_preoperative(obj){
     $('#occupation_show_preoperative').text(if_none(obj.OccupCode).toUpperCase());
     $('#citizenship_show_preoperative').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_preoperative').text(if_none(obj.AreaCode).toUpperCase());
-    // $('#ward_show_preoperative').text(obj.ward);
-    $('#diagnosis_show_preoperative').text(obj.diagnosis);
-    $('#procedure_show_preoperative').text(obj.procedure);
+    $('#ward_show_preoperative').text(obj.ward);
+    $('#diagnosis_show_preoperative').text(obj.appt_diag);
+    $('#procedure_show_preoperative').text(obj.appt_prcdure);
     $('#unit_show_preoperative').text(obj.op_unit);
     
     // form_preoperative
-    $('#mrn_preoperative').val(obj.MRN);
-    $("#episno_preoperative").val(obj.Episno);
+    $('#mrn_preoperative').val(obj.mrn);
+    $("#episno_preoperative").val(obj.latest_episno);
+    $('#ward').val(obj.ward);
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -258,7 +279,7 @@ function saveForm_preoperative(callback){
 }
 
 function textare_init_preoperative(){
-    $('textarea#pt_unknown,textarea#consent').each(function () {
+    $('textarea#pat_remark,textarea#cons_remark,textarea#check_side_remark,textarea#side_op_remark,textarea#lastmeal_remark,textarea#check_item_remark,textarea#allergies_remark,textarea#implant_remark,textarea#premed_remark,textarea#blood_remark,textarea#casenotes_remark,textarea#oldnotes_remark,textarea#imaging_remark,textarea#vs_remark,textarea#others_remark,textarea#imprtnt_issues').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -305,7 +326,7 @@ function getdata_preoperative(){
     }).done(function(data){
         if(!$.isEmptyObject(data)){
             button_state_preoperative('edit');
-            autoinsert_rowdata("#form_preoperative",data.otmanage);
+            autoinsert_rowdata("#form_preoperative",data.preop);
             textare_init_preoperative();
         }else{
             button_state_preoperative('add');

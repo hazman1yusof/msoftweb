@@ -151,6 +151,7 @@ $(document).ready(function () {
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
+				populate_preoperative(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -158,6 +159,7 @@ $(document).ready(function () {
 				$('.jqgridsegment').removeClass('loading');
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_otmgmt_div();
+				empty_preoperative();
 				init_editbtn_top();
 			},
 		});
@@ -227,8 +229,8 @@ $(document).ready(function () {
 			onSelectRow:function(rowid, selected){
 				$('button#timer_stop').click();
 				populate_otmgmt_div(selrowData('#jqGrid'));
+				populate_preoperative(selrowData('#jqGrid'));
 				$("#jqGrid").data('lastidno',rowid);
-				// populate_otmgmt_div(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -236,6 +238,7 @@ $(document).ready(function () {
 				$('.jqgridsegment').removeClass('loading');
 				$('#no_of_pat').text($("#jqGrid").getGridParam("reccount"));
 				empty_otmgmt_div();
+				empty_preoperative();
 				init_editbtn_top();
 				if(!$("button#timer_play").hasClass("disabled")){
 					$("#jqGrid").setSelection($("#jqGrid").data('lastidno'));
