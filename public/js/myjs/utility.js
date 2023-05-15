@@ -241,7 +241,6 @@ function selrowData(grid){
 function emptyFormdata(errorField,form,except=[]){
 	var temp=[];
 	except.push(form+' input[name="_token"]');
-	except.push('#computerid');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());
@@ -261,7 +260,6 @@ function emptyFormdata(errorField,form,except=[]){
 function emptyFormdata_div(div,except=[]){
 	var temp=[];
 	except.push(div+' input[name="_token"]');
-	except.push('#computerid');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			temp.push($(value).val());

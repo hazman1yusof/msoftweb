@@ -414,6 +414,10 @@ abstract class defaultController extends Controller{
                 $array_insert[$value] = strtoupper($request[$request->field[$key]]);
             }
 
+            if(session()->has('computerid')){
+                $array_insert['computerid'] = session('computerid');
+            }
+
             $table->insert($array_insert);
             $queries = DB::getQueryLog();
 
@@ -462,6 +466,10 @@ abstract class defaultController extends Controller{
             }
 
         	$array_update[$value] = $field_value;
+        }
+
+        if(session()->has('computerid')){
+            $array_update['lastcomputerid'] = session('computerid');
         }
 
         try {
@@ -514,6 +522,10 @@ abstract class defaultController extends Controller{
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'DEACTIVE',
             ]);
+            
+            if(session()->has('computerid')){
+                $array_update['lastcomputerid'] = session('computerid');
+            }
 
             $responce = new stdClass();
             $responce->sql = $table->toSql();

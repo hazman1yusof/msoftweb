@@ -59,11 +59,9 @@ class CompcodeController extends defaultController
                     'bmppath1' => strtoupper($request->bmppath1),
                     'logo1' => strtoupper($request->logo1),
                     'recstatus' => strtoupper($request->recstatus),
-                    //'idno' => strtoupper($request->idno),
-                   // 'lastcomputerid' => strtoupper($request->lastcomputerid),
-//'lastipaddress' => strtoupper($request->lastipaddress),
-                    //'lastuser' => strtoupper(session('username')),
-                    //'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'computerid' => $request->computerid,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -92,10 +90,9 @@ class CompcodeController extends defaultController
                     'logo1' => strtoupper($request->logo1),
                     'recstatus' => strtoupper($request->recstatus),
                     'compcode' => strtoupper($request->compcode),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    //'lastipaddress' => strtoupper($request->lastipaddress),
-                    //'lastuser' => strtoupper(session('username')),
-                    //'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => $request->computerid,
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -112,7 +109,8 @@ class CompcodeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

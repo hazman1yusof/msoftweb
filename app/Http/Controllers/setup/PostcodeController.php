@@ -61,8 +61,7 @@ class PostcodeController extends defaultController
                     'countrycode' => strtoupper($request->cn_Code),
                     'statecode' => strtoupper($request->st_StateCode),
                     'district' => strtoupper($request->pc_district),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => $request->computerid,
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -93,8 +92,7 @@ class PostcodeController extends defaultController
                     'countrycode' => strtoupper($request->cn_Code),
                     'statecode' => strtoupper($request->st_StateCode),
                     'district' => strtoupper($request->pc_district),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),             
+                    'lastcomputerid' => $request->computerid,    
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -113,7 +111,8 @@ class PostcodeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

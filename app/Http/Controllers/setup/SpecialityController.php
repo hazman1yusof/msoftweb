@@ -61,8 +61,7 @@ class SpecialityController extends defaultController
                     'type' => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => $request->computerid,
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -93,8 +92,7 @@ class SpecialityController extends defaultController
                     'type' => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => $request->computerid,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -113,7 +111,8 @@ class SpecialityController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

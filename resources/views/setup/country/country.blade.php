@@ -16,6 +16,7 @@ input.uppercase {
 	<div class='row'>
 	<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
+				<input id="computerid" name="computerid" type="hidden" >
 				<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
@@ -86,8 +87,6 @@ input.uppercase {
 			}
 		});
 	</script>
-	
-	<script src="js/finance/FA/location/locationScript.js"></script>
 
 	<script src="js/setup/country/country.js"></script>
 	

@@ -55,14 +55,13 @@ class WardController extends defaultController
             DB::table('sysdb.department')
                 ->insert([  
                     'compcode' => session('compcode'),
-                    'warddept' => strtoupper($request->warddept),
+                    'warddept' => $request->warddept,
                     'description' => strtoupper($request->description),
                     'sector' => strtoupper($request->sector),
                     'region' => strtoupper($request->region),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => $request->computerid,
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -86,14 +85,13 @@ class WardController extends defaultController
             DB::table('sysdb.department')
                 ->where('idno','=',$request->idno)
                 ->update([  
-                    'warddept' => strtoupper($request->warddept),
+                    'warddept' => $request->warddept,
                     'description' => strtoupper($request->description),
                     'sector' => strtoupper($request->sector),
                     'region' => strtoupper($request->region),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => $request->computerid,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -112,7 +110,8 @@ class WardController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

@@ -58,8 +58,7 @@ class AddressTypeController extends defaultController
                     'addtype' => strtoupper($request->addtype),
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => $request->computerid,
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -88,8 +87,7 @@ class AddressTypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => $request->computerid,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -108,7 +106,8 @@ class AddressTypeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

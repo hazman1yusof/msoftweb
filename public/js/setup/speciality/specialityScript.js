@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -47,26 +46,26 @@ $(document).ready(function () {
 			colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'idno', name: 'idno', width: 80, hidden:true, key:true},					
-			{ label: 'Speciality Code', name: 'specialitycode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, checked: true, width: 80, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Discipline Code', name: 'disciplinecode', width: 30, classes: 'wrap',editable:true,
+			{ label: 'Speciality Code', name: 'specialitycode', width: 30, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Description', name: 'description', classes: 'wrap', canSearch: true, checked: true, width: 100, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Discipline Code', name: 'disciplinecode', width: 40, classes: 'wrap',editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 				edittype:'custom',	editoptions:
 					{  custom_element:disciplinecodeCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Category Type', name: 'type', width: 30, classes: 'wrap',editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-			{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-			{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+			{ label: 'Category Type', name: 'type', width: 40, classes: 'wrap',editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Status', name: 'recstatus', width: 40, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 				cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
 			},
+			{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 40, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 40, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 40, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 40, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -124,7 +123,8 @@ $(document).ready(function () {
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -187,7 +187,8 @@ $(document).ready(function () {
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();

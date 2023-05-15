@@ -38,6 +38,9 @@ class SessionController extends Controller
             $request->session()->put('compcode', request('cmb_companies'));
             $request->session()->put('username', request('username'));
             $request->session()->put('deptcode', $user->dept);
+            if(!empty(request('computerid'))){
+                $request->session()->put('computerid',request('computerid'));
+            }
 
             $doctor = DB::table('hisdb.doctor')->where('loginid','=',$user->username);
 

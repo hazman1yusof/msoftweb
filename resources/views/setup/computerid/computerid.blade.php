@@ -21,6 +21,7 @@
   </div>
   <div class="ui segment diaform">
       <form class="ui form">
+        <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
         <div class="field">
           <label>Computer ID</label>
           <input type="text" name="computerid" id="computerid" autocomplete="off">

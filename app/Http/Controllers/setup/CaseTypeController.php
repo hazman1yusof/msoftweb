@@ -60,8 +60,9 @@ class CaseTypeController extends defaultController
                     'grpcasetype' => strtoupper($request->grpcasetype),
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
-                    'lastuser' => strtoupper(session('username')),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'computerid' => $request->computerid,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -90,6 +91,7 @@ class CaseTypeController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
                     'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => $request->computerid,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -108,7 +110,8 @@ class CaseTypeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }
