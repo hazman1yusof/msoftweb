@@ -59,7 +59,7 @@ $(document).ready(function () {
     $("#side_op_na").click(function(){
         if($('#side_op_na').is(":checked")){
             $("input[name='side_op_mark']").each(function(){
-                if($(this).val() !== "1"){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
                     $(this).prop("checked",false);
                 }
             });

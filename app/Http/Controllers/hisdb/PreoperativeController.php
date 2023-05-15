@@ -20,12 +20,7 @@ class PreoperativeController extends defaultController
     
     public function show(Request $request)
     {
-        $otroom = DB::table('hisdb.apptresrc')
-                    ->select('resourcecode','description')
-                    ->where('compcode','=',session('compcode'))
-                    ->get();
-        
-        return view('hisdb.preoperative.preoperative',compact('otroom'));
+        return view('hisdb.preoperative.preoperative');
     }
     
     public function table(Request $request)
