@@ -267,7 +267,12 @@ function emptyFormdata_div(div,except=[]){
 	}
 
 	$(div+' textarea').val("");
-	$(div+' input').val("");
+	$(div+' input[type=text]').val("");
+	$(div+' input[type=number]').val("");
+	$(div+' input[type=date]').val("");
+	$(div+' input[type=time]').val("");
+	$(div+' input[type=checkbox]').prop('checked',false);
+	$(div+' input[type=radio]').prop('checked',false);
 
 	$(div+' .help-block').html('');
 	if(except!=null){

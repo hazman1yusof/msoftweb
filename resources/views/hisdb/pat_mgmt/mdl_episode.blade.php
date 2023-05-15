@@ -19,6 +19,10 @@
                 </div>
                 <div class="form-group ">
                     <div class="col-sm-1">
+                        <small  for="txt_epis_no">MRN</small>
+                        <input class="form-control input-sm" id="txt_epis_mrn" name="txt_epis_mrn" placeholder="" type="text" readonly>
+                    </div>
+                    <div class="col-sm-1">
                         <small  for="txt_epis_no">EPISODE</small>
                         <input class="form-control input-sm" id="txt_epis_no" name="txt_epis_no" placeholder="" type="text" readonly>
                     </div>
@@ -27,42 +31,27 @@
                         <input id="txt_epis_type" name="txt_epis_type" placeholder="" type="text" class="form-control input-sm" readonly>
                     </div>
 
-                    <div class="col-sm-3">
-                        <small for="txt_epis_type">Case</small>
-                        <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control input-sm form-mandatory" required>
-                            <option value="">- Select -</option>
-                            <option value="1">New Case</option>
-                            <option value="2">Follow Up</option>
-                        </select>
+
+                    <div class="col-sm-7">
+                        <small for="txt_epis_type">NAME:  </small>
+                        <br/><big id="txt_epis_name" class="epis_name_big"></big></b>
                     </div>
 
-                    <div class="col-sm-3">
-                        <small for="txt_epis_type">Pregnancy</small>
-                        <select id="cmb_epis_pregnancy" name="cmb_epis_pregnancy" class="form-control input-sm form-mandatory" required>  
-                            <option value="">- Select -</option>
-                            <option value="Pregnant">Pregnant</option>
-                            <option value="Non-Pregnant" selected>Non-Pregnant</option>
-                        </select>
-                    </div>
-
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <small for="txt_epis_date">DATE: </small>
                         <input class="form-control" name="txt_epis_date" id="txt_epis_date" placeholder="" type="text" readonly>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <small for="txt_epis_time">TIME: </small>
                         <input class="form-control" name="txt_epis_time" id="txt_epis_time" placeholder="" type="text" readonly>
                     </div>
                 </div>
 
-                <div class="form-group ">
+                <!-- <div class="form-group ">
                     <div class="col-md-offset-1 col-md-8">
                        NAME:  <b><big id="txt_epis_name"></big></b>
                     </div>
-                    <div class="col-md-2">
-                       MRN:  <b><big id="txt_epis_mrn"></big></b>
-                    </div>
-                </div>
+                </div> -->
             </form></div>
             <div class="modal-body">
                 <div class="row">
@@ -90,7 +79,7 @@
                                             <input type="text" class="form-control form-mandatory" id="txt_epis_dept" required tabindex=1>
                                             <input type="hidden" id="hid_epis_dept" name="regdept" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_dept" data-toggle="modal" onclick_xguna="pop_item_select('epis_dept');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>                                          
@@ -100,7 +89,7 @@
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_source" id="txt_epis_source" required tabindex=2>
                                             <input type="hidden" id="hid_epis_source" name="" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_source" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_source" data-toggle="modal" onclick_xguna="pop_item_select('epis_source');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -110,7 +99,7 @@
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_case" id="txt_epis_case" required tabindex=3>
                                             <input type="hidden" id="hid_epis_case" name="case_code"/>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_case" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_case" data-toggle="modal" onclick_xguna="pop_item_select('epis_case');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -120,7 +109,7 @@
                                             <input type="text" class="form-control form-mandatory" name="txt_epis_doctor" id="txt_epis_doctor" required tabindex=4>
                                             <input type="hidden" id="hid_epis_doctor" name="admdoctor"/>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_doctor" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_doctor" data-toggle="modal" onclick_xguna="pop_item_select('epis_doctor');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -154,7 +143,7 @@
                                             <input type="text" class="form-control form-mandatory" id="txt_epis_fin" name="txt_epis_fin" required>
                                             <input type="hidden" id="hid_epis_fin" name="pay_type"/>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_fin" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('epis_fin');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_fin" data-toggle="modal" onclick_xguna="pop_item_select('epis_fin');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -207,10 +196,10 @@
                                         <input id="txt_epis_our_refno" name="txt_epis_our_refno" type="text" class="form-control"  readonly>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-md-offset-1 col-md-4">
+                                <div class="form-group" style="padding-top: 30px !important;">
+                                    <div class="col-md-offset-1 col-md-1">
                                         <small for="rad_epis_fee">Admin Fee</small>
-                                        <div class="panel-body">
+                                        <div class="panel-body" style="padding: 3px !important;">
                                             <small class="radio-inline"><input type="radio" value="1" name="rad_epis_fee" id="rad_epis_fee_yes" checked>Yes</small>
                                             <small class="radio-inline"><input type="radio" value="0" name="rad_epis_fee" id="rad_epis_fee_no">No</small>
                                         </div>
@@ -219,14 +208,31 @@
                                         <small for="txt_epis_queno">Queue No</small>
                                         <input id="txt_epis_queno"  type="text" class="form-control">
                                     </div>
+
+                                    <div class="col-sm-2">
+                                        <small for="txt_epis_type">Case</small>
+                                        <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control input-sm form-mandatory" required>
+                                            <option value="">- Select -</option>
+                                            <option value="1">New Case</option>
+                                            <option value="2">Follow Up</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <small for="txt_epis_type">Pregnancy</small>
+                                        <select id="cmb_epis_pregnancy" name="cmb_epis_pregnancy" class="form-control input-sm form-mandatory" required>  
+                                            <option value="">- Select -</option>
+                                            <option value="Pregnant">Pregnant</option>
+                                            <option value="Non-Pregnant" selected>Non-Pregnant</option>
+                                        </select>
+                                    </div>
+                                    
+                                        
+                                    <div class="pull-right" style="margin-top: 10px;margin-right: 25px;">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success" id="btn_save_episode">Save changes</button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-offset-8 col-md-4">
-                                    <div class="pull-right">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-success" id="btn_save_episode">Save changes</button>
-                                    </div>
-                                    </div>
                                 </div>
 
                             </div>
@@ -602,6 +608,8 @@
                             <th data-column-id="debtor_type" >Debtor Type</th>
                             <th data-column-id="debtor_code" >Debtor Code</th>
                             <th data-column-id="debtor_name" >Name</th>
+                            <th data-column-id="debtor_description" >Name</th>
+                            <th data-column-id="debtor_debtortycode" >Name</th>
                         </tr>
                         </thead>
 
@@ -647,7 +655,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <small for="input-title">RELATIONSHIP</small>
-                                            <!--input class="form-control" id="txt_grtr_relation" placeholder="" type="text" onclick="Global.pop_item_select('grtr_relation');">
+                                            <!--input class="form-control" id="txt_grtr_relation" placeholder="" type="text" onclick_xguna="pop_item_select('grtr_relation');">
                                             <input type="text" id="hid_grtr_relation" /-->
                                             <select id="cmb_grtr_relation" name="cmb_grtr_relation" class="form-control form-mandatory">
                                                 <option value="">- Select relationship -</option>
@@ -747,7 +755,7 @@
 </div>
 
 <div id="mdl_reference" class="modal fade" role="dialog" data-backdrop="static" style="z-index: 111 !important;">
-    <div class="modal-dialog smallmodal">
+    <div class="modal-dialog mediummodal">
         <form class="form-horizontal">
             <div class="modal-content">
                 <div class="modal-header label-info">
@@ -758,30 +766,29 @@
                     <table id="tbl_epis_reference" class="table table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th data-column-id="mrn" >Debtor Code</th>
-                            <th data-column-id="mrn" >Name</th>
-                            <th data-column-id="mrn" >GL Type</th>
-                            <th data-column-id="mrn" >Staff ID</th>
-                            <th data-column-id="mrn" >Ref No</th>
-                            <th data-column-id="mrn" >Our Ref No</th>
-                            <th data-column-id="mrn" >childno</th>
-                            <th data-column-id="mrn" >episno</th>
-                            <th data-column-id="mrn" >medcase</th>
-                            <th data-column-id="mrn" >mrn</th>
-                            <th data-column-id="mrn" >relatecode</th>
-                            <th data-column-id="mrn" >remark</th>
-                            <th data-column-id="mrn" >startdate</th>
-                            <th data-column-id="mrn" >enddate</th>
+                            <th >Debtor Code</th>
+                            <th >Name</th>
+                            <th >GL Type</th>
+                            <th >Staff ID</th>
+                            <th >Ref No</th>
+                            <th >Our Ref No</th>
+                            <th >childno</th>
+                            <th >episno</th>
+                            <th >medcase</th>
+                            <th >mrn</th>
+                            <th >relatecode</th>
+                            <th >remark</th>
+                            <th >startdate</th>
+                            <th >enddate</th>
                         </tr>
                         </thead>
 
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" disabled>VIEW GL</button>
-                    <button type="button" class="btn btn-info" disabled>GL DETAIL</button>
+                    <button id="btn_epis_view_gl" type="button" class="btn btn-info" disabled>VIEW GL</button>
+                    <button id="btn_epis_detail_gl" type="button" class="btn btn-info" disabled>GL DETAIL</button>
                     <button id="btn_epis_new_gl" type="button" class="btn btn-info" >NEW GL</button>
-                    <button type="button" class="btn btn-info" disabled>OK</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
                 </div>
             </div>
@@ -818,7 +825,7 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control form-mandatory" name="txt_newgl_corpcomp" id="txt_newgl_corpcomp">
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_newgl_corpcomp" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_corpcomp');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_newgl_corpcomp" data-toggle="modal" onclick_xguna="pop_item_select('newgl_corpcomp');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -834,7 +841,7 @@
                                             <input type="text" class="form-control form-mandatory" name="txt_newgl_occupcode" id="txt_newgl_occupcode">
                                             <input type="hidden" name="hid_newgl_occupcode" id="hid_newgl_occupcode" value="" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_newgl_occupcode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_occupcode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_newgl_occupcode" data-toggle="modal" onclick_xguna="pop_item_select('newgl_occupcode');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
 
@@ -845,7 +852,7 @@
                                             <input type="text" class="form-control form-mandatory" name="txt_newgl_relatecode" id="txt_newgl_relatecode">
                                             <input type="hidden" name="hid_newgl_relatecode" id="hid_newgl_relatecode" value="" />
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_newgl_relatecode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('newgl_relatecode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_newgl_relatecode" data-toggle="modal" onclick_xguna="pop_item_select('newgl_relatecode');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>

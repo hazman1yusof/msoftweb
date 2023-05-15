@@ -521,9 +521,21 @@ class PatmastController extends defaultController
                             ->get();
                 }else if($request->type == 2){
                     $data = DB::table('debtor.debtormast AS dm')
-                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
-                            ->leftJoin('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode')
+                            ->join('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->where('dt.recstatus','=','ACTIVE')  
                             ->where('dm.compcode','=',session('compcode'))  
+                            ->where('dt.compcode','=',session('compcode'))  
+                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->whereNotIn('dm.debtortype', ['PR', 'PT'])
+                            ->get();
+                }else if($request->type == 'newgl'){
+                    $data = DB::table('debtor.debtormast AS dm')
+                            ->select('dm.debtorcode as code','dm.name as description')
+                            ->join('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
+                            ->where('dt.recstatus','=','ACTIVE')  
+                            ->where('dm.compcode','=',session('compcode'))  
+                            ->where('dt.compcode','=',session('compcode'))  
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->whereNotIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
@@ -587,7 +599,7 @@ class PatmastController extends defaultController
             case 'get_refno_list':
                 $data = DB::table('hisdb.guarantee')
                     ->select('debtorcode','name','gltype','staffid','refno','ourrefno','childno','episno','medcase','mrn','relatecode','remark','startdate','enddate')
-                    ->where('debtorcode','=',$request->debtorcode)
+                    // ->where('debtorcode','=',$request->debtorcode)
                     ->where('mrn','=',$request->mrn)
                     ->get();
 

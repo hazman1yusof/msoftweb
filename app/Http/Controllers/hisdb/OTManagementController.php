@@ -67,8 +67,14 @@ class OTManagementController extends defaultController
                     ->select('code','description')
                     ->where('compcode','=',session('compcode'))
                     ->get();
+
+
+        $otroom = DB::table('hisdb.apptresrc')
+                    ->select('resourcecode','description')
+                    ->where('compcode','=',session('compcode'))
+                    ->get();
         
-        return view('hisdb.otmanagement.otmanagement',compact('otstatus'));
+        return view('hisdb.otmanagement.otmanagement',compact('otstatus','otroom'));
         
     }
     

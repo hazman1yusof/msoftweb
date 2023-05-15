@@ -330,6 +330,21 @@
 		    height: calc(100vh - 70px);
 		}
 
+		.epis_name_big{
+			display: block;
+		    min-height: 30px;
+		    padding: 5px 10px;
+		    background: #dcffd7;
+		    border: solid #114400 1px;
+		    border-radius: 8px;
+		    overflow: visible;
+		    overflow-wrap: anywhere;
+		}
+
+		#tbl_epis_reference tr.active td{
+			background-color: #e6ffe8 !important;
+		}
+
 	</style>
 
 </head>
@@ -649,7 +664,6 @@
 
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
-	<script type="text/javascript" src="js/myjs/global.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
 
