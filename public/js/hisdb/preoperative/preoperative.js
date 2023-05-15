@@ -193,7 +193,6 @@ function populate_preoperative(obj){
     // form_preoperative
     $('#mrn_preoperative').val(obj.mrn);
     $("#episno_preoperative").val(obj.latest_episno);
-    $('#ward').val(obj.ward);
 }
 
 function autoinsert_rowdata(form,rowData){
