@@ -31,8 +31,15 @@ class ComputeridController extends defaultController
 
     public function form(Request $request)
     {  
-        switch($request->oper){
-
+        switch($request->action){
+            case 'setcompid': return $this->setcompid($request);break;
         }
+    }
+
+    public function setcompid(Request $request){
+        if(!empty($request->computerid)){
+            $request->session()->put('computerid',$request->computerid);
+        }
+        dd(session('computerid'));
     }
 }

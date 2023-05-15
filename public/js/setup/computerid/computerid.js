@@ -16,8 +16,16 @@ function initcompid(){
 function setcompid(){
     if($('#computerid').val() !== ''){
         localStorage.setItem('computerid', $('#computerid').val());
-        success_fld('#computerid');
-    }else{
+
+		$.post( './computerid/form?action=setcompid', {computerid: $('#computerid').val(),_token:$('#_token').val()}, function( data ) {
+			
+		}).fail(function(data) {
+    		error_fld('#computerid');
+		}).done(function(data){
+        	success_fld('#computerid');
+        	alert('Computerid successfully set');
+		});
+	}else{
     	error_fld('#computerid');
         alert('Computerid field cant be blank!');
     }

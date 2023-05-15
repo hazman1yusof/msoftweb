@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -98,7 +97,6 @@ $(document).ready(function () {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
@@ -114,7 +112,7 @@ $(document).ready(function () {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -124,7 +122,7 @@ $(document).ready(function () {
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -151,7 +149,6 @@ $(document).ready(function () {
 		keys: true,
 		extraparam:{
 			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
@@ -167,13 +164,13 @@ $(document).ready(function () {
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
+			refreshGrid('#jqGrid',urlParam2,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

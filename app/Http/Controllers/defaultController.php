@@ -402,7 +402,6 @@ abstract class defaultController extends Controller{
             	'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
                 'recstatus' => 'ACTIVE'
             ];
 
@@ -413,6 +412,10 @@ abstract class defaultController extends Controller{
                     continue;
                 }
                 $array_insert[$value] = strtoupper($request[$request->field[$key]]);
+            }
+
+            if(session()->has('computerid')){
+                $array_insert['computerid'] = session('computerid');
             }
 
             $table->insert($array_insert);
@@ -442,7 +445,6 @@ abstract class defaultController extends Controller{
         	'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'lastcomputerid' => $request->computerid,
             'recstatus' => 'ACTIVE'
         ];
 
@@ -464,6 +466,10 @@ abstract class defaultController extends Controller{
             }
 
         	$array_update[$value] = $field_value;
+        }
+
+        if(session()->has('computerid')){
+            $array_update['lastcomputerid'] = session('computerid');
         }
 
         try {
@@ -514,9 +520,12 @@ abstract class defaultController extends Controller{
             $table->update([
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
                 'recstatus' => 'DEACTIVE',
             ]);
+            
+            if(session()->has('computerid')){
+                $array_update['lastcomputerid'] = session('computerid');
+            }
 
             $responce = new stdClass();
             $responce->sql = $table->toSql();

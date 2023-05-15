@@ -46,6 +46,7 @@ class RaceController extends defaultController
         try {
 
             $citizen = DB::table('hisdb.racecode')
+                            ->where('compcode','=',session('compcode'))
                             ->where('Code','=',$request->Code);
 
             if($citizen->exists()){
@@ -59,7 +60,7 @@ class RaceController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -88,7 +89,7 @@ class RaceController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -108,7 +109,7 @@ class RaceController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

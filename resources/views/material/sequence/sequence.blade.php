@@ -8,7 +8,6 @@
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-			<input id="computerid" name="computerid" type="hidden" >
 				<div class="ScolClass">
 					<div name='Scol'>Search By : </div>
 				</div>
