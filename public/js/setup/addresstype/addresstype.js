@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-    $("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+    computerid_set('#computerid');
     /////////////////////////validation//////////////////////////
     $.validate({
         language : {
@@ -47,24 +46,24 @@ $(document).ready(function () {
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
             //{ label: 'Address Type', name: 'addtype', width: 35, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }},
-            { label: 'Address Type', name: 'addtype', width: 30, classes: 'wrap', canSearch: true,editable: true, edittype:"select",formatter:'select', 
+            { label: 'Address Type', name: 'addtype', width: 40, classes: 'wrap', canSearch: true,editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"CURRENT:CURRENT;OFFICE:OFFICE;HOME:HOME"
                 }},
-            { label: 'Description', name: 'description', width: 50, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
                 },
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
-            { label: 'adduser', name: 'adduser', width: 30, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 30, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 30, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 30, hidden: true },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 30, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 30, hidden:true},
+            { label: 'Add User', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 30, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 30, hidden:true},
         ],
@@ -124,7 +123,8 @@ $(document).ready(function () {
     var myEditOptions = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val()
+            "_token": $("#_token").val(),
+            "computerid": $('#computerid').val()
         },
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -185,7 +185,8 @@ $(document).ready(function () {
     var myEditOptions_edit = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val()
+            "_token": $("#_token").val(),
+            "computerid": $('#computerid').val()
         },
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);

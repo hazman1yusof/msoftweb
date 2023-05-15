@@ -65,8 +65,7 @@ class AdmisSrcController extends defaultController
                     'telno' => strtoupper($request->telno),
                     'email' => strtoupper($request->email),
                     'type' => $request->type,
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => $request->computerid,
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -101,8 +100,7 @@ class AdmisSrcController extends defaultController
                     'telno' => strtoupper($request->telno),
                     'email' => strtoupper($request->email),
                     'type' => $request->type,
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => $request->computerid,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -121,7 +119,8 @@ class AdmisSrcController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => $request->computerid,
             ]);
     }
 }

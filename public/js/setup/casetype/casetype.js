@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-    $("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+    computerid_set('#computerid');
     /////////////////////////validation//////////////////////////
     $.validate({
         language : {
@@ -25,7 +24,7 @@ $(document).ready(function () {
     };
 
 	var fdl = new faster_detail_load();
-    var err_reroll = new err_reroll('#jqGrid',['case_code', 'description']);
+    var err_reroll = new err_reroll('#jqGrid',['case_code', 'description', 'grpcasetype']);
 
     /////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
@@ -45,19 +44,25 @@ $(document).ready(function () {
         editurl: "./casetype/form",
         colModel: [
             { label: 'compcode', name: 'compcode', width: 20, hidden:true},						
-            { label: 'Case Code', name: 'case_code', width: 30, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Description', name: 'description', width: 60, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
+            { label: 'Case Code', name: 'case_code', width: 50, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+            { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true, editable: true,editrules: { required: true }, 
                 editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Source Type', name: 'grpcasetype', width: 30, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
+            { label: 'Source Type', name: 'grpcasetype', width: 50, classes: 'wrap',editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"DELIVERY:DELIVERY;REGISTER:REGISTER"
-                }},
-            { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            }},
+            { label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
-                },
+            },
+            { label: 'Add User', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
         ],
         autowidth:true,
@@ -116,7 +121,8 @@ $(document).ready(function () {
     var myEditOptions = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val()
+            "_token": $("#_token").val(),
+            "computerid": $('#computerid').val()
         },
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -176,7 +182,8 @@ $(document).ready(function () {
     var myEditOptions_edit = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val()
+            "_token": $("#_token").val(),
+            "computerid": $('#computerid').val()
         },
         oneditfunc: function (rowid) {
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();

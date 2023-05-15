@@ -3,8 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
+	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -25,7 +24,7 @@ $(document).ready(function () {
 	};
 
 	var fdl = new faster_detail_load();
-	var err_reroll = new err_reroll('#jqGrid',['pc_postcode', 'pc_place_name','pc_district']);
+	var err_reroll = new err_reroll('#jqGrid',['pc_postcode','pc_place_name','pc_district','st_StateCode','cn_Code']);
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam = {
@@ -50,36 +49,36 @@ $(document).ready(function () {
 		editurl: "./postcode/form",
 		colModel: [
             { label: 'compcode', name: 'pc_compcode', hidden: true },
-            { label: 'Postode', name: 'pc_postcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'Place Name', name: 'pc_place_name', width: 30, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Postode', name: 'pc_postcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Place Name', name: 'pc_place_name', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'District', name: 'pc_district', width: 60, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'State', name: 'st_StateCode', width: 15, canSearch: true, editable: true, 
+            { label: 'State', name: 'st_StateCode', width: 60, canSearch: true, editable: true, 
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:StateCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Country', name: 'cn_Code', width: 15, canSearch: true, editable: true,
+			{ label: 'Country', name: 'cn_Code', width: 60, canSearch: true, editable: true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:CountryCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Status', name: 'pc_recstatus', width: 15, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Status', name: 'pc_recstatus', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
                     value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
                     cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
                 },
 			{ label: 'id', name: 'pc_idno', width:10, hidden: true, key:true},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
+			{ label: 'Add User', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
 		],
@@ -139,7 +138,8 @@ $(document).ready(function () {
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -203,7 +203,8 @@ $(document).ready(function () {
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#_token").val(),
+			"computerid": $('#computerid').val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
@@ -402,13 +403,12 @@ $(document).ready(function () {
 						if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 							$(gridname+' tr#1').click();
 							$(gridname+' tr#1').dblclick();
-							//$('#povalidate').focus();
 						}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 							$('#'+obj.dialogname).dialog('close');
 						}
 					}
 		},{
-			title:"Select Account Code",
+			title:"Select State",
 			open: function(){
 				dialog_state.urlParam.filterCol=['compcode','recstatus'];
 				dialog_state.urlParam.filterVal=['session.compcode','ACTIVE'];
@@ -444,7 +444,7 @@ $(document).ready(function () {
 						}
 					}
 		},{
-			title:"Select Account Code",
+			title:"Select Country",
 			open: function(){
 				dialog_country.urlParam.filterCol=['compcode','recstatus'];
 				dialog_country.urlParam.filterVal=['session.compcode','ACTIVE'];
