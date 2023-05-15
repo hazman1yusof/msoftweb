@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -47,13 +46,13 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true, key:true },
 			{ label: 'idno', name: 'idno', width: 5,hidden:true, key:true},		
 			{ label: 'Code', name: 'Code', width: 50, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 80, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Add User', name: 'adduser', width: 90, hidden:false},
-			{ label: 'Add Date', name: 'adddate', width: 90, hidden:false},
-			{ label: 'Upd User', name: 'upduser', width: 90, hidden:false},
-			{ label: 'Upd Date', name: 'upddate', width: 90, hidden:false},
-			{ label: 'Computer ID', name: 'computerid', width: 90, hidden:false},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'Description', name: 'Description', classes: 'wrap', canSearch: true, width: 100, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Add User', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 59, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 50, hidden:true},
 			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
 			cellattr: function(rowid, cellvalue)
 						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
@@ -115,8 +114,7 @@ function check_cust_rules(rowid){
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
+			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -175,8 +173,7 @@ function check_cust_rules(rowid){
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
+			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
@@ -202,7 +199,7 @@ function check_cust_rules(rowid){
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

@@ -46,6 +46,7 @@ class AddressTypeController extends defaultController
         try {
 
             $addresstype = DB::table('hisdb.addcode')
+                            ->where('compcode','=',session('compcode'))
                             ->where('addtype','=',$request->addtype);
 
             if($addresstype->exists()){
@@ -58,7 +59,7 @@ class AddressTypeController extends defaultController
                     'addtype' => strtoupper($request->addtype),
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -87,7 +88,7 @@ class AddressTypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'idno' => strtoupper($request->idno),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -107,7 +108,7 @@ class AddressTypeController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

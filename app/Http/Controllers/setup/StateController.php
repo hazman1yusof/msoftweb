@@ -46,6 +46,7 @@ class StateController extends defaultController
         try {
 
             $state = DB::table('hisdb.state')
+                            ->where('compcode','=',session('compcode'))
                             ->where('StateCode','=',$request->StateCode);
 
             if($state->exists()){
@@ -60,7 +61,7 @@ class StateController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -90,7 +91,7 @@ class StateController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -110,7 +111,7 @@ class StateController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

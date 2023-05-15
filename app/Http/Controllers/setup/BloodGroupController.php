@@ -46,6 +46,7 @@ class BloodGroupController extends defaultController
         try {
 
             $bloodGroup = DB::table('hisdb.bloodgroup')
+                            ->where('compcode','=',session('compcode'))
                             ->where('bloodcode','=',$request->bloodcode);
 
             if($bloodGroup->exists()){
@@ -59,7 +60,7 @@ class BloodGroupController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -88,7 +89,7 @@ class BloodGroupController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -108,7 +109,7 @@ class BloodGroupController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

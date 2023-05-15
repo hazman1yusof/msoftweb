@@ -1,322 +1,117 @@
-$.jgrid.defaults.responsive = true;
-$.jgrid.defaults.styleUI = 'Bootstrap';
-var editedRow=0;
+<?php
 
-$(document).ready(function () {
-	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-	/////////////////////////validation//////////////////////////
-	$.validate({
-		language : {
-			requiredFields: ''
-		},
-	});
-	
-	var errorField=[];
-	conf = {
-		onValidate : function($form) {
-			if(errorField.length>0){
-				return {
-					element : $('#'+errorField[0]),
-					message : ' '
-				}
-			}
-		},
-	};
+namespace App\Http\Controllers\setup;
 
-	var fdl = new faster_detail_load();
-	var err_reroll = new err_reroll('#jqGrid',['dosecode', 'dosedesc', 'convfactor']);
+use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
+use stdClass;
+use DB;
+use DateTime;
+use Carbon\Carbon;
 
-	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
-	var urlParam={
-		action:'get_table_default',
-		url:'util/get_table_default',
-		field:'',
-		table_name:'hisdb.dose',
-		table_id:'dosecode',
-		sort_idno: true
-	}
+class DosageController extends defaultController
+{   
 
-	/////////////////////parameter for saving url////////////////////////////////////////////////
-	var addmore_jqgrid={more:false,state:false,edit:false}
-	$("#jqGrid").jqGrid({
-		datatype: "local",
-		editurl: "/dosage/form",
-		 colModel: [
-			 { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
-			{ label: 'Dose Code', name: 'dosecode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Description', name: 'dosedesc', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Conversion <br> Factor', name: 'convfactor', classes: 'wrap', width: 10, editable: true, align: 'right',
-					editrules:{required: true}, 
-					editoptions: { maxlength: 100, style: "text-transform:uppercase"},
-			},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-			{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
-			{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
-			{ label: 'deluser', name: 'deluser', width: 90, hidden:true},
-			{ label: 'deldate', name: 'deldate', width: 90, hidden:true},
-			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
-				cellattr: function(rowid, cellvalue)
-					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
-			},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
-			
-		],
-		autowidth:true,
-		multiSort: true,
-		viewrecords: true,
-		loadonce:false,
-		sortname: 'idno',
-		sortorder: 'desc',
-		width: 900,
-		height: 470,
-		rowNum: 30,
-		pager: "#jqGridPager",
-		onSelectRow:function(rowid, selected){
-			if(!err_reroll.error)$('#p_error').text('');   //hilangkan error msj after save
-		},
-		loadComplete: function(){
-			if(addmore_jqgrid.more == true){
-				$('#jqGrid_iladd').click();
-			}else if($('#jqGrid').data('lastselrow') == 'none'){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}else{
-			$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
-			$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
-			}
+    var $table;
+    var $duplicateCode;
 
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
-			if(err_reroll.error == true){
-				err_reroll.reroll();
-			}
-		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGrid_iledit").click();
-			$('#p_error').text('');   //hilangkan duplicate error msj after save
-		},
-		gridComplete: function () {
-			fdl.set_array().reset();
-			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
-				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}	
-		},				
-	});
-	function check_cust_rules(rowid){
-		var chk = ['dosecode','dosedesc','convfactor'];
-		chk.forEach(function(e,i){
-			var val = $("#jqGrid input[name='"+e+"']").val();
-			if(val.trim().length <= 0){
-				myerrorIt_only("#jqGrid input[name='"+e+"']",true);
-			}else{
-				myerrorIt_only("#jqGrid input[name='"+e+"']",false);
-			}
-		})
-	}
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->duplicateCode = "dosecode";
+    }
 
-	//////////////////////////My edit options /////////////////////////////////////////////////////////
-	var myEditOptions = {
-		keys: true,
-		extraparam:{
-			"_token": $("#_token").val()
-		},
-		oneditfunc: function (rowid) {
-			$('#jqGrid').data('lastselrow','none');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("#dosedesc").focus().select();
-			$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
-			});
-			$("#jqGrid input[type='text']").on('focus',function(){
-				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid input[type='text']").removeClass( "error" );
-			});	
-		},
-		aftersavefunc: function (rowid, response, options) {
-			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			addmore_jqgrid.more = true;
-			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'add');
-			errorField.length=0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-		},
-		errorfunc: function(rowid,response){
-			var data = JSON.parse(response.responseText)
-			//$('#p_error').text(response.responseText);
-			err_reroll.old_data = data.request;
-			err_reroll.error = true;
-			err_reroll.errormsg = data.errormsg;
-			refreshGrid('#jqGrid',urlParam,'add');
-		},
-		beforeSaveRow: function (options, rowid) {
-			$('#p_error').text('');
-			if(errorField.length>0)return false;
+    public function show(Request $request)
+    {   
+        return view('setup.dosage.dosage');
+    }
 
-			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			console.log(data);
+    public function form(Request $request)
+    {  
+        switch($request->oper){
+            case 'add':
+                return $this->add($request);
+            case 'edit':
+                return $this->edit($request);
+            case 'del':
+                return $this->del($request);
+            default:
+                return 'error happen..';
+        }
+    }
 
-			check_cust_rules();
+     public function add(Request $request){
 
-			let editurl = "/dosage/form?"+
-				$.param({
-					action: 'dosage_save',
-				});
-			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid',urlParam,'add');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-		},
-		errorTextFormat: function (data) {
-			alert(data);
-		},
-	};
+        DB::beginTransaction();
+        try {
 
-	var myEditOptions_edit = {
-		keys: true,
-		extraparam:{
-			"_token": $("#_token").val()
-		},
-		oneditfunc: function (rowid) {
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("#dosedesc").focus().select();
-			$("input[name='dosecode']").attr('disabled','disabled');
-			$("input[name='convfactor']").keydown(function(e) {//when click tab at last column in header, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
-			});
-			$("#jqGrid input[type='text']").on('focus',function(){
-				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid input[type='text']").removeClass( "error" );
-			});
-		},
-		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'edit');
-			errorField.length=0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-		},
-		errorfunc: function(rowid,response){
-			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
-		},
-		beforeSaveRow: function (options, rowid) {
-			$('#p_error').text('');
-			if(errorField.length>0)return false;
+            $dosage = DB::table('hisdb.dose')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('dosecode','=',$request->dosecode);
 
-			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
-			// console.log(data);
+            if($dosage->exists()){
+                throw new \Exception("Record Duplicate");
+            }
 
-			check_cust_rules();
+            DB::table('hisdb.dose')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'dosecode' => strtoupper($request->dosecode),
+                    'dosedesc' => strtoupper($request->dosedesc),
+                    'convfactor' => strtoupper($request->convfactor),
+                    'recstatus' => strtoupper($request->recstatus),
+                    //'idno' => strtoupper($request->idno),
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
 
-			let editurl = "/dosage/form?"+
-				$.param({
-					action: 'dosage_save',
-				});
-			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
-		},
-		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid',urlParam,'edit');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-		},
-		errorTextFormat: function (data) {
-			alert(data);
-		}
-	};
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
 
-	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-	$("#jqGrid").inlineNav('#jqGridPager', {
-		add: true,
-		edit: true,
-		cancel: true,
-		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
-		restoreAfterSelect: false,
-		addParams: {
-			addRowParams: myEditOptions
-		},
-		editParams: myEditOptions_edit
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		id: "jqGridPagerDelete",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-trash",
-		title: "Delete Selected Row",
-		onClickButton: function () {
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			if (!selRowId) {
-				bootbox.alert('Please select row');
-			} else {
-				bootbox.confirm({
-					message: "Are you sure you want to delete this row?",
-					buttons: {
-						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
-					},
-					callback: function (result) {
-						if (result == true) {
-							param = {
-								_token: $("#_token").val(),
-								action: 'dosage_save',
-								dosecode: $('#dosecode').val(),
-								idno: selrowData('#jqGrid').idno,
-							}
-							$.post( "/dosage/form?"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function (data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
-								refreshGrid("#jqGrid", urlParam);
-							});
-						}else{
-							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
-						}
-					}
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		id: "jqGridPagerRefresh",
-		caption: "", cursor: "pointer", position: "last",
-		buttonicon: "glyphicon glyphicon-refresh",
-		title: "Refresh Table",
-		onClickButton: function () {
-			refreshGrid("#jqGrid", urlParam);
-		},
-	});
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
 
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-	
-	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
-	
-	//toogleSearch('#sbut1','#searchForm','on');
-	populateSelect2('#jqGrid','#searchForm');
-	searchClick2('#jqGrid','#searchForm',urlParam);
+            return response(json_encode($responce), 500);
+        }
+    }
 
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
-	
-	function err_reroll(jqgridname,data_array){
-		this.jqgridname = jqgridname;
-		this.data_array = data_array;
-		this.error = false;
-		this.errormsg = 'asdsds';
-		this.old_data;
-		this.reroll=function(){
+    public function edit(Request $request){
+        
+        DB::beginTransaction();
+        try {
 
-			$('#p_error').text(this.errormsg);
-			var self = this;
-			$(this.jqgridname+"_iladd").click();
+            DB::table('hisdb.dose')
+                ->where('idno','=',$request->idno)
+                ->update([  
+					'dosecode' => strtoupper($request->dosecode),
+                    'dosedesc' => strtoupper($request->dosedesc),
+                    'convfactor' => strtoupper($request->convfactor),
+                    'recstatus' => strtoupper($request->recstatus),
+                    'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]); 
 
-			this.data_array.forEach(function(item,i){
-				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
-			});
-			this.error = false;
-		}	
-	}
-});		
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function del(Request $request){
+        DB::table('hisdb.dose')
+            ->where('idno','=',$request->idno)
+            ->update([  
+                'recstatus' => 'DEACTIVE',
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
+            ]);
+    }
+}

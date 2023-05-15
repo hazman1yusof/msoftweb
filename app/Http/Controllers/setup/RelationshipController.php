@@ -47,6 +47,7 @@ class RelationshipController extends defaultController
         try {
 
             $citizen = DB::table('hisdb.relationship')
+                            ->where('compcode','=',session('compcode'))
                             ->where('RelationShipCode','=',$request->RelationShipCode);
 
             if($citizen->exists()){
@@ -60,7 +61,7 @@ class RelationshipController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -89,7 +90,7 @@ class RelationshipController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -109,7 +110,7 @@ class RelationshipController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

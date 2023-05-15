@@ -46,6 +46,7 @@ class WardController extends defaultController
         try {
 
             $warddept = DB::table('sysdb.department')
+                            ->where('compcode','=',session('compcode'))
                             ->where('warddept','=',$request->warddept);
 
             if($warddept->exists()){
@@ -61,7 +62,7 @@ class WardController extends defaultController
                     'region' => strtoupper($request->region),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -91,7 +92,7 @@ class WardController extends defaultController
                     'region' => strtoupper($request->region),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -111,7 +112,7 @@ class WardController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

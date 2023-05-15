@@ -46,6 +46,7 @@ class DischargeDestinationController extends defaultController
         try {
 
             $discharge = DB::table('hisdb.discharge')
+                            ->where('compcode','=',session('compcode'))
                             ->where('code','=',$request->code);
 
             if($discharge->exists()){
@@ -58,7 +59,7 @@ class DischargeDestinationController extends defaultController
                     'code' => strtoupper($request->code),
                     'discharge' => strtoupper($request->discharge),
                     'recstatus' => strtoupper($request->recstatus),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -87,7 +88,7 @@ class DischargeDestinationController extends defaultController
                     'discharge' => strtoupper($request->discharge),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -107,7 +108,7 @@ class DischargeDestinationController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

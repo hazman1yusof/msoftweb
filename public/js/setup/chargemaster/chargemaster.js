@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -108,7 +107,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='cm_lastcomputerid']", "input[name='cm_lastipaddress']", "input[name='cm_computerid']", "input[name='cm_ipaddress']");
 				check_chgclass_on_open();
 				dialog_chggroup.on();
 				dialog_chgclass.on();
@@ -232,9 +230,7 @@ $(document).ready(function () {
 			cellattr: function (rowid, cellvalue)
 			{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
 			{ label: 'computerid', name: 'cm_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'cm_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'cm_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'cm_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -340,7 +336,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_ipaddress', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate']);
+	addParamField('#jqGrid',false,saveParam,['cm_idno','ct_description', 'cc_description','cg_description', 'cm_compcode', 'cm_computerid', 'cm_adddate', 'cm_adduser','cm_upduser','cm_upddate']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
 
@@ -458,6 +454,8 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				$('#idno').val(data.idno);
+				$('#cm_computerid').val(data.computerid);
+				$('#cm_lastcomputerid').val(data.lastcomputerid);
 				
 				urlParam2.filterVal[1]=$('#cm_chgcode').val();
 			}else if(selfoper=='edit'){

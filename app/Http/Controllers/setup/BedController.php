@@ -129,8 +129,7 @@ class BedController extends defaultController
                     'bedchgcode' => strtoupper($request->bedchgcode),
                     'statistic' => strtoupper($request->statistic), 
                     'recstatus' => 'ACTIVE',
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -163,8 +162,7 @@ class BedController extends defaultController
                     'bedchgcode' => strtoupper($request->bedchgcode), 
                     'statistic' => $request->statistic,    
                     // 'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -186,7 +184,8 @@ class BedController extends defaultController
                 ->update([  
                     'recstatus' => 'DEACTIVE',
                     'deluser' => strtoupper(session('username')),
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid')
                 ]);
 
             DB::commit();

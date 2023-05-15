@@ -4,7 +4,6 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -70,7 +69,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_chggroup.on();
 				dialog_ipdept.on();
 				dialog_opdept.on();
@@ -156,9 +154,7 @@ $(document).ready(function () {
 			cellattr: function (rowid, cellvalue)
 			{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -257,7 +253,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'ipaddress', 'computerid', 'adddate', 'adduser','upduser','upddate','recstatus']);
+	addParamField('#jqGrid',false,saveParam,['idno', 'compcode', 'computerid', 'adddate', 'adduser','upduser','upddate','recstatus']);
 
 	/////////////////////////start grid pager/////////////////////////////////////////// //////////////
 

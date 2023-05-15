@@ -46,6 +46,7 @@ class PostcodeController extends defaultController
         try {
 
             $postcode = DB::table('hisdb.postcode')
+                            ->where('compcode','=',session('compcode'))
                             ->where('postcode','=',$request->pc_postcode);
 
             if($postcode->exists()){
@@ -61,7 +62,7 @@ class PostcodeController extends defaultController
                     'countrycode' => strtoupper($request->cn_Code),
                     'statecode' => strtoupper($request->st_StateCode),
                     'district' => strtoupper($request->pc_district),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -92,7 +93,7 @@ class PostcodeController extends defaultController
                     'countrycode' => strtoupper($request->cn_Code),
                     'statecode' => strtoupper($request->st_StateCode),
                     'district' => strtoupper($request->pc_district),
-                    'lastcomputerid' => $request->computerid,    
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -112,7 +113,7 @@ class PostcodeController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

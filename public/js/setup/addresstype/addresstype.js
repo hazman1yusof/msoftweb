@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-    computerid_set('#computerid');
     /////////////////////////validation//////////////////////////
     $.validate({
         language : {
@@ -24,7 +23,7 @@ $(document).ready(function () {
     };
 
 	var fdl = new faster_detail_load();
-    var err_reroll = new err_reroll('#jqGrid',['addtype', 'description']);
+    var err_reroll = new err_reroll('#jqGrid',['description']);
 
     /////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
@@ -49,14 +48,8 @@ $(document).ready(function () {
             { label: 'Address Type', name: 'addtype', width: 40, classes: 'wrap', canSearch: true,editable: true, edittype:"select",formatter:'select', 
                 editoptions:{
                     value:"CURRENT:CURRENT;OFFICE:OFFICE;HOME:HOME"
-                }},
+            }},
             { label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-            { label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-                editoptions:{
-                    value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
-                    cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
-                },
             { label: 'id', name: 'idno', width:10, hidden: true, key:true},
             { label: 'Add User', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
@@ -66,6 +59,12 @@ $(document).ready(function () {
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 30, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 30, hidden:true},
+            { label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+            editoptions:{
+                value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
+                cellattr: function(rowid, cellvalue)
+                        {return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+            },
         ],
         autowidth:true,
         multiSort: true,
@@ -108,7 +107,7 @@ $(document).ready(function () {
 	});
 
 	function check_cust_rules(rowid){
-		var chk = ['addtype','description'];
+		var chk = ['description'];
 		chk.forEach(function(e,i){
 			var val = $("#jqGrid input[name='"+e+"']").val();
 			if(val.trim().length <= 0){
@@ -123,8 +122,7 @@ $(document).ready(function () {
     var myEditOptions = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val(),
-            "computerid": $('#computerid').val()
+            "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -185,14 +183,13 @@ $(document).ready(function () {
     var myEditOptions_edit = {
         keys: true,
         extraparam:{
-            "_token": $("#_token").val(),
-            "computerid": $('#computerid').val()
+            "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
             $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
             $("#description").focus().select();
-            $("input[name='addtype']").attr('disabled','disabled');
+           // $("input[name='addtype']").attr('disabled','disabled');
             $("input[name='description']").keydown(function(e) {//when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGrid_ilsave').click();
@@ -213,7 +210,7 @@ $(document).ready(function () {
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGrid',urlParam,'add');
+            refreshGrid('#jqGrid',urlParam,'edit');
         },
         beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

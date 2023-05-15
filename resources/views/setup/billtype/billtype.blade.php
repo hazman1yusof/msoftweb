@@ -253,27 +253,14 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="computerid" name="computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
 				<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 				<div class="col-md-3">
-					<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
-			</div>    
-
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
-				<div class="col-md-3">
-					<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-
-				<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-				<div class="col-md-3">
-					<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-			</div>   
-
+			</div>
 		</form>
 	</div>
 	<!--------------------------------END Bill Type Master Form ------------------>
@@ -394,27 +381,14 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="svc_computerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="svc_computerid" name="svc_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="svc_computerid" name="svc_computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
 				<label class="col-md-2 control-label" for="svc_lastcomputerid">Last Computer Id</label>  
 				<div class="col-md-3">
-					<input id="svc_lastcomputerid" name="svc_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-			</div>    
-
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="svc_ipaddress">IP Address</label>  
-				<div class="col-md-3">
-					<input id="svc_ipaddress" name="svc_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-
-				<label class="col-md-2 control-label" for="svc_lastipaddress">Last IP Address</label>  
-				<div class="col-md-3">
-					<input id="svc_lastipaddress" name="svc_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="svc_lastcomputerid" name="svc_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div>
-
 		</form>
 	</div>
 	<!--------------------------------END Bill Type Service Form ------------------>
@@ -513,27 +487,14 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="i_computerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="i_computerid" name="i_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="i_computerid" name="i_computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
 				<label class="col-md-2 control-label" for="i_lastcomputerid">Last Computer Id</label>  
 				<div class="col-md-3">
-					<input id="i_lastcomputerid" name="i_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="i_lastcomputerid" name="i_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 			</div>    
-
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="i_ipaddress">IP Address</label>  
-				<div class="col-md-3">
-					<input id="i_ipaddress" name="i_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-
-				<label class="col-md-2 control-label" for="i_lastipaddress">Last IP Address</label>  
-				<div class="col-md-3">
-					<input id="i_lastipaddress" name="i_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-			</div> 
-
 		</form>
 	</div>
 	<!--------------------------------END Bill Type Item Form ------------------>
@@ -632,27 +593,14 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="t_computerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="t_computerid" name="t_computerid" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="t_computerid" name="t_computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
 				<label class="col-md-2 control-label" for="t_lastcomputerid">Last Computer Id</label>  
 				<div class="col-md-3">
-					<input id="t_lastcomputerid" name="t_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
+					<input id="t_lastcomputerid" name="t_lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit hideOne>
 				</div>
 			</div>    
-
-			<div class="form-group">
-				<label class="col-md-2 control-label" for="t_ipaddress">IP Address</label>  
-				<div class="col-md-3">
-					<input id="t_ipaddress" name="t_ipaddress" type="text" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-
-				<label class="col-md-2 control-label" for="t_lastipaddress">Last IP Address</label>  
-				<div class="col-md-3">
-					<input id="t_lastipaddress" name="t_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit hideOne>
-				</div>
-			</div> 
-
 		</form>
 	</div>
 	<!--------------------------------END Bill Charge Type Form ------------------>
