@@ -5,7 +5,6 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language: {
@@ -50,27 +49,25 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', width: 10, hidden: true, key:true},
 			{ label: 'idno', name: 'idno', width: 10, hidden: true, key:true},
-			{ label: 'Unit', name: 'sectorcode', width: 20, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-			{ label: 'Section', name: 'regioncode', width: 50, classes: 'wrap', editable:true,
+			{ label: 'Unit', name: 'sectorcode', width: 30, classes: 'wrap', canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Description', name: 'description', width: 100, classes: 'wrap', canSearch: true, checked:true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+			{ label: 'Section', name: 'regioncode', width: 40, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:unitCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+			{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 40, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 40, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
 				cellattr: function(rowid, cellvalue)
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
-			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 		],
 		autowidth: true,
 		multiSort: true,
@@ -218,7 +215,7 @@ $(document).ready(function () {
 				},
 				errorfunc: function(rowid,response){
 					$('#p_error').text(response.responseText);
-					refreshGrid('#jqGrid',urlParam,'add');
+					refreshGrid('#jqGrid',urlParam,'edit');
 				},
 				beforeSaveRow: function (options, rowid) {
 					$('#p_error').text('');

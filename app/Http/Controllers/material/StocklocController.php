@@ -82,8 +82,7 @@ class StocklocController extends defaultController
                     'recstatus' => 'ACTIVE',
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'lastcomputerid' => $request->lastcomputerid,
-                    'lastipaddress' => $request->lastipaddress
+                    'computerid' => session('computerid'),
                 ]);
             
 

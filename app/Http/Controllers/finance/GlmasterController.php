@@ -46,6 +46,7 @@ class GlmasterController extends defaultController
         try {
 
             $glmasref = DB::table('finance.glmasref')
+                            ->where('compcode','=',session('compcode'))
                             ->where('glaccno','=',$request->glaccno);
 
             if($glmasref->exists()){
@@ -60,9 +61,8 @@ class GlmasterController extends defaultController
                     'accgroup' => strtoupper($request->accgroup),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -91,8 +91,7 @@ class GlmasterController extends defaultController
                     'accgroup' => strtoupper($request->accgroup),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -111,7 +110,8 @@ class GlmasterController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

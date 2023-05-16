@@ -239,25 +239,13 @@ i.fa {
 						<div class="col-md-2">
 							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
-				</div>    
+				</div> 
 
 				<div class="form-group">
-					<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
+					<label class="col-md-2 control-label" for="AccNo">Company Account No</label>  
 						<div class="col-md-3">
-						  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" frozeOnEdit hideOne>
+							<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
 						</div>
-
-					<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-						<div class="col-md-3">
-							<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>    
-                    
-                 	<div class="form-group">
-				  		<label class="col-md-2 control-label" for="AccNo">Company Account No</label>  
-				 			<div class="col-md-3">
-				  				<input id="AccNo" name="AccNo" type="text" maxlength="15" class="form-control input-sm text-uppercase">
-				  			</div>
                             
 				   	<!-- <label class="col-md-2 control-label" for="SuppFlg">Supply Goods</label>  
 				  	<div class="col-md-2">
@@ -425,21 +413,9 @@ i.fa {
 
 					<label class="col-md-2 control-label" for="si_lastcomputerid">Last Computer Id</label>  
 						<div class="col-md-2">
-							<input id="si_lastcomputerid" name="si_lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit hideOne>
+							<input id="si_lastcomputerid" name="si_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
-				</div>    
-
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="si_ipaddress">IP Address</label>  
-						<div class="col-md-2">
-						  	<input id="si_ipaddress" name="si_ipaddress" type="text" class="form-control input-sm"  frozeOnEdit hideOne>
-						</div>
-
-					<label class="col-md-2 control-label" for="si_lastipaddress">Last IP Address</label>  
-						<div class="col-md-2">
-							<input id="si_lastipaddress" name="si_lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>    
+				</div>   
 			</form>
 		</div>
 		<!------------------------------end supplier item form---------------------------------->
@@ -536,19 +512,7 @@ i.fa {
 						<div class="col-md-2">
 							<input id="sb_lastcomputerid" name="sb_lastcomputerid" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
 						  	</div>
-				</div>    
-
-				<div class="form-group">
-					<label class="col-md-3 control-label" for="sb_ipaddress">IP Address</label>  
-						<div class="col-md-2">
-						  	<input id="sb_ipaddress" name="sb_ipaddress" type="text" class="form-control input-sm" frozeOnEdit hideOne>
-						</div>
-
-					<label class="col-md-2 control-label" for="sb_lastipaddress">Last IP Address</label>  
-						<div class="col-md-2">
-							<input id="sb_lastipaddress" name="sb_lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>    
+				</div>   
             </form>
         </div>
 	@endsection

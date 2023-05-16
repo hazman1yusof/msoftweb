@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules: 'sanitize',
@@ -86,7 +85,6 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper != 'view') {
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 					mycurrency.formatOn();
 					dialog_deptcode.on();
 					delay(function(){
@@ -161,9 +159,7 @@ $(document).ready(function () {
 			//{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap',  
 			//cellattr: function(rowid, cellvalue){return cellvalue == 'D' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth: true,
 		multiSort: true,

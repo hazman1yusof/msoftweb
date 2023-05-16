@@ -46,6 +46,7 @@ class UnitController extends defaultController
         try {
 
             $sector = DB::table('sysdb.sector')
+                            ->where('compcode','=',session('compcode'))
                             ->where('sectorcode','=',$request->sectorcode);
 
             if($sector->exists()){
@@ -60,8 +61,7 @@ class UnitController extends defaultController
                     'regioncode' => strtoupper($request->regioncode),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -91,8 +91,7 @@ class UnitController extends defaultController
                     'regioncode' => strtoupper($request->regioncode),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -111,7 +110,8 @@ class UnitController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

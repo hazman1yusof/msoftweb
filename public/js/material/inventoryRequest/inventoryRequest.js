@@ -409,10 +409,14 @@ $(document).ready(function () {
 				$('#ivreqno').val(data.ivreqno);
 				$('#idno').val(data.idno);//just save idno for edit later
 				$('#amount').val(data.amount);
+				$('#adduser').val(data.adduser);
+				$('#adddate').val(data.adddate);
 
 				urlParam2.filterVal[0] = data.recno;
 			} else if (selfoper == 'edit') {
 				//doesnt need to do anything
+				$('#upduser').val(data.upduser);
+				$('#upddate').val(data.upddate);
 			}
 			
 			refreshGrid('#jqGrid2', urlParam2);

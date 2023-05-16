@@ -46,26 +46,24 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'id', name: 'idno', width:5, hidden: true, key:true},
 			{ label: 'compcode', name: 'compcode', hidden:true},						
-			{ label: 'MMA Code', name: 'mmacode', width: 12, classes: 'wrap', canSearch: true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
+			{ label: 'MMA Code', name: 'mmacode', width: 30, classes: 'wrap', canSearch: true, editable: true,editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'description', classes: 'wrap', width: 100, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
 			},
-			{ label: 'Version', name: 'version', width: 6, canSearch: true, align: 'right'},
-			{ label: 'Status', name: 'recstatus', width: 10, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-						editoptions:{
-							value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
-							cellattr: function(rowid, cellvalue)
-									{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
-						},
-			{ label: 'adduser', name: 'adduser', width: 30, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 30, hidden: true },
-			{ label: 'lastuser', name: 'lastuser', width: 30, hidden: true },
-			{ label: 'lastupdate', name: 'lastupdate', width: 30, hidden: true },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 30, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 30, hidden:true},
-			{ label: 'deluser', name: 'deluser', width: 30, hidden:true},
-			{ label: 'deldate', name: 'deldate', width: 30, hidden:true},
+			{ label: 'Version', name: 'version', width: 30, canSearch: true, align: 'right'},
+			{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 40, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 40, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+				editoptions:{
+					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"},
+					cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
+			},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -235,8 +233,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

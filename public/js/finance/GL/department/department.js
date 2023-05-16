@@ -5,7 +5,6 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -181,7 +180,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_costcode.on();
 				dialog_sector.on();
 				dialog_region.on();
@@ -257,9 +255,7 @@ $(document).ready(function () {
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', hidden:true},
 			{ label: 'computerid', name: 'computerid', hidden:true},
-			{ label: 'ipaddress', name: 'ipaddress', hidden:true},
 		],
 		autowidth:true,
         multiSort: true,

@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -144,7 +143,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_depccode.on();
 				dialog_depglacc.on();
 				
@@ -219,9 +217,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},					
 			{ label: 'Open Balance', name: 'openbal', width: 90,  hidden:true},	
 			{ label: 'Last PV No', name: 'lastpvno', width: 30 , classes: 'wrap' },								
 			{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)

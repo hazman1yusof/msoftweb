@@ -5,7 +5,6 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-    check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -30,7 +29,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
         action:'get_table_default',
-        url:'icd/table',
+        //url:'icd/table',
         // field:'',
 		// table_name:['hisdb.diagtab AS dt', 'sysdb.sysparam AS sp'],
 		// table_id:'idno',
@@ -40,6 +39,12 @@ $(document).ready(function () {
 		// filterCol:['dt.type','dt.compcode'],
 		// filterVal:['','session.coompcode'],
 		// sort_idno: true,
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'hisdb.diagtab',
+		table_id: 'idno',
+		filterCol:['compcode'],
+		filterVal:['session.compcode']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -49,31 +54,23 @@ $(document).ready(function () {
         editurl: "/icd/form",
 		colModel: [
             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
-			{ label: 'ICD Code', name: 'icdcode', width: 15, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Description', name: 'description_show', classes: 'wrap', width: 80, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
-			// 	editoptions: 
-			// 		{style: "width: -webkit-fill-available; text-transform: uppercase" ,rows: 5}
-			// },
-			{ label: 'Description', name: 'description', classes: 'wrap', width: 80, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
+			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'ICD Code', name: 'icdcode', width: 20, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Description', name: 'description', classes: 'wrap', width: 100, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 
 					{style: "width: -webkit-fill-available; text-transform: uppercase", rows: 5}
 			},
-			{ label: 'Type', name: 'type', width: 20, canSearch: true, hidden: false},            
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
-            { label: 'adddate', name: 'adddate', width: 90, hidden:true},
-            { label: 'upduser', name: 'upduser', width: 90, hidden:true},
-            { label: 'upddate', name: 'upddate', width: 90, hidden:true},
-            { label: 'deluser', name: 'deluser', width: 90, hidden:true},
-            { label: 'deldate', name: 'deldate', width: 90, hidden:true},
-            { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+			{ label: 'Type', name: 'type', width: 15, canSearch: true, hidden: false},            
+			{ label: 'Add User', name: 'adduser', width: 40, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 40, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 40, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+            { label: 'Status', name: 'recstatus', width: 40, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
                 cellattr: function(rowid, cellvalue)
                     {return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
             },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
-			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
-
 		],
 		autowidth: true,
 		multiSort: true,		
@@ -219,7 +216,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			//console.log(errorField)

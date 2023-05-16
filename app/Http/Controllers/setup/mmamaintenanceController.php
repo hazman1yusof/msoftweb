@@ -108,6 +108,7 @@ class mmamaintenanceController extends defaultController
         try {
 
             $mmamaster = DB::table('hisdb.mmamaster')
+                            ->where('compcode','=',session('compcode'))
                             ->where('mmacode','=',strtoupper($request->mmacode));
 
             $type = DB::table('sysdb.sysparam')
@@ -127,9 +128,9 @@ class mmamaintenanceController extends defaultController
                     "version" => $type->pvalue1,
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -168,8 +169,10 @@ class mmamaintenanceController extends defaultController
                     //'mmacode' => strtoupper($request->mmacode),
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress)
+                    'idno' => strtoupper($request->idno),
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -186,7 +189,8 @@ class mmamaintenanceController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

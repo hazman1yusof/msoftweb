@@ -4,7 +4,6 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				modules : 'sanitize',
@@ -77,7 +76,6 @@
 							break;
 					}
 					if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 						dialog_costcode.on();
 						dialog_glaccount.on();
 						dialog_depccode.on();
@@ -147,9 +145,7 @@
 					{ label: 'upduser', name: 'upduser', width: 20, hidden:true},
 					{ label: 'upddate', name: 'upddate', width: 20, hidden:true},
 					{ label: 'lastcomputerid', name: 'lastcomputerid', hidden:true},
-					{ label: 'lastipaddress', name: 'lastipaddress', hidden:true},
 					{ label: 'computerid', name: 'computerid', hidden:true},
-					{ label: 'ipaddress', name: 'ipaddress', hidden:true},
 					{ label: 'Record Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},

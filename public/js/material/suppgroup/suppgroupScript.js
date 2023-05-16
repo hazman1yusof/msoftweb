@@ -5,7 +5,6 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 			/////////////////////////validation//////////////////////////
 			$.validate({
 				language : {
@@ -211,7 +210,6 @@
 					}
 
 					if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 						dialog_costcode.on();
 						dialog_glaccno.on();
 						dialog_advccode.on();
@@ -280,7 +278,7 @@
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
 					{ label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
+					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'Del User', name: 'deluser', width: 80,hidden:true},
 					{ label: 'Del Date', name: 'deldate', width: 90,hidden:true},
 					{ label: 'Advance Cost Code', name: 'advccode', width: 80, sorttype: 'number', editable: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
@@ -288,11 +286,6 @@
 					{ label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 					},
-					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
-					
 				],
 				autowidth:true,
                 multiSort: true,

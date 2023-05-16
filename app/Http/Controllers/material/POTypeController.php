@@ -46,6 +46,7 @@ class POTypeController extends defaultController
         try {
 
             $potype = DB::table('material.potype')
+                            ->where('compcode','=',session('compcode'))
                             ->where('potype','=',$request->potype);
 
             if($potype->exists()){
@@ -59,9 +60,8 @@ class POTypeController extends defaultController
                     'typedec' => strtoupper($request->typedec),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -89,9 +89,8 @@ class POTypeController extends defaultController
                     'typedec' => strtoupper($request->typedec),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => session('username'),
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
@@ -109,7 +108,8 @@ class POTypeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }
