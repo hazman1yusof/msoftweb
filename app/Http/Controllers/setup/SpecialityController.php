@@ -46,6 +46,7 @@ class SpecialityController extends defaultController
         try {
 
             $speciality = DB::table('hisdb.speciality')
+                            ->where('compcode','=',session('compcode'))
                             ->where('specialitycode','=',$request->specialitycode);
 
             if($speciality->exists()){
@@ -61,7 +62,7 @@ class SpecialityController extends defaultController
                     'type' => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -92,7 +93,7 @@ class SpecialityController extends defaultController
                     'type' => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -112,7 +113,7 @@ class SpecialityController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

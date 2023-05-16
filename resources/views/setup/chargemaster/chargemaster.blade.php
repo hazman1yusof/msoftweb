@@ -385,14 +385,14 @@ input.uppercase {
 					
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="cm_lastcomputerid">Computer Id</label>  
+						<label class="col-md-2 control-label" for="cm_computerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="cm_lastcomputerid" name="cm_lastcomputerid" type="text" class="form-control input-sm uppercase" data-validation="required" rdonly>
+							<input id="cm_computerid" name="cm_computerid" type="text" class="form-control input-sm uppercase" rdonly>
 						</div>
 
-						<label class="col-md-2 control-label" for="cm_lastipaddress">IP Address</label>  
+						<label class="col-md-2 control-label" for="cm_lastcomputerid"> Last Computer Id</label>  
 						<div class="col-md-3">
-							<input id="cm_lastipaddress" name="cm_lastipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" rdonly>
+							<input id="cm_lastcomputerid" name="cm_lastcomputerid" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
 						</div>
 					</div> 
 				</form>

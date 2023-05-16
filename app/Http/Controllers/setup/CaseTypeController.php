@@ -46,6 +46,7 @@ class CaseTypeController extends defaultController
         try {
 
             $casetype = DB::table('hisdb.casetype')
+                            ->where('compcode','=',session('compcode'))
                             ->where('case_code','=',$request->case_code);
 
             if($casetype->exists()){
@@ -60,7 +61,7 @@ class CaseTypeController extends defaultController
                     'grpcasetype' => strtoupper($request->grpcasetype),
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -91,7 +92,7 @@ class CaseTypeController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     'units' => strtoupper($request->units),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -111,7 +112,7 @@ class CaseTypeController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

@@ -7,7 +7,6 @@ var x = document.getElementById("myDiv");
 
 $(document).ready(function () {
 	$("body").show();
-    check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -182,8 +181,8 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
+			{ label: 'Computer ID', name: 'computerid', width: 90, hidden:true},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
 		],
 		autowidth: true,
 		multiSort: true,
@@ -469,7 +468,7 @@ $(document).ready(function () {
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam2,'add');
-            refreshGrid('#jqGrid',urlParam,'add');
+            refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

@@ -5,8 +5,6 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
-
 			hidePostClass();
 			/////////////////////////validation//////////////////////////
 			$.validate({
@@ -91,7 +89,6 @@
 							break;
 					}
 					if(oper!='view'){
-						set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 						showing_which_ordialog('nocheck');
 					}
 					if(oper!='add'){
@@ -152,9 +149,7 @@
 					},
 					{ label: 'idno', name: 'idno', hidden: true},
 					{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 					{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 				],
 				autowidth:true,
                 multiSort: true,
@@ -380,7 +375,7 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['idno','adduser', 'adddate', 'upddate', 'upduser', 'computerid', 'ipaddress','recstatus']);
+			addParamField('#jqGrid',false,saveParam,['idno','adduser', 'adddate', 'upddate', 'upduser', 'computerid', 'recstatus']);
 
 
 			/////////////////////////////////////////////////////////ordialog//////////////////////////////

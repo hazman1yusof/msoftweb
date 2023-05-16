@@ -103,9 +103,7 @@ class ProductController extends defaultController
                              'p.generic as generic',
                              'p.idno as idno',
                              'p.computerid as computerid',
-                             'p.ipaddress as ipaddress',
                              'p.lastcomputerid as lastcomputerid',
-                             'p.lastipaddress as lastipaddress',
                              'cm.chgclass as cm_chgclass',
                              'cm.chggroup as cm_chggroup',
                              'cm.chgtype as cm_chgtype',
@@ -230,8 +228,7 @@ class ProductController extends defaultController
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'ACTIVE',
-                'computerid' => $request->computerid,
-                'ipaddress' => $request->ipaddress,
+                'computerid' => session('computerid'),
             ];
 
             $er = $this->add($request);
@@ -291,8 +288,7 @@ class ProductController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
-                    'computerid' => $request->computerid,
-                    'ipaddress' => $request->ipaddress,
+                    'computerid' => session('computerid'),
                 ];
 
                 DB::table('material.product')->insert($array_insert);
@@ -331,10 +327,8 @@ class ProductController extends defaultController
                         'doctorstat' => 0, 
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'computerid' => $request->cm_computerid, 
-                        'ipaddress' => $request->cm_ipaddress, 
-                        'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                        'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                        'computerid' => session('computerid'),
+                        'lastcomputerid' => session('computerid'),
                     ];
 
                     DB::table('hisdb.chgmast')->insert($array_insert);
@@ -387,8 +381,7 @@ class ProductController extends defaultController
 
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'computerid' => $request->computerid,
-                    'ipaddress' => $request->ipaddress,
+                    'lastcomputerid' => session('computerid'),
                 ];
                 $table->update($array_update);
 
@@ -425,8 +418,7 @@ class ProductController extends defaultController
 
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                            'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                            'lastcomputerid' => session('computerid'),
                         ];
                         $chgmast->update($array_update);
                     }else{
@@ -462,10 +454,8 @@ class ProductController extends defaultController
                             'doctorstat' => 0, 
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'computerid' => $request->cm_computerid, 
-                            'ipaddress' => $request->cm_ipaddress, 
-                            'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                            'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                            'computerid' => session('computerid'),
+                            'lastcomputerid' => session('computerid'),
                         ];
 
                         DB::table('hisdb.chgmast')->insert($array_insert);

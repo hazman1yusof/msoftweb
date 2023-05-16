@@ -462,19 +462,7 @@
 								<div class="col-md-3">
 									<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit>
 								  	</div>
-						</div>    
-
-						<div class="form-group" hideOne>
-							<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
-								<div class="col-md-3">
-								  	<input id="ipaddress" name="ipaddress" type="text" class="form-control input-sm" frozeOnEdit>
-								</div>
-
-							<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-								<div class="col-md-3">
-									<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit>
-								  	</div>
-						</div>  
+						</div>
 					</form>
 				</div>
 			</div>

@@ -108,16 +108,15 @@ class ChargeMasterController extends defaultController
                     'doctorstat' => $request->cm_doctorstat, 
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'computerid' => $request->cm_computerid, 
-                    'ipaddress' => $request->cm_ipaddress, 
-                    'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                    'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                    'computerid' => session('computerid'),
+                    'lastcomputerid' => session('computerid'),
                 ]);
 
                 $queries = DB::getQueryLog();
 
                 $responce = new stdClass();
                 $responce->queries = $queries;
+                $responce->computerid = session('computerid');
                 echo json_encode($responce);
 
              DB::commit();
@@ -188,14 +187,14 @@ class ChargeMasterController extends defaultController
                     'doctorstat' => $request->cm_doctorstat,
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'lastcomputerid' => strtoupper($request->cm_lastcomputerid),
-                    'lastipaddress' => strtoupper($request->cm_lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                 ]);
 
                 $queries = DB::getQueryLog();
 
                 $responce = new stdClass();
                 $responce->queries = $queries;
+                $responce->lastcomputerid = session('computerid');
                 echo json_encode($responce);
 
              DB::commit();
@@ -220,8 +219,7 @@ class ChargeMasterController extends defaultController
                     'deluser' => session('username'),
                     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'DEACTIVE',
-                    'lastcomputerid' => $request->cm_lastcomputerid, 
-                    'lastipaddress' => $request->cm_lastipaddress, 
+                    'computerid' => session('computerid')
                 ]);
 
             

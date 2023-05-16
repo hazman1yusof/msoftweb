@@ -46,6 +46,7 @@ class SectionController extends defaultController
         try {
 
             $region = DB::table('sysdb.region')
+                            ->where('compcode','=',session('compcode'))
                             ->where('regioncode','=',$request->regioncode);
 
             if($region->exists()){
@@ -59,8 +60,7 @@ class SectionController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -89,8 +89,7 @@ class SectionController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -109,7 +108,8 @@ class SectionController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

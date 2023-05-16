@@ -46,6 +46,7 @@ class OccupationController extends defaultController
         try {
 
             $occupation = DB::table('hisdb.occupation')
+                            ->where('compcode','=',session('compcode'))
                             ->where('occupcode','=',$request->occupcode);
 
             if($occupation->exists()){
@@ -59,7 +60,7 @@ class OccupationController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -88,7 +89,7 @@ class OccupationController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -108,7 +109,7 @@ class OccupationController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

@@ -46,6 +46,7 @@ class assettypeController extends defaultController
         try {
 
             $assettype = DB::table('finance.fatype')
+                            ->where('compcode','=',session('compcode'))
                             ->where('assettype','=',$request->assettype);
 
             if($assettype->exists()){
@@ -59,8 +60,7 @@ class assettypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -89,8 +89,7 @@ class assettypeController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -109,7 +108,8 @@ class assettypeController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 

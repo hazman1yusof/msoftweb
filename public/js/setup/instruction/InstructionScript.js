@@ -4,7 +4,6 @@ var editedRow=0;
 
 $(document).ready(function () {
     $("body").show();
-    check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
     /////////////////////////validation//////////////////////////
     $.validate({
         language : {
@@ -47,22 +46,20 @@ $(document).ready(function () {
          colModel: [
             {label: 'Compcode', name: 'compcode', width: 90 , hidden: true},
             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
-            { label: 'Instruction Code', name: 'inscode', width: 20, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-            { label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 80, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
-            { label: 'adduser', name: 'adduser', width: 90, hidden:true},
-            { label: 'adddate', name: 'adddate', width: 90, hidden:true},
-            { label: 'upduser', name: 'upduser', width: 90, hidden:true},
-            { label: 'upddate', name: 'upddate', width: 90, hidden:true},
-            { label: 'deluser', name: 'deluser', width: 90, hidden:true},
-            { label: 'deldate', name: 'deldate', width: 90, hidden:true},
+            { label: 'Instruction Code', name: 'inscode', width: 50, classes: 'wrap', canSearch: true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+            { label: 'Description', name: 'description', classes: 'wrap', canSearch: true, width: 100, checked:true,editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase"}},
+            { label: 'Add User', name: 'adduser', width: 50, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
             { label: 'computerid', name: 'computerid', width: 90, hidden:true},
             { label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-            { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+            { label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', hidden: false, editable: true, edittype:"select",formatter:'select', editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
                 cellattr: function(rowid, cellvalue)
                     {return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''},
             },
-            { label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-            { label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
             
         ],
         autowidth:true,
@@ -105,7 +102,7 @@ $(document).ready(function () {
 		},	        
     });
 		function check_cust_rules(rowid){
-		var chk = ['dosecode','dosedesc','convfactor'];
+		var chk = ['inscode','description'];
 		chk.forEach(function(e,i){
 			var val = $("#jqGrid input[name='"+e+"']").val();
 			if(val.trim().length <= 0){
@@ -206,7 +203,7 @@ $(document).ready(function () {
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGrid',urlParam,'add');
+            refreshGrid('#jqGrid',urlParam,'edit');
         },
         beforeSaveRow: function (options, rowid) {
             $('#p_error').text('');

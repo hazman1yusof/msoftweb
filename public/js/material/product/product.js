@@ -5,7 +5,6 @@ var editedRow=0;
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -725,7 +724,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_uomcode.on();
 				dialog_pouom.on();
 				dialog_suppcode.on();
@@ -871,9 +869,7 @@ $(document).ready(function () {
 			{ label: 'cm_dosecode', name: 'cm_dosecode', width: 50, hidden:true },
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
         multiSort: true,
@@ -919,13 +915,10 @@ $(document).ready(function () {
 					$("#Save").show();
 					$('#formdata input[name=productcat]').prop("readonly",true);
 					$('#formdata input[name=lastcomputerid]').prop("readonly",true);
-					$('#formdata input[name=lastipaddress]').prop("readonly",true);
 					$('#formdata input[name=computerid]').prop("readonly",true);
-					$('#formdata input[name=ipaddress]').prop("readonly",true);
 					$('#itemcodesearch').prop("readonly",true);
 					$('#uomcodesearch').prop("readonly",true);
 
-					set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 					getgcforAdd();
 				}
 			}
@@ -1234,13 +1227,13 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus', 'computerid', 'ipaddress']);
+	addParamField('#jqGrid',false,saveParam,['idno', 'adduser', 'adddate', 'upduser', 'upddate', 'recstatus', 'computerid']);
 
 	////////////////////////////////////////////////////////addNewProduct ///////////////////////////////
 	var adpsaveParam={
 		action:'save_productmaster',
 		url:'product/form',
-		field:['itemcode','description','groupcode', 'productcat', 'Class', 'computerid', 'ipaddress'],
+		field:['itemcode','description','groupcode', 'productcat', 'Class', 'computerid'],
 		oper:'add',
 		table_name:'material.productmaster',
 		table_id:'itemcode',
@@ -1297,7 +1290,6 @@ $(document).ready(function () {
 		autoOpen: false,
 		open: function( event, ui ) {
 			rdonly("#addNewProductDialog");
-			set_compid_from_storage("input[name='computerid']", "input[name='ipaddress']");
 
 			if($('#groupcode2').val()=="Stock" && $('#othergrid_productcatAddNew1').length == 0){
 					let dialog_cat1 = new ordialog(

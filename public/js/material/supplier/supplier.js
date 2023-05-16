@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']","input[name='si_lastcomputerid']","input[name='si_lastipaddress']","input[name='si_computerid']","input[name='si_ipaddress']","input[name='sb_lastcomputerid']","input[name='sb_lastipaddress']","input[name='sb_computerid']","input[name='sb_ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 	    modules : 'sanitize',
@@ -196,7 +195,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 				dialog_SuppGroup.on();
 				dialog_CostCode.on();
 				dialog_GlAccNo.on();
@@ -282,11 +280,9 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
-			{label: 'idno', name: 'idno', hidden: true},
+			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		autowidth:true,
 		viewrecords: true,
@@ -422,7 +418,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid','ipaddress']);
+	addParamField('#jqGrid',false,saveParam,['idno','compcode','adduser','adddate','upduser','upddate','recstatus','computerid']);
 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -535,7 +531,7 @@ $(document).ready(function () {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
 			if( $('#Fsuppitems').isValid({requiredFields: ''}, {}, true) ) {
-				saveFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",oper_suppitems,saveParam_suppitems,urlParam_suppitems,'#searchForm2');
+				saveFormdata("#gridSuppitems","#Dsuppitems","#Fsuppitems",oper_suppitems,saveParam_suppitems,urlParam_suppitems);//,'#searchForm2'
 			}else{
 				mycurrency.formatOn();
 			}
@@ -602,7 +598,6 @@ $(document).ready(function () {
 				dialog_uomcode.check(errorField);
 			}
 			if (oper_suppitems != 'view') {
-				set_compid_from_storage("input[name='si_lastcomputerid']","input[name='si_lastipaddress']","input[name='si_computerid']","input[name='si_ipaddress']");
 			}
 		},
 		close: function( event, ui ) {
@@ -680,9 +675,7 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'si_upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'si_upddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'computerid', name: 'si_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'si_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'si_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'si_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		viewrecords: true,
 		//shrinkToFit: true,
@@ -795,7 +788,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#gridSuppitems',false,urlParam_suppitems);
-	addParamField('#gridSuppitems',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_ipaddress', 'si_recstatus']);
+	addParamField('#gridSuppitems',false,saveParam_suppitems,["p_description", "si_idno", "si_adduser", "si_adddate", "si_upduser", "si_upddate", "si_computerid", 'si_recstatus']);
 
 	populateSelect('#gridSuppitems','#searchForm2');
 	searchClick('#gridSuppitems','#searchForm2',urlParam_suppitems);
@@ -831,7 +824,7 @@ $(document).ready(function () {
 			title:"Select Bonus Price Code",
 			open: function(){
 				dialog_bonpricecode.urlParam.filterCol=['recstatus'],
-				dialog_bonpricecode.urlParam.filterVal=['A']
+				dialog_bonpricecode.urlParam.filterVal=['ACTIVE']
 			}
 		},'urlParam', 'radio', 'tab'
 	);
@@ -953,7 +946,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper_suppbonus!='view'){
-				set_compid_from_storage("input[name='sb_lastcomputerid']","input[name='sb_lastipaddress']","input[name='sb_computerid']","input[name='sb_ipaddress']");
 				dialog_bonpricecode.on();
 				dialog_bonitemcode.on();
 				dialog_bonuomcode.on();
@@ -1038,9 +1030,7 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 'sb_upddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'idno', name: 'sb_idno', width: 90, hidden:true},
 			{ label: 'computerid', name: 'sb_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'sb_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'sb_lastcomputerid', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'lastipaddress', name: 'sb_lastipaddress', width: 90, hidden:true, classes: 'wrap'},
 		],
 		viewrecords: true,
 		shrinkToFit: true,
@@ -1137,7 +1127,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#gridSuppBonus',false,urlParam_suppbonus);
-	addParamField('#gridSuppBonus',false,saveParam_suppbonus,["p_description", "sb_idno", "sb_adduser","sb_adddate", "sb_upduser","sb_upddate", "sb_computerid", "sb_ipaddress", "sb_recstatus"]);
+	addParamField('#gridSuppBonus',false,saveParam_suppbonus,["p_description", "sb_idno", "sb_adduser","sb_adddate", "sb_upduser","sb_upddate", "sb_computerid", "sb_recstatus"]);
 
 	populateSelect('#gridSuppBonus','#searchForm3');
 	searchClick('#gridSuppBonus','#searchForm3',urlParam_suppbonus);

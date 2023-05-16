@@ -45,6 +45,7 @@ class LocationController extends defaultController
         try {
 
             $location = DB::table('sysdb.location')
+                            ->where('compcode','=',session('compcode'))
                             ->where('loccode','=',$request->loccode);
 
             if($location->exists()){
@@ -58,8 +59,7 @@ class LocationController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -87,8 +87,7 @@ class LocationController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => $request->idno,
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -107,7 +106,8 @@ class LocationController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

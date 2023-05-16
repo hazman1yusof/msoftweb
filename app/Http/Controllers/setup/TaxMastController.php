@@ -46,6 +46,7 @@ class TaxMastController extends defaultController
         try {
 
             $taxmast = DB::table('hisdb.taxmast')
+                            ->where('compcode','=',session('compcode'))
                             ->where('taxcode','=',$request->taxcode);
 
             if($taxmast->exists()){
@@ -61,8 +62,7 @@ class TaxMastController extends defaultController
                     'taxtype' => strtoupper($request->taxtype),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -94,8 +94,7 @@ class TaxMastController extends defaultController
                     'taxtype' => strtoupper($request->taxtype),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -114,7 +113,8 @@ class TaxMastController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

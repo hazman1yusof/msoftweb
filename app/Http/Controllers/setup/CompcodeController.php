@@ -45,6 +45,7 @@ class CompcodeController extends defaultController
         try {
 
             $compcode = DB::table('sysdb.company')
+                            ->where('compcode','=',session('compcode'))
                             ->where('compcode','=',$request->compcode);
 
             if($compcode->exists()){
@@ -59,7 +60,7 @@ class CompcodeController extends defaultController
                     'bmppath1' => strtoupper($request->bmppath1),
                     'logo1' => strtoupper($request->logo1),
                     'recstatus' => strtoupper($request->recstatus),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -89,8 +90,9 @@ class CompcodeController extends defaultController
                     'bmppath1' => strtoupper($request->bmppath1),
                     'logo1' => strtoupper($request->logo1),
                     'recstatus' => strtoupper($request->recstatus),
+                    'idno' => strtoupper($request->idno),
                     'compcode' => strtoupper($request->compcode),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -110,7 +112,7 @@ class CompcodeController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

@@ -3,7 +3,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	computerid_set('#computerid');
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -49,18 +48,18 @@ $(document).ready(function () {
 			{ label: 'Area Code', name: 'areacode', width: 50, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Area Group', name: 'areagroup', width: 50, canSearch: true, classes: 'wrap txnum', editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }, align:'right'},
-			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-				editoptions:{
-					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
-					cellattr: function(rowid, cellvalue)
-						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
-			},
 			{ label: 'Add User', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
 			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
 			{ label: 'Upd Date', name: 'upddate', width: 50, hidden:false},
 			{ label: 'Computer ID', name: 'computerid', width: 50, hidden:false},
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},	
+			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+				editoptions:{
+					value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, 
+					cellattr: function(rowid, cellvalue)
+						{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
+			},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -112,8 +111,7 @@ $(document).ready(function () {
 	var myEditOptions = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
+			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow','none');
@@ -170,8 +168,7 @@ $(document).ready(function () {
 	var myEditOptions_edit = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val(),
-			"computerid": $('#computerid').val()
+			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid').data('lastselrow',rowid);
@@ -197,7 +194,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam,'add');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');

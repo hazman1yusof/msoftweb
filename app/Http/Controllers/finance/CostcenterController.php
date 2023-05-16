@@ -45,6 +45,7 @@ class CostcenterController extends defaultController
         try {
 
             $costcode = DB::table('finance.costcenter')
+                        ->where('compcode','=',session('compcode'))
                         ->where('costcode','=',$request->costcode);
 
             if($costcode->exists()){
@@ -58,10 +59,9 @@ class CostcenterController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
@@ -88,10 +88,9 @@ class CostcenterController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'lastuser' => session('username'),
-                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
             DB::commit();
@@ -107,8 +106,9 @@ class CostcenterController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'lastuser' => session('username'),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

@@ -46,6 +46,7 @@ class AdmisSrcController extends defaultController
         try {
 
             $admissrc = DB::table('hisdb.admissrc')
+                            ->where('compcode','=',session('compcode'))
                             ->where('admsrccode','=',$request->admsrccode);
 
             if($admissrc->exists()){
@@ -65,7 +66,7 @@ class AdmisSrcController extends defaultController
                     'telno' => strtoupper($request->telno),
                     'email' => strtoupper($request->email),
                     'type' => $request->type,
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -100,7 +101,7 @@ class AdmisSrcController extends defaultController
                     'telno' => strtoupper($request->telno),
                     'email' => strtoupper($request->email),
                     'type' => $request->type,
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -120,7 +121,7 @@ class AdmisSrcController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

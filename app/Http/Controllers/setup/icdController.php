@@ -108,6 +108,7 @@ class icdController extends defaultController
         try {
 
             $diagtab = DB::table('hisdb.diagtab')
+                            ->where('compcode','=',session('compcode'))
                             ->where('icdcode','=',strtoupper($request->icdcode));
 
             $type = DB::table('sysdb.sysparam')
@@ -126,8 +127,7 @@ class icdController extends defaultController
                     'description' => strtoupper($request->description),
                     "type" => strtoupper($request->type),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => session('computerid'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -155,8 +155,7 @@ class icdController extends defaultController
                     'description' => strtoupper($request->description),
                     'recstatus' => strtoupper($request->recstatus),                    
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -174,8 +173,9 @@ class icdController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'lastuser' => strtoupper(session('username')),
-                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

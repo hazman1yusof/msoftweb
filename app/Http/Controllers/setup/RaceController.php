@@ -64,7 +64,7 @@ class RaceController extends defaultController
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-
+                
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();

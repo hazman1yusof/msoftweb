@@ -353,14 +353,14 @@ i.fa {
 			</div>  
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="lastcomputerid">Computer Id</label>  
+				<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 				<div class="col-md-3">
-					<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit rdonly>
+					<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 				</div>
 
-				<label class="col-md-2 control-label" for="lastipaddress">IP Address</label>  
+				<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
 				<div class="col-md-3">
-					<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
+					<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm" hideOne frozeOnEdit>
 				</div>
 			</div>
 

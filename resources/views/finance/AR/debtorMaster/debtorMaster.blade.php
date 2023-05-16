@@ -248,27 +248,13 @@
 
 				</div> 
 
-				<div class="form-group">
-				<label class="col-md-2 control-label" for="ipaddress">IP Address</label>  
-						  	<div class="col-md-3">
-								<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit hideOne>
-						  	</div>
-					
+				<input id="actdebccode" name="actdebccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
-						<label class="col-md-2 control-label" for="lastipaddress">Last IP Address</label>  
-						  	<div class="col-md-3">
-								<input id="lastipaddress" name="lastipaddress" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
-						  	</div>
-				</div>
+				<input id="actdebglacc" name="actdebglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
+				<input id="depccode" name="depccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
-				  <input id="actdebccode" name="actdebccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
-
-				  <input id="actdebglacc" name="actdebglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
-
-				  <input id="depccode" name="depccode" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
-
-				  <input id="depglacc" name="depglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
+				<input id="depglacc" name="depglacc" type="hidden" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value">
 
 
 				 

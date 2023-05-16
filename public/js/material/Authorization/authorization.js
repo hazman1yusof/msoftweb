@@ -141,9 +141,7 @@ $(document).ready(function () {
 					{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
         multiSort: true,
@@ -227,7 +225,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','computerid', 'ipaddress', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
+	addParamField('#jqGrid',false,saveParam,['idno','computerid', 'adduser', 'adddate', 'upddate', 'upduser', 'recstatus']);
 
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////

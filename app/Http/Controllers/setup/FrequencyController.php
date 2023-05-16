@@ -46,6 +46,7 @@ class FrequencyController extends defaultController
         try {
 
             $frequency = DB::table('hisdb.freq')
+                            ->where('compcode','=',session('compcode'))
                             ->where('freqcode','=',$request->freqcode);
 
             if($frequency->exists()){
@@ -60,9 +61,8 @@ class FrequencyController extends defaultController
                     'convfactor' => strtoupper($request->convfactor),
                     'recstatus' => strtoupper($request->recstatus),
                     //'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'adduser' => session('username'),
+                    'computerid' => session('computerid'),
+                    'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -91,9 +91,8 @@ class FrequencyController extends defaultController
                     'convfactor' => strtoupper($request->convfactor),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => strtoupper($request->idno),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
-                    'upduser' => session('username'),
+                    'lastcomputerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
 
@@ -110,8 +109,9 @@ class FrequencyController extends defaultController
             ->where('idno','=',$request->idno)
             ->update([  
                 'recstatus' => 'DEACTIVE',
-                'deluser' => session('username'),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deluser' => strtoupper(session('username')),
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 }

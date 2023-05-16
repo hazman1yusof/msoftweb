@@ -47,10 +47,6 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Race Code', name: 'Code', width: 50, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'Description', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
-				editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
-			},
 			{ label: 'Add User', name: 'adduser', width: 50, hidden:false},
 			{ label: 'Add Date', name: 'adddate', width: 50, hidden:false},
 			{ label: 'Upd User', name: 'upduser', width: 50, hidden:false},
@@ -59,6 +55,10 @@ $(document).ready(function () {
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
 			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
+			{ label: 'Status', name: 'recstatus', width: 50, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+				editoptions:{value:"ACTIVE:ACTIVE;DEACTIVE:DEACTIVE"}, cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
+			},
 
 		],
 		autowidth: true,
@@ -112,7 +112,7 @@ $(document).ready(function () {
 			//if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
 			addmore_jqgrid.more = true;
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'edit');
+			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
@@ -122,7 +122,7 @@ $(document).ready(function () {
 			err_reroll.old_data = data.request;
 			err_reroll.error = true;
 			err_reroll.errormsg = data.errormsg;
-			refreshGrid('#jqGrid',urlParam,'edit');
+			refreshGrid('#jqGrid',urlParam,'add');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -277,7 +277,5 @@ $(document).ready(function () {
 			});
 			this.error = false;
 		}
-		
-
 	}
 });

@@ -46,6 +46,7 @@ class CountryController extends defaultController
         try {
 
             $country = DB::table('hisdb.country')
+                            ->where('compcode','=',session('compcode'))
                             ->where('Code','=',$request->Code);
 
             if($country->exists()){
@@ -58,7 +59,7 @@ class CountryController extends defaultController
                     'Code' => strtoupper($request->Code),
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -87,7 +88,7 @@ class CountryController extends defaultController
                     'Description' => strtoupper($request->Description),
                     'recstatus' => strtoupper($request->recstatus),
                     'idno' => $request->idno,
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -107,7 +108,7 @@ class CountryController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

@@ -46,6 +46,7 @@ class AreaController extends defaultController
         try {
 
             $citizen = DB::table('hisdb.areacode')
+                            ->where('compcode','=',session('compcode'))
                             ->where('areacode','=',$request->areacode);
 
             if($citizen->exists()){
@@ -60,7 +61,7 @@ class AreaController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     'areagroup' => strtoupper($request->areagroup),
                     'citizen' => strtoupper($request->citizen),
-                    'computerid' => $request->computerid,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -90,7 +91,7 @@ class AreaController extends defaultController
                     'recstatus' => strtoupper($request->recstatus),
                     'areagroup' => strtoupper($request->areagroup),
                     'citizen' => strtoupper($request->citizen),
-                    'lastcomputerid' => $request->computerid,
+                    'lastcomputerid' => session('computerid'),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -110,7 +111,7 @@ class AreaController extends defaultController
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'computerid' => $request->computerid,
+                'computerid' => session('computerid')
             ]);
     }
 }

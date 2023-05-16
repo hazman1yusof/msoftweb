@@ -70,10 +70,7 @@ class ProductMasterController extends defaultController
                             'recstatus' =>  $request->recstatus,
                             'Class' =>  $request->Class,
                             // 'unit' => session('unit'),
-                            'computerid' =>  $request->computerid,
-                            'lastcomputerid' =>  $request->lastcomputerid,
-                            'ipaddress' =>  $request->ipaddress,
-                            'lastipaddress' =>  $request->lastipaddress,
+                            'computerid' => session('computerid'),
                             'compcode' => session('compcode'),
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -126,6 +123,7 @@ class ProductMasterController extends defaultController
                             'productcat' =>  $productcat,
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastcomputerid' => session('computerid'),
                             'recstatus' => 'ACTIVE'
                         ]);
 
@@ -156,10 +154,8 @@ class ProductMasterController extends defaultController
                     'groupcode' => $request->groupcode,
                     'productcat' => $productcat,
                     'unit' => session('unit'),
-                    'computerid' =>  $request->computerid,
-                    'lastcomputerid' =>  $request->lastcomputerid,
-                    'ipaddress' =>  $request->ipaddress,
-                    'lastipaddress' =>  $request->lastipaddress,
+                    'computerid' => session('computerid'),
+                    'lastcomputerid' => session('computerid'),
                     'compcode' => session('compcode'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -188,10 +184,8 @@ class ProductMasterController extends defaultController
                     'reordqty' => 0,
                     'itemtype' => 'NON-POISON',
                     'unit' => session('unit'),
-                    'computerid' =>  $request->computerid,
-                    'lastcomputerid' =>  $request->lastcomputerid,
-                    'ipaddress' =>  $request->ipaddress,
-                    'lastipaddress' =>  $request->lastipaddress,
+                    'computerid' => session('computerid'),
+                    'lastcomputerid' => session('computerid'),
                     'compcode' => session('compcode'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -214,8 +208,7 @@ class ProductMasterController extends defaultController
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
-                    'computerid' => $request->computerid,
-                    'ipaddress' => $request->ipaddress,
+                    'computerid' => session('computerid'),
                 ]);
     }
 }

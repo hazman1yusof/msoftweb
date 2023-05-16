@@ -5,7 +5,6 @@
 
 		$(document).ready(function () {
 			$("body").show();
-			check_compid_exist("input[name='lastcomputerid']","input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 
 			/////////////////////////////////////validation///////////////////////////////////
 			$.validate({
@@ -77,7 +76,6 @@
 							break;
 					}
 					if (oper != 'view') {
-						set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']","input[name='ipaddress']");
 					}
 					
 				},
@@ -136,11 +134,10 @@
 					{label: 'upduser', name: 'upduser', width: 90, hidden:true},
 					{label: 'upddate', name: 'upddate', width: 90, hidden:true},
 					{label: 'computerid', name: 'computerid', width: 90, hidden:true},
-					{label: 'ipaddress', name: 'ipaddress', width: 90, hidden:true},
-					{label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
-							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 					{label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-					{label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
+					{label: 'Status', name: 'recstatus', width: 80, classes: 'wrap', cellattr: function(rowid, cellvalue)
+							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}
+					},
 					
 				],
 				autowidth:true,
@@ -226,6 +223,6 @@
 
 			//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 			addParamField('#jqGrid',true,urlParam);
-			addParamField('#jqGrid',false,saveParam,['compcode','idno', 'adduser', 'adddate', 'upddate', 'upduser', 'computerid', 'ipaddress','recstatus']);
+			addParamField('#jqGrid',false,saveParam,['compcode','idno', 'adduser', 'adddate', 'upddate', 'upduser', 'computerid','recstatus']);
 		});
 		

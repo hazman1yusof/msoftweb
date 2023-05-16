@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		language : {
@@ -90,7 +89,6 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']");
 				dialog_doctype.on();
 				dialog_department.on();
 				dialog_speciality.on();
@@ -187,10 +185,8 @@ $(document).ready(function () {
 			{label: 'adddate', name: 'adddate', width: 90, hidden:true},
 			{label: 'upduser', name: 'upduser', width: 90, hidden:true},
 			{label: 'upddate', name: 'upddate', width: 90, hidden:true},
-			{label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-		
-
+			{label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
+			{label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -218,7 +214,6 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid2",urlParam2);
 			
 		},
-		
 		
 	});
 
@@ -699,7 +694,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
+	addParamField('#jqGrid',false,saveParam, ['idno','compcode','computerid','adduser','adddate','upduser','upddate','recstatus']);
 
 	////////////////////object for dialog handler//////////////////
 

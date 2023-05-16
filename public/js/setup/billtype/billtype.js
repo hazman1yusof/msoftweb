@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	$("body").show();
-	check_compid_exist("input[name='lastcomputerid']", "input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules: 'sanitize,logic',
@@ -91,10 +90,8 @@ $(document).ready(function () {
 						break;
 				}
 				if (oper != 'view') {
-					set_compid_from_storage("input[name='lastcomputerid']","input[name='lastipaddress']","input[name='computerid']","input[name='ipaddress']");
 				}
 				if (oper != 'add') {
-
 				}
 			},
 			close: function (event, ui) {
@@ -172,13 +169,11 @@ $(document).ready(function () {
 			{ label: 'adddate', name: 'adddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upduser', name: 'upduser', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'upddate', name: 'upddate', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'Record Status', name: 'recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
+			{ label: 'Status', name: 'recstatus', width: 30, classes: 'wrap', cellattr: function(rowid, cellvalue)
 			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		autowidth: true,
 		viewrecords: true,
@@ -311,7 +306,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam, ['idno','recstatus','adduser','adddate','upduser','upddate']);
+	addParamField('#jqGrid', false, saveParam, ['idno','recstatus','adduser','adddate','upduser','upddate', 'computerid']);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////// billtysvc //////////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +448,6 @@ $(document).ready(function () {
 					dialog_discChargeCode.check(errorField);
 				}
 				if (oper_svc != 'view') {
-					set_compid_from_storage("input[name='svc_lastcomputerid']","input[name='svc_lastipaddress']","input[name='svc_computerid']","input[name='svc_ipaddress']");
 				}
 
 			},
@@ -558,9 +552,7 @@ $(document).ready(function () {
 			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'svc_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'svc_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'svc_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'svc_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'svc_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		viewrecords: true,
 		autowidth: true,
@@ -712,7 +704,7 @@ $(document).ready(function () {
 
 	addParamField('#jqGridsvc', false, urlParam_svc);
 	//addParamField('#jqGridsvc',false,saveParam_svc,['cc_description','m_description','svc_discrate',"svc_recstatus"]);
-	addParamField('#jqGridsvc', false, saveParam_svc, ['cc_description', 'm_description', 'svc_discrate', 'svc_idno', 'svc_adduser', 'svc_adddate', 'svc_adduser', 'svc_upduser', 'svc_upddate', 'svc_recstatus']);
+	addParamField('#jqGridsvc', false, saveParam_svc, ['cc_description', 'm_description', 'svc_discrate', 'svc_idno', 'svc_adduser', 'svc_adddate', 'svc_adduser', 'svc_upduser', 'svc_upddate', 'svc_recstatus', 'svc_computerid']);
 
 	//populateSelect('#jqGridsvc');
 	populateSelect('#jqGridsvc', '#searchForm2');
@@ -816,7 +808,6 @@ $(document).ready(function () {
 					dialog_chgcode.check(errorField);
 				}
 				if(oper_item!='view'){
-					set_compid_from_storage("input[name='i_lastcomputerid']","input[name='i_lastipaddress']","input[name='i_computerid']","input[name='i_ipaddress']");
 				}
 				/*if(oper_item!='add'){
 					dialog_chgcode.check(errorField);
@@ -890,9 +881,7 @@ $(document).ready(function () {
 			{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, },
 			{ label: 'No', name: 'i_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 'i_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 'i_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'i_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 'i_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		viewrecords: true,
 		autowidth: true,
@@ -995,7 +984,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGriditem', false, urlParam_item);
-	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "m_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus']);
+	addParamField('#jqGriditem', false, saveParam_item, ["c_description", "m_description", "i_discrate", "i_idno",'i_adduser', 'i_adddate', 'i_upduser', 'i_upddate', 'i_recstatus', 'i_computerid']);
 
 	//populateSelect('#jqGriditem');
 	populateSelect('#jqGriditem', '#searchForm3');
@@ -1099,7 +1088,6 @@ $(document).ready(function () {
 					dialog_chgtype.check(errorField);
 				}
 				if(oper_type!='view'){
-					set_compid_from_storage("input[name='t_lastcomputerid']","input[name='t_lastipaddress']","input[name='t_computerid']","input[name='t_ipaddress']");
 					// dialog_chgtype.on();
 				}
 				/*if(oper_item!='add'){
@@ -1178,9 +1166,7 @@ $(document).ready(function () {
 			{ label: 'upddate', name: 't_upddate', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'No', name: 't_idno', width: 50, hidden: true },
 			{ label: 'computerid', name: 't_computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'ipaddress', name: 't_ipaddress', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 't_lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastipaddress', name: 't_lastipaddress', width: 90, hidden: true, classes: 'wrap' },
 		],
 		viewrecords: true,
 		autowidth: true,
@@ -1283,7 +1269,7 @@ $(document).ready(function () {
 	});
 
 	addParamField('#jqGridtype', false, urlParam_type);
-	addParamField('#jqGridtype', false, saveParam_type, ["cg_description","ct_description", "t_discrate", "t_idno",'t_adduser', 't_adddate', 't_upduser', 't_upddate', 't_recstatus']);
+	addParamField('#jqGridtype', false, saveParam_type, ["cg_description","ct_description", "t_discrate", "t_idno",'t_adduser', 't_adddate', 't_upduser', 't_upddate', 't_recstatus', 't_computerid']);
 
 	//populateSelect('#jqGriditem');
 	populateSelect('#jqGridtype', '#searchForm4');
