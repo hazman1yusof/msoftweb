@@ -69,6 +69,20 @@ $(document).ready(function () {
         }, 0);
     });
     
+    // to calculate hours utilized
+    $("#timeended").on('change',function() {
+        var timestarted = new Date("#timestarted");
+        var timeended = new Date("#timeended");
+    
+        var hoursutilized = Math.abs(timeended.getHours() - timestarted.getHours());
+        
+        if (isNaN(hoursutilized)) hoursutilized = 0;
+        
+        $("#hoursutilized").val((hoursutilized));
+    
+        console.log(hoursutilized);
+    });
+    
 });
 
 var errorField = [];
@@ -290,6 +304,8 @@ function getdata_otmgmt(){
             autoinsert_rowdata("#form_otmgmt_div",data.otmanage);
             autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
             autoinsert_rowdata("#form_otmgmt_div",data.episode);
+            $('#timestarted').val(data.start);
+            $('#timeended').val(data.end);
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{

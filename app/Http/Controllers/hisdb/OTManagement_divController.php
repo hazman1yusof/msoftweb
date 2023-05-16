@@ -68,12 +68,8 @@ class OTManagement_divController extends defaultController
                         'admdate' => $request->admdate,
                         'admtime' => $request->admtime,
                         'ward' => $request->ward,
-                        'operdate' => $request->operdate,
-                        'timestarted' => $request->timestarted,
-                        'timeended' => $request->timeended,
                         'hoursutilized' => $request->hoursutilized,
                         'serialno' => $request->serialno,
-                        'recstatus' => $request->recstatus,
                         'natureoper' => $request->natureoper,
                         'specimen' => $request->specimen,
                         'remarks' => $request->remarks,
@@ -94,6 +90,12 @@ class OTManagement_divController extends defaultController
                 ->where('Type','=','OT')
                 ->where('compcode','=',session('compcode'))
                 ->update([
+                    'apptdatefr'  => $request->operdate,
+                    'apptdateto'  => $request->operdate,
+                    'start'       => $request->operdate.' '.$request->timestarted,
+                    'end'         => $request->operdate.' '.$request->timeended,
+                    'surgery_date'=> $request->operdate,
+                    'oper_status' => strtoupper($request->oper_status),
                     'procedure' => $request->procedure,
                     'diagnosis' => $request->diagnosis,
                     'lastuser'  => session('username'),
@@ -137,12 +139,8 @@ class OTManagement_divController extends defaultController
                             'admdate' => $request->admdate,
                             'admtime' => $request->admtime,
                             'ward' => $request->ward,
-                            'operdate' => $request->operdate,
-                            'timestarted' => $request->timestarted,
-                            'timeended' => $request->timeended,
                             'hoursutilized' => $request->hoursutilized,
                             'serialno' => $request->serialno,
-                            'recstatus' => $request->recstatus,
                             'natureoper' => $request->natureoper,
                             'specimen' => $request->specimen,
                             'remarks' => $request->remarks,
@@ -163,6 +161,12 @@ class OTManagement_divController extends defaultController
                     ->where('Type','=','OT')
                     ->where('compcode','=',session('compcode'))
                     ->update([
+                        'apptdatefr'  => $request->operdate,
+                        'apptdateto'  => $request->operdate,
+                        'start'       => $request->operdate.' '.$request->timestarted,
+                        'end'         => $request->operdate.' '.$request->timeended,
+                        'surgery_date'=> $request->operdate,
+                        'oper_status' => strtoupper($request->oper_status),
                         'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
@@ -176,12 +180,8 @@ class OTManagement_divController extends defaultController
                         'admdate' => $request->admdate,
                         'admtime' => $request->admtime,
                         'ward' => $request->ward,
-                        'operdate' => $request->operdate,
-                        'timestarted' => $request->timestarted,
-                        'timeended' => $request->timeended,
                         'hoursutilized' => $request->hoursutilized,
                         'serialno' => $request->serialno,
-                        'recstatus' => $request->recstatus,
                         'natureoper' => $request->natureoper,
                         'specimen' => $request->specimen,
                         'remarks' => $request->remarks,
@@ -202,6 +202,12 @@ class OTManagement_divController extends defaultController
                     ->where('Type','=','OT')
                     ->where('compcode','=',session('compcode'))
                     ->update([
+                        'apptdatefr'  => $request->operdate,
+                        'apptdateto'  => $request->operdate,
+                        'start'       => $request->operdate.' '.$request->timestarted,
+                        'end'         => $request->operdate.' '.$request->timeended,
+                        'surgery_date'=> $request->operdate,
+                        'oper_status' => strtoupper($request->oper_status),
                         'procedure' => $request->procedure,
                         'diagnosis' => $request->diagnosis,
                         'lastuser'  => session('username'),
@@ -237,7 +243,7 @@ class OTManagement_divController extends defaultController
                     ->where('episno','=',$request->episno);
         
         $apptbook_obj = DB::table('hisdb.apptbook')
-                    ->select('procedure', 'diagnosis')
+                    ->select('apptdatefr as operdate', 'start', 'end', 'oper_status', 'procedure', 'diagnosis')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
                     // ->where('episno','=',$request->episno);
@@ -264,6 +270,12 @@ class OTManagement_divController extends defaultController
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
         }
+        
+        $start = date('H:i', strtotime($responce->apptbook->start));
+        $responce->start = $start;
+        
+        $end = date('H:i', strtotime($responce->apptbook->end));
+        $responce->end = $end;
         
         return json_encode($responce);
     

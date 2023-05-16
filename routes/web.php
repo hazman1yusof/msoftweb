@@ -269,6 +269,11 @@ Route::get('/preoperative','hisdb\PreoperativeController@show');
 Route::get('/preoperative/table','hisdb\PreoperativeController@table');
 Route::post('/preoperative/form','hisdb\PreoperativeController@form');
 
+//// Operating Team page ////
+Route::get('/oper_team','hisdb\OperTeamController@show');
+Route::get('/oper_team/table','hisdb\OperTeamController@table');
+Route::post('/oper_team/form','hisdb\OperTeamController@form');
+
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
 Route::get('/ot_status/table','hisdb\OTStatusController@table');

@@ -70,7 +70,7 @@
 
                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                     <label>Hours Utilized</label>
-                                    <input id="hoursutilized" name="hoursutilized" type="text">
+                                    <input id="hoursutilized" name="hoursutilized" type="text" rdonly>
                                 </div>
                             </div>
                             
@@ -105,7 +105,12 @@
 
                                                 <div class="field five wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                     <label>Status</label>
-                                                    <input id="recstatus" name="recstatus" type="text">
+                                                    <select name="oper_status" id="oper_status" class="form-control input-sm">
+                                                        <option value=""></option>
+                                                        @foreach($otstatus as $obj)
+                                                            <option value="{{$obj->code}}">{{$obj->description}}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -156,24 +161,48 @@
                                                             <div class="ui grid">
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                                     <label>Elective/Emergency</label>
-                                                                    <input id="electiveemgc" name="electiveemgc" type="text">
+                                                                    <select name="electiveemgc" id="electiveemgc" class="form-control input-sm">
+                                                                        <option value=""></option>
+                                                                        <option value="ELECTIVE">ELECTIVE</option>
+                                                                        <option value="EMERGENCY">EMERGENCY</option>
+                                                                    </select>
                                                                 </div>
 
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                                     <label>Classification</label>
-                                                                    <input id="classification" name="classification" type="text">
+                                                                    <select name="classification" id="classification" class="form-control input-sm">
+                                                                        <option value=""></option>
+                                                                        <option value="MAJOR">MAJOR</option>
+                                                                        <option value="MINOR">MINOR</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
 
                                                             <div class="ui grid">
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                                     <label>Type of Anaesthesia</label>
-                                                                    <input id="anaesthtype" name="anaesthtype" type="text">
+                                                                    <select name="anaesthtype" id="anaesthtype" class="form-control input-sm">
+                                                                        <option value=""></option>
+                                                                        <option value="GA">GA</option>
+                                                                        <option value="LA">LA</option>
+                                                                        <option value="SPINAL">SPINAL</option>
+                                                                        <option value="EPIDURAL">EPIDURAL</option>
+                                                                        <option value="CSE">CSE</option>
+                                                                        <option value="LAN SEDATION">LAN SEDATION</option>
+                                                                        <option value="REGIONAL">REGIONAL</option>
+                                                                    </select>
                                                                 </div>
 
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                                     <label>OT No</label>
-                                                                    <input id="otno" name="otno" type="text">
+                                                                    <select name="otno" id="otno" class="form-control input-sm">
+                                                                        <option value=""></option>
+                                                                        <option value="1">1</option>
+                                                                        <option value="2">2</option>
+                                                                        <option value="3">3</option>
+                                                                        <option value="4">4</option>
+                                                                        <option value="5">5</option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             
@@ -188,36 +217,24 @@
                                                             <div class="ui grid">
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                                     <label>First Scrub</label>
-                                                                    <div class="ui action input">
-                                                                        <input id="firstscrubnrs" name="firstscrubnrs" type="text">
-                                                                        <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
-                                                                    </div>
+                                                                    <input type="text" id="firstscrubnrs" name="firstscrubnrs">
                                                                 </div>
 
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                                     <label>Second Scrub</label>
-                                                                    <div class="ui action input">
-                                                                        <input id="secondscrubnrs" name="secondscrubnrs" type="text">
-                                                                        <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
-                                                                    </div>
+                                                                    <input type="text" id="secondscrubnrs" name="secondscrubnrs">
                                                                 </div>
                                                             </div>
 
                                                             <div class="ui grid">
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 0px 14px;">
                                                                     <label>G.A Asst</label>
-                                                                    <div class="ui action input">
-                                                                        <input id="gaassistant" name="gaassistant" type="text">
-                                                                        <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
-                                                                    </div>
+                                                                    <input type="text" id="gaassistant" name="gaassistant">
                                                                 </div>
 
                                                                 <div class="field eight wide column" style="margin:0px; padding: 3px 14px 14px 14px;">
                                                                     <label>Circulator</label>
-                                                                    <div class="ui action input">
-                                                                        <input id="circulator" name="circulator" type="text">
-                                                                        <a class="ui icon blue button"><i class="fa fa-ellipsis-h"></i></a>
-                                                                    </div>
+                                                                    <input type="text" id="circulator" name="circulator">
                                                                 </div>
                                                             </div>
                                                             

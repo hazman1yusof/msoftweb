@@ -60,7 +60,7 @@ class PreoperativeController extends defaultController
         
         try {
             
-            DB::table('nursing.preop')
+            DB::table('nursing.otpreop')
                     ->insert([
                         'compcode' => session('compcode'),
                         'mrn' => $request->mrn_preoperative,
@@ -172,7 +172,7 @@ class PreoperativeController extends defaultController
         
         try {
             
-            DB::table('nursing.preop')
+            DB::table('nursing.otpreop')
                 ->where('mrn','=',$request->mrn_preoperative)
                 ->where('episno','=',$request->episno_preoperative)
                 ->where('compcode','=',session('compcode'))
@@ -283,7 +283,7 @@ class PreoperativeController extends defaultController
     
     public function get_table_preoperative(Request $request){
         
-        $preop_obj = DB::table('nursing.preop')
+        $preop_obj = DB::table('nursing.otpreop')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
