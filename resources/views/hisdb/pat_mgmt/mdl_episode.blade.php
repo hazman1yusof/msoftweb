@@ -197,7 +197,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" style="padding-top: 30px !important;">
-                                    <div class="col-md-offset-1 col-md-1">
+                                    <div class="col-md-offset-1 col-md-2">
                                         <small for="rad_epis_fee">Admin Fee</small>
                                         <div class="panel-body" style="padding: 3px !important;">
                                             <small class="radio-inline"><input type="radio" value="1" name="rad_epis_fee" id="rad_epis_fee_yes" checked>Yes</small>
@@ -766,11 +766,13 @@
                     <table id="tbl_epis_reference" class="table table-striped" width="100%">
                         <thead>
                         <tr>
-                            <th >Debtor Code</th>
+                            <th >Payer</th>
                             <th >Name</th>
                             <th >GL Type</th>
                             <th >Staff ID</th>
                             <th >Ref No</th>
+                            <th >Date From </th>
+                            <th >Date To</th>
                             <th >Our Ref No</th>
                             <th >childno</th>
                             <th >episno</th>
@@ -800,8 +802,10 @@
     <div class="modal-dialog mediummodal">
         <form class="form-horizontal" id="glform">
             <div class="modal-content">
-                <div class="modal-header label-info">
-                    <p align="center"><b>GURANTEE LETTER ENTRY</b></p>
+                <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
+                    <b style="float: left;" id="newgl-textmrn"></b>
+                    <b style="float: left;padding-left: 10px;" id="newgl-textname"></b>
+                    <b style="float: right;">GURANTEE LETTER ENTRY</b>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -812,72 +816,65 @@
                                     <div class="col-md-4">
                                         <small for="newgl-staffid">STAFF ID</small>
                                         <input class="form-control form-mandatory" id="newgl-staffid" name="newgl-staffid" placeholder="" type="text" required>
-
                                     </div>
-                                    <div class="col-md-7 col-md-offset-1">
+                                    <div class="col-md-7">
                                         <small for="newgl-corpcomp">Name</small>
                                         <input class="form-control form-mandatory" id="newgl-name" name="newgl-name" placeholder="" type="text" required>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <small for="newgl-childno">CHILD NO</small>
+                                        <input name="newgl-childno" id="newgl-childno" class="form-control" placeholder="" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-4">
                                         <small for="newgl-corpcomp">Company Code</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_corpcomp" id="txt_newgl_corpcomp">
+                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_corpcomp" id="txt_newgl_corpcomp" required>
+                                            <input type="hidden" name="hid_newgl_corpcomp" id="hid_newgl_corpcomp" value="" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_newgl_corpcomp" data-toggle="modal" onclick_xguna="pop_item_select('newgl_corpcomp');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-7 col-md-offset-1">
-                                        <small for="newgl-corpcomp">Company Name</small>
-                                        <input type="text" class="form-control form-mandatory" name="hid_newgl_corpcomp" id="hid_newgl_corpcomp" value="" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
+
                                     <div class="col-md-4">
                                         <small for="newgl-occupcode">OCCUPATION</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_occupcode" id="txt_newgl_occupcode">
+                                            <input type="text" class="form-control" name="txt_newgl_occupcode" id="txt_newgl_occupcode">
                                             <input type="hidden" name="hid_newgl_occupcode" id="hid_newgl_occupcode" value="" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_newgl_occupcode" data-toggle="modal" onclick_xguna="pop_item_select('newgl_occupcode');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
-
                                     </div>
-                                    <div class="col-md-4 col-md-offset-1">
+                                    <div class="col-md-4">
                                         <small for="newgl-relatecode">RELATIONSHIP</small>
                                         <div class="input-group">
-                                            <input type="text" class="form-control form-mandatory" name="txt_newgl_relatecode" id="txt_newgl_relatecode">
+                                            <input type="text" class="form-control" name="txt_newgl_relatecode" id="txt_newgl_relatecode">
                                             <input type="hidden" name="hid_newgl_relatecode" id="hid_newgl_relatecode" value="" />
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-info" id="btn_newgl_relatecode" data-toggle="modal" onclick_xguna="pop_item_select('newgl_relatecode');"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 col-md-offset-1">
-                                        <small for="newgl-childno">CHILD NO</small>
-                                        <input name="newgl-childno" id="newgl-childno" class="form-control form-mandatory" placeholder="" type="text" required>
-                                    </div>
                                 </div>
                             </fieldset>
 
-                            <fieldset class="mycss">
-                            <legend>GL Info:</legend>
                                 <ul class="nav nav-tabs" id="select_gl_tab" style="margin-bottom: 10px;">
                                     <li class="active"><a href="#" data-toggle="tab" id="newgl_default_tab">Multi Volume</a></li>
-                                    <li><a href="#" data-toggle="tab">Multi Date</a></li>
-                                    <li><a href="#" data-toggle="tab">Open</a></li>
-                                    <li><a href="#" data-toggle="tab">Single Use</a></li>
-                                    <li><a href="#" data-toggle="tab">Limit Amount</a></li>
-                                    <li><a href="#" data-toggle="tab">Monthly Amount</a></li>
+                                    <li><a href="Multi Date" data-toggle="tab">Multi Date</a></li>
+                                    <li><a href="Open" data-toggle="tab">Open</a></li>
+                                    <li><a href="Single Use" data-toggle="tab">Single Use</a></li>
+                                    <li><a href="Limit Amount" data-toggle="tab">Limit Amount</a></li>
+                                    <li><a href="Monthly Amount" data-toggle="tab">Monthly Amount</a></li>
                                 </ul>
+                                <input type="hidden" id="newgl-gltype" name="newgl-gltype">
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <div class="col-md-6">
                                         <small for="newgl-gltype">GL TYPE</small>
-                                        <select id="newgl-gltype" name="newgl-gltype" class="form-control form-mandatory" readonly required>
+                                        <select id="newgl-gltype" name="newgl-gltype" class="form-control form-mandatory" disabled required>
                                             <option value="Multi Volume">Multi Volume</option>
                                             <option value="Multi Date">Multi Date</option>
                                             <option value="Open">Open</option>
@@ -887,19 +884,19 @@
                                             <option value="Single Use">Single Use</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" id="newgl-effdate_div">
                                         <small for="newgl-effdate">EFFECTIVE DATE:</small>
                                         <input class="form-control form-mandatory" id="newgl-effdate" name="newgl-effdate" placeholder="" type="date" required>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" id="newgl-expdate_div">
                                         <small for="newgl-expdate">EXPIRY DATE:</small>
                                         <input class="form-control form-mandatory" id="newgl-expdate" name="newgl-expdate" placeholder="" type="Date" required>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" id="newgl-visitno_div">
                                         <small for="newgl-visitno">VISIT NO</small>
-                                        <input class="form-control" id="newgl-visitno" name="newgl-visitno" placeholder="" type="text" disabled>
+                                        <input class="form-control" id="newgl-visitno" name="newgl-visitno" placeholder="" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -922,7 +919,6 @@
                                         <input class="form-control" id="newgl-remark" name="newgl-remark" placeholder="" type="text">
                                     </div>
                                 </div>
-                            </fieldset>
 
                         </div>
                     </div>

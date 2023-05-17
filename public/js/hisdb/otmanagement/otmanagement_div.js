@@ -70,7 +70,14 @@ $(document).ready(function () {
     });
     
     // to calculate hours utilized
-    $("#timeended").on('change',function() {
+    $("#timeended,#timestarted").on('change',function() {
+        var startTime = moment($('#timestarted').val(),'hh:mm:ss');
+        var endTime = moment($('#timeended').val(),'hh:mm:ss');
+        let duration = endTime.diff(startTime,'hours');
+        $("#hoursutilized").val(duration);
+
+        // duration in hours
+        // var hours = parseInt(duration.asHours());
         // var timestarted = new Date("#timestarted");
         // var timeended = new Date("#timeended");
     
@@ -78,9 +85,9 @@ $(document).ready(function () {
         
         // if (isNaN(hoursutilized)) hoursutilized = 0;
         
-        let hoursutilized = new Date("#timeended").getHours() - new Date("#timestarted").getHours();
+        // let hoursutilized = new Date("#timeended").getHours() - new Date("#timestarted").getHours();
         
-        $("#hoursutilized").val((hoursutilized));
+        // $("#duration").val(hours);
     
         // console.log(hoursutilized);
     });
@@ -307,7 +314,7 @@ function getdata_otmgmt(){
             autoinsert_rowdata("#form_otmgmt_div",data.apptbook);
             autoinsert_rowdata("#form_otmgmt_div",data.episode);
             $('#timestarted').val(data.start);
-            $('#timeended').val(data.end);
+            $('#timeended').val(data.end).change();
             // $('#form_otmgmt_div textarea#procedure').val(data.apptbook.procedure);
             // $('#form_otmgmt_div textarea#diagnosis').val(data.apptbook.diagnosis);
         }else{

@@ -72,7 +72,7 @@ $(document).ready(function() {
                 var retval = "<button title='Address' type='button' class='btn btn-xs btn-default btn-md command-add' data-row-id=\"" + row.MRN + "\"  name=\"cmd_add" + row.MRN + "\" data-telhp=\"" + row.telhp + "\"data-telh=\"" + row.telh + "\"data-Address1=\"" + row.Address1 + "\"data-Address2=\"" + row.Address2 + "\"data-Address3=\"" + row.Address3 + "\"data-Postcode=\"" + row.Postcode + "\"data-OffAdd1=\"" + row.OffAdd1 + "\"data-OffAdd2=\"" + row.OffAdd2 + "\"data-OffAdd3=\"" + row.OffAdd3 + "\"data-OffPostcode=\"" + row.OffPostcode + "\"data-pAdd1=\"" + row.pAdd1 + "\"data-pAdd2=\"" + row.pAdd2 + "\"data-pAdd3=\"" + row.pAdd3 + "\"data-pPostCode=\"" + row.pPostCode + "\" ><span class=\"glyphicon glyphicon-home\" aria-hidden=\"true\"></span></button>";
                 if($('#curpat').val() == 'false'){
                     if(row.PatStatus == 1 && row.q_epistycode=='IP'){
-                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='15' title='In Patinet'></a>";
+                        retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/warded.png' width='16' title='In Patinet'></a>";
                     }else if(row.PatStatus == 1 && row.q_epistycode=='OP'){
                         retval+="&nbsp;<a class='btn btn-xs btn-default'><img src='img/op.png' width='15' title='Out Patient'></a>";
                     }
@@ -107,7 +107,7 @@ $(document).ready(function() {
                            "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div>";
 
                 }else{
-                    if(row.q_epistycode == $("#epistycode").val() ){
+                    if(row.q_epistycode == $("#epistycode").val() && $('#curpat').val() == 'true'){
                         return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
                            "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+row.q_epistycode+"</b></button>";
                     }else{
@@ -235,7 +235,7 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        
+        console.log(rows[bootgrid_last_rowid])
         if($('#curpat').val() == 'true'){
 
             if($('#epistycode').val() == 'OP'){
@@ -712,6 +712,11 @@ function calc_jq_height_onchange(jqgrid,max_height=300){
 
 }
 
+
+var textfield_modal = new textfield_modal();
+textfield_modal.ontabbing();
+textfield_modal.checking();
+textfield_modal.clicking();
 
 if($('#epistycode').val() == 'OP'){
     var epis_desc_show = new loading_desc_epis([

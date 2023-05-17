@@ -393,26 +393,6 @@ function textfield_modal(){
         obj.dontcheck = true;
     }
     
-    // function get_mdl(type){
-    //     let mdl = null;
-        
-    //     switch (type){
-    //         case "pat_title":
-    //             mdl = "#mdl_add_new_title";
-    //             break;
-    //         case "pat_occupation":
-    //             mdl = "#mdl_add_new_occ";
-    //             break;
-    //         case "pat_area":
-    //             mdl = "#mdl_add_new_areacode";
-    //             break;
-    //         case "epis_source":
-    //             mdl = "mdl_add_new_adm";
-    //             break;
-    //     }
-    //     return mdl;
-    // }
-    
     function get_url(type){
         let act = null;
         switch (type){
@@ -452,154 +432,149 @@ function textfield_modal(){
         }
         obj.dontcheck = false;
     }
-    
-    function pop_item_select(type,ontab=false,text_val,obj){
-        var obj = obj;
+
+    function pop_item_select(type,ontab=false,text_val,obj){ 
         var act = null;
+        var id = id;
+        var rowid = rowid;
         var selecter = null;
         var title="Item selector";
         var mdl = null;
-        
+        var text_val = $('input#'+id).val();
+            
         act = get_url(type);
-        // mdl = get_mdl(type);
+
+        $('#mdl_item_selector').modal({
+            'closable':false,
+            onHidden : function(){
+                $('#tbl_item_select').html('');
+                selecter.destroy();
+            },
+        }).modal('show');
+        $('body,#mdl_item_selector').addClass('scrolling');
         
         selecter = $('#tbl_item_select').DataTable( {
-                "ajax": "preoperative/get_entry?action=" + act,
+                "ajax": "./preoperative/get_entry?action=" + act,
                 "ordering": false,
                 "lengthChange": false,
                 "info": true,
                 "pagingType" : "numbers",
                 "search": {
-                    "smart": true,
-                },
+                            "smart": true,
+                            "search": text_val
+                          },
                 "columns": [
-                    {'data': 'code'},
-                    {'data': 'description' },
-                ],
+                            {'data': 'code'}, 
+                            {'data': 'description'}
+                           ],
+
                 "columnDefs": [ {
-                    "targets": 0,
-                    "data": "code",
-                    "render": function ( data, type, row, meta ) {
-                        return data;
-                    }
-                } ],
-                "fnInitComplete": function(oSettings, json) {
-                    if(ontab==true){
-                        selecter.search( text_val ).draw();
-                    }
-                    // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-                    // if(mdl!=null){
-                    //     $('#add_new_adm').data('modal-target',mdl)
-                    //     $('#add_new_adm').show();
-                    // }
-                    if(selecter.page.info().recordsDisplay == 1){
-                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
-                    }
-                }
+                        "width": "20%",
+                        "targets": 0,
+                        "data": "code",
+                        "render": function ( data, type, row, meta ) {
+                            return data;
+                        }
+                      }
+                ],
+
+                "initComplete": function(oSettings, json) {
+                    delay(function(){
+                        $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
+                    }, 10 );
+                },
         });
-        
+
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
-            myerrorIt_only('#txt_' + type,false);
             item = selecter.row( this ).data();
-            
-            $('#hid_' + type).val(item["code"]);
-            $('#txt_' + type).val(item["description"]);
-            
-            $('#txt_' + type).change(); // <-- to activate onchange event if any
-            
+            $('input[name='+type+'][optid='+rowid+']').val(item["code"]);
+            $('input[name='+type+'][optid='+rowid+']').parent().next().html(item["description"]);
+            if(type == "chgcode"){
+                $('input[name=quantity][optid='+rowid+']').val(item["doseqty"]);
+
+                $('input[name=dosecode][optid='+rowid+']').val(item["dosecode"]);
+                $('input[name=dosecode][optid='+rowid+']').parent().next().html(item["dosecode_"]);
+
+                $('input[name=freqcode][optid='+rowid+']').val(item["freqcode"]);
+                $('input[name=freqcode][optid='+rowid+']').parent().next().html(item["freqcode_"]);
+
+                $('input[name=inscode][optid='+rowid+']').val(item["instruction"]);
+                $('input[name=inscode][optid='+rowid+']').parent().next().html(item["instruction_"]);
+            }
             $('#mdl_item_selector').modal('hide');
         });
-        
-        $("#mdl_item_selector").on('hidden.bs.modal', function () {
-            $('#add_new_adm').hide();
-            $('#tbl_item_select').html('');
-            selecter.destroy();
-            $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
-            type = "";
-            item = "";
-        });
-        
-        // $('#add_new_adm').click(function(){
-        //     $('#mdl_add_new_adm').modal('show');
-        // });
-        
-        // $('#adm_save').click(function(){
-        //     if($('#adm_form').valid()){
-        //         var _token = $('#csrf_token').val();
-        //         let serializedForm = $( "#adm_form" ).serializeArray();
-        //         let obj = {
-        //             _token: _token
-        //         }
-                
-        //         $.post( 'pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-        //             $("#adm_form").trigger('reset');
-        //             selecter.ajax.reload()
-        //             $('#mdl_add_new_adm').modal('hide');
-        //         }).fail(function(data) {
-        //             alert(data.responseText);
-        //         }).success(function(data){
-        //         });
-        //     }
-        // });
-        
-        // $('#new_occup_save').click(function(){
-        //     if($('#new_occup_form').valid()){
-        //         var _token = $('#csrf_token').val();
-        //         let serializedForm = $( "#new_occup_form" ).serializeArray();
-        //         let obj = {
-        //             _token: _token
-        //         }
-                
-        //         $.post( 'pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-        //             $("#new_occup_form").trigger('reset');
-        //             selecter.ajax.reload()
-        //             $('#mdl_add_new_occ').modal('hide');
-        //         }).fail(function(data) {
-        //             alert(data.responseText);
-        //         }).success(function(data){
-        //         });
-        //     }
-        // });
-        
-        // $('#new_title_save').click(function(){
-        //     if($('#new_title_form').valid()){
-        //         var _token = $('#csrf_token').val();
-        //         let serializedForm = $( "#new_title_form" ).serializeArray();
-        //         let obj = {
-        //             _token: _token
-        //         }
-                
-        //         $.post( 'pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-        //             $("#new_title_form").trigger('reset');
-        //             selecter.ajax.reload()
-        //             $('#mdl_add_new_title').modal('hide');
-        //         }).fail(function(data) {
-        //             alert(data.responseText);
-        //         }).success(function(data){
-        //         });
-        //     }
-        // });
-        
-        // $('#new_areacode_save').click(function(){
-        //     if($('#new_areacode_form').valid()){
-        //         var _token = $('#csrf_token').val();
-        //         let serializedForm = $( "#new_areacode_form" ).serializeArray();
-        //         let obj = {
-        //             _token: _token
-        //         }
-                
-        //         $.post( 'pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-        //             $("#new_areacode_form").trigger('reset');
-        //             selecter.ajax.reload()
-        //             $('#mdl_add_new_title').modal('hide');
-        //         }).fail(function(data) {
-        //             alert(data.responseText);
-        //         }).success(function(data){
-        //         });
-        //     }
-        // });
     }
+
+    
+    // function pop_item_select(type,ontab=false,text_val,obj){
+    //     var obj = obj;
+    //     var act = null;
+    //     var selecter = null;
+    //     var title="Item selector";
+    //     var mdl = null;
+        
+    //     act = get_url(type);
+    //     // mdl = get_mdl(type);
+        
+    //     selecter = $('#tbl_item_select').DataTable( {
+    //             "ajax": "preoperative/get_entry?action=" + act,
+    //             "ordering": false,
+    //             "lengthChange": false,
+    //             "info": true,
+    //             "pagingType" : "numbers",
+    //             "search": {
+    //                 "smart": true,
+    //             },
+    //             "columns": [
+    //                 {'data': 'code'},
+    //                 {'data': 'description' },
+    //             ],
+    //             "columnDefs": [ {
+    //                 "targets": 0,
+    //                 "data": "code",
+    //                 "render": function ( data, type, row, meta ) {
+    //                     return data;
+    //                 }
+    //             } ],
+    //             "fnInitComplete": function(oSettings, json) {
+    //                 if(ontab==true){
+    //                     selecter.search( text_val ).draw();
+    //                 }
+    //                 // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
+    //                 // if(mdl!=null){
+    //                 //     $('#add_new_adm').data('modal-target',mdl)
+    //                 //     $('#add_new_adm').show();
+    //                 // }
+    //                 if(selecter.page.info().recordsDisplay == 1){
+    //                     $('#tbl_item_select tbody tr:eq(0)').dblclick();
+    //                 }
+    //             }
+    //     });
+        
+    //     // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
+    //     $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
+    //         myerrorIt_only('#txt_' + type,false);
+    //         item = selecter.row( this ).data();
+            
+    //         $('#hid_' + type).val(item["code"]);
+    //         $('#txt_' + type).val(item["description"]);
+            
+    //         $('#txt_' + type).change(); // <-- to activate onchange event if any
+            
+    //         $('#mdl_item_selector').modal('hide');
+    //     });
+        
+    //     $("#mdl_item_selector").on('hidden.bs.modal', function () {
+    //         $('#add_new_adm').hide();
+    //         $('#tbl_item_select').html('');
+    //         selecter.destroy();
+    //         $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
+    //         type = "";
+    //         item = "";
+    //     });
+        
+    // }
 }
 
 function loading_desc_epis(obj){ //loading description dia sebab save code dia je

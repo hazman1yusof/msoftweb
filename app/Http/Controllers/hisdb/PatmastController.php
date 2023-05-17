@@ -69,7 +69,7 @@ class PatmastController extends defaultController
             $sel_epistycode = $request->epistycode;
 
             $table_patm = DB::table('hisdb.pat_mast') //ambil dari patmast balik
-                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo'])
+                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','epispayer.payercode','debtormast.name as payername'])
                             ->join('hisdb.queue', function($join) use ($request,$sel_epistycode){
                                 $join = $join->on('queue.mrn', '=', 'pat_mast.MRN')
                                             ->where('queue.billflag','=',0)
@@ -81,6 +81,16 @@ class PatmastController extends defaultController
                                 }else{
                                     $join = $join->whereIn('queue.epistycode', ['IP','DP']);
                                 }
+                            })
+                            ->leftJoin('hisdb.epispayer', function($join) use ($request){
+                                $join = $join->on('epispayer.mrn', '=', 'pat_mast.MRN')
+                                                ->on('epispayer.episno','=','pat_mast.Episno')
+                                                ->where('epispayer.compcode','=',session('compcode'))
+                                                ->where('epispayer.lineno','=','1');
+                            })
+                            ->leftJoin('debtor.debtormast', function($join) use ($request){
+                                $join = $join->on('epispayer.payercode', '=', 'debtormast.debtorcode')
+                                                ->where('epispayer.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.doctor', function($join) use ($request){
                                 $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
@@ -134,31 +144,31 @@ class PatmastController extends defaultController
             $paginate_patm = $table_patm->paginate($request->rows);
 
 
-            foreach ($paginate_patm->items() as $key => $value) {
-                // foreach ($paginate->items() as $key2 => $value2) {
-                //     if($value->MRN == $value2->mrn){
-                //         $value->q_doctorname = $value2->doctorname;
-                //         $value->q_epistycode = $value2->epistycode;
-                //     }
-                // }
+            // foreach ($paginate_patm->items() as $key => $value) {
+            //     // foreach ($paginate->items() as $key2 => $value2) {
+            //     //     if($value->MRN == $value2->mrn){
+            //     //         $value->q_doctorname = $value2->doctorname;
+            //     //         $value->q_epistycode = $value2->epistycode;
+            //     //     }
+            //     // }
 
-                $episode = DB::table('hisdb.episode')
-                            ->select('newcaseP','newcaseNP','followupP','followupNP')
-                            ->where('mrn','=',$value->MRN)
-                            ->where('episno','=',$value->Episno);
+            //     $episode = DB::table('hisdb.episode')
+            //                 ->select('newcaseP','newcaseNP','followupP','followupNP')
+            //                 ->where('mrn','=',$value->MRN)
+            //                 ->where('episno','=',$value->Episno);
 
-                if($episode->exists()){
-                    $episode = $episode->first();
-                    if($episode->newcaseP == 1 || $episode->followupP == 1){
-                        $value->pregnant = 1;
-                    }else{
-                        $value->pregnant = 0;
-                    }
+            //     if($episode->exists()){
+            //         $episode = $episode->first();
+            //         if($episode->newcaseP == 1 || $episode->followupP == 1){
+            //             $value->pregnant = 1;
+            //         }else{
+            //             $value->pregnant = 0;
+            //         }
 
-                }
+            //     }
 
 
-            }
+            // }
 
             $responce = new stdClass();
             $responce->current = $paginate_patm->currentPage();
@@ -240,10 +250,13 @@ class PatmastController extends defaultController
                                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
                                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
                                 ->where('episode.mrn','=',$value->MRN)
-                                ->where('episode.episno','=',$value->Episno);
+                                ->where('episode.episno','=',$value->Episno)
+                                ->where('episode.compcode','=',session('compcode'));
+
 
                     if($episode->exists()){
                         $episode = $episode->first();
+                    // dump($episode->epistycode);
                         $value->q_epistycode = $episode->epistycode;
                         $value->q_doctorname = $episode->doctorname;
                     }
@@ -597,11 +610,24 @@ class PatmastController extends defaultController
                 break;
 
             case 'get_refno_list':
-                $data = DB::table('hisdb.guarantee')
-                    ->select('debtorcode','name','gltype','staffid','refno','ourrefno','childno','episno','medcase','mrn','relatecode','remark','startdate','enddate')
-                    // ->where('debtorcode','=',$request->debtorcode)
-                    ->where('mrn','=',$request->mrn)
-                    ->get();
+                $data = DB::table('hisdb.guarantee AS g')
+                            ->select('g.idno','g.compcode','g.debtorcode','g.staffid','g.relatecode','g.childno','g.refno','g.gltype','g.startdate','g.enddate','g.adduser','g.adddate','g.upduser','g.upddate','g.visitno','g.visitbal','g.medcase','g.remark','g.name','g.ourrefno','g.mrn','g.active','g.episno','g.lineno_','g.case','dm.name as debtor_name','r.Description as relate_desc','o.occupcode','o.description as occup_desc')
+                            ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                                $join = $join->on('dm.debtorcode', '=', 'g.debtorcode')
+                                                ->where('dm.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.relationship AS r', function($join) use ($request){
+                                $join = $join->on('r.RelationShipCode', '=', 'g.relatecode')
+                                                ->where('r.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.pat_mast AS pm', function($join) use ($request){
+                                $join = $join->on('pm.MRN', '=', 'g.mrn')
+                                                ->where('pm.compcode','=',session('compcode'));
+                            })->leftJoin('hisdb.occupation AS o', function($join) use ($request){
+                                $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
+                                                ->where('o.compcode','=',session('compcode'));
+                            })
+                            ->where('g.mrn','=',$request->mrn)
+                            ->where('g.compcode','=',session('compcode'))
+                            ->get();
 
                 break;
 
@@ -2122,7 +2148,9 @@ class PatmastController extends defaultController
                     'ourrefno' =>   $ourrefno,
                     'refno' =>   $request['newgl-refno'],
                     'debtorcode'  =>  $request['hid_newgl_corpcomp'],
-                    'name'  =>  $request['txt_newgl_corpcomp'],
+                    'occupcode'  =>  $request['hid_newgl_occupcode'],
+                    'case'  =>  $request['newgl-case'],
+                    'name'  =>  $request['newgl-name'],
                     'staffid' =>   $request['newgl-staffid'],
                     'childno' =>   $request['newgl-childno'],
                     'relatecode' =>   $request['hid_newgl_relatecode'],
@@ -2135,6 +2163,15 @@ class PatmastController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
+
+            if($request['hid_newgl_occupcode'] != ''){
+                DB::table('hisdb.pat_mast')
+                    ->where('MRN',$request->mrn)
+                    ->where('compcode',session('compcode'))
+                    ->update([
+                        'OccupCode' => $request['hid_newgl_occupcode']
+                    ]);
+            }
 
             DB::commit();
 

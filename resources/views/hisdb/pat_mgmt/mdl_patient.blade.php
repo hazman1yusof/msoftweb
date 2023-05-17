@@ -73,7 +73,7 @@
                                                         <input type="text" class="form-control" name="txt_pat_title" id="txt_pat_title">
                                                         <input type="hidden" name="TitleCode" id="hid_pat_title" value="" />
                                                         <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-info" id="btn_pat_title" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_title');"><span class="fa fa-ellipsis-h"></span></button>
+                                                            <button type="button" class="btn btn-info" id="btn_pat_title" onclick-xguna="Global.pop_item_select('pat_title');"><span class="fa fa-ellipsis-h"></span></button>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -101,7 +101,7 @@
                                                         <input type="text" class="form-control form-mandatory" name="txt_ID_Type" id="txt_ID_Type" required>
                                                         <input type="hidden" name="ID_Type" id="hid_ID_Type" value="" />
                                                         <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-info" id="btn_ID_Type" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('ID_Type');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                            <button type="button" class="btn btn-info" id="btn_ID_Type" onclick-xguna="Global.pop_item_select('ID_Type');"><span class="fa fa-ellipsis-h"></span> </button>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -139,7 +139,7 @@
                                                 <input type="text" class="form-control form-mandatory" name="txt_RaceCode" id="txt_RaceCode" required>
                                                 <input type="hidden" name="RaceCode" id="hid_RaceCode" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_RaceCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('RaceCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_RaceCode" onclick-xguna="Global.pop_item_select('RaceCode');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@
                                                 <input type="text" class="form-control form-mandatory" name="txt_Religion" id="txt_Religion" required>
                                                 <input type="hidden" name="Religion" id="hid_Religion" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_Religion" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_Religion" onclick-xguna="Global.pop_item_select('Religion');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                                 <input type="text" class="form-control form-mandatory" name="txt_pat_citizen" id="txt_pat_citizen" required>
                                                 <input type="hidden" name="Citizencode" id="hid_pat_citizen" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_pat_citizen" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_citizen');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_pat_citizen" onclick-xguna="Global.pop_item_select('pat_citizen');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -189,7 +189,7 @@
                                                 <input type="text" class="form-control" name="txt_LanguageCode" id="txt_LanguageCode">
                                                 <input type="hidden" name="LanguageCode" id="hid_LanguageCode" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_LanguageCode" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_LanguageCode" onclick-xguna="Global.pop_item_select('LanguageCode');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -267,7 +267,7 @@
                                                                 <input type="text" class="form-control form-mandatory" name="txt_pat_area" id="txt_pat_area" required>
                                                                 <input type="hidden" name="AreaCode" id="hid_pat_area" value="" />
                                                                 <span class="input-group-btn">
-                                                                    <button type="button" class="btn btn-info" id="btn_pat_area" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_area');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                                    <button type="button" class="btn btn-info" id="btn_pat_area" onclick-xguna="Global.pop_item_select('pat_area');"><span class="fa fa-ellipsis-h"></span> </button>
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -397,7 +397,7 @@
                                                 <input type="text" class="form-control form-mandatory" name="txt_payer_company" id="txt_payer_company">
                                                 <input type="hidden" name="CorpComp" id="hid_payer_company" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_payer_company" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('payer_company');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_payer_company" onclick-xguna="Global.pop_item_select('payer_company');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>
@@ -416,7 +416,7 @@
                                                 <input type="text" class="form-control form-mandatory" name="txt_pat_occupation" id="txt_pat_occupation">
                                                 <input type="hidden" name="OccupCode" id="hid_pat_occupation" value="" />
                                                 <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-info" id="btn_pat_occupation" data-toggle="modal" data-target="#mdl_item_selector" onclick="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
+                                                    <button type="button" class="btn btn-info" id="btn_pat_occupation" onclick-xguna="Global.pop_item_select('pat_occupation');"><span class="fa fa-ellipsis-h"></span> </button>
                                                 </span>
                                             </div>
                                         </div>

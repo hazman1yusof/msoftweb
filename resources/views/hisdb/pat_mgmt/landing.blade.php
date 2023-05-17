@@ -527,19 +527,22 @@
                 <tr>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
                     @if (request()->get('curpat') == 'true')
-                    <th data-column-id="QueueNo" data-width="3%">Queue</th>
+                    <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
 					@endif
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="20%">Name</th>
+                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="15%">Name</th>
+                    @if (request()->get('curpat') == 'true')
+                    <th data-column-id="payername" data-width="15%">Payer</th>
+					@endif
+                    <th data-column-id="q_doctorname" data-width="15%">Doctor</th>
                 	<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
-                    <th data-column-id="q_doctorname" data-width="20%">Doctor</th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
                     <th data-column-id="Sex" data-width="2%">Sex</th>
                     <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
+					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Action</th>
 				</tr>
 				</thead>
 
@@ -717,6 +720,7 @@
 	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script> -->
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/landing.js"></script>
 
 	</div>
