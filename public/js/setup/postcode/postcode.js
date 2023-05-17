@@ -49,7 +49,7 @@ $(document).ready(function () {
 		colModel: [
             { label: 'compcode', name: 'pc_compcode', hidden: true },
             { label: 'Postode', name: 'pc_postcode', width: 30, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
-            { label: 'Place Name', name: 'pc_place_name', width: 80, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
+            { label: 'Place Name', name: 'pc_place_name', width: 100, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'District', name: 'pc_district', width: 60, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" } },
             { label: 'State', name: 'st_StateCode', width: 60, canSearch: true, editable: true, 
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,unformat:un_showdetail,
@@ -66,11 +66,11 @@ $(document).ready(function () {
 						    },
 			},
 			{ label: 'id', name: 'pc_idno', width:10, hidden: true, key:true},
-			{ label: 'Add User', name: 'pc_adduser', width: 50, hidden:false},
+			{ label: 'Add User', name: 'pc_adduser', width: 40, hidden:false},
 			{ label: 'Add Date', name: 'pc_adddate', width: 50, hidden:false},
-			{ label: 'Upd User', name: 'pc_upduser', width: 50, hidden:false},
+			{ label: 'Upd User', name: 'pc_upduser', width: 40, hidden:false},
 			{ label: 'Upd Date', name: 'pc_upddate', width: 50, hidden:false},
-			{ label: 'Computer ID', name: 'pc_computerid', width: 50, hidden:false},
+			{ label: 'Computer ID', name: 'pc_computerid', width: 40, hidden:false},
 			{ label: 'lastcomputerid', name: 'pc_lastcomputerid', width: 90, hidden:true},
 			{ label: 'lastuser', name: 'pc_lastuser', width: 90, hidden:true},
 			{ label: 'lastupdate', name: 'pc_lastupdate', width: 90, hidden:true},
@@ -350,8 +350,8 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
-			case 'st_StateCode':field=['StateCode','Description'];table="hisdb.state";case_='expacct';break;
-			case 'cn_Code':field=['Code','Description'];table="hisdb.country";case_='expacct';break;
+			case 'st_StateCode':field=['StateCode','Description'];table="hisdb.state";case_='st_StateCode';break;
+			case 'cn_Code':field=['Code','Description'];table="hisdb.country";case_='cn_Code';break;
 
 		}
 

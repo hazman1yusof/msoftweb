@@ -47,7 +47,8 @@ class AddressTypeController extends defaultController
 
             $addresstype = DB::table('hisdb.addcode')
                             ->where('compcode','=',session('compcode'))
-                            ->where('addtype','=',$request->addtype);
+                            ->where('addtype','=',$request->addtype)
+                            ->where('description','=',$request->description);;
 
             if($addresstype->exists()){
                 throw new \Exception("Record Duplicate");

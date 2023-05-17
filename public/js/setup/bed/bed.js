@@ -123,25 +123,23 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./bed/form",
 		colModel: [
+			{ label: 'idno', name: 'idno', hidden: true },
             { label: 'compcode', name: 'compcode', hidden: true },
-            { label: 'Bed No', name: 'bednum', width: 10, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, formatter: showdetail, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
+            { label: 'Bed No', name: 'bednum', width: 13, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Bed Type', name: 'bedtype', width: 20, classes: 'wrap', editable:true, canSearch: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 					edittype:'custom',	editoptions:
 						{	custom_element:bedTypeCustomEdit,
 							custom_value:galGridCustomValue 	
 						},
 			},
-			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
-			{ label: 'Bed Status', name: 'occup', width: 20, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Bed Status', name: 'occup', width: 25, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:occupCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Room', name: 'room', width: 8, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 13, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Ward', name: 'ward', width: 25 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -149,17 +147,16 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', formatter: stat_format, unformat:stat_unformat, canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: false, editable: true, editoptions: {style: "text-transform: uppercase" }, hidden:true},
+			{ label: 'Statistic', name: 'statistic', width: 15, classes: 'wrap', formatter: stat_format, unformat:stat_unformat, canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:statCustomEdit,
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: ' ', name: 'episno', width: 5, align : 'right'},
+			{ label: 'MRN', name: 'mrn', width: 13, canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: ' ', name: 'episno', width: 10, align : 'right'},
 			{ label: 'Patient Name', name: 'name', width: 30, canSearch: true, classes: 'wrap'},
-			// { label: 'Charge Code', name: 'cm_chgcode', classes: 'wrap', width: 30, canSearch: true},
 			{ label: 'Charge Code', name: 'bedchgcode', width: 25 , classes: 'wrap', editable:true,
 				editrules:{required: false}, formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -167,22 +164,13 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			// { label: ' ', name: 'recstatus', width: 10, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
-			// 	edittype:'custom',	editoptions:
-			// 	{ 	custom_element:recstatusCustomEdit,
-			// 		custom_value:galGridCustomValue 	
-			// 	},
-			// },
 			{ label: 'recstatus', name: 'recstatus', width:10, hidden: true},
-			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
-			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
-			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
-			{ label: 'Computer ID', name: 'computerid', width: 90, hidden:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'Add User', name: 'adduser', width: 20, hidden:false},
+			{ label: 'Add Date', name: 'adddate', width: 30, hidden:false},
+			{ label: 'Upd User', name: 'upduser', width: 20, hidden:false},
+			{ label: 'Upd Date', name: 'upddate', width: 30, hidden:false},
+			{ label: 'Computer ID', name: 'computerid', width: 20, hidden:false},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 50, hidden:true},
 		],
 		autowidth: true,
 		multiSort: true,
@@ -467,7 +455,6 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'add');
             refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
