@@ -268,6 +268,7 @@ Route::post('/otmanagement_div/form','hisdb\OTManagement_divController@form');
 Route::get('/preoperative','hisdb\PreoperativeController@show');
 Route::get('/preoperative/table','hisdb\PreoperativeController@table');
 Route::post('/preoperative/form','hisdb\PreoperativeController@form');
+Route::get('/preoperative/get_entry','hisdb\PreoperativeController@get_entry');
 
 //// Operating Team page ////
 Route::get('/oper_team','hisdb\OperTeamController@show');

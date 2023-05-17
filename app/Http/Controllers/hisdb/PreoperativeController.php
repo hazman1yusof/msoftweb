@@ -299,4 +299,31 @@ class PreoperativeController extends defaultController
     
     }
     
+    public function get_entry(Request $request)
+    {
+        $responce = new stdClass();
+        
+        switch ($request->action) {
+            case 'get_reg_doctor':
+                $data = DB::table('hisdb.doctor')
+                        ->select('doctorcode as code','doctorname as description')
+                        ->where('recstatus','=','ACTIVE')
+                        ->where('compcode','=',session('compcode'));
+                
+                if(!empty($request->search)){
+                    $data = $data->where('description','=',$request->search)->first();
+                }else{
+                    $data = $data->get();
+                }
+                break;
+            
+            default:
+                $data = 'nothing';
+                break;
+        }
+        
+        $responce->data = $data;
+        return json_encode($responce);
+    }
+    
 }

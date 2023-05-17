@@ -71,16 +71,18 @@ $(document).ready(function () {
     
     // to calculate hours utilized
     $("#timeended").on('change',function() {
-        var timestarted = new Date("#timestarted");
-        var timeended = new Date("#timeended");
+        // var timestarted = new Date("#timestarted");
+        // var timeended = new Date("#timeended");
     
-        var hoursutilized = Math.abs(timeended.getHours() - timestarted.getHours());
+        // var hoursutilized = Math.abs(timeended - timestarted) / 36e5;
         
-        if (isNaN(hoursutilized)) hoursutilized = 0;
+        // if (isNaN(hoursutilized)) hoursutilized = 0;
+        
+        let hoursutilized = new Date("#timeended").getHours() - new Date("#timestarted").getHours();
         
         $("#hoursutilized").val((hoursutilized));
     
-        console.log(hoursutilized);
+        // console.log(hoursutilized);
     });
     
 });
