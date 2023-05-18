@@ -87,8 +87,6 @@ $(document).ready(function () {
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
-	
-	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
@@ -122,6 +120,8 @@ $(document).ready(function () {
 		width: 200,
 		height: 100,
 		rowNum: 30,
+		sortname: 'fd_year',
+		sortorder: "desc",
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');

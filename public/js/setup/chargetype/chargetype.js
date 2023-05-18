@@ -55,17 +55,25 @@ $(document).ready(function () {
 			parent_close_disabled(true);
 			switch(oper) {
 				case state = 'add':
+					$( this ).dialog( "option", "title", "Add" );
 					enableForm('#formdata');
 					rdonly('#formdata');
+					hideOne("#formdata");
 					break;
 				case state = 'edit':
+					$( this ).dialog( "option", "title", "Edit" );
 					enableForm('#formdata');
 					rdonly('#formdata');
 					frozeOnEdit("#dialogForm");
+					$('#formdata :input[hideOne]').show();
 					recstatusDisable();
 					break;
 				case state = 'view':
+					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
+					rdonly("#formdata");
+					$(this).dialog("option", "buttons",butt2);
+					$('#formdata :input[hideOne]').show();
 					break;
 			}
 			if(oper!='view'){
@@ -140,10 +148,14 @@ $(document).ready(function () {
 			{ label: 'Compcode', name: 'compcode', hidden:true},
 			{ label: 'Charge Type', name: 'chgtype', classes: 'wrap', width: 30, canSearch: true},
 			{ label: 'Description', name: 'description', classes: 'wrap', width: 70, canSearch: true, checked:true},
-			{ label: 'Last User', name: 'upduser', classes: 'wrap', width: 30},
-			{ label: 'Last Update', name: 'upddate', classes: 'wrap', width: 20},
 			{ label: 'Sequence Number', name: 'seqno', classes: 'wrap', width: 20},
 			{ label: 'Charge Group', name: 'chggroup', classes: 'wrap', width: 20, canSearch: true},
+			{ label: 'Add User', name: 'adduser', width: 30,hidden:true},
+			{ label: 'Add Date', name: 'adddate', width: 90,hidden:true},
+			{ label: 'Upd User', name: 'upduser', width: 80,hidden:true}, 
+			{ label: 'Upd Date', name: 'upddate', width: 90,hidden:true},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap'},
 			{ label: 'ipacccode', name: 'ipacccode', hidden:true},
 			{ label: 'opacccode', name: 'opacccode', hidden:true},
 			{ label: 'otcacccode', name: 'otcacccode', hidden:true},
@@ -153,13 +165,14 @@ $(document).ready(function () {
 			{ label: 'Status', name:'recstatus', width:20, classes:'wrap', hidden:false,
 			cellattr: function (rowid, cellvalue)
 			{ return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"' : '' },},
-			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+			
 		],
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
+		sortname:'idno',
+		sortorder:'desc',
 		width: 900,
 		height: 250,
 		rowNum: 30,

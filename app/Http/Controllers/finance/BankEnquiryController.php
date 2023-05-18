@@ -61,7 +61,6 @@ class BankEnquiryController extends defaultController
                     ->where('year','=',$request->year) 
                     ->where('period','=',$request->period);
 
-
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
@@ -74,8 +73,5 @@ class BankEnquiryController extends defaultController
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
-
-
-
     }
 }

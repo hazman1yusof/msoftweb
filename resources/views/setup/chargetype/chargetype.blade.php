@@ -173,29 +173,40 @@ input.uppercase {
 					</div> 
 
 					<div class="form-group">
-						<label class="col-md-2 control-label" for="upduser">Last User</label>  
+					<label class="col-md-2 control-label" for="adduser">Created By</label>  
 						<div class="col-md-3">
-							<input id="upduser" name="upduser" type="text" class="form-control input-sm uppercase" rdonly>
+						  	<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
-						<label class="col-md-2 control-label" for="upddate">Last Update</label>  
-						<div class="col-md-3">
-							<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly>
-						</div>
-					</div> 
-					
+						<label class="col-md-2 control-label" for="upduser">Last Entered</label>  
+						  	<div class="col-md-3">
+								<input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+						  	</div>
+				</div>
 
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="adddate">Created Date</label>  
 						<div class="col-md-3">
-							<input id="computerid" name="computerid" type="text" class="form-control input-sm uppercase" rdonly >
+						  	<input id="adddate" name="adddate" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
 
-						<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+						<label class="col-md-2 control-label" for="upddate">Last Entered Date</label>  
+						  	<div class="col-md-3">
+								<input id="upddate" name="upddate" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit hideOne>
+						  	</div>
+				</div>  
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
-							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm uppercase" rdonly >
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne>
 						</div>
-					</div>  
+
+					<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+						<div class="col-md-3">
+							<input id="lastcomputerid" name="lastcomputerid" type="text" maxlength="30" class="form-control input-sm"  frozeOnEdit hideOne>
+						  	</div>
+				</div>   
 				</form>
 			</div>
 		</div>		
