@@ -432,8 +432,8 @@ function textfield_modal(){
         }
         obj.dontcheck = false;
     }
-
-    function pop_item_select(type,ontab=false,text_val,obj){ 
+    
+    function pop_item_select(type,ontab=false,text_val,obj){
         var act = null;
         var id = id;
         var rowid = rowid;
@@ -441,9 +441,9 @@ function textfield_modal(){
         var title="Item selector";
         var mdl = null;
         var text_val = $('input#'+id).val();
-            
+        
         act = get_url(type);
-
+        
         $('#mdl_item_selector').modal({
             'closable':false,
             onHidden : function(){
@@ -460,47 +460,51 @@ function textfield_modal(){
                 "info": true,
                 "pagingType" : "numbers",
                 "search": {
-                            "smart": true,
-                            "search": text_val
-                          },
+                    "smart": true,
+                    "search": text_val
+                },
                 "columns": [
-                            {'data': 'code'}, 
-                            {'data': 'description'}
-                           ],
-
-                "columnDefs": [ {
-                        "width": "20%",
-                        "targets": 0,
-                        "data": "code",
-                        "render": function ( data, type, row, meta ) {
-                            return data;
-                        }
-                      }
+                    {'data': 'code'},
+                    {'data': 'description'}
                 ],
-
+                "columnDefs": [ {
+                    "width": "20%",
+                    "targets": 0,
+                    "data": "code",
+                    "render": function ( data, type, row, meta ) {
+                        return data;
+                    }
+                } ],
                 "initComplete": function(oSettings, json) {
                     delay(function(){
                         $('div.dataTables_filter input', selecter.table().container()).get(0).focus();
                     }, 10 );
                 },
         });
-
+        
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
             item = selecter.row( this ).data();
             $('input[name='+type+'][optid='+rowid+']').val(item["code"]);
             $('input[name='+type+'][optid='+rowid+']').parent().next().html(item["description"]);
-            if(type == "chgcode"){
-                $('input[name=quantity][optid='+rowid+']').val(item["doseqty"]);
-
-                $('input[name=dosecode][optid='+rowid+']').val(item["dosecode"]);
-                $('input[name=dosecode][optid='+rowid+']').parent().next().html(item["dosecode_"]);
-
-                $('input[name=freqcode][optid='+rowid+']').val(item["freqcode"]);
-                $('input[name=freqcode][optid='+rowid+']').parent().next().html(item["freqcode_"]);
-
-                $('input[name=inscode][optid='+rowid+']').val(item["instruction"]);
-                $('input[name=inscode][optid='+rowid+']').parent().next().html(item["instruction_"]);
+            
+            if(type == "anaesthetist"){
+                $('input[name=info_anaesthetist][optid='+rowid+']').val(item["description"]);
+                
+                // $('input[name=dosecode][optid='+rowid+']').val(item["dosecode"]);
+                // $('input[name=dosecode][optid='+rowid+']').parent().next().html(item["dosecode_"]);
+                
+                // $('input[name=freqcode][optid='+rowid+']').val(item["freqcode"]);
+                // $('input[name=freqcode][optid='+rowid+']').parent().next().html(item["freqcode_"]);
+                
+                // $('input[name=inscode][optid='+rowid+']').val(item["instruction"]);
+                // $('input[name=inscode][optid='+rowid+']').parent().next().html(item["instruction_"]);
+            }
+            if(type == "surgeon"){
+                $('input[name=info_surgeon][optid='+rowid+']').val(item["description"]);
+            }
+            if(type == "asstsurgeon"){
+                $('input[name=info_asstsurgeon][optid='+rowid+']').val(item["description"]);
             }
             $('#mdl_item_selector').modal('hide');
         });
