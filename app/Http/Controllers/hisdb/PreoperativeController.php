@@ -284,18 +284,19 @@ class PreoperativeController extends defaultController
     public function get_table_preoperative(Request $request){
         
         $preop_obj = DB::table('nursing.otpreop as ot')
-                    ->select(['ot.idno','ot.compcode','ot.mrn','ot.episno','ot.pat_id','ot.use2iden','ot.pat_ward','ot.pat_ot','ot.pat_remark','ot.cons_surgery',
-                    'ot.cons_anaes','ot.cons_trans','ot.cons_photo','ot.check_form','ot.check_pat','ot.check_list','ot.cons_ward','ot.cons_ot','ot.cons_remark',
-                    'ot.check_side_left','ot.check_side_right','ot.check_side_na','ot.check_side_ward','ot.check_side_ot','ot.check_side_remark','ot.side_op_mark',
-                    'ot.side_op_na','ot.side_op_ward','ot.side_op_ot','ot.side_op_remark','ot.lastmeal_date','ot.lastmeal_time','ot.lastmeal_ward','ot.lastmeal_ot',
-                    'ot.lastmeal_remark','ot.check_item_na','ot.check_item_ward','ot.check_item_ot','ot.check_item_remark','ot.allergies','ot.allergies_ward',
-                    'ot.allergies_ot','ot.allergies_remark','ot.implant_avlblt','ot.implant_ward','ot.implant_ot','ot.implant_remark','ot.premed_na','ot.premed_ward',
-                    'ot.premed_ot','ot.premed_remark','ot.blood_na','ot.blood_ward','ot.blood_ot','ot.blood_remark','ot.casenotes_na','ot.casenotes_ward',
-                    'ot.casenotes_ot','ot.casenotes_remark','ot.oldnotes_na','ot.oldnotes_ward','ot.oldnotes_ot','ot.oldnotes_remark','ot.imaging_na','ot.imaging_ward',
-                    'ot.imaging_ot','ot.imaging_remark','ot.bp_sys1','ot.bp_dias','ot.pulse','ot.temperature','ot.vs_ward','ot.vs_ot','ot.vs_remark','ot.others_na',
-                    'ot.others_ward','ot.others_ot','ot.others_remark','ot.imprtnt_issues','ot.info_temperature','ot.info_humidity','ot.info_otroom',
-                    'ot.info_anaesthetist','ot.info_surgeon','ot.info_asstsurgeon','ot.adduser','ot.adddate','ot.upduser','ot.upddate',
-                    'd1.doctorname as desc_anaesthetist','d2.doctorname as desc_surgeon','d3.doctorname as desc_asstsurgeon'
+                    ->select([
+                        'ot.idno','ot.compcode','ot.mrn','ot.episno','ot.pat_id','ot.use2iden','ot.pat_ward','ot.pat_ot','ot.pat_remark','ot.cons_surgery',
+                        'ot.cons_anaes','ot.cons_trans','ot.cons_photo','ot.check_form','ot.check_pat','ot.check_list','ot.cons_ward','ot.cons_ot','ot.cons_remark',
+                        'ot.check_side_left','ot.check_side_right','ot.check_side_na','ot.check_side_ward','ot.check_side_ot','ot.check_side_remark','ot.side_op_mark',
+                        'ot.side_op_na','ot.side_op_ward','ot.side_op_ot','ot.side_op_remark','ot.lastmeal_date','ot.lastmeal_time','ot.lastmeal_ward','ot.lastmeal_ot',
+                        'ot.lastmeal_remark','ot.check_item_na','ot.check_item_ward','ot.check_item_ot','ot.check_item_remark','ot.allergies','ot.allergies_ward',
+                        'ot.allergies_ot','ot.allergies_remark','ot.implant_avlblt','ot.implant_ward','ot.implant_ot','ot.implant_remark','ot.premed_na',
+                        'ot.premed_ward','ot.premed_ot','ot.premed_remark','ot.blood_na','ot.blood_ward','ot.blood_ot','ot.blood_remark','ot.casenotes_na',
+                        'ot.casenotes_ward','ot.casenotes_ot','ot.casenotes_remark','ot.oldnotes_na','ot.oldnotes_ward','ot.oldnotes_ot','ot.oldnotes_remark',
+                        'ot.imaging_na','ot.imaging_ward','ot.imaging_ot','ot.imaging_remark','ot.bp_sys1','ot.bp_dias','ot.pulse','ot.temperature','ot.vs_ward',
+                        'ot.vs_ot','ot.vs_remark','ot.others_na','ot.others_ward','ot.others_ot','ot.others_remark','ot.imprtnt_issues','ot.info_temperature',
+                        'ot.info_humidity','ot.info_otroom','ot.info_anaesthetist','ot.info_surgeon','ot.info_asstsurgeon','ot.adduser','ot.adddate','ot.upduser',
+                        'ot.upddate','d1.doctorname as desc_anaesthetist','d2.doctorname as desc_surgeon','d3.doctorname as desc_asstsurgeon'
                     ])
                     ->leftJoin('hisdb.doctor AS d1', function($join) use ($request){
                         $join = $join->on('d1.doctorcode', '=', 'ot.info_anaesthetist')
