@@ -52,6 +52,114 @@ $(document).ready(function () {
         
     });
     
+    // Op site marked
+    $("#op_site_na").click(function(){
+        if($('#op_site_na').is(":checked")){
+            $("input[name='op_site_mark']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='op_site_mark']").click(function(){
+        if($(this).is(':checked')){
+            $("#op_site_na").prop("checked", false);
+        }
+    })
+    // Op site marked ends
+
+    // GA machine and defib machine
+    $("#machine_na").click(function(){
+        if($('#machine_na').is(":checked")){
+            $("input[name='machine_chck']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='machine_chck']").click(function(){
+        if($(this).is(':checked')){
+            $("#machine_na").prop("checked", false);
+        }
+    })
+    // GA machine and defib machine ends
+
+    // Haemodynamic monitor
+    $("#monitor_na").click(function(){
+        if($('#monitor_na').is(":checked")){
+            $("input[name='monitor_on']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='monitor_on']").click(function(){
+        if($(this).is(':checked')){
+            $("#monitor_na").prop("checked", false);
+        }
+    })
+    // Haemodynamic monitor ends
+
+    // Difficult airway/aspiration risk
+    $("#diff_airway_na").click(function(){
+        if($('#diff_airway_na').is(":checked")){
+            $("input[name='diff_airway']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='diff_airway']").click(function(){
+        if($(this).is(':checked')){
+            $("#diff_airway_na").prop("checked", false);
+        }
+    })
+    // Difficult airway/aspiration risk ends
+
+    // Any GXM/GSH
+    $("#gxm_gsh_na").click(function(){
+        if($('#gxm_gsh_na').is(":checked")){
+            $("input[name='gxm_gsh']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='gxm_gsh']").click(function(){
+        if($(this).is(':checked')){
+            $("#gxm_gsh_na").prop("checked", false);
+        }
+    })
+    // Any GXM/GSH ends
+
+    // Specimen(s) to be labelled
+    $("#specimen_lbl_na").click(function(){
+        if($('#specimen_lbl_na').is(":checked")){
+            $("input[name='specimen_lbl']").each(function(){
+                if(($(this).val() == "1") || ($(this).val() == "0")){
+                    $(this).prop("checked",false);
+                }
+            });
+        }
+    });
+    
+    $("input[name='specimen_lbl']").click(function(){
+        if($(this).is(':checked')){
+            $("#specimen_lbl_na").prop("checked", false);
+        }
+    })
+    // Specimen(s) to be labelled ends
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function() {
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -258,7 +366,7 @@ function saveForm_oper_team(callback){
 }
 
 function textare_init_oper_team(){
-    $('textarea#allergy_remark').each(function () {
+    $('textarea#allergy_remark,textarea#relative_remark').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
@@ -305,7 +413,7 @@ function getdata_oper_team(){
     }).done(function(data){
         if(!$.isEmptyObject(data)){
             button_state_oper_team('edit');
-            autoinsert_rowdata("#form_oper_team",data.preop);
+            autoinsert_rowdata("#form_oper_team",data.otteam);
             textare_init_oper_team();
         }else{
             button_state_oper_team('add');

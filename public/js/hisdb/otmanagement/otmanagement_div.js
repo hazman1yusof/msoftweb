@@ -70,26 +70,12 @@ $(document).ready(function () {
     });
     
     // to calculate hours utilized
-    $("#timeended,#timestarted").on('change',function() {
+    $("#timestarted,#timeended").on('change',function() {
         var startTime = moment($('#timestarted').val(),'hh:mm:ss');
         var endTime = moment($('#timeended').val(),'hh:mm:ss');
+        
         let duration = endTime.diff(startTime,'hours');
         $("#hoursutilized").val(duration);
-
-        // duration in hours
-        // var hours = parseInt(duration.asHours());
-        // var timestarted = new Date("#timestarted");
-        // var timeended = new Date("#timeended");
-    
-        // var hoursutilized = Math.abs(timeended - timestarted) / 36e5;
-        
-        // if (isNaN(hoursutilized)) hoursutilized = 0;
-        
-        // let hoursutilized = new Date("#timeended").getHours() - new Date("#timestarted").getHours();
-        
-        // $("#duration").val(hours);
-    
-        // console.log(hoursutilized);
     });
     
 });
