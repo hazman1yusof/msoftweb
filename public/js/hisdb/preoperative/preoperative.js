@@ -116,23 +116,23 @@ function button_state_preoperative(state){
         case 'empty':
             $("#toggle_preoperative").removeAttr('data-toggle');
             $('#cancel_preoperative').data('oper','add');
-            $('#new_preoperative,#save_preoperative,#cancel_preoperative,#edit_preoperative').attr('disabled',true);
+            $('#new_preoperative,#save_preoperative,#cancel_preoperative,#edit_preoperative,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
             break;
         case 'add':
             $("#toggle_preoperative").attr('data-toggle','collapse');
             $('#cancel_preoperative').data('oper','add');
             $("#new_preoperative").attr('disabled',false);
-            $('#save_preoperative,#cancel_preoperative,#edit_preoperative').attr('disabled',true);
+            $('#save_preoperative,#cancel_preoperative,#edit_preoperative,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
             break;
         case 'edit':
             $("#toggle_preoperative").attr('data-toggle','collapse');
             $('#cancel_preoperative').data('oper','edit');
             $("#edit_preoperative").attr('disabled',false);
-            $('#save_preoperative,#cancel_preoperative,#new_preoperative').attr('disabled',true);
+            $('#save_preoperative,#cancel_preoperative,#new_preoperative,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_preoperative").attr('data-toggle','collapse');
-            $("#save_preoperative,#cancel_preoperative").attr('disabled',false);
+            $("#save_preoperative,#cancel_preoperative,#btn_anaesthetist,#btn_surgeon,#btn_asstsurgeon").attr('disabled',false);
             $('#edit_preoperative,#new_preoperative').attr('disabled',true);
             break;
         case 'disableAll':
@@ -490,76 +490,6 @@ function textfield_modal(){
             $('#mdl_item_selector').modal('hide');
         });
     }
-
-    
-    // function pop_item_select(type,ontab=false,text_val,obj){
-    //     var obj = obj;
-    //     var act = null;
-    //     var selecter = null;
-    //     var title="Item selector";
-    //     var mdl = null;
-        
-    //     act = get_url(type);
-    //     // mdl = get_mdl(type);
-        
-    //     selecter = $('#tbl_item_select').DataTable( {
-    //             "ajax": "preoperative/get_entry?action=" + act,
-    //             "ordering": false,
-    //             "lengthChange": false,
-    //             "info": true,
-    //             "pagingType" : "numbers",
-    //             "search": {
-    //                 "smart": true,
-    //             },
-    //             "columns": [
-    //                 {'data': 'code'},
-    //                 {'data': 'description' },
-    //             ],
-    //             "columnDefs": [ {
-    //                 "targets": 0,
-    //                 "data": "code",
-    //                 "render": function ( data, type, row, meta ) {
-    //                     return data;
-    //                 }
-    //             } ],
-    //             "fnInitComplete": function(oSettings, json) {
-    //                 if(ontab==true){
-    //                     selecter.search( text_val ).draw();
-    //                 }
-    //                 // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-    //                 // if(mdl!=null){
-    //                 //     $('#add_new_adm').data('modal-target',mdl)
-    //                 //     $('#add_new_adm').show();
-    //                 // }
-    //                 if(selecter.page.info().recordsDisplay == 1){
-    //                     $('#tbl_item_select tbody tr:eq(0)').dblclick();
-    //                 }
-    //             }
-    //     });
-        
-    //     // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-    //     $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
-    //         myerrorIt_only('#txt_' + type,false);
-    //         item = selecter.row( this ).data();
-            
-    //         $('#hid_' + type).val(item["code"]);
-    //         $('#txt_' + type).val(item["description"]);
-            
-    //         $('#txt_' + type).change(); // <-- to activate onchange event if any
-            
-    //         $('#mdl_item_selector').modal('hide');
-    //     });
-        
-    //     $("#mdl_item_selector").on('hidden.bs.modal', function () {
-    //         $('#add_new_adm').hide();
-    //         $('#tbl_item_select').html('');
-    //         selecter.destroy();
-    //         $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
-    //         type = "";
-    //         item = "";
-    //     });
-        
-    // }
 }
 
 function loading_desc_epis(obj){ //loading description dia sebab save code dia je
