@@ -524,22 +524,38 @@ class PatmastController extends defaultController
                 break;
 
             case 'get_debtor_list':
+                if($request->epistycode=='IP'){
+                    $billtype_fld = 'dm.billtype';
+                }else{
+                    $billtype_fld = 'dm.billtypeop';
+                }
+
                 if($request->type == 1){
                     $data = DB::table('debtor.debtormast AS dm')
-                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description')
-                            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'dm.debtortype')
-                            ->where('dm.compcode','=',session('compcode'))  
-                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode',$billtype_fld.' as billtype','bt.description as billtype_desc')
+                            ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                                $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                                ->where('dt.compcode','=',session('compcode'))
+                                                ->where('dt.recstatus','=','ACTIVE');
+                            })->leftJoin('hisdb.billtymst as bt', function($join) use ($request,$billtype_fld){
+                                $join = $join->on('bt.billtype', '=', $billtype_fld)
+                                                ->where('bt.compcode','=',session('compcode'));
+                            })
+                            ->where('dm.compcode','=',session('compcode'))
                             ->whereIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else if($request->type == 2){
                     $data = DB::table('debtor.debtormast AS dm')
-                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode')
-                            ->join('debtor.debtortype AS dt', 'dt.debtortycode', '=', 'dm.debtortype')
-                            ->where('dt.recstatus','=','ACTIVE')  
-                            ->where('dm.compcode','=',session('compcode'))  
-                            ->where('dt.compcode','=',session('compcode'))  
-                            // ->where('debtorcode','=',ltrim($request->mrn, '0'))
+                            ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode',$billtype_fld.' as billtype','bt.description as billtype_desc')
+                            ->join('debtor.debtortype as dt', function($join) use ($request){
+                                $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                                ->where('dt.compcode','=',session('compcode'))
+                                                ->where('dt.recstatus','=','ACTIVE');
+                            })->leftJoin('hisdb.billtymst as bt', function($join) use ($request,$billtype_fld){
+                                $join = $join->on('bt.billtype', '=', $billtype_fld)
+                                                ->where('bt.compcode','=',session('compcode'));
+                            })
+                            ->where('dm.compcode','=',session('compcode'))
                             ->whereNotIn('dm.debtortype', ['PR', 'PT'])
                             ->get();
                 }else if($request->type == 'newgl'){

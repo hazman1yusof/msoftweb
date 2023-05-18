@@ -306,8 +306,8 @@
                                             <td>
                                                 <div class="form-inline"> Anaesthetist(s) <span style="margin-left: 34px;"> :  &nbsp;
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" name="info_anaesthetist" id="info_anaesthetist" tabindex=4>
-                                                        <input type="hidden" id="hid_anaesthetist" name="anaesthetist"/>
+                                                        <input type="text" class="form-control" name="desc_anaesthetist" id="desc_anaesthetist" tabindex=4>
+                                                        <input type="hidden" id="info_anaesthetist" name="info_anaesthetist"/>
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-info" id="btn_anaesthetist" data-toggle="modal" onclick_xguna="pop_item_select('anaesthetist');"><span class="fa fa-ellipsis-h"></span></button>
                                                         </span>
@@ -324,8 +324,8 @@
                                             <td>
                                                 <div class="form-inline"> Surgeon <span style="margin-left: 76px;"> :  &nbsp;
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" name="info_surgeon" id="info_surgeon" tabindex=4>
-                                                        <input type="hidden" id="hid_surgeon" name="surgeon"/>
+                                                        <input type="text" class="form-control" name="desc_surgeon" id="desc_surgeon" tabindex=4>
+                                                        <input type="hidden" id="info_surgeon" name="info_surgeon"/>
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-info" id="btn_surgeon" data-toggle="modal" onclick_xguna="pop_item_select('surgeon');"><span class="fa fa-ellipsis-h"></span></button>
                                                         </span>
@@ -342,8 +342,8 @@
                                             <td>
                                                 <div class="form-inline"> Asst. Surgeon <span style="margin-left: 44px;"> :  &nbsp;
                                                     <div class="input-group">
-                                                        <input type="text" class="form-control" name="info_asstsurgeon" id="info_asstsurgeon" tabindex=4>
-                                                        <input type="hidden" id="hid_asstsurgeon" name="asstsurgeon"/>
+                                                        <input type="text" class="form-control" name="desc_asstsurgeon" id="desc_asstsurgeon" tabindex=4>
+                                                        <input type="hidden" id="info_asstsurgeon" name="info_asstsurgeon"/>
                                                         <span class="input-group-btn">
                                                             <button type="button" class="btn btn-info" id="btn_asstsurgeon" data-toggle="modal" onclick_xguna="pop_item_select('asstsurgeon');"><span class="fa fa-ellipsis-h"></span></button>
                                                         </span>

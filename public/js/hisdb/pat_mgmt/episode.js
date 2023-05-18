@@ -2,6 +2,7 @@
 
 $('#editEpisode').on('shown.bs.modal', function (e) {
     parent_close_disabled(true);
+    $('#txt_epis_dept').focus();
 });
 
 $('#editEpisode').on('hidden.bs.modal', function (e) {
@@ -216,17 +217,17 @@ $('#txt_epis_fin').change(function (e){
             $('#txt_epis_payer').prop('disabled',true);
             pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
             check_debtormast_exists($('#epis_rowid').val(),false);
-            $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
-            $('#hid_epis_bill_type').val($('#billtype_def_code').val());
+            // $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+            // $('#hid_epis_bill_type').val($('#billtype_def_code').val());
         }else if(iregin == 'PR'){
             pay_mode_arr = ['CASH','CARD','OPEN CARD','CONSULTANT GUARANTEE (PWD)'];
             check_debtormast_exists($('#epis_rowid').val(),false);
-            $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
-            $('#hid_epis_bill_type').val($('#billtype_def_code').val());
+            // $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+            // $('#hid_epis_bill_type').val($('#billtype_def_code').val());
         }else{
             pay_mode_arr = ['PANEL', 'GUARANTEE LETTER', 'WAITING GL'];
-            $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
-            $('#hid_epis_bill_type').val($('#billtype_def_code').val());
+            // $('#txt_epis_bill_type').val($('#billtype_def_desc').val());
+            // $('#hid_epis_bill_type').val($('#billtype_def_code').val());
         }
 
         $.each(pay_mode_arr, function(i,val){
@@ -270,9 +271,9 @@ function epis_payer_onclick(){
 
     if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
         $('#btngurantor').show();
-        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1' ).load();
+        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
     }else{
-        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2' ).load();
+        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
     }
     
     // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
@@ -282,15 +283,16 @@ function epis_payer_onclick(){
         let debtor_item = debtor_table.row( this ).data();
         $('#hid_epis_payer').val(debtor_item["debtorcode"]);
         $('#txt_epis_payer').val(debtor_item["name"]);
-        // $('#hid_epis_fin').val(debtor_item["debtortype"]);
-        // $('#txt_epis_fin').val(debtor_item["debtortype"]);
+        $('#hid_epis_bill_type').val(debtor_item["billtype"]);
+        $('#txt_epis_bill_type').val(debtor_item["billtype_desc"]);
         $('#mdl_epis_pay_mode').modal('hide');
 
         if($('#hid_epis_fin').val() != 'PT' || $('#hid_epis_fin').val() != 'PR'){
             $('#txt_epis_fin').val(debtor_item["description"]);
             $('#hid_epis_fin').val(debtor_item["debtortycode"]);
         }
-    } );
+        $('#txt_epis_refno').focus();
+    });
         
 }
 

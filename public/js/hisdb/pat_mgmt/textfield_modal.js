@@ -58,6 +58,62 @@ function textfield_modal(){
         return mdl;
     }
 
+    function after_hide(type){
+        switch (type){
+            case "pat_title":
+                
+                break;
+            case "ID_Type":
+                
+                break;
+            case "RaceCode":
+                
+                break;
+            case "Religion":
+                
+                break;
+            case "pat_citizen":
+                
+                break;
+            case "LanguageCode":
+                
+                break;
+            case "pat_area":
+                
+                break;
+            case "pat_occupation":
+                
+                break;
+            case "payer_company":
+                
+                break;
+            case "epis_dept":
+                $('#txt_epis_source').focus();
+                break;
+            case "epis_source":
+                $('#txt_epis_case').focus();
+                break;
+            case "epis_case":
+                $('#txt_epis_doctor').focus();
+                break;
+            case "epis_doctor":
+                $('#txt_epis_fin').focus();
+                break;
+            case "epis_fin":
+                $('#txt_epis_payer').focus();
+                break;
+            case "newgl_corpcomp":
+                
+                break;
+            case "newgl_occupcode":
+                
+                break;
+            case "newgl_relatecode":
+                
+                break;
+        }
+    }
+
     function get_url(type){
         let act = null;
         switch (type){
@@ -199,6 +255,7 @@ function textfield_modal(){
             $('#txt_' + type).change(); // <-- to activate onchange event if any
                 
             $('#mdl_item_selector').modal('hide');
+            after_hide(type);
         });
             
         $("#mdl_item_selector").on('hidden.bs.modal', function () {

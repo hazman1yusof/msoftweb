@@ -485,27 +485,8 @@ function textfield_modal(){
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
             item = selecter.row( this ).data();
-            $('input[name='+type+'][optid='+rowid+']').val(item["code"]);
-            $('input[name='+type+'][optid='+rowid+']').parent().next().html(item["description"]);
-            
-            if(type == "anaesthetist"){
-                $('input[name=info_anaesthetist][optid='+rowid+']').val(item["description"]);
-                
-                // $('input[name=dosecode][optid='+rowid+']').val(item["dosecode"]);
-                // $('input[name=dosecode][optid='+rowid+']').parent().next().html(item["dosecode_"]);
-                
-                // $('input[name=freqcode][optid='+rowid+']').val(item["freqcode"]);
-                // $('input[name=freqcode][optid='+rowid+']').parent().next().html(item["freqcode_"]);
-                
-                // $('input[name=inscode][optid='+rowid+']').val(item["instruction"]);
-                // $('input[name=inscode][optid='+rowid+']').parent().next().html(item["instruction_"]);
-            }
-            if(type == "surgeon"){
-                $('input[name=info_surgeon][optid='+rowid+']').val(item["description"]);
-            }
-            if(type == "asstsurgeon"){
-                $('input[name=info_asstsurgeon][optid='+rowid+']').val(item["description"]);
-            }
+            $('input[name=desc_'+type+']').val(item["description"]);
+            $('input[name=info_'+type+']').val(item["code"]);
             $('#mdl_item_selector').modal('hide');
         });
     }
