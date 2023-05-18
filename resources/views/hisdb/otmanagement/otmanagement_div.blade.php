@@ -27,12 +27,12 @@
                             <div class="ui grid">
                                 <div class="field five wide column">
                                     <label>Adm Date</label>
-                                    <input id="admdate" name="admdate" type="date" rdonly>
+                                    <input id="admdate" name="admdate" type="date" rdonly onkeydown="return false"/>
                                 </div>
 
                                 <div class="field five wide column">
                                     <label>Adm Time</label>
-                                    <input id="admtime" name="admtime" type="time" rdonly>
+                                    <input id="admtime" name="admtime" type="time" rdonly onkeydown="return false"/>
                                 </div>
 
                                 <div class="field six wide column">
