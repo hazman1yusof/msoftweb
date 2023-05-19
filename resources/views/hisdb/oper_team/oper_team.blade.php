@@ -97,7 +97,7 @@
                                         <tr>
                                             <td>
                                                 Patient has allergy?<br>
-                                                <label>If yes, please specify</label>
+                                                If yes, please specify
                                                 <textarea class="form-control input-sm" id="allergy_remark" name="allergy_remark"></textarea>
                                             </td>
                                             <td>
@@ -464,7 +464,7 @@
                                         <tr>
                                             <td>
                                                 Inform relative(s)<br>
-                                                <label>If no, why?</label>
+                                                If no, why?
                                                 <textarea class="form-control input-sm" id="relative_remark" name="relative_remark"></textarea>
                                             </td>
                                             <td>
