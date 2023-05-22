@@ -6,10 +6,13 @@ $('#editEpisode').on('shown.bs.modal', function (e) {
 });
 
 $('#editEpisode').on('hidden.bs.modal', function (e) {
-    $('#editEpisode').find("label.error").detach();
-    $("#editEpisode").find('.error').removeClass("error");
-    $("#editEpisode").find('.valid').removeClass("valid");
-    $("#editEpisode").find('.myerror').removeClass("myerror");
+    $('#form_episode').find("label.error").detach();
+    $("#form_episode").find('.has-error').removeClass("has-error");
+    $("#form_episode").find('.error').removeClass("error");
+    $("#form_episode").find('.has-success').removeClass("has-success");
+    $("#form_episode").find('.valid').removeClass("valid");
+    $("#form_episode").find('.myerror').removeClass("myerror");
+
     $(this)
         .find("input,textarea,select")
         .val('')
@@ -262,60 +265,118 @@ var debtor_table =
         columnDefs: [ {
             targets: [3,4],
             visible: false
-        } ]
+        } ],
+        "fnDrawCallback": function( oSettings ) {
+            let search = $('#tbl_epis_debtor').data('search');
+            let iscomplete = $('#tbl_epis_debtor').data('iscomplete');
+
+            if(search == true){
+                $('#tbl_epis_debtor').data('search',false)
+                debtor_table.search($('#txt_epis_payer').val()).draw();
+            }
+
+            if($('#tbl_epis_debtor').data('iscomplete') == true){
+                if(debtor_table.page.info().recordsDisplay == 1){
+                    $('#tbl_epis_debtor tbody tr:eq(0)').dblclick();
+                }
+            }
+        },
+        "fnInitComplete": function(oSettings, json) {
+            $('#tbl_epis_debtor').data('search',false);
+            $('#tbl_epis_debtor').data('iscomplete',true);
+        }
     } );
 
-function epis_payer_onclick(){
-    $('#btngurantor').hide();
-    $('#mdl_epis_pay_mode').modal('show');
+function epis_payer_onclick(event){
+    $('#btngurantor').show();
 
-    if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
-        $('#btngurantor').show();
-        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
-    }else{
-        debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
-    }
-    
-    // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-    $('#tbl_epis_debtor').off('dblclick', 'tr');
+    let oper = event.data.data;
 
-    $('#tbl_epis_debtor').on('dblclick', 'tr', function () {
-        let debtor_item = debtor_table.row( this ).data();
-        $('#hid_epis_payer').val(debtor_item["debtorcode"]);
-        $('#txt_epis_payer').val(debtor_item["name"]);
-        $('#hid_epis_bill_type').val(debtor_item["billtype"]);
-        $('#txt_epis_bill_type').val(debtor_item["billtype_desc"]);
-        $('#mdl_epis_pay_mode').modal('hide');
+    if(oper == 'tab' && event.key == "Tab"){
+        $('#mdl_epis_pay_mode').modal('show');
+        $('#tbl_epis_debtor').data('search',true);
 
-        if($('#hid_epis_fin').val() != 'PT' || $('#hid_epis_fin').val() != 'PR'){
-            $('#txt_epis_fin').val(debtor_item["description"]);
-            $('#hid_epis_fin').val(debtor_item["debtortycode"]);
+        if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
+            debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
+        }else{
+            debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
         }
-        $('#txt_epis_refno').focus();
-    });
+
+    }else if(oper == 'click'){
+        $('#mdl_epis_pay_mode').modal('show');
+        if($('#hid_epis_fin').val() == 'PT'  || $('#hid_epis_fin').val() == 'PR'){
+            debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=1&epistycode='+$('#epistycode').val() ).load();
+        }else{
+            debtor_table.ajax.url( 'pat_mast/get_entry?action=get_debtor_list&type=2&epistycode='+$('#epistycode').val() ).load();
+        }
+
+    }
+
+    
         
 }
+
+$('#tbl_epis_debtor').on('dblclick', 'tr', function () {
+    let debtor_item = debtor_table.row( this ).data();
+    $('#hid_epis_payer').val(debtor_item["debtorcode"]);
+    $('#txt_epis_payer').val(debtor_item["name"]);
+    $('#hid_epis_bill_type').val(debtor_item["billtype"]);
+    $('#txt_epis_bill_type').val(debtor_item["billtype_desc"]);
+    $('#mdl_epis_pay_mode').modal('hide');
+
+    if($('#hid_epis_fin').val() != 'PT' || $('#hid_epis_fin').val() != 'PR'){
+        $('#txt_epis_fin').val(debtor_item["description"]);
+        $('#hid_epis_fin').val(debtor_item["debtortycode"]);
+    }
+    $('#txt_epis_refno').focus();
+});
 
 var billtype_table = 
         $('#tbl_epis_billtype').DataTable( {
             "columns": [
                 {'data': 'billtype'}, 
                 {'data': 'description' },
-               ]
+            ],
+            "fnDrawCallback": function( oSettings ) {
+                let search = $('#tbl_epis_billtype').data('search');
+                let iscomplete = $('#tbl_epis_billtype').data('iscomplete');
+
+                if(search == true){
+                    $('#tbl_epis_billtype').data('search',false)
+                    billtype_table.search($('#txt_epis_bill_type').val()).draw();
+                }
+
+                if($('#tbl_epis_billtype').data('iscomplete') == true){
+                    if(billtype_table.page.info().recordsDisplay == 1){
+                        $('#tbl_epis_billtype tbody tr:eq(0)').dblclick();
+                    }
+                }
+            },
+            "fnInitComplete": function(oSettings, json) {
+                $('#tbl_epis_billtype').data('search',false);
+                $('#tbl_epis_billtype').data('iscomplete',true);
+            }
         });
 
-function bill_type_info_onclick(){
-    billtype_mdl_opened = $('#mdl_bill_type');
-    billtype_mdl_opened.modal('show');
-    billtype_table.ajax.url( 'pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
-    
-    // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
-    $('#tbl_epis_billtype').on('dblclick', 'tr', function () {
-            let billtype_item = billtype_table.row( this ).data();              
-            $('#hid_epis_bill_type').val(billtype_item["billtype"]);
-            $('#txt_epis_bill_type').val(billtype_item["description"]);
-            billtype_mdl_opened.modal('hide');
-        } );
+$('#tbl_epis_billtype').on('dblclick', 'tr', function (){
+    let billtype_item = billtype_table.row( this ).data();              
+    $('#hid_epis_bill_type').val(billtype_item["billtype"]);
+    $('#txt_epis_bill_type').val(billtype_item["description"]);
+    $('#mdl_bill_type').modal('hide');
+});
+
+function bill_type_info_onclick(event){
+    let oper = event.data.data;
+    if(oper == 'tab' && event.key == "Tab"){
+        $('#tbl_epis_billtype').data('search',true);
+        $('#mdl_bill_type').modal('show');
+        billtype_table.ajax.url( 'pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
+
+    }else if(oper == 'click'){
+        $('#mdl_bill_type').modal('show');
+        billtype_table.ajax.url( 'pat_mast/get_entry?action=get_billtype_list&type=' + $('#txt_epis_type').val() ).load();
+
+    }
 }
 
 $( "#btngurantor").click(function() {
@@ -344,14 +405,18 @@ function btn_refno_info_onclick(){
 
 function disableEpisode(status) {
 
+    $("#txt_epis_bill_type").off('click',bill_type_info_onclick);
+    $("#btn_bill_type_info").off('keydown',bill_type_info_onclick);
+    $("#txt_epis_payer").on('keydown',{data:'tab'},epis_payer_onclick);
+    $("#btn_epis_payer").off('click',{data:'click'},epis_payer_onclick);
     $("#btn_refno_info").off('click',btn_refno_info_onclick);
-    $("#btn_epis_payer").off('click',epis_payer_onclick);
-    $("#btn_bill_type_info").off('click',bill_type_info_onclick);
 
     if(status == false){
+        $("#txt_epis_bill_type").on('keydown',{data:'tab'},bill_type_info_onclick);
+        $("#btn_bill_type_info").on('click',{data:'click'},bill_type_info_onclick);
+        $("#txt_epis_payer").on('keydown',{data:'tab'},epis_payer_onclick);
+        $("#btn_epis_payer").on('click',{data:'click'},epis_payer_onclick);
         $("#btn_refno_info").on('click',btn_refno_info_onclick);
-        $("#btn_epis_payer").on('click',epis_payer_onclick);
-        $("#btn_bill_type_info").on('click',bill_type_info_onclick);
         $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
     }
 
@@ -752,17 +817,23 @@ function refno_class(){
     var selrowdata = null;
     $("#btn_epis_new_gl").click(function() {
         $('#mdl_new_gl').data('oper','add');
+        $('#btnglsave').show();
         $('#mdl_new_gl').modal('show');
     });
 
     $("#btn_epis_view_gl").click(function() {
         $('#mdl_new_gl').data('oper','edit');
+        $('#btnglsave').hide();
         $('#mdl_new_gl').modal('show');
     });
 
     $("#btnglclose").click(function() {
         $('#glform').find("label").detach();
         $("#glform").trigger('reset');
+        $("#glform").find('.has-error').removeClass("has-error");
+        $("#glform").find('.error').removeClass("error");
+        $("#glform").find('.has-success').removeClass("has-success");
+        $("#glform").find('.valid').removeClass("valid");
         self.show_mdl();
     });
 
@@ -872,6 +943,8 @@ function refno_class(){
 
     $("#btnglsave").on('click',function(){
         if($('#glform').valid()){
+            $("#btnglsave").prop('disabled',true);
+
             var _token = $('#csrf_token').val();
             let serializedForm = $( "#glform" ).serializeArray();
             let obj = {
@@ -884,9 +957,11 @@ function refno_class(){
             $.post('pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
                 $("#glform").trigger('reset');
                 $('#mdl_new_gl').modal('hide');
+                $("#btnglsave").prop('disabled',false);
                 self.show_mdl();
             }).fail(function(data) {
                 alert(data.responseText);
+                $("#btnglsave").prop('disabled',false);
             }).success(function(data){
             });
         }

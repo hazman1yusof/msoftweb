@@ -704,6 +704,16 @@ class PatmastController extends defaultController
 
                 break;
 
+            case 'chk_duplicate_corpstaff':
+
+                if($this->duplicate_corpstaff($request)){
+                    $data = 'true';
+                }else{
+                    $data = 'false';
+                }
+
+                break;
+
             case 'get_default_value':
                 $pat = DB::table('hisdb.pat_mast')
                             ->select('Episno')
@@ -2132,7 +2142,7 @@ class PatmastController extends defaultController
                 ->where('compcode','=', session('compcode'))
                 ->where('debtorcode','=',$request['hid_newgl_corpcomp'])
                 ->first();
-
+            
             $sysparam = DB::table('sysdb.sysparam')
                 ->where('source','=','GL')
                 ->where('trantype','=',$debtormast->debtortype);
@@ -2156,15 +2166,16 @@ class PatmastController extends defaultController
                 $ourrefno = $debtormast->debtortype . strval(1);
             }
 
-             DB::table('hisdb.guarantee')
+            DB::table('hisdb.guarantee')
                 ->insert([
                     'compcode' => session('compcode'),
                     'mrn'    =>  $request->mrn,
                     'episno' =>   $request->episno,
                     'ourrefno' =>   $ourrefno,
                     'refno' =>   $request['newgl-refno'],
+                    'visitno' =>   $request['newgl-visitno'],
                     'debtorcode'  =>  $request['hid_newgl_corpcomp'],
-                    'occupcode'  =>  $request['hid_newgl_occupcode'],
+                    // 'occupcode'  =>  $request['hid_newgl_occupcode'],
                     'case'  =>  $request['newgl-case'],
                     'name'  =>  $request['newgl-name'],
                     'staffid' =>   $request['newgl-staffid'],
@@ -2180,13 +2191,49 @@ class PatmastController extends defaultController
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
-            if($request['hid_newgl_occupcode'] != ''){
+            // check duplicate corpstaff
+            if(!$this->duplicate_corpstaff($request)){
                 DB::table('hisdb.pat_mast')
                     ->where('MRN',$request->mrn)
                     ->where('compcode',session('compcode'))
                     ->update([
-                        'OccupCode' => $request['hid_newgl_occupcode']
+                        'OccupCode' => $request['hid_newgl_occupcode'],
+                        'RelateCode' => $request['hid_newgl_relatecode'],
+                        'ChildNo' => $request['newgl-childno'],
+                        'CorpComp' => $request['hid_newgl_corpcomp'],
+                        'Staffid' => $request['newgl-staffid'],
                     ]);
+
+                if($this->corpstaff_exists($request)){
+                    DB::table('hisdb.corpstaff')
+                        ->where('MRN',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['hid_newgl_relatecode'])
+                        ->where('debtorcode',$request['hid_newgl_corpcomp'])
+                        ->where('staffid',$request['newgl-staffid'])
+                        ->where('childno',$request['newgl-childno'])
+                        ->update([
+                            'name' => $request['newgl-name'],
+                            'gltype' => $request['newgl-gltype']
+                        ]);
+                }else{
+                    DB::table('hisdb.corpstaff')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'debtorcode' => $request['hid_newgl_corpcomp'],
+                            'staffid' => $request['newgl-staffid'],
+                            'childno' => $request['newgl-childno'],
+                            'relatecode' => $request['hid_newgl_relatecode'],
+                            'name' => $request['newgl-name'],
+                            'recstatus' => 'ACTIVE',
+                            'gltype' => $request['newgl-gltype'],
+                            'adduser' => session('username'),
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'mrn' => $request->mrn,
+                        ]);
+                }
+            }else{
+                throw new \Exception("Duplicate Corp Staff!");
             }
 
             DB::commit();
@@ -2621,6 +2668,29 @@ class PatmastController extends defaultController
 
             return response($e->getMessage(), 500);
         }
+    }
+
+    public function duplicate_corpstaff(Request $request){
+        return  DB::table('hisdb.pat_mast')
+                        ->where('mrn','!=',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        // ->where('OccupCode',$request['hid_newgl_occupcode'])
+                        ->where('RelateCode',$request['hid_newgl_relatecode'])
+                        ->where('ChildNo',$request['newgl-childno'])
+                        ->where('CorpComp',$request['hid_newgl_corpcomp'])
+                        ->where('Staffid',$request['newgl-staffid'])
+                        ->exists();
+    }
+
+    public function corpstaff_exists(Request $request){
+        return DB::table('hisdb.corpstaff')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['hid_newgl_relatecode'])
+                        ->where('debtorcode',$request['hid_newgl_corpcomp'])
+                        ->where('staffid',$request['newgl-staffid'])
+                        ->where('childno',$request['newgl-childno'])
+                        ->exists();
     }
 
 

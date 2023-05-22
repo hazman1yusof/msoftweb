@@ -68,13 +68,14 @@ class BankEnquiryController extends defaultController
         
         $responce = new stdClass();
 
-        // if(empty($request->bankcode)){
-        //     $responce->data = [];
-        //     return json_encode($responce);
-        // }
+        if(empty($request->bankcode)){
+            $responce->data = [];
+            return json_encode($responce);
+        }
+
 
         $table_dr = DB::table('finance.cbtran')
-                    ->select(DB::raw("'open' as open"),DB::raw("'' as amountdr"),'cbtran.source','cbtran.trantype','cbtran.auditno','cbtran.postdate','cbtran.reference','cbtran.cheqno','cbtran.amount as amountdr',)
+                    ->select(DB::raw("'open' as open"),DB::raw("'' as amountcr"),'cbtran.source','cbtran.trantype','cbtran.auditno','cbtran.postdate','cbtran.reference','cbtran.cheqno','cbtran.amount as amountdr')
                     // ->leftJoin('finance.bank', function($join) use ($request){
                     //     $join = $join->on('finance.glaccno', '=', 'cbtran.dracc')
                     //                     ->where('glmasref.compcode','=',session('compcode'));
@@ -83,8 +84,51 @@ class BankEnquiryController extends defaultController
                     ->where('cbtran.bankcode',$request->bankcode)
                     ->where('cbtran.year',$request->year)
                     ->where('cbtran.period',$request->period)
+                    ->where('cbtran.amount','>=',0)
                     ->get();
+
+        $table_cr = DB::table('finance.cbtran')
+                    ->select(DB::raw("'open' as open"),DB::raw("'' as amountdr"),'cbtran.source','cbtran.trantype','cbtran.auditno','cbtran.postdate','cbtran.reference','cbtran.cheqno','cbtran.amount as amountcr')
+                    // ->leftJoin('finance.bank', function($join) use ($request){
+                    //     $join = $join->on('finance.glaccno', '=', 'cbtran.dracc')
+                    //                     ->where('glmasref.compcode','=',session('compcode'));
+                    // })
+                    ->where('cbtran.compcode',session('compcode'))
+                    ->where('cbtran.bankcode',$request->bankcode)
+                    ->where('cbtran.year',$request->year)
+                    ->where('cbtran.period',$request->period)
+                    ->where('cbtran.amount','<',0)
+                    ->get();
+
+        // $table_dr = DB::table('finance.gltran')
+        //             ->select(DB::raw("'open' as open"),DB::raw("'' as cramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as dramount','glmasref.description as acctname')
+        //             ->leftJoin('finance.glmasref', function($join) use ($request){
+        //                 $join = $join->on('glmasref.glaccno', '=', 'gltran.dracc')
+        //                                 ->where('glmasref.compcode','=',session('compcode'));
+        //             })
+        //             ->where('gltran.compcode',session('compcode'))
+        //             ->where('gltran.drcostcode',$request->costcode)
+        //             ->where('gltran.dracc',$request->acc)
+        //             ->where('gltran.year',$request->year)
+        //             ->where('gltran.period',$request->period)
+        //             ->get();
+
+        // $table_cr = DB::table('finance.gltran')
+        //             ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc as acccode','gltran.amount as cramount','glmasref.description as acctname')
+        //             ->leftJoin('finance.glmasref', function($join) use ($request){
+        //                 $join = $join->on('glmasref.glaccno', '=', 'gltran.cracc')
+        //                                 ->where('glmasref.compcode','=',session('compcode'));
+        //             })
+        //             ->where('gltran.compcode',session('compcode'))
+        //             ->where('gltran.crcostcode',$request->costcode)
+        //             ->where('gltran.cracc',$request->acc)
+        //             ->where('gltran.year',$request->year)
+        //             ->where('gltran.period',$request->period)
+        //             ->get();
         
+        $table_merge = $table_dr->merge($table_cr);
+
+        $responce->data = $table_merge;
         return json_encode($responce);
     }
 }

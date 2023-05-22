@@ -1,5 +1,48 @@
 function textfield_modal(){
 
+    var self= this;
+    this.dontcheck = false;
+    this.db_search = false;
+    this.txt_search = false;
+
+    this.selecter = $('#tbl_item_select').DataTable( {
+            "ajax": "",
+            "ordering": false,
+            "lengthChange": false,
+            "info": true,
+            "pagingType" : "numbers",
+            "search": {
+                        "smart": true,
+                      },
+            "columns": [
+                        {'data': 'code'}, 
+                        {'data': 'description' },
+                       ],
+
+            "columnDefs":[{
+                "targets": 0,
+                "data": "code",
+                "render": function ( data, type, row, meta ) {
+                    return data;
+                }
+            }],
+            "fnDrawCallback": function( oSettings ) {
+                if(self.db_search == true){
+                    self.db_search=false;
+                    self.selecter.search(self.txt_search).draw();
+                }
+
+                if($('#tbl_item_select').data('iscomplete') == true){
+                    if(self.selecter.page.info().recordsDisplay == 1){
+                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
+                    }
+                }
+            },
+            "fnInitComplete": function(oSettings, json) {
+                $('#tbl_item_select').data('iscomplete',true);
+            }
+    });
+
     this.ontabbing = function(){
         $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#hid_newgl_corpcomp,#txt_newgl_occupcode,#txt_newgl_relatecode,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_pat_citizen,#txt_LanguageCode,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('keydown',{data:this},onTab);
     }
@@ -12,8 +55,6 @@ function textfield_modal(){
         $("#btn_epis_dept,#btn_epis_source,#btn_epis_case,#btn_epis_doctor,#btn_epis_fin,#btn_newgl_corpcomp,#btn_newgl_occupcode,#btn_newgl_relatecode,#btn_pat_title,#btn_ID_Type,#btn_RaceCode,#btn_Religion,#btn_pat_citizen,#btn_LanguageCode,#btn_pat_area,#btn_payer_company,#btn_pat_occupation").on('click',{data:this},onClick);
     }
 
-    this.dontcheck = false;
-
     function onTab(event){
         var obj = event.data.data;
         var textfield = $(event.currentTarget);
@@ -22,6 +63,8 @@ function textfield_modal(){
 
         if(event.key == "Tab" && textfield.val() != ""){
             $('#mdl_item_selector').modal('show');
+            obj.db_search = true;
+            obj.txt_search = textfield.val();
             pop_item_select(id_use,true,textfield.val(),obj);
             obj.dontcheck = true;
         }
@@ -101,6 +144,7 @@ function textfield_modal(){
                 break;
             case "epis_fin":
                 $('#txt_epis_payer').focus();
+                $('#txt_epis_fin').change(); 
                 break;
             case "newgl_corpcomp":
                 
@@ -200,49 +244,17 @@ function textfield_modal(){
     function pop_item_select(type,ontab=false,text_val,obj){ 
         var obj = obj;   
         var act = null;
-        var selecter = null;
+        var selecter = obj.selecter;
         var title="Item selector";
         var mdl = null;
+        $('#tbl_item_select tbody').off('dblclick');
+        $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
             
         act = get_url(type);
         mdl = get_mdl(type);
-        
-        selecter = $('#tbl_item_select').DataTable( {
-                "ajax": "pat_mast/get_entry?action=" + act,
-                "ordering": false,
-                "lengthChange": false,
-                "info": true,
-                "pagingType" : "numbers",
-                "search": {
-                            "smart": true,
-                          },
-                "columns": [
-                            {'data': 'code'}, 
-                            {'data': 'description' },
-                           ],
 
-                "columnDefs": [ {
-                    "targets": 0,
-                    "data": "code",
-                    "render": function ( data, type, row, meta ) {
-                        return data;
-                    }
-                  } ],
-
-                "fnInitComplete": function(oSettings, json) {
-                    if(ontab==true){
-                        selecter.search( text_val ).draw();
-                    }
-                    // if(act == "get_reg_source" || act == "get_patient_occupation" || act == "get_patient_title" || act == "get_patient_areacode"){
-                    if(mdl!=null){
-                        $('#add_new_adm').data('modal-target',mdl)
-                        $('#add_new_adm').show();
-                    }
-                    if(selecter.page.info().recordsDisplay == 1){
-                        $('#tbl_item_select tbody tr:eq(0)').dblclick();
-                    }
-                }
-        });
+        selecter.ajax.async = false;
+        selecter.ajax.url( "pat_mast/get_entry?action=" + act).load();
         
         // dbl click will return the description in text box and code into hidden input, dialog will be closed automatically
         $('#tbl_item_select tbody').on('dblclick', 'tr', function () {
@@ -250,22 +262,18 @@ function textfield_modal(){
             item = selecter.row( this ).data();
             
             $('#hid_' + type).val(item["code"]);
-            $('#txt_' + type).val(item["description"]);            
-            
-            $('#txt_' + type).change(); // <-- to activate onchange event if any
+            $('#txt_' + type).val(item["description"]);  
                 
             $('#mdl_item_selector').modal('hide');
             after_hide(type);
         });
             
-        $("#mdl_item_selector").on('hidden.bs.modal', function () {
-            $('#add_new_adm').hide();
-            $('#tbl_item_select').html('');
-            selecter.destroy();
-            $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
-            type = "";
-            item = "";
-        });
+        // $("#mdl_item_selector").on('hide.bs.modal', function () {
+        //     $('#add_new_adm').hide();
+        //     $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
+        //     type = "";
+        //     item = "";
+        // });
 
         $('#add_new_adm').click(function(){
             $('#mdl_add_new_adm').modal('show');

@@ -84,7 +84,7 @@ class ChargeMasterController extends defaultController
             DB::table('hisdb.chgmast')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'units' => session('unit'),
+                    'unit' => session('unit'),
                     'chgcode' => strtoupper($request->cm_chgcode),
                     'description' => strtoupper($request->cm_description),
                     'barcode' => strtoupper($request->cm_barcode),

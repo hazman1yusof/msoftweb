@@ -235,7 +235,6 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        console.log(rows[bootgrid_last_rowid])
         if($('#curpat').val() == 'true'){
 
             if($('#epistycode').val() == 'OP'){
