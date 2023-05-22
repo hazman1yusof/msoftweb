@@ -31,12 +31,6 @@ class BankEnquiryController extends defaultController
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);
-            case 'edit':
-                return $this->defaultEdit($request);
-            case 'del':
-                return $this->defaultDel($request);
-            case 'getdatadr':
-                return $this->getdatadr($request);
             default:
                 return 'error happen..';
         }
@@ -44,34 +38,53 @@ class BankEnquiryController extends defaultController
 
     public function table(Request $request)
     {   
-        switch($request->oper){
-            case 'getdatadr':
-                return $this->getdatadr($request);
+        switch($request->action){
+            case 'getdata':
+                return $this->getdata($request);
             default:
                 return 'error happen..';
         }
     }
 
-    public function getdatadr(Request $request){
+    public function getdata(Request $request){
 
-        $table = DB::table('finance.cbtran')
-                    ->select(
-                        'source','source','trantype','auditno','postdate','reference','cheqno','amount as amountdr','source')
-                    ->where('bankcode','=',$request->bankcode) 
-                    ->where('year','=',$request->year) 
-                    ->where('period','=',$request->period);
+        // $table = DB::table('finance.cbtran')
+        //             ->select(
+        //                 'source','source','trantype','auditno','postdate','reference','cheqno','amount as amountdr','source')
+        //             ->where('bankcode','=',$request->bankcode) 
+        //             ->where('year','=',$request->year) 
+        //             ->where('period','=',$request->period);
 
         //////////paginate/////////
-        $paginate = $table->paginate($request->rows);
+        // $paginate = $table->paginate($request->rows);
 
+        // $responce = new stdClass();
+        // $responce->page = $paginate->currentPage();
+        // $responce->total = $paginate->lastPage();
+        // $responce->records = $paginate->total();
+        // $responce->rows = $paginate->items();
+        // $responce->sql = $table->toSql();
+        // $responce->sql_bind = $table->getBindings();
+        
         $responce = new stdClass();
-        $responce->page = $paginate->currentPage();
-        $responce->total = $paginate->lastPage();
-        $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
-        $responce->sql = $table->toSql();
-        $responce->sql_bind = $table->getBindings();
 
+        // if(empty($request->bankcode)){
+        //     $responce->data = [];
+        //     return json_encode($responce);
+        // }
+
+        $table_dr = DB::table('finance.cbtran')
+                    ->select(DB::raw("'open' as open"),DB::raw("'' as amountdr"),'cbtran.source','cbtran.trantype','cbtran.auditno','cbtran.postdate','cbtran.reference','cbtran.cheqno','cbtran.amount as amountdr',)
+                    // ->leftJoin('finance.bank', function($join) use ($request){
+                    //     $join = $join->on('finance.glaccno', '=', 'cbtran.dracc')
+                    //                     ->where('glmasref.compcode','=',session('compcode'));
+                    // })
+                    ->where('cbtran.compcode',session('compcode'))
+                    ->where('cbtran.bankcode',$request->bankcode)
+                    ->where('cbtran.year',$request->year)
+                    ->where('cbtran.period',$request->period)
+                    ->get();
+        
         return json_encode($responce);
     }
 }

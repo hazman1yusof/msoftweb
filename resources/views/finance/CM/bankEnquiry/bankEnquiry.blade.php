@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Bank Enquiry Setup')
+@section('title', 'Bank Enquiry')
 
 @section('style')
 	.num{
@@ -41,7 +41,7 @@
 		border-color:#ddd;
 		background-color:#ddd;
 	}
-	#TableGlmasdtl td:nth-child(2),#TableGlmasdtl th:nth-child(2){
+	#TableBankEnquiry td:nth-child(2),#TableBankEnquiry th:nth-child(2){
 		text-align:right;padding-right: 15px;
 	}
 	.textalignright,#TableGlmasTran_filter { text-align:right !important; }
@@ -52,7 +52,6 @@
 	.bg-info{
 		background-color: white;
 	}
-
 
 @endsection
 

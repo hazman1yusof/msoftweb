@@ -1,4 +1,3 @@
-
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
@@ -8,7 +7,7 @@ $(document).ready(function () {
 	/////////////////////////validation//////////////////////////
 	var errorField=[];
 	var mymodal = new modal();
-	var detbut = new detail_button();
+	//var detbut = new detail_button();
 	var fdl = new faster_detail_load();
 	//////////////////////////////////////////////////////////////
 
@@ -26,19 +25,20 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow:function(event){
-				
+				$('#year').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
+					$('#year').focus();
 					$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 				}
 			}
 			
 		},{
-			title:"Select Tax Code For Item",
+			title:"Select Bank Code",
 			open: function(){
 				dialog_bankcode.urlParam.filterCol=['compcode','recstatus'];
 				dialog_bankcode.urlParam.filterVal=['session.compcode','ACTIVE'];
@@ -57,10 +57,8 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			
 		},
 		close: function( event, ui ) {
-			
 		},
 		buttons :[{
 			text: "Close",click: function() {
@@ -70,7 +68,6 @@ $(document).ready(function () {
 	});
 	
 	////////////////////////////////////////end dialog///////////////////////////////////////////
-
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
@@ -124,15 +121,15 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');
+			//$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');
 			hidetbl(true);
-			DataTable.clear().draw();
+			//DataTable.clear().draw();
 			populateTable();
 			getTotal();
 			getBalance();
 		},
 		gridComplete: function(){
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
 			$("#searchForm input[name=Stext]").focus();
 			fdl.set_array().reset();
 		},
@@ -142,6 +139,19 @@ $(document).ready(function () {
 		
 	});
 	$("#jqGrid").jqGrid('setLabel','fd_openbal','Open Balance',{'text-align':'right'});
+
+	/////////////////////////start grid pager/////////////////////////////////////////////////////////
+	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#jqGrid",urlParam);
+		},
+	})
+
+	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+
+	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
+	addParamField('#jqGrid',true,urlParam);
 	
 	function getTotal(){
 		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
@@ -169,177 +179,31 @@ $(document).ready(function () {
 				balance+=parseFloat(value);
 			}
 		});
-		balance = parseFloat(openbal) - parseFloat(balance)
-		$('#fd_openbal').html(numeral(openbal).format('0,0.00'));
+		// balance = parseFloat(openbal) - parseFloat(balance)
+		// $('#fd_openbal').html(numeral(openbal).format('0,0.00'));
 		$('#fd_balance').html(numeral(balance).format('0,0.00'));
 	}
-
-	///////////////////////////////start->dialogHandler part////////////////////////////////////////////
-	function makeDialog(table,id,cols,title){
-		this.table=table;
-		this.id=id;
-		this.cols=cols;
-		this.title=title;
-		this.handler=dialogHandler;
-		this.check=checkInput;
-	}
-
-	$( "#dialog" ).dialog({
-		autoOpen: false,
-		width: 7/10 * $(window).width(),
-		modal: true,
-		open: function(){
-			$("#gridDialog").jqGrid ('setGridWidth', Math.floor($("#gridDialog_c")[0].offsetWidth-$("#gridDialog_c")[0].offsetLeft));
-		},
-		close: function( event, ui ){
-			paramD.searchCol=null;
-			paramD.searchVal=null;
-		},
-	});
-
-	var selText,Dtable,Dcols;
-	$("#gridDialog").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'Code', name: 'code', width: 200,  classes: 'pointer', canSearch:true,checked:true}, 
-			{ label: 'Description', name: 'desc', width: 400, canSearch:true, classes: 'pointer'},
-		],
-		width: 500,
-		autowidth: true,
-		viewrecords: true,
-		loadonce: false,
-        multiSort: true,
-		rowNum: 30,
-		pager: "#gridDialogPager",
-		ondblClickRow: function(rowid, iRow, iCol, e){
-			var data=$("#gridDialog").jqGrid ('getRowData', rowid);
-			$("#gridDialog").jqGrid("clearGridData", true);
-			$("#dialog").dialog( "close" );
-			$(selText).val(rowid);
-			$(selText).focus();
-			//$(selText).parent().next().html(data['desc']);
-			if(selText=="#bankcode"){
-				bankcode=data.bankcode;
-
-				$("#year").focus();	
-			}
-		},
-		
-	});
-
-	var paramD={action:'get_table_default',table_name:'',field:'',table_id:'',filter:''};
-	function dialogHandler(errorField){
-		var table=this.table,id=this.id,cols=this.cols,title=this.title,self=this;
-		$( id+" ~ a" ).on( "click", function() {
-			selText=id,Dtable=table,Dcols=cols,
-			$( "#dialog" ).dialog( "open" );
-			$( "#dialog" ).dialog( "option", "title", title );
-			paramD.table_name=table;
-			paramD.field=cols;
-			paramD.table_id=cols[0];
-			
-			$("#gridDialog").jqGrid('setGridParam',{datatype:'json',url:'../../../../assets/php/entry.php?'+$.param(paramD)}).trigger('reloadGrid');
-			$('#Dtext').val('');$('#Dcol').html('');
-			
-			$.each($("#gridDialog").jqGrid('getGridParam','colModel'), function( index, value ) {
-				if(value['canSearch']){
-					if(value['checked']){
-						$( "#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' checked>"+value['label']+"</input></label>" );
-					}else{
-						$("#Dcol" ).append( "<label class='radio-inline'><input type='radio' name='dcolr' value='"+cols[index]+"' >"+value['label']+"</input></label>" );
-					}
-				}
-			});
-		});
-		$(id).on("blur", function(){
-			self.check(errorField);
-		});
-	}
 	
-	function checkInput(errorField){
-		var table=this.table,id=this.id,field=this.cols,value=$( this.id ).val()
-		var param={action:'input_check',table:table,field:field,value:value};
-		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(data.msg=='success'){
-				if($.inArray(id,errorField)!==-1){
-					errorField.splice($.inArray(id,errorField), 1);
-				}
-				$( id ).parent().removeClass( "has-error" ).addClass( "has-success" );
-				$( id ).removeClass( "error" ).addClass( "valid" );
-				$( id ).parent().siblings( ".help-block" ).html(data.row[field[1]]);
-			}else if(data.msg=='fail'){
-				$( id ).parent().removeClass( "has-success" ).addClass( "has-error" );
-				$( id ).removeClass( "valid" ).addClass( "error" );
-				$( id ).parent().siblings( ".help-block" ).html("Invalid Code ( "+field[0]+" )");
-				if($.inArray(id,errorField)===-1){
-					errorField.push(id);
-				}
-			}
-		});
-	}
-	
-	$('#Dtext').keyup(function() {
-		delay(function(){
-			Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-		}, 500 );
-	});
-	
-	$('#Dcol').change(function(){
-		Dsearch($('#Dtext').val(),$('#checkForm input:radio[name=dcolr]:checked').val());
-	});
-	
-	function Dsearch(Dtext,Dcol){
-		paramD.searchCol=null;
-		paramD.searchVal=null;
-		Dtext=Dtext.trim();
-		if(Dtext != ''){
-			var split = Dtext.split(" "),searchCol=[],searchVal=[];
-			$.each(split, function( index, value ) {
-				searchCol.push(Dcol);
-				searchVal.push('%'+value+'%');
-			});
-			paramD.searchCol=searchCol;
-			paramD.searchVal=searchVal;
-		}
-		refreshGrid("#gridDialog",paramD);
-	}
-	///////////////////////////////finish->dialogHandler///part////////////////////////////////////////////
-
-	//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
-	function showdetail(cellvalue, options, rowObject){
-		var field,table,case_;
-		switch(options.colModel.name){
-			case 'fd_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='fd_bankcode';break;
-
-		}
-		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-
-		fdl.get_array('bankEnquiry',options,param,case_,cellvalue);
-		
-		return cellvalue;
-	}
-	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
-		},
-	})
-
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
-
 	function populateTable(){
+		var latest_tblid = false;
+		if($("#TableBankEnquiry td[id^='fd_actamount']").hasClass("bg-primary")){
+			latest_tblid = $("#TableBankEnquiry td[class='bg-primary']").attr('id')
+		}
+		$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');
+
 		selrow = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 		rowData = $("#jqGrid").jqGrid ('getRowData', selrow);
 		$.each(rowData, function( index, value ) {
-			if(value)$('#TableBankEnquiry #'+index+' span').text(numeral(value).format('0,0.00'));
-			
+			if(value){
+				$('#TableBankEnquiry #'+index+' span').text(numeral(value).format('0,0.00'));
+			}else{
+				$('#TableBankEnquiry #'+index+' span').text("0.00");
+			}
 		});
+
+		if(latest_tblid){
+			$("#TableBankEnquiry td#"+latest_tblid).click();
+	   }
 	}
 
 	$('#search').click(function(){
@@ -350,34 +214,35 @@ $(document).ready(function () {
 		$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');
 		$("#TableBankEnquiry td span").text("");
 		DataTable.clear().draw();
-
 	});
+	
 
-	var page=1, moredr=true, DTscrollTop = 0;
-	function scroll_next1000(){
-		var scrolbody = $(".dataTables_scrollBody")[0];
-		$('#but_det').hide();
-		DTscrollTop = scrolbody.scrollTop;
-		if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
-			if(moredr){
-				mymodal.show("#TableBankEnquiryTran_c");
-				getdatadr(false,page);
-			}
-		}
-	}
+	var counter=20, moredr=true, DTscrollTop = 0;
+	// function scroll_next1000(){
+	// 	var scrolbody = $(".dataTables_scrollBody")[0];
+	// 	$('#but_det').hide();
+	// 	DTscrollTop = scrolbody.scrollTop;
+	// 	if (scrolbody.scrollHeight - scrolbody.scrollTop === scrolbody.clientHeight) {
+	// 		if(moredr){
+	// 			mymodal.show("#TableBankEnquiryTran_c");
+	// 			getdatadr(false,page);
+	// 		}
+	// 	}
+	// }
 
 	$("#TableBankEnquiry td[id^='fd_actamount']").click(function(){
 		$("#TableBankEnquiry td[id^='fd_actamount']").removeClass('bg-primary');
 		$(this).addClass("bg-primary");
 		DataTable.clear().draw();
-		$(".dataTables_scrollBody").unbind('scroll').scroll(scroll_next1000);
+		DataTable.ajax.reload();
+		//$(".dataTables_scrollBody").unbind('scroll').scroll(scroll_next1000);
 		hidetbl(false);
 		if($(this).text().length>0){
 			moredr=true;
-			page=1;
+			//page=1;
 			mymodal.show("#TableBankEnquiryTran_c");
-			getdatadr(false,page);
-			page=page+1;
+			// getdatadr(false,page);
+			// page=page+1;
 		}else{
 			hidetbl(true);
 		}
@@ -385,47 +250,87 @@ $(document).ready(function () {
 	});
 
 	var DataTable = $('#TableBankEnquiryTran').DataTable({
-	    responsive: true,
-	    scrollY: 400,
+	    //responsive: true,
+		ajax: './bankEnquiry/table?action=getdata',
+	    scrollY: 500,
+		deferRender: true,
+    	scroller: true,
 		paging: false,
 	    columns: [
-	   	 	{data: 'open',},
-			{data: "source","width": "1%"},
-			{data: "trantype","width": "1%"},
-			{data: "auditno", "width": "1%" },
-			{data: "postdate","width": "13%"},
+	    	{data: 'open' ,"width": "5%", "sClass": "opendetail"},
+			{data: "source","sClass": "source"},
+			{data: "trantype","sClass": "trantype"},
+			{data: "auditno", "sClass": "auditno"},
+			{data: "postdate","width": "13%", "sClass": "postdate"},
 			{data: "reference"},
 			{data: "cheqno" },
-			{data: "amountdr", "sClass": "numericCol","width": "11%",},
-			{data: "amountcr","sClass": "numericCol","width": "11%"},
+			{data: "amountdr", "sClass": "numericCol"},
+			{data: "amountcr","sClass": "numericCol"},
+		],
+		columnDefs: [
+			{targets: 0,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(`<i class='fa fa-folder-open-o'></i>`);
+	   			}
+	   		},{targets: 7,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(numeral(cellData).format('0,0.00'));
+	   			}
+	   		},{targets: 8,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+					$(td).html(numeral(cellData).format('0,0.00'));
+	   			}
+	   		}
 		],
 		drawCallback: function( settings ) {
 			$(".dataTables_scrollBody")[0].scrollTop = DTscrollTop;
 		}
+	}).on('xhr.dt', function ( e, settings, json, xhr ) {
+        mymodal.hide();
+    }).on('preXhr.dt', function ( e, settings, data ) {
+        data.year = $('#year').val();
+        data.bankcode = selrowData("#jqGrid").fd_bankcode;
+        //data.bankcode = $('#bankcode').val();
+        data.period = $("td[class='bg-primary']").attr('period');
 	});
 
 	$('#TableBankEnquiryTran tbody').on( 'click', 'tr', function () {
 		DataTable.$('tr.bg-info').removeClass('bg-info');
 		$(this).addClass('bg-info');
 	});
-/*	$('#TableBankEnquiryTran').on( 'dblclick', 'tr', function () {
-		console.log($(this));
-	});*/
-	$('#TableBankEnquiryTran').on( 'click', 'i', function () {
-		console.log($(this).closest( "tr" ));
-		detbut.show($(this).closest( "tr" ));
+
+	// $('#TableBankEnquiryTran').on( 'click', 'i', function () {
+	// 	console.log($(this).closest( "tr" ));
+	// 	detbut.show($(this).closest( "tr" ));
+	// });
+
+	$('#TableBankEnquiryTran').on( 'click', 'td.opendetail', function () {
+		var source = $(this).siblings("td.source").text();
+		var trantype = $(this).siblings("td.trantype").text();
+		var auditno = $(this).siblings("td.auditno").text();
+		var obj_id = {
+			source: source,
+			trantype: trantype,
+			auditno: auditno
+		}
+
+		switch(true){
+			case obj_id.source=='CM':
+				dialogForm_paymentVoucher(obj_id);
+				break;
+		}
 	});
 
 	hidetbl(true);
 	function hidetbl(hide){
-		$('#but_det').hide();
-		if(hide){
-			$('#TableBankEnquiryTran_wrapper').children().first().hide();
-			$('#TableBankEnquiryTran_wrapper').children().last().hide();
-		}else{
-			$('#TableBankEnquiryTran_wrapper').children().first().show();
-			$('#TableBankEnquiryTran_wrapper').children().last().show();
-		}
+		// $('#but_det').hide();
+		// if(hide){
+		// 	$('#TableBankEnquiryTran_wrapper').children().first().hide();
+		// 	$('#TableBankEnquiryTran_wrapper').children().last().hide();
+		// }else{
+		// 	$('#TableBankEnquiryTran_wrapper').children().first().show();
+		// 	$('#TableBankEnquiryTran_wrapper').children().last().show();
+		// }
 	}
 
 	function getdatadr(fetchall,page){
@@ -465,243 +370,256 @@ $(document).ready(function () {
 		});
 	}
 
-	function detail_button(){
-	
-		this.pagesList = [
-			{
-				source:'CM',
-				trantype:'FT',
-				loadurl:"../../CM/bankTransfer/bankTransfer.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field: ['auditno','pvno','actdate','paymode','bankcode','cheqno','cheqdate','amount','payto','remarks'],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol: ['source', 'trantype','auditno'],
-					filterVal: ['CM', 'FT',''],
-				}
-			},{
-				source:'CM',
-				trantype:'DP',
-				loadurl:"../../CM/Direct%20Payment/DirectPayment.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:['*'],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol: ['source', 'trantype','auditno'],
-					filterVal: ['CM', 'DP', ''],
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'deptcode',
-							filterCol:['auditno', 'recstatus'],
-							filterVal:['', 'A'],
-						}
-					}
-				]
-			},{
-				source:'PB',
-				trantype:'RC',
-				loadurl:"../../AR/receipt/receipt.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'debtor.dbacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['PB', 'RC','']
-				}
-			},{
-				source:'CM',
-				trantype:'CA',
-				loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['CM', 'CA','']
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'deptcode',
-							filterCol:['auditno', 'recstatus','trantype'],
-							filterVal:['', 'A',''],
-						}
-					}
-				]
-			},{
-				source:'CM',
-				trantype:'DA',
-				loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-				urlParam:{
-					action:'get_value_default',
-					field:["*"],
-					table_name:'finance.apacthdr',
-					table_id:'auditno',
-					filterCol:['source', 'trantype','auditno'],
-					filterVal:['CM', 'DA','']
-				},
-				jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-					{
-						id:'#jqGrid2',
-						urlParam:{
-							action:'get_table_default',
-							field:[
-								{label:'Department',name:'deptcode'},
-								{label:'Category',name:'category'},
-								{label:'Document',name:'document'},
-								{label:'Amount Before GST',name:'AmtB4GST'},
-								{label:'GST Code',name:'GSTCode'},
-								{label:'Total Amount',name:'amount'}
-							],
-							table_name:'finance.apactdtl',
-							table_id:'deptcode',
-							filterCol:['auditno', 'recstatus','trantype'],
-							filterVal:['', 'A',''],
-						}
-					}
-				]
-			}
-		];
+	//////////////////////////////////////xxformatter checkdetail//////////////////////////////////////////
+	function showdetail(cellvalue, options, rowObject){
+		var field,table,case_;
+		switch(options.colModel.name){
+			case 'fd_bankcode':field=['bankcode','bankname'];table="finance.bank";case_='fd_bankcode';break;
+
+		}
+		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+
+		fdl.get_array('bankEnquiry',options,param,case_,cellvalue);
 		
-		this.show=function(obj){
-			
-				mymodal.show("body");
-				var source = obj.children("td:nth-child(2)").text();
-				var trantype = obj.children("td:nth-child(3)").text();
-				var auditno = obj.children("td:nth-child(4)").text();
-				var pageUse = this.pagesList.find(function(obj){
-					return (obj.source === source && obj.trantype === trantype);
-				});
-				if(pageUse == undefined){
-					mymodal.hide();
-					bootbox.alert('Unknown source: '+source+' | trantype: '+trantype+' or no selected row');
-					return false;
-				}
-				pageUse.urlParam.filterVal[2] = auditno;
-
-				$.get( "../../../../assets/php/entry.php?"+$.param(pageUse.urlParam), function( data ) {
-					
-				},'json').done(function(data) {
-					mymodal.hide();
-					if(!$.isEmptyObject(data.rows)){
-						$( "#dialogForm" ).load( pageUse.loadurl, function(){
-							populatePage(data.rows[0],'#formdata',source,trantype);
-							disableForm('#formdata');
-
-							if(source=="PB" && trantype=="RC"){
-								$(".nav-tabs a[form='"+data.rows[0].paytype+"']").tab('show');
-								populatePage(data.rows[0],data.rows[0].paytype,source,trantype);
-								disableForm(data.rows[0].paytype);
-							}
-
-							$("#dialogForm").dialog("open");
-							
-							if(pageUse.hasOwnProperty('jqgrid')){
-								pageUse.jqgrid[0].urlParam.filterVal[0] = auditno;
-
-								if(source=="CM" && trantype=="DA"){
-									pageUse.jqgrid[0].urlParam.filterVal[2] = "DA";
-								}else if(source=="CM" && trantype=="CA"){
-									pageUse.jqgrid[0].urlParam.filterVal[2] = "CA";
-								}
-
-								jqgrid_inpage(
-									pageUse.jqgrid[0].id,
-									populate_colmodel(pageUse.jqgrid[0].urlParam.field),
-									pageUse.jqgrid[0].urlParam
-								);//change here
-							}
-
-						});
-					}
-				});
-			
-		}
-
-		function populate_colmodel(field){
-			var colmodel = [];
-			field.forEach(function(element){
-				colmodel.push({label:element.label,name:element.name,formatter:showdetail,classes: 'wrap'});
-			});
-			return colmodel;
-		}
-
-		function showdetail(cellvalue, options, rowObject){
-			var field,table;
-			switch(options.colModel.name){
-				case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-				case 'category':field=['catcode','description'];table="material.category";break;
-				case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
-				default: return cellvalue;
-			}
-			var param={action:'input_check',table:table,field:field,value:cellvalue};
-			$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.row)){
-					console.log(options);
-					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
-				}
-			});
-			return cellvalue;
-		}
-
-		function jqgrid_inpage(jqgrid,colmodel,urlParam){
-			var jqgrid = $("#dialogForm "+jqgrid).jqGrid({
-				datatype: "local",
-				colModel: colmodel,
-				autowidth:true,
-				viewrecords: true,
-				loadonce:false,
-				width: 200,
-				height: 200,
-				rowNum: 300,
-			});
-
-			addParamField(jqgrid,true,urlParam);
-		}
-
-		function populatePage(obj,form,source,trantype){
-			$.each(obj, function( index, value ) {
-				if(source=="PB" && trantype=="RC")index = "dbacthdr_"+index;
-				var input=$(form+" [name='"+index+"']");
-				if(input.is("[type=radio]")){
-					$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-				}else{
-					input.val(value);
-				}
-			});
-		}
+		return cellvalue;
 	}
 
+	// function detail_button(){
+	
+	// 	this.pagesList = [
+	// 		{
+	// 			source:'CM',
+	// 			trantype:'FT',
+	// 			loadurl:"../../CM/bankTransfer/bankTransfer.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field: ['auditno','pvno','actdate','paymode','bankcode','cheqno','cheqdate','amount','payto','remarks'],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol: ['source', 'trantype','auditno'],
+	// 				filterVal: ['CM', 'FT',''],
+	// 			}
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'DP',
+	// 			loadurl:"../../CM/Direct%20Payment/DirectPayment.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:['*'],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol: ['source', 'trantype','auditno'],
+	// 				filterVal: ['CM', 'DP', ''],
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'deptcode',
+	// 						filterCol:['auditno', 'recstatus'],
+	// 						filterVal:['', 'A'],
+	// 					}
+	// 				}
+	// 			]
+	// 		},{
+	// 			source:'PB',
+	// 			trantype:'RC',
+	// 			loadurl:"../../AR/receipt/receipt.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'debtor.dbacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['PB', 'RC','']
+	// 			}
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'CA',
+	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['CM', 'CA','']
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'deptcode',
+	// 						filterCol:['auditno', 'recstatus','trantype'],
+	// 						filterVal:['', 'A',''],
+	// 					}
+	// 				}
+	// 			]
+	// 		},{
+	// 			source:'CM',
+	// 			trantype:'DA',
+	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
+	// 			urlParam:{
+	// 				action:'get_value_default',
+	// 				field:["*"],
+	// 				table_name:'finance.apacthdr',
+	// 				table_id:'auditno',
+	// 				filterCol:['source', 'trantype','auditno'],
+	// 				filterVal:['CM', 'DA','']
+	// 			},
+	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
+	// 				{
+	// 					id:'#jqGrid2',
+	// 					urlParam:{
+	// 						action:'get_table_default',
+	// 						field:[
+	// 							{label:'Department',name:'deptcode'},
+	// 							{label:'Category',name:'category'},
+	// 							{label:'Document',name:'document'},
+	// 							{label:'Amount Before GST',name:'AmtB4GST'},
+	// 							{label:'GST Code',name:'GSTCode'},
+	// 							{label:'Total Amount',name:'amount'}
+	// 						],
+	// 						table_name:'finance.apactdtl',
+	// 						table_id:'deptcode',
+	// 						filterCol:['auditno', 'recstatus','trantype'],
+	// 						filterVal:['', 'A',''],
+	// 					}
+	// 				}
+	// 			]
+	// 		}
+	// 	];
+		
+	// 	this.show=function(obj){
+			
+	// 			mymodal.show("body");
+	// 			var source = obj.children("td:nth-child(2)").text();
+	// 			var trantype = obj.children("td:nth-child(3)").text();
+	// 			var auditno = obj.children("td:nth-child(4)").text();
+	// 			var pageUse = this.pagesList.find(function(obj){
+	// 				return (obj.source === source && obj.trantype === trantype);
+	// 			});
+	// 			if(pageUse == undefined){
+	// 				mymodal.hide();
+	// 				bootbox.alert('Unknown source: '+source+' | trantype: '+trantype+' or no selected row');
+	// 				return false;
+	// 			}
+	// 			pageUse.urlParam.filterVal[2] = auditno;
+
+	// 			$.get( "../../../../assets/php/entry.php?"+$.param(pageUse.urlParam), function( data ) {
+					
+	// 			},'json').done(function(data) {
+	// 				mymodal.hide();
+	// 				if(!$.isEmptyObject(data.rows)){
+	// 					$( "#dialogForm" ).load( pageUse.loadurl, function(){
+	// 						populatePage(data.rows[0],'#formdata',source,trantype);
+	// 						disableForm('#formdata');
+
+	// 						if(source=="PB" && trantype=="RC"){
+	// 							$(".nav-tabs a[form='"+data.rows[0].paytype+"']").tab('show');
+	// 							populatePage(data.rows[0],data.rows[0].paytype,source,trantype);
+	// 							disableForm(data.rows[0].paytype);
+	// 						}
+
+	// 						$("#dialogForm").dialog("open");
+							
+	// 						if(pageUse.hasOwnProperty('jqgrid')){
+	// 							pageUse.jqgrid[0].urlParam.filterVal[0] = auditno;
+
+	// 							if(source=="CM" && trantype=="DA"){
+	// 								pageUse.jqgrid[0].urlParam.filterVal[2] = "DA";
+	// 							}else if(source=="CM" && trantype=="CA"){
+	// 								pageUse.jqgrid[0].urlParam.filterVal[2] = "CA";
+	// 							}
+
+	// 							jqgrid_inpage(
+	// 								pageUse.jqgrid[0].id,
+	// 								populate_colmodel(pageUse.jqgrid[0].urlParam.field),
+	// 								pageUse.jqgrid[0].urlParam
+	// 							);//change here
+	// 						}
+
+	// 					});
+	// 				}
+	// 			});
+			
+	// 	}
+
+	// 	function populate_colmodel(field){
+	// 		var colmodel = [];
+	// 		field.forEach(function(element){
+	// 			colmodel.push({label:element.label,name:element.name,formatter:showdetail,classes: 'wrap'});
+	// 		});
+	// 		return colmodel;
+	// 	}
+
+	// 	function showdetail(cellvalue, options, rowObject){
+	// 		var field,table;
+	// 		switch(options.colModel.name){
+	// 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
+	// 			case 'category':field=['catcode','description'];table="material.category";break;
+	// 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+	// 			default: return cellvalue;
+	// 		}
+	// 		var param={action:'input_check',table:table,field:field,value:cellvalue};
+	// 		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
+				
+	// 		},'json').done(function(data) {
+	// 			if(!$.isEmptyObject(data.row)){
+	// 				console.log(options);
+	// 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
+	// 			}
+	// 		});
+	// 		return cellvalue;
+	// 	}
+
+	// 	function jqgrid_inpage(jqgrid,colmodel,urlParam){
+	// 		var jqgrid = $("#dialogForm "+jqgrid).jqGrid({
+	// 			datatype: "local",
+	// 			colModel: colmodel,
+	// 			autowidth:true,
+	// 			viewrecords: true,
+	// 			loadonce:false,
+	// 			width: 200,
+	// 			height: 200,
+	// 			rowNum: 300,
+	// 		});
+
+	// 		addParamField(jqgrid,true,urlParam);
+	// 	}
+
+	// 	function populatePage(obj,form,source,trantype){
+	// 		$.each(obj, function( index, value ) {
+	// 			if(source=="PB" && trantype=="RC")index = "dbacthdr_"+index;
+	// 			var input=$(form+" [name='"+index+"']");
+	// 			if(input.is("[type=radio]")){
+	// 				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+	// 			}else{
+	// 				input.val(value);
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	set_yearperiod();
 	function set_yearperiod(){
