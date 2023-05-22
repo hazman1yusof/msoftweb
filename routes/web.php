@@ -275,6 +275,11 @@ Route::get('/oper_team','hisdb\OperTeamController@show');
 Route::get('/oper_team/table','hisdb\OperTeamController@table');
 Route::post('/oper_team/form','hisdb\OperTeamController@form');
 
+//// OT Swab page ////
+Route::get('/otswab','hisdb\OTSwabController@show');
+Route::get('/otswab/table','hisdb\OTSwabController@table');
+Route::post('/otswab/form','hisdb\OTSwabController@form');
+
 //// OT Status setup page ///
 Route::get('/ot_status','hisdb\OTStatusController@show');
 Route::get('/ot_status/table','hisdb\OTStatusController@table');
