@@ -15,8 +15,8 @@ var urlParam_otswab = {
     
     // action: 'get_grid_otswab',
     // url: './otswab/table',
-    // mrn: $('#mrn_otswab').val(),
-    // episno: $("#episno_otswab").val(),
+    // mrn: '',
+    // episno: '',
 }
 
 $(document).ready(function () {
@@ -343,6 +343,8 @@ function populate_otswab(obj){
     // table jqGrid_otswab
 	urlParam_otswab.filterVal[1] = obj.mrn;
 	urlParam_otswab.filterVal[2] = obj.latest_episno;
+    // urlParam_otswab.mrn= obj.mrn;
+    // urlParam_otswab.episno= obj.latest_episno;
 }
 
 function autoinsert_rowdata(form,rowData){
