@@ -26,6 +26,8 @@ class OTSwabController extends defaultController
     public function table(Request $request)
     {
         switch($request->action){
+            // case 'get_grid_otswab':
+            //     return $this->get_grid_otswab($request);
             default:
                 return 'error happen..';
         }
@@ -193,6 +195,30 @@ class OTSwabController extends defaultController
         return json_encode($responce);
     
     }
+    
+    // public function get_grid_otswab(Request $request){
+        
+    //     $table = DB::table('nursing.otswab')
+    //                 ->select('idno','compcode','mrn','episno','items','count_initial','add_1','count_1st','add_2','count_2nd','add_3','count_final','adduser','adddate')
+    //                 ->where('compcode','=',session('compcode'))
+    //                 ->where('mrn','=',$request->mrn)
+    //                 ->where('episno','=',$request->episno);
+        
+    //     /////////////////paginate/////////////////
+    //     $paginate = $table->paginate($request->rows);
+        
+    //     $responce = new stdClass();
+    //     $responce->page = $paginate->currentPage();
+    //     $responce->total = $paginate->lastPage();
+    //     $responce->records = $paginate->total();
+    //     $responce->rows = $paginate->items();
+    //     $responce->sql = $table->toSql();
+    //     $responce->sql_bind = $table->getBindings();
+    //     $responce->sql_query = $this->getQueries($table);
+        
+    //     return json_encode($responce);
+        
+    // }
     
     public function add_jqgrid(Request $request){
         

@@ -83,9 +83,9 @@
                                 
                                 <div class="sixteen wide column">
                                     <div class="ui segments">
-                                        <div class="ui segment" id="jqGrid_c">
-                                            <table id="jqGrid" class="table table-striped"></table>
-                                            <div id="jqGridPager"></div>
+                                        <div class="ui segment" id="jqGrid_otswab_c">
+                                            <table id="jqGrid_otswab" class="table table-striped"></table>
+                                            <div id="jqGridPager_otswab"></div>
                                         </div>
                                     </div>
                                 </div>

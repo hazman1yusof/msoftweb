@@ -3,8 +3,8 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
-//////////////////////////////////parameter for jqGrid url//////////////////////////////////
-var urlParam = {
+//////////////////////////////////parameter for jqGrid_otswab url//////////////////////////////////
+var urlParam_otswab = {
     action: 'get_table_default',
     url: './util/get_table_default',
     field: '',
@@ -12,6 +12,11 @@ var urlParam = {
     table_id: 'idno',
     filterCol:['compcode','mrn','episno'],
     filterVal:['session.compcode','',''],
+    
+    // action: 'get_grid_otswab',
+    // url: './otswab/table',
+    // mrn: $('#mrn_otswab').val(),
+    // episno: $("#episno_otswab").val(),
 }
 
 $(document).ready(function () {
@@ -85,8 +90,8 @@ $(document).ready(function () {
     ////////////////////////////////////////parameter for saving url////////////////////////////////////////
     var addmore_jqgrid={more:false,state:false,edit:false}
     
-    /////////////////////////////////////////////////jqGrid/////////////////////////////////////////////////
-    $("#jqGrid").jqGrid({
+    /////////////////////////////////////////////////jqGrid_otswab/////////////////////////////////////////////////
+    $("#jqGrid_otswab").jqGrid({
         datatype: "local",
         editurl: "./otswab/form",
         colModel: [
@@ -114,53 +119,53 @@ $(document).ready(function () {
         width: 900,
         height: 200,
         rowNum: 30,
-        pager: "#jqGridPager",
+        pager: "#jqGridPager_otswab",
         loadComplete: function(){
-            if(addmore_jqgrid.more == true){$('#jqGrid_iladd').click();}
+            if(addmore_jqgrid.more == true){$('#jqGrid_otswab_iladd').click();}
             else{
                 $('#jqGrid2').jqGrid ('setSelection', "1");
             }
             $('.ui-pg-button').prop('disabled',true);
             addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
             
-            // calc_jq_height_onchange("jqGrid");
+            // calc_jq_height_onchange("jqGrid_otswab");
         },
         ondblClickRow: function(rowid, iRow, iCol, e){
-            $("#jqGrid_iledit").click();
+            $("#jqGrid_otswab_iledit").click();
         },
     });
     
-    ///////////////////////////////////////////////////myEditOptions_add///////////////////////////////////////////////////
-    var myEditOptions_add = {
+    ///////////////////////////////////////////////////myEditOptions_add_otswab///////////////////////////////////////////////////
+    var myEditOptions_add_otswab = {
         keys: true,
         extraparam:{
-            "_token": $("#csrf_token").val()
+            "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-            $("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").hide();
             
             $("input[name='final_count']").keydown(function(e) {//when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
-                if (code == '9')$('#jqGrid_ilsave').click();
+                if (code == '9')$('#jqGrid_otswab_ilsave').click();
                 // addmore_jqgrid.state = true;
-                // $('#jqGrid_ilsave').click();
+                // $('#jqGrid_otswab_ilsave').click();
             });
         },
         aftersavefunc: function (rowid, response, options) {
             // addmore_jqgrid.more=true; //only addmore after save inline
             // state true maksudnyer ada isi, tak kosong
-            refreshGrid('#jqGrid',urlParam,'add_jqgrid');
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
             errorField.length=0;
-            $("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
-            refreshGrid('#jqGrid',urlParam,'add_jqgrid');
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
         },
         beforeSaveRow: function (options, rowid) {
             $('#p_error').text('');
             
-            let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+            let data = $('#jqGrid_otswab').jqGrid ('getRowData', rowid);
             
             let editurl = "./otswab/form?"+
                 $.param({
@@ -168,10 +173,10 @@ $(document).ready(function () {
                     mrn:$('#mrn_otswab').val(),
                     action: 'addJqgrid_save',
                 });
-            $("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+            $("#jqGrid_otswab").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc : function( response ) {
-            $("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
         },
         errorTextFormat: function (data) {
             alert(data);
@@ -179,54 +184,54 @@ $(document).ready(function () {
     };
     
     ///////////////////////////////////////////////////jqGridPager///////////////////////////////////////////////////
-    $("#jqGrid").inlineNav('#jqGridPager', {
+    $("#jqGrid_otswab").inlineNav('#jqGridPager_otswab', {
         add: true,
         edit: true,
         cancel: true,
         // to prevent the row being edited/added from being automatically cancelled once the user clicks another row
         restoreAfterSelect: false,
         addParams: {
-            addRowParams: myEditOptions_add
+            addRowParams: myEditOptions_add_otswab
         },
-        editParams: myEditOptions_add
+        editParams: myEditOptions_add_otswab
     })
-    // .jqGrid('navButtonAdd', "#jqGridPager", {
-    //     id: "jqGridPagerDelete",
+    // .jqGrid('navButtonAdd', "#jqGridPager_otswab", {
+    //     id: "jqGridPagerDelete_otswab",
     //     caption: "", cursor: "pointer", position: "last",
     //     buttonicon: "glyphicon glyphicon-trash",
     //     title: "Delete Selected Row",
     //     onClickButton: function () {
-    //         selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+    //         selRowId = $("#jqGrid_otswab").jqGrid('getGridParam', 'selrow');
     //         if (!selRowId) {
     //             alert('Please select row');
     //         } else {
     //             var result = confirm("Are you sure you want to delete this row?");
     //             if (result == true) {
     //                 param = {
-    //                     _token: $("#csrf_token").val(),
+    //                     _token: $("#_token").val(),
     //                     action: 'addJqgrid_save',
-    //                     idno: selrowData('#jqGrid').idno,
+    //                     idno: selrowData('#jqGrid_otswab').idno,
     //                 }
     //                 $.post( "./otswab/form?"+$.param(param),{oper:'del'}, function( data ){
                         
     //                 }).fail(function (data) {
     //                     //////////////////errorText(dialog,data.responseText);
     //                 }).done(function (data) {
-    //                     refreshGrid("#jqGrid", urlParam);
+    //                     refreshGrid("#jqGrid_otswab", urlParam_otswab);
     //                 });
     //             }else{
-    //                 $("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+    //                 $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
     //             }
     //         }
     //     },
     // })
-    .jqGrid('navButtonAdd', "#jqGridPager", {
-        id: "jqGridPagerRefresh",
+    .jqGrid('navButtonAdd', "#jqGridPager_otswab", {
+        id: "jqGridPagerRefresh_otswab",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-refresh",
         title: "Refresh Table",
         onClickButton: function () {
-            refreshGrid("#jqGrid", urlParam);
+            refreshGrid("#jqGrid_otswab", urlParam_otswab);
         },
     });
     
@@ -334,6 +339,10 @@ function populate_otswab(obj){
     // form_otswab
     $('#mrn_otswab').val(obj.mrn);
     $("#episno_otswab").val(obj.latest_episno);
+    
+    // table jqGrid_otswab
+	urlParam_otswab.filterVal[1] = obj.mrn;
+	urlParam_otswab.filterVal[2] = obj.latest_episno;
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -437,7 +446,7 @@ function textare_init_otswab(){
 
 $('#tab_otswab').on('shown.bs.collapse', function () {
     SmoothScrollTo('#tab_otswab', 300);
-    $("#jqGrid").jqGrid ('setGridWidth', Math.floor($("#jqGrid_c")[0].offsetWidth-$("#jqGrid_c")[0].offsetLeft-14));
+    $("#jqGrid_otswab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
     
     if($('#mrn_otswab').val() != ''){
         getdata_otswab();
@@ -469,11 +478,11 @@ function getdata_otswab(){
             button_state_otswab('edit');
             autoinsert_rowdata("#form_otswab",data.otswab);
             // textare_init_otswab();
-            // refreshGrid('#jqGrid',urlParam,'add_jqgrid');
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
         }else{
             button_state_otswab('add');
             // textare_init_otswab();
-            // refreshGrid('#jqGrid',urlParam,'add_jqgrid');
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
         }
     });
 }
