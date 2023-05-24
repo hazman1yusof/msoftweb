@@ -1,6 +1,6 @@
 <div class="ui segments" style="position: relative;">
     <div class="ui secondary segment bluecloudsegment">
-        OT Time Record
+        OT TIME RECORD
         <div class="ui small blue icon buttons" id="btn_grp_edit_ottime" style="position: absolute;
                     padding: 0 0 0 0;
                     right: 40px;
