@@ -54,6 +54,12 @@ class OTSwabController extends defaultController
             case 'addJqgrid_save':
                 return $this->add_jqgrid($request);
             
+            case 'addJqgrid_edit':
+                return $this->edit_jqgrid($request);
+            
+            case 'addJqgrid_delete':
+                return $this->del_jqgrid($request);
+            
             default:
                 return 'error happen..';
         }
@@ -226,34 +232,11 @@ class OTSwabController extends defaultController
         
         try {
             
-            $otswab = DB::table('nursing.otswab')
-                        ->where('mrn','=',$request->mrn_otswab)
-                        ->where('episno','=',$request->episno_otswab)
-                        ->where('compcode','=',session('compcode'));
-            
-            if(!$otswab->exists()){
-                
-                DB::table('nursing.otswab')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'mrn' => $request->mrn_otswab,
-                            'episno' => $request->episno_otswab,
-                            'items' => $request->items,
-                            'count_initial' => $request->count_initial,
-                            'add_1' => $request->add_1,
-                            'count_1st' => $request->count_1st,
-                            'add_2' => $request->add_2,
-                            'count_2nd' => $request->count_2nd,
-                            'add_3' => $request->add_3,
-                            'count_final' => $request->count_final,
-                            'adduser'  => session('username'),
-                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                        ]);
-                
-            }else{
-                
-                $otswab
-                    ->update([
+            DB::table('nursing.otswab_sets')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
                         'items' => $request->items,
                         'count_initial' => $request->count_initial,
                         'add_1' => $request->add_1,
@@ -262,11 +245,66 @@ class OTSwabController extends defaultController
                         'count_2nd' => $request->count_2nd,
                         'add_3' => $request->add_3,
                         'count_final' => $request->count_final,
-                        'upduser'  => session('username'),
-                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-                    
-            }
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function edit_jqgrid(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab_sets')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->update([
+                    'items' => $request->items,
+                    'count_initial' => $request->count_initial,
+                    'add_1' => $request->add_1,
+                    'count_1st' => $request->count_1st,
+                    'add_2' => $request->add_2,
+                    'count_2nd' => $request->count_2nd,
+                    'add_3' => $request->add_3,
+                    'count_final' => $request->count_final,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
+    
+    }
+    
+    public function del_jqgrid(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.otswab_sets')
+                ->where('idno','=',$request->idno)
+                ->where('compcode','=',session('compcode'))
+                ->delete();
             
             DB::commit();
             

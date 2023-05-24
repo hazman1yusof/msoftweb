@@ -8,7 +8,7 @@ var urlParam_otswab = {
     action: 'get_table_default',
     url: './util/get_table_default',
     field: '',
-    table_name: 'nursing.otswab',
+    table_name: 'nursing.otswab_sets',
     table_id: 'idno',
     filterCol:['compcode','mrn','episno'],
     filterVal:['session.compcode','',''],
@@ -169,9 +169,58 @@ $(document).ready(function () {
             
             let editurl = "./otswab/form?"+
                 $.param({
-                    episno:$('#episno_otswab').val(),
-                    mrn:$('#mrn_otswab').val(),
+                    episno: $('#episno_otswab').val(),
+                    mrn: $('#mrn_otswab').val(),
                     action: 'addJqgrid_save',
+                });
+            $("#jqGrid_otswab").jqGrid('setGridParam', { editurl: editurl });
+        },
+        afterrestorefunc : function( response ) {
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
+        },
+        errorTextFormat: function (data) {
+            alert(data);
+        }
+    };
+    
+    ///////////////////////////////////////////////////myEditOptions_edit_otswab///////////////////////////////////////////////////
+    var myEditOptions_edit_otswab = {
+        keys: true,
+        extraparam:{
+            "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").hide();
+            
+            $("input[name='final_count']").keydown(function(e) {//when click tab at last column in header, auto save
+                var code = e.keyCode || e.which;
+                if (code == '9')$('#jqGrid_otswab_ilsave').click();
+                // addmore_jqgrid.state = true;
+                // $('#jqGrid_otswab_ilsave').click();
+            });
+        },
+        aftersavefunc: function (rowid, response, options) {
+            // addmore_jqgrid.more=true; //only addmore after save inline
+            // state true maksudnyer ada isi, tak kosong
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
+            errorField.length=0;
+            $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
+        },
+        errorfunc: function(rowid,response){
+            $('#p_error').text(response.responseText);
+            refreshGrid('#jqGrid_otswab',urlParam_otswab,'add_jqgrid');
+        },
+        beforeSaveRow: function (options, rowid) {
+            $('#p_error').text('');
+            
+            let data = $('#jqGrid_otswab').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./otswab/form?"+
+                $.param({
+                    episno: $('#episno_otswab').val(),
+                    mrn: $('#mrn_otswab').val(),
+                    idno: selrowData('#jqGrid_otswab').idno,
+                    action: 'addJqgrid_edit',
                 });
             $("#jqGrid_otswab").jqGrid('setGridParam', { editurl: editurl });
         },
@@ -193,39 +242,37 @@ $(document).ready(function () {
         addParams: {
             addRowParams: myEditOptions_add_otswab
         },
-        editParams: myEditOptions_add_otswab
-    })
-    // .jqGrid('navButtonAdd', "#jqGridPager_otswab", {
-    //     id: "jqGridPagerDelete_otswab",
-    //     caption: "", cursor: "pointer", position: "last",
-    //     buttonicon: "glyphicon glyphicon-trash",
-    //     title: "Delete Selected Row",
-    //     onClickButton: function () {
-    //         selRowId = $("#jqGrid_otswab").jqGrid('getGridParam', 'selrow');
-    //         if (!selRowId) {
-    //             alert('Please select row');
-    //         } else {
-    //             var result = confirm("Are you sure you want to delete this row?");
-    //             if (result == true) {
-    //                 param = {
-    //                     _token: $("#_token").val(),
-    //                     action: 'addJqgrid_save',
-    //                     idno: selrowData('#jqGrid_otswab').idno,
-    //                 }
-    //                 $.post( "./otswab/form?"+$.param(param),{oper:'del'}, function( data ){
+        editParams: myEditOptions_edit_otswab
+    }).jqGrid('navButtonAdd', "#jqGridPager_otswab", {
+        id: "jqGridPagerDelete_otswab",
+        caption: "", cursor: "pointer", position: "last",
+        buttonicon: "glyphicon glyphicon-trash",
+        title: "Delete Selected Row",
+        onClickButton: function () {
+            selRowId = $("#jqGrid_otswab").jqGrid('getGridParam', 'selrow');
+            if (!selRowId) {
+                alert('Please select row');
+            } else {
+                var result = confirm("Are you sure you want to delete this row?");
+                if (result == true) {
+                    param = {
+                        _token: $("#_token").val(),
+                        action: 'addJqgrid_delete',
+                        idno: selrowData('#jqGrid_otswab').idno,
+                    }
+                    $.post( "./otswab/form?"+$.param(param),{oper:'del_jqgrid'}, function( data ){
                         
-    //                 }).fail(function (data) {
-    //                     //////////////////errorText(dialog,data.responseText);
-    //                 }).done(function (data) {
-    //                     refreshGrid("#jqGrid_otswab", urlParam_otswab);
-    //                 });
-    //             }else{
-    //                 $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
-    //             }
-    //         }
-    //     },
-    // })
-    .jqGrid('navButtonAdd', "#jqGridPager_otswab", {
+                    }).fail(function (data) {
+                        //////////////////errorText(dialog,data.responseText);
+                    }).done(function (data) {
+                        refreshGrid("#jqGrid_otswab", urlParam_otswab);
+                    });
+                }else{
+                    $("#jqGridPagerDelete_otswab,#jqGridPagerRefresh_otswab").show();
+                }
+            }
+        },
+    }).jqGrid('navButtonAdd', "#jqGridPager_otswab", {
         id: "jqGridPagerRefresh_otswab",
         caption: "", cursor: "pointer", position: "last",
         buttonicon: "glyphicon glyphicon-refresh",
