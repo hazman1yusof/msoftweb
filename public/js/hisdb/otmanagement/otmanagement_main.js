@@ -154,6 +154,7 @@ $(document).ready(function () {
 				populate_preoperative(selrowData('#jqGrid'));
 				populate_oper_team(selrowData('#jqGrid'));
 				populate_otswab(selrowData('#jqGrid'));
+				populate_ottime(selrowData('#jqGrid'));
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
 			},
@@ -164,6 +165,7 @@ $(document).ready(function () {
 				empty_preoperative();
 				empty_oper_team();
 				empty_otswab();
+				empty_ottime();
 				init_editbtn_top();
 			},
 		});
@@ -236,6 +238,7 @@ $(document).ready(function () {
 				populate_preoperative(selrowData('#jqGrid'));
 				populate_oper_team(selrowData('#jqGrid'));
 				populate_otswab(selrowData('#jqGrid'));
+				populate_ottime(selrowData('#jqGrid'));
 				$("#jqGrid").data('lastidno',rowid);
 			},
 			ondblClickRow: function (rowid, iRow, iCol, e) {
@@ -247,6 +250,7 @@ $(document).ready(function () {
 				empty_preoperative();
 				empty_oper_team();
 				empty_otswab();
+				empty_ottime();
 				init_editbtn_top();
 				if(!$("button#timer_play").hasClass("disabled")){
 					$("#jqGrid").setSelection($("#jqGrid").data('lastidno'));
