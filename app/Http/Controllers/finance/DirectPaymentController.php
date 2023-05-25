@@ -239,7 +239,7 @@ class DirectPaymentController extends defaultController
             if($this->isCBtranExist($apacthdr_get->bankcode,$yearperiod->year,$yearperiod->period)){
 
                 $totamt = $this->getCbtranTotamt($apacthdr_get->bankcode,$yearperiod->year,$yearperiod->period);
-
+                
                 DB::table('finance.bankdtl')
                     ->where('compcode','=',session('compcode'))
                     ->where('year','=',$yearperiod->year)
@@ -525,9 +525,10 @@ class DirectPaymentController extends defaultController
                   /*  ->first();*/
                     ->sum('amount');
                    
-
+                   // dd($cbtranamt);
         $responce = new stdClass();
         $responce->amount = $cbtranamt->amount;
+        
         return $responce;
     }
 

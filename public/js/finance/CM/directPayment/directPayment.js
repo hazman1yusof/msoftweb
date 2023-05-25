@@ -336,22 +336,37 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
+	// $("#but_cancel_jq,#but_post_jq").click(function(){
+	// 	saveParam.oper = $(this).data('oper');
+	// 	let obj={
+	// 		idno:selrowData('#jqGrid').idno,
+	// 		auditno:selrowData('#jqGrid').auditno,
+	// 		_token:$('#_token').val(),
+	// 	};
+	// 	$.post("directPayment/form?" + $.param(saveParam),obj,function (data) {
+	// 		refreshGrid("#jqGrid", urlParam);
+	// 	}).fail(function (data) {
+	// 		alert(data.responseText);
+	// 	}).done(function (data) {
+	// 		//2nd successs?
+	// 	});
+	// });
+
 	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			idno:selrowData('#jqGrid').idno,
-			auditno:selrowData('#jqGrid').auditno,
-			_token:$('#_token').val(),
-		};
-		$.post("directPayment/form?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+		var idno = selrowData('#jqGrid').idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = "posted";
+
+		$.post( './directPayment/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			//$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
-
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
 		if(obj==null){
@@ -364,7 +379,7 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			alert(data.responseText);
 		}).done(function (data) {
-
+			mycurrency.formatOn();
 			unsaved = false;
 			hideatdialogForm(false);
 			addmore_jqgrid2.state = true;
@@ -378,7 +393,7 @@ $(document).ready(function () {
 				$('#auditno').val(data.auditno);
 				$('#idno').val(data.idno);
 				$('#pvno').val(data.pvno);
-				$('#amount').val(data.amount);//just save idno for edit later
+				//$('#amount').val(data.amount);//just save idno for edit later
 				
 				urlParam2.filterVal[1]=data.auditno;
 			}else if(selfoper=='edit'){
