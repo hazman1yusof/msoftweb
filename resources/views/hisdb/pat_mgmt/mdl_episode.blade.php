@@ -64,7 +64,7 @@
                             <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
                             <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
                             <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                <h5><strong>EPISODE</strong></h5>
+                                <h5><strong><span id="episode_title_text"></span> EPISODE</strong></h5>
                             </div> 
                             </div>
 
@@ -866,8 +866,8 @@
                                     <li><a href="Multi Date" data-toggle="tab">Multi Date</a></li>
                                     <li><a href="Open" data-toggle="tab">Open</a></li>
                                     <li><a href="Single Use" data-toggle="tab">Single Use</a></li>
-                                    <li><a href="Limit Amount" data-toggle="tab">Limit Amount</a></li>
-                                    <li><a href="Monthly Amount" data-toggle="tab">Monthly Amount</a></li>
+                                    <!-- <li><a href="Limit Amount" data-toggle="tab">Limit Amount</a></li>
+                                    <li><a href="Monthly Amount" data-toggle="tab">Monthly Amount</a></li> -->
                                 </ul>
                                 <input type="hidden" id="newgl-gltype" name="newgl-gltype">
 
