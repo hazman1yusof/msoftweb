@@ -314,7 +314,7 @@ class CreditDebitTransController extends defaultController
                 $dept = $this->getDept($apactdtl->deptcode);
                 $cat = $this->getCat($apactdtl->category);
 
-                if($apactdtl_get->trantype == "CA" ){
+                if($apactdtl->trantype == "CA" ){
                     $drcostcode = $dept->costcode;
                     $dracc = $cat->expacct;
 
@@ -377,7 +377,7 @@ class CreditDebitTransController extends defaultController
                 /////////////for gst/////////////////////////////////
                 $amountgst = floatval($apactdtl->amount) - floatval($apactdtl->AmtB4GST);
                 $amount2 = ($apactdtl->trantype == "CA" ) ? - floatval($apactdtl->AmtB4GST) : (floatval($apactdtl->AmtB4GST)); 
-
+                dd($amount2);
                 if($amountgst > 0.00){
                     DB::table('finance.gltran')
                         ->insert([

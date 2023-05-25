@@ -394,7 +394,8 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			alert(data.responseText);
 		}).done(function (data) {
-
+			
+			mycurrency.formatOn();
 			unsaved = false;
 			hideatdialogForm(false);
 			addmore_jqgrid2.state = true;
