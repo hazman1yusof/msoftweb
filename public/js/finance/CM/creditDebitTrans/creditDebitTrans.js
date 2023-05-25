@@ -352,21 +352,36 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
+	// $("#but_cancel_jq,#but_post_jq").click(function(){
+	// 	saveParam.oper = $(this).data('oper');
+	// 	let obj={
+	// 		auditno:selrowData('#jqGrid').auditno,
+	// 		_token:$('#_token').val(),
+	// 	};
+	// 	$.post("creditDebitTrans/form?" + $.param(saveParam),obj,function (data) { 
+	// 		refreshGrid("#jqGrid", urlParam);
+	// 	}).fail(function (data) {
+	// 		alert(data.responseText);
+	// 	}).done(function (data) {
+	// 		//2nd successs?
+	// 	});
+	// });
+
 	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			auditno:selrowData('#jqGrid').auditno,
-			_token:$('#_token').val(),
-		};
-		$.post("creditDebitTrans/form?" + $.param(saveParam),obj,function (data) { 
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+		var idno = selrowData('#jqGrid').idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = "posted";
+
+		$.post( './creditDebitTrans/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			//$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
-
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
 		if(obj==null){

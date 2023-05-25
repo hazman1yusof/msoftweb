@@ -242,7 +242,7 @@ class CreditDebitTransController extends defaultController
             $apacthdr_get = $apacthdr->first();
             $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
             $amountused = $apacthdr_get->trantype == "CA" ? -$apacthdr_get->amount : $apacthdr_get->amount;
-
+            //dd($amountused);
             //1st step add cbtran credit
             DB::table('finance.cbtran')
                 ->insert([  'compcode' => $apacthdr_get->compcode, 
