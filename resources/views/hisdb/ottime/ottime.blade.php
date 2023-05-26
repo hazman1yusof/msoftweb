@@ -53,7 +53,9 @@
                                                     <div class="form-inline">
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="callpt_time" name="callpt_time">
+                                                            <!-- <input type="time" id="time-input" name="callpt_time" step="3600" min="00:00" max="23:59" pattern="[0-2][0-9]:[0-5][0-9]"> -->
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="callpt_date" name="callpt_date">
                                                         </div>
@@ -67,6 +69,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="ppkward_time" name="ppkward_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="ppkward_date" name="ppkward_date">
                                                         </div>
@@ -80,6 +83,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="reception_time" name="reception_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="reception_date" name="reception_date">
                                                         </div>
@@ -93,6 +97,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="patientOT_time" name="patientOT_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="patientOT_date" name="patientOT_date">
                                                         </div>
@@ -104,8 +109,9 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <div class="form-group">
-                                                            <input type="time" class="form-control" id="incisionstart" name="incisionstart" rdonly onkeydown="return false"/>
-                                                        </div>
+                                                            <input type="time" class="form-control" id="incisionstart" name="incisionstart">
+                                                        </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                     </div>
                                                 </td>
                                             </tr>
@@ -114,8 +120,9 @@
                                                 <td>
                                                     <div class="form-inline">
                                                         <div class="form-group">
-                                                            <input type="time" class="form-control" id="incisionend" name="incisionend" rdonly onkeydown="return false"/>
-                                                        </div>
+                                                            <input type="time" class="form-control" id="incisionend" name="incisionend">
+                                                        </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                     </div>
                                                 </td>
                                             </tr>
@@ -126,6 +133,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="ptOut_time" name="ptOut_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="ptOut_date" name="ptOut_date">
                                                         </div>
@@ -139,6 +147,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="wardCall_time" name="wardCall_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="wardCall_date" name="wardCall_date">
                                                         </div>
@@ -152,6 +161,7 @@
                                                         <div class="form-group">
                                                             <input type="time" class="form-control" id="ptWard_time" name="ptWard_time">
                                                         </div>  &nbsp;
+                                                        <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="ptWard_date" name="ptWard_date">
                                                         </div>
