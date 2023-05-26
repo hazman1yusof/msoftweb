@@ -16,6 +16,7 @@ $(document).ready(function () {
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
+        $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
         // dialog_mrn_edit.on();
         
@@ -25,6 +26,7 @@ $(document).ready(function () {
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
+        $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         // dialog_mrn_edit.on();
         
     });
@@ -39,6 +41,7 @@ $(document).ready(function () {
         }else{
             enableForm('#form_otdischarge');
             rdonly('#form_otdischarge');
+            $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         }
         
     });
