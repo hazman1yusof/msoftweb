@@ -267,94 +267,95 @@ function textfield_modal(){
             $('#mdl_item_selector').modal('hide');
             after_hide(type);
         });
-            
-        // $("#mdl_item_selector").on('hide.bs.modal', function () {
-        //     $('#add_new_adm').hide();
-        //     $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
-        //     type = "";
-        //     item = "";
-        // });
-
-        $('#add_new_adm').click(function(){
-            $('#mdl_add_new_adm').modal('show');
-        });
-
-        $('#adm_save').click(function(){
-            if($('#adm_form').valid()){
-                var _token = $('#csrf_token').val();
-                let serializedForm = $( "#adm_form" ).serializeArray();
-                let obj = {
-                        _token: _token
-                }
-                
-                $.post( 'pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                    $("#adm_form").trigger('reset');
-                    selecter.ajax.reload()
-                    $('#mdl_add_new_adm').modal('hide');
-                }).fail(function(data) {
-                    alert(data.responseText);
-                }).success(function(data){
-                });
-              }
-        });
-
-        $('#new_occup_save').click(function(){
-            if($('#new_occup_form').valid()){
-                var _token = $('#csrf_token').val();
-                let serializedForm = $( "#new_occup_form" ).serializeArray();
-                let obj = {
-                        _token: _token
-                }
-                
-                $.post( 'pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                    $("#new_occup_form").trigger('reset');
-                    selecter.ajax.reload()
-                    $('#mdl_add_new_occ').modal('hide');
-                }).fail(function(data) {
-                    alert(data.responseText);
-                }).success(function(data){
-                });
-              }
-        });
-
-        $('#new_title_save').click(function(){
-            if($('#new_title_form').valid()){
-                var _token = $('#csrf_token').val();
-                let serializedForm = $( "#new_title_form" ).serializeArray();
-                let obj = {
-                        _token: _token
-                }
-                
-                $.post( 'pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                    $("#new_title_form").trigger('reset');
-                    selecter.ajax.reload()
-                    $('#mdl_add_new_title').modal('hide');
-                }).fail(function(data) {
-                    alert(data.responseText);
-                }).success(function(data){
-                });
-              }
-        });
-
-        $('#new_areacode_save').click(function(){
-            if($('#new_areacode_form').valid()){
-                var _token = $('#csrf_token').val();
-                let serializedForm = $( "#new_areacode_form" ).serializeArray();
-                let obj = {
-                        _token: _token
-                }
-                
-                $.post( 'pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                    $("#new_areacode_form").trigger('reset');
-                    selecter.ajax.reload()
-                    $('#mdl_add_new_title').modal('hide');
-                }).fail(function(data) {
-                    alert(data.responseText);
-                }).success(function(data){
-                });
-              }
-        });
 
     }
+    
+    $("#mdl_item_selector").on('hide.bs.modal', function () {
+        // $('#add_new_adm').hide();
+        // $('#add_new_adm,#adm_save,#new_occup_save,#new_title_save,#new_areacode_save').off('click');
+        // type = "";
+        // item = "";
+        self.selecter.search('');
+    });
+
+    $('#add_new_adm').click(function(){
+        $('#mdl_add_new_adm').modal('show');
+    });
+
+    $('#adm_save').click(function(){
+        if($('#adm_form').valid()){
+            var _token = $('#csrf_token').val();
+            let serializedForm = $( "#adm_form" ).serializeArray();
+            let obj = {
+                    _token: _token
+            }
+            
+            $.post( 'pat_mast/save_adm', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $("#adm_form").trigger('reset');
+                selecter.ajax.reload()
+                $('#mdl_add_new_adm').modal('hide');
+            }).fail(function(data) {
+                alert(data.responseText);
+            }).success(function(data){
+            });
+          }
+    });
+
+    $('#new_occup_save').click(function(){
+        if($('#new_occup_form').valid()){
+            var _token = $('#csrf_token').val();
+            let serializedForm = $( "#new_occup_form" ).serializeArray();
+            let obj = {
+                    _token: _token
+            }
+            
+            $.post( 'pat_mast/new_occup_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $("#new_occup_form").trigger('reset');
+                selecter.ajax.reload()
+                $('#mdl_add_new_occ').modal('hide');
+            }).fail(function(data) {
+                alert(data.responseText);
+            }).success(function(data){
+            });
+          }
+    });
+
+    $('#new_title_save').click(function(){
+        if($('#new_title_form').valid()){
+            var _token = $('#csrf_token').val();
+            let serializedForm = $( "#new_title_form" ).serializeArray();
+            let obj = {
+                    _token: _token
+            }
+            
+            $.post( 'pat_mast/new_title_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $("#new_title_form").trigger('reset');
+                selecter.ajax.reload()
+                $('#mdl_add_new_title').modal('hide');
+            }).fail(function(data) {
+                alert(data.responseText);
+            }).success(function(data){
+            });
+          }
+    });
+
+    $('#new_areacode_save').click(function(){
+        if($('#new_areacode_form').valid()){
+            var _token = $('#csrf_token').val();
+            let serializedForm = $( "#new_areacode_form" ).serializeArray();
+            let obj = {
+                    _token: _token
+            }
+            
+            $.post( 'pat_mast/new_areacode_form', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
+                $("#new_areacode_form").trigger('reset');
+                selecter.ajax.reload()
+                $('#mdl_add_new_title').modal('hide');
+            }).fail(function(data) {
+                alert(data.responseText);
+            }).success(function(data){
+            });
+          }
+    });
 
 }

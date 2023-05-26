@@ -51,10 +51,16 @@
                                                 <td>CALL PATIENT</td>
                                                 <td>
                                                     <div class="form-inline">
-                                                        <div class="form-group">
+                                                       <!--  <div class="form-group">
                                                             <input type="time" class="form-control" id="callpt_time" name="callpt_time">
-                                                            <!-- <input type="time" id="time-input" name="callpt_time" step="3600" min="00:00" max="23:59" pattern="[0-2][0-9]:[0-5][0-9]"> -->
-                                                        </div>  &nbsp;
+                                                            <input type="time" id="time-input" name="callpt_time" step="3600" min="00:00" max="23:59" pattern="[0-2][0-9]:[0-5][0-9]">
+                                                        </div>  &nbsp; -->
+                                                        <div class="ui calendar" id="no_ampm">
+                                                          <div class="ui input left icon">
+                                                            <i class="time icon"></i>
+                                                            <input type="text" placeholder="Time">
+                                                          </div>
+                                                        </div>
                                                         <small>/24H</small>  &nbsp;
                                                         <div class="form-group">
                                                             <input type="date" class="form-control" id="callpt_date" name="callpt_date">

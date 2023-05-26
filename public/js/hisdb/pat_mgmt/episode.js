@@ -919,28 +919,43 @@ function refno_class(){
 
     function onchg_gltype(){
         let selected_tab = $('#newgl-gltype').val();
+        $('#newgl-effdate').off('change');
+        $('#newgl-effdate,#newgl-expdate').val('');
+        $('#newgl-expdate').prop('readonly',false);
         $('#newgl-visitno_div,#newgl-expdate_div,#newgl-effdate_div').show();
         $('#newgl-effdate_div,#newgl-expdate_div,#newgl-visitno_div').removeClass('form-mandatory');
 
         switch(selected_tab){
             case 'Multi Volume':
-                $('#newgl-effdate').prop('required',true).addClass('form-mandatory');
-                $('#newgl-visitno,#newgl-expdate').prop('required',false);
+                console.log(moment().format('YYYY-MM-DD'));
+                $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
+                $('#newgl-effdate,#newgl-visitno').prop('required',true).addClass('form-mandatory');
+                $('#newgl-expdate').prop('required',false);
                 $('#newgl-expdate_div').hide();
                 break;
             case 'Multi Date':
+                $('#newgl-effdate,#newgl-expdate').val(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate,#newgl-expdate').prop('required',true).addClass('form-mandatory');
                 $('#newgl-visitno').prop('required',false);
+                $('#newgl-visitno_div').hide();
                 break;
             case 'Open':
-                $('#newgl-visitno').prop('required',true).addClass('form-mandatory');
-                $('#newgl-effdate,#newgl-expdate').prop('required',false);
-                $('#newgl-effdate_div,#newgl-expdate_div').hide();
-                break;
-            case 'Single Use':
+                $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate').prop('required',true).addClass('form-mandatory');
                 $('#newgl-visitno,#newgl-expdate').prop('required',false);
                 $('#newgl-visitno_div,#newgl-expdate_div').hide();
+                break;
+            case 'Single Use':
+                $('#newgl-effdate,#newgl-expdate').val(moment().format('YYYY-MM-DD'));
+                $('#newgl-expdate').prop('readonly',true);
+                $('#newgl-effdate').prop('required',true).addClass('form-mandatory');
+                $('#newgl-visitno').prop('required',false);
+                $('#newgl-visitno_div').hide();
+
+                $('#newgl-effdate').on('change',function(){
+                    $('#newgl-expdate').val($(this).val());
+                });
+
                 break;
             case 'Limit Amount':
                 $('#newgl-effdate,#newgl-expdate,#newgl-visitno').prop('required',false);

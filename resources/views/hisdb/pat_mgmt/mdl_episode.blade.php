@@ -906,7 +906,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <small for="newgl-refno">REFERENCE NO</small>
-                                        <input class="form-control" id="newgl-refno" name="newgl-refno" placeholder="" type="text">
+                                        <input class="form-control form-mandatory" id="newgl-refno" name="newgl-refno" placeholder="" type="text" required>
                                     </div>
                                 </div>
                                 <div class="form-group">

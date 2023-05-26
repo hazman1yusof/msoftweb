@@ -8,6 +8,15 @@ $(document).ready(function () {
     // textare_init_ottime();
     
     var fdl = new faster_detail_load();
+
+    $('#no_ampm')
+          .calendar({
+            type: 'time',
+            formatter: {
+              time: 'HH:mm',
+              cellTime: 'HH:mm'
+            }
+          });
     
     disableForm('#form_ottime');
     
