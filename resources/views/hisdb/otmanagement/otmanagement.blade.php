@@ -253,6 +253,44 @@
         </div>
     </div>
     
+    <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otdischarge_panel">
+        <div class="panel-heading clearfix collapsed" id="toggle_otdischarge">
+            <b>NAME: <span id="name_show_otdischarge"></span></b><br>
+            <b>MRN:</b> <span id="mrn_show_otdischarge"></span> &nbsp;
+            <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otdischarge"></span> &nbsp;
+            <b>SEX:</b> <span id="sex_show_otdischarge"></span> &nbsp;
+            <b>HEIGHT:</b> <span id="height_show_otdischarge"></span> &nbsp;
+            <b>WEIGHT:</b> <span id="weight_show_otdischarge"></span> &nbsp;
+            <b>DOB:</b> <span id="dob_show_otdischarge"></span> &nbsp;
+            <b>AGE:</b> <span id="age_show_otdischarge"></span> &nbsp;
+            <b>RACE:</b> <span id="race_show_otdischarge"></span> &nbsp;
+            <b>RELIGION:</b> <span id="religion_show_otdischarge"></span> &nbsp;
+            <b>OCCUPATION:</b> <span id="occupation_show_otdischarge"></span><br>
+            <b>CITIZENSHIP:</b> <span id="citizenship_show_otdischarge"></span> &nbsp;
+            <b>AREA:</b> <span id="area_show_otdischarge"></span> &nbsp;
+            <b>WARD:</b> <span id="ward_show_otdischarge"></span> &nbsp;
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otdischarge"></span><br>
+            <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otdischarge"></span> &nbsp;
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otdischarge"></span>
+            
+            <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otdischarge"></i>
+            <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otdischarge"></i>
+            <div style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 50px;
+                            top: 48px;">
+                <h5><strong>Pre-Discharge</strong>&nbsp;&nbsp;
+                    <span class="metal"></span></h5>
+            </div>
+        </div>
+        
+        <div id="tab_otdischarge" class="panel-collapse collapse">
+            <div class="panel-body paneldiv">
+                @include('hisdb.otdischarge.otdischarge')
+            </div>
+        </div>
+    </div>
+    
     @include('patientcare.itemselector')
 
 @endsection
@@ -305,5 +343,6 @@
     <script type="text/javascript" src="js/hisdb/oper_team/oper_team.js"></script>
     <script type="text/javascript" src="js/hisdb/otswab/otswab.js"></script>
     <script type="text/javascript" src="js/hisdb/ottime/ottime.js"></script>
+    <script type="text/javascript" src="js/hisdb/otdischarge/otdischarge.js"></script>
 
 @endsection
