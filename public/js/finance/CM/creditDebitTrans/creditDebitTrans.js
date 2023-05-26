@@ -352,21 +352,36 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
+	// $("#but_cancel_jq,#but_post_jq").click(function(){
+	// 	saveParam.oper = $(this).data('oper');
+	// 	let obj={
+	// 		auditno:selrowData('#jqGrid').auditno,
+	// 		_token:$('#_token').val(),
+	// 	};
+	// 	$.post("creditDebitTrans/form?" + $.param(saveParam),obj,function (data) { 
+	// 		refreshGrid("#jqGrid", urlParam);
+	// 	}).fail(function (data) {
+	// 		alert(data.responseText);
+	// 	}).done(function (data) {
+	// 		//2nd successs?
+	// 	});
+	// });
+
 	$("#but_cancel_jq,#but_post_jq").click(function(){
-		saveParam.oper = $(this).data('oper');
-		let obj={
-			auditno:selrowData('#jqGrid').auditno,
-			_token:$('#_token').val(),
-		};
-		$.post("creditDebitTrans/form?" + $.param(saveParam),obj,function (data) { 
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+		var idno = selrowData('#jqGrid').idno;
+		var obj={};
+		obj.idno = idno;
+		obj._token = $('#_token').val();
+		obj.oper = "posted";
+
+		$.post( './creditDebitTrans/form', obj , function( data ) {
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			//$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
-
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj,needrefresh){
 		if(obj==null){
@@ -379,7 +394,8 @@ $(document).ready(function () {
 		},'json').fail(function (data) {
 			alert(data.responseText);
 		}).done(function (data) {
-
+			
+			mycurrency.formatOn();
 			unsaved = false;
 			hideatdialogForm(false);
 			addmore_jqgrid2.state = true;
@@ -931,15 +947,16 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-			case 'category':field=['catcode','description'];table="material.category";break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='category';break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GSTCode';break;
 
-			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
+			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';case_='bankcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('creditDebitTrans',options,param,case_,cellvalue);
+		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
 
@@ -968,7 +985,7 @@ $(document).ready(function () {
 
 	/////////////////////////////////////////////custom input////////////////////////////////////////////
 	function deptcodeCustomEdit(val, opt) {
-		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		val = getEditVal(val);
 		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="deptcode" type="text" class="form-control input-sm text-uppercase" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 

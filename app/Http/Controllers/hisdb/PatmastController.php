@@ -625,6 +625,29 @@ class PatmastController extends defaultController
                     ->get();
                 break;
 
+            case 'loadcorpstaff':
+                $data = DB::table('hisdb.corpstaff as cs')
+                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','r.Description as relate_desc','cs.name','o.occupcode','o.description as occup_desc')
+                    ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
+                        $join = $join->on('dm.debtorcode', '=', 'cs.debtorcode')
+                                        ->where('dm.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.relationship AS r', function($join) use ($request){
+                        $join = $join->on('r.RelationShipCode', '=', 'cs.relatecode')
+                                        ->where('r.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.pat_mast AS pm', function($join) use ($request){
+                        $join = $join->on('pm.MRN', '=', 'cs.mrn')
+                                        ->where('pm.compcode','=',session('compcode'));
+                    })->leftJoin('hisdb.occupation AS o', function($join) use ($request){
+                            $join = $join->on('o.occupcode', '=', 'pm.OccupCode')
+                                            ->where('o.compcode','=',session('compcode'));
+                        })
+                    ->where('cs.compcode','=',session('compcode'))
+                    ->where('cs.mrn','=',$request->mrn)
+                    ->first();
+                break;
+
             case 'get_refno_list':
                 $data = DB::table('hisdb.guarantee AS g')
                             ->select('g.idno','g.compcode','g.debtorcode','g.staffid','g.relatecode','g.childno','g.refno','g.gltype','g.startdate','g.enddate','g.adduser','g.adddate','g.upduser','g.upddate','g.visitno','g.visitbal','g.medcase','g.remark','g.name','g.ourrefno','g.mrn','g.active','g.episno','g.lineno_','g.case','dm.name as debtor_name','r.Description as relate_desc','o.occupcode','o.description as occup_desc')
@@ -677,15 +700,62 @@ class PatmastController extends defaultController
 
             case 'get_epis_other_data':
 
-                $episode = DB::table('hisdb.episode')
-                            ->where('mrn','=',$request->mrn)
-                            ->orderBy('episno', 'desc')
-                            ->first();
+                // $episode = DB::table('hisdb.episode')
+                //             ->select('admsrccode','case_code','admdoctor','pay_type','pyrmode','payer')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$request->mrn)
+                //             ->orderBy('episno', 'desc')
+                //             ->first();
+
+                // $epispayer = DB::table('hisdb.epispayer')
+                //             ->where('compcode',session('compcode'))
+                //             ->where('mrn','=',$request->mrn)
+                //             ->orderBy('episno', 'desc')
+                //             ->first();
+
+                $episode = DB::table('hisdb.episode as e')
+                                    ->select(
+                                        'reg_date',
+                                        'reg_time',
+                                        'episno',
+                                        'epistycode',
+                                        'e.bed',
+                                        'newcaseP',
+                                        'newcaseNP',
+                                        'followupP',
+                                        'followupP',
+                                        'e.regdept',
+                                        'e.admsrccode',
+                                        'e.case_code',
+                                        'e.admdoctor',
+                                        'e.pay_type',
+                                        'e.pyrmode',
+                                        'e.payer',
+                                        'e.billtype',
+                                        'dpmt.description as reg_desc',
+                                        'adm.description as adm_desc',
+                                        'cas.description as cas_desc',
+                                        'doc.doctorname as doc_desc',
+                                        'dbty.description as dbty_desc',
+                                        'dbms.name as dbms_name',
+                                        'bmst.description as bmst_desc')
+                                    ->leftJoin('sysdb.department as dpmt', 'dpmt.deptcode', '=', 'e.regdept')
+                                    ->leftJoin('hisdb.admissrc as adm', 'adm.admsrccode', '=', 'e.admsrccode')
+                                    ->leftJoin('hisdb.casetype as cas', 'cas.case_code', '=', 'e.case_code')
+                                    ->leftJoin('hisdb.doctor as doc', 'doc.doctorcode', '=', 'e.admdoctor')
+                                    ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
+                                    ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
+                                    ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
+                                    ->where('e.compcode','=',session('compcode'))
+                                    ->where('e.mrn',$request->mrn)
+                                    ->where('e.episno',$request->episno)
+                                    ->first();
 
                 $epispayer = DB::table('hisdb.epispayer')
-                            ->where('mrn','=',$request->mrn)
-                            ->orderBy('episno', 'desc')
-                            ->first();
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn)
+                    ->where('Episno','=',$request->episno)
+                    ->first();
 
                 $responce->episode = $episode;
                 $responce->epispayer = $epispayer;

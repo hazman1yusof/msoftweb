@@ -104,22 +104,29 @@ function check_debtormast_exists(rowid,kosong){
     // });
 }
 
-function get_epis_other_data(mrn){
+function get_epis_other_data(episno){
     let obj_param = {
            action:'get_epis_other_data',
-           mrn:mrn,
+           mrn:$('#mrn_episode').val(),
+           episno:episno,
        };
 
     $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
-        if(!$.isEmptyObject(data)){
-           // $("form#form_episode input[name='pay_type']").val(data.episode.pay_type);
-           // $("form#form_episode select[name='pyrmode']").val(data.episode.pyrmode);
-           // $("form#form_episode input[name='payercode']").val(data.epispayer.payercode);
-           // $("form#form_episode input[name='bill_type']").val(data.epispayer.payercode);
+        if(data.episode != null){
 
-           // epis_desc_show.write_desc();
+            var episdata = data.episode;
+            var epispayer = data.epispayer;
+
+            $('#hid_epis_fin').val(episdata.pay_type);
+            $('#txt_epis_fin').val(episdata.dbty_desc).change();
+            $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
+            $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
+            $('#txt_epis_payer').val(episdata.dbms_name);
+            $('#hid_epis_payer').val(episdata.payer);
+            $('#txt_epis_bill_type').val(episdata.bmst_desc);
+            $('#hid_epis_bill_type').val(episdata.billtype);
         }
     });
 }
@@ -167,15 +174,16 @@ function populate_episode(rowid){
     if(isNaN(episno_)){
         episno_ = 0;
     }
-
     
 
     if(rowdata.PatStatus == 1){
+        $('#episode_title_text').text('EDIT CURRENT');
         $("#episode_oper").val('edit');
         $('#txt_epis_no').val(parseInt(episno_));
         populate_episode_by_mrn_episno(rowdata.MRN,rowdata.Episno);
         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().show();
     }else{
+        $('#episode_title_text').text('ADD NEW');
         $("#episode_oper").val('add');
         $('#txt_epis_no').val(parseInt(episno_) + 1);
         $("#toggle_tabDoctor,#toggle_tabBed,#toggle_tabNok,#toggle_tabPayer,#toggle_tabDeposit").parent().hide();
@@ -183,7 +191,7 @@ function populate_episode(rowid){
         $('#hid_epis_dept').val($('#userdeptcode').val());
         $('#txt_epis_dept').val($('#userdeptdesc').val());
 
-        get_epis_other_data(parseInt(episno_) + 1);
+        get_epis_other_data(episno_);
 
         // $('#txt_epis_dept').blur();
 
@@ -532,7 +540,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
                 $('#cmb_epis_pregnancy').val("Non-Pregnant");
             }
 
-            $('#cmb_epis_pregnancy').val();
+            // $('#cmb_epis_pregnancy').val();
             $('#txt_epis_date').val(episdata.reg_date);
             $('#txt_epis_time').val(episdata.reg_time);
             $('#txt_epis_no').val(episdata.episno);
@@ -563,7 +571,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             $('#hid_epis_bill_type').val(episdata.billtype);
             $('#txt_epis_refno').val(data.txt_epis_refno);
             $('#txt_epis_our_refno').val(data.txt_epis_our_refno);
-            $('#txt_epis_queno').val();
+            // $('#txt_epis_queno').val();
 
             // $('#txt_epis_fin').change();
 
@@ -892,11 +900,13 @@ function refno_class(){
         $('#newgl-textname').text($('#txt_epis_name').text());
         $('#newgl-gltype').val('Multi Volume');
         $('#select_gl_tab li:first-child a').tab('show');
+        $('#txt_newgl_corpcomp').val($('#txt_epis_payer').val());
+        $('#hid_newgl_corpcomp').val($('#hid_epis_payer').val());
 
         if(oper=='edit'){
             autoinsert_rowdata_gl(selrowdata);
         }else if(oper=='add'){
-
+            loadcorpstaff_gl(selrowdata);
         }
         onchg_gltype();
     });
@@ -1006,6 +1016,29 @@ function autoinsert_rowdata_gl(selrowdata){
 
 
     $('#select_gl_tab a[href="'+selrowdata.gltype+'"]').tab('show');
+}
+
+function loadcorpstaff_gl(){
+    let obj_param = {
+           action:'loadcorpstaff',
+           mrn:parseInt($('#txt_epis_mrn').val())
+       };
+
+    $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
+        
+    },'json').done(function(data) {
+        if(data.data != null){
+            $('#newgl-staffid').val(data.data.staffid);
+            $('#newgl-name').val(data.data.name);
+            $('#txt_newgl_corpcomp').val(data.data.debtor_name);
+            $('#hid_newgl_corpcomp').val(data.data.debtorcode);
+            $('#txt_newgl_occupcode').val(data.data.occup_desc);
+            $('#hid_newgl_occupcode').val(data.data.occupcode);
+            $('#txt_newgl_relatecode').val(data.data.relate_desc);
+            $('#hid_newgl_relatecode').val(data.data.relatecode);
+            $('#newgl-childno').val(data.data.childno);
+        }
+    });
 }
 
 
