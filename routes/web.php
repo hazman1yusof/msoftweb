@@ -825,8 +825,6 @@ Route::get('/get_preepis_data','hisdb\PatmastController@get_preepis_data');
 Route::get('/preregister','hisdb\PreregisterController@show');
 Route::post('/prereg','hisdb\PreregisterController@prereg');
 
-
-
 //// Emergency setup page ///
 Route::get('/emergency','hisdb\EmergencyController@show');
 Route::get('/emergency/table','hisdb\EmergencyController@table');
@@ -839,9 +837,8 @@ Route::post('/currentPt/table','hisdb\CurrentPatientController@table');
 
 //// pat_enq registration ////
 Route::get('/pat_enq','hisdb\PatEnqController@show');
-Route::get('/pat_enq/get_entry','hisdb\PatEnqController@get_entry');
-Route::post('/pat_enq/post_entry','hisdb\PatEnqController@post_entry');
-Route::post('/pat_enq/save_patient','hisdb\PatEnqController@save_patient');
+Route::get('/pat_enq/table','hisdb\PatEnqController@table');
+Route::post('/pat_enq/form','hisdb\PatEnqController@form');
 
 //// Nursing (Triage Info) page ///
 Route::get('/nursing','hisdb\NursingController@show');
@@ -978,7 +975,6 @@ Route::post('/fadepricate/form','finance\fadepricateController@form');
 
 Route::get('/preview','hisdb\ReviewController@review');
 Route::get('/upload','hisdb\ReviewController@upload');
-Route::post('/pat_enq/form','hisdb\ReviewController@form');
 
 //change carousel image to small thumbnail size
 Route::get('/thumbnail/{folder}/{image_path}','hisdb\ReviewController@thumbnail');

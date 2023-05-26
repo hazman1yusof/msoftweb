@@ -119,33 +119,6 @@ function get_epis_other_data(episno){
             var episdata = data.episode;
             var epispayer = data.epispayer;
 
-            if(episdata.newcaseP == 1){
-                $('#cmb_epis_case_maturity').val(1);
-                $('#cmb_epis_pregnancy').val("Pregnant");
-            }else if(episdata.newcaseNP == 1){
-                $('#cmb_epis_case_maturity').val(1);
-                $('#cmb_epis_pregnancy').val("Non-Pregnant");
-            }else if(episdata.followupP == 1){
-                $('#cmb_epis_case_maturity').val(2);
-                $('#cmb_epis_pregnancy').val("Pregnant");
-            }else if(episdata.followupP == 1){
-                $('#cmb_epis_case_maturity').val(2);
-                $('#cmb_epis_pregnancy').val("Non-Pregnant");
-            }
-            $('#txt_epis_date').val(episdata.reg_date);
-            $('#txt_epis_time').val(episdata.reg_time);
-            $('#txt_epis_no').val(episdata.episno);
-            $('#txt_epis_type').val(episdata.epistycode);
-
-
-            $('#txt_epis_dept').val(episdata.reg_desc);
-            $('#hid_epis_dept').val(episdata.regdept);
-            $('#txt_epis_source').val(episdata.adm_desc);
-            $('#hid_epis_source').val(episdata.admsrccode);
-            $('#txt_epis_case').val(episdata.cas_desc);
-            $('#hid_epis_case').val(episdata.case_code);
-            $('#txt_epis_doctor').val(episdata.doc_desc);
-            $('#hid_epis_doctor').val(episdata.admdoctor);
             $('#hid_epis_fin').val(episdata.pay_type);
             $('#txt_epis_fin').val(episdata.dbty_desc).change();
             $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');

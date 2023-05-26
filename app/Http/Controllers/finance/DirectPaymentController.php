@@ -235,7 +235,7 @@ class DirectPaymentController extends defaultController
                             'recstatus' => 'ACTIVE' 
                         ]);
 
-            //1st step, 2nd phase, update bank detail
+            //1st step, 2nd phase, update bank detaild
             if($this->isCBtranExist($apacthdr_get->bankcode,$yearperiod->year,$yearperiod->period)){
 
                 $totamt = $this->getCbtranTotamt($apacthdr_get->bankcode,$yearperiod->year,$yearperiod->period);
@@ -245,7 +245,7 @@ class DirectPaymentController extends defaultController
                     ->where('year','=',$yearperiod->year)
                     ->where('bankcode','=',$apacthdr_get->bankcode)
                     ->update([
-                        "actamount".$yearperiod->period => $totamt->amount-$apacthdr_get->amount
+                        "actamount".$yearperiod->period => $totamt->amount
                     ]);
 
             }else{
@@ -255,7 +255,7 @@ class DirectPaymentController extends defaultController
                             'compcode' => session('compcode'),
                             'bankcode' => $apacthdr_get->bankcode,
                             'year' => $yearperiod->year,
-                            'actamount'.$yearperiod->period => -$apacthdr_get->amount,
+                            'actamount'.$yearperiod->period => $totamt->amount,
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
 
