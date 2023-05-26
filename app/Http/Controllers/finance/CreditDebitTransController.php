@@ -160,7 +160,7 @@ class CreditDebitTransController extends defaultController
             $idno = DB::table('finance.apacthdr')
                     ->insertGetId([
                         'auditno' => $auditno,
-                        'bankcode' => $request->bankcode,
+                        'bankcode' => strtoupper($request->bankcode),
                         'actdate' => $request->actdate,
                         'amount' => $amount,
                         'refsource' => strtoupper($request->refsource),
