@@ -144,7 +144,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
+			refreshGrid("#jqGrid",urlParam,'edit');
 		},
 	})
 
