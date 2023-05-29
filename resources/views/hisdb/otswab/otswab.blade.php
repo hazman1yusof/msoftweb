@@ -31,8 +31,16 @@
                                         <div class="form-group">
                                             <input type="date" class="form-control" id="startdate" name="startdate">
                                         </div>  &nbsp;
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <input type="time" class="form-control" id="starttime" name="starttime">
+                                        </div> -->
+                                        <div class="form-group" style="width:200px">
+                                            <div class="ui calendar" id="starttime">
+                                                <div class="ui input left icon">
+                                                    <i class="time icon"></i>
+                                                    <input type="text" class="form-control" name="starttime">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -44,8 +52,16 @@
                                         <div class="form-group">
                                             <input type="date" class="form-control" id="enddate" name="enddate">
                                         </div>  &nbsp;
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <input type="time" class="form-control" id="endtime" name="endtime">
+                                        </div> -->
+                                        <div class="form-group" style="width:200px">
+                                            <div class="ui calendar" id="endtime">
+                                                <div class="ui input left icon">
+                                                    <i class="time icon"></i>
+                                                    <input type="text" class="form-control" name="endtime">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

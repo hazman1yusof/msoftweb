@@ -4,19 +4,19 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-
+    
     // textare_init_ottime();
     
     var fdl = new faster_detail_load();
-
-    $('#no_ampm')
-          .calendar({
+    
+    $('#callpt_time,#ppkward_time,#reception_time,#patientOT_time,#incisionstart,#incisionend,#ptOut_time,#wardCall_time,#ptWard_time')
+        .calendar({
             type: 'time',
             formatter: {
-              time: 'HH:mm',
-              cellTime: 'HH:mm'
+                time: 'HH:mm',
+                cellTime: 'HH:mm'
             }
-          });
+        });
     
     disableForm('#form_ottime');
     

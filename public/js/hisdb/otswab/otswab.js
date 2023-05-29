@@ -20,10 +20,19 @@ var urlParam_otswab = {
 }
 
 $(document).ready(function () {
-
+    
     // textare_init_otswab();
     
     var fdl = new faster_detail_load();
+    
+    $('#starttime,#endtime')
+        .calendar({
+            type: 'time',
+            formatter: {
+                time: 'HH:mm',
+                cellTime: 'HH:mm'
+            }
+        });
     
     disableForm('#form_otswab');
     
