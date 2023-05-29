@@ -249,9 +249,12 @@ function empty_oper_team(){
     $('#citizenship_show_oper_team').text('');
     $('#area_show_oper_team').text('');
     $('#ward_show_oper_team').text('');
+    $('#bednum_show_oper_team').text('');
+    $('#oproom_show_oper_team').text('');
     $('#diagnosis_show_oper_team').text('');
     $('#procedure_show_oper_team').text('');
     $('#unit_show_oper_team').text('');
+    $('#type_show_oper_team').text('');
     
     // form_oper_team
     $('#mrn_oper_team').val('');
@@ -274,9 +277,12 @@ function populate_oper_team(obj){
     $('#citizenship_show_oper_team').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_oper_team').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_oper_team').text(obj.ward);
+    $('#bednum_show_oper_team').text(obj.bednum);
+    $('#oproom_show_oper_team').text(obj.ot_description);
     $('#diagnosis_show_oper_team').text(obj.appt_diag);
     $('#procedure_show_oper_team').text(obj.appt_prcdure);
     $('#unit_show_oper_team').text(obj.op_unit);
+    $('#type_show_oper_team').text(obj.oper_type);
     
     // form_oper_team
     $('#mrn_oper_team').val(obj.mrn);

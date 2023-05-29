@@ -78,10 +78,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_otmgmt_div"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otmgmt_div"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otmgmt_div"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_otmgmt_div"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otmgmt_div"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_otmgmt_div"></span> / <span id="bednum_show_otmgmt_div"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_otmgmt_div"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otmgmt_div"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otmgmt_div"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otmgmt_div"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otmgmt_div"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_otmgmt_div"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otmgmt_div"></i>
@@ -116,10 +118,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_preoperative"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_preoperative"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_preoperative"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_preoperative"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_preoperative"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_preoperative"></span> / <span id="bednum_show_preoperative"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_preoperative"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_preoperative"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_preoperative"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_preoperative"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_preoperative"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_preoperative"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_preoperative"></i>
@@ -154,10 +158,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_oper_team"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_oper_team"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_oper_team"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_oper_team"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_oper_team"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_oper_team"></span> / <span id="bednum_show_oper_team"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_oper_team"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_oper_team"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_oper_team"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_oper_team"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_oper_team"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_oper_team"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_oper_team"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_oper_team"></i>
@@ -192,10 +198,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_otswab"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otswab"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otswab"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_otswab"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otswab"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_otswab"></span> / <span id="bednum_show_otswab"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_otswab"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otswab"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otswab"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otswab"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otswab"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_otswab"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otswab"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otswab"></i>
@@ -230,10 +238,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_ottime"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_ottime"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_ottime"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_ottime"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_ottime"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_ottime"></span> / <span id="bednum_show_ottime"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_ottime"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_ottime"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_ottime"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_ottime"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_ottime"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_ottime"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_ottime"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_ottime"></i>
@@ -268,10 +278,12 @@
             <b>OCCUPATION:</b> <span id="occupation_show_otdischarge"></span><br>
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otdischarge"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otdischarge"></span> &nbsp;
-            <b>WARD:</b> <span id="ward_show_otdischarge"></span> &nbsp;
-            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otdischarge"></span><br>
+            <b>WARD / BED:</b> <span id="ward_show_otdischarge"></span> / <span id="bednum_show_otdischarge"></span> &nbsp;
+            <b>OP ROOM:</b> <span id="oproom_show_otdischarge"></span><br>
+            <b>DIAGNOSIS:</b> <span id="diagnosis_show_otdischarge"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otdischarge"></span> &nbsp;
-            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otdischarge"></span>
+            <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otdischarge"></span> &nbsp;
+            <b>OPERATION TYPE:</b> <span id="type_show_otdischarge"></span> &nbsp;
             
             <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otdischarge"></i>
             <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#tab_otdischarge"></i>

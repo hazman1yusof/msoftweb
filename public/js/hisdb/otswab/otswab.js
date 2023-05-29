@@ -363,9 +363,12 @@ function empty_otswab(){
     $('#citizenship_show_otswab').text('');
     $('#area_show_otswab').text('');
     $('#ward_show_otswab').text('');
+    $('#bednum_show_otswab').text('');
+    $('#oproom_show_otswab').text('');
     $('#diagnosis_show_otswab').text('');
     $('#procedure_show_otswab').text('');
     $('#unit_show_otswab').text('');
+    $('#type_show_otswab').text('');
     
     // form_otswab
     $('#mrn_otswab').val('');
@@ -388,9 +391,12 @@ function populate_otswab(obj){
     $('#citizenship_show_otswab').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otswab').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_otswab').text(obj.ward);
+    $('#bednum_show_otswab').text(obj.bednum);
+    $('#oproom_show_otswab').text(obj.ot_description);
     $('#diagnosis_show_otswab').text(obj.appt_diag);
     $('#procedure_show_otswab').text(obj.appt_prcdure);
     $('#unit_show_otswab').text(obj.op_unit);
+    $('#type_show_otswab').text(obj.oper_type);
     
     // form_otswab
     $('#mrn_otswab').val(obj.mrn);

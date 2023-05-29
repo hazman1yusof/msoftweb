@@ -150,9 +150,12 @@ function empty_ottime(){
     $('#citizenship_show_ottime').text('');
     $('#area_show_ottime').text('');
     $('#ward_show_ottime').text('');
+    $('#bednum_show_ottime').text('');
+    $('#oproom_show_ottime').text('');
     $('#diagnosis_show_ottime').text('');
     $('#procedure_show_ottime').text('');
     $('#unit_show_ottime').text('');
+    $('#type_show_ottime').text('');
     
     // form_ottime
     $('#mrn_ottime').val('');
@@ -175,9 +178,12 @@ function populate_ottime(obj){
     $('#citizenship_show_ottime').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_ottime').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_ottime').text(obj.ward);
+    $('#bednum_show_ottime').text(obj.bednum);
+    $('#oproom_show_ottime').text(obj.ot_description);
     $('#diagnosis_show_ottime').text(obj.appt_diag);
     $('#procedure_show_ottime').text(obj.appt_prcdure);
     $('#unit_show_ottime').text(obj.op_unit);
+    $('#type_show_ottime').text(obj.oper_type);
     
     // form_ottime
     $('#mrn_ottime').val(obj.mrn);

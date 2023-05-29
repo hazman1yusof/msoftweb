@@ -47,7 +47,7 @@
                                             </td>
                                             <td><input type="checkbox" name="pat_ot" value="1"></td>
                                             <td><input type="checkbox" name="pat_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="pat_remark" name="pat_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="pat_remark" name="pat_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
@@ -64,49 +64,49 @@
                                             </td>
                                             <td><input type="checkbox" name="conslevel_ot" value="1"></td>
                                             <td><input type="checkbox" name="conslevel_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="conslevel_remark" name="conslevel_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="conslevel_remark" name="conslevel_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
                                             <td>Inform vital signs (BP, PR, SpO2) & Pain Score</td>
                                             <td><input type="checkbox" name="vitalsign_ot" value="1"></td>
                                             <td><input type="checkbox" name="vitalsign_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="vitalsign_remark" name="vitalsign_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="vitalsign_remark" name="vitalsign_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
                                             <td>Check operative site/dressing</td>
                                             <td><input type="checkbox" name="checksite_ot" value="1"></td>
                                             <td><input type="checkbox" name="checksite_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="checksite_remark" name="checksite_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="checksite_remark" name="checksite_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>5</td>
                                             <td>Check drains, tubes, urinary catheter</td>
                                             <td><input type="checkbox" name="checkdrains_ot" value="1"></td>
                                             <td><input type="checkbox" name="checkdrains_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="checkdrains_remark" name="checkdrains_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="checkdrains_remark" name="checkdrains_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>6</td>
                                             <td>Check IV lines and infusions</td>
                                             <td><input type="checkbox" name="checkiv_ot" value="1"></td>
                                             <td><input type="checkbox" name="checkiv_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="checkiv_remark" name="checkiv_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="checkiv_remark" name="checkiv_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>7</td>
                                             <td>Blood used and unused</td>
                                             <td><input type="checkbox" name="blood_ot" value="1"></td>
                                             <td><input type="checkbox" name="blood_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="blood_remark" name="blood_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="blood_remark" name="blood_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>8</td>
                                             <td>Specimens (culture(s) etc.)</td>
                                             <td><input type="checkbox" name="specimen_ot" value="1"></td>
                                             <td><input type="checkbox" name="specimen_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="specimen_remark" name="specimen_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="specimen_remark" name="specimen_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>9</td>
@@ -127,84 +127,84 @@
                                             </td>
                                             <td><input type="checkbox" name="docs_ward" value="1"></td>
                                             <td><input type="checkbox" name="docs_ot" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="docs_remark" name="docs_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="docs_remark" name="docs_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>10</td>
                                             <td>Imaging studies</td>
                                             <td><input type="checkbox" name="imgstudies_ot" value="1"></td>
                                             <td><input type="checkbox" name="imgstudies_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="imgstudies_remark" name="imgstudies_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="imgstudies_remark" name="imgstudies_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>11</td>
                                             <td>Check post-operative pain relief order</td>
                                             <td><input type="checkbox" name="painrelief_ot" value="1"></td>
                                             <td><input type="checkbox" name="painrelief_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="painrelief_remark" name="painrelief_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="painrelief_remark" name="painrelief_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>12</td>
                                             <td>Others, e.g.: amputated part, placenta etc.</td>
                                             <td><input type="checkbox" name="others_ot" value="1"></td>
                                             <td><input type="checkbox" name="others_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="others_remark" name="others_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="others_remark" name="others_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>13</td>
                                             <td>Arterial Line (should be removed if not needed)</td>
                                             <td><input type="checkbox" name="arterial_ot" value="1"></td>
                                             <td><input type="checkbox" name="arterial_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="arterial_remark" name="arterial_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="arterial_remark" name="arterial_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>14</td>
                                             <td>PCA pump or epidural checked</td>
                                             <td><input type="checkbox" name="pcapump_ot" value="1"></td>
                                             <td><input type="checkbox" name="pcapump_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="pcapump_remark" name="pcapump_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="pcapump_remark" name="pcapump_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>15</td>
                                             <td><textarea class="form-control input-sm" id="addmore1" name="addmore1"></textarea></td>
                                             <td><input type="checkbox" name="addmore1_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore1_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore1_remark" name="addmore1_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore1_remark" name="addmore1_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>16</td>
                                             <td><textarea class="form-control input-sm" id="addmore2" name="addmore2"></textarea></td>
                                             <td><input type="checkbox" name="addmore2_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore2_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore2_remark" name="addmore2_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore2_remark" name="addmore2_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>17</td>
                                             <td><textarea class="form-control input-sm" id="addmore3" name="addmore3"></textarea></td>
                                             <td><input type="checkbox" name="addmore3_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore3_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore3_remark" name="addmore3_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore3_remark" name="addmore3_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>18</td>
                                             <td><textarea class="form-control input-sm" id="addmore4" name="addmore4"></textarea></td>
                                             <td><input type="checkbox" name="addmore4_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore4_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore4_remark" name="addmore4_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore4_remark" name="addmore4_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>19</td>
                                             <td><textarea class="form-control input-sm" id="addmore5" name="addmore5"></textarea></td>
                                             <td><input type="checkbox" name="addmore5_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore5_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore5_remark" name="addmore5_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore5_remark" name="addmore5_remark"></textarea></td>
                                         </tr>
                                         <tr>
                                             <td>20</td>
                                             <td><textarea class="form-control input-sm" id="addmore6" name="addmore6"></textarea></td>
                                             <td><input type="checkbox" name="addmore6_ot" value="1"></td>
                                             <td><input type="checkbox" name="addmore6_ward" value="1"></td>
-                                            <td><textarea class="form-control input-sm" id="addmore6_remark" name="addmore6_remark" rdonly></textarea></td>
+                                            <td><textarea class="form-control input-sm" id="addmore6_remark" name="addmore6_remark"></textarea></td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -148,9 +148,12 @@ function empty_otmgmt_div(){
     $('#citizenship_show_otmgmt_div').text('');
     $('#area_show_otmgmt_div').text('');
     $('#ward_show_otmgmt_div').text('');
+    $('#bednum_show_otmgmt_div').text('');
+    $('#oproom_show_otmgmt_div').text('');
     $('#diagnosis_show_otmgmt_div').text('');
     $('#procedure_show_otmgmt_div').text('');
     $('#unit_show_otmgmt_div').text('');
+    $('#type_show_otmgmt_div').text('');
     
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val('');
@@ -173,9 +176,12 @@ function populate_otmgmt_div(obj){
     $('#citizenship_show_otmgmt_div').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otmgmt_div').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_otmgmt_div').text(obj.ward);
+    $('#bednum_show_otmgmt_div').text(obj.bednum);
+    $('#oproom_show_otmgmt_div').text(obj.ot_description);
     $('#diagnosis_show_otmgmt_div').text(obj.appt_diag);
     $('#procedure_show_otmgmt_div').text(obj.appt_prcdure);
     $('#unit_show_otmgmt_div').text(obj.op_unit);
+    $('#type_show_otmgmt_div').text(obj.oper_type);
     
     // form_otmgmt_div
     $('#mrn_otmgmt_div').val(obj.mrn);

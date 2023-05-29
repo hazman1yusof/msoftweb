@@ -16,7 +16,7 @@ $(document).ready(function () {
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
-        $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+        // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         // emptyFormdata_div("#form_otdischarge",['#mrn_otdischarge','#episno_otdischarge']);
         // dialog_mrn_edit.on();
         
@@ -26,7 +26,7 @@ $(document).ready(function () {
         button_state_otdischarge('wait');
         enableForm('#form_otdischarge');
         rdonly('#form_otdischarge');
-        $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+        // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         // dialog_mrn_edit.on();
         
     });
@@ -41,7 +41,7 @@ $(document).ready(function () {
         }else{
             enableForm('#form_otdischarge');
             rdonly('#form_otdischarge');
-            $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
+            // $("#pat_remark,#conslevel_remark,#vitalsign_remark,#checksite_remark,#checkdrains_remark,#checkiv_remark,#blood_remark,#specimen_remark,#docs_remark,#imgstudies_remark,#painrelief_remark,#others_remark,#arterial_remark,#pcapump_remark,#addmore1_remark,#addmore2_remark,#addmore3_remark,#addmore4_remark,#addmore5_remark,#addmore6_remark").prop("readonly",true);
         }
         
     });
@@ -144,9 +144,12 @@ function empty_otdischarge(){
     $('#citizenship_show_otdischarge').text('');
     $('#area_show_otdischarge').text('');
     $('#ward_show_otdischarge').text('');
+    $('#bednum_show_otdischarge').text('');
+    $('#oproom_show_otdischarge').text('');
     $('#diagnosis_show_otdischarge').text('');
     $('#procedure_show_otdischarge').text('');
     $('#unit_show_otdischarge').text('');
+    $('#type_show_otdischarge').text('');
     
     // form_otdischarge
     $('#mrn_otdischarge').val('');
@@ -169,9 +172,12 @@ function populate_otdischarge(obj){
     $('#citizenship_show_otdischarge').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_otdischarge').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_otdischarge').text(obj.ward);
+    $('#bednum_show_otdischarge').text(obj.bednum);
+    $('#oproom_show_otdischarge').text(obj.ot_description);
     $('#diagnosis_show_otdischarge').text(obj.appt_diag);
     $('#procedure_show_otdischarge').text(obj.appt_prcdure);
     $('#unit_show_otdischarge').text(obj.op_unit);
+    $('#type_show_otdischarge').text(obj.oper_type);
     
     // form_otdischarge
     $('#mrn_otdischarge').val(obj.mrn);

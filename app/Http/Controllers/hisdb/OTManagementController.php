@@ -150,6 +150,11 @@ class OTManagementController extends defaultController
                     $bed_first = $bed->first();
                     $value->ward = $bed_first->ward;
                 }
+                
+                if($bed->exists()){
+                    $bed_first = $bed->first();
+                    $value->bednum = $bed_first->bednum;
+                }
             }
         }
         

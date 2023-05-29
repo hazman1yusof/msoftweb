@@ -161,9 +161,12 @@ function empty_preoperative(){
     $('#citizenship_show_preoperative').text('');
     $('#area_show_preoperative').text('');
     $('#ward_show_preoperative').text('');
+    $('#bednum_show_preoperative').text('');
+    $('#oproom_show_preoperative').text('');
     $('#diagnosis_show_preoperative').text('');
     $('#procedure_show_preoperative').text('');
     $('#unit_show_preoperative').text('');
+    $('#type_show_preoperative').text('');
     
     // form_preoperative
     $('#mrn_preoperative').val('');
@@ -186,9 +189,12 @@ function populate_preoperative(obj){
     $('#citizenship_show_preoperative').text(if_none(obj.Citizencode).toUpperCase());
     $('#area_show_preoperative').text(if_none(obj.AreaCode).toUpperCase());
     $('#ward_show_preoperative').text(obj.ward);
+    $('#bednum_show_preoperative').text(obj.bednum);
+    $('#oproom_show_preoperative').text(obj.ot_description);
     $('#diagnosis_show_preoperative').text(obj.appt_diag);
     $('#procedure_show_preoperative').text(obj.appt_prcdure);
     $('#unit_show_preoperative').text(obj.op_unit);
+    $('#type_show_preoperative').text(obj.oper_type);
     
     // form_preoperative
     $('#mrn_preoperative').val(obj.mrn);
