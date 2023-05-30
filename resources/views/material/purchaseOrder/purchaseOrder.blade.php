@@ -221,6 +221,26 @@ div.noti > li{
 					</div>
 				</div>	
 			</div>
+
+			<div class="panel panel-default" style="position: relative;" id="gridDo_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel" id="panel_gridDo">
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>GRN List</h5>
+				</div>
+			</div>
+			<div id="gridDo_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridDo" class="table table-striped"></table>
+						<div id="jqGridPager4"></div>
+					</div>
+				</div>
+			</div>	
+		</div>     
+
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		
