@@ -65,7 +65,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otmgmt_div_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otmgmt_div">
-            <b>NAME: <span id="name_show_otmgmt_div"></span></b><br>
+            <b>NAME: <span id="name_show_otmgmt_div"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otmgmt_div"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otmgmt_div"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_otmgmt_div"></span> &nbsp;
@@ -74,12 +74,12 @@
             <b>DOB:</b> <span id="dob_show_otmgmt_div"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_otmgmt_div"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_otmgmt_div"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_otmgmt_div"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_otmgmt_div"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_otmgmt_div"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_otmgmt_div"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otmgmt_div"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otmgmt_div"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_otmgmt_div"></span> / <span id="bednum_show_otmgmt_div"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_otmgmt_div"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_otmgmt_div"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_otmgmt_div"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otmgmt_div"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otmgmt_div"></span> &nbsp;
@@ -105,7 +105,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="preoperative_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_preoperative">
-            <b>NAME: <span id="name_show_preoperative"></span></b><br>
+            <b>NAME: <span id="name_show_preoperative"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_preoperative"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_preoperative"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_preoperative"></span> &nbsp;
@@ -114,12 +114,12 @@
             <b>DOB:</b> <span id="dob_show_preoperative"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_preoperative"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_preoperative"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_preoperative"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_preoperative"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_preoperative"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_preoperative"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_preoperative"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_preoperative"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_preoperative"></span> / <span id="bednum_show_preoperative"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_preoperative"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_preoperative"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_preoperative"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_preoperative"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_preoperative"></span> &nbsp;
@@ -145,7 +145,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="oper_team_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_oper_team">
-            <b>NAME: <span id="name_show_oper_team"></span></b><br>
+            <b>NAME: <span id="name_show_oper_team"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_oper_team"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_oper_team"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_oper_team"></span> &nbsp;
@@ -154,12 +154,12 @@
             <b>DOB:</b> <span id="dob_show_oper_team"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_oper_team"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_oper_team"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_oper_team"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_oper_team"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_oper_team"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_oper_team"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_oper_team"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_oper_team"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_oper_team"></span> / <span id="bednum_show_oper_team"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_oper_team"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_oper_team"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_oper_team"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_oper_team"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_oper_team"></span> &nbsp;
@@ -185,7 +185,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otswab_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otswab">
-            <b>NAME: <span id="name_show_otswab"></span></b><br>
+            <b>NAME: <span id="name_show_otswab"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otswab"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otswab"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_otswab"></span> &nbsp;
@@ -194,12 +194,12 @@
             <b>DOB:</b> <span id="dob_show_otswab"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_otswab"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_otswab"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_otswab"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_otswab"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_otswab"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_otswab"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otswab"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otswab"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_otswab"></span> / <span id="bednum_show_otswab"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_otswab"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_otswab"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_otswab"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otswab"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otswab"></span> &nbsp;
@@ -225,7 +225,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="ottime_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_ottime">
-            <b>NAME: <span id="name_show_ottime"></span></b><br>
+            <b>NAME: <span id="name_show_ottime"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_ottime"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_ottime"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_ottime"></span> &nbsp;
@@ -234,12 +234,12 @@
             <b>DOB:</b> <span id="dob_show_ottime"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_ottime"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_ottime"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_ottime"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_ottime"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_ottime"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_ottime"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_ottime"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_ottime"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_ottime"></span> / <span id="bednum_show_ottime"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_ottime"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_ottime"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_ottime"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_ottime"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_ottime"></span> &nbsp;
@@ -265,7 +265,7 @@
     
     <div class="panel panel-default" style="z-index: 100;position: relative;margin: 10px 0px 10px 0px" id="otdischarge_panel">
         <div class="panel-heading clearfix collapsed" id="toggle_otdischarge">
-            <b>NAME: <span id="name_show_otdischarge"></span></b><br>
+            <b>NAME: <span id="name_show_otdischarge"></span></b> <br>
             <b>MRN:</b> <span id="mrn_show_otdischarge"></span> &nbsp;
             <b>IC NO./PASSPORT:</b> <span id="icpssprt_show_otdischarge"></span> &nbsp;
             <b>SEX:</b> <span id="sex_show_otdischarge"></span> &nbsp;
@@ -274,12 +274,12 @@
             <b>DOB:</b> <span id="dob_show_otdischarge"></span> &nbsp;
             <b>AGE:</b> <span id="age_show_otdischarge"></span> &nbsp;
             <b>RACE:</b> <span id="race_show_otdischarge"></span> &nbsp;
-            <b>RELIGION:</b> <span id="religion_show_otdischarge"></span> &nbsp;
-            <b>OCCUPATION:</b> <span id="occupation_show_otdischarge"></span><br>
+            <b>RELIGION:</b> <span id="religion_show_otdischarge"></span> <br>
+            <b>OCCUPATION:</b> <span id="occupation_show_otdischarge"></span> &nbsp;
             <b>CITIZENSHIP:</b> <span id="citizenship_show_otdischarge"></span> &nbsp;
             <b>AREA:</b> <span id="area_show_otdischarge"></span> &nbsp;
             <b>WARD / BED:</b> <span id="ward_show_otdischarge"></span> / <span id="bednum_show_otdischarge"></span> &nbsp;
-            <b>OP ROOM:</b> <span id="oproom_show_otdischarge"></span><br>
+            <b>OP ROOM:</b> <span id="oproom_show_otdischarge"></span> <br>
             <b>DIAGNOSIS:</b> <span id="diagnosis_show_otdischarge"></span> &nbsp;
             <b>PLANNED PROCEDURE:</b> <span id="procedure_show_otdischarge"></span> &nbsp;
             <b>UNIT/DISCIPLINE:</b> <span id="unit_show_otdischarge"></span> &nbsp;
