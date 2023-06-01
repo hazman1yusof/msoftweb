@@ -1964,7 +1964,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Qty <br> Delivered', name: 'qtydelivered', width: 130, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Qty <br> Delivered', name: 'qtydelivered', width: 150, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules:{required: true,custom:true, custom_func:cust_rules},edittype:"text",
