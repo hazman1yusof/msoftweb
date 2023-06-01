@@ -1984,7 +1984,7 @@ $(document).ready(function () {
 				formatter: format_qtyoutstand, formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: false},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Unit Price', name: 'unitprice', width: 100, align: 'right', classes: 'wrap', 
+			{ label: 'Unit Price', name: 'unitprice', width: 110, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -2000,14 +2000,14 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Tax Code', name: 'taxcode', width: 150, classes: 'wrap', editable:true,
+			{ label: 'Tax Code', name: 'taxcode', width: 180, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 							{  custom_element:taxcodeCustomEdit,
 								custom_value:galGridCustomValue 	
 							},
 			},
-			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 150, align: 'right', classes: 'wrap', 
+			{ label: 'Percentage <br> Discount (%)', name: 'perdisc', width: 160, align: 'right', classes: 'wrap', 
 				editable:true,
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4,},
 					editrules:{required: true},edittype:"text",
@@ -2039,7 +2039,7 @@ $(document).ready(function () {
 						}
 					},
 			},
-			{ label: 'Total <br> GST Amount', name: 'tot_gst', width: 110, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total <br> GST <br> Amount', name: 'tot_gst', width: 120, align: 'right', classes: 'wrap', editable:true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules:{required: true},
 				editoptions:{
@@ -2062,7 +2062,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry <br> Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Expiry <br> Date', name: 'expdate', width: 140, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
