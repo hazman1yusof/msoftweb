@@ -117,6 +117,12 @@
 	    	<td colspan="6" rowspan="2">
 	    		<p><i>Please Deliver goods/services/works with original purchase order, delivery order and invoice to:</i></p>
 	    		<p><b>Address</b></p>
+				<p>{{$supplier->Name}}</p>
+				<p>{{$supplier->Addr1}}</p>
+				<p>{{$supplier->Addr2}}</p>
+				<p>{{$supplier->Addr3}}</p>
+				<p>{{$supplier->Addr4}}</p><br>
+
 	    		<p><b>Contact Person</b></p>
 	    		<p><b>Tel No.</b></p>
 	    		<p><b>Email</b></p>

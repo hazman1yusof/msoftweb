@@ -2063,7 +2063,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry <br> Date', name: 'expdate', width: 140, classes: 'wrap', editable:true,
+			{ label: 'Expiry <br> Date', name: 'expdate', width: 150, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -2078,7 +2078,7 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{ label: 'Batch No', name: 'batchno', width: 120, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 140, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
