@@ -174,9 +174,6 @@ div.noti > li{
 		    		<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
 		    			<span class='fa fa-print'></span> Print 
 		    		</a>
-		    		<a class='pull-right pointer text-primary' id='grnlist'>
-		    			<span class='fa fa-file-text'></span> GRN list 
-		    		</a>
 		    	</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -186,17 +183,6 @@ div.noti > li{
 		    		</div>
 		</div>
 
-       <!--  
-        	<div class='click_row'>
-        		<label class="control-label">Purchase Order No</label>
-        		<span id="ponodepan" style="display: block;">&nbsp</span>
-        	</div>
-
-        	<div class='click_row'>
-				<label class="control-label">Purchase Dept</label>
-        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
-        	</div>
- -->
 	   		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Print Label</label>
         	</div>

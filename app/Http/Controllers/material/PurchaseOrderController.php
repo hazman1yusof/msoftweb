@@ -933,7 +933,7 @@ class PurchaseOrderController extends defaultController
             ->first();
 
         $purorddt = DB::table('material.purorddt AS podt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyrequest', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
+            ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'podt.itemcode', '=', 'p.itemcode')
             ->leftJoin('material.uom as u', 'podt.uomcode', '=', 'u.uomcode')
             ->where('recno','=',$recno)
@@ -946,6 +946,11 @@ class PurchaseOrderController extends defaultController
         $supplier = DB::table('material.supplier')
             ->where('compcode','=',session('compcode'))
             ->where('SuppCode','=',$purordhd->suppcode)
+            ->first();
+
+        $deldept = DB::table('material.deldept')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$purordhd->deldept)
             ->first();
 
         $totamount_expld = explode(".", (float)$purordhd->totamount);

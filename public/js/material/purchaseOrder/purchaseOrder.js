@@ -1401,6 +1401,7 @@ $(document).ready(function () {
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'purordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purordhd_prdept';break;
+			//case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1932,7 +1933,7 @@ $(document).ready(function () {
 			{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'No', name: 'lineno_', width: 60, classes: 'wrap', editable:false},
 			
-			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false},
+			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:false, hidden:true}, 
 			{ label: 'Price Code', name: 'pricecode', width: 200, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -1940,8 +1941,8 @@ $(document).ready(function () {
 								custom_value:galGridCustomValue 	
 							},
 			},
-			{ label: 'Item Code', name: 'itemcode', width: 170, classes: 'wrap', editable:true,
-					editrules:{required: true,custom:true, custom_func:cust_rules},
+			{ label: 'Item Code', name: 'itemcode', width: 180, classes: 'wrap', editable:true,
+					editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 						edittype:'custom',	editoptions:
 							{  custom_element:itemcodeCustomEdit,
 								custom_value:galGridCustomValue 	
