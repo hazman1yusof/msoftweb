@@ -375,6 +375,18 @@ function populateSelect2(grid,form){
 	});
 }
 
+function populateSelect3(grid,form){
+	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
+		if(value['canSearch']){
+			if(value['checked']){
+				$( form+" [name=Scol]" ).append(" <option selected value='"+value['name']+"'>"+value['label']+"</option>");
+			}else{
+				$( form+" [name=Scol]" ).append(" <option value='"+value['name']+"'>"+value['label']+"</option>");
+			}
+		}
+	});
+}
+
 function searchClick(grid,form,urlParam){
 	$(form+' [name=Stext]').on( "keyup", onchgscol_500);
 
@@ -413,6 +425,25 @@ function searchClick2(grid,form,urlParam,withscol=true){
 			$('#reqdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
 		});
+	}
+}
+
+function searchClick3(grid,form,urlParam){
+	$(form+' [name=Stext]').on( "keyup", onchgscol_500);
+
+	$(form+' [name=Scol]').on( "change", onchgscol);
+
+	function onchgscol(){
+		search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+	}
+
+	function onchgscol_500(e){
+		var code = e.keyCode || e.which;
+		if(code != '9'){
+			delay(function(){
+				search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
+			}, 500 );
+		}
 	}
 }
 

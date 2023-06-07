@@ -711,7 +711,6 @@ function calc_jq_height_onchange(jqgrid,max_height=300){
 
 }
 
-
 var textfield_modal = new textfield_modal();
 textfield_modal.ontabbing();
 textfield_modal.checking();

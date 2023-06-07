@@ -545,6 +545,7 @@ abstract class defaultController extends Controller{
 
         //1. get pvalue 1
         $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
+            ->where('compcode',session('compcode'))
             ->where('source', '=', $source)
             ->where('trantype', '=', $trantype)->first();
         
@@ -552,8 +553,11 @@ abstract class defaultController extends Controller{
         $pvalue1 = intval($pvalue1->pvalue1) + 1;
 
         //3. update the value
-        DB::table('sysdb.sysparam')->where('source', '=', $source)->where('trantype', '=', $trantype)
-        ->update(array('pvalue1' => $pvalue1));
+        DB::table('sysdb.sysparam')
+            ->where('compcode',session('compcode'))
+            ->where('source', '=', $source)
+            ->where('trantype', '=', $trantype)
+            ->update(array('pvalue1' => $pvalue1));
 
         //4. return pvalue1
         return $pvalue1;
@@ -615,6 +619,7 @@ abstract class defaultController extends Controller{
     public function request_no($trantype,$dept){
         $seqno = DB::table('material.sequence')
                 ->select('seqno')
+                ->where('compcode',session('compcode'))
                 ->where('trantype','=',$trantype)
                 ->where('dept','=',$dept)
                 ->where('recstatus','=', 'ACTIVE');
@@ -626,7 +631,9 @@ abstract class defaultController extends Controller{
         $seqno = $seqno->first();
 
         DB::table('material.sequence')
-            ->where('trantype','=',$trantype)->where('dept','=',$dept)
+            ->where('trantype','=',$trantype)
+            ->where('compcode',session('compcode'))
+            ->where('dept','=',$dept)
             ->update(['seqno' => intval($seqno->seqno) + 1]);
         
         return $seqno->seqno;
@@ -634,8 +641,9 @@ abstract class defaultController extends Controller{
 
     public function recno($source,$trantype){//sysparam pvalue 1 start dgn 1
         $pvalue1 = DB::table('sysdb.sysparam')
-                ->select('pvalue1')
-                ->where('source','=',$source)->where('trantype','=',$trantype);
+                    ->where('compcode',session('compcode'))
+                    ->select('pvalue1')
+                    ->where('source','=',$source)->where('trantype','=',$trantype);
 
         if(!$pvalue1->exists()){
             throw new \Exception("Sysparam for source $source and trantype $trantype is not available");
@@ -644,6 +652,7 @@ abstract class defaultController extends Controller{
         $pvalue1 = $pvalue1->first();
 
         DB::table('sysdb.sysparam')
+            ->where('compcode',session('compcode'))
             ->where('source','=',$source)->where('trantype','=',$trantype)
             ->update(['pvalue1' => intval($pvalue1->pvalue1) + 1]);
             
@@ -704,6 +713,36 @@ abstract class defaultController extends Controller{
             return false;
         }
 
+    }
+    
+    public function isCBtranExist($bankcode,$year,$period){
+
+        $cbtran = DB::table('finance.bankdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$year)
+                ->where('bankcode','=',$bankcode);
+
+        if($cbtran->exists()){
+            $cbtran_get = (array)$cbtran->first();
+            $this->cbtranAmount = $cbtran_get["actamount".$period];
+        }
+
+        return $cbtran->exists();
+    }
+
+    public function getCbtranTotamt($bankcode, $year, $period){
+        $cbtranamt = DB::table('finance.cbtran')
+                    ->where('compcode', '=', session('compcode'))
+                    ->where('bankcode', '=', $bankcode)
+                    ->where('year', '=', $year)
+                    ->where('period', '=', $period)
+                  /*  ->first();*/
+                    ->sum('amount');
+                
+        $responce = new stdClass();
+        $responce->amount = $cbtranamt;
+        
+        return $responce;
     }
 
     public static function toYear($date){

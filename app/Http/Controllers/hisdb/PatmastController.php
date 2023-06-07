@@ -1248,22 +1248,30 @@ class PatmastController extends defaultController
                 ->where('Episno','=',$epis_no);
 
             if(!$epispayer_obj->exists()){
+
+                if(!empty($epis_refno)){
+                    $use_refno = $epis_refno;
+                }else{
+                    $use_refno = null;
+                }
+
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
-                ->insert([
-                    'CompCode' => session('compcode'),
-                    'MRN' => $epis_mrn,
-                    'Episno' => $epis_no,
-                    'EpisTyCode' => $epis_type,
-                    'LineNo' => '1',
-                    'BillType' => $epis_billtype,
-                    'PayerCode' => $epis_payer,
-                    'Pay_Type' => $epis_fin,
-                    'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'AddUser' => session('username'),
-                    'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username')
-                ]);
+                    ->insert([
+                        'CompCode' => session('compcode'),
+                        'MRN' => $epis_mrn,
+                        'Episno' => $epis_no,
+                        'EpisTyCode' => $epis_type,
+                        'LineNo' => '1',
+                        'BillType' => $epis_billtype,
+                        'PayerCode' => $epis_payer,
+                        'Pay_Type' => $epis_fin,
+                        'refno' => $use_refno,
+                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'AddUser' => session('username'),
+                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'LastUser' => session('username')
+                    ]);
             }
 
             //CREATE NOK
@@ -1679,7 +1687,7 @@ class PatmastController extends defaultController
                         'CompCode' => session('compcode'),
                         'MRN' => $epis_mrn,
                         'Episno' => $epis_no,
-                        'refno' => $epis_ourrefno,
+                        'refno' => $epis_refno,
                         'EpisTyCode' => "OP",
                         'LineNo' => '1',
                         'BillType' => $epis_billtype,
@@ -1695,8 +1703,9 @@ class PatmastController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$epis_mrn)
                     ->where('Episno','=',$epis_no)
+                    ->where('LineNo','=','1')
                     ->update([
-                        'refno' => $epis_ourrefno,
+                        'refno' => $epis_refno,
                         'BillType' => $epis_billtype,
                         'PayerCode' => $epis_payer,
                         'Pay_Type' => $epis_fin,
@@ -2241,7 +2250,7 @@ class PatmastController extends defaultController
                     'compcode' => session('compcode'),
                     'mrn'    =>  $request->mrn,
                     'episno' =>   $request->episno,
-                    'ourrefno' =>   $ourrefno,
+                    'ourrefno' =>  $ourrefno,
                     'refno' =>   $request['newgl-refno'],
                     'visitno' =>   $request['newgl-visitno'],
                     'debtorcode'  =>  $request['hid_newgl_corpcomp'],
@@ -2307,6 +2316,13 @@ class PatmastController extends defaultController
             }
 
             DB::commit();
+
+
+            $responce = new stdClass();
+            $responce->ourrefno = $ourrefno;
+            $responce->refno = $request['newgl-refno'];
+
+            return json_encode($responce);
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -2466,6 +2482,7 @@ class PatmastController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('Episno','=',$request->episno)
+                ->where('LineNo','=','1')
                 ->first();
 
         $txt_epis_refno = "";
@@ -2475,7 +2492,7 @@ class PatmastController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('ourrefno','=',$epispayer->refno);
+                ->where('refno','=',$epispayer->refno);
 
             if($guarantee->exists()){
                 $guarantee = $guarantee->first();

@@ -5,19 +5,33 @@ var urlparam_episodelist = {
 	mrn:null
 }
 
+var rowdata_episodelist=null;
+
 $(document).ready(function () {
+
+	$('#episodelist_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#episodelist_panel", 500);
+		$("#jqGrid_episodelist").jqGrid ('setGridWidth', Math.floor($("#jqGrid_episodelist_c")[0].offsetWidth-$("#jqGrid_episodelist_c")[0].offsetLeft));
+		init_episodelist();
+	});
 
 	$("#jqGrid_episodelist").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Episode', name: 'episno', classes: 'wrap', width:10},
-			{ label: 'Type', name: 'epistycode', classes: 'wrap', width:10},
-			{ label: 'Reg Date', name: 'reg_date', classes: 'wrap', width:10},
-			{ label: 'Case', name: 'case_desc', classes: 'wrap', width:20},
-			{ label: 'Pay Type', name: 'pay_type_desc', classes: 'wrap', width:20},
-			{ label: 'Doctor', name: 'doctorname', classes: 'wrap', width:50},
-			{ label: 'End Date', name: 'dischargedate', classes: 'wrap', width:20},
-			{ label: 'Status', name: 'episstatus', classes: 'wrap', width:10}
+			{ label: 'idno', name: 'idno', hidden:true},
+			{ label: 'Episode', name: 'episno', classes: 'wrap', width:8, canSearch:true, checked:true},
+			{ label: 'Type', name: 'epistycode', classes: 'wrap', width:8, canSearch:true},
+			{ label: 'Adm Source', name: 'admsrccode_desc', classes: 'wrap', width:11, canSearch:true},
+			{ label: 'Reg Dept', name: 'regdept_desc', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Reg Date', name: 'reg_date', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Reg Time', name: 'reg_time', classes: 'wrap', width:10},
+			{ label: 'Case', name: 'case_desc', classes: 'wrap', width:13},
+			{ label: 'Pay Type', name: 'pay_type_desc', classes: 'wrap', width:15},
+			{ label: 'Doctor', name: 'doctorname', classes: 'wrap', width:30},
+			{ label: 'End Date', name: 'dischargedate', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Add By', name: 'adduser', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Add Date', name: 'adddate', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Status', name: 'episstatus', classes: 'wrap', width:11, canSearch:true},
 		],
 		autowidth:true,
 		viewrecords: true,
@@ -31,18 +45,14 @@ $(document).ready(function () {
 		gridComplete: function () {
 		},
 		loadComplete: function(data){
+			rowdata_episodelist = data.rows;
 			let jq_max_hgt = $('#jqGrid_episodelist>tbody').closest('div.paneldiv').prop('clientHeight') - 120;
 			calc_jq_height_onchange("jqGrid_episodelist",jq_max_hgt);
 		}
 		
 	});
-
-
-	$('#episodelist_panel').on('shown.bs.collapse', function () {
-		SmoothScrollTo("#episodelist_panel", 500);
-		$("#jqGrid_episodelist").jqGrid ('setGridWidth', Math.floor($("#jqGrid_episodelist_c")[0].offsetWidth-$("#jqGrid_episodelist_c")[0].offsetLeft));
-		init_episodelist();
-	});
+	populateSelect3("#jqGrid_episodelist","#eplist_searchform");
+	searchClick("#jqGrid_episodelist","#eplist_searchform",urlparam_episodelist);
 });
 
 function populate_episodelist(obj){

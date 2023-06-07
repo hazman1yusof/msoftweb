@@ -47,7 +47,7 @@
   100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
 }
 
-#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
+#mdl_ep_note,#mdl_new_gl{
 	display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
 }
 .smallmodal{
@@ -94,7 +94,7 @@ small, input[type=text]{
 
 .modal .modal-content {
 	height: auto;
-	min-height: 100%;
+/*	min-height: 100%;*/
 	border: 0 none;
 	border-radius: 0;
 	box-shadow: none;
@@ -114,7 +114,7 @@ small, input[type=text]{
 .modal-backdrop{
 	z-index: 99 !important;
 	background-color: #fff !important;
-	opacity: 1 !important;
+/*	opacity: 1 !important;*/
 }
 
 .form-group{
@@ -319,4 +319,53 @@ fieldset.mycss {
 
 #tbl_epis_reference tr.active td{
 	background-color: #e6ffe8 !important;
+}
+
+div.my_cf{
+	display:flex;justify-content: center;padding: 5px 15px;
+	border: solid 1px white;
+  border-radius: 5px;
+}
+
+a.my_a{
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0px 20px !important;
+  cursor: pointer;
+  color: #3838b9 !important;
+  margin: 10px 0px;
+}
+
+a.my_a:hover{
+/*  background-image: linear-gradient(to bottom, #dbdbdb 0%, #e2e2e2 100%);*/
+/*  box-shadow: inset 0 3px 9px rgba(0, 0, 0, .075);*/
+  color: grey !important;
+/*  background-color: #e7e7e7;*/
+}
+
+div.ui-jqgrid-bdiv{
+	overflow-x: hidden !important;
+}
+
+.form_medc p{
+	margin: 12px !important;
+}
+
+div#gbox_jqGrid_episodelist{
+	background: white;
+}
+
+div.paneldiv_lightblue{
+	overflow-y: auto;
+  background: #e4f6ff;
+}
+
+a.a_bro{
+	border-right: 1px solid #c5c5c5 !important;
+}
+
+form#form_medc .form-control{
+	display: unset !important;
+  width: unset !important;
+  height: 26px !important;
 }
