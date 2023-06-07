@@ -179,6 +179,7 @@
 					{ label: 'General Telephone', name: 'generaltel', width: 90, classes: 'wrap', hidden: true},
 					{ label: 'General Fax', name: 'generalfax', width: 90, classes: 'wrap', hidden: true},
 					{ label: 'Contact Person', name: 'contactper', width: 90, classes: 'wrap', hidden: true},
+					{ label: 'email', name: 'email', width: 90, hidden:true},
 					{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
 					{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
 					{ label: 'upduser', name: 'upduser', width: 90, hidden:true},
