@@ -4,7 +4,7 @@
 
 @section('body')
 	
-	<table class="table table-bordered">
+<table class="table table-bordered">
 		<tbody>
 			
 			<tr>
@@ -45,7 +45,7 @@
 				<td colspan="2"><b>Page No.</b></td>
 				<td colspan="4"></td>
 			</tr>
-		
+
 			<tr>
 				<td><b>No.</b></td>
 				<td colspan="4"><b>Description</b></td>
@@ -66,6 +66,7 @@
 				<td colspan="4"> <!-- description -->
 					@foreach ($purorddt as $obj)
 						<p>{{$obj->description}}</p>
+						<p>{{$obj->remarks}}</p>
 					@endforeach
 				</td>
 				<td> <!-- uomcode -->
@@ -99,14 +100,28 @@
 					@endforeach
 				</td>
 			</tr>
-			
+
 			<tr>
-				<td colspan="11">
+				<td colspan="5">
 					<p><b>Total Amount</b></p>
+				</td>
+				<td> 
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td> <!-- total tax amount -->
+					<p>{{number_format($purordhd->perdisc,2)}}</p>
+				</td>
+				<td> <!-- total disc amount -->
+					<p>{{number_format($purordhd->amtdisc,2)}}</p>
+				</td>
+				<td> <!-- total nett amount -->
 					<p>{{number_format($purordhd->totamount,2)}}</p>
 				</td>
 			</tr>
-			
+
 			<tr>
 				<td colspan="11">
 					<p><b>Ringgit Malaysia</b></p>
@@ -114,39 +129,46 @@
 				</td>
 			</tr>
 
-	    <tr>
-	    	<td colspan="6" rowspan="2">
-	    		<p><i>Please Deliver goods/services/works with original purchase order, delivery order and invoice to:</i></p>
-	    		<p><b>Address</b></p>
-	    		<p><b>Contact Person</b></p>
-	    		<p><b>Tel No.</b></p>
-	    		<p><b>Email</b></p>
-	    	</td>
+			<tr>
+				<td colspan="6" rowspan="2">
+					<p><i>Please Deliver goods/services/works with original purchase order, delivery order and invoice to:</i></p>
+					<p><b>Address</b></p>
+					<p>{{$deldept->description}}</p>
+					<p>{{$deldept->Addr1}}</p>
+					<p>{{$deldept->Addr2}}</p>
+					<p>{{$deldept->Addr3}}</p>
+					<p>{{$deldept->Addr4}}</p><br>
 
-	    	<td colspan="3" height="10">
-	    		<p><b>Delivered By</b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-			
-	    	<td colspan="2" height="10">
-	    		<p><b>Approval</b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    </tr>
+					<p><b>Contact Person</b></p>
+					<p>{{$deldept->contactper}}</p><br>
 
-	    <tr>
-	    	<td colspan="6">
-	    		<p><b>Sign: </b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Position: </b></p>
-	    		<p>&nbsp;</p>
-	    		<p><b>Date: </b></p>
-	    		<p>&nbsp;</p>
-	    	</td>
-	    </tr>
+					<p><b>Tel No.</b></p>
+					<p><b>Email</b></p>
+				</td>
 
+				<td colspan="3" height="10">
+					<p><b>Delivered By</b></p>
+					<p>&nbsp;</p>
+				</td>
 
-	  </tbody>
+				<td colspan="2" height="10">
+					<p><b>Approval</b></p>
+					<p>&nbsp;</p>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="5">
+					<p><b>Sign: </b></p>
+					<p>&nbsp;</p>
+					<p><b>Position: </b></p>
+					<p>&nbsp;</p>
+					<p><b>Date: </b></p>
+					<p>&nbsp;</p>
+				</td>
+			</tr>
+
+		</tbody>
 	</table>
 
 @endsection

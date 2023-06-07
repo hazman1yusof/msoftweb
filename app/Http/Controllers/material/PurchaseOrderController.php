@@ -953,6 +953,8 @@ class PurchaseOrderController extends defaultController
             ->where('deptcode','=',$purordhd->deldept)
             ->first();
 
+            //dd($deldept);
+
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
