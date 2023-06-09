@@ -112,7 +112,7 @@
 				
 						<label class="col-md-2 control-label" for="email">Email</label>  
 							<div class="col-md-3">
-								<input id="email" name="email" type="text" class="form-control input-sm text-uppercase">
+								<input id="email" name="email" type="text" class="form-control input-sm">
 							</div>
               	</div>
 
