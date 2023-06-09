@@ -21,8 +21,7 @@
 	<div id="episodelist_panel" class="panel-collapse collapse">
 		<div class="panel-body paneldiv paneldiv_lightblue" >
 			<div class='col-md-12' style="padding:0 0 15px 0" id="jqGrid_episodelist_c">
-				<nav class="navb
-				ar navbar-default">
+				<nav class="navbar navbar-default" style="border-radius: 100px;">
 				  <div class="container-fluid my_cf" >
 				    <div class="navbar-header">
 					<ul class="nav navbar-nav myhover">    	

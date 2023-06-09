@@ -322,9 +322,10 @@ fieldset.mycss {
 }
 
 div.my_cf{
-	display:flex;justify-content: center;padding: 5px 15px;
+	display:flex;justify-content: center;
+	padding: 5px 15px;
 	border: solid 1px white;
-  border-radius: 5px;
+  border-radius: 100px;
 }
 
 a.my_a{

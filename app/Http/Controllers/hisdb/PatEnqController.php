@@ -123,7 +123,7 @@ class PatEnqController extends defaultController
 
         // $mrn_range = $this->mrn_range($request);
         $table = DB::table('hisdb.episode as e')
-                        ->select('e.idno','e.compcode','e.mrn','e.episno','e.admsrccode','e.epistycode','e.case_code','e.ward','e.bedtype','e.room','e.bed','e.admdoctor','e.attndoctor','e.refdoctor','e.prescribedays','e.pay_type','e.pyrmode','e.climitauthid','e.crnumber','e.depositreq','e.deposit','e.pkgcode','e.billtype','e.remarks','e.episstatus','e.episactive','e.adddate','e.adduser','e.reg_date','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.dischargedest','e.allocdoc','e.allocbed','e.allocnok','e.allocpayer','e.allocicd','e.lastupdate','e.lastuser','e.lasttime','e.procedure','e.dischargediag','e.lodgerno','e.regdept','e.diet1','e.diet2','e.diet3','e.diet4','e.diet5','e.glauthid','e.treatment','e.diagcode','e.complain','e.diagfinal','e.clinicalnote','e.conversion','e.newcaseP','e.newcaseNP','e.followupP','e.followupNP','e.bed2','e.bed3','e.bed4','e.bed5','e.bed6','e.bed7','e.bed8','e.bed9','e.bed10','e.diagprov','e.visitcase','e.PkgAutoNo','e.AgreementID','e.AdminFees','e.EDDept','e.dischargestatus','e.procode','e.treatcode','e.payer','e.doctorstatus','e.reff_rehab','e.reff_physio','e.reff_diet','e.stats_rehab','e.stats_physio','e.stats_diet','e.dry_weight','e.duration_hd','e.lastarrivaldate','e.lastarrivaltime','e.lastarrivalno','e.picdoctor','e.nurse_stat','d.doctorname as doctorname','c.description as case_desc','d.description as pay_type_desc','ad.description as admsrccode_desc','dp.description as regdept_desc');
+                        ->select('e.idno','e.compcode','e.mrn','e.episno','e.admsrccode','e.epistycode','e.case_code','e.ward','e.bedtype','e.room','e.bed','e.admdoctor','e.attndoctor','e.refdoctor','e.prescribedays','e.pay_type','e.pyrmode','e.climitauthid','e.crnumber','e.depositreq','e.deposit','e.pkgcode','e.billtype','e.remarks','e.episstatus','e.episactive','e.adddate','e.adduser','e.reg_date','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.dischargedest','e.allocdoc','e.allocbed','e.allocnok','e.allocpayer','e.allocicd','e.lastupdate','e.lastuser','e.lasttime','e.procedure','e.dischargediag','e.lodgerno','e.regdept','e.diet1','e.diet2','e.diet3','e.diet4','e.diet5','e.glauthid','e.treatment','e.diagcode','e.complain','e.diagfinal','e.clinicalnote','e.conversion','e.newcaseP','e.newcaseNP','e.followupP','e.followupNP','e.bed2','e.bed3','e.bed4','e.bed5','e.bed6','e.bed7','e.bed8','e.bed9','e.bed10','e.diagprov','e.visitcase','e.PkgAutoNo','e.AgreementID','e.AdminFees','e.EDDept','e.dischargestatus','e.procode','e.treatcode','e.payer','e.doctorstatus','e.reff_rehab','e.reff_physio','e.reff_diet','e.stats_rehab','e.stats_physio','e.stats_diet','e.dry_weight','e.duration_hd','e.lastarrivaldate','e.lastarrivaltime','e.lastarrivalno','e.picdoctor','e.nurse_stat','d.doctorname as doctorname','ct.description as case_desc','ad.description as admsrccode_desc','dp.description as regdept_desc','dm.name as payer_desc');
 
         if(!empty($request->searchCol)){
             if(!empty($request->fixPost)){
@@ -156,16 +156,16 @@ class PatEnqController extends defaultController
                                             ->where('d.compcode','=',session('compcode'));
                         })->leftJoin('sysdb.department as dp', function($join) use ($request){
                             $join = $join->on('dp.deptcode', '=', 'e.regdept')
-                                            ->where('d.compcode','=',session('compcode'));
+                                            ->where('dp.compcode','=',session('compcode'));
                         })->leftJoin('hisdb.admissrc as ad', function($join) use ($request){
                             $join = $join->on('ad.admsrccode', '=', 'e.admsrccode')
                                             ->where('ad.compcode','=',session('compcode'));
-                        })->leftJoin('hisdb.casetype as c', function($join) use ($request){
-                            $join = $join->on('c.case_code', '=', 'e.case_code')
-                                            ->where('c.compcode','=',session('compcode'));
-                        })->leftJoin('debtor.debtortype as d', function($join) use ($request){
-                            $join = $join->on('d.debtortycode', '=', 'e.pay_type')
-                                            ->where('c.compcode','=',session('compcode'));
+                        })->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                            $join = $join->on('dm.debtorcode', '=', 'e.payer')
+                                            ->where('dm.compcode','=',session('compcode'));
+                        })->leftJoin('hisdb.casetype as ct', function($join) use ($request){
+                            $join = $join->on('ct.case_code', '=', 'e.case_code')
+                                            ->where('ct.compcode','=',session('compcode'));
                         });
 
         if(!empty($request->sort)){
