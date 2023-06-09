@@ -29,6 +29,8 @@ class PatEnqController extends defaultController
                 return $this->loadgl($request);
             case 'show_mc':
                 return $this->show_mc($request);
+            case 'mc_list':
+                return $this->mc_list($request);
             default:
                 return 'error happen..';
         }
@@ -318,5 +320,17 @@ class PatEnqController extends defaultController
             abort(403, 'MC not found');
         }
 
+    }
+
+    public function mc_list(Request $request){
+        $patmc = DB::table('hisdb.patmc')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->get();
+
+        $responce = new stdClass();
+        $responce->data = $patmc;
+
+        return json_encode($responce);
     }
 }

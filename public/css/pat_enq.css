@@ -369,3 +369,7 @@ form#form_medc .form-control{
   width: unset !important;
   height: 26px !important;
 }
+
+table.dataTable tr.active{
+	background: aliceblue;
+}
