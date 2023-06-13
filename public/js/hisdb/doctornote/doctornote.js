@@ -15,92 +15,187 @@ var urlParam_AddNotes = {
 }
 
 $(document).ready(function () {
-
+	
 	textare_init_doctornote();
-
+	
 	// $('textarea#clinicnote,textarea#pmh,textarea#drugh,textarea#allergyh,textarea#socialh,textarea#fmh,textarea#examination,textarea#diagfinal,textarea#plan_').each(function () {
-	//   this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	// 	this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
 	// }).on('input', function () {
-	//   this.style.height = 'auto';
-	//   this.style.height = (this.scrollHeight) + 'px';
+	// 	this.style.height = 'auto';
+	// 	this.style.height = (this.scrollHeight) + 'px';
 	// });
-
+	
 	var fdl = new faster_detail_load();
-
+	
 	disableForm('#formDoctorNote');
-
+	
 	$("#new_doctorNote").click(function(){
-    	$('#docnote_date_tbl tbody tr').removeClass('active');
+		$('#docnote_date_tbl tbody tr').removeClass('active');
 		$('#cancel_doctorNote').data('oper','add');
 		button_state_doctorNote('wait');
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
-    	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
+		emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
 		hide_tran_button(false);
-		
+	
 	});
-
+	
 	$("#edit_doctorNote").click(function(){
 		button_state_doctorNote('wait');
 		enableForm('#formDoctorNote');
 		rdonly('#formDoctorNote');
 		// dialog_mrn_edit.on();
-		
+	
 	});
-
+	
 	$("#save_doctorNote").click(function(){
 		disableForm('#formDoctorNote');
 		if( $('#formDoctorNote').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_doctorNote(function(data){
 				$("#cancel_doctorNote").click();
-    			docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
-    				docnote_date_tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
-					    var currow = this.data();
-					    if(currow.idno == data.idno){
-			    			$(this.node()).addClass('active');
-					    }
+				docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(){
+					docnote_date_tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+						var currow = this.data();
+						if(currow.idno == data.idno){
+							$(this.node()).addClass('active');
+						}
 					});
-    			});
+				});
 			});
 		}else{
 			enableForm('#formDoctorNote');
 			rdonly('#formDoctorNote');
 		}
-
+	
 	});
-
+	
 	$("#cancel_doctorNote").click(function(){
 		disableForm('#formDoctorNote');
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
 		$("#current,#past").attr('disabled',false);
+	
 	});
-
+	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
 	
-	//bmi calculator
+	// bmi calculator
 	$('#height').keyup(function(event) {
 		getBMI();
 	});
-
+	
 	$('#weight').keyup(function(event) {
 		getBMI();
 	});
-	//bmi calculator ends
-
+	// bmi calculator ends
+	
 	// change diagnosis value
 	$('#icdcode').change(function() {
 		$('#diagfinal').val($('#icdcode').val());
 	});
-
-	/////////////////////parameter for saving url/////////////////////////////////////////////////
+	
+	///////////////////////////////////////////Referral Letter///////////////////////////////////////////
+	// var oper='add';
+	$("#dialogForm")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				parent_close_disabled(true);
+				disableForm('#form_refLetter');
+				disableForm('#form_docNoteRef');
+				textare_init_doctornote();
+				// refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
+				switch(oper) {
+					case state = 'add':
+						// $( this ).dialog( "option", "title", "Add" );
+						enableForm('#form_refLetter');
+						rdonly('#form_refLetter');
+						break;
+					case state = 'edit':
+						// $( this ).dialog( "option", "title", "Edit" );
+						enableForm('#form_refLetter');
+						rdonly('#form_refLetter');
+						break;
+					case state = 'view':
+						// $( this ).dialog( "option", "title", "View" );
+						disableForm('#form_refLetter');
+						rdonly("#form_refLetter");
+						// $(this).dialog("option", "buttons",butt2);
+						break;
+				}
+				if(oper!='view'){
+					
+				}
+				if(oper!='add'){
+					
+				}
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#form_refLetter');
+				emptyFormdata(errorField,'#form_docNoteRef');
+				// $('.alert').detach();
+				$('.my-alert').detach();
+				if(oper=='view'){
+					// $(this).dialog("option", "buttons",butt1);
+				}
+			},
+		});
+	
+	$("#referLetter").click(function(){
+		// oper='add';
+		$("#dialogForm").dialog("open");
+		populate_refLetter();
+	});
+	
+	$("#new_refLetter").click(function(){
+		$('#cancel_refLetter').data('oper','add');
+		button_state_refLetter('wait');
+		enableForm('#form_refLetter');
+		rdonly('#form_refLetter');
+		emptyFormdata_div("#form_refLetter",['#mrn_refLetter','#episno_refLetter']);
+	
+	});
+	
+	$("#edit_refLetter").click(function(){
+		button_state_refLetter('wait');
+		enableForm('#form_refLetter');
+		rdonly('#form_refLetter');
+	
+	});
+	
+	$("#save_refLetter").click(function(){
+		if( $('#form_refLetter').isValid({requiredFields: ''}, conf, true) ) {
+			saveForm_refLetter(function(data){
+				emptyFormdata_div("#form_refLetter",['#mrn_refLetter','#episno_refLetter']);
+				disableForm('#form_refLetter');
+			
+			});
+		}else{
+			enableForm('#form_refLetter');
+			rdonly('#form_refLetter');
+		
+		}
+	
+	});
+	
+	$("#cancel_refLetter").click(function(){
+		emptyFormdata_div("#form_refLetter",['#mrn_refLetter','#episno_refLetter']);
+		disableForm('#form_refLetter');
+		button_state_refLetter($(this).data('oper'));
+	
+	});
+	
+	//////////////////////////////////////parameter for saving url//////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
-
-	///////////////////////////////////jqGridAddNotes///////////////////////////////////////////////////
+	
+	///////////////////////////////////////////jqGridAddNotes///////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
 		editurl: "./doctornote/form",
@@ -137,8 +232,8 @@ $(document).ready(function () {
 			$("#jqGridAddNotes_iledit").click();
 		},
 	});
-
-	//////////////////////////////////////////myEditOptions////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////myEditOptions////////////////////////////////////////////////////
 	var myEditOptions_add = {
 		keys: true,
 		extraparam:{
@@ -146,14 +241,14 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh_addnotes").hide();
-
+			
 			$("input[name='additionalnote']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridAddNotes_ilsave').click();
 				/*addmore_jqgrid.state = true;
 				$('#jqGrid_ilsave').click();*/
 			});
-
+			
 		},
 		aftersavefunc: function (rowid, response, options) {
 			// addmore_jqgrid.more=true; //only addmore after save inline
@@ -169,10 +264,10 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
-
+			
 			let data = $('#jqGridAddNotes').jqGrid ('getRowData', rowid);
 			console.log(data);
-
+			
 			let editurl = "./doctornote/form?"+
 				$.param({
 					episno:$('#episno_doctorNote').val(),
@@ -188,8 +283,8 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
-	//////////////////////////////////////////jqGridPagerAddNotes////////////////////////////////////////////////
+	
+	///////////////////////////////////////////////jqGridPagerAddNotes///////////////////////////////////////////////
 	$("#jqGridAddNotes").inlineNav('#jqGridPagerAddNotes', {
 		add: true,
 		edit: false,
@@ -239,8 +334,8 @@ $(document).ready(function () {
 			refreshGrid("#jqGridAddNotes", urlParam_AddNotes);
 		},
 	});
-
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////end grid/////////////////////////////////////////////////
 	
 });
 
@@ -379,6 +474,34 @@ function button_state_doctorNote(state){
 
 }
 
+// button_state_refLetter('empty');
+function button_state_refLetter(state){
+	switch(state){
+		case 'empty':
+			$("#toggle_refLetter").removeAttr('data-toggle');
+			$('#cancel_refLetter').data('oper','add');
+			$('#new_refLetter,#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
+			break;
+		case 'add':
+			$("#toggle_refLetter").attr('data-toggle','collapse');
+			$('#cancel_refLetter').data('oper','add');
+			$("#new_refLetter").attr('disabled',false);
+			$('#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
+			break;
+		case 'edit':
+			$("#toggle_refLetter").attr('data-toggle','collapse');
+			$('#cancel_refLetter').data('oper','edit');
+			$("#edit_refLetter").attr('disabled',false);
+			$('#save_refLetter,#cancel_refLetter,#new_refLetter').attr('disabled',true);
+			break;
+		case 'wait':
+			$("#toggle_refLetter").attr('data-toggle','collapse');
+			$("#save_refLetter,#cancel_refLetter").attr('disabled',false);
+			$('#edit_refLetter,#new_refLetter').attr('disabled',true);
+			break;
+	}
+}
+
 var dateParam_docnote,doctornote_docnote,curr_obj;
 //screen bedmanagement//
 function populate_doctorNote(obj,rowdata){
@@ -461,6 +584,48 @@ function populate_doctorNote_currpt(obj){
     // });
 }
 
+function populate_refLetter(obj){
+	emptyFormdata(errorField,"#form_docNoteRef");
+	
+	// form_docNoteRef
+	$('#mrn_docNoteRef').val(obj.MRN);
+	$("#episno_docNoteRef").val(obj.Episno);
+	
+	var urlparam={
+		action:'get_table_docNoteRef',
+		mrn:$('#mrn_docNoteRef').val(),
+		episno:$("#episno_docNoteRef").val(),
+		recorddate:$("#recorddate_docNoteRef").val()
+	}
+	
+	var postobj={
+		_token : $('#csrf_token').val(),
+		mrn:$('#mrn_docNoteRef').val(),
+		episno:$("#episno_docNoteRef").val()
+	};
+	
+	$.post( "./doctornote/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+		
+	},'json').fail(function(data) {
+		alert('there is an error');
+	}).done(function(data){
+		if(!$.isEmptyObject(data)){
+			// button_state_refLetter('edit');
+			textare_init_doctornote();
+			getBMI();
+			if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRef",data.episode);
+			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRef",data.pathealth);
+			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRef",data.pathistory);
+			if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
+			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
+			// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
+		}else{
+			// button_state_refLetter('add');
+			textare_init_doctornote();
+		}
+	});
+}
+
 //screen emergency//
 function populate_doctorNote_emergency(obj,rowdata){
 	curr_obj=obj;
@@ -525,7 +690,7 @@ function on_toggling_curr_past(obj = curr_obj){
 	}
 }
 
-function autoinsert_rowdata_doctorNote(form,rowData){
+function autoinsert_rowdata(form,rowData){
 	$.each(rowData, function( index, value ) {
 		var input=$(form+" [name='"+index+"']");
 		if(input.is("[type=radio]")){
@@ -547,54 +712,129 @@ function autoinsert_rowdata_doctorNote(form,rowData){
 
 function saveForm_doctorNote(callback){
 	var saveParam={
-        action:'save_table_doctornote',
-        oper:$("#cancel_doctorNote").data('oper')
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	// sex_edit : $('#sex_edit').val(),
-    	// idtype_edit : $('#idtype_edit').val()
-
-    };
-
+		action:'save_table_doctornote',
+		oper:$("#cancel_doctorNote").data('oper')
+	}
+	var postobj={
+		_token : $('#csrf_token').val(),
+		// sex_edit : $('#sex_edit').val(),
+		// idtype_edit : $('#idtype_edit').val()
+	
+	};
+	
 	values = $("#formDoctorNote").serializeArray();
 	
 	values = values.concat(
-        $('#formDoctorNote input[type=checkbox]:not(:checked)').map(
-        function() {
-            return {"name": this.name, "value": 0}
-        }).get()
-    );
-
-    values = values.concat(
-        $('#formDoctorNote input[type=checkbox]:checked').map(
-        function() {
-            return {"name": this.name, "value": 1}
-        }).get()
+		$('#formDoctorNote input[type=checkbox]:not(:checked)').map(
+		function() {
+			return {"name": this.name, "value": 0}
+		}).get()
 	);
 	
 	values = values.concat(
-        $('#formDoctorNote input[type=radio]:checked').map(
-        function() {
-            return {"name": this.name, "value": this.value}
-        }).get()
-    );
-
-    values = values.concat(
-        $('#formDoctorNote select').map(
-        function() {
-            return {"name": this.name, "value": this.value}
-        }).get()
+		$('#formDoctorNote input[type=checkbox]:checked').map(
+		function() {
+			return {"name": this.name, "value": 1}
+		}).get()
 	);
-
-    $.post( "./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
-        
-    },'json').fail(function(data) {
-        callback(data);
-    }).success(function(data){
-        callback(data);
-    });
+	
+	values = values.concat(
+		$('#formDoctorNote input[type=radio]:checked').map(
+		function() {
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#formDoctorNote select').map(
+		function() {
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	$.post( "./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+		
+	},'json').fail(function(data) {
+		callback(data);
+	}).success(function(data){
+		callback(data);
+	});
 }
+
+function saveForm_refLetter(callback){
+	var saveParam={
+		action:'save_refLetter',
+		oper:$("#cancel_refLetter").data('oper')
+	}
+	var postobj={
+		_token : $('#csrf_token').val(),
+		// sex_edit : $('#sex_edit').val(),
+		// idtype_edit : $('#idtype_edit').val()
+	
+	};
+	
+	values = $("#form_refLetter").serializeArray();
+	
+	values = values.concat(
+		$('#form_refLetter input[type=checkbox]:not(:checked)').map(
+		function() {
+			return {"name": this.name, "value": 0}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetter input[type=checkbox]:checked').map(
+		function() {
+			return {"name": this.name, "value": 1}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetter input[type=radio]:checked').map(
+		function() {
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	values = values.concat(
+		$('#form_refLetter select').map(
+		function() {
+			return {"name": this.name, "value": this.value}
+		}).get()
+	);
+	
+	$.post( "./doctornote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+		
+	},'json').fail(function(data) {
+		callback(data);
+	}).success(function(data){
+		callback(data);
+	});
+}
+
+// function getdata_refLetter(){
+//     var urlparam={
+//         action:'get_table_refLetter',
+//     }
+    
+//     var postobj={
+//         _token : $('#csrf_token').val(),
+//         mrn:$('#mrn_refLetter').val(),
+//         episno:$("#episno_refLetter").val()
+//     };
+    
+//     $.post( "./doctornote/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+        
+//     },'json').fail(function(data) {
+//         alert('there is an error');
+//     }).done(function(data){
+//         if(!$.isEmptyObject(data)){
+//             button_state_refLetter('edit');
+//         }else{
+//             button_state_refLetter('add');
+//         }
+//     });
+// }
 
 var docnote_date_tbl = $('#docnote_date_tbl').DataTable({
 	"ajax": "",
@@ -702,26 +942,28 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	$('#mrn_doctorNote').val(data.mrn);
 	$("#episno_doctorNote").val(data.episno);
 	$("#recorddate_doctorNote").val(data.date);
+	$("#recorddate_docNoteRef").val(data.date);
 
     doctornote_docnote.mrn = data.mrn;
     doctornote_docnote.episno = data.episno;
-    doctornote_docnote.recorddate = data.date;
+	doctornote_docnote.recorddate = data.date;
+	// urlparam.recorddate = data.date;
 
     $.get( "./doctornote/table?"+$.param(doctornote_docnote), function( data ) {
 			
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
-			if(!emptyobj_(data.episode))autoinsert_rowdata_doctorNote("#formDoctorNote",data.episode);
-			if(!emptyobj_(data.pathealth))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealth);
+			if(!emptyobj_(data.episode))autoinsert_rowdata("#formDoctorNote",data.episode);
+			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#formDoctorNote",data.pathealth);
 			if(!emptyobj_(data.pathealth))$('#formDoctorNote span#doctorcode').text(data.pathealth.doctorcode);
-			if(!emptyobj_(data.pathistory))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathistory);
-			if(!emptyobj_(data.patexam))autoinsert_rowdata_doctorNote("#formDoctorNote",data.patexam);
-			if(!emptyobj_(data.episdiag))autoinsert_rowdata_doctorNote("#formDoctorNote",data.episdiag);
-			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata_doctorNote("#formDoctorNote",data.pathealthadd);
+			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#formDoctorNote",data.pathistory);
+			if(!emptyobj_(data.patexam))autoinsert_rowdata("#formDoctorNote",data.patexam);
+			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#formDoctorNote",data.episdiag);
+			if(!emptyobj_(data.pathealthadd))autoinsert_rowdata("#formDoctorNote",data.pathealthadd);
 			refreshGrid('#jqGridAddNotes',urlParam_AddNotes,'add_notes');
 			getBMI();
 			textare_init_doctornote();
-
+			
 			// datable_medication.clear().draw();
 			// datable_medication.rows.add(data.transaction.rows).draw();
 		}

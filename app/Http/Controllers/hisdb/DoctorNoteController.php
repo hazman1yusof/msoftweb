@@ -57,7 +57,7 @@ class DoctorNoteController extends defaultController
     }
 
     public function form(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_doctornote':
@@ -69,16 +69,19 @@ class DoctorNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+                
             case 'get_table_doctornote':
                 return $this->get_table_doctornote($request);
-
+            
             case 'doctornote_save':
                 return $this->add_notes($request);
-
+            
             case 'doctornote_transaction_save':
                 return $this->doctornote_transaction_save($request);
-
+            
+            case 'get_table_docNoteRef':
+                return $this->get_table_docNoteRef($request);
+            
             default:
                 return 'error happen..';
         }
@@ -732,6 +735,100 @@ class DoctorNoteController extends defaultController
         $responce->transaction = json_decode($this->get_transaction_table($request));
 
         return json_encode($responce);
+    }
+    
+    public function get_table_docNoteRef(Request $request){
+        
+        $responce = new stdClass();
+        
+        $episode_obj = DB::table('hisdb.episode')
+            ->select('diagfinal as diagfinal_ref')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+        
+        if(!empty($request->recorddate) && $request->recorddate != '-'){
+            $pathealth_obj = DB::table('hisdb.pathealth')
+                ->select(
+                    'complain as complain_ref',
+                    'clinicnote as clinicnote_ref',
+                    'drugh as drugh_ref',
+                    'allergyh as allergyh_ref',
+                    'followuptime as followuptime_ref',
+                    'followupdate as followupdate_ref',
+                    'plan_ as plan_ref',
+                    'height as height_ref',
+                    'weight as weight_ref',
+                    'bp_sys1 as bp_sys1_ref',
+                    'bp_dias2 as bp_dias2_ref',
+                    'pulse as pulse_ref',
+                    'temperature as temperature_ref',
+                    'respiration as respiration_ref',
+                )
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                // ->orderBy('recordtime','desc');
+            
+            $pathistory_obj = DB::table('hisdb.pathistory')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+            
+            $patexam_obj = DB::table('hisdb.patexam')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+        }
+        
+        $episdiag_obj = DB::table('hisdb.episdiag')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+        
+        $pathealthadd_obj = DB::table('hisdb.pathealthadd')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+        
+        if($episode_obj->exists()){
+            $episode_obj = $episode_obj->first();
+            $responce->episode = $episode_obj;
+        }
+        
+        if(!empty($request->recorddate) && $request->recorddate != '-'){
+            if($pathealth_obj->exists()){
+                $pathealth_obj = $pathealth_obj->first();
+                $responce->pathealth = $pathealth_obj;
+            }
+            
+            if($pathistory_obj->exists()){
+                $pathistory_obj = $pathistory_obj->first();
+                $responce->pathistory = $pathistory_obj;
+            }
+            
+            if($patexam_obj->exists()){
+                $patexam_obj = $patexam_obj->first();
+                $responce->patexam = $patexam_obj;
+            }
+        }
+        
+        if($episdiag_obj->exists()){
+            $episdiag_obj = $episdiag_obj->first();
+            $responce->episdiag = $episdiag_obj;
+        }
+        
+        if($pathealthadd_obj->exists()){
+            $pathealthadd_obj = $pathealthadd_obj->first();
+            $responce->pathealthadd = $pathealthadd_obj;
+        }
+        
+        $responce->transaction = json_decode($this->get_transaction_table($request));
+        
+        return json_encode($responce);
+        
     }
 
     public function dialog_icd(Request $request){

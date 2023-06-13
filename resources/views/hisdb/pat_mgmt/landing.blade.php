@@ -325,11 +325,17 @@
 		}
 
 		.paneldiv{
-/*		    padding-top: 5px !important;*/
-		    overflow-y: auto;
-		    height: calc(100vh - 70px);
+			/* padding-top: 5px !important; */
+			overflow-y: auto;
+			height: calc(100vh - 70px);
 		}
-
+		
+		.paneldiv2{
+			/* padding-top: 5px !important; */
+			overflow-y: auto;
+			height: 639px;
+		}
+		
 		.epis_name_big{
 			display: block;
 		    min-height: 30px;

@@ -76,7 +76,7 @@
 
                                 <div class="form-group">
                                     <label class="col-md-2 control-label" for="complain">Patient Complaint</label>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <input id="complain" name="complain" type="text" class="form-control input-sm">
                                     </div>
                                     
@@ -103,8 +103,10 @@
                                                 <label class="form-check-label" for="past">Past History</label>
                                             </label>
                                         </div>
-                                    </div> 
-
+                                    </div>
+                                    
+                                    <button type="button" id="referLetter" style="margin-left: 10px; margin-top: 10px;">Referral Letter</button>
+                                    
                                     <!-- <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span> -->
                                 </div>
 
@@ -294,14 +296,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- to add spaces between panels -->
-                                        <div class="panel panel-info" style="height: 550px;border: 0;box-shadow: none;">
-                                            <div class="panel-body">
-                                            </div>
-                                        </div>
-                                        <!-- to add spaces between panels -->
-
-                                        <div class="panel panel-info">
+                                        <div class="panel panel-info" style="margin-top: 389px;">
                                             <div class="panel-body">
 
                                                 <div class="form-group col-md-12">
@@ -363,4 +358,376 @@
 			</div>
 		</div>
 	</div>	
+</div>
+
+<div id="dialogForm" title="Referral Letter">
+
+    <div class='col-md-6' style="padding-left: 0px; padding-right: 10px;">
+        <div class="panel panel-default">
+            <div class="panel-heading text-center" style="padding-top: 20px; padding-bottom: 20px;">
+                
+                <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                    id="btn_grp_edit_refLetter"
+                    style="position: absolute;
+                            padding: 0 0 0 0;
+                            right: 40px;
+                            top: 5px;">
+                    <button type="button" class="btn btn-default" id="new_refLetter">
+                        <span class="fa fa-plus-square-o"></span> New
+                    </button>
+                    <button type="button" class="btn btn-default" id="edit_refLetter">
+                        <span class="fa fa-edit fa-lg"></span> Edit
+                    </button>
+                    <button type="button" class="btn btn-default" data-oper='add' id="save_refLetter">
+                        <span class="fa fa-save fa-lg"></span> Save
+                    </button>
+                    <button type="button" class="btn btn-default" id="cancel_refLetter">
+                        <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                    </button>
+                </div>
+
+            </div>
+            <div class="panel-body">
+
+                <form class='form-horizontal' style='width:99%' id='form_refLetter'>
+                
+                    <!-- <input id="idno_refLetter" name="idno_refLetter" type="hidden"> -->
+                    <input id="mrn_refLetter" name="mrn_refLetter" type="hidden">
+                    <input id="episno_refLetter" name="episno_refLetter" type="hidden">
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                        <div class="form-group col-md-5">
+                            <input id="ltr_date" name="ltr_date" type="date" class="form-control input-sm">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                        <div class="form-group col-md-5">
+                            <textarea id="ltr_addr" name="ltr_addr" rows="3" class="form-control input-sm"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 7px;">
+                        <div class="form-inline">
+                            Dear Dr. <input id="dr_name" name="dr_name" type="text" class="form-control input-sm">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 7px;">
+                        <textarea id="ltr_content" name="ltr_content" rows="3" class="form-control input-sm"></textarea>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                        <div class="form-group">
+                            <div class="col-md-1 control-label" for="ltr_diag">Diagnosis:</div>  
+                            <div class="col-md-11" style="padding-left: 30px;">
+                                <textarea id="ltr_diag" name="ltr_diag" rows="3" class="form-control input-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                        <div class="form-group">
+                            <div class="col-md-1 control-label" for="ltr_plan">Plan:</div>  
+                            <div class="col-md-11" style="padding-left: 3px;">
+                                <textarea id="ltr_plan" name="ltr_plan" rows="3" class="form-control input-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                        <div class="form-group">
+                            <div class="col-md-1 control-label" for="ltr_prescrption">Prescription:</div>  
+                            <div class="col-md-11" style="padding-left: 40px;">
+                                <textarea id="ltr_prescrption" name="ltr_prescrption" rows="3" class="form-control input-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients. <br><br>
+                    
+                    Sincerely, <br>
+                    
+                    <div class="form-inline">
+                        Dr. <input id="dr_name2" name="dr_name2" type="text" class="form-control input-sm">
+                    </div> <br>
+                                
+                </form>
+                
+            </div>
+        </div>
+    </div>
+          
+    <div class="col-md-6" style="padding-left: 10px; padding-right: 0px;">
+        <div class="panel panel-info">
+            <!-- <div class="panel-heading text-center">REFERRAL LETTER</div> -->
+            <div class="panel-body paneldiv2" style="overflow-y: auto; padding-left: 0px; padding-right: 0px;">
+            
+                <form class='form-horizontal' style='width:99%' id='form_docNoteRef'>
+                
+                    <!-- <input id="idno_docNoteRef" name="idno_docNoteRef" type="hidden"> -->
+                    <input id="mrn_docNoteRef" name="mrn_docNoteRef" type="hidden">
+                    <input id="episno_docNoteRef" name="episno_docNoteRef" type="hidden">
+                    <input id="recorddate_docNoteRef" name="recorddate_docNoteRef" type="hidden">
+                
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="complain_ref">Patient Complaint</label>
+                        <div class="col-md-9">
+                            <input id="complain_ref" name="complain_ref" type="text" class="form-control input-sm">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12" style="padding:0px;">
+                        <div class='col-md-8'>
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center">CLINICAL NOTE</div>
+                                <div class="panel-body">
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="clinicnote_ref" style="padding-bottom:5px">History of Presenting Complaint</label>
+                                            <textarea id="clinicnote_ref" name="clinicnote_ref" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
+                                            <textarea id="pmh" name="pmh" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="drugh_ref" style="padding-bottom:5px">Drug History</label>
+                                            <textarea id="drugh_ref" name="drugh_ref" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="allergyh_ref" style="padding-bottom:5px">Allergy History</label>
+                                            <textarea id="allergyh_ref" name="allergyh_ref" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
+                                            <textarea id="socialh" name="socialh" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
+                                            <textarea id="fmh" name="fmh" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="margin-top: 10px">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading text-center">FOLLOW UP</div>
+                                            <div class="panel-body">
+                                                
+                                                <div class="form-group col-md-12">
+                                                    <label class="control-label" for="followuptime_ref" style="padding-bottom:5px">Time</label>
+                                                    <input id="followuptime_ref" name="followuptime_ref" type="time" class="form-control input-sm">
+                                                </div>
+                                                
+                                                <div class="form-group col-md-12">
+                                                    <label class="control-label" for="followupdate_ref" style="padding-bottom:5px">Date</label>
+                                                    <input id="followupdate_ref" name="followupdate_ref" type="date" class="form-control input-sm">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center">Physical Examination</div>
+                                <div class="panel-body">
+                                    
+                                    <div class="form-group">
+                                        <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
+                                        <div class="col-md-12">
+                                            <textarea id="examination" name="examination" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center">Diagnosis</div>
+                                <div class="panel-body">
+                                    
+                                    <div class="form-group">
+                                        <!-- <label class="col-md-3 control-label" for="diagfinal_ref">Diagnosis</label> -->
+                                        <div class="col-md-12">
+                                            <textarea id="diagfinal_ref" name="diagfinal_ref" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" for="icdcode" style="text-align: left;">Primary ICD</label>
+                                <div class="col-md-9">
+                                    <div class='input-group'>
+                                        <input id="icdcode" name="icdcode" type="text" class="form-control input-sm">
+                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                                    </div>
+                                    <span class="help-block"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center">Plan</div>
+                                <div class="panel-body">
+                                    
+                                    <div class="form-group">
+                                        <!-- <label class="col-md-3 control-label" for="plan_ref">Plan</label> -->
+                                        <div class="col-md-12">
+                                            <textarea id="plan_ref" name="plan_ref" type="text" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4" style="padding:0 0 0 0">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center">Vital Sign</div>
+                                <div class="panel-body">
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="height_ref" style="padding-bottom:5px">Height</label>
+                                        <div class="input-group">
+                                            <input id="height_ref" name="height_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                            <span class="input-group-addon">cm</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="weight_ref" style="padding-bottom:5px">Weight</label>
+                                        <div class="input-group">
+                                            <input id="weight_ref" name="weight_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                            <span class="input-group-addon">kg</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="bmi" style="padding-bottom:5px">BMI</label>
+                                        <input id="bmi" name="bmi" type="number" class="form-control input-sm" rdonly>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="bp_ref" style="padding-bottom:5px">BP</label>
+                                        <div class="input-group">
+                                            <input id="bp_sys1_ref" name="bp_sys1_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                            <input id="bp_dias2_ref" name="bp_dias2_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                            <span class="input-group-addon">mmHg</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="pulse_ref" style="padding-bottom:5px">Pulse Rate</label>
+                                        <input id="pulse_ref" name="pulse_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="temperature_ref" style="padding-bottom:5px">Temperature</label>
+                                        <div class="input-group">
+                                            <input id="temperature_ref" name="temperature_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                            <span class="input-group-addon">°C</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="respiration_ref" style="padding-bottom:5px">Respiration</label>
+                                        <input id="respiration_ref" name="respiration_ref" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="panel panel-info" style="margin-top: 483px;">
+                                <div class="panel-body">
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="adduser" style="padding-bottom:5px">Added by</label>  
+                                        <input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="control-label" for="adddate" style="padding-bottom:5px">Date</label>
+                                        <input id="adddate" name="adddate" type="text" class="form-control input-sm" rdonly>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">MEDICATION</div>
+                            <div class="panel-body" style="overflow: auto;padding: 0px;" id="jqGrid_trans_doctornote_c">
+                                <table id="jqGrid_trans_doctornote" class="table table-striped"></table>
+                                <div id="jqGrid_trans_doctornotePager"></div>
+                                <!-- <table id="medication_tbl" class="ui selectable celled table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Items</th>
+                                            <th>Qty</th>
+                                            <th>Remarks</th>
+                                            <th>Dosage</th>
+                                            <th>Frequency</th>
+                                            <th>Instruction</th>
+                                            <th>Indicator</th>
+                                        </tr>
+                                    </thead>
+                                </table> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+        
+    <!-- <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-body">
+            
+                <textarea id="letter" name="letter" rows="30" cols="90" class="form-control input-sm">
+                
+                Dear Dr. 
+
+                Diagnosis: 
+
+                Plan: 
+
+                Prescription: 
+
+                If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients.
+
+                Sincerely,
+
+                Dr. 
+
+                </textarea>
+                
+            </div>
+        </div>
+    </div> -->
+
 </div>
