@@ -876,7 +876,7 @@ function refno_class(){
     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
         let refno_item = self.refno_table.row( this ).data();
         $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
-        $('#txt_epis_refno').val(refno_item["debtorcode"]);
+        $('#txt_epis_refno').val(refno_item["refno"]);
         
         $('#mdl_reference').modal('hide');
     });
@@ -980,21 +980,23 @@ function refno_class(){
             };
             
             $.post('pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                $("#glform").trigger('reset');
-                $('#mdl_new_gl').modal('hide');
-                $("#btnglsave").prop('disabled',false);
-                self.show_mdl();
-            }).fail(function(data) {
+                
+            },'json').fail(function(data) {
                 alert(data.responseText);
                 $("#btnglsave").prop('disabled',false);
             }).success(function(data){
+                $('#txt_epis_our_refno').val(data.ourrefno);
+                $('#txt_epis_refno').val(data.refno);
+                $('#mdl_new_gl').modal('hide');
+                $('#mdl_reference').modal('hide');
+                $("#btnglsave").prop('disabled',false);
+
+                $("#glform").trigger('reset');
             });
         }
     });
 
 }
-
-
 
 $("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type").on('show.bs.modal', function () {
     $(this).eq(0).css('z-index','120');

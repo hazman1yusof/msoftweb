@@ -929,6 +929,7 @@ class PurchaseOrderController extends defaultController
         }
 
         $purordhd = DB::table('material.purordhd')
+            ->where('compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->first();
 
@@ -936,6 +937,9 @@ class PurchaseOrderController extends defaultController
             ->select('podt.compcode', 'podt.recno', 'podt.lineno_', 'podt.pricecode', 'podt.itemcode', 'p.description', 'podt.uomcode', 'podt.pouom', 'podt.qtyorder', 'podt.unitprice', 'podt.taxcode', 'podt.perdisc', 'podt.amtdisc', 'podt.amtslstax as tot_gst','podt.netunitprice', 'podt.totamount','podt.amount', 'podt.rem_but AS remarks_button', 'podt.remarks', 'podt.recstatus', 'podt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'podt.itemcode', '=', 'p.itemcode')
             ->leftJoin('material.uom as u', 'podt.uomcode', '=', 'u.uomcode')
+            ->where('podt.compcode','=',session('compcode'))
+            ->where('p.compcode','=',session('compcode'))
+            ->where('u.compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->get();
 
@@ -953,6 +957,8 @@ class PurchaseOrderController extends defaultController
             ->where('deptcode','=',$purordhd->deldept)
             ->first();
 
+            //dd($deldept);
+
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
         $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
@@ -963,11 +969,11 @@ class PurchaseOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
 
-        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier'));
+        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept'));
         return $pdf->stream();      
 
         
-        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier'));
+        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept'));
     }
 
      // public function toGetAllpurreqhd($recno){

@@ -70,7 +70,7 @@
 
 
 	<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="episodelist_patenq_row">
-			@include('hisdb.pat_enq.episodelist_patenq')
+		@include('hisdb.pat_enq.episodelist_patenq')
 	</div>
 
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
@@ -101,7 +101,10 @@
 	</script>
 
 	<script type="text/javascript" src="js/hisdb/pat_enq/pat_enq_main.js"></script>
+
 	<script type="text/javascript" src="js/hisdb/pat_enq/episodelist_patenq.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/gl_script.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/epno_medc.js"></script>
 
 	</div>
 

@@ -870,21 +870,6 @@
                                     <li><a href="Monthly Amount" data-toggle="tab">Monthly Amount</a></li> -->
                                 </ul>
                                 <input type="hidden" id="newgl-gltype" name="newgl-gltype">
-
-                                <!-- <div class="form-group">
-                                    <div class="col-md-6">
-                                        <small for="newgl-gltype">GL TYPE</small>
-                                        <select id="newgl-gltype" name="newgl-gltype" class="form-control form-mandatory" disabled required>
-                                            <option value="Multi Volume">Multi Volume</option>
-                                            <option value="Multi Date">Multi Date</option>
-                                            <option value="Open">Open</option>
-                                            <option value="Single Use">Single Use</option>
-                                            <option value="Limit Amount">Limit Amount</option>
-                                            <option value="Monthly Amount">Monthly Amount</option>
-                                            <option value="Single Use">Single Use</option>
-                                        </select>
-                                    </div>
-                                </div> -->
                                 <div class="form-group">
                                     <div class="col-md-4" id="newgl-effdate_div">
                                         <small for="newgl-effdate">EFFECTIVE DATE:</small>
@@ -912,7 +897,7 @@
                                 <div class="form-group">
                                     <div class="col-md-6">
                                         <small for="newgl-ourrefno">OUR REFERENCE</small>
-                                        <input class="form-control" id="newgl-ourrefno" name="newgl-ourrefno" placeholder="" type="text">
+                                        <input class="form-control" id="newgl-ourrefno" name="newgl-ourrefno" placeholder="" type="text" readonly>
                                     </div>
                                     <div class="col-md-6">
                                         <small for="newgl-remark">REMARK</small>

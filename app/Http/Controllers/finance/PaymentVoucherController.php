@@ -992,6 +992,53 @@ use PDF;
                     'recstatus' => 'ACTIVE'
                 ]);
         }
+        //cbtran
+
+        //1st step add cbtran credit
+        DB::table('finance.cbtran')
+            ->insert([  'compcode' => $apacthdr_obj->compcode, 
+                        'bankcode' => $apacthdr_obj->bankcode, 
+                        'source' => $apacthdr_obj->source, 
+                        'trantype' => $apacthdr_obj->trantype, 
+                        'auditno' => $apacthdr_obj->auditno, 
+                        'postdate' => $apacthdr_obj->actdate, 
+                        'year' => $yearperiod->year, 
+                        'period' => $yearperiod->period, 
+                        'cheqno' => $apacthdr_obj->cheqno, 
+                        'amount' => -$apacthdr_obj->amount, 
+                        'remarks' => strtoupper($apacthdr_obj->remarks), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'reference' => 'Pay To :'. ' ' .$apacthdr_obj->payto  .' '. $apacthdr_obj->remarks, 
+                        'recstatus' => 'ACTIVE' 
+                    ]);
+
+        //1st step, 2nd phase, update bank detaild
+        if($this->isCBtranExist($apacthdr_obj->bankcode,$yearperiod->year,$yearperiod->period)){
+
+            $totamt = $this->getCbtranTotamt($apacthdr_obj->bankcode,$yearperiod->year,$yearperiod->period);
+
+            DB::table('finance.bankdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('year','=',$yearperiod->year)
+                ->where('bankcode','=',$apacthdr_obj->bankcode)
+                ->update([
+                    "actamount".$yearperiod->period => $totamt->amount
+                ]);
+
+        }else{
+
+            DB::table('finance.bankdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'bankcode' => $apacthdr_obj->bankcode,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $totamt->amount,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+
+                    ]);
+        }
     }
 
     public function gltran_cancel($idno){
