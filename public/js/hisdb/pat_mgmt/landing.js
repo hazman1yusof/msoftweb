@@ -243,6 +243,7 @@ $(document).ready(function() {
                     populate_antenatal(rows[bootgrid_last_rowid]);
                     populate_paediatric(rows[bootgrid_last_rowid]);
                     populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
+                    populate_refLetter(rows[bootgrid_last_rowid]);
                     populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(rows[bootgrid_last_rowid]);
@@ -257,6 +258,7 @@ $(document).ready(function() {
                     populate_triage_currpt(rows[bootgrid_last_rowid]);
                     populate_antenatal(rows[bootgrid_last_rowid]);
                     populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
+                    populate_refLetter(rows[bootgrid_last_rowid]);
                     populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
                     populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
                 }else if($('#user_nurse').val() == '1'){
