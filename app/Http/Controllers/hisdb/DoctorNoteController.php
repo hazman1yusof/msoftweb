@@ -9,26 +9,26 @@ use DB;
 use Carbon\Carbon;
 
 class DoctorNoteController extends defaultController
-{   
-
+{
+    
     var $table;
     var $duplicateCode;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
         // $this->duplicateCode = "chgtype";
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('hisdb.doctornote.doctornote');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         switch($request->action){
-            case 'get_table_date_curr':          // for current
+            case 'get_table_date_curr':     // for current
                 return $this->get_table_date_curr($request);
             case 'get_table_date_past':     // for past history
                 return $this->get_table_date_past($request);
@@ -37,7 +37,7 @@ class DoctorNoteController extends defaultController
             case 'dialog_icd':
                 return $this->dialog_icd($request);
             
-            //transaction stuff
+            // transaction stuff
             case 'get_transaction_table':
                 return $this->get_transaction_table($request);
             case 'get_chgcode':
@@ -50,15 +50,17 @@ class DoctorNoteController extends defaultController
                 return $this->get_dosecode($request);
             case 'get_inscode':
                 return $this->get_inscode($request);
-
+            
             default:
                 return 'error happen..';
         }
     }
-
+    
     public function form(Request $request)
     {
+        
         DB::enableQueryLog();
+        
         switch($request->action){
             case 'save_table_doctornote':
                 switch($request->oper){
@@ -69,7 +71,7 @@ class DoctorNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
-                
+            
             case 'get_table_doctornote':
                 return $this->get_table_doctornote($request);
             
@@ -85,14 +87,15 @@ class DoctorNoteController extends defaultController
             default:
                 return 'error happen..';
         }
+    
     }
-
+    
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
@@ -103,7 +106,7 @@ class DoctorNoteController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+            
             DB::table('hisdb.patexam')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -117,17 +120,17 @@ class DoctorNoteController extends defaultController
                         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+            
             $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
                     ->where('loginid','=',session('username'));
-
+            
             $doctorcode=null;
             if($doctorcode_obj->exists()){
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
-
+            
             DB::table('hisdb.pathealth')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -155,7 +158,7 @@ class DoctorNoteController extends defaultController
                         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+            
             DB::table('hisdb.pathistory')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -172,7 +175,7 @@ class DoctorNoteController extends defaultController
                         'recorddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+            
             DB::table('hisdb.episdiag')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -182,22 +185,25 @@ class DoctorNoteController extends defaultController
                         'adduser'  => session('username'),
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+
     }
-
+    
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
@@ -208,7 +214,7 @@ class DoctorNoteController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+            
             // DB::table('hisdb.pathealthadd')
             //     ->insert([
             //         'compcode' => session('compcode'),
@@ -216,29 +222,29 @@ class DoctorNoteController extends defaultController
             //         'episno' => $request->episno_doctorNote,
             //         'additionalnote' => $request->additionalnote,
             //     ]);
-
+            
             $patexam = DB::table('hisdb.patexam')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
                 ->where('compcode','=',session('compcode'));
-
+            
             $pathealth = DB::table('hisdb.pathealth')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
                 ->where('compcode','=',session('compcode'));
-
+            
             $pathistory = DB::table('hisdb.pathistory')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate_doctorNote))
                 ->where('compcode','=',session('compcode'));
-
+            
             $episdiag = DB::table('hisdb.episdiag')
                 ->where('mrn','=',$request->mrn_doctorNote)
                 ->where('episno','=',$request->episno_doctorNote)
                 ->where('compcode','=',session('compcode'));
-
+            
             if($patexam->exists()){
                 $patexam->update([
                         'examination' => $request->examination,
@@ -260,17 +266,17 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
-
+            
             $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
                     ->where('loginid','=',session('username'));
-
+            
             $doctorcode=null;
             if($doctorcode_obj->exists()){
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
-
+            
             if($pathealth->exists()){
                 $pathealth
                     ->update([
@@ -321,7 +327,7 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
-
+            
             if($pathistory->exists()){
                 $pathistory
                     ->update([
@@ -351,7 +357,7 @@ class DoctorNoteController extends defaultController
                         'recordtime' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
-
+            
             if($episdiag->exists()){
                 $episdiag
                     ->update([
@@ -368,32 +374,35 @@ class DoctorNoteController extends defaultController
                         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             $queries = DB::getQueryLog();
             // dump($queries);
             
             DB::commit();
-
+            
             $responce = new stdClass();
             $responce->mrn = $request->mrn_doctorNote;
             $responce->episno = $request->episno_doctorNote;
             $responce->recorddate = $request->recorddate_doctorNote;
-
+            
             return json_encode($responce);
-
-
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+        
     }
-
+    
     public function get_transaction_table($request){
+        
         if($request->rows == null){
             $request->rows = 100;
         }
-
+        
         $table_chgtrx = DB::table('hisdb.chargetrx as trx') //ambil dari patmast balik
                             ->select('trx.auditno',
                                 'trx.chgcode as chg_code',
@@ -403,17 +412,17 @@ class DoctorNoteController extends defaultController
                                 'trx.doscode as dos_code',
                                 'trx.frequency as fre_code',
                                 'trx.drugindicator as dru_code',
-
+                                
                                 'chgmast.description as chg_desc',
                                 'instruction.description as ins_desc',
                                 'dose.dosedesc as dos_desc',
                                 'freq.freqdesc as fre_desc',
                                 'drugindicator.drugindcode as dru_desc')
-
+                            
                             ->where('trx.mrn' ,'=', $request->mrn)
                             ->where('trx.episno' ,'=', $request->episno)
                             ->where('trx.compcode','=',session('compcode'))
-
+                            
                             ->leftJoin('hisdb.chgmast', function($join) use ($request){
                                 $join = $join->on('chgmast.chgcode', '=', 'trx.chgcode')
                                                 ->where('chgmast.compcode','=',session('compcode'));
@@ -439,10 +448,10 @@ class DoctorNoteController extends defaultController
                             // ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
                             // ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
                             // ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator');
-
+        
         //////////paginate/////////
         $paginate = $table_chgtrx->paginate($request->rows);
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -451,22 +460,23 @@ class DoctorNoteController extends defaultController
         $responce->sql = $table_chgtrx->toSql();
         $responce->sql_bind = $table_chgtrx->getBindings();
         return json_encode($responce);
-
+        
     }
-
+    
     public function get_chgcode(Request $request){
+        
         // $pharcode = DB::table('sysdb.sysparam')
         //             ->where('compcode','=',session('compcode'))
         //             ->where('source','=','OE')
         //             ->where('trantype','=','PHAR')
         //             ->first();
-
+        
         $data = DB::table('hisdb.chgmast')
                     ->where('compcode','=',session('compcode'))
                     // ->where('chggroup','=',$pharcode->pvalue1)
                     ->where('active','=',1)
                     ->select('chgcode as code','description as description');
-
+        
         if(!empty($request->search)){
             $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
         }else{
@@ -476,13 +486,14 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         $responce->data = $data;
         return json_encode($responce);
-        
+    
     }
-
+    
     public function get_drugindcode(Request $request){
+        
         $data = DB::table('hisdb.drugindicator')
                 ->select('drugindcode as code','description as description');
-
+        
         if(!empty($request->search)){
             $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
         }else{
@@ -492,14 +503,15 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         $responce->data = $data;
         return json_encode($responce);
-        
+    
     }
-
+    
     public function get_freqcode(Request $request){
+        
         $data = DB::table('hisdb.freq')
                 ->select('freqcode as code','freqdesc as description')
                 ->where('compcode','=',session('compcode'));
-
+        
         if(!empty($request->search)){
             $data = $data->where('freqdesc','LIKE','%'.$request->search.'%')->first();
         }else{
@@ -509,14 +521,15 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         $responce->data = $data;
         return json_encode($responce);
-        
+    
     }
-
+    
     public function get_dosecode(Request $request){
+        
         $data = DB::table('hisdb.dose')
                 ->select('dosecode as code','dosedesc as description')
                 ->where('compcode','=',session('compcode'));
-
+        
         if(!empty($request->search)){
             $data = $data->where('dosedesc','LIKE','%'.$request->search.'%')->first();
         }else{
@@ -526,14 +539,15 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         $responce->data = $data;
         return json_encode($responce);
-        
+    
     }
-
+    
     public function get_inscode(Request $request){
+        
         $data = DB::table('hisdb.instruction')
                 ->select('inscode as code','description as description')
                 ->where('compcode','=',session('compcode'));
-
+        
         if(!empty($request->search)){
             $data = $data->where('description','LIKE','%'.$request->search.'%')->first();
         }else{
@@ -543,24 +557,24 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         $responce->data = $data;
         return json_encode($responce);
-        
+    
     }
-
+    
     public function get_table_date_curr(Request $request){
-
+        
         $responce = new stdClass();
-
+        
         $pathealth_obj = DB::table('hisdb.pathealth')
             ->select('mrn','episno','recordtime','adddate','adduser')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
-
+        
         if(!$pathealth_obj->exists()){
             $responce->data = [];
             return json_encode($responce);
         }
-
+        
         $episode_obj = DB::table('hisdb.episode as e')
             ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
             ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
@@ -575,13 +589,12 @@ class DoctorNoteController extends defaultController
             ->where('e.mrn','=',$request->mrn)
             ->where('e.episno','=',$request->episno)
             ->orderBy('p.adddate','desc');
-
         
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->get();
-
+            
             $data = [];
-
+            
             foreach ($episode_obj as $key => $value) {
                 if(!empty($value->adddate)){
                     $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
@@ -592,21 +605,23 @@ class DoctorNoteController extends defaultController
                 $date['episno'] = $value->episno;
                 $date['adduser'] = $value->adduser;
                 $date['doctorname'] = $value->doctorname;
-
+                
                 array_push($data,$date);
             }
-
+            
             $responce->data = $data;
         }else{
             $responce->data = [];
         }
-
+        
         return json_encode($responce);
+
     }
-
+    
     public function get_table_date_past(Request $request){
+        
         $responce = new stdClass();
-
+        
         $episode_obj = DB::table('hisdb.episode as e')
             ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
             ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
@@ -620,19 +635,18 @@ class DoctorNoteController extends defaultController
             ->where('e.compcode','=',session('compcode'))
             ->where('e.mrn','=',$request->mrn)
             ->orderBy('p.adddate','desc');
-
-
+        
         // $patexam_obj = DB::table('hisdb.pathealth')
         //     ->select('mrn','episno','recordtime','adddate','adduser')
         //     ->where('compcode','=',session('compcode'))
         //     ->where('mrn','=',$request->mrn)
         //     ->orderBy('adddate','desc');
-
+        
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->get();
-
+            
             $data = [];
-
+            
             foreach ($episode_obj as $key => $value) {
                 if(!empty($value->adddate)){
                     $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
@@ -648,28 +662,29 @@ class DoctorNoteController extends defaultController
                 }
                 $date['adduser'] = $value->adduser;
                 $date['doctorname'] = $value->doctorname;
-
+                
                 array_push($data,$date);
             }
-
+            
             $responce->data = $data;
         }else{
             $responce->data = [];
         }
-
+        
         return json_encode($responce);
+    
     }
-
+    
     public function get_table_doctornote(Request $request){
-
+        
         $responce = new stdClass();
-
+        
         $episode_obj = DB::table('hisdb.episode')
             ->select('diagfinal')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
-
+        
         if(!empty($request->recorddate) && $request->recorddate != '-'){
             $pathealth_obj = DB::table('hisdb.pathealth')
                 ->where('compcode','=',session('compcode'))
@@ -677,64 +692,65 @@ class DoctorNoteController extends defaultController
                 ->where('episno','=',$request->episno)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
                 // ->orderBy('recordtime','desc');
-
+            
             $pathistory_obj = DB::table('hisdb.pathistory')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
-
+            
             $patexam_obj = DB::table('hisdb.patexam')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
                 ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
         }
-
+        
         $episdiag_obj = DB::table('hisdb.episdiag')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
-
+        
         $pathealthadd_obj = DB::table('hisdb.pathealthadd')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
-
+        
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
         }
-
+        
         if(!empty($request->recorddate) && $request->recorddate != '-'){
             if($pathealth_obj->exists()){
                 $pathealth_obj = $pathealth_obj->first();
                 $responce->pathealth = $pathealth_obj;
             }
-
+            
             if($pathistory_obj->exists()){
                 $pathistory_obj = $pathistory_obj->first();
                 $responce->pathistory = $pathistory_obj;
             }
-
+            
             if($patexam_obj->exists()){
                 $patexam_obj = $patexam_obj->first();
                 $responce->patexam = $patexam_obj;
             }
         }
-
+        
         if($episdiag_obj->exists()){
             $episdiag_obj = $episdiag_obj->first();
             $responce->episdiag = $episdiag_obj;
         }
-
+        
         if($pathealthadd_obj->exists()){
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
         }
-
+        
         $responce->transaction = json_decode($this->get_transaction_table($request));
-
+        
         return json_encode($responce);
+    
     }
     
     public function get_table_docNoteRef(Request $request){
@@ -747,13 +763,22 @@ class DoctorNoteController extends defaultController
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
         
-        if(!empty($request->recorddate) && $request->recorddate != '-'){
+        $date_obj = DB::table('hisdb.pathealth')
+            // ->select('recorddate')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno)
+            ->first();
+            
+        // dd($date_obj->recorddate);
+        
+        if(!empty($date_obj->recorddate) && $date_obj->recorddate != '-'){
             $pathealth_obj = DB::table('hisdb.pathealth')
                 ->select(
                     'complain as complain_ref',
                     'clinicnote as clinicnote_ref',
-                    'drugh as drugh_ref',
-                    'allergyh as allergyh_ref',
+                    // 'drugh as drugh_ref',
+                    // 'allergyh as allergyh_ref',
                     'followuptime as followuptime_ref',
                     'followupdate as followupdate_ref',
                     'plan_ as plan_ref',
@@ -768,22 +793,31 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
                 // ->orderBy('recordtime','desc');
             
             $pathistory_obj = DB::table('hisdb.pathistory')
+                ->select(
+                    'pmh as pmh_ref',
+                    'drugh as drugh_ref',
+                    'allergyh as allergyh_ref',
+                    'socialh as socialh_ref',
+                    'fmh as fmh_ref'
+                )
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
             
             $patexam_obj = DB::table('hisdb.patexam')
+                ->select('examination as examination_ref')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')
+            ->select('icdcode as icdcode_ref')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
@@ -798,7 +832,7 @@ class DoctorNoteController extends defaultController
             $responce->episode = $episode_obj;
         }
         
-        if(!empty($request->recorddate) && $request->recorddate != '-'){
+        if(!empty($date_obj->recorddate) && $date_obj->recorddate != '-'){
             if($pathealth_obj->exists()){
                 $pathealth_obj = $pathealth_obj->first();
                 $responce->pathealth = $pathealth_obj;
@@ -830,29 +864,29 @@ class DoctorNoteController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function dialog_icd(Request $request){
-
+        
         $icdver = DB::table('sysdb.sysparam')
-                        ->select('pvalue1')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('source','=','MR')
-                        ->where('trantype','=','ICD')
-                        ->first();
-
+                    ->select('pvalue1')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('source','=','MR')
+                    ->where('trantype','=','ICD')
+                    ->first();
+        
         $table = DB::table('hisdb.diagtab')
                     ->where('type','=',$icdver->pvalue1)
                     ->orderBy('idno','asc');
-
+        
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
-
+            
             $count = array_count_values($searchCol_array);
             // dump($count);
-
+            
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
-
+                
                 $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
@@ -865,7 +899,7 @@ class DoctorNoteController extends defaultController
         }
         
         $paginate = $table->paginate($request->rows);
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -873,28 +907,29 @@ class DoctorNoteController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
-
+        
         return json_encode($responce);
+    
     }
-
+    
     public function add_notes(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $doctorcode_obj = DB::table('hisdb.doctor')
                     ->select('doctorcode')
                     ->where('compcode','=',session('compcode'))
                     ->where('loginid','=',session('username'));
-
+            
             $doctorcode=null;
             if($doctorcode_obj->exists()){
                 $doctorcode = $doctorcode_obj->first()->doctorcode;
             }
-
+            
             DB::table('hisdb.pathealthadd')
-                ->insert([  
+                ->insert([
                     'compcode' => session('compcode'),
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
@@ -902,43 +937,46 @@ class DoctorNoteController extends defaultController
                     'doctorcode'  => $doctorcode,
                     'adduser'  => session('username'),
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
-                    
                 ]);
-
-             DB::commit();
-
+             
+            DB::commit();
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
+    
     }
-
+    
     public function doctornote_transaction_save(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
+            
             $table = DB::table('hisdb.chargetrx');
-
+            
             $chgmast = DB::table('hisdb.chgmast')
                         ->where('compcode','=',session('compcode'))
                         ->where('chgcode','=',$request->chg_desc)
                         ->first();
-
+            
             $episode = DB::table('hisdb.episode')
                         ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->first();
-                        
+            
             $isudept = $episode->regdept;
-
+            
             if($request->oper == 'edit'){
                 $table->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->where('id','=',$request->id);
-
+                
                 $array_edit = [
                     'chgcode' => $request->chg_desc,
                     'chggroup' =>  $chgmast->chggroup,
@@ -952,7 +990,7 @@ class DoctorNoteController extends defaultController
                     'lastuser' => Auth::user()->username,
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
-
+                
                 $table->update($array_edit);
             }else if($request->oper == 'add'){
                 $array_insert = [
@@ -976,27 +1014,28 @@ class DoctorNoteController extends defaultController
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
-
+                
                 $table->insert($array_insert);
             }else if($request->oper == 'del'){
                 $table->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->where('id','=',$request->id)->delete();
             }
-
             
-
             $responce = new stdClass();
             $responce->success = 'success';
             echo json_encode($responce);
-
-             DB::commit();
-
+            
+            DB::commit();
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
+    
     }
-
+    
 }

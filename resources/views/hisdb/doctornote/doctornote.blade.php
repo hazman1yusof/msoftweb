@@ -492,8 +492,8 @@
                                     
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label class="control-label" for="pmh" style="padding-bottom:5px">Past Medical History</label>
-                                            <textarea id="pmh" name="pmh" type="text" class="form-control input-sm"></textarea>
+                                            <label class="control-label" for="pmh_ref" style="padding-bottom:5px">Past Medical History</label>
+                                            <textarea id="pmh_ref" name="pmh_ref" type="text" class="form-control input-sm"></textarea>
                                         </div>
                                     </div>
                                     
@@ -513,15 +513,15 @@
                                     
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label class="control-label" for="socialh" style="padding-bottom:5px">Social History</label>
-                                            <textarea id="socialh" name="socialh" type="text" class="form-control input-sm"></textarea>
+                                            <label class="control-label" for="socialh_ref" style="padding-bottom:5px">Social History</label>
+                                            <textarea id="socialh_ref" name="socialh_ref" type="text" class="form-control input-sm"></textarea>
                                         </div>
                                     </div>
                                     
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label class="control-label" for="fmh" style="padding-bottom:5px">Family History</label>
-                                            <textarea id="fmh" name="fmh" type="text" class="form-control input-sm"></textarea>
+                                            <label class="control-label" for="fmh_ref" style="padding-bottom:5px">Family History</label>
+                                            <textarea id="fmh_ref" name="fmh_ref" type="text" class="form-control input-sm"></textarea>
                                         </div>
                                     </div>
                                     
@@ -552,9 +552,9 @@
                                 <div class="panel-body">
                                     
                                     <div class="form-group">
-                                        <!-- <label class="col-md-3 control-label" for="examination">Physical Examination</label> -->
+                                        <!-- <label class="col-md-3 control-label" for="examination_ref">Physical Examination</label> -->
                                         <div class="col-md-12">
-                                            <textarea id="examination" name="examination" type="text" class="form-control input-sm"></textarea>
+                                            <textarea id="examination_ref" name="examination_ref" type="text" class="form-control input-sm"></textarea>
                                         </div>
                                     </div>
                                     
@@ -576,10 +576,10 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="col-md-3 control-label" for="icdcode" style="text-align: left;">Primary ICD</label>
+                                <label class="col-md-3 control-label" for="icdcode_ref" style="text-align: left;">Primary ICD</label>
                                 <div class="col-md-9">
                                     <div class='input-group'>
-                                        <input id="icdcode" name="icdcode" type="text" class="form-control input-sm">
+                                        <input id="icdcode_ref" name="icdcode_ref" type="text" class="form-control input-sm">
                                         <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
                                     </div>
                                     <span class="help-block"></span>
@@ -623,8 +623,8 @@
                                     </div>
 
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="bmi" style="padding-bottom:5px">BMI</label>
-                                        <input id="bmi" name="bmi" type="number" class="form-control input-sm" rdonly>
+                                        <label class="control-label" for="bmi_ref" style="padding-bottom:5px">BMI</label>
+                                        <input id="bmi_ref" name="bmi_ref" type="number" class="form-control input-sm" rdonly>
                                     </div>
 
                                     <div class="form-group col-md-12">
