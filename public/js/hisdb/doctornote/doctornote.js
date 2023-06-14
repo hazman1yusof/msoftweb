@@ -15,6 +15,19 @@ var urlParam_AddNotes = {
 }
 
 $(document).ready(function () {
+
+	$("#jqGrid_trans_doctornote_ref").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid_trans_doctornote").jqGrid('getGridParam','colModel'),
+		autowidth: false,
+		width: 900,
+		height: 80,
+		rowNum: 30,
+		pager:'#jqGrid_trans_doctornote_refPager',
+		viewrecords: true,
+		loadonce:false,
+		scroll: true,
+	});
 	
 	textare_init_doctornote();
 	
@@ -99,7 +112,7 @@ $(document).ready(function () {
 	});
 	
 	///////////////////////////////////////////Referral Letter///////////////////////////////////////////
-	// var oper='add';
+	var oper_refletter='add';
 	$("#dialogForm")
 		.dialog({
 			width: 9/10 * $(window).width(),
@@ -111,7 +124,7 @@ $(document).ready(function () {
 				disableForm('#form_docNoteRef');
 				textare_init_doctornote();
 				// refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
-				switch(oper) {
+				switch(oper_refletter) {
 					case state = 'add':
 						// $( this ).dialog( "option", "title", "Add" );
 						enableForm('#form_refLetter');
@@ -129,10 +142,10 @@ $(document).ready(function () {
 						// $(this).dialog("option", "buttons",butt2);
 						break;
 				}
-				if(oper!='view'){
+				if(oper_refletter!='view'){
 					
 				}
-				if(oper!='add'){
+				if(oper_refletter!='add'){
 					
 				}
 			},
@@ -142,14 +155,14 @@ $(document).ready(function () {
 				emptyFormdata(errorField,'#form_docNoteRef');
 				// $('.alert').detach();
 				$('.my-alert').detach();
-				if(oper=='view'){
+				if(oper_refletter=='view'){
 					// $(this).dialog("option", "buttons",butt1);
 				}
 			},
 		});
 	
 	$("#referLetter").click(function(){
-		// oper='add';
+		oper_refletter='add';
 		$("#dialogForm").dialog("open");
 		populate_refLetter();
 	});
@@ -543,7 +556,6 @@ function populate_doctorNote(obj,rowdata){
 
 //screen current patient//
 function populate_doctorNote_currpt(obj){
-	console.log(obj);
 	curr_obj=obj;
 	
 	emptyFormdata(errorField,"#formDoctorNote");
@@ -584,24 +596,20 @@ function populate_doctorNote_currpt(obj){
     // });
 }
 
-function populate_refLetter(obj){
+function populate_refLetter(date){
 	emptyFormdata(errorField,"#form_docNoteRef");
-	
-	// form_docNoteRef
-	$('#mrn_docNoteRef').val(obj.MRN);
-	$("#episno_docNoteRef").val(obj.Episno);
-	
+
 	var urlparam={
 		action:'get_table_docNoteRef',
-		mrn:$('#mrn_docNoteRef').val(),
-		episno:$("#episno_docNoteRef").val(),
-		recorddate:$("#recorddate_docNoteRef").val()
+		mrn:$('#mrn_doctorNote').val(),
+		episno:$("#episno_doctorNote").val(),
+		recorddate:$('#recorddate_doctorNote').val()
 	}
 	
 	var postobj={
 		_token : $('#csrf_token').val(),
-		mrn:$('#mrn_docNoteRef').val(),
-		episno:$("#episno_docNoteRef").val()
+		mrn:$('#mrn_doctorNote').val(),
+		episno:$("#episno_doctorNote").val()
 	};
 	
 	$.post( "./doctornote/form?"+$.param(urlparam), $.param(postobj), function( data ) {
@@ -619,6 +627,8 @@ function populate_refLetter(obj){
 			if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
 			// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
+
+			refreshGrid("#jqGrid_trans_doctornote_ref", urlParam_trans);
 		}else{
 			// button_state_refLetter('add');
 			textare_init_doctornote();
@@ -886,7 +896,6 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	urlParam_trans.episno=$('#episno_doctorNote').val();
 	curpage_tran = null;
 	refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
-
 });
 
 //to reload date table on radio btn click

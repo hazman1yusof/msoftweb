@@ -22,6 +22,10 @@ class PatEnqController extends defaultController
     }
 
     public function table(Request $request){
+        switch($request->action2){
+            case 'getpayercode':
+                return $this->getpayercode($request);
+        }
         switch($request->action){
             case 'episodelist':
                 return $this->episodelist($request);
@@ -31,6 +35,8 @@ class PatEnqController extends defaultController
                 return $this->show_mc($request);
             case 'mc_list':
                 return $this->mc_list($request);
+            case 'pat_enq_payer':
+                return $this->pat_enq_payer($request);
             default:
                 return 'error happen..';
         }
@@ -330,6 +336,121 @@ class PatEnqController extends defaultController
 
         $responce = new stdClass();
         $responce->data = $patmc;
+
+        return json_encode($responce);
+    }
+
+    public function pat_enq_payer(Request $request){
+        $table = DB::table('hisdb.epispayer as ep')
+                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','dm.name as payercode_desc','btm.description as billtype_desc')
+                    ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                                $join = $join->on('dm.debtorcode', '=', 'ep.payercode')
+                                                ->where('dm.compcode','=',session('compcode'));
+                            })
+                    ->leftJoin('hisdb.billtymst as btm', function($join) use ($request){
+                                $join = $join->on('btm.billtype', '=', 'ep.billtype')
+                                                ->where('btm.compcode','=',session('compcode'))
+                                                ->where('btm.recstatus','=','ACTIVE');
+                            })
+                    ->where('ep.compcode',session('compcode'))
+                    ->where('ep.mrn',$request->mrn)
+                    ->where('ep.episno',$request->episno);
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function getpayercode(Request $request){
+        if($request->epistycode=='IP'){
+            $billtype_fld = 'dm.billtype';
+        }else{
+            $billtype_fld = 'dm.billtypeop';
+        }
+
+        $table = DB::table('debtor.debtormast AS dm')
+                        ->select('dm.debtortype','dm.debtorcode','dm.name','dt.description','dt.debtortycode',$billtype_fld.' as billtype','bt.description as billtype_desc');
+
+        $table = $table->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                ->where('dt.compcode','=',session('compcode'))
+                                ->where('dt.recstatus','=','ACTIVE');
+            })->leftJoin('hisdb.billtymst as bt', function($join) use ($request,$billtype_fld){
+                $join = $join->on('bt.billtype', '=', $billtype_fld)
+                                ->where('bt.compcode','=',session('compcode'));
+            });
+
+        /////////searching/////////
+        if(!empty($request->searchCol)){
+            if(!empty($request->fixPost)){
+                $searchCol_array = $this->fixPost3($request->searchCol);
+            }else{
+                $searchCol_array = $request->searchCol;
+            }
+
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+            
+        }
+
+        if(!empty($request->searchCol2)){
+
+            $searchCol_array = $request->searchCol2;
+            
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+            
+        }
+        
+        $table = $table->where('dm.compcode','=',session('compcode'));
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }

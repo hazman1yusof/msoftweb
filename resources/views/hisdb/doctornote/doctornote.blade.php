@@ -678,9 +678,9 @@
                     <div class="col-md-12">
                         <div class="panel panel-info">
                             <div class="panel-heading text-center">MEDICATION</div>
-                            <div class="panel-body" style="overflow: auto;padding: 0px;" id="jqGrid_trans_doctornote_c">
-                                <table id="jqGrid_trans_doctornote" class="table table-striped"></table>
-                                <div id="jqGrid_trans_doctornotePager"></div>
+                            <div class="panel-body" style="overflow: auto;padding: 0px;" id="jqGrid_trans_doctornote_ref_c">
+                                <table id="jqGrid_trans_doctornote_ref" class="table table-striped"></table>
+                                <div id="jqGrid_trans_doctornote_refPager"></div>
                                 <!-- <table id="medication_tbl" class="ui selectable celled table" style="width: 100%;">
                                     <thead>
                                         <tr>

@@ -1,4 +1,5 @@
-
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
 var bootgrid_last_rowid = null;
 var bootgrid_last_row = null;
 
@@ -182,7 +183,6 @@ $(document).ready(function() {
 
         populate_episodelist(bootgrid_last_row);
     });
-
 });
 
 function calc_jq_height_onchange(jqgrid,max_height=300){

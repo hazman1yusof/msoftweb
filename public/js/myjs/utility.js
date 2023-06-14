@@ -100,14 +100,17 @@ function addParamField(grid,needRefresh,param,except){
 }
 
 function refreshGrid(grid,urlParam,oper){
+
+	let myurl = (urlParam.url.includes('?'))?urlParam.url+'&'+$.param(urlParam):urlParam.url+'?'+$.param(urlParam);
+
 	if(oper == 'add'){
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid', [{page:1}]);
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:myurl}).trigger('reloadGrid', [{page:1}]);
 	}else if(oper == 'edit' || oper == 'del'){
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid', [{current:true}]);
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:myurl}).trigger('reloadGrid', [{current:true}]);
 	}else if(oper == 'kosongkan'){
 		$(grid).jqGrid('setGridParam',{datatype:'local'}).trigger('reloadGrid');
 	}else{
-		$(grid).jqGrid('setGridParam',{datatype:'json',url:urlParam.url+'?'+$.param(urlParam)}).trigger('reloadGrid',[{page:1}]);
+		$(grid).jqGrid('setGridParam',{datatype:'json',url:myurl}).trigger('reloadGrid',[{page:1}]);
 	}
 }
 
@@ -1563,7 +1566,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 		}
 
-		$.get( param.url+"?"+$.param(param), function( data ) {
+		let myurl = (param.url.includes('?'))?param.url+"&"+$.param(param):param.url+"?"+$.param(param);
+
+		$.get(myurl, function( data ) {
 
 		},'json').done(function(data) {
 			if(index == -1){

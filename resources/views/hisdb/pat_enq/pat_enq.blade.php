@@ -73,6 +73,9 @@
 		@include('hisdb.pat_enq.episodelist_patenq')
 	</div>
 
+
+	@include('hisdb.pat_enq.itemselector')
+
 	<script type="text/ecmascript" src="plugins/jquery-3.2.1.min.js"></script> 
 	<script type="text/ecmascript" src="plugins/jquery-migrate-3.0.0.js"></script>
     <script type="text/ecmascript" src="plugins/trirand/i18n/grid.locale-en.js"></script>
@@ -99,12 +102,13 @@
 		$.jgrid.defaults.responsive = true;
 		$.jgrid.defaults.styleUI = 'Bootstrap';
 	</script>
-
+	<script type="text/javascript" src="js/hisdb/pat_enq/textfield_modal.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/pat_enq_main.js"></script>
-
 	<script type="text/javascript" src="js/hisdb/pat_enq/episodelist_patenq.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/gl_script.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/epno_medc.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/epno_nok.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/epno_payer.js"></script>
 
 	</div>
 

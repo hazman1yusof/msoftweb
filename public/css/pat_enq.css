@@ -47,8 +47,8 @@
   100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
 }
 
-#mdl_ep_note,#mdl_new_gl{
-	display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
+div.modal{
+	display: none; z-index: 110;background-color: rgba(0, 0, 0, 0.3);
 }
 .smallmodal{
 	width: 40% !important; margin: auto !important;margin-top:10% !important;
@@ -56,8 +56,11 @@
 .mediummodal{
 	width: 90% !important; margin: auto !important;margin-top:10% !important;
 }
+.smallmedmodal{
+	width: 60% !important; margin: auto !important;margin-top:1% !important;
+}
 .smallmodal > .modal-content{
-	border: 3px solid darkblue !important;min-height: fit-content !important;
+/*	border: 3px solid darkblue !important;min-height: fit-content !important;*/
 }
 tr.dtrg-group{
 	font-size: 15px;
@@ -170,7 +173,7 @@ div.wrapper > div.row > div.panel.panel-default > div.panel-heading.clearfix > i
 }
 
 .ui-widget-overlay.ui-front{
-	z-index: 100 !important;
+	z-index: 111 !important;
 }
 
 .search{

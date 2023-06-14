@@ -772,7 +772,7 @@ class DoctorNoteController extends defaultController
             
         // dd($date_obj->recorddate);
         
-        if(!empty($date_obj->recorddate) && $date_obj->recorddate != '-'){
+        if(!empty($request->recorddate) && $request->recorddate != '-'){
             $pathealth_obj = DB::table('hisdb.pathealth')
                 ->select(
                     'complain as complain_ref',
@@ -793,7 +793,7 @@ class DoctorNoteController extends defaultController
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
                 // ->orderBy('recordtime','desc');
             
             $pathistory_obj = DB::table('hisdb.pathistory')
@@ -806,14 +806,14 @@ class DoctorNoteController extends defaultController
                 )
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
             
             $patexam_obj = DB::table('hisdb.patexam')
                 ->select('examination as examination_ref')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $date_obj->recorddate));
+                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
         }
         
         $episdiag_obj = DB::table('hisdb.episdiag')
@@ -832,7 +832,7 @@ class DoctorNoteController extends defaultController
             $responce->episode = $episode_obj;
         }
         
-        if(!empty($date_obj->recorddate) && $date_obj->recorddate != '-'){
+        if(!empty($request->recorddate) && $request->recorddate != '-'){
             if($pathealth_obj->exists()){
                 $pathealth_obj = $pathealth_obj->first();
                 $responce->pathealth = $pathealth_obj;

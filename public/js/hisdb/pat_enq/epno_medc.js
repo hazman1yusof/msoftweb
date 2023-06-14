@@ -1,8 +1,8 @@
 $(document).ready(function () {
-    $('#my_a_enot').click(function(){
+    $('#my_a_mc').click(function(){
         var selrow = $("#jqGrid_episodelist").jqGrid ('getGridParam', 'selrow');
         if(selrow != null){
-            $('#mdl_ep_note').modal('show');
+            $('#mdl_mc').modal('show');
             epno_medc_init();
         }else{
             alert('Please select episode first')

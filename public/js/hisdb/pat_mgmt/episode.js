@@ -870,7 +870,7 @@ function refno_class(){
     this.show_mdl = function(first = false){
         $('#mdl_reference').modal('show');
         $('#btn_epis_view_gl').prop('disabled',true);
-        this.refno_table.ajax.url("pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val()).load();
+        this.refno_table.ajax.url("pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('#mrn_epno_payer').val()).load();
     }
 
     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
