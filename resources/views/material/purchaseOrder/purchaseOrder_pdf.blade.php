@@ -31,10 +31,11 @@
 	text-align: center;
 	position: fixed;
 	font-size: 8pt;
-	top:-39px
+	top:-39px;
+	<!-- display: table-row-group; -->
 }
 .pagenum:before {
-    content: counter(page);
+    content: "Page " counter(PAGE_NUM) " of " counter(PAGE_COUNT);
 }
 .page-break {
 	page-break-after:auto;
@@ -49,16 +50,18 @@
 @section('body')
 
 <div class="footer">
-	Page <span class="pagenum"></span>
+	<span class="pagenum"></span>
 </div>
+
 <div class="hideheadertop">
 </div>
+
 <div class="header">
 	<table class="table table-bordered">
 		<tr>  
 			<th style="text-align:left"><b>No.</b></th>
 			<th colspan="4" style="text-align:left"><b>Description</b></th>
-			<th style="text-align:left"><b>Uom</b></th>
+			<th style="text-align:left"><b>UOM</b></th>
 			<th style="text-align:left"><b>Quantity</b></th>
 			<th style="text-align:left"><b>Unit Price</b></th>
 			<th style="text-align:left"><b>Tax Amt</b></th>
@@ -67,8 +70,23 @@
 		</tr>
 	</table>
 </div>
+
 <table class="table table-bordered">
 		<tbody>
+			<!-- <script type="text/php">
+					if ( isset($pdf) ) { 
+					$pdf->page_script('
+					if ($PAGE_COUNT > 1) {
+						$font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+						$size = 12;
+						$pageText = "Page " . $PAGE_NUM . " of " . $PAGE_COUNT;
+						$y = 15;
+						$x = 520;
+						$pdf->text($x, $y, $pageText, $font, $size);
+					} 
+				');
+			}
+			</script> -->
 			<tr id="note">
 				<td colspan="5">
 					<img src="./img/MSLetterHead.jpg" height="75px">
@@ -90,7 +108,6 @@
 				</td>
 				<td colspan="2"><b>Purchase No.</b></td>
 				<td colspan="4">{{$purordhd->prdept}}{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}</td>
-				<!-- <td colspan="3">{{$purordhd->purordno}}</td> -->
 			</tr>
 			
 			<tr>
@@ -114,7 +131,7 @@
 			<tr>  
 				<th style="text-align:left"><b>No.</b></th>
 				<th colspan="4" style="text-align:left"><b>Description</b></th>
-				<th style="text-align:left"><b>Uom</b></th>
+				<th style="text-align:left"><b>UOM</b></th>
 				<th style="text-align:left"><b>Quantity</b></th>
 				<th style="text-align:left"><b>Unit Price</b></th>
 				<th style="text-align:left"><b>Tax Amt</b></th>
@@ -129,7 +146,7 @@
 					</td>
 					<td colspan="4"> <!-- description -->
 							<p>{{$obj->description}}</p>
-							<p> - {{$obj->remarks}}</p>
+							<p style="white-space: pre-wrap;">{{$obj->remarks}}</p> 
 					</td>
 					<td> <!-- uomcode -->
 							<p>{{$obj->uomcode}}</p>
@@ -163,10 +180,10 @@
 				<td>
 				</td>
 				<td style="text-align:right"> <!-- total tax amount -->
-					<p>{{number_format($purordhd->perdisc,2)}}</p>
+					<p>{{number_format($total_tax,2)}}</p>
 				</td>
 				<td style="text-align:right"> <!-- total disc amount -->
-					<p>{{number_format($purordhd->amtdisc,2)}}</p>
+					<p>{{number_format($total_discamt,2)}}</p>
 				</td>
 				<td style="text-align:right"> <!-- total nett amount -->
 					<p>{{number_format($purordhd->totamount,2)}}</p>

@@ -942,7 +942,7 @@ class PurchaseOrderController extends defaultController
             ->where('u.compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->get();
-
+        
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
@@ -957,7 +957,15 @@ class PurchaseOrderController extends defaultController
             ->where('deptcode','=',$purordhd->deldept)
             ->first();
 
-            //dd($deldept);
+        $total_tax = DB::table('material.purorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtslstax');
+        
+        $total_discamt = DB::table('material.purorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtdisc');
 
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
@@ -968,12 +976,14 @@ class PurchaseOrderController extends defaultController
             $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
-
-        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept'));
+        
+        // $pdf = PDF::setOptions(['isPhpEnabled'=>true]);
+        //$pdf->set_option("isPhpEnabled", true);
+        $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
         return $pdf->stream();      
 
         
-        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept'));
+        return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
     }
 
      // public function toGetAllpurreqhd($recno){

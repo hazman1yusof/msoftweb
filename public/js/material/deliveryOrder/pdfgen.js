@@ -44,16 +44,15 @@
 		var header_data = $(event.data.data.formdataHeader).serializeArray();
 		var gridname = event.data.data.gridname;
 		var table_array = getval_from_grid(gridname,[	//get the index from jqgrid start with 0
-								{text: 'Price Code', style: 'tableHeader', jq_index: 3},
-								{text: 'Item Code', style: 'tableHeader', jq_index: 4},
-								{text: 'Item Description', style: 'tableHeader', jq_index: 5},
-								{text: 'Quantity Delivered', style: 'tableHeader', jq_index: 8},
-								{text: 'Unit Price', style: 'tableHeader', jq_index: 9},
-								{text: 'Tax Code', style: 'tableHeader', jq_index: 10},
-								{text: 'Total GST Amount', style: 'tableHeader', jq_index: 12},
-								{text: 'Total Line Amount.', style: 'tableHeader', jq_index: 13}
-
-							]);
+			{text: 'Price Code', style: 'tableHeader', jq_index: 4},
+			{text: 'Item Code', style: 'tableHeader', jq_index: 5},
+			{text: 'Item Description', style: 'tableHeader', jq_index: 3},
+			{text: 'Quantity Delivered', style: 'tableHeader', jq_index: 10},
+			{text: 'Unit Price', style: 'tableHeader', jq_index: 12},
+			{text: 'Tax Code', style: 'tableHeader', jq_index: 8},
+			{text: 'Total GST Amount', style: 'tableHeader', jq_index: 15},
+			{text: 'Total Line Amount', style: 'tableHeader', jq_index: 18},
+		]);
 
 		docDefinition = {
 			pageSize: 'A4',
@@ -121,7 +120,7 @@
 		      style:'colmargin',
 		      columns: [
 					{ width: 80, text: 'GST Amount: ', bold: true },
-					{ width: 100, text: getval_from_name(header_data,'delordhd_') },
+					{ width: 100, text: getval_from_name(header_data,'delordhd_TaxAmt') },
 					{ width: 80, text: 'Tax Claim: ', bold: true },
 					{ width: 100, text: getval_from_name(header_data,'delordhd_taxclaimable') },
 					{ width: 80, text: 'Record Status: ', bold: true },
@@ -141,7 +140,7 @@
 		    },{
 		      style:'colmargin',
 		      columns: [
-					{ width: 120, text: 'Remark: ', bold: true },
+					{ width: 100, text: 'Remark: ', bold: true },
 					{ width: 450, text: getval_from_name(header_data,'delordhd_remarks') },
 		      ],
 		    },{ 

@@ -170,7 +170,6 @@ $(document).ready(function () {
 		}
 	}
 
-
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 
 	var recstatus_filter = [['OPEN','REQUEST']];

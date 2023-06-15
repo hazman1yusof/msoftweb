@@ -197,7 +197,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
                     'recstatus' => 'OPEN', 
-                    'remarks'=> strtoupper($request->remarks),
+                    'remarks'=> $request->remarks,
                     'unit' => session('unit')
 
                 ]);
@@ -283,7 +283,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
-                    'remarks' => strtoupper($request->remarks),
+                    'remarks' => $request->remarks,
                     'prdept' => strtoupper($request->prdept),
                     'purordno' => $request->purordno,
                 ]);
@@ -383,7 +383,7 @@ class PurchaseOrderDetailController extends defaultController
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),  
                     'recstatus' => 'OPEN', 
-                    'remarks'=> strtoupper($value['remarks']),
+                    'remarks'=> $value['remarks'],
                     'prdept' => $request->prdept,
                     'purordno' => $request->purordno,
                 ]);

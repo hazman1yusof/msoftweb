@@ -473,7 +473,7 @@ div.noti > li{
 			<div id="dialog_remarks" title="Remarks">
 			  <div class="panel panel-default">
 			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm text-uppercase" style="width:100%;"></textarea>
+			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
 			    </div>
 			  </div>
 			</div>
