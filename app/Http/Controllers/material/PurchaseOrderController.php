@@ -977,7 +977,7 @@ class PurchaseOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
         
-        // $pdf = PDF::setOptions(['isPhpEnabled'=>true]);
+        //$pdf = PDF::setOptions(['isPhpEnabled'=>true]);
         //$pdf->set_option("isPhpEnabled", true);
         $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
         return $pdf->stream();      

@@ -32,10 +32,9 @@
 	position: fixed;
 	font-size: 8pt;
 	top:-39px;
-	<!-- display: table-row-group; -->
 }
 .pagenum:before {
-    content: "Page " counter(PAGE_NUM) " of " counter(PAGE_COUNT);
+    content: "Page " counter(page);
 }
 .page-break {
 	page-break-after:auto;
@@ -73,20 +72,6 @@
 
 <table class="table table-bordered">
 		<tbody>
-			<!-- <script type="text/php">
-					if ( isset($pdf) ) { 
-					$pdf->page_script('
-					if ($PAGE_COUNT > 1) {
-						$font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-						$size = 12;
-						$pageText = "Page " . $PAGE_NUM . " of " . $PAGE_COUNT;
-						$y = 15;
-						$x = 520;
-						$pdf->text($x, $y, $pageText, $font, $size);
-					} 
-				');
-			}
-			</script> -->
 			<tr id="note">
 				<td colspan="5">
 					<img src="./img/MSLetterHead.jpg" height="75px">
@@ -239,8 +224,17 @@
 					<p>&nbsp;</p>
 				</td>
 			</tr>
-		
+
+			
 		</tbody>
+		<!-- <script type="text/php">
+					$pdf->page_script('
+					$pageText = $PAGE_NUM . "/" . $PAGE_COUNT;
+					$y = $pdf->get_height() - 24;
+					$x = ($pdf->get_width() - Font_Metrics::get_text_width($pageText, $font, $size))/2;
+					$pdf->page_text($x, $y, $pageText, $font, $size);
+					');
+			</script> -->
 	</table>
 
 
