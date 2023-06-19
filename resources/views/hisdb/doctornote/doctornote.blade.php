@@ -89,7 +89,7 @@
                                         ">
                                         <div class="panel-body" style="padding-top:5px;padding-bottom:5px;">
                                             <label class="radio-inline">
-                                                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current" 
+                                                <input class="form-check-input" type="radio" name="toggle_type" id="current" value="current"
                                                 @if (Request::path() != 'casenote')
                                                     checked
                                                 @endif>
@@ -109,7 +109,7 @@
                                     
                                     <!-- <span class="label label-info" style="margin-left: 30px;font-size: 100%;">Written By: <span id="doctorcode" name="doctorcode"></span></span> -->
                                 </div>
-
+                                
                                 <div class="col-md-12" style="padding:0px;">
                                     <div class='col-md-9'>
                                         <div class="panel panel-info">
@@ -296,7 +296,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="panel panel-info" style="margin-top: 389px;">
+                                        <div class="panel panel-info" style="margin-top: 413px;">
                                             <div class="panel-body">
 
                                                 <div class="form-group col-md-12">
@@ -657,7 +657,7 @@
                                 </div>
                             </div>
 
-                            <div class="panel panel-info" style="margin-top: 483px;">
+                            <div class="panel panel-info" style="margin-top: 550px;">
                                 <div class="panel-body">
 
                                     <div class="form-group col-md-12">
