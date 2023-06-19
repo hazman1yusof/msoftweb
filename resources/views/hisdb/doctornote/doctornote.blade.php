@@ -392,8 +392,8 @@
                 <form class='form-horizontal' style='width:99%' id='form_refLetter'>
                 
                     <!-- <input id="idno_refLetter" name="idno_refLetter" type="hidden"> -->
-                    <input id="mrn_refLetter" name="mrn_refLetter" type="hidden">
-                    <input id="episno_refLetter" name="episno_refLetter" type="hidden">
+                    <!-- <input id="mrn_refLetter" name="mrn_refLetter" type="hidden"> -->
+                    <!-- <input id="episno_refLetter" name="episno_refLetter" type="hidden"> -->
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
                         <div class="form-group col-md-5">
@@ -466,9 +466,9 @@
                 <form class='form-horizontal' style='width:99%' id='form_docNoteRef'>
                 
                     <!-- <input id="idno_docNoteRef" name="idno_docNoteRef" type="hidden"> -->
-                    <input id="mrn_docNoteRef" name="mrn_docNoteRef" type="hidden">
-                    <input id="episno_docNoteRef" name="episno_docNoteRef" type="hidden">
-                    <input id="recorddate_docNoteRef" name="recorddate_docNoteRef" type="hidden">
+                    <!-- <input id="mrn_docNoteRef" name="mrn_docNoteRef" type="hidden"> -->
+                    <!-- <input id="episno_docNoteRef" name="episno_docNoteRef" type="hidden"> -->
+                    <!-- <input id="recorddate_docNoteRef" name="recorddate_docNoteRef" type="hidden"> -->
                 
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="complain_ref">Patient Complaint</label>
@@ -661,13 +661,13 @@
                                 <div class="panel-body">
 
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="adduser" style="padding-bottom:5px">Added by</label>  
-                                        <input id="adduser" name="adduser" type="text" class="form-control input-sm" rdonly>
+                                        <label class="control-label" for="adduser_ref" style="padding-bottom:5px">Added by</label>  
+                                        <input id="adduser_ref" name="adduser_ref" type="text" class="form-control input-sm" rdonly>
                                     </div>
 
                                     <div class="form-group col-md-12">
-                                        <label class="control-label" for="adddate" style="padding-bottom:5px">Date</label>
-                                        <input id="adddate" name="adddate" type="text" class="form-control input-sm" rdonly>
+                                        <label class="control-label" for="adddate_ref" style="padding-bottom:5px">Date</label>
+                                        <input id="adddate_ref" name="adddate_ref" type="text" class="form-control input-sm" rdonly>
                                     </div>
 
                                 </div>

@@ -15,7 +15,7 @@ var urlParam_AddNotes = {
 }
 
 $(document).ready(function () {
-
+	
 	$("#jqGrid_trans_doctornote_ref").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid_trans_doctornote").jqGrid('getGridParam','colModel'),
@@ -97,12 +97,12 @@ $(document).ready(function () {
 	});
 	
 	// bmi calculator
-	$('#height').keyup(function(event) {
+	$("#formDoctorNote input[name='height'], #formDoctorNote input[name='weight']").on('change',function() {
 		getBMI();
 	});
 	
-	$('#weight').keyup(function(event) {
-		getBMI();
+	$("#form_docNoteRef input[name='height_ref'], #form_docNoteRef input[name='weight_ref']").on('change',function() {
+		getBMI_ref();
 	});
 	// bmi calculator ends
 	
@@ -112,7 +112,8 @@ $(document).ready(function () {
 	});
 	
 	///////////////////////////////////////////Referral Letter///////////////////////////////////////////
-	var oper_refletter='add';
+	var oper_refletter='';
+	// var oper_refletter='add';
 	$("#dialogForm")
 		.dialog({
 			width: 9/10 * $(window).width(),
@@ -123,6 +124,7 @@ $(document).ready(function () {
 				disableForm('#form_refLetter');
 				disableForm('#form_docNoteRef');
 				textare_init_doctornote();
+				// dialog_icd_ref.check(errorField);
 				// refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
 				switch(oper_refletter) {
 					case state = 'add':
@@ -153,6 +155,7 @@ $(document).ready(function () {
 				parent_close_disabled(false);
 				emptyFormdata(errorField,'#form_refLetter');
 				emptyFormdata(errorField,'#form_docNoteRef');
+				dialog_icd_ref.off();
 				// $('.alert').detach();
 				$('.my-alert').detach();
 				if(oper_refletter=='view'){
@@ -162,7 +165,7 @@ $(document).ready(function () {
 		});
 	
 	$("#referLetter").click(function(){
-		oper_refletter='add';
+		// oper_refletter='add';
 		$("#dialogForm").dialog("open");
 		populate_refLetter();
 	});
@@ -354,8 +357,8 @@ $(document).ready(function () {
 
 //bmi calculator
 function getBMI() {
-    var height = parseFloat($("#height").val());
-    var weight = parseFloat($("#weight").val());
+    var height = parseFloat($("#formDoctorNote input[name='height']").val());
+    var weight = parseFloat($("#formDoctorNote input[name='weight']").val());
 
 	var myBMI = (weight / height / height) * 10000;
 
@@ -363,7 +366,23 @@ function getBMI() {
 
     if (isNaN(bmi)) bmi = 0;
 
-    $('#bmi').val((bmi));
+    $("#formDoctorNote input[name='bmi']").val((bmi));
+}
+
+function getBMI_ref() {
+    var height_ref = parseFloat($("#form_docNoteRef input[name='height_ref']").val());
+	var weight_ref = parseFloat($("#form_docNoteRef input[name='weight_ref']").val());
+	
+	console.log(height_ref);
+	console.log(weight_ref);
+	
+	var myBMI_ref = (weight_ref / height_ref / height_ref) * 10000;
+
+    var bmi_ref = myBMI_ref.toFixed(2);
+
+    if (isNaN(bmi_ref)) bmi_ref = 0;
+
+    $("#form_docNoteRef input[name='bmi_ref']").val((bmi_ref));
 }
 
 //to disable all input fields except additional note
@@ -446,6 +465,51 @@ var dialog_icd = new ordialog(
 	},'urlParam','radio','tab'
 );
 dialog_icd.makedialog();
+
+var dialog_icd_ref = new ordialog(
+	'icdcode_ref',['hisdb.diagtab AS dt','sysdb.sysparam AS sp'],"#form_docNoteRef input[name='icdcode_ref']",errorField,
+	{	colModel:[
+			{label:'ICD Code',name:'icdcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+		],
+		urlParam: {
+			url : "./doctornote/table",
+			filterCol:['sp.compcode'],
+			filterVal:['session.compcode'],
+		},
+		ondblClickRow:function(){
+			let data = selrowData('#'+dialog_icd_ref.gridname);
+			$("#diagfinal_ref").val(data['icdcode'] + " " + data['description']);
+			$('#plan_ref').focus();
+			// document.getElementById("diagfinal_ref").value = document.getElementById("icdcode_ref").value; //copy data to Diagnosis
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				// $('#optax').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},{
+		title:"Select ICD",
+		open: function(){
+			dialog_icd_ref.urlParam.url = "./doctornote/table";
+			dialog_icd_ref.urlParam.action = "dialog_icd";
+			dialog_icd_ref.urlParam.table_name = ['hisdb.diagtab AS dt','sysdb.sysparam AS sp'];
+			dialog_icd_ref.urlParam.join_type = ['LEFT JOIN'];
+			dialog_icd_ref.urlParam.join_onCol = ['dt.type'];
+			dialog_icd_ref.urlParam.join_onVal = ['sp.pvalue1'];
+			dialog_icd_ref.urlParam.fixPost="true";
+			dialog_icd_ref.urlParam.table_id="none_";
+			dialog_icd_ref.urlParam.filterCol=['sp.compcode','sp.source', 'sp.trantype'];
+			dialog_icd_ref.urlParam.filterVal=['session.compcode', 'MR', 'ICD' ];
+		}
+	},'urlParam','radio','tab'
+);
+dialog_icd_ref.makedialog();
 
 button_state_doctorNote('empty');
 function button_state_doctorNote(state){
@@ -596,9 +660,9 @@ function populate_doctorNote_currpt(obj){
     // });
 }
 
-function populate_refLetter(date){
+function populate_refLetter(obj){
 	emptyFormdata(errorField,"#form_docNoteRef");
-
+	
 	var urlparam={
 		action:'get_table_docNoteRef',
 		mrn:$('#mrn_doctorNote').val(),
@@ -620,15 +684,16 @@ function populate_refLetter(date){
 		if(!$.isEmptyObject(data)){
 			// button_state_refLetter('edit');
 			textare_init_doctornote();
-			getBMI();
+			getBMI_ref();
 			if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRef",data.episode);
 			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRef",data.pathealth);
 			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRef",data.pathistory);
 			if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
 			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
 			// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
-
+			
 			refreshGrid("#jqGrid_trans_doctornote_ref", urlParam_trans);
+			// $("#jqGrid_trans_doctornote_ref").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_ref_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_ref_c")[0].offsetLeft));
 		}else{
 			// button_state_refLetter('add');
 			textare_init_doctornote();
@@ -896,6 +961,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	urlParam_trans.episno=$('#episno_doctorNote').val();
 	curpage_tran = null;
 	refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
+
 });
 
 //to reload date table on radio btn click

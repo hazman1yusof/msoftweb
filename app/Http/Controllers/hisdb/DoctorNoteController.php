@@ -195,7 +195,7 @@ class DoctorNoteController extends defaultController
             return response('Error DB rollback!'.$e, 500);
             
         }
-
+    
     }
     
     public function edit(Request $request){
@@ -615,7 +615,7 @@ class DoctorNoteController extends defaultController
         }
         
         return json_encode($responce);
-
+    
     }
     
     public function get_table_date_past(Request $request){
@@ -789,6 +789,8 @@ class DoctorNoteController extends defaultController
                     'pulse as pulse_ref',
                     'temperature as temperature_ref',
                     'respiration as respiration_ref',
+                    'adduser as adduser_ref',
+                    'adddate as adddate_ref'
                 )
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
