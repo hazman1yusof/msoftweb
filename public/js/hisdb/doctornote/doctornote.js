@@ -87,7 +87,7 @@ $(document).ready(function () {
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
-		$("#current,#past").attr('disabled',false);
+		$("#formDoctorNote input[id='current'],#formDoctorNote input[id='past']").attr('disabled',false);
 	
 	});
 	
@@ -524,7 +524,7 @@ function button_state_doctorNote(state){
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_doctorNote').data('oper','add');
-			$("#new_doctorNote,#current,#past").attr('disabled',false);
+			$("#new_doctorNote,#formDoctorNote input[id='current'],#formDoctorNote input[id='past']").attr('disabled',false);
 			$('#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
 			break;
 		case 'edit':
@@ -970,7 +970,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 });
 
 //to reload date table on radio btn click
-$("input[name=toggle_type]").on('click', function () {
+$("#formDoctorNote input[name='toggle_type']").on('click', function () {
 	event.stopPropagation();
 	on_toggling_curr_past(curr_obj);
 	docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
@@ -1003,7 +1003,6 @@ $('#docnote_date_tbl tbody').on('click', 'tr', function () {
 	// console.log($('input[name="toggle_type"]:checked').val());
 	
 	emptyFormdata_div("#formDoctorNote",['#mrn_doctorNote','#episno_doctorNote','#recorddate_doctorNote']);
-	// console.log($('input[name="toggle_type"]:checked').val());
 	$('#docnote_date_tbl tbody tr').removeClass('active');
 	$(this).addClass('active');
 	
