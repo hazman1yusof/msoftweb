@@ -25,13 +25,14 @@ $(document).ready(function () {
 			{ label: 'Reg Dept', name: 'regdept_desc', classes: 'wrap', width:8, canSearch:true},
 			{ label: 'Reg Date', name: 'reg_date', classes: 'wrap', width:9, canSearch:true},
 			{ label: 'Reg Time', name: 'reg_time', classes: 'wrap', width:8},
-			{ label: 'Case', name: 'case_desc', classes: 'wrap', width:12},
-			{ label: 'Payer', name: 'payer_desc', classes: 'wrap', width:25},
-			{ label: 'Doctor', name: 'doctorname', classes: 'wrap', width:27},
+			{ label: 'Case', name: 'case_desc', classes: 'wrap', width:8},
+			{ label: 'Bill Type', name: 'billtype_desc', classes: 'wrap', width:15},
+			{ label: 'Payer', name: 'payer_desc', classes: 'wrap', width:20},
+			{ label: 'Doctor', name: 'doctorname', classes: 'wrap', width:20},
 			{ label: 'End Date', name: 'dischargedate', classes: 'wrap', width:9, canSearch:true},
-			{ label: 'Add By', name: 'adduser', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Add By', name: 'adduser', classes: 'wrap', width:8, canSearch:true},
 			{ label: 'Add Date', name: 'adddate', classes: 'wrap', width:9, canSearch:true},
-			{ label: 'Status', name: 'episstatus', classes: 'wrap', width:11, canSearch:true},
+			{ label: 'Status', name: 'episstatus', classes: 'wrap', width:10, canSearch:true},
 		],
 		autowidth:true,
 		viewrecords: true,
@@ -43,6 +44,7 @@ $(document).ready(function () {
 		ondblClickRow: function(rowid, iRow, iCol, e){
 		},
 		gridComplete: function () {
+			$("#jqGrid_episodelist").setSelection($("#jqGrid_episodelist").getDataIDs()[0]);
 		},
 		loadComplete: function(data){
 			rowdata_episodelist = data.rows;
@@ -61,11 +63,11 @@ function populate_episodelist(obj){
 	$('#sex_show_episodelist').text(obj.Sex);
 	$('#dob_show_episodelist').text(dob_chg(obj.DOB));
 	$('#age_show_episodelist').text(get_age(obj.DOB));
-	$('#race_show_episodelist').text(obj.RaceCode);
-	$('#religion_show_episodelist').text(if_none(obj.Religion));
-	$('#occupation_show_episodelist').text(if_none(obj.OccupCode));
-	$('#citizenship_show_episodelist').text(obj.Citizencode);
-	$('#area_show_episodelist').text(obj.AreaCode);
+	$('#race_show_episodelist').text(obj.raceDesc);
+	$('#religion_show_episodelist').text(if_none(obj.religionDesc));
+	$('#occupation_show_episodelist').text(if_none(obj.occupDesc));
+	$('#citizenship_show_episodelist').text(obj.cityDesc);
+	$('#area_show_episodelist').text(obj.areaDesc);
 	urlparam_episodelist.mrn = obj.MRN;
 }
 

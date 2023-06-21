@@ -47,19 +47,24 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <small for="nok_postcode_pat">Postcode</small>
                     <input id="nok_postcode_pat" name="nok_postcode_pat" type="text" class="form-control">
                 </div>
 
-                <div class="col-md-offset-3 col-md-6">
+                <div class="col-md-4">
                     <small for="nok_telh_pat">Tel (H)</small>
                     <input id="nok_telh_pat" name="nok_telh_pat" type="text" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                    <small for="nok_telo_pat">Tel (O)</small>
+                    <input id="nok_telo_pat" name="nok_telo_pat" type="text" class="form-control" rdonly>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <small for="nok_relate_pat">Relationship</small>
                     <div class='input-group'>
                         <input id="nok_relate_pat" name="nok_relate_pat" type="text" class="form-control uppercase">
@@ -67,22 +72,28 @@
                     </div>
                     <span class="help-block"></span>
                 </div>
-
-                <div class="col-md-6">
-                    <small for="nok_telo_pat">Tel (O)</small>
-                    <input id="nok_telo_pat" name="nok_telo_pat" type="text" class="form-control" rdonly>
-                </div>
-            </div>
-
-            <div class="form-group">
                 <div class="col-md-6">
                     <small for="nok_telhp_pat">Tel (H/P)</small>
                     <input id="nok_telhp_pat" name="nok_telhp_pat" type="text" class="form-control" rdonly>
                 </div>
-
-                <div class="col-md-offset-3 col-md-3">
+                <div class="col-md-2">
                     <small for="nok_ext_pat">Ext</small>
                     <input id="nok_ext_pat" name="nok_ext_pat" type="text" class="form-control"  rdonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <small for="nok_computerid">Computer ID</small>
+                    <input id="nok_computerid" name="nok_computerid" type="text" class="form-control"  rdonly>
+                </div>
+                <div class="col-md-4">
+                    <small for="nok_lastuser">Last User</small>
+                    <input id="nok_lastuser" name="nok_lastuser" type="text" class="form-control"  rdonly>
+                </div>
+                <div class="col-md-4">
+                    <small for="nok_lastupdate">Last Update</small>
+                    <input id="nok_lastupdate" name="nok_lastupdate" type="text" class="form-control"  rdonly>
                 </div>
             </div>
 

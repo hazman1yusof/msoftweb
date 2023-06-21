@@ -47,7 +47,7 @@
 
 		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
 			<div  class="panel-heading clearfix">
-				<h5><strong>PATIENT LIST</strong></h5>
+				<h5><strong>PATIENT</strong></h5>
 			</div>
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
@@ -109,6 +109,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_enq/epno_medc.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/epno_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_enq/epno_payer.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_enq/epno_docinfo.js"></script>
 
 	</div>
 

@@ -123,6 +123,7 @@
 
     $('#mdl_patient_info').on('shown.bs.modal', function (e) {
         parent_close_disabled(true);
+        $('#txt_pat_newic').blur();
     });
 
     $('#mdl_patient_info').on('hidden.bs.modal', function (e) {

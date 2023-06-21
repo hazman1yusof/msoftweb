@@ -54,7 +54,7 @@ div.modal{
 	width: 40% !important; margin: auto !important;margin-top:10% !important;
 }
 .mediummodal{
-	width: 90% !important; margin: auto !important;margin-top:10% !important;
+	width: 90% !important; margin: auto !important;margin-top:1% !important;
 }
 .smallmedmodal{
 	width: 60% !important; margin: auto !important;margin-top:1% !important;
@@ -363,17 +363,61 @@ div.paneldiv_lightblue{
 	overflow-y: auto;
   background: #e4f6ff;
 }
-
 a.a_bro{
 	border-right: 1px solid #c5c5c5 !important;
 }
-
 form#form_medc .form-control{
 	display: unset !important;
   width: unset !important;
   height: 26px !important;
 }
-
 table.dataTable tr.active{
 	background: aliceblue;
+}
+button.close_icon{
+  z-index: 1;
+  float: right;
+  font-size: 14px;
+  border: solid 1px grey;
+  border-radius: 5px;
+  margin: 5px;
+  color: grey;
+}
+button.close_icon:hover{
+	color: black;
+	border-color: black;
+}
+span.popspan{
+	text-transform: uppercase;
+}
+a.btn-dpn{
+	width: 25px;
+}
+form.myrow{
+	margin-bottom: 20px;
+  border: 1px solid #939393;
+  padding: 10px 10px 0px 10px;
+}
+div.mytitle{
+	margin-left: -11px;
+  margin-bottom: 5px;
+  margin-top: -3px;
+}
+div.mytitle > span{
+  padding: 8px 40px;
+	background-image: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+	border-bottom-right-radius: 5px;
+	border: 1px solid #939393;
+}
+div.addt_data{
+	text-align: right;padding-top: 10px;
+}
+div.addt_data > div{
+	padding: 1px 5px;display: inline;
+}
+div.addt_data > div > input{
+	background: transparent;border: none;max-width: 100px;
+}
+div.addt_data > div > label{
+	margin-bottom: 0px !important;
 }

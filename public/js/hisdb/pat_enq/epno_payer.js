@@ -40,18 +40,19 @@ $(document).ready(function () {
             { label: 'Name', name: 'payercode_desc', width: 200  },
             { label: 'Fin Class', name: 'pay_type' , width: 50 },
             { label: 'Limit Amt.', name: 'pyrlmtamt' , width: 100 },
-            { label: 'All Group', name: 'allgroup' , width: 50 },
+            { label: 'All Group', name: 'allgroup' , width: 50, formatter: allgroupformat, unformat: allgroupunformat },
             { label: 'billtype_desc', name: 'billtype_desc' , hidden: true },
-            { label: 'idno', name: 'idno'  , hidden: true },
+            { label: 'idno', name: 'idno', hidden: true },
             { label: 'mrn', name: 'mrn', hidden: true  },
             { label: 'episno', name: 'episno', hidden: true },
             { label: 'epistycode', name: 'epistycode', hidden: true },
             { label: 'pyrmode', name: 'pyrmode' , hidden: true },
             { label: 'alldept', name: 'alldept' , hidden: true },
-            { label: 'adddate', name: 'adddate' , hidden: true },
-            { label: 'adduser', name: 'adduser' , hidden: true },
+            { label: 'lastupdate', name: 'lastupdate' , hidden: true },
+            { label: 'lastuser', name: 'lastuser' , hidden: true },
             { label: 'billtype', name: 'billtype' , hidden: true },
             { label: 'refno', name: 'refno' , hidden: true },
+            { label: 'computerid', name: 'computerid' , hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -75,6 +76,7 @@ $(document).ready(function () {
 			}else{
 				button_state_epno_payer('add');
 			}
+			$("#jqGrid_epno_payer").setSelection($("#jqGrid_epno_payer").getDataIDs()[0]);
 
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -140,7 +142,7 @@ $(document).ready(function () {
 	$("#add_epno_payer").click(function(){
 		emptyFormdata_div('#form_epno_payer',['#mrn_epno_payer','#episno_epno_payer','#epistycode_epno_payer','#name_epno_payer']);
 		button_state_epno_payer('wait');
-		enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type']);
+		enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type','computerid','lastuser','lastupdate']);
 		epno_payer_payercode.on();
 		$("#save_epno_payer").data('oper','add');
 		$('#pyrlmtamt_epno_payer').val(9999999.99);
@@ -156,7 +158,7 @@ $(document).ready(function () {
 			alert('Select payer first!');
 		}else{
 			button_state_epno_payer('wait');
-			enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type']);
+			enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type','computerid','lastuser','lastupdate']);
 			epno_payer_payercode.on();
 			$("#save_epno_payer").data('oper','edit');
 		}
@@ -169,32 +171,29 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid_epno_payer", urlParam_epno_payer);
 			});
 		}else{
-			enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type']);
+			enableForm('#form_epno_payer',['mrn','episno','epistycode','name','billtype_desc','payercode_desc','ourrefno','lineno','pay_type','computerid','lastuser','lastupdate']);
 		}
 
 	});
 
 	function saveForm_epno_payer(callback){
 
-	    var postobj={
+        var serializedForm = $("#form_epno_payer").serializeArray();
+
+	    serializedForm = serializedForm.concat(
+	        $('#form_epno_payer select').map(
+	        function() {
+	            return {"name": this.name, "value": this.value}
+	        }).get()
+		);
+
+	    var obj={
+	    	action:'save_payer',
 	        oper:$("#save_epno_payer").data('oper'),
-	        idno:$("#nok_idno_pat").val(),
-	    	_token : $('#csrf_token').val(),
-	    	mrn : bootgrid_last_row.MRN,
-	    	episno : bootgrid_last_row.Episno,
-			name : $("#nok_name_pat").val(),
-			relationshipcode : $("#nok_relate_pat").val(),
-			address1 : $("#nok_addr1_pat").val(),
-			address2 : $("#nok_addr2_pat").val(),
-			address3 : $("#nok_addr3_pat").val(),
-			postcode : $("#nok_postcode_pat").val(),
-			tel_h : $("#nok_telh_pat").val(),
-			tel_hp : $("#nok_telhp_pat").val(),
-			tel_o : $("#nok_telo_pat").val(),
-			tel_o_ext : $("#nok_ext_pat").val()
+	    	_token : $('#csrf_token').val()
 	    };
 
-	    $.post( "./pat_enq/table", $.param(postobj) , function( data ) {
+	    $.post( "./pat_enq/form", $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
 	        
 	    },'json').fail(function(data) {
 	        // alert('there is an error');
@@ -241,23 +240,13 @@ $(document).ready(function () {
 
 		$.each(obj, function( index, value ) {
 			var input=$(form+" [name='"+index+"']");
+			console.log(input);
 			if(input.is("[type=radio]")){
 				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
 			}else if( except != undefined && except.indexOf(index) === -1){
 				input.val(decodeEntities(value));
 			}
 		});
-		// $("#nok_idno_pat").val(obj.idno);
-		// $("#nok_name_pat").val(obj.name);
-		// $("#nok_relate_pat").val(obj.relationshipcode);
-		// $("#nok_addr1_pat").val(obj.address1);
-		// $("#nok_addr2_pat").val(obj.address2);
-		// $("#nok_addr3_pat").val(obj.address3);
-		// $("#nok_postcode_pat").val(obj.postcode);
-		// $("#nok_telh_pat").val(obj.tel_h);
-		// $("#nok_telhp_pat").val(obj.tel_hp);
-		// $("#nok_telo_pat").val(obj.tel_o);
-		// $("#nok_ext_pat").val(obj.tel_o_ext);
 	}
 
 });
@@ -388,7 +377,6 @@ function refno_class(){
 
         switch(selected_tab){
             case 'Multi Volume':
-                console.log(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate,#newgl-visitno').prop('required',true).addClass('form-mandatory');
                 $('#newgl-expdate').prop('required',false);
@@ -503,6 +491,18 @@ function loadcorpstaff_gl(){
             $('#newgl-childno').val(data.data.childno);
         }
     });
+}
+
+function allgroupformat(cellvalue, options, rowObject){
+	if(cellvalue == '1'){
+		return '<span data-orig='+cellvalue+'>Yes</span>';
+	}else{
+		return '<span data-orig='+cellvalue+'>No</span>';
+	}
+}
+
+function allgroupunformat(cellvalue, options, rowObject){
+	return $(rowObject).find('span').data('orig');
 }
 
 var textfield_modal = new textfield_modal();

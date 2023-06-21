@@ -1,21 +1,21 @@
 
 <div class="panel panel-default" style="position: relative;">
 	<div class="panel-heading clearfix collapsed position" id="toggle_episodelist" style="position: sticky;top: 0px;z-index: 3;">
-		<b>NAME: <span id="name_show_episodelist"></span></b><br>
-		MRN: <span id="mrn_show_episodelist"></span>
-        SEX: <span id="sex_show_episodelist"></span>
-        DOB: <span id="dob_show_episodelist"></span>
-        AGE: <span id="age_show_episodelist"></span>
-        RACE: <span id="race_show_episodelist"></span>
-        RELIGION: <span id="religion_show_episodelist"></span><br>
-        OCCUPATION: <span id="occupation_show_episodelist"></span>
-        CITIZENSHIP: <span id="citizenship_show_episodelist"></span>
-        AREA: <span id="area_show_episodelist"></span> 
+		<b>NAME: <span class="popspan" id="name_show_episodelist"></span></b><br>
+		MRN: <span class="popspan" id="mrn_show_episodelist"></span>
+        SEX: <span class="popspan" id="sex_show_episodelist"></span>
+        DOB: <span class="popspan" id="dob_show_episodelist"></span>
+        AGE: <span class="popspan" id="age_show_episodelist"></span>
+        RACE: <span class="popspan" id="race_show_episodelist"></span>
+        RELIGION: <span class="popspan" id="religion_show_episodelist"></span><br>
+        OCCUPATION: <span class="popspan" id="occupation_show_episodelist"></span>
+        CITIZENSHIP: <span class="popspan" id="citizenship_show_episodelist"></span>
+        AREA: <span class="popspan" id="area_show_episodelist"></span> 
 
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#episodelist_panel"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px" data-toggle="collapse" data-target="#episodelist_panel"></i>
 		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 60px; top: 15px;">
-			<h5><b>Episode List</b></h5>
+			<h5><b>Episode</b></h5>
 		</div>
 	</div>
 	<div id="episodelist_panel" class="panel-collapse collapse">
@@ -58,6 +58,7 @@
 
 <div id="mdl_new_gl_epno" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog mediummodal">
+        <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <form class="form-horizontal" id="glform">
             <div class="modal-content">
                 <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
@@ -166,10 +167,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="modal-footer">
-                    <button id="btnglclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
             </div>
         </form>
     </div>
@@ -177,15 +174,13 @@
 
 <div id="mdl_mc" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
 	<div class="modal-dialog mediummodal">
+        <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
 		<div class="modal-content">
 			<div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b style="float: right;">Medical Certificate</b>
+                <b>Medical Certificate</b>
             </div>
             <div class="modal-body">
                 @include('hisdb.pat_enq.epno_medc')
-            </div>
-            <div class="modal-footer">
-                <button id="mc_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
 		</div>
 	</div>
@@ -193,15 +188,13 @@
 
 <div id="mdl_nok" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog mediummodal">
+        <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b style="float: right;">Next Of Kin</b>
+                <b>Next Of Kin</b>
             </div>
             <div class="modal-body">
                 @include('hisdb.pat_enq.epno_nok')
-            </div>
-            <div class="modal-footer">
-                <button id="nok_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -209,15 +202,27 @@
 
 <div id="mdl_payer" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
     <div class="modal-dialog smallmedmodal">
+        <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b style="float: right;">Payer</b>
+                <b>Payer</b>
             </div>
             <div class="modal-body" style="padding: 0px 10px;">
                 @include('hisdb.pat_enq.epno_payer')
             </div>
-            <div class="modal-footer">
-                <button id="payer_close" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<div id="mdl_docinfo" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog mediummodal">
+        <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
+        <div class="modal-content">
+            <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
+                <b>Doctor Info <span id="spanttl-docinfo"></span></b>
+            </div>
+            <div class="modal-body" style="padding: 0px 10px;">
+                @include('hisdb.pat_enq.epno_docinfo')
             </div>
         </div>
     </div>

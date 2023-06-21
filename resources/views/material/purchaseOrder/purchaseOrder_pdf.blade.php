@@ -33,6 +33,9 @@
 	font-size: 8pt;
 	top:-39px;
 }
+.page-break {
+    page-break-after: always;
+}
 .pagenum:before {
     content: "Page " counter(page);
 }
@@ -153,7 +156,6 @@
 					</td>
 				</tr>
 			@endforeach
-
 			<tr>
 				<td colspan="5">
 					<p><b>Total Amount</b></p>
@@ -224,17 +226,8 @@
 					<p>&nbsp;</p>
 				</td>
 			</tr>
-
 			
 		</tbody>
-		<!-- <script type="text/php">
-					$pdf->page_script('
-					$pageText = $PAGE_NUM . "/" . $PAGE_COUNT;
-					$y = $pdf->get_height() - 24;
-					$x = ($pdf->get_width() - Font_Metrics::get_text_width($pageText, $font, $size))/2;
-					$pdf->page_text($x, $y, $pageText, $font, $size);
-					');
-			</script> -->
 	</table>
 
 

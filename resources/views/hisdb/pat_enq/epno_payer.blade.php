@@ -10,19 +10,23 @@
         </div>
         <form class="col-xs-12" id="form_epno_payer" autocomplete="off">
             <div class="form-group">
-                <div class="col-md-2">
+                <div class="col-md-2" >
+                    <small for="lineno_epno_payer">Payer No</small>
+                    <input id="lineno_epno_payer" name="lineno" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-2" style="padding:0px 5px">
                     <small for="">MRN</small>
                     <input id="mrn_epno_payer" name="mrn" type="text" class="form-control" data-validation="required" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" style="padding:0px 5px">
                     <small for="">Episode</small>
                     <input id="episno_epno_payer" name="episno" type="text" class="form-control" data-validation="required" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1" style="padding:0px 5px">
                     <small for="">Type</small>
                     <input id="epistycode_epno_payer" name="epistycode" type="text" class="form-control" data-validation="required" readonly>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                     id="btn_grp_edit_epno_payer">
                         <button type="button" class="btn btn-default" id="add_epno_payer">
@@ -54,7 +58,7 @@
                 <div class="col-md-4">
                     <small for="payercode_epno_payer">Payer Code</small>
                     <div class='input-group'>
-                        <input id="payercode_epno_payer" name="payercode" type="text" class="form-control uppercase" required>
+                        <input id="payercode_epno_payer" name="payercode" type="text" class="form-control uppercase" data-validation="required" >
                         <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                     </div>
                     <span class="help-block"></span>
@@ -67,15 +71,6 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-4">
-                    <small for="lineno_epno_payer">Payer No</small>
-                    <input id="lineno_epno_payer" name="lineno" type="text" class="form-control" readonly>
-                </div>
-
-                <div class="col-md-8">
-                    <small for="pay_type_epno_payer">Fin Class</small>
-                    <input id="pay_type_epno_payer" name="pay_type" type="text" class="form-control">
-                </div>
             </div>
 
             <!-- <div class="form-group">
@@ -96,7 +91,12 @@
                     <input id="pyrlmtamt_epno_payer" name="pyrlmtamt" type="text" class="form-control">
                 </div>
 
-                <div class="col-md-2 col-md-4">
+                <div class="col-md-4">
+                    <small for="pay_type_epno_payer">Fin Class</small>
+                    <input id="pay_type_epno_payer" name="pay_type" type="text" class="form-control">
+                </div>
+
+                <div class="col-md-2">
                     <small for="allgroup_epno_payer">All Group</small>
                     <select name="allgroup" id="allgroup_epno_payer" class="form-control">
                       <option value="1">Yes</option>
@@ -121,6 +121,21 @@
                 <div class="col-md-6">
                     <small for="ourrefno_epno_payer">Our Reference</small>
                     <input id="ourrefno_epno_payer" name="ourrefno" type="text" class="form-control" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4">
+                    <small for="computerid_epno_payer">Computer ID</small>
+                    <input id="computerid_epno_payer" name="computerid" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-4">
+                    <small for="lastuser_epno_payer">Last User</small>
+                    <input id="lastuser_epno_payer" name="lastuser" type="text" class="form-control" readonly>
+                </div>
+                <div class="col-md-4">
+                    <small for="lastupdate_epno_payer">Last Update</small>
+                    <input id="lastupdate_epno_payer" name="lastupdate" type="text" class="form-control" readonly>
                 </div>
             </div>
 

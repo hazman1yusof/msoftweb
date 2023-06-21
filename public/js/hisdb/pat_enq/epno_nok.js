@@ -1,7 +1,7 @@
 var urlParam_nok_pat = {
 	action:'get_table_default',
 	url:'util/get_table_default',
-	field: ['n.idno','n.mrn','n.episno','n.name','n.relationshipcode','r.Description','n.address1','n.address2','n.address3','n.postcode','n.tel_h','n.tel_hp','n.tel_o','n.tel_o_ext'],
+	field: ['n.idno','n.mrn','n.episno','n.name','n.relationshipcode','r.Description','n.address1','n.address2','n.address3','n.postcode','n.tel_h','n.tel_hp','n.tel_o','n.tel_o_ext','n.lastuser','n.lastupdate','n.computerid'],
 	table_name: ['hisdb.nok_ec AS n','hisdb.relationship AS r'],
 	join_onCol : ['r.relationshipcode'],
     join_onVal : ['n.relationshipcode'],
@@ -51,6 +51,9 @@ $(document).ready(function () {
             { label: 'tel_hp', name: 'tel_hp' , hidden: true },
             { label: 'tel_o', name: 'tel_o' , hidden: true },
             { label: 'tel_o_ext', name: 'tel_o_ext' , hidden: true },
+            { label: 'computerid', name: 'computerid' , hidden: true },
+            { label: 'lastuser', name: 'lastuser' , hidden: true },
+            { label: 'lastupdate', name: 'lastupdate' , hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -133,15 +136,15 @@ $(document).ready(function () {
 	$("#add_nok_pat").click(function(){
 		emptyFormdata_div('#form_nok_pat');
 		button_state_nok_pat('wait');
-		enableForm('#form_nok_pat',['nok_relate_pat']);
+		enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate_pat.on();
 		$("#save_nok_pat").data('oper','add');
-		
+
 	});
 
 	$("#edit_nok_pat").click(function(){
 		button_state_nok_pat('wait');
-		enableForm('#form_nok_pat',['nok_relate_pat']);
+		enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate_pat.on();
 		$("#save_nok_pat").data('oper','edit');
 	});
@@ -153,7 +156,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid_nok_pat", urlParam_nok_pat);
 			});
 		}else{
-			enableForm('#form_nok_pat',['nok_relate_pat']);
+			enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		}
 
 	});
@@ -175,7 +178,10 @@ $(document).ready(function () {
 			tel_h : $("#nok_telh_pat").val(),
 			tel_hp : $("#nok_telhp_pat").val(),
 			tel_o : $("#nok_telo_pat").val(),
-			tel_o_ext : $("#nok_ext_pat").val()
+			tel_o_ext : $("#nok_ext_pat").val(),
+			computerid : $("#nok_computerid").val(),
+			lastuser : $("#nok_lastuser").val(),
+			lastupdate : $("#nok_lastupdate").val()
 	    };
 
 	    $.post( "episode/save_nok", $.param(postobj) , function( data ) {
@@ -231,6 +237,9 @@ $(document).ready(function () {
 		$("#nok_telhp_pat").val(obj.tel_hp);
 		$("#nok_telo_pat").val(obj.tel_o);
 		$("#nok_ext_pat").val(obj.tel_o_ext);
+		$("#nok_computerid").val(obj.computerid);
+		$("#nok_lastuser").val(obj.lastuser);
+		$("#nok_lastupdate").val(obj.lastupdate);
 	}
 
 });

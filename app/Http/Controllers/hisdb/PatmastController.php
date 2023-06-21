@@ -1141,6 +1141,7 @@ class PatmastController extends defaultController
                     "episactive" => 1,
                     "allocpayer" => 1,
                     'episstatus' => 'CURRENT',
+                    'computerid' => session('computerid')
                 ]);
 
             //update patmast
@@ -1159,7 +1160,7 @@ class PatmastController extends defaultController
                     'patstatus' => 1,
                     'last_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
                     'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'LastUser' => session('username'),
+                    'LastUser' => session('username')
                 ]);
 
             if($epis_no == 1){
@@ -1270,7 +1271,8 @@ class PatmastController extends defaultController
                         'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'LastUser' => session('username')
+                        'LastUser' => session('username'),
+                        'computerid' => session('computerid')
                     ]);
             }
 
@@ -1316,7 +1318,8 @@ class PatmastController extends defaultController
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'LastUser' => session('username'),
                         'ASDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString()
+                        'ASTime' => Carbon::now("Asia/Kuala_Lumpur")->toDateTimeString(),
+                        'computerid' => session('computerid')
                     ]);
             }
 
@@ -1348,7 +1351,8 @@ class PatmastController extends defaultController
                             'astime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'compcode' => session('compcode'),
                             'adduser' => strtoupper(session('username')),
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid' => session('computerid')
                         ]);
 
                     $bed_obj->update([
@@ -1566,10 +1570,10 @@ class PatmastController extends defaultController
         try {
 
             DB::table("hisdb.episode")
+                ->where("compcode",session('compcode'))
                 ->where("mrn",'=',$epis_mrn)
                 ->where("episno",'=',$epis_no)
                 ->update([
-                    "compcode" => session('compcode'),
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,
@@ -1696,7 +1700,8 @@ class PatmastController extends defaultController
                         'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'AddUser' => session('username'),
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'LastUser' => session('username')
+                        'LastUser' => session('username'),
+                        'computerid' => session('computerid')
                     ]);
             }else{
                 DB::table('hisdb.epispayer')
@@ -1710,7 +1715,8 @@ class PatmastController extends defaultController
                         'PayerCode' => $epis_payer,
                         'Pay_Type' => $epis_fin,
                         'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'LastUser' => session('username')
+                        'LastUser' => session('username'),
+                        'computerid' => session('computerid')
                     ]);
             }
 
@@ -2352,7 +2358,12 @@ class PatmastController extends defaultController
                         'tel_h'    =>   $request->tel_h,
                         'tel_hp'    =>   $request->tel_hp,
                         'tel_o'    =>  $request->tel_o,
-                        'tel_o_ext'    =>  $request->tel_o_ext
+                        'tel_o_ext'    =>  $request->tel_o_ext,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid'    =>  session('computerid')
                     ]);
 
             }else if($request->oper == 'edit'){
@@ -2371,7 +2382,10 @@ class PatmastController extends defaultController
                             'tel_h'    =>   $request->tel_h,
                             'tel_hp'    =>   $request->tel_hp,
                             'tel_o'    =>  $request->tel_o,
-                            'tel_o_ext'    =>  $request->tel_o_ext
+                            'tel_o_ext'    =>  $request->tel_o_ext,
+                            'lastuser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'computerid'    =>  session('computerid')
                         ]);
                 }
 

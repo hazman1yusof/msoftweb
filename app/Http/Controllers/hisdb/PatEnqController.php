@@ -37,6 +37,10 @@ class PatEnqController extends defaultController
                 return $this->mc_list($request);
             case 'pat_enq_payer':
                 return $this->pat_enq_payer($request);
+            case 'addnotes_epno':
+                return $this->addnotes_epno($request);
+            case 'init_vs_diag':
+                return $this->init_vs_diag($request);
             default:
                 return 'error happen..';
         }
@@ -48,6 +52,14 @@ class PatEnqController extends defaultController
                 return $this->maintable($request);
             case 'save_mc':
                 return $this->save_mc($request);
+            case 'save_payer':
+                return $this->save_payer($request);
+            case 'save_epno_addnotes':
+                return $this->save_epno_addnotes($request);
+            case 'save_epno_vitstate':
+                return $this->save_epno_vitstate($request);
+            case 'save_epno_diagnose':
+                return $this->save_epno_diagnose($request);
             default:
                 return 'error happen..';
         } 
@@ -56,7 +68,28 @@ class PatEnqController extends defaultController
     public function maintable(Request $request){
 
         // $mrn_range = $this->mrn_range($request);
-        $table_patm = DB::table('hisdb.pat_mast');
+        $table_patm = DB::table('hisdb.pat_mast')
+                        ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc'])
+                            ->leftJoin('hisdb.racecode', function($join) use ($request){
+                                $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
+                                                ->where('racecode.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.occupation', function($join) use ($request){
+                                $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
+                                                ->where('occupation.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.religion', function($join) use ($request){
+                                $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
+                                                ->where('religion.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.citizen', function($join) use ($request){
+                                $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
+                                                ->where('citizen.compcode','=',session('compcode'));
+                            })
+                            ->leftJoin('hisdb.areacode', function($join) use ($request){
+                                $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
+                                                ->where('areacode.compcode','=',session('compcode'));
+                            });
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -77,17 +110,17 @@ class PatEnqController extends defaultController
         }
 
         $table_patm = $table_patm
-                    ->where('Active','=','1')
-                    ->where('compcode','=',session('compcode'));
+                    ->where('pat_mast.Active','=','1')
+                    ->where('pat_mast.compcode','=',session('compcode'));
                     // ->whereBetween('MRN',$mrn_range);
 
 
         if(!empty($request->sort)){
             foreach ($request->sort as $key => $value) {
-                $table_patm = $table_patm->orderBy($key, $value);
+                $table_patm = $table_patm->orderBy('pat_mast.'.$key, $value);
             }
         }else{
-            $table_patm = $table_patm->orderBy('idno', 'DESC');
+            $table_patm = $table_patm->orderBy('pat_mast.idno', 'DESC');
         }
 
         $request->page = $request->current;
@@ -98,7 +131,7 @@ class PatEnqController extends defaultController
         foreach ($paginate->items() as $key => $value) {
             if($value->PatStatus==1){
                 $episode = DB::table('hisdb.episode')
-                            ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
+                            ->select(['episode.mrn','doctor.doctorname','episode.epistycode','episode.admdoctor'])
                             ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
                             ->where('episode.mrn','=',$value->MRN)
                             ->where('episode.episno','=',$value->Episno)
@@ -109,6 +142,7 @@ class PatEnqController extends defaultController
                     $episode = $episode->first();
                     $value->q_epistycode = $episode->epistycode;
                     $value->q_doctorname = $episode->doctorname;
+                    $value->admdoctor = $episode->admdoctor;
                 }
             }
         }
@@ -129,7 +163,7 @@ class PatEnqController extends defaultController
 
         // $mrn_range = $this->mrn_range($request);
         $table = DB::table('hisdb.episode as e')
-                        ->select('e.idno','e.compcode','e.mrn','e.episno','e.admsrccode','e.epistycode','e.case_code','e.ward','e.bedtype','e.room','e.bed','e.admdoctor','e.attndoctor','e.refdoctor','e.prescribedays','e.pay_type','e.pyrmode','e.climitauthid','e.crnumber','e.depositreq','e.deposit','e.pkgcode','e.billtype','e.remarks','e.episstatus','e.episactive','e.adddate','e.adduser','e.reg_date','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.dischargedest','e.allocdoc','e.allocbed','e.allocnok','e.allocpayer','e.allocicd','e.lastupdate','e.lastuser','e.lasttime','e.procedure','e.dischargediag','e.lodgerno','e.regdept','e.diet1','e.diet2','e.diet3','e.diet4','e.diet5','e.glauthid','e.treatment','e.diagcode','e.complain','e.diagfinal','e.clinicalnote','e.conversion','e.newcaseP','e.newcaseNP','e.followupP','e.followupNP','e.bed2','e.bed3','e.bed4','e.bed5','e.bed6','e.bed7','e.bed8','e.bed9','e.bed10','e.diagprov','e.visitcase','e.PkgAutoNo','e.AgreementID','e.AdminFees','e.EDDept','e.dischargestatus','e.procode','e.treatcode','e.payer','e.doctorstatus','e.reff_rehab','e.reff_physio','e.reff_diet','e.stats_rehab','e.stats_physio','e.stats_diet','e.dry_weight','e.duration_hd','e.lastarrivaldate','e.lastarrivaltime','e.lastarrivalno','e.picdoctor','e.nurse_stat','d.doctorname as doctorname','ct.description as case_desc','ad.description as admsrccode_desc','dp.description as regdept_desc','dm.name as payer_desc');
+                        ->select('e.idno','e.compcode','e.mrn','e.episno','e.admsrccode','e.epistycode','e.case_code','e.ward','e.bedtype','e.room','e.bed','e.admdoctor','e.attndoctor','e.refdoctor','e.prescribedays','e.pay_type','e.pyrmode','e.climitauthid','e.crnumber','e.depositreq','e.deposit','e.pkgcode','e.billtype','e.remarks','e.episstatus','e.episactive','e.adddate','e.adduser','e.reg_date','e.reg_time','e.dischargedate','e.dischargeuser','e.dischargetime','e.dischargedest','e.allocdoc','e.allocbed','e.allocnok','e.allocpayer','e.allocicd','e.lastupdate','e.lastuser','e.lasttime','e.procedure','e.dischargediag','e.lodgerno','e.regdept','e.diet1','e.diet2','e.diet3','e.diet4','e.diet5','e.glauthid','e.treatment','e.diagcode','e.complain','e.diagfinal','e.clinicalnote','e.conversion','e.newcaseP','e.newcaseNP','e.followupP','e.followupNP','e.bed2','e.bed3','e.bed4','e.bed5','e.bed6','e.bed7','e.bed8','e.bed9','e.bed10','e.diagprov','e.visitcase','e.PkgAutoNo','e.AgreementID','e.AdminFees','e.EDDept','e.dischargestatus','e.procode','e.treatcode','e.payer','e.doctorstatus','e.reff_rehab','e.reff_physio','e.reff_diet','e.stats_rehab','e.stats_physio','e.stats_diet','e.dry_weight','e.duration_hd','e.lastarrivaldate','e.lastarrivaltime','e.lastarrivalno','e.picdoctor','e.nurse_stat','d.doctorname as doctorname','ct.description as case_desc','ad.description as admsrccode_desc','dp.description as regdept_desc','dm.name as payer_desc','btm.description as billtype_desc');
 
         if(!empty($request->searchCol)){
             if(!empty($request->fixPost)){
@@ -172,6 +206,9 @@ class PatEnqController extends defaultController
                         })->leftJoin('hisdb.casetype as ct', function($join) use ($request){
                             $join = $join->on('ct.case_code', '=', 'e.case_code')
                                             ->where('ct.compcode','=',session('compcode'));
+                        })->leftJoin('hisdb.billtymst as btm', function($join) use ($request){
+                            $join = $join->on('btm.billtype', '=', 'e.billtype')
+                                            ->where('btm.compcode','=',session('compcode'));
                         });
 
         if(!empty($request->sort)){
@@ -285,6 +322,216 @@ class PatEnqController extends defaultController
         }
     }
 
+    public function save_epno_addnotes(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            DB::table('hisdb.pathealthadd')
+                ->insert([  
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn ,
+                    'episno' => $request->episno ,
+                    'additionalnote' => $request->additionalnote ,
+                    'doctorcode' => $request->doctorcode,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'addtime' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid'),
+                ]);
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function save_epno_vitstate(Request $request){
+
+        DB::beginTransaction();
+        try {
+            
+            $pathealth = DB::table('hisdb.pathealth')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->where('episno',$request->episno);
+
+            if($pathealth->exists()){
+                DB::table('hisdb.pathealth')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->update([  
+                        'height' => $request->height,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
+                        'temperature' => $request->temperature,
+                        'visionl' => $request->visionl,
+                        'weight' => $request->weight,
+                        'pulse' => $request->pulse,
+                        'respiration' => $request->respiration,
+                        'colorblind' => $request->colorblind,
+                        'visionr' => $request->visionr,
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else{
+                DB::table('hisdb.pathealthadd')
+                    ->insert([  
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn ,
+                        'episno' => $request->episno ,
+                        'height' => $request->height,
+                        'bp_sys1' => $request->bp_sys1,
+                        'bp_dias2' => $request->bp_dias2,
+                        'temperature' => $request->temperature,
+                        'visionl' => $request->visionl,
+                        'weight' => $request->weight,
+                        'pulse' => $request->pulse,
+                        'respiration' => $request->respiration,
+                        'colorblind' => $request->colorblind,
+                        'visionr' => $request->visionr,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid'),
+                    ]);
+            }
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function save_epno_diagnose(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            DB::table('hisdb.episode')
+                ->where('compcode',session('compcode'))
+                ->where('mrn',$request->mrn)
+                ->where('episno',$request->episno)
+                ->update([  
+                    'diagprov' => $request->diagprov,
+                    'diagfinal' => $request->diagfinal,
+                    'procedure' => $request->procedure,
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'computerid' => session('computerid')
+                ]);
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function save_payer(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            if($request->oper == 'add'){
+
+                $count = DB::table('hisdb.epispayer')
+                            ->where('compcode',session('compcode'))
+                            ->where('mrn',$request->mrn)
+                            ->where('episno',$request->episno)
+                            ->count();
+
+                $lineno = intval($count) + 1;
+
+                $idno = DB::table('hisdb.epispayer')
+                        ->insert([  
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'payercode' => $request->payercode,
+                            'lineno' => $lineno,
+                            'epistycode' => $request->epistycode,
+                            'pay_type' => $request->pay_type,
+                            // 'pyrmode' => $request->,
+                            // 'pyrcharge' => $request->,
+                            // 'pyrcrdtlmt' => $request->,
+                            'pyrlmtamt' => $request->pyrlmtamt,
+                            // 'totbal' => $request->,
+                            'allgroup' => $request->allgroup,
+                            // 'alldept' => $request->,
+                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'adduser' => session('username'),
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            // 'billtype' => $request->,
+                            'refno' => $request->refno,
+                            'computerid' => session('computerid')
+                            // 'chgrate' => $request->
+                        ]);
+
+            }else if($request->oper == 'edit'){
+                DB::table('hisdb.epispayer')
+                        ->where('idno',$request->idno)
+                        ->update([  
+                            'payercode' => $request->payercode,
+                            'pay_type' => $request->pay_type,
+                            'pyrlmtamt' => $request->pyrlmtamt,
+                            'allgroup' => $request->allgroup,
+                            'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'lastuser' => session('username'),
+                            'refno' => $request->refno,
+                            'computerid' => session('computerid')
+                        ]);
+            }
+
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            $responce->idno = $idno;
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
     public function show_mc(Request $request){   
         $patmc = DB::table('hisdb.patmc as mc')
                         ->select('mc.idno','mc.compcode','mc.datefrom','mc.dateto','mc.dateresume','mc.datereexam','mc.mrn','mc.episno','pm.newic','mc.patfrom','mc.mccnt','mc.adduser','mc.adddate','mc.serialno','mc.printeddate','mc.printedby','pm.sex')
@@ -340,9 +587,23 @@ class PatEnqController extends defaultController
         return json_encode($responce);
     }
 
+    public function addnotes_epno(Request $request){
+        $patmc = DB::table('hisdb.pathealthadd')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->where('episno',$request->episno)
+                    ->get();
+
+        $responce = new stdClass();
+        $responce->data = $patmc;
+
+        return json_encode($responce);
+    }
+
+
     public function pat_enq_payer(Request $request){
         $table = DB::table('hisdb.epispayer as ep')
-                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','dm.name as payercode_desc','btm.description as billtype_desc')
+                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
                     ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->on('dm.debtorcode', '=', 'ep.payercode')
                                                 ->where('dm.compcode','=',session('compcode'));
@@ -369,6 +630,33 @@ class PatEnqController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
+    }
+
+    public function init_vs_diag(Request $request){
+        $responce = new stdClass();
+        $responce->episode = null;
+        $responce->pathealth = null;
+
+        $episode = DB::table('hisdb.episode')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->where('episno',$request->episno);
+
+        $pathealth = DB::table('hisdb.pathealth')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->where('episno',$request->episno);
+
+        if($episode->exists()){
+            $responce->episode = $episode->first();
+        }
+
+        if($episode->exists()){
+            $responce->pathealth = $pathealth->first();
+        }
+
+        return json_encode($responce);
+
     }
 
     public function getpayercode(Request $request){
