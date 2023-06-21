@@ -34,7 +34,7 @@
 	top:-39px;
 }
 .pagenum:before {
-    content: "Page " counter(page);
+    content: "Page " counter(page) " of " counter(pageTotal);
 }
 .page-break {
 	page-break-after:auto;
