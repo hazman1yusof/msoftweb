@@ -16,11 +16,43 @@
 
 <script>
 	
-	purordhd
-	
-	var supplier = {
-	    'SuppCode':'{{$supplier->SuppCode}}'
+	var purordhd = {
+		@foreach($purordhd as $key => $val) 
+			'{{$key}}' : '{{$val}}',
+		@endforeach 
 	};
+
+	var purorddt=[
+		@foreach($purorddt as $key => $podt)
+		[
+			@foreach($podt as $key2 => $val)
+				{'{{$key2}}' : `{{$val}}`},
+			@endforeach
+		],
+		@endforeach 
+	];
+
+	var supplier = {
+		@foreach($supplier as $key => $val) 
+			'{{$key}}' : '{{$val}}',
+		@endforeach 
+	};
+
+	var company = {
+		@foreach($company as $key => $val) 
+			'{{$key}}' : '{{$val}}',
+		@endforeach 
+	};
+
+	var deldept = {
+		@foreach($deldept as $key => $val) 
+			'{{$key}}' : '{{$val}}',
+		@endforeach 
+	};
+
+	var totamt_bm = '{{$totamt_bm}}';
+	var total_tax = '{{$total_tax}}';
+	var total_discamt = '{{$total_discamt}}';
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -41,7 +73,7 @@
 							[{text: 'Image', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}],
 
 							[{
-								text: 'Address To:', 
+								text: 'Address To:\n{{$supplier->SuppCode}}\n{{$supplier->Name}}\n{{$supplier->Addr1}}\n{{$supplier->Addr2}}\n{{$supplier->Addr3}}\n{{$supplier->Addr4}}', 
 								colSpan: 5, 
 								rowSpan: 4,
 								alignment: 'left'},{},{},{},{},
@@ -49,29 +81,45 @@
 							 	text: 'Purchase No.',
 							 	colSpan: 2, alignment: 'left'},{},
 							{
-								text: supplier.SuppCode,
+								text: '{{$purordhd->prdept}}'+'{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}',
 							 	colSpan: 4, alignment: 'left'},{},{},{}],
 							[{},{},{},{},{},
 							{
 							 	text: 'Purchase Date.',
 							 	colSpan: 2, alignment: 'left'},{},
 							{
-								text: '09-06-2023',
+								text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}',
 							 	colSpan: 4, alignment: 'left'},{},{},{}],
 							[{},{},{},{},{},
 							{
 							 	text: 'Contact Person.',
 							 	colSpan: 2, alignment: 'left'},{},
 							{
-								text: 'PCS000000066',
+								text: '{{$supplier->ContPers}}',
 							 	colSpan: 4, alignment: 'left'},{},{},{}],
+
 							[{},{},{},{},{},
 							{
 							 	text: 'Contact No.',
 							 	colSpan: 2, alignment: 'left'},{},
 							{
-								text: '03-51610919',
+								text: '{{$supplier->TelNo}}',
 							 	colSpan: 4, alignment: 'left'},{},{},{}],
+
+							[{text:'No.'},{text:'Description',colSpan: 4},{},{},{},{text:'UOM'},{text:'Quantity'},{text:'Unit Price'},{text:'Tax Amt'},{text:'Discount Amount'},{text:'Nett Amount'}],
+
+							@foreach ($purorddt as $index=>$obj)
+							[
+								{text:'{{++$index}}'},
+								{text:`{{$obj->description}}\n{{$obj->remarks}}`,colSpan: 4},{},{},{},
+								{text:'{{$obj->uomcode}}'},
+								{text:'{{$obj->qtyorder}}'},
+								{text:'{{number_format($obj->unitprice,2)}}'},
+								{text:'{{number_format($obj->tot_gst,2)}}'},
+								{text:'{{number_format($obj->amtdisc,2)}}'},
+								{text:'{{number_format($obj->amount,2)}}'},
+							],
+							@endforeach
 						]
 					}
 				},
@@ -88,6 +136,7 @@
 					margin: [0, 10, 0, 5]
 				},
 				tableExample: {
+					fontSize: 9,
 					margin: [0, 5, 0, 15]
 				},
 				tableHeader: {
@@ -108,6 +157,10 @@
 			$('#pdfiframe').attr('src',dataURL);
 		});
 	});
+
+	function make_header(){
+
+	}
 	
 
 	// pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
