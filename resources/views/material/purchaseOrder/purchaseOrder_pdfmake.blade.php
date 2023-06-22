@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<title>Purchase Order</title>
 
 </head>
 
@@ -113,13 +113,28 @@
 								{text:'{{++$index}}'},
 								{text:`{{$obj->description}}\n{{$obj->remarks}}`,colSpan: 4},{},{},{},
 								{text:'{{$obj->uomcode}}'},
-								{text:'{{$obj->qtyorder}}'},
-								{text:'{{number_format($obj->unitprice,2)}}'},
-								{text:'{{number_format($obj->tot_gst,2)}}'},
-								{text:'{{number_format($obj->amtdisc,2)}}'},
-								{text:'{{number_format($obj->amount,2)}}'},
+								{text:'{{$obj->qtyorder}}', alignment: 'right'},
+								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 							],
 							@endforeach
+
+							[
+								{text:'Total',colSpan: 5, rowspan: 2},{},{},{},{},{},{},{},
+								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
+								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
+								{text:'{{number_format($purordhd->totamount,2)}}', alignment: 'right'}
+							],
+
+							[
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}',colSpan: 11, rowspan: 2}],
+							[
+								{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},
+								{text:'Address To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}', colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{}
+							],
+							[{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{},{}],
 						]
 					}
 				},

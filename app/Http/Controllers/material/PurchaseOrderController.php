@@ -922,7 +922,7 @@ class PurchaseOrderController extends defaultController
 
     }
 
-     public function showpdf(Request $request){
+    public function showpdf(Request $request){
         $recno = $request->recno;
         if(!$recno){
             abort(404);
@@ -983,7 +983,6 @@ class PurchaseOrderController extends defaultController
             
             return $pdf->stream();      
 
-            
             return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
         }else{
 
