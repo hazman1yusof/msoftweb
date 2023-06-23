@@ -87,7 +87,7 @@ $(document).ready(function () {
 		button_state_doctorNote($(this).data('oper'));
 		// dialog_mrn_edit.off();
 		$('#docnote_date_tbl tbody tr:eq(0)').click();	//to select first row
-		$("#formDoctorNote input[id='current'],#formDoctorNote input[id='past']").attr('disabled',false);
+		$("#current,#past").attr('disabled',false);
 	
 	});
 	
@@ -524,7 +524,7 @@ function button_state_doctorNote(state){
 		case 'add':
 			$("#toggle_doctorNote").attr('data-toggle','collapse');
 			$('#cancel_doctorNote').data('oper','add');
-			$("#new_doctorNote,#formDoctorNote input[id='current'],#formDoctorNote input[id='past']").attr('disabled',false);
+			$("#new_doctorNote,#current,#past").attr('disabled',false);
 			$('#save_doctorNote,#cancel_doctorNote,#edit_doctorNote').attr('disabled',true);
 			break;
 		case 'edit':
@@ -744,7 +744,6 @@ function populate_doctorNote_emergency(obj,rowdata){
 
 function on_toggling_curr_past(obj = curr_obj){
 	var addnotes = document.getElementById("addnotes");
-	// console.log($('input[name="toggle_type"]:checked').val());
 	
 	if (document.getElementById("current").checked){
 		dateParam_docnote={
@@ -970,7 +969,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 });
 
 //to reload date table on radio btn click
-$("#formDoctorNote input[name='toggle_type']").on('click', function () {
+$("input[name=toggle_type]").on('click', function () {
 	event.stopPropagation();
 	on_toggling_curr_past(curr_obj);
 	docnote_date_tbl.ajax.url( "./doctornote/table?"+$.param(dateParam_docnote) ).load(function(data){
