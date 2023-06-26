@@ -123,7 +123,7 @@ $(document).ready(function () {
 			dialog_srcdocno.off();
 			$(".noti").empty();
 			$("#refresh_jqGrid").click();
-			refreshGrid("#jqGrid2",null,"kosongkan");
+			//refreshGrid("#jqGrid2",null,"kosongkan");
 			radbuts.reset();
 		},
 	});

@@ -122,19 +122,23 @@
 							@endforeach
 
 							[
-								{text:'Total',colSpan: 5, rowspan: 2},{},{},{},{},{},{},{},
+								{text:'TOTAL', style: 'totalbold', colSpan: 5, rowspan: 2},{},{},{},{},{},{},{},
 								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
 								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($purordhd->totamount,2)}}', alignment: 'right'}
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}',colSpan: 11, rowspan: 2}],
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11, rowspan: 2}],
 							[
-								{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},
-								{text:'Address To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}', colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{}
+								{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 5, rowspan: 2},
+								{text:'Address To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}', colSpan: 6, rowspan: 2},
+								{text:'Delivered By: ',colSpan: 3, rowspan: 2},
+								{text:'Approval: ',colSpan: 3, rowspan: 2},
+								{},{},{},{},{},{},{}
 							],
-							[{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{},{}],
+							
+							//[{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{},{}],
 						]
 					}
 				},
@@ -158,6 +162,10 @@
 					bold: true,
 					fontSize: 13,
 					color: 'black'
+				},
+				totalbold: {
+					bold: true,
+					fontSize: 10,
 				}
 			},
 		};

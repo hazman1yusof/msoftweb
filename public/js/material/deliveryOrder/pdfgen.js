@@ -66,7 +66,7 @@
 		      style:'colmargin',
 		      columns: [
 					{ width: 80, text: 'Purchase Department: ', bold: true },
-					{ width: 200, text: get_desc('delordhd_prdept')+' ( '+getval_from_name(header_data,'delordhd_prdept')+' )' },
+					{ width: 200, text: get_desc('delordhd_prdept')+' \n( '+getval_from_name(header_data,'delordhd_prdept')+' )' },
 					{ width: 80, text: 'PO No: ', bold: true },
 					{ width: 50, text: getval_from_name(header_data,'delordhd_') },
 					{ width: 80, text: 'GRN No: ', bold: true },
@@ -76,7 +76,7 @@
 		      style:'colmargin',
 		      columns: [
 					{ width: 80, text: 'Supplier Code: ', bold: true },
-					{ width: 200, text: get_desc('delordhd_suppcode')+' ( '+getval_from_name(header_data,'delordhd_suppcode')+' )' },
+					{ width: 200, text: get_desc('delordhd_suppcode')+' \n ( '+getval_from_name(header_data,'delordhd_suppcode')+' )' },
 					{ width: 80, text: 'DO No: ', bold: true },
 					{ width: 50, text: getval_from_name(header_data,'delordhd_delordno') },
 					{ width: 80, text: 'Record No: ', bold: true },
@@ -163,13 +163,13 @@
 		  ],
 		  styles: {
 				header: {
-					fontSize: 15,
+					fontSize: 14,
 					bold: true,
 					alignment: 'right',
 					margin: [0,0,0,20]		
 				},
 				headerDetail: {
-					fontSize: 15,
+					fontSize: 13,
 					bold: true,
 					alignment: 'right',
 					margin: [0,50,0,20]		
@@ -178,6 +178,7 @@
 					margin: [0, 5, 0, 15]
 				},
 				colmargin: {
+					fontSize: 9,
 					margin: [0, 5, 0, 5]
 				}
 			},
