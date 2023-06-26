@@ -67,7 +67,7 @@
                 <div class="col-md-4">
                     <small for="nok_relate_pat">Relationship</small>
                     <div class='input-group'>
-                        <input id="nok_relate_pat" name="nok_relate_pat" type="text" class="form-control uppercase">
+                        <input id="nok_relate_pat" name="nok_relate_pat" type="text" class="form-control uppercase" data-validation="required">
                         <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                     </div>
                     <span class="help-block"></span>

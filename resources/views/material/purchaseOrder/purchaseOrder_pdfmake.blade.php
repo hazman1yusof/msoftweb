@@ -70,33 +70,45 @@
 						// headerRows: 5,
 						// keepWithHeaderRows: 5,
 						body: [
-							[{text: 'Image', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}],
+							[
+								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-							[{
-								text: 'Address To:\n{{$supplier->SuppCode}}\n{{$supplier->Name}}\n{{$supplier->Addr1}}\n{{$supplier->Addr2}}\n{{$supplier->Addr3}}\n{{$supplier->Addr4}}', 
-								colSpan: 5, 
-								rowSpan: 4,
-								alignment: 'left'},{},{},{},{},
-							{
-							 	text: 'Purchase No.',
-							 	colSpan: 2, alignment: 'left'},{},
-							{
-								text: '{{$purordhd->prdept}}'+'{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}',
-							 	colSpan: 4, alignment: 'left'},{},{},{}],
-							[{},{},{},{},{},
-							{
-							 	text: 'Purchase Date.',
-							 	colSpan: 2, alignment: 'left'},{},
-							{
-								text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}',
-							 	colSpan: 4, alignment: 'left'},{},{},{}],
-							[{},{},{},{},{},
-							{
-							 	text: 'Contact Person.',
-							 	colSpan: 2, alignment: 'left'},{},
-							{
-								text: '{{$supplier->ContPers}}',
-							 	colSpan: 4, alignment: 'left'},{},{},{}],
+								{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+							],
+
+							[
+								{
+									text: 'Address To:\n{{$supplier->SuppCode}}\n{{$supplier->Name}}\n{{$supplier->Addr1}}\n{{$supplier->Addr2}}\n{{$supplier->Addr3}}\n{{$supplier->Addr4}}', 
+									colSpan: 5, 
+									rowSpan: 4,
+									alignment: 'left'},{},{},{},{},
+								{
+								 	text: 'Purchase No.',
+								 	colSpan: 2, alignment: 'left'},{},
+								{
+									text: '{{$purordhd->prdept}}'+'{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}',
+								 	colSpan: 4, alignment: 'left'},{},{},{}
+							],
+							
+							[
+								{},{},{},{},{},
+								{
+								 	text: 'Purchase Date.',
+								 	colSpan: 2, alignment: 'left'},{},
+								{
+									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}',
+								 	colSpan: 4, alignment: 'left'},{},{},{}
+							],
+
+							[
+								{},{},{},{},{},
+								{
+								 	text: 'Contact Person.',
+								 	colSpan: 2, alignment: 'left'},{},
+								{
+									text: '{{$supplier->ContPers}}',
+								 	colSpan: 4, alignment: 'left'},{},{},{}
+							],
 
 							[{},{},{},{},{},
 							{
@@ -122,21 +134,51 @@
 							@endforeach
 
 							[
-								{text:'TOTAL', style: 'totalbold', colSpan: 5, rowspan: 2},{},{},{},{},{},{},{},
+								{text:'TOTAL', style: 'totalbold', colSpan: 5},{},{},{},{},{},{},{},
 								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
 								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($purordhd->totamount,2)}}', alignment: 'right'}
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11, rowspan: 2}],
-							[
-								{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 5, rowspan: 2},
-								{text:'Address To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}', colSpan: 6, rowspan: 2},
-								{text:'Delivered By: ',colSpan: 3, rowspan: 2},
-								{text:'Approval: ',colSpan: 3, rowspan: 2},
-								{},{},{},{},{},{},{}
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
 							],
+							
+							[
+								{text:
+
+									`Please Deliver goods/services/works with original purchase order, delivery order and invoice to:\n\nAddress To:\n{{$deldept->description}}\n
+										{{$deldept->addr1}}\n
+										{{$deldept->addr2}}\n
+										{{$deldept->addr3}}\n
+										{{$deldept->addr4}}
+									Contact Person:\n
+									Tel No.:\n
+									Email:\n
+									`
+									,colSpan: 6,rowSpan:4},{},{},{},{},{},
+								{text:'Delivered By: \n\n\n\n\n\n', style: 'totalbold',colSpan: 3,rowSpan:3},{},{},
+								{text:'Approval: \n\n\n\n\n\n', style: 'totalbold',colSpan: 2,rowSpan:3},{}
+							],
+							
+							[
+								{},{},{},{},{},{},
+								{},{},{},
+								{},{}
+							],
+							
+							[
+								{},{},{},{},{},{},
+								{},{},{},
+								{},{}
+							],
+							
+							[
+								{},{},{},{},{},{},
+								{text:'Sign: \n\n Position:\n\n Date:\n\n', style: 'totalbold',colSpan: 5},{},{},
+								{},{}
+							]
+							
 							
 							//[{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{},{}],
 						]
@@ -168,6 +210,15 @@
 					fontSize: 10,
 				}
 			},
+			images: {
+				letterhead: {
+				  url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
+			      headers: {
+			        myheader: '123',
+			        myotherheader: 'abc',
+			      }
+			    }
+			}
 		};
 
 		// pdfMake.createPdf(docDefinition).getBase64(function(data) {

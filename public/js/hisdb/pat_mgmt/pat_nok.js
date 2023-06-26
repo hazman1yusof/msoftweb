@@ -51,6 +51,9 @@ $(document).ready(function () {
             { label: 'tel_hp', name: 'tel_hp' , hidden: true },
             { label: 'tel_o', name: 'tel_o' , hidden: true },
             { label: 'tel_o_ext', name: 'tel_o_ext' , hidden: true },
+            { label: 'computerid', name: 'computerid' , hidden: true },
+            { label: 'lastuser', name: 'lastuser' , hidden: true },
+            { label: 'lastupdate', name: 'lastupdate' , hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -133,7 +136,7 @@ $(document).ready(function () {
 	$("#add_nok_pat").click(function(){
 		emptyFormdata_div('#form_nok_pat');
 		button_state_nok_pat('wait');
-		enableForm('#form_nok_pat',['nok_relate_pat']);
+		enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate_pat.on();
 		$("#save_nok_pat").data('oper','add');
 		
@@ -141,7 +144,7 @@ $(document).ready(function () {
 
 	$("#edit_nok_pat").click(function(){
 		button_state_nok_pat('wait');
-		enableForm('#form_nok_pat',['nok_relate_pat']);
+		enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate_pat.on();
 		$("#save_nok_pat").data('oper','edit');
 	});
@@ -153,7 +156,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid_nok_pat", urlParam_nok_pat);
 			});
 		}else{
-			enableForm('#form_nok_pat',['nok_relate_pat']);
+			enableForm('#form_nok_pat',['nok_relate_pat','nok_computerid','nok_lastuser','nok_lastupdate']);
 		}
 
 	});
@@ -231,6 +234,9 @@ $(document).ready(function () {
 		$("#nok_telhp_pat").val(obj.tel_hp);
 		$("#nok_telo_pat").val(obj.tel_o);
 		$("#nok_ext_pat").val(obj.tel_o_ext);
+		$("#nok_computerid_pat").val(obj.computerid);
+		$("#nok_lastuser_pat").val(obj.lastuser);
+		$("#nok_lastupdate_pat").val(obj.lastupdate);
 	}
 
 });

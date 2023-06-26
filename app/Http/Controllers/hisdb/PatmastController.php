@@ -2183,6 +2183,7 @@ class PatmastController extends defaultController
                         'epistycode'    =>  $request->epistycode,
                         'adddate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'adduser'    =>  session('username'),
+                        'computerid'    =>  session('computerid'),
                         'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'lastuser'    =>  session('username')
                     ]);
@@ -2200,7 +2201,8 @@ class PatmastController extends defaultController
                         'asdate'        =>  Carbon::now("Asia/Kuala_Lumpur"), 
                         'astime'    =>  Carbon::now("Asia/Kuala_Lumpur"),
                         'lastupdate'    =>  Carbon::now("Asia/Kuala_Lumpur"),
-                        'lastuser'    =>  session('username')
+                        'lastuser'    =>  session('username'),
+                        'computerid'    =>  session('computerid'),
                     ]);
                 }
             }else{

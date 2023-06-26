@@ -323,6 +323,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="col-md-4">
+                                            <small for="doc_status">Add User</small>
+                                            <input id="doc_adduser" name="doc_adduser" type="text" class="form-control" rdonly>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small for="doc_status">Add Date</small>
+                                            <input id="doc_adddate" name="doc_adddate" type="text" class="form-control" rdonly>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small for="doc_status">Computerid</small>
+                                            <input id="doc_computerid" name="doc_computerid" type="text" class="form-control" rdonly>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             </div>
@@ -502,42 +516,53 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <small for="nok_postcode">Postcode</small>
-                                            <input id="nok_postcode" name="nok_postcode" type="text" class="form-control" data-validation="required">
+                                            <input id="nok_postcode" name="nok_postcode" type="text" class="form-control">
                                         </div>
 
-                                        <div class="col-md-offset-3 col-md-6">
+                                        <div class="col-md-4">
                                             <small for="nok_telh">Tel (H)</small>
                                             <input id="nok_telh" name="nok_telh" type="text" class="form-control">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <small for="nok_telo">Tel (O)</small>
+                                            <input id="nok_telo" name="nok_telo" type="text" class="form-control" rdonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <small for="nok_relate">Relationship</small>
                                             <div class='input-group'>
-                                                <input id="nok_relate" name="nok_relate" type="text" class="form-control uppercase">
+                                                <input id="nok_relate" name="nok_relate" type="text" class="form-control uppercase" data-validation="required">
                                                 <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
                                             </div>
                                             <span class="help-block"></span>
                                         </div>
-
                                         <div class="col-md-6">
-                                            <small for="nok_telo">Tel (O)</small>
-                                            <input id="nok_telo" name="nok_telo" type="text" class="form-control" data-validation="required" rdonly>
+                                            <small for="nok_telhp">Tel (H/P)</small>
+                                            <input id="nok_telhp" name="nok_telhp" type="text" class="form-control" rdonly>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <small for="nok_ext">Ext</small>
+                                            <input id="nok_ext" name="nok_ext" type="text" class="form-control"  rdonly>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-md-6">
-                                            <small for="nok_telhp">Tel (H/P)</small>
-                                            <input id="nok_telhp" name="nok_telhp" type="text" class="form-control" data-validation="required" rdonly>
+                                        <div class="col-md-4">
+                                            <small for="nok_computerid">Computer ID</small>
+                                            <input id="nok_computerid" name="nok_computerid" type="text" class="form-control"  rdonly>
                                         </div>
-
-                                        <div class="col-md-offset-3 col-md-3">
-                                            <small for="nok_ext">Ext</small>
-                                            <input id="nok_ext" name="nok_ext" type="text" class="form-control" data-validation="required" rdonly>
+                                        <div class="col-md-4">
+                                            <small for="nok_lastuser">Last User</small>
+                                            <input id="nok_lastuser" name="nok_lastuser" type="text" class="form-control"  rdonly>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <small for="nok_lastupdate">Last Update</small>
+                                            <input id="nok_lastupdate" name="nok_lastupdate" type="text" class="form-control"  rdonly>
                                         </div>
                                     </div>
 
@@ -559,7 +584,131 @@
 
                             <div id="tabPayer" class="panel-collapse collapse">
                             <div class="panel-body">
+                                <div class="col-xs-12">
+                                    <div id="jqGrid_epno_payer_c">
+                                        <div class='col-md-12' style="padding:0 0 15px 0">
+                                            <table id="jqGrid_epno_payer" class="table table-striped"></table>
+                                            <div id="jqGridPager_epno_payer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form class="col-xs-12" id="form_epno_payer" autocomplete="off">
+                                    <div class="form-group">
+                                        <div class="col-md-2" >
+                                            <small for="lineno_epno_payer">Payer No</small>
+                                            <input id="lineno_epno_payer" name="lineno" type="text" class="form-control" readonly>
+                                        </div>
+                                        <div class="col-md-2" style="padding:0px 5px">
+                                            <small for="">MRN</small>
+                                            <input id="mrn_epno_payer" name="mrn" type="text" class="form-control" data-validation="required" readonly>
+                                        </div>
+                                        <div class="col-md-2" style="padding:0px 5px">
+                                            <small for="">Episode</small>
+                                            <input id="episno_epno_payer" name="episno" type="text" class="form-control" data-validation="required" readonly>
+                                        </div>
+                                        <div class="col-md-1" style="padding:0px 5px">
+                                            <small for="">Type</small>
+                                            <input id="epistycode_epno_payer" name="epistycode" type="text" class="form-control" data-validation="required" readonly>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                            id="btn_grp_edit_epno_payer">
+                                                <button type="button" class="btn btn-default" id="add_epno_payer">
+                                                    <span class="fa fa-plus-square-o fa-lg"></span> Add
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="edit_epno_payer">
+                                                    <span class="fa fa-edit fa-lg"></span> Edit
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="save_epno_payer">
+                                                    <span class="fa fa-save fa-lg"></span> Save
+                                                </button>
+                                                <button type="button" class="btn btn-default" id="cancel_epno_payer" >
+                                                    <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <input id="idno_epno_payer" name="idno" type="hidden">
+
+                                    <div class="form-group">
+                                        <div class="col-xs-12">
+                                            <small for="name">Name</small>
+                                            <input id="name_epno_payer" name="name" type="text" class="form-control" data-validation="required" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-xs-4">
+                                            <small for="payercode_epno_payer">Payer Code</small>
+                                            <div class='input-group'>
+                                                <input id="payercode_epno_payer" name="payercode" type="text" class="form-control uppercase" data-validation="required" >
+                                                <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
+                                            </div>
+                                            <span class="help-block"></span>
+                                        </div>
+
+                                        <div class="col-xs-8">
+                                            <small for="billtype_epno_payer">&nbsp;</small>
+                                            <input id="payercode_desc_epno_payer" name="payercode_desc" type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-xs-4">
+                                            <small for="pyrlmtamt_epno_payer">Limit Amount</small>
+                                            <input id="pyrlmtamt_epno_payer" name="pyrlmtamt" type="text" class="form-control">
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <small for="pay_type_epno_payer">Fin Class</small>
+                                            <input id="pay_type_epno_payer" name="pay_type" type="text" class="form-control">
+                                        </div>
+
+                                        <div class="col-xs-2">
+                                            <small for="allgroup_epno_payer">All Group</small>
+                                            <select name="allgroup" id="allgroup_epno_payer" class="form-control">
+                                              <option value="1">Yes</option>
+                                              <option value="0">No</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <small for="allgroup_epno_payer">&nbsp;</small>
+                                            <button type="button" id="except_epno_payer" class="btn btn-default" style="display: block;">Exception</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-xs-6">
+                                            <small for="refno_epno_payer">Reference No</small>
+                                            <div class='input-group'>
+                                                <input id="refno_epno_payer" name="refno" type="text" class="form-control uppercase">
+                                                <a class='input-group-addon btn btn-info' id="refno_epno_payer_btn"><span class='fa fa-ellipsis-h'></span></a>
+                                            </div>
+                                            <span class="help-block"></span>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <small for="ourrefno_epno_payer">Our Reference</small>
+                                            <input id="ourrefno_epno_payer" name="ourrefno" type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-xs-4">
+                                            <small for="computerid_epno_payer">Computer ID</small>
+                                            <input id="computerid_epno_payer" name="computerid" type="text" class="form-control" readonly>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <small for="lastuser_epno_payer">Last User</small>
+                                            <input id="lastuser_epno_payer" name="lastuser" type="text" class="form-control" readonly>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <small for="lastupdate_epno_payer">Last Update</small>
+                                            <input id="lastupdate_epno_payer" name="lastupdate" type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                             </div>
                         </div>

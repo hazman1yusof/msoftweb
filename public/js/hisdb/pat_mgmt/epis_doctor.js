@@ -46,6 +46,9 @@ $(document).ready(function () {
             { label: 'da_asdate', name: 'da_asdate' , hidden: true },
             { label: 'da_astime', name: 'da_astime' , hidden: true },
             { label: 'da_astatus', name: 'da_astatus' , hidden: true },
+            { label: 'da_adddate', name: 'da_adddate' , hidden: true },
+            { label: 'da_adduser', name: 'da_adduser' , hidden: true },
+            { label: 'da_computerid', name: 'da_computerid' , hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -137,7 +140,7 @@ $(document).ready(function () {
 	$("#add_doc").click(function(){
 		emptyFormdata_div('#form_doc');
 		button_state_doc('wait');
-		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time']);
+		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time','doc_adddate','doc_adduser','doc_computerid']);
 		$("#save_doc").data('oper','add');
 		search_doctor.on();
 		
@@ -145,7 +148,7 @@ $(document).ready(function () {
 
 	$("#edit_doc").click(function(){
 		button_state_doc('wait');
-		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time']);
+		enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time','doc_adddate','doc_adduser','doc_computerid']);
 		$("#save_doc").data('oper','edit');
 		search_doctor.on();
 		
@@ -158,7 +161,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid_doctor", urlParam_doctor);
 			});
 		}else{
-			enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time']);
+			enableForm('#form_doc',['doc_no','doc_doctorcode','doc_doctorname','doc_discipline','doc_date','doc_time','doc_adddate','doc_adduser','doc_computerid']);
 		}
 
 	});
@@ -229,6 +232,9 @@ $(document).ready(function () {
 		$("#doc_date").val(obj.da_asdate);
 		$("#doc_time").val(obj.da_astime);
 		$("#doc_status").val(obj.da_astatus);
+		$("#doc_adddate").val(obj.da_adddate);
+		$("#doc_adduser").val(obj.da_adduser);
+		$("#doc_computerid").val(obj.da_computerid);
 	}
 
 });

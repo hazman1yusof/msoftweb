@@ -1,14 +1,7 @@
-var urlParam_epno_payer = {
-	action:'pat_enq_docinfo',
-	url:'./pat_enq/table',
-	mrn:null,
-	episno:null,
-}
-
 var addnotes_epno = $('#addnotes_epno').DataTable({
     "ajax": "",
     "sDom": "",
-    "paging":false,
+    "paging":false,"aaSorting": [],
     "columns": [
             {'data': 'adddate'},
             {'data': 'addtime'},
@@ -43,8 +36,6 @@ $(document).ready(function () {
         emptyFormdata_div('#form_epno_vitstate');
         emptyFormdata_div('#form_epno_diagnose');
 		$('#admdoctor_text').text(bootgrid_last_row.q_doctorname);
-		urlParam_epno_payer.mrn = bootgrid_last_row.MRN;
-		urlParam_epno_payer.episno = bootgrid_last_row.Episno;
         addnotes_epno.ajax.url( "./pat_enq/table?action=addnotes_epno&mrn="+bootgrid_last_row.MRN+"&episno="+bootgrid_last_row.Episno)
         .load(function(){
         	$('#addnotes_epno tbody tr:eq(0)').click();
@@ -301,6 +292,7 @@ function check_editadd_vs(data){
 	if(data.pathealth.height!=null||data.pathealth.weight!=null||data.pathealth.bp_sys1!=null||data.pathealth.pulse!=null||data.pathealth.temperature!=null||data.pathealth.respiration!=null||data.pathealth.colorblind!=null||data.pathealth.visionl!=null||data.pathealth.visionr!=null){
 		$('#edit_epno_vitstate').show();
 		populate_epno_docinfo(data.pathealth,'#form_epno_vitstate');
+		calc_bmi_docinfo();
 	}else{
 		$('#add_epno_vitstate').show();
 	}
@@ -323,11 +315,10 @@ function calc_bmi_docinfo(){
 	let w = $('#form_epno_vitstate input[name=weight]').val().trim();
 	$('#form_epno_vitstate input[name=bmi]').val('');
 
-	console.log(h);
 	if(h=='')return false;
 	if(w=='')return false;
 
-	let bmi = w/(h*h);
+	let bmi = parseFloat(w)/(parseFloat(h/100)*parseFloat(h/100));
 
 	$('#form_epno_vitstate input[name=bmi]').val(bmi.toFixed(2));
 }

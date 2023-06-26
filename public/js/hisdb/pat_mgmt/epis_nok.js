@@ -23,10 +23,15 @@ $(document).ready(function () {
 	var urlParam_nok = {
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field: '',
-		table_name: 'hisdb.nok_ec',
-		filterCol:['compcode','episno','mrn'],
-		filterVal:['session.compcode',$("#txt_epis_no").val(),$("#mrn_episode").val()],
+		field: ['n.idno','n.mrn','n.episno','n.name','n.relationshipcode','r.Description','n.address1','n.address2','n.address3','n.postcode','n.tel_h','n.tel_hp','n.tel_o','n.tel_o_ext'],
+		table_name: ['hisdb.nok_ec AS n','hisdb.relationship AS r'],
+		join_onCol : ['r.relationshipcode'],
+        join_onVal : ['n.relationshipcode'],
+        join_type: ['LEFT JOIN'],
+        join_filterCol : [['r.compcode =']],
+        join_filterVal : [['session.compcode']],
+		filterCol:['n.compcode','n.mrn'],
+		filterVal:['session.compcode',$("#mrn_episode").val()],
 	}
 
 	$("#jqGrid_nok").jqGrid({
@@ -37,6 +42,7 @@ $(document).ready(function () {
             { label: 'episno', name: 'episno', hidden: true },
             { label: 'Name', name: 'name', width: 80 },
             { label: 'Relatecode', name: 'relationshipcode', hidden: true  },
+            { label: 'Relationship', name: 'Description', hidden: false  , width: 50 },
             { label: 'address1', name: 'address1' , hidden: true },
             { label: 'address2', name: 'address2' , hidden: true },
             { label: 'address3', name: 'address3' , hidden: true },
@@ -45,6 +51,9 @@ $(document).ready(function () {
             { label: 'tel_hp', name: 'tel_hp' , hidden: true },
             { label: 'tel_o', name: 'tel_o' , hidden: true },
             { label: 'tel_o_ext', name: 'tel_o_ext' , hidden: true },
+            { label: 'computerid', name: 'computerid' , hidden: true },
+            { label: 'lastuser', name: 'lastuser' , hidden: true },
+            { label: 'lastupdate', name: 'lastupdate' , hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -87,12 +96,12 @@ $(document).ready(function () {
 		},
 	});
 
-	addParamField('#jqGrid_nok', false, urlParam_nok);
+	// addParamField('#jqGrid_nok', false, urlParam_nok);
 
 	$("#tabNok").on("shown.bs.collapse", function(){
 		$("#jqGrid_nok").jqGrid ('setGridWidth', Math.floor($("#jqGrid_nok_c")[0].offsetWidth-$("#jqGrid_nok_c")[0].offsetLeft-0));
-		urlParam_nok.filterCol = ['compcode','episno','mrn'],
-		urlParam_nok.filterVal = ['session.compcode',$("#txt_epis_no").val(),$("#mrn_episode").val()]
+		urlParam_nok.filterCol = ['n.compcode','n.mrn'],
+		urlParam_nok.filterVal = ['session.compcode',$("#mrn_episode").val()]
 		refreshGrid("#jqGrid_nok", urlParam_nok);
 	});
 
@@ -125,7 +134,7 @@ $(document).ready(function () {
 	
 	$("#add_nok").click(function(){
 		button_state_nok('wait');
-		enableForm('#form_nok',['nok_relate']);
+		enableForm('#form_nok',['nok_relate','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate.on();
 		$("#save_nok").data('oper','add');
 		
@@ -133,7 +142,7 @@ $(document).ready(function () {
 
 	$("#edit_nok").click(function(){
 		button_state_nok('wait');
-		enableForm('#form_nok',['nok_relate']);
+		enableForm('#form_nok',['nok_relate','nok_computerid','nok_lastuser','nok_lastupdate']);
 		search_relate.on();
 		$("#save_nok").data('oper','edit');
 	});
@@ -145,7 +154,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid_nok", urlParam_nok);
 			});
 		}else{
-			enableForm('#form_nok',['nok_relate']);
+			enableForm('#form_nok',['nok_relate','nok_computerid','nok_lastuser','nok_lastupdate']);
 		}
 
 	});
@@ -207,8 +216,6 @@ $(document).ready(function () {
 				$('#edit_nok,#save_nok,#cancel_nok').attr('disabled',true);
 				break;
 			case 'wait':
-				// dialog_tri_col.on();
-				// examination.on().enable();
 				$("#save_nok,#cancel_nok").attr('disabled',false);
 				$('#add_nok,#edit_nok').attr('disabled',true);
 				break;
@@ -227,6 +234,9 @@ $(document).ready(function () {
 		$("#nok_telhp").val(obj.tel_hp);
 		$("#nok_telo").val(obj.tel_o);
 		$("#nok_ext").val(obj.tel_o_ext);
+		$("#nok_computerid").val(obj.computerid);
+		$("#nok_lastuser").val(obj.lastuser);
+		$("#nok_lastupdate").val(obj.lastupdate);
 	}
 
 });

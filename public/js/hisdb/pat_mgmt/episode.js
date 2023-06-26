@@ -870,7 +870,7 @@ function refno_class(){
     this.show_mdl = function(first = false){
         $('#mdl_reference').modal('show');
         $('#btn_epis_view_gl').prop('disabled',true);
-        this.refno_table.ajax.url("pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('#mrn_epno_payer').val()).load();
+        this.refno_table.ajax.url("pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('input[type="hidden"]#mrn_episode').val()).load();
     }
 
     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
@@ -927,7 +927,6 @@ function refno_class(){
 
         switch(selected_tab){
             case 'Multi Volume':
-                console.log(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
                 $('#newgl-effdate,#newgl-visitno').prop('required',true).addClass('form-mandatory');
                 $('#newgl-expdate').prop('required',false);

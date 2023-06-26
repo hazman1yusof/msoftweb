@@ -592,6 +592,7 @@ class PatEnqController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('mrn',$request->mrn)
                     ->where('episno',$request->episno)
+                    ->orderBy('idno','desc')
                     ->get();
 
         $responce = new stdClass();

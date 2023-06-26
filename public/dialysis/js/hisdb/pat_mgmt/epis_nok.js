@@ -116,8 +116,8 @@ $(document).ready(function () {
 				search_relate.urlParam.filterCol=['compcode', 'recstatus'];
 				search_relate.urlParam.filterVal=['session.compcode', 'A'];
 
-				$('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
-				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
+				$('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1200");
+				$('div.ui-widget-overlay.ui-front').css("z-index", "1100");
 			}
 		},'urlParam','radio','tab'
 	);
