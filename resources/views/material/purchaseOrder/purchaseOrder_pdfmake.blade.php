@@ -141,7 +141,7 @@
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: \n{{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
+								{text:'RINGGIT MALAYSIA: \n{{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11}
 							],
 							
 							[

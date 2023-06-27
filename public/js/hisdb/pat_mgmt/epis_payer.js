@@ -107,7 +107,8 @@ $(document).ready(function () {
 		$('#epistycode_epno_payer').val(selrowData('#jqGrid_episodelist').epistycode);
 		$('#name_epno_payer').val($('#txt_epis_name').text());
 
-		$("#btnglsave").data('from','payer');
+		$("#mdl_reference").data('from','payer');
+    	$("#refno_epno_payer_btn").off('click',btn_refno_info_onclick);
 		$("#refno_epno_payer_btn").on('click',btn_refno_info_onclick);
 	});
 
@@ -243,7 +244,6 @@ $(document).ready(function () {
 
 		$.each(obj, function( index, value ) {
 			var input=$(form+" [name='"+index+"']");
-			console.log(input);
 			if(input.is("[type=radio]")){
 				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
 			}else if( except != undefined && except.indexOf(index) === -1){

@@ -402,7 +402,9 @@ var refno_object = null;
 // $("#btn_refno_info").on('click',btn_refno_info_onclick);
 
 
-function btn_refno_info_onclick(){
+function btn_refno_info_onclick(event){
+    console.log('asd');
+    $('#mdl_reference').data('target_id',$(event.currentTarget).attr('id'));
     if(refno_object == null){
         refno_object = new refno_class();
         refno_object.show_mdl();
@@ -875,8 +877,15 @@ function refno_class(){
 
     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
         let refno_item = self.refno_table.row( this ).data();
-        $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
-        $('#txt_epis_refno').val(refno_item["refno"]);
+        let target_id = $('#mdl_reference').data('target_id');
+
+        if(target_id == 'btn_refno_info'){
+            $('#txt_epis_our_refno').val(refno_item["ourrefno"]);
+            $('#txt_epis_refno').val(refno_item["refno"]);
+        }else if(target_id == 'refno_epno_payer_btn'){
+            $('#ourrefno_epno_payer').val(refno_item["ourrefno"]);
+            $('#refno_epno_payer').val(refno_item["refno"]);
+        }
         
         $('#mdl_reference').modal('hide');
     });
@@ -984,8 +993,16 @@ function refno_class(){
                 alert(data.responseText);
                 $("#btnglsave").prop('disabled',false);
             }).success(function(data){
-                $('#txt_epis_our_refno').val(data.ourrefno);
-                $('#txt_epis_refno').val(data.refno);
+
+                let target_id = $('#mdl_reference').data('target_id');
+                if(target_id == 'btn_refno_info'){
+                    $('#txt_epis_our_refno').val(data.ourrefno);
+                    $('#txt_epis_refno').val(data.refno);
+                }else if(target_id == 'refno_epno_payer_btn'){
+                    $('#ourrefno_epno_payer').val(data.ourrefno);
+                    $('#refno_epno_payer').val(data.refno);
+                }
+
                 $('#mdl_new_gl').modal('hide');
                 $('#mdl_reference').modal('hide');
                 $("#btnglsave").prop('disabled',false);

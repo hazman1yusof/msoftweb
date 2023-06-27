@@ -976,18 +976,25 @@ class PurchaseOrderController extends defaultController
             $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
+        
+        return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
 
-        if(empty($request->type)){
-
-            $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
+        // $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
             
-            return $pdf->stream();      
+        // return $pdf->stream();
 
-            return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-        }else{
 
-            return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-        }
+        // if(empty($request->type)){
+
+        //     $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
+            
+        //     return $pdf->stream();      
+
+        //     return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
+        // }else{
+
+        //     return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
+        // }
         
     }
 
