@@ -141,7 +141,7 @@
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
+								{text:'RINGGIT MALAYSIA: \n{{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
 							],
 							
 							[
@@ -151,10 +151,10 @@
 										{{$deldept->addr1}}\n
 										{{$deldept->addr2}}\n
 										{{$deldept->addr3}}\n
-										{{$deldept->addr4}}
-									Contact Person:\n
-									Tel No.:\n
-									Email:\n
+										{{$deldept->addr4}}\n
+									Contact Person: {{$deldept->contactper}}\n
+									Tel No.: {{$deldept->tel}}\n
+									Email: {{$deldept->email}}\n
 									`
 									,colSpan: 6,rowSpan:4},{},{},{},{},{},
 								{text:'Delivered By: \n\n\n\n\n\n', style: 'totalbold',colSpan: 3,rowSpan:3},{},{},
@@ -175,12 +175,9 @@
 							
 							[
 								{},{},{},{},{},{},
-								{text:'Sign: \n\n Position:\n\n Date:\n\n', style: 'totalbold',colSpan: 5},{},{},
+								{text:'Sign: \n\n\n\n\n\n   Position:\n\n Date:\n\n', style: 'totalbold',colSpan: 5},{},{},
 								{},{}
 							]
-							
-							
-							//[{text:'Please Deliver goods/services/works with original purchase order, delivery order and invoice to:',colSpan: 6, rowspan: 2},{},{},{},{},{},{},{},{},{},{}],
 						]
 					}
 				},
@@ -212,7 +209,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
+				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',
