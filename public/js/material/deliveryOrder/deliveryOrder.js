@@ -320,7 +320,7 @@ $(document).ready(function () {
         return true; // allow selection
     	},*/
 
-		onSelectRow:function(rowid, selected){
+		onSelectRow:function(data, rowid, selected){
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").delordhd_recstatus;
 			let scope = $("#recstatus_use").val();
@@ -359,6 +359,10 @@ $(document).ready(function () {
 			$('#but_print_dtl').data('recno',selrowData("#jqGrid").delordhd_recno);
 
 			refreshGrid("#jqGrid3",urlParam2);
+
+			$("#pdfgen1").attr('href','./deliveryOrder/showpdf?recno='+selrowData("#jqGrid").delordhd_recno);
+
+			$("#pdfgen2").attr('href','./deliveryOrder/showpdf?recno='+selrowData("#jqGrid").delordhd_recno);
 
 			if_cancel_hide();
 		},
@@ -2746,8 +2750,8 @@ $(document).ready(function () {
 	});
 
 	/////////////////////pdf//////////////
-	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();
+	// var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
+	// genpdf.printEvent();
 
 	var barcode = new gen_barcode('#_token','#but_print_dtl',);
 	barcode.init();

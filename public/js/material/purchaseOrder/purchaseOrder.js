@@ -260,18 +260,18 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Record No', name: 'purordhd_recno', width: 10, canSearch: true, selected: true },
+			{ label: 'Record No', name: 'purordhd_recno', width: 5, canSearch: true, selected: true },
 			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Delivery Department', name: 'purordhd_deldept', width: 15, hidden: false, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Req No', name: 'purordhd_purreqno', width: 20, hidden: true },
 			{ label: 'DelordNo', name: 'purordhd_delordno', width: 20, width: 10, classes: 'wrap', hidden:true},
 			{ label: 'Request Department', name: 'purordhd_reqdept', width: 30, hidden: true },
-			{ label: 'deldept', name: 'purordhd_deldept', width: 30, hidden: true },
-			{ label: 'Purchase Order Date', name: 'purordhd_purdate', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'Purchase Order <br> Date', name: 'purordhd_purdate', width: 10, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
 			{ label: 'expecteddate', name: 'purordhd_expecteddate', width: 20, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
 			{ label: 'expirydate', name: 'purordhd_expirydate', width: 20, formatter: "date", hidden: true },
-			{ label: 'Supplier Code', name: 'purordhd_suppcode', width: 15, classes: 'wrap' },
-			{ label: 'Supplier Name', name: 'supplier_name', width: 35, classes: 'wrap', canSearch: true },
+			{ label: 'Supplier Code', name: 'purordhd_suppcode', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Name', name: 'supplier_name', width: 35, classes: 'wrap', hidden:true},
 			{ label: 'credcode', name: 'purordhd_credcode', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'termsdays', name: 'purordhd_termdays', width: 20, hidden: true },
 			{ label: 'subamount', name: 'purordhd_subamount', width: 30, hidden: true,align: 'right', formatter: 'currency'},
@@ -358,6 +358,8 @@ $(document).ready(function () {
 
             $("#pdfgen1").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
 
+			$("#pdfgen2").attr('href','./purchaseOrder/showpdf?recno='+selrowData("#jqGrid").purordhd_recno);
+
 		},
 
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -367,6 +369,7 @@ $(document).ready(function () {
 			}else{
 				$("#jqGridPager td[title='View Selected Row']").click();
 			}
+			
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -1400,7 +1403,8 @@ $(document).ready(function () {
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'purordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purordhd_prdept';break;
-			//case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
+			case 'purordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='purordhd_deldept';break;
+			case 'purordhd_suppcode':field=['suppcode','name'];table="material.supplier";case_='purordhd_suppcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

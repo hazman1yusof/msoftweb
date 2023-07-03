@@ -978,6 +978,9 @@ class PurchaseRequestController extends defaultController
             ->select('prdt.compcode', 'prdt.recno', 'prdt.lineno_', 'prdt.pricecode', 'prdt.itemcode', 'p.description', 'prdt.uomcode', 'prdt.pouom', 'prdt.qtyrequest', 'prdt.unitprice', 'prdt.taxcode', 'prdt.perdisc', 'prdt.amtdisc', 'prdt.amtslstax as tot_gst','prdt.netunitprice', 'prdt.totamount','prdt.amount', 'prdt.rem_but AS remarks_button', 'prdt.remarks', 'prdt.recstatus', 'prdt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'prdt.itemcode', '=', 'p.itemcode')
             ->leftJoin('material.uom as u', 'prdt.uomcode', '=', 'u.uomcode')
+            ->where('prdt.compcode','=',session('compcode'))
+            ->where('p.compcode','=',session('compcode'))
+            ->where('u.compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->get();
 
@@ -990,21 +993,44 @@ class PurchaseRequestController extends defaultController
             ->where('SuppCode','=',$purreqhd->suppcode)
             ->first();
 
+        $reqdept = DB::table('material.deldept')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$purreqhd->reqdept)
+            ->first();
+
+        $total_tax = DB::table('material.purreqdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtslstax');
+        
+        $total_discamt = DB::table('material.purreqdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtdisc');
+
+
         $totamount_expld = explode(".", (float)$purreqhd->totamount);
 
-        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm."";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier'));
-        return $pdf->stream();      
+        // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
+        // return $pdf->stream();      
 
-        
-        return view('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier'));
+        return view('material.purchaseRequest.purchaseRequest_pdfmake',compact('purreqhd','purreqdt','totamt_eng','company', 'supplier', 'reqdept', 'total_tax', 'total_discamt'));
     }
 
     function sendemail($data){

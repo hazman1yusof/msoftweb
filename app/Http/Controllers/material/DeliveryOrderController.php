@@ -9,6 +9,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use App\Http\Controllers\util\do_util;
+use PDF;
 
 class DeliveryOrderController extends defaultController
 {   
@@ -1251,6 +1252,63 @@ class DeliveryOrderController extends defaultController
                     ->where('purordno', '=', $do_hd->srcdocno)
                     ->update(['recstatus'  => $recstatus]);
         }
+    }
+
+    public function showpdf(Request $request){
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+
+        $delordhd = DB::table('material.delordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->first();
+
+        $delorddt = DB::table('material.delorddt AS dodt', 'material.productmaster AS p', 'material.uom as u')
+            ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', 'dodt.itemcode', '=', 'p.itemcode')
+            ->leftJoin('material.uom as u', 'dodt.uomcode', '=', 'u.uomcode')
+            ->where('dodt.compcode','=',session('compcode'))
+            ->where('p.compcode','=',session('compcode'))
+            ->where('u.compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->get();
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $total_tax = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtslstax');
+        
+        $total_discamt = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtdisc');
+
+        $totamount_expld = explode(".", (float)$delordhd->totamount);
+
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm."";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt'));
+        
     }
 }
 

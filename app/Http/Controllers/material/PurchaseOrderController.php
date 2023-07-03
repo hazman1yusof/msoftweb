@@ -969,32 +969,23 @@ class PurchaseOrderController extends defaultController
 
         $totamount_expld = explode(".", (float)$purordhd->totamount);
 
-        $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        $totamt_bm = $totamt_bm_rm." SAHAJA";
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm."";
 
         if(count($totamount_expld) > 1){
-            $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-            $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-
-        // $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-            
-        // return $pdf->stream();
-
-
-        // if(empty($request->type)){
-
-        //     $pdf = PDF::loadView('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-            
-        //     return $pdf->stream();      
-
-        //     return view('material.purchaseOrder.purchaseOrder_pdf',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-        // }else{
-
-        //     return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_bm', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
-        // }
+        return view('material.purchaseOrder.purchaseOrder_pdfmake',compact('purordhd','purorddt','totamt_eng', 'company', 'supplier','deldept', 'total_tax', 'total_discamt'));
         
     }
 
