@@ -38,7 +38,10 @@
 		@endforeach 
 	};
 
-	var totamt_eng = '{{$totamt_eng}}';
+    var totamt_eng = '{{$totamt_eng}}';
+	var total_amt = '{{$total_amt}}';
+    var total_tax = '{{$total_tax}}';
+    var total_discamt = '{{$total_discamt}}';
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -71,14 +74,151 @@
 
                         body: [
                             [
-								{text: 'Received  Department: ', }, 
-								{text: 'Goods Receipt No.:', style: 'tableHeader', alignment: 'right'}
+								{text: 'Received  Department : {{$delordhd->deldept}}'}, 
+								{text: 'Goods Receipt No. : {{$delordhd->docno}}'},
 							],
                             [
-								{text: '{{$totamt_eng}}'}, 
-								{text: '{{number_format($apacthdr->amount,2)}}', alignment: 'right'}
+								{text: 'DO/Inv No. : {{$delordhd->delordno}}'}, 
+								{text: 'Purchase Order No. : {{$delordhd->srcdocno}}'},
+							],
+                            [
+								{text: 'Supplier : {{$delordhd->suppcode}}'}, 
+								{text: 'Received Date : {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->trandate)->format('d-m-Y')}}'},
+							],
+                            [
+								{text: 'Status : {{$delordhd->recstatus}}'}, 
+								{text: 'Time : {{\Carbon\Carbon::createFromFormat('H:i:s',$delordhd->trantime)->format('H:i')}}'},
+							],
+                            [
+								{text: 'Remarks : {{$delordhd->remarks}}'}, 
+								{text: 'Delivery Date : {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->deliverydate)->format('d-m-Y')}}'},
+							],
+                            [
+								{text: ''}, 
+								{text: 'Checked Date : '},
+							],
+                        ]
+                    },
+			        layout: 'noBorders',
+		        },
+
+                // {canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 }]},
+
+                {
+                    style: 'tableDetail',
+                    table: {
+                        headerRows: 1,
+                        widths: [18,40,18,14,40,40,40,40,40,40,70],//panjang standard dia 515
+
+                        body: [
+                            [
+								{text: 'Type', style: 'tableHeader'}, 
+								{text: 'Item', style: 'tableHeader'}, 
+								{text: 'UOM', style: 'tableHeader'}, 
+								{text: 'Qty', style: 'tableHeader'},
+								{text: 'Tax\nCode', style: 'tableHeader'}, 
+								{text: 'Unit\nPrice', style: 'tableHeader'}, 
+								{text: 'Disc\nAmount', style: 'tableHeader'}, 
+                                {text: 'Amount', style: 'tableHeader'}, 
+								{text: 'Tax\nAmount', style: 'tableHeader'}, 
+								{text: 'Net\nAmount (RM)', style: 'tableHeader'}, 
+                                {text: 'Expiry\nDate', style: 'tableHeader'}, 
 							],
 
+							@foreach ($delorddt as $obj)
+							[
+								
+								{text:'{{$obj->pricecode}}'},
+								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
+								{text:'{{$obj->uomcode}}'},
+                                {text:'{{$obj->qtydelivered}}'},
+								{text:'{{$obj->taxcode}}'},
+								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+                                {text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->totamount,2)}}', alignment: 'right'},
+                                {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
+							],
+							@endforeach
+                        ]
+                    },
+			        layout: 'lightHorizontalLines',
+		        },
+                {
+                    style: 'tableExample',
+                    table: {
+                        headerRows: 1,
+                        widths: ['*', '*'],//panjang standard dia 515
+
+                        body: [
+                            [
+								{text: 'Sub Amount: '}, 
+							],
+                            [
+								{text: 'Amount Discount: {{number_format($total_discamt,2)}}'}, 
+							],
+                            [
+								{text: 'Total Amount: {{number_format($total_amt,2)}}'}, 
+							],
+                        ]
+                    },
+			        layout: 'noBorders',
+		        },
+                {
+                    text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 14,
+		        },
+                {
+                    style: 'tableDetail',
+                    table: {
+                        headerRows: 1,
+                        widths: ['*','*','*','*','*','*'],//panjang standard dia 515
+
+                        body: [
+                            [
+								{text: 'Type', style: 'tableHeader'}, 
+								{text: 'Item', style: 'tableHeader'}, 
+								{text: 'UOM', style: 'tableHeader'}, 
+								{text: 'Qty', style: 'tableHeader'},
+								{text: 'Tax\nCode', style: 'tableHeader'}, 
+								{text: 'Unit\nPrice', style: 'tableHeader'}, 
+								
+							],
+
+							@foreach ($delorddt as $obj)
+							[
+								{text:'{{$obj->pricecode}}'},
+								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
+								{text:'{{$obj->uomcode}}'},
+                                {text:'{{$obj->qtydelivered}}'},
+								{text:'{{$obj->taxcode}}'},
+								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+							],
+							@endforeach
+                        ]
+                    },
+			        layout: 'lightHorizontalLines',
+		        },
+                {
+                    style: 'tableExample',
+                    table: {
+                        headerRows: 1,
+                        widths: ['*', '*'],//panjang standard dia 515
+
+                        body: [
+                            [
+								{text: 'Certified By: \n\n\n\n'}, 
+                                {text: 'Received/Accepted By:\n\n\n\n'}, 
+							],
+                            [
+                                {text: '___________________'},
+								{text: '___________________'}, 
+							],
+                            [
+								{text: 'Name:', fontSize: 8},
+								{text: 'Name:', fontSize: 8},
+								
+							],
                         ]
                     },
 			        layout: 'noBorders',
@@ -96,12 +236,16 @@
 					margin: [0, 10, 0, 5]
 				},
 				tableExample: {
-					fontSize: 9,
-					margin: [0, 5, 0, 15]
+					fontSize: 8,
+					margin: [0, 5, 0, 10]
+				},
+                tableDetail: {
+					fontSize: 8,
+					margin: [0, 0, 0, 8]
 				},
 				tableHeader: {
 					bold: true,
-					fontSize: 10,
+					fontSize: 9,
 					color: 'black'
 				},
 				totalbold: {

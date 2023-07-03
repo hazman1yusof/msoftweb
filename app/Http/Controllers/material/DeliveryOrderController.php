@@ -1259,14 +1259,14 @@ class DeliveryOrderController extends defaultController
         if(!$recno){
             abort(404);
         }
-
+        
         $delordhd = DB::table('material.delordhd')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->first();
 
         $delorddt = DB::table('material.delorddt AS dodt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.unit', 'u.description as uom_desc')
+            ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.expdate','dodt.unit', 'u.description as uom_desc')
             ->leftJoin('material.productmaster as p', 'dodt.itemcode', '=', 'p.itemcode')
             ->leftJoin('material.uom as u', 'dodt.uomcode', '=', 'u.uomcode')
             ->where('dodt.compcode','=',session('compcode'))
@@ -1278,6 +1278,11 @@ class DeliveryOrderController extends defaultController
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+
+        $total_amt = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('totamount');
 
         $total_tax = DB::table('material.delorddt')
             ->where('compcode','=',session('compcode'))
@@ -1307,7 +1312,7 @@ class DeliveryOrderController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt'));
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt'));
         
     }
 }

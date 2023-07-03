@@ -419,6 +419,7 @@ Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
 Route::post('/deliveryOrder/form','material\DeliveryOrderController@form');
 Route::get('/deliveryOrder/form','material\DeliveryOrderController@form');
+Route::get('/deliveryOrder/showpdf','material\DeliveryOrderController@showpdf');
 Route::post('/deliveryOrderDetail/form','material\DeliveryOrderDetailController@form');
 Route::get('/deliveryOrderDetail/table','material\DeliveryOrderDetailController@table');
 
