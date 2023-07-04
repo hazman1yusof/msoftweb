@@ -804,21 +804,42 @@ class DoctorNoteController extends defaultController
         
         try {
             
-            DB::table('hisdb.patreferral')
-                ->where('compcode','=',session('compcode'))
+            $patreferral = DB::table('hisdb.patreferral')
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
-                ->update([
-                    'refdate' => $request->refdate,
-                    'refaddress' => $request->refaddress,
-                    'refdoc' => $request->refdoc,
-                    'reftitle' => $request->reftitle,
-                    'refdiag' => $request->refdiag,
-                    'refplan' => $request->refplan,
-                    'refprescription' => $request->refprescription,
-                    'upduser'  => session('username'),
-                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                ]);
+                ->where('compcode','=',session('compcode'));
+            
+            if($patreferral->exists()){
+                $patreferral
+                    ->update([
+                        'refdate' => $request->refdate,
+                        'refaddress' => $request->refaddress,
+                        'refdoc' => $request->refdoc,
+                        'reftitle' => $request->reftitle,
+                        'refdiag' => $request->refdiag,
+                        'refplan' => $request->refplan,
+                        'refprescription' => $request->refprescription,
+                        'upduser'  => session('username'),
+                        'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                DB::table('hisdb.patreferral')
+                        ->insert([
+                            'compcode' => session('compcode'),
+                            'mrn' => $request->mrn,
+                            'episno' => $request->episno,
+                            'refdate' => $request->refdate,
+                            'refaddress' => $request->refaddress,
+                            'refdoc' => $request->refdoc,
+                            'reftitle' => $request->reftitle,
+                            'refdiag' => $request->refdiag,
+                            'refplan' => $request->refplan,
+                            'refprescription' => $request->refprescription,
+                            'adduser'  => session('username'),
+                            'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                            'computerid' => session('computerid'),
+                        ]);
+            }
             
             $queries = DB::getQueryLog();
             // dump($queries);
