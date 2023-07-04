@@ -171,11 +171,11 @@ $(document).ready(function () {
 	});
 	
 	$("#new_refLetter").click(function(){
-		$('#cancel_refLetter').data('oper','add');
+		$('#cancel_refLetter').data('oper','add_refLetter');
 		button_state_refLetter('wait');
 		enableForm('#form_refLetter');
 		rdonly('#form_refLetter');
-		emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
+		// emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
 	
 	});
 	
@@ -187,22 +187,22 @@ $(document).ready(function () {
 	});
 	
 	$("#save_refLetter").click(function(){
+		disableForm('#form_refLetter');
 		if( $('#form_refLetter').isValid({requiredFields: ''}, conf, true) ) {
 			saveForm_refLetter(function(data){
-				emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
-				disableForm('#form_refLetter');
-			
+				// emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
+				// disableForm('#form_refLetter');
+				$("#cancel_refLetter").click();
 			});
 		}else{
 			enableForm('#form_refLetter');
 			rdonly('#form_refLetter');
-		
 		}
-	
+		
 	});
 	
 	$("#cancel_refLetter").click(function(){
-		emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
+		// emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
 		disableForm('#form_refLetter');
 		button_state_refLetter($(this).data('oper'));
 	
@@ -558,18 +558,18 @@ function button_state_refLetter(state){
 	switch(state){
 		case 'empty':
 			$("#toggle_refLetter").removeAttr('data-toggle');
-			$('#cancel_refLetter').data('oper','add');
+			$('#cancel_refLetter').data('oper','add_refLetter');
 			$('#new_refLetter,#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
-			$('#cancel_refLetter').data('oper','add');
+			$('#cancel_refLetter').data('oper','add_refLetter');
 			$("#new_refLetter").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
-			$('#cancel_refLetter').data('oper','edit');
+			$('#cancel_refLetter').data('oper','edit_refLetter');
 			$("#edit_refLetter").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#new_refLetter').attr('disabled',true);
 			break;
@@ -642,6 +642,7 @@ function populate_doctorNote_currpt(obj){
 	//formDoctorNote
 	$('#mrn_doctorNote').val(obj.MRN);
 	$("#episno_doctorNote").val(obj.Episno);
+	$('#ptname_doctorNote').val(obj.Name);
 	
 	on_toggling_curr_past(obj);
 	
@@ -664,10 +665,14 @@ function populate_doctorNote_currpt(obj){
 }
 
 function populate_refLetter(obj){
+	// emptyFormdata(errorField,"#form_refLetter");
 	emptyFormdata(errorField,"#form_docNoteRef");
 	
+	$("#pt_mrn").text($('#mrn_doctorNote').val());
+	$("#pt_name").text($('#ptname_doctorNote').val());
+	
 	var urlparam={
-		action:'get_table_docNoteRef',
+		action:'get_table_refLetter',
 		mrn:$('#mrn_doctorNote').val(),
 		episno:$("#episno_doctorNote").val(),
 		recorddate:$('#recorddate_doctorNote').val()
@@ -684,23 +689,32 @@ function populate_refLetter(obj){
 	},'json').fail(function(data) {
 		alert('there is an error');
 	}).done(function(data){
-		if(!$.isEmptyObject(data)){
-			// button_state_refLetter('edit');
-			textare_init_doctornote();
-			if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRef",data.episode);
-			if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRef",data.pathealth);
-			if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRef",data.pathistory);
-			if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
-			if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
-			// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
-			getBMI_ref();
+		if(!$.isEmptyObject(data.patreferral)){
+			button_state_refLetter('edit');
+			if(!emptyobj_(data.patreferral))autoinsert_rowdata("#form_refLetter",data.patreferral);
 			
-			refreshGrid("#jqGrid_trans_doctornote_ref", urlParam_trans);
-			// $("#jqGrid_trans_doctornote_ref").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_ref_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_ref_c")[0].offsetLeft));
+			if(!$.isEmptyObject(data.patreferral.reftitle)){
+				$('#form_refLetter textarea[name=reftitle]').text(data.patreferral.reftitle);	// from patreferral
+			}else{
+				$('#form_refLetter textarea[name=reftitle]').text(data.sys_reftitle);	// from sysparam
+			}
 		}else{
-			// button_state_refLetter('add');
-			textare_init_doctornote();
+			button_state_refLetter('add');
+			$('#form_refLetter textarea[name=reftitle]').text(data.sys_reftitle);
 		}
+		$("#refadduser").val(data.adduser);
+		
+		textare_init_doctornote();
+		if(!emptyobj_(data.episode))autoinsert_rowdata("#form_docNoteRef",data.episode);
+		if(!emptyobj_(data.pathealth))autoinsert_rowdata("#form_docNoteRef",data.pathealth);
+		if(!emptyobj_(data.pathistory))autoinsert_rowdata("#form_docNoteRef",data.pathistory);
+		if(!emptyobj_(data.patexam))autoinsert_rowdata("#form_docNoteRef",data.patexam);
+		if(!emptyobj_(data.episdiag))autoinsert_rowdata("#form_docNoteRef",data.episdiag);
+		// if(!emptyobj_(data.pathealth))$('#form_docNoteRef span#doctorcode').text(data.pathealth.doctorcode);
+		getBMI_ref();
+		
+		refreshGrid("#jqGrid_trans_doctornote_ref", urlParam_trans);
+		// $("#jqGrid_trans_doctornote_ref").jqGrid('setGridWidth', Math.floor($("#jqGrid_trans_doctornote_ref_c")[0].offsetWidth-$("#jqGrid_trans_doctornote_ref_c")[0].offsetLeft));
 	});
 }
 
@@ -843,7 +857,9 @@ function saveForm_doctorNote(callback){
 function saveForm_refLetter(callback){
 	var saveParam={
 		action:'save_refLetter',
-		oper:$("#cancel_refLetter").data('oper')
+		oper:$("#cancel_refLetter").data('oper'),
+		mrn:$('#mrn_doctorNote').val(),
+		episno:$("#episno_doctorNote").val(),
 	}
 	var postobj={
 		_token : $('#csrf_token').val(),

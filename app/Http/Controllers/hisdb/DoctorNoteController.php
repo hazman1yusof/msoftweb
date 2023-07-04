@@ -81,8 +81,18 @@ class DoctorNoteController extends defaultController
             case 'doctornote_transaction_save':
                 return $this->doctornote_transaction_save($request);
             
-            case 'get_table_docNoteRef':
-                return $this->get_table_docNoteRef($request);
+            case 'save_refLetter':
+                switch($request->oper){
+                    case 'add_refLetter':
+                        return $this->add_refLetter($request);
+                    case 'edit_refLetter':
+                        return $this->edit_refLetter($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'get_table_refLetter':
+                return $this->get_table_refLetter($request);
             
             default:
                 return 'error happen..';
@@ -753,7 +763,83 @@ class DoctorNoteController extends defaultController
     
     }
     
-    public function get_table_docNoteRef(Request $request){
+    public function add_refLetter(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.patreferral')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'refdate' => $request->refdate,
+                        'refaddress' => $request->refaddress,
+                        'refdoc' => $request->refdoc,
+                        'reftitle' => $request->reftitle,
+                        'refdiag' => $request->refdiag,
+                        'refplan' => $request->refplan,
+                        'refprescription' => $request->refprescription,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'computerid' => session('computerid'),
+                    ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+    
+    }
+    
+    public function edit_refLetter(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.patreferral')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->update([
+                    'refdate' => $request->refdate,
+                    'refaddress' => $request->refaddress,
+                    'refdoc' => $request->refdoc,
+                    'reftitle' => $request->reftitle,
+                    'refdiag' => $request->refdiag,
+                    'refplan' => $request->refplan,
+                    'refprescription' => $request->refprescription,
+                    'upduser'  => session('username'),
+                    'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                ]);
+            
+            $queries = DB::getQueryLog();
+            // dump($queries);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            
+            return json_encode($responce);
+        
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function get_table_refLetter(Request $request){
         
         $responce = new stdClass();
         
@@ -829,6 +915,32 @@ class DoctorNoteController extends defaultController
             ->where('mrn','=',$request->mrn)
             ->where('episno','=',$request->episno);
         
+        // form_refLetter
+        $pat_mast = DB::table('hisdb.pat_mast')
+            // ->select('Name')
+            ->where('CompCode',session('compcode'))
+            ->where('MRN','=',$request->mrn)
+            ->where('Episno','=',$request->episno)
+            ->first();
+        
+        $sysparam = DB::table('sysdb.sysparam')
+            // ->select('pvalue1')
+            ->where('compcode',session('compcode'))
+            ->where('source','=','HIS')
+            ->where('trantype','=','REFHDR')
+            ->first();
+        
+        $sys_reftitle = ucwords(strtolower($pat_mast->Name)).' '.$sysparam->pvalue1;
+        $responce->sys_reftitle = $sys_reftitle;
+        
+        $adduser = session('username');
+        $responce->adduser = $adduser;
+        
+        $patreferral_obj = DB::table('hisdb.patreferral')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$request->mrn)
+            ->where('episno','=',$request->episno);
+        
         if($episode_obj->exists()){
             $episode_obj = $episode_obj->first();
             $responce->episode = $episode_obj;
@@ -859,6 +971,12 @@ class DoctorNoteController extends defaultController
         if($pathealthadd_obj->exists()){
             $pathealthadd_obj = $pathealthadd_obj->first();
             $responce->pathealthadd = $pathealthadd_obj;
+        }
+        
+        // form_refLetter
+        if($patreferral_obj->exists()){
+            $patreferral_obj = $patreferral_obj->first();
+            $responce->patreferral = $patreferral_obj;
         }
         
         $responce->transaction = json_decode($this->get_transaction_table($request));

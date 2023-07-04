@@ -101,6 +101,7 @@
                         <input id="mrn_doctorNote" name="mrn_doctorNote" type="hidden">
                         <input id="episno_doctorNote" name="episno_doctorNote" type="hidden">
                         <input id="recorddate_doctorNote" name="recorddate_doctorNote" type="hidden">
+                        <input id="ptname_doctorNote" name="ptname_doctorNote" type="hidden">
                         
                         <div class="panel panel-info">
                             <div class="panel-body">
@@ -372,6 +373,13 @@
         <div class="panel panel-default">
             <div class="panel-heading text-center" style="padding-top: 20px; padding-bottom: 20px;">
                 
+                <div class="pull-left" style="position: absolute; padding: 0 0 0 0; left: 15px; top: 12px;">
+                    <span style="margin-left: 0px;font-size: 100%;">
+                        <span id="pt_mrn" name="pt_mrn"></span> - 
+                        <span id="pt_name" name="pt_name"></span>
+                    </span>
+                </div>
+                
                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                     id="btn_grp_edit_refLetter"
                     style="position: absolute;
@@ -384,7 +392,7 @@
                     <button type="button" class="btn btn-default" id="edit_refLetter">
                         <span class="fa fa-edit fa-lg"></span> Edit
                     </button>
-                    <button type="button" class="btn btn-default" data-oper='add' id="save_refLetter">
+                    <button type="button" class="btn btn-default" data-oper='add_refLetter' id="save_refLetter">
                         <span class="fa fa-save fa-lg"></span> Save
                     </button>
                     <button type="button" class="btn btn-default" id="cancel_refLetter">
@@ -401,61 +409,67 @@
                     <!-- <input id="mrn_refLetter" name="mrn_refLetter" type="hidden"> -->
                     <!-- <input id="episno_refLetter" name="episno_refLetter" type="hidden"> -->
                     
-                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
+                    <div class="col-md-12" style="padding-left: 0px;">
                         <div class="form-group col-md-5">
-                            <input id="ltr_date" name="ltr_date" type="date" class="form-control input-sm">
+                            <label class="control-label" for="refdate" style="font-weight: normal !important; padding-bottom: 3px;">Date</label>
+                            <input id="refdate" name="refdate" type="date" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                         </div>
                     </div>
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
-                        <div class="form-group col-md-5">
-                            <textarea id="ltr_addr" name="ltr_addr" rows="3" class="form-control input-sm"></textarea>
+                        <!-- <div class="form-group col-md-5"> -->
+                            <label class="control-label" for="refaddress" style="font-weight: normal !important; padding-bottom:3px;">Address</label>
+                            <textarea id="refaddress" name="refaddress" rows="3" class="form-control input-sm"></textarea>
+                        <!-- </div> -->
+                    </div>
+                    
+                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 7px;">
+                        <!-- <div class="form-inline">
+                            Dear Dr. <input id="refdoc" name="refdoc" type="text" class="form-control input-sm">
+                        </div> -->
+                        <div class="col-md-1" style="padding: 5px 0px"> Dear Dr. </div>
+                        <div class="col-md-11" style="padding-right: 0px;">
+                            <input id="refdoc" name="refdoc" type="text" class="form-control input-sm" style="text-transform:none">
                         </div>
                     </div>
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 7px;">
-                        <div class="form-inline">
-                            Dear Dr. <input id="dr_name" name="dr_name" type="text" class="form-control input-sm">
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-12" style="padding-left: 0px; padding-bottom: 7px;">
-                        <textarea id="ltr_content" name="ltr_content" rows="3" class="form-control input-sm"></textarea>
+                        <textarea id="reftitle" name="reftitle" rows="3" class="form-control input-sm"></textarea>
                     </div>
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
                         <div class="form-group">
-                            <div class="col-md-1 control-label" for="ltr_diag">Diagnosis:</div>  
+                            <div class="col-md-1 control-label" for="refdiag">Diagnosis:</div>  
                             <div class="col-md-11" style="padding-left: 30px;">
-                                <textarea id="ltr_diag" name="ltr_diag" rows="3" class="form-control input-sm"></textarea>
+                                <textarea id="refdiag" name="refdiag" rows="3" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
                         <div class="form-group">
-                            <div class="col-md-1 control-label" for="ltr_plan">Plan:</div>  
+                            <div class="col-md-1 control-label" for="refplan">Plan:</div>  
                             <div class="col-md-11" style="padding-left: 3px;">
-                                <textarea id="ltr_plan" name="ltr_plan" rows="3" class="form-control input-sm"></textarea>
+                                <textarea id="refplan" name="refplan" rows="3" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
                     
                     <div class="col-md-12" style="padding-left: 0px; padding-bottom: 5px;">
                         <div class="form-group">
-                            <div class="col-md-1 control-label" for="ltr_prescrption">Prescription:</div>  
+                            <div class="col-md-1 control-label" for="refprescription">Prescription:</div>  
                             <div class="col-md-11" style="padding-left: 40px;">
-                                <textarea id="ltr_prescrption" name="ltr_prescrption" rows="3" class="form-control input-sm"></textarea>
+                                <textarea id="refprescription" name="refprescription" rows="3" class="form-control input-sm"></textarea>
                             </div>
                         </div>
                     </div>
                     
-                    If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients. <br><br>
+                    <p>If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients.</p>
                     
-                    Sincerely, <br>
+                    <p>Sincerely,</p>
                     
                     <div class="form-inline">
-                        Dr. <input id="dr_name2" name="dr_name2" type="text" class="form-control input-sm">
+                        Dr. <input id="refadduser" name="adduser" type="text" class="form-control input-sm">
                     </div> <br>
                     
                 </form>
