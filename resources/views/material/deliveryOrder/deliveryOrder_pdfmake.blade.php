@@ -108,7 +108,7 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: [18,40,18,14,40,40,40,40,40,40,70],//panjang standard dia 515
+                        widths: [20,40,20,14,21,40,40,40,40,40,70],//panjang standard dia 515
 
                         body: [
                             [
@@ -153,13 +153,13 @@
 
                         body: [
                             [
-								{text: 'Sub Amount: '}, 
+								{text: 'Sub Amount: ', fontSize: 9}, 
 							],
                             [
-								{text: 'Amount Discount: {{number_format($total_discamt,2)}}'}, 
+								{text: 'Amount Discount: {{number_format($total_discamt,2)}}', fontSize: 9}, 
 							],
                             [
-								{text: 'Total Amount: {{number_format($total_amt,2)}}'}, 
+								{text: 'Total Amount: {{number_format($total_amt,2)}}', fontSize: 9}, 
 							],
                         ]
                     },
@@ -240,7 +240,7 @@
 					margin: [0, 5, 0, 10]
 				},
                 tableDetail: {
-					fontSize: 8,
+					fontSize: 7.5,
 					margin: [0, 0, 0, 8]
 				},
 				tableHeader: {

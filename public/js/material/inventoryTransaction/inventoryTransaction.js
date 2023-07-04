@@ -256,6 +256,11 @@ $(document).ready(function () {
 			$('#isstype').val(selrowData("#jqGrid").isstype);
 
 			refreshGrid("#jqGrid3",urlParam2);
+
+			$("#pdfgen1").attr('href','./inventoryTransaction/showpdf?recno='+selrowData("#jqGrid").recno);
+
+			$("#pdfgen2").attr('href','./inventoryTransaction/showpdf?recno='+selrowData("#jqGrid").recno);
+
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").recstatus;
@@ -911,10 +916,10 @@ $(document).ready(function () {
 		afterShowForm: function (rowid) {
 		},
 		beforeSubmit: function(postdata, rowid){ 
-			dialog_itemcode.check(errorField);
-			dialog_expdate.check(errorField);
-			dialog_uomcoderecv.check(errorField);
-			dialog_uomcodetrdept.check(errorField);
+			// dialog_itemcode.check(errorField);
+			// dialog_expdate.check(errorField);
+			// dialog_uomcoderecv.check(errorField);
+			// dialog_uomcodetrdept.check(errorField);
 	 	}
 	});
 
@@ -2224,8 +2229,8 @@ $(document).ready(function () {
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
 	
-	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();
+	// var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
+	// genpdf.printEvent();
 
 	function check_cust_rules(grid,data){
 		var cust_val =  true;

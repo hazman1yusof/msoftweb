@@ -184,14 +184,6 @@ i.fa {
 		    		</div>
 		</div>
 
-        	<!-- <div class='click_row'>
-        		<label class="control-label">Request No</label>
-        		<span id="reqnodepan" style="display: block;">&nbsp</span>
-        	</div>
-        	<div class='click_row'>
-				<label class="control-label">Request Dept</label>
-        		<span id="reqdeptdepan" style="display: block;">&nbsp</span>
-        	</div> -->
         	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 				<label class="control-label" style="margin-top: 10px;">Print Label</label>
         	</div>
@@ -223,7 +215,9 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Purchase Request Header</div>
+			<div class="panel-heading">Purchase Request Header
+				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+			</div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}

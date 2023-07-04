@@ -274,6 +274,8 @@ $(document).ready(function () {
 
 			$("#pdfgen1").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
 
+			$("#pdfgen2").attr('href','./purchaseRequest/showpdf?recno='+selrowData("#jqGrid").purreqhd_recno);
+
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").purreqhd_recstatus;

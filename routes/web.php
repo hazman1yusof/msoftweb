@@ -388,6 +388,8 @@ Route::get('/inventoryRequest/table','material\InventoryRequestController@table'
 Route::post('/inventoryRequest/form','material\InventoryRequestController@form');
 Route::get('/inventoryRequest/form','material\InventoryRequestController@form');
 Route::post('/inventoryRequestDetail/form','material\InventoryRequestDetailController@form');
+Route::get('/inventoryRequest/showpdf','material\InventoryRequestController@showpdf');
+
 
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
