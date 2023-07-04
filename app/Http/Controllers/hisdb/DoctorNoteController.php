@@ -83,9 +83,9 @@ class DoctorNoteController extends defaultController
             
             case 'save_refLetter':
                 switch($request->oper){
-                    case 'add_refLetter':
+                    case 'add':
                         return $this->add_refLetter($request);
-                    case 'edit_refLetter':
+                    case 'edit':
                         return $this->edit_refLetter($request);
                     default:
                         return 'error happen..';

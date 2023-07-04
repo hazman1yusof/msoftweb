@@ -171,7 +171,7 @@ $(document).ready(function () {
 	});
 	
 	$("#new_refLetter").click(function(){
-		$('#cancel_refLetter').data('oper','add_refLetter');
+		$('#cancel_refLetter').data('oper','add');
 		button_state_refLetter('wait');
 		enableForm('#form_refLetter');
 		rdonly('#form_refLetter');
@@ -192,6 +192,7 @@ $(document).ready(function () {
 			saveForm_refLetter(function(data){
 				// emptyFormdata_div("#form_refLetter",['#mrn_doctorNote','#episno_doctorNote']);
 				// disableForm('#form_refLetter');
+				$('#cancel_refLetter').data('oper','edit');
 				$("#cancel_refLetter").click();
 			});
 		}else{
@@ -558,18 +559,18 @@ function button_state_refLetter(state){
 	switch(state){
 		case 'empty':
 			$("#toggle_refLetter").removeAttr('data-toggle');
-			$('#cancel_refLetter').data('oper','add_refLetter');
+			$('#cancel_refLetter').data('oper','add');
 			$('#new_refLetter,#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
 			break;
 		case 'add':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
-			$('#cancel_refLetter').data('oper','add_refLetter');
+			$('#cancel_refLetter').data('oper','add');
 			$("#new_refLetter").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
-			$('#cancel_refLetter').data('oper','edit_refLetter');
+			$('#cancel_refLetter').data('oper','edit');
 			$("#edit_refLetter").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#new_refLetter').attr('disabled',true);
 			break;
