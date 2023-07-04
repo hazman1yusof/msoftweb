@@ -333,7 +333,7 @@
 		.paneldiv2{
 			/* padding-top: 5px !important; */
 			overflow-y: auto;
-			height: 639px;
+			height: 682px;
 		}
 		
 		.epis_name_big{

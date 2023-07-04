@@ -157,7 +157,11 @@ div.noti > li{
 		</div>
 
     <div class="panel panel-default">
-    	<div class="panel-heading">Delivery Order DataEntry Header</div>
+    	<div class="panel-heading">Delivery Order DataEntry Header
+			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
+		    	<span class='fa fa-print'></span> Print 
+			</a>
+		</div>
     		<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
         				<table id="jqGrid" class="table table-striped"></table>
@@ -166,14 +170,6 @@ div.noti > li{
     		</div>
 		</div>
 
-        	<!-- <div class='click_row'>
-        		<label class="control-label">Record No</label>
-        		<span id="recnodepan" style="display: block;">&nbsp</span>
-        	</div>
-        	<div class='click_row'>
-				<label class="control-label">Purchase Dept</label>
-        		<span id="prdeptdepan" style="display: block;">&nbsp</span>
-        	</div> -->
   	<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
 			<label class="control-label" style="margin-top: 10px;">Print Label</label>
   	</div>
@@ -217,8 +213,8 @@ div.noti > li{
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Delivery Order Header
-					<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
-					</div>
+					<a class='pull-right pointer text-primary' id='pdfgen2'><span class='fa fa-print'></span> Print </a>
+			</div>
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 							{{ csrf_field() }}
@@ -476,7 +472,7 @@ div.noti > li{
 		});
 	</script>
 	<script src="js/material/deliveryOrder/deliveryOrder.js"></script>
-	<script src="js/material/deliveryOrder/pdfgen.js"></script>
+	<!-- <script src="js/material/deliveryOrder/pdfgen.js"></script> -->
 	<script src="js/myjs/barcode.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>

@@ -55,6 +55,11 @@
 		]);
 
 		docDefinition = {
+			footer: function(currentPage, pageCount) {
+				return [
+			      { text: currentPage.toString() + ' of ' + pageCount, alignment: 'center' }
+			    ]
+			},
 			pageSize: 'A4',
 		  	content: [
 			{ 

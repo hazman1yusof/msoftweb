@@ -183,10 +183,6 @@ div.noti > li{
 		    		</div>
 		</div>
 
-	   		<div type="button" class="click_row pull-right" id="but_print_dtl" style="display: none;background: #337ab7;color: white;min-height: 39px">
-				<label class="control-label" style="margin-top: 10px;">Print Label</label>
-        	</div>
-
 	 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
 					<b>PURCHASE ORDER NO: </b><span id="prdept_show"></span> - <span id="purordno_show"></span><br>
@@ -232,9 +228,10 @@ div.noti > li{
 		
 		<div id="dialogForm" title="Add Form" >
 			<div class='panel panel-info'>
-				<div class="panel-heading">
-					Purchase Order Header
-					
+				<div class="panel-heading">Purchase Order Header
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
+		    			<span class='fa fa-print'></span> Print 
+		    		</a>
 				</div>
 					<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 						<form class='form-horizontal' style='width:99%' id='formdata'>

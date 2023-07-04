@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Purchase Order</title>
+<title>Purchase Request</title>
 
 </head>
 
@@ -16,14 +16,14 @@
 
 <script>
 	
-	var purordhd = {
-		@foreach($purordhd as $key => $val) 
+	var purreqhd = {
+		@foreach($purreqhd as $key => $val) 
 			'{{$key}}' : '{{$val}}',
 		@endforeach 
 	};
 
-	var purorddt=[
-		@foreach($purorddt as $key => $podt)
+	var purreqdt=[
+		@foreach($purreqdt as $key => $podt)
 		[
 			@foreach($podt as $key2 => $val)
 				{'{{$key2}}' : `{{$val}}`},
@@ -44,8 +44,8 @@
 		@endforeach 
 	};
 
-	var deldept = {
-		@foreach($deldept as $key => $val) 
+	var reqdept = {
+		@foreach($reqdept as $key => $val) 
 			'{{$key}}' : '{{$val}}',
 		@endforeach 
 	};
@@ -73,7 +73,7 @@
 							[
 								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-								{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+								{text: 'Purchase Request', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
 							],
 
 							[
@@ -86,7 +86,7 @@
 								 	text: 'Purchase No.',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{$purordhd->prdept}}'+'{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}',
+									text: '{{$purreqhd->reqdept}}'+'{{str_pad($purreqhd->purreqno, 9, '0', STR_PAD_LEFT)}}',
 								 	colSpan: 4, alignment: 'left'},{},{},{}
 							],
 							
@@ -96,7 +96,7 @@
 								 	text: 'Purchase Date.',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}',
+									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purreqhd->purreqdt)->format('d-m-Y')}}',
 								 	colSpan: 4, alignment: 'left'},{},{},{}
 							],
 
@@ -120,12 +120,12 @@
 
 							[{text:'No.'},{text:'Description',colSpan: 4},{},{},{},{text:'UOM'},{text:'Quantity'},{text:'Unit Price'},{text:'Tax Amt'},{text:'Discount Amount'},{text:'Nett Amount'}],
 
-							@foreach ($purorddt as $index=>$obj)
+							@foreach ($purreqdt as $index=>$obj)
 							[
 								{text:'{{++$index}}'},
 								{text:`{{$obj->description}}\n{{$obj->remarks}}`,colSpan: 4},{},{},{},
 								{text:'{{$obj->uomcode}}'},
-								{text:'{{$obj->qtyorder}}', alignment: 'right'},
+								{text:'{{$obj->qtyrequest}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
@@ -137,20 +137,20 @@
 								{text:'TOTAL', style: 'totalbold', colSpan: 5},{},{},{},{},{},{},{},
 								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
 								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
-								{text:'{{number_format($purordhd->totamount,2)}}', alignment: 'right'}
+								{text:'{{number_format($purreqhd->totamount,2)}}', alignment: 'right'}
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_eng}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
+								{text:'RINGGIT MALAYSIA: {{$totamt_eng}}', style: 'totalbold', italics: true, colSpan: 11}
 							],
 							
 							[
 								{text:
 
-									`Please Deliver goods/services/works with original purchase order, delivery order and invoice to:\n\nAddress To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}\n
-									Contact Person: {{$deldept->contactper}}\n
-									Tel No.: {{$deldept->tel}}\n
-									Email: {{$deldept->email}}\n
+									`Please Deliver goods/services/works with original purchase order, delivery order and invoice to:\n\nAddress To:\n{{$reqdept->description}}\n{{$reqdept->addr1}}\n{{$reqdept->addr2}}\n{{$reqdept->addr3}}\n{{$reqdept->addr4}}\n
+									Contact Person: {{$reqdept->contactper}}\n
+									Tel No.: {{$reqdept->tel}}\n
+									Email: {{$reqdept->email}}\n
 									`
 									,colSpan: 6,rowSpan:4},{},{},{},{},{},
 								{text:'Delivered By: \n\n\n\n\n\n', style: 'totalbold',colSpan: 3,rowSpan:3},{},{},

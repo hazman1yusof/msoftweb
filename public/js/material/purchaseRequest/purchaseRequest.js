@@ -217,7 +217,6 @@ $(document).ready(function () {
 			{ label: 'upduser', name: 'purreqhd_upduser', width: 90, hidden: true },
 			{ label: 'upddate', name: 'purreqhd_upddate', width: 90, hidden: true },
 			{ label: 'reopenby', name: 'purreqhd_reopenby', width: 40, hidden: true},
-
 			{ label: 'requestby', name: 'purreqhd_requestby', width: 90, hidden: true },
 			{ label: 'requestdate', name: 'purreqhd_requestdate', width: 90, hidden: true },
 			{ label: 'supportby', name: 'purreqhd_supportby', width: 90, hidden: true },
@@ -226,7 +225,6 @@ $(document).ready(function () {
 			{ label: 'verifieddate', name: 'purreqhd_verifieddate', width: 90, hidden: true },
 			{ label: 'approvedby', name: 'purreqhd_approvedby', width: 90, hidden: true },
 			{ label: 'approveddate', name: 'purreqhd_approveddate', width: 40, hidden: true},
-
 			{ label: 'reopendate', name: 'purreqhd_reopendate', width: 40, hidden:true},
 			{ label: 'cancelby', name: 'purreqhd_cancelby', width: 40, hidden:true},
 			{ label: 'canceldate', name: 'purreqhd_canceldate', width: 40, hidden:true},
