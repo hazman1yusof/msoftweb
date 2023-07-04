@@ -421,3 +421,8 @@ div.addt_data > div > input{
 div.addt_data > div > label{
 	margin-bottom: 0px !important;
 }
+.epno-title{
+	text-transform: uppercase;
+	padding-right: 20px;
+	letter-spacing: 2px;
+}

@@ -210,6 +210,15 @@ $('#form_episode').validate({
 
 $('#btn_save_episode').click(function(){
     if(check_if_paymode_kena_gl() && $('#epis_header').valid() && $('#form_episode').valid() && $('#form_episode input.myerror').length<=0){
+        if(check_if_paymode_kena_panel()){
+            add_episode();
+        }
+    }
+});
+
+$("#btnpanelsave").on('click',function(){
+    if($('#panelform').valid()){
+        $("#btnpanelsave").prop('disabled',true);
         add_episode();
     }
 });
@@ -319,8 +328,6 @@ function epis_payer_onclick(event){
         }
 
     }
-
-    
         
 }
 
@@ -403,7 +410,6 @@ var refno_object = null;
 
 
 function btn_refno_info_onclick(event){
-    console.log('asd');
     $('#mdl_reference').data('target_id',$(event.currentTarget).attr('id'));
     if(refno_object == null){
         refno_object = new refno_class();
@@ -496,6 +502,16 @@ function add_episode()
                 preepisidno : preepisidno,
                 _token: _token
               }
+
+    if($('#cmb_epis_pay_mode').val() == 'PANEL'){
+        obj.newpanel_corpcomp = $('#hid_newpanel_corpcomp').val();
+        obj.newpanel_name = $('#newpanel-name').val(); 
+        obj.newpanel_staffid = $('#newpanel-staffid').val(); 
+        obj.newpanel_relatecode = $('#hid_newpanel_relatecode').val(); 
+        obj.newpanel_case = $('#newpanel-case').val(); 
+        obj.epis_refno = $('#newpanel-refno').val();  
+        obj.newpanel_deptcode = $('#newpanel-deptcode').val(); 
+    }
 
     $.post( "pat_mast/save_episode", obj , function( data ) {
         
@@ -1014,7 +1030,7 @@ function refno_class(){
 
 }
 
-$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type").on('show.bs.modal', function () {
+$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type,#mdl_new_panel").on('show.bs.modal', function () {
     $(this).eq(0).css('z-index','120');
 });
 
@@ -1024,6 +1040,20 @@ function check_if_paymode_kena_gl(){
             alert('Reference No. cant empty if patient using GL');
             return false;
         }
+    }
+    return true;
+}
+
+function check_if_paymode_kena_panel(){
+    if($('#cmb_epis_pay_mode').val() == 'PANEL'){
+        $('#newpanel-textmrn').text($('#txt_epis_mrn').val());
+        $('#newpanel-textname').text($('#txt_epis_name').text());
+        $('#txt_newpanel_corpcomp').val($('#txt_epis_payer').val());
+        $('#hid_newpanel_corpcomp').val($('#hid_epis_payer').val());
+
+        loadcorpstaff_gl(true);
+        $('#mdl_new_panel').modal('show');
+        return false;
     }
     return true;
 }
@@ -1051,25 +1081,40 @@ function autoinsert_rowdata_gl(selrowdata){
     $('#select_gl_tab a[href="'+selrowdata.gltype+'"]').tab('show');
 }
 
-function loadcorpstaff_gl(){
+function loadcorpstaff_gl(panel=false){
     let obj_param = {
            action:'loadcorpstaff',
-           mrn:parseInt($('#txt_epis_mrn').val())
+           mrn:parseInt($('#txt_epis_mrn').val()),
+           episno:parseInt($('#txt_epis_no').val()),
+           oper:$("#episode_oper").val(),
+           panel:panel,
        };
 
     $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
         
     },'json').done(function(data) {
         if(data.data != null){
-            $('#newgl-staffid').val(data.data.staffid);
-            $('#newgl-name').val(data.data.name);
-            $('#txt_newgl_corpcomp').val(data.data.debtor_name);
-            $('#hid_newgl_corpcomp').val(data.data.debtorcode);
-            $('#txt_newgl_occupcode').val(data.data.occup_desc);
-            $('#hid_newgl_occupcode').val(data.data.occupcode);
-            $('#txt_newgl_relatecode').val(data.data.relate_desc);
-            $('#hid_newgl_relatecode').val(data.data.relatecode);
-            $('#newgl-childno').val(data.data.childno);
+            if(panel){
+                $('#newpanel-staffid').val(data.data.staffid);
+                $('#newpanel-name').val(data.data.name);
+                $('#txt_newpanel_corpcomp').val(data.data.debtor_name);
+                $('#hid_newpanel_corpcomp').val(data.data.debtorcode);
+                $('#txt_newpanel_relatecode').val(data.data.relate_desc);
+                $('#hid_newpanel_relatecode').val(data.data.relatecode);
+                $('#newpanel-refno').val(data.data.refno);
+                $('#newpanel-case').val(data.data.remark);
+                $('#newpanel-deptcode').val(data.data.deptcode);
+            }else{
+                $('#newgl-staffid').val(data.data.staffid);
+                $('#newgl-name').val(data.data.name);
+                $('#txt_newgl_corpcomp').val(data.data.debtor_name);
+                $('#hid_newgl_corpcomp').val(data.data.debtorcode);
+                $('#txt_newgl_occupcode').val(data.data.occup_desc);
+                $('#hid_newgl_occupcode').val(data.data.occupcode);
+                $('#txt_newgl_relatecode').val(data.data.relate_desc);
+                $('#hid_newgl_relatecode').val(data.data.relatecode);
+                $('#newgl-childno').val(data.data.childno);
+            }
         }
     });
 }

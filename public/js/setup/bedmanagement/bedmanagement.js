@@ -136,7 +136,6 @@ $(document).ready(function () {
 		colModel: [
             { label: 'compcode', name: 'compcode', hidden: true },
             { label: 'Bed No', name: 'bednum', width: 10, canSearch: true, checked: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Bed Type', name: 'bedtype', width: 5, canSearch: true, editable: true, editrules: { required: true }, formatter: showdetail, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Bed Type', name: 'bedtype', width: 15, classes: 'wrap', editable:true, canSearch: true,
 				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -144,7 +143,6 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
-			// { label: 'Status', name: 'occup', width: 5, canSearch: true, formatter: formatteroccup, unformat: unformatoccup, classes: 'wrap'},
 			{ label: 'Bed Status', name: 'occup', width: 20, classes: 'wrap', canSearch: true, editable: true,formatter:occup,unformat:occup_unformat, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:occupCustomEdit,
@@ -152,7 +150,6 @@ $(document).ready(function () {
 					},
 			},
 			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
-			// { label: 'Ward', name: 'ward', width: 5, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Ward', name: 'ward', width: 25 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -161,7 +158,6 @@ $(document).ready(function () {
 						},
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			//{ label: 'Statistic', name: 'statistic', width: 15, canSearch: true, editable: true, edittype:"select", editrules: { required: true }, editoptions: {value:'TRUE:TRUE;FALSE:FALSE' },formatter:truefalseFormatter,unformat:truefalseUNFormatter},
 			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
 					{ 	custom_element:statCustomEdit,
@@ -171,7 +167,6 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', align: 'right', width: 5},
 			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
-			//{ label: 'Remarks', name: 'reservebedNote', width: 40, hidden:true},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
 				edittype:'custom',	editoptions:
@@ -180,15 +175,6 @@ $(document).ready(function () {
 				},
 			},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
-			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
-			{ label: 'upduser', name: 'upduser', width: 90, hidden: true },
-			{ label: 'upddate', name: 'upddate', width: 90, hidden: true },
-			{ label: 'lastuser', name: 'lastuser', width: 90, hidden:true},
-			{ label: 'lastupdate', name: 'lastupdate', width: 90, hidden:true},
-			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
-			{ label: 'lastipaddress', name: 'lastipaddress', width: 90, hidden:true},
-
 			{ label: 'sex', name: 'sex', hidden: true },
 			{ label: 'dob', name: 'dob', hidden: true },
 			{ label: 'age', name: 'age', hidden: true },
@@ -197,8 +183,6 @@ $(document).ready(function () {
 			{ label: 'occupation', name: 'occupation', hidden: true },
 			{ label: 'citizen', name: 'citizen', hidden: true },
 			{ label: 'area', name: 'area', hidden: true },
-			
-			
 		],
 		autowidth: true,
 		multiSort: true,

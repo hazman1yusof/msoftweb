@@ -31,7 +31,6 @@ $(document).ready(function () {
 	});
 
 	$("#mdl_docinfo").on("shown.bs.modal", function(){
-		$('span#spanttl-docinfo').text(' ( '+bootgrid_last_row.Name+' - '+bootgrid_last_row.MRN+' - '+bootgrid_last_row.Episno+' )');
         emptyFormdata_div('#form_epno_addnotes');
         emptyFormdata_div('#form_epno_vitstate');
         emptyFormdata_div('#form_epno_diagnose');

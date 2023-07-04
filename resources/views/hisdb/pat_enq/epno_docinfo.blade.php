@@ -4,7 +4,7 @@
         <input type="hidden" id="episno_epno_docinfo" name="episno_epno_docinfo">
 
         <form class="row myrow" style="margin-bottom:20px" id="form_epno_vitstate" autocomplete="off">
-          <div class="row mytitle">
+          <div class="row mytitle"><span id="admdoctor_text"></span>
             <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." id="btn_grp_edit_nok_pat">
                 <button type="button" class="btn btn-default" id="add_epno_vitstate">
                     <span class="fa fa-plus-square-o fa-lg"></span> Add
@@ -102,7 +102,7 @@
         <div class="row">
           <div class="col-md-3" style="padding:0px">
             <div class="panel panel-default">
-              <div class="panel-heading" style="font-weight: bold;"><span id="admdoctor_text"></span></div>
+              <div class="panel-heading" style="font-weight: bold;">Date / Time</div>
               <div class="panel-body" style="padding: 0px 15px 5px 15px;">
                 <table id="addnotes_epno" style="width:100%">
                     <thead>
@@ -139,13 +139,13 @@
               <div class="panel-body" style="padding-bottom: 0px;">
                 <textarea rows="3"class="form-control" id="additionalnote_epno_addnotes" name="additionalnote" required></textarea>
                 <div class="addt_data">
+                  <div style="float:left">
+                    <label>Add User</label>
+                    <input type="text" name="name" style="width:400px;max-width: 500px;">  
+                  </div>
                   <div>
                     <label>Add Date</label>
                     <input type="text" name="adddate">  
-                  </div>
-                  <div>
-                    <label>Add User</label>
-                    <input type="text" name="adduser">  
                   </div>
                   <div>
                     <label>Computer ID</label>

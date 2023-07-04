@@ -100,8 +100,10 @@ function addParamField(grid,needRefresh,param,except){
 }
 
 function refreshGrid(grid,urlParam,oper){
-
-	let myurl = (urlParam.url.includes('?'))?urlParam.url+'&'+$.param(urlParam):urlParam.url+'?'+$.param(urlParam);
+	let myurl = null
+	if(urlParam != null){
+		myurl = (urlParam.url.includes('?'))?urlParam.url+'&'+$.param(urlParam):urlParam.url+'?'+$.param(urlParam);
+	}
 
 	if(oper == 'add'){
 		$(grid).jqGrid('setGridParam',{datatype:'json',url:myurl}).trigger('reloadGrid', [{page:1}]);

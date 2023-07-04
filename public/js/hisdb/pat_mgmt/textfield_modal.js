@@ -44,15 +44,15 @@ function textfield_modal(){
     });
 
     this.ontabbing = function(){
-        $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#hid_newgl_corpcomp,#txt_newgl_occupcode,#txt_newgl_relatecode,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_pat_citizen,#txt_LanguageCode,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('keydown',{data:this},onTab);
+        $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#hid_newgl_corpcomp,#txt_newgl_occupcode,#txt_newgl_relatecode,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_pat_citizen,#txt_LanguageCode,#txt_pat_area,#txt_payer_company,#txt_pat_occupation,#txt_newpanel_corpcomp,#txt_newpanel_relatecode").on('keydown',{data:this},onTab);
     }
 
     this.checking = function(){
-        $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#hid_newgl_corpcomp,#txt_newgl_occupcode,#txt_newgl_relatecode,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_pat_citizen,#txt_LanguageCode,#txt_pat_area,#txt_payer_company,#txt_pat_occupation").on('blur',{data:this},onCheck);
+        $("#txt_epis_dept,#txt_epis_source,#txt_epis_case,#txt_epis_doctor,#txt_epis_fin,#hid_newgl_corpcomp,#txt_newgl_occupcode,#txt_newgl_relatecode,#txt_pat_title,#txt_ID_Type,#txt_RaceCode,#txt_Religion,#txt_pat_citizen,#txt_LanguageCode,#txt_pat_area,#txt_payer_company,#txt_pat_occupation,#txt_newpanel_corpcomp,#txt_newpanel_relatecode").on('blur',{data:this},onCheck);
     }
 
     this.clicking = function(){
-        $("#btn_epis_dept,#btn_epis_source,#btn_epis_case,#btn_epis_doctor,#btn_epis_fin,#btn_newgl_corpcomp,#btn_newgl_occupcode,#btn_newgl_relatecode,#btn_pat_title,#btn_ID_Type,#btn_RaceCode,#btn_Religion,#btn_pat_citizen,#btn_LanguageCode,#btn_pat_area,#btn_payer_company,#btn_pat_occupation").on('click',{data:this},onClick);
+        $("#btn_epis_dept,#btn_epis_source,#btn_epis_case,#btn_epis_doctor,#btn_epis_fin,#btn_newgl_corpcomp,#btn_newgl_occupcode,#btn_newgl_relatecode,#btn_pat_title,#btn_ID_Type,#btn_RaceCode,#btn_Religion,#btn_pat_citizen,#btn_LanguageCode,#btn_pat_area,#btn_payer_company,#btn_pat_occupation,#btn_newpanel_corpcomp,#btn_newpanel_relatecode").on('click',{data:this},onClick);
     }
 
     function onTab(event){
@@ -155,6 +155,15 @@ function textfield_modal(){
             case "newgl_relatecode":
                 
                 break;
+            case "newpanel_corpcomp":
+                
+                break;
+            case "newpanel_occupcode":
+                
+                break;
+            case "newpanel_relatecode":
+                
+                break;
         }
     }
 
@@ -211,6 +220,15 @@ function textfield_modal(){
                 act = "get_patient_occupation";
                 break;
             case "newgl_relatecode":
+                act = "get_patient_relationship";
+                break;
+            case "newpanel_corpcomp":
+                act = "get_debtor_list&type=newgl";
+                break;
+            case "newpanel_occupcode":
+                act = "get_patient_occupation";
+                break;
+            case "newpanel_relatecode":
                 act = "get_patient_relationship";
                 break;
         }

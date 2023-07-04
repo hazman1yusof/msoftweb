@@ -627,7 +627,7 @@ class PatmastController extends defaultController
 
             case 'loadcorpstaff':
                 $data = DB::table('hisdb.corpstaff as cs')
-                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','r.Description as relate_desc','cs.name','o.occupcode','o.description as occup_desc')
+                    ->select('cs.debtorcode','dm.name as debtor_name','cs.staffid','cs.childno','cs.relatecode','r.Description as relate_desc','cs.name','o.occupcode','o.description as occup_desc','cs.deptcode','cs.remark')
                     ->leftJoin('debtor.debtormast AS dm', function($join) use ($request){
                         $join = $join->on('dm.debtorcode', '=', 'cs.debtorcode')
                                         ->where('dm.compcode','=',session('compcode'));
@@ -646,6 +646,20 @@ class PatmastController extends defaultController
                     ->where('cs.compcode','=',session('compcode'))
                     ->where('cs.mrn','=',$request->mrn)
                     ->first();
+
+
+                if($request->panel == true && $request->oper =='edit'){
+                    $epispayer = DB::table('hisdb.epispayer as ep')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('mrn','=',$request->mrn)
+                                    ->where('episno','=',$request->episno)
+                                    ->where('lineno','=','1');
+
+                    if($epispayer->exists()){
+                        $data->refno = $epispayer->first()->refno;
+                    }
+                }
+                
                 break;
 
             case 'get_refno_list':
@@ -1276,6 +1290,48 @@ class PatmastController extends defaultController
                     ]);
             }
 
+            if($request->epis_pay == 'PANEL'){
+
+                if(!$this->duplicate_corpstaff_panel($request)){
+                    DB::table('hisdb.pat_mast')
+                        ->where('MRN',$epis_mrn)
+                        ->where('compcode',session('compcode'))
+                        ->update([
+                            'CorpComp' => $request['newpanel_corpcomp'],
+                            'RelateCode' => $request['newpanel_relatecode'],
+                            'Staffid' => $request['newpanel_staffid'],
+                        ]);
+
+                    if($this->corpstaff_exists_panel($request)){
+                        DB::table('hisdb.corpstaff')
+                            ->where('MRN',$epis_mrn)
+                            ->where('compcode',session('compcode'))
+                            ->where('relatecode',$request['newpanel_relatecode'])
+                            ->where('debtorcode',$request['newpanel_corpcomp'])
+                            ->where('staffid',$request['newpanel_staffid'])
+                            ->update([
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode']
+                            ]);
+                    }else{
+                        DB::table('hisdb.corpstaff')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'debtorcode' => $request['newpanel_corpcomp'],
+                                'staffid' => $request['newpanel_staffid'],
+                                'relatecode' => $request['newpanel_relatecode'],
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode'],
+                                'recstatus' => 'ACTIVE',
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'mrn' => $epis_mrn,
+                            ]);
+                    }
+                }
+            }
             //CREATE NOK
 
             //CREATE docalloc
@@ -1718,6 +1774,49 @@ class PatmastController extends defaultController
                         'LastUser' => session('username'),
                         'computerid' => session('computerid')
                     ]);
+            }
+
+            if($request->epis_pay == 'PANEL'){
+
+                if(!$this->duplicate_corpstaff_panel($request)){
+                    DB::table('hisdb.pat_mast')
+                        ->where('MRN',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->update([
+                            'CorpComp' => $request['newpanel_corpcomp'],
+                            'RelateCode' => $request['newpanel_relatecode'],
+                            'Staffid' => $request['newpanel_staffid'],
+                        ]);
+
+                    if($this->corpstaff_exists_panel($request)){
+                        DB::table('hisdb.corpstaff')
+                            ->where('MRN',$request->mrn)
+                            ->where('compcode',session('compcode'))
+                            ->where('relatecode',$request['newpanel_relatecode'])
+                            ->where('debtorcode',$request['newpanel_corpcomp'])
+                            ->where('staffid',$request['newpanel_staffid'])
+                            ->update([
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode']
+                            ]);
+                    }else{
+                        DB::table('hisdb.corpstaff')
+                            ->insert([
+                                'compcode' => session('compcode'),
+                                'debtorcode' => $request['newpanel_corpcomp'],
+                                'staffid' => $request['newpanel_staffid'],
+                                'relatecode' => $request['newpanel_relatecode'],
+                                'name' => $request['newpanel_name'],
+                                'remark' => $request['newpanel_case'],
+                                'deptcode' => $request['newpanel_deptcode'],
+                                'recstatus' => 'ACTIVE',
+                                'adduser' => session('username'),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'mrn' => $request->mrn,
+                            ]);
+                    }
+                }
             }
 
             //CREATE NOK
@@ -2504,6 +2603,8 @@ class PatmastController extends defaultController
         $txt_epis_refno = "";
         $txt_epis_our_refno = "";
         if(!empty($epispayer->refno)){
+            $txt_epis_refno = $epispayer->refno;
+
             $guarantee = DB::table('hisdb.guarantee')
                 ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
@@ -2512,7 +2613,6 @@ class PatmastController extends defaultController
 
             if($guarantee->exists()){
                 $guarantee = $guarantee->first();
-                $txt_epis_refno = $guarantee->refno;
                 $txt_epis_our_refno = $guarantee->ourrefno;
             }
         }
@@ -2793,6 +2893,27 @@ class PatmastController extends defaultController
                         ->where('debtorcode',$request['hid_newgl_corpcomp'])
                         ->where('staffid',$request['newgl-staffid'])
                         ->where('childno',$request['newgl-childno'])
+                        ->exists();
+    }
+
+    public function duplicate_corpstaff_panel(Request $request){
+        return  DB::table('hisdb.pat_mast')
+                        ->where('mrn','!=',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        // ->where('OccupCode',$request['hid_newgl_occupcode'])
+                        ->where('RelateCode',$request['newpanel_relatecode'])
+                        ->where('CorpComp',$request['newpanel_corpcomp'])
+                        ->where('Staffid',$request['newpanel_staffid'])
+                        ->exists();
+    }
+
+    public function corpstaff_exists_panel(Request $request){
+        return DB::table('hisdb.corpstaff')
+                        ->where('mrn',$request->mrn)
+                        ->where('compcode',session('compcode'))
+                        ->where('relatecode',$request['newpanel_relatecode'])
+                        ->where('debtorcode',$request['newpanel_corpcomp'])
+                        ->where('staffid',$request['newpanel_staffid'])
                         ->exists();
     }
 

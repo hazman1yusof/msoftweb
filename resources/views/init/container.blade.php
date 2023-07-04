@@ -45,6 +45,7 @@
 			</button>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
+			<h4 class="company_name">{{$company->name}}</h4>
 
 			@if(Auth::user()->dept == '')
 			<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">

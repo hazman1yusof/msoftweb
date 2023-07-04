@@ -33,6 +33,7 @@ $(document).ready(function () {
 			{ label: 'Add By', name: 'adduser', classes: 'wrap', width:8, canSearch:true},
 			{ label: 'Add Date', name: 'adddate', classes: 'wrap', width:9, canSearch:true},
 			{ label: 'Status', name: 'episstatus', classes: 'wrap', width:10, canSearch:true},
+			{ label: 'Status', name: 'episstatus', hidden:true},
 		],
 		autowidth:true,
 		viewrecords: true,
@@ -69,6 +70,9 @@ function populate_episodelist(obj){
 	$('#citizenship_show_episodelist').text(obj.cityDesc);
 	$('#area_show_episodelist').text(obj.areaDesc);
 	urlparam_episodelist.mrn = obj.MRN;
+
+	$('b.epno-textmrn').text(("0000000" + obj.MRN).slice(-7));
+	$('b.epno-textname').text(obj.Name);
 }
 
 function init_episodelist(){

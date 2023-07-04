@@ -588,11 +588,16 @@ class PatEnqController extends defaultController
     }
 
     public function addnotes_epno(Request $request){
-        $patmc = DB::table('hisdb.pathealthadd')
-                    ->where('compcode',session('compcode'))
-                    ->where('mrn',$request->mrn)
-                    ->where('episno',$request->episno)
-                    ->orderBy('idno','desc')
+        $patmc = DB::table('hisdb.pathealthadd as pa')
+                    ->select('pa.idno','pa.compcode','pa.mrn','pa.episno','pa.additionalnote','pa.adduser','pa.adddate','pa.addtime','pa.lastuser','pa.lastupdate','pa.doctorcode','pa.computerid','u.name')
+                    ->leftJoin('sysdb.users as u', function($join) use ($request){
+                        $join = $join->on('u.username', '=', 'pa.adduser')
+                                        ->where('u.compcode','=',session('compcode'));
+                    })
+                    ->where('pa.compcode',session('compcode'))
+                    ->where('pa.mrn',$request->mrn)
+                    ->where('pa.episno',$request->episno)
+                    ->orderBy('pa.idno','desc')
                     ->get();
 
         $responce = new stdClass();

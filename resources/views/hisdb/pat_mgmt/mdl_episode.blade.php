@@ -712,24 +712,6 @@
                             </div>
                             </div>
                         </div>
-
-                        <!-- deposit -->
-                        <div class="panel panel-default" style="position: relative;" id="div_deposit">
-                            <div class="panel-heading clearfix collapsed" id="toggle_tabDeposit" data-toggle="collapse" data-target="#tabDeposit">
-
-                            <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-                            <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i >
-                            <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
-                                <h5><strong>DEPOSIT</strong></h5>
-                            </div> 
-                            </div>
-
-                            <div id="tabDeposit" class="panel-collapse collapse">
-                            <div class="panel-body">
-
-                            </div>
-                            </div>
-                        </div>
                 
                     </div>
                 </div>
@@ -1066,5 +1048,67 @@
         </form>
 
 
+    </div>
+</div>
+
+<div id="mdl_new_panel" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
+    <div class="modal-dialog smallmodal">
+        <form class="form-horizontal" id="panelform">
+            <div class="modal-content">
+                <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
+                    <b style="float: left;" id="newpanel-textmrn"></b>
+                    <b style="float: left;padding-left: 10px;" id="newpanel-textname"></b>
+                    <b style="float: right;">PANEL INFORMATION</b>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <small for="newpanel-corpcomp">Panel Code</small>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-mandatory" name="txt_newpanel_corpcomp" id="txt_newpanel_corpcomp" required>
+                                <input type="hidden" name="hid_newpanel_corpcomp" id="hid_newpanel_corpcomp" value="" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info" id="btn_newpanel_corpcomp" data-toggle="modal" ><span class="fa fa-ellipsis-h"></span> </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <small for="newpanel-corpcomp">STAFF NAME</small>
+                            <input class="form-control form-mandatory" id="newpanel-name" name="newpanel-name" placeholder="" type="text" required>
+                        </div>
+                        <div class="col-md-6">
+                            <small for="newpanel-staffid">STAFF ID</small>
+                            <input class="form-control form-mandatory" id="newpanel-staffid" name="newpanel-staffid" placeholder="" type="text" required>
+                        </div>
+                        <div class="col-md-6">
+                            <small for="newpanel-relatecode">RELATIONSHIP</small>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="txt_newpanel_relatecode" id="txt_newpanel_relatecode">
+                                <input type="hidden" name="hid_newpanel_relatecode" id="hid_newpanel_relatecode" value="" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info" id="btn_newpanel_relatecode" data-toggle="modal" onclick_xguna="pop_item_select('newpanel_relatecode');"><span class="fa fa-ellipsis-h"></span> </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <small for="newpanel-case">CASE</small>
+                            <input class="form-control" id="newpanel-case" name="newpanel-case" placeholder="" type="text">
+                        </div>
+                        <div class="col-md-12">
+                            <small for="newpanel-refno">REFERENCE NO</small>
+                            <input class="form-control form-mandatory" id="newpanel-refno" name="newpanel-refno" placeholder="" type="text" required>
+                        </div>
+                        <div class="col-md-12">
+                            <small for="newpanel-refno">DEPARTMENT</small>
+                            <input class="form-control form-mandatory" id="newpanel-deptcode" name="newpanel-deptcode" placeholder="" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnpanelclose" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="btnpanelsave" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>

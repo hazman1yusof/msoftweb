@@ -250,3 +250,11 @@ iframe{
 	width: 25px;
 	margin-right: 4px;
 }
+.company_name{
+	display: inline-block;
+  letter-spacing: 8px;
+  padding-top: 5px;
+  font-stretch: condensed;
+  color: #545454;
+  font-weight: bold;
+}

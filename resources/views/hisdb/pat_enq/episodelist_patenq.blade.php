@@ -25,7 +25,7 @@
 				  <div class="container-fluid my_cf" >
 				    <div class="navbar-header">
 					<ul class="nav navbar-nav myhover">    	
-                        <li class=""><a class="my_a a_bro" id="my_a_dtin">Doctor Info</a></li>
+                        <li class=""><a class="my_a a_bro" id="my_a_dtin">Doctor</a></li>
 			        	<li class=""><a class="my_a a_bro" id="my_a_chgs">Charges</a></li>
 			        	<!-- <li class=""><a class="my_a a_bro" id="my_a_enot">Episode Notes</a></li> -->
 			        	<li class=""><a class="my_a a_bro" id="my_a_payr">Payer</a></li>
@@ -62,9 +62,9 @@
         <form class="form-horizontal" id="glform">
             <div class="modal-content">
                 <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                    <b style="float: left;" id="newgl_epno-textmrn"></b>
-                    <b style="float: left;padding-left: 10px;" id="newgl_epno-textname"></b>
-                    <b style="float: right;">GURANTEE LETTER ENTRY</b>
+                    <b style="float: left;" class="epno-textmrn"></b>
+                    <b style="float: left;padding-left: 10px;" class="epno-textname"></b>
+                    <b style="float: right;" class="epno-title">GUARANTEE LETTER ENTRY</b>
                 </div>
                 <div class="modal-body">
                     <div class="row">
@@ -177,7 +177,9 @@
         <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
 		<div class="modal-content">
 			<div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b>Medical Certificate</b>
+                <b style="float: left;" class="epno-textmrn"></b>
+                <b style="float: left;padding-left: 10px;" class="epno-textname"></b>
+                <b style="float: right;" class="epno-title">Medical Certificate</b>
             </div>
             <div class="modal-body">
                 @include('hisdb.pat_enq.epno_medc')
@@ -191,7 +193,9 @@
         <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b>Next Of Kin</b>
+                <b style="float: left;" class="epno-textmrn"></b>
+                <b style="float: left;padding-left: 10px;" class="epno-textname"></b>
+                <b style="float: right;" class="epno-title">Next Of Kin</b>
             </div>
             <div class="modal-body">
                 @include('hisdb.pat_enq.epno_nok')
@@ -205,7 +209,9 @@
         <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b>Payer</b>
+                <b style="float: left;" class="epno-textmrn"></b>
+                <b style="float: left;padding-left: 10px;" class="epno-textname"></b>
+                <b style="float: right;" class="epno-title">Payer</b>
             </div>
             <div class="modal-body" style="padding: 0px 10px;">
                 @include('hisdb.pat_enq.epno_payer')
@@ -219,7 +225,9 @@
         <button class="glyphicon glyphicon-remove close_icon" aria-hidden="true" type="button" data-dismiss="modal"></button>
         <div class="modal-content">
             <div class="modal-header label-info" style="height: 32px;padding:8px 30px;">
-                <b>Doctor Info <span id="spanttl-docinfo"></span></b>
+                <b style="float: left;" class="epno-textmrn"></b>
+                <b style="float: left;padding-left: 10px;" class="epno-textname"></b>
+                <b style="float: right;" class="epno-title">Doctor</b>
             </div>
             <div class="modal-body" style="padding: 0px 10px;">
                 @include('hisdb.pat_enq.epno_docinfo')

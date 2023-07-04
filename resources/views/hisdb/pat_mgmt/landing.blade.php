@@ -70,7 +70,7 @@
           100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
         }
 
-		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl{
+		#mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl,#mdl_new_panel{
 			display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
 		}
 		.smallmodal{

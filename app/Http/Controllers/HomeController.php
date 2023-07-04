@@ -30,7 +30,9 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        return view('init.container',compact('menu','units','unit_user'));
+        $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first(); 
+
+        return view('init.container',compact('menu','units','unit_user','company'));
     }
 
     public function ptcare(){
