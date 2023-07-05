@@ -392,7 +392,7 @@
                     <button type="button" class="btn btn-default" id="edit_refLetter">
                         <span class="fa fa-edit fa-lg"></span> Edit
                     </button>
-                    <button type="button" class="btn btn-default" data-oper='add_refLetter' id="save_refLetter">
+                    <button type="button" class="btn btn-default" data-oper='add' id="save_refLetter">
                         <span class="fa fa-save fa-lg"></span> Save
                     </button>
                     <button type="button" class="btn btn-default" id="cancel_refLetter">

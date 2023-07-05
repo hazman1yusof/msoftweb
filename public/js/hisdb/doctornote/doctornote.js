@@ -358,46 +358,46 @@ $(document).ready(function () {
 
 //bmi calculator
 function getBMI() {
-    var height = parseFloat($("#formDoctorNote input[name='height']").val());
-    var weight = parseFloat($("#formDoctorNote input[name='weight']").val());
-
+	var height = parseFloat($("#formDoctorNote input[name='height']").val());
+	var weight = parseFloat($("#formDoctorNote input[name='weight']").val());
+	
 	var myBMI = (weight / height / height) * 10000;
-
-    var bmi = myBMI.toFixed(2);
-
-    if (isNaN(bmi)) bmi = 0;
-
-    $("#formDoctorNote input[name='bmi']").val((bmi));
+	
+	var bmi = myBMI.toFixed(2);
+	
+	if (isNaN(bmi)) bmi = 0;
+	
+	$("#formDoctorNote input[name='bmi']").val((bmi));
 }
 
 function getBMI_ref() {
-    var height_ref = parseFloat($("#form_docNoteRef input[name='height_ref']").val());
+	var height_ref = parseFloat($("#form_docNoteRef input[name='height_ref']").val());
 	var weight_ref = parseFloat($("#form_docNoteRef input[name='weight_ref']").val());
 	
 	// console.log(height_ref);
 	// console.log(weight_ref);
 	
 	var myBMI_ref = (weight_ref / height_ref / height_ref) * 10000;
-
-    var bmi_ref = myBMI_ref.toFixed(2);
-
-    if (isNaN(bmi_ref)) bmi_ref = 0;
-
-    $("#form_docNoteRef input[name='bmi_ref']").val((bmi_ref));
+	
+	var bmi_ref = myBMI_ref.toFixed(2);
+	
+	if (isNaN(bmi_ref)) bmi_ref = 0;
+	
+	$("#form_docNoteRef input[name='bmi_ref']").val((bmi_ref));
 }
 
 //to disable all input fields except additional note
 function disableOtherFields() {
 	// var fieldsNotToBeDisabled = new Array("additionalnote");
-
+	
 	// $("form input").filter(function(index){
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
-
+	
 	// $("form textarea").filter(function(index){
 	// 	return fieldsNotToBeDisabled.indexOf($(this).attr("name"))<0;
 	// }).prop("disabled", true);
-
+	
 	$('#remarks, #clinicnote, #pmh, #drugh, #allergyh, #socialh, #fmh, #followuptime, #followupdate, #examination, #diagfinal, #icdcode, #plan_, #height, #weight, #bp_sys1, #bp_dias2, #pulse, #temperature, #respiration').prop('disabled',true);
 }
 
@@ -551,7 +551,7 @@ function button_state_doctorNote(state){
 		// 	$('#save_doctorNote,#cancel_doctorNote').attr('disabled',true);
 		// 	break;
 	}
-
+	
 }
 
 // button_state_refLetter('empty');
@@ -580,7 +580,7 @@ function button_state_refLetter(state){
 			$('#edit_refLetter,#new_refLetter').attr('disabled',true);
 			break;
 	}
-
+	
 }
 
 var dateParam_docnote,doctornote_docnote,curr_obj;
@@ -982,7 +982,7 @@ $('#jqGridDoctorNote_panel').on('shown.bs.collapse', function () {
 	urlParam_trans.episno=$('#episno_doctorNote').val();
 	curpage_tran = null;
 	refreshGrid("#jqGrid_trans_doctornote", urlParam_trans);
-
+	
 });
 
 //to reload date table on radio btn click
@@ -1081,13 +1081,13 @@ function check_same_usr_edit(data){
 	let same = true;
 	var adduser = data.adduser;
 	
-    if(adduser == null){
-    	same =false;
-    }else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
-    	same = false;
+	if(adduser == null){
+		same =false;
+	}else if(adduser.toUpperCase() != $('#curr_user').val().toUpperCase()){
+		same = false;
 	}
 	
-    return same;
+	return same;
 }
 
 function sticky_docnotetbl(on){
