@@ -1193,22 +1193,15 @@ class DoctorNoteController extends defaultController
             ->where('mrn','=',$mrn)
             ->where('episno','=',$episno)
             ->first();
-            
-        // $refaddress = nl2br($patreferral->refaddress);
-        $refaddress = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refaddress);
-        $reftitle = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->reftitle);
-        $refdiag = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refdiag);
-        $refplan = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refplan);
-        $refprescription = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refprescription);
         
-        // dd($refprescription);
+        // dd($patreferral);
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
         
-        return view('hisdb.doctornote.refLetter_pdfmake',compact('patreferral', 'refaddress', 'reftitle', 'refdiag', 'refplan', 'refprescription', 'company'));
-    
+        return view('hisdb.doctornote.refLetter_pdfmake',compact('patreferral', 'company'));
+        
     }
     
 }

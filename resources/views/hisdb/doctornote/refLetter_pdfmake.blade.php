@@ -35,6 +35,20 @@
                 },
                 pageSize: 'A4',
                 content: [
+                    // {
+                    //     text: [
+                    //         {text: '{{\Carbon\Carbon::parse($patreferral->refdate)->format('d/m/Y')}}\n\n', margin: [0, 50, 0, 0]},
+                    //         '{{$patreferral->refaddress}}\n\n',
+                    //         'Dear Dr. {{$patreferral->refdoc}}\n\n',
+                    //         '{{$patreferral->reftitle}}\n\n',
+                    //         'Diagnosis: {{$patreferral->refdiag}}\n\n',
+                    //         'Plan: {{$patreferral->refplan}}\n\n',
+                    //         'Prescription: {{$patreferral->refprescription}}\n\n',
+                    //         'If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients.\n\n',
+                    //         'Sincerely,\n\n',
+                    //         'Dr. {{ucwords(strtolower($patreferral->adduser))}}\n\n',
+                    //     ]
+                    // },
                     {
                         text: '{{\Carbon\Carbon::parse($patreferral->refdate)->format('d/m/Y')}}\n\n',
                         style: 'refdate'
@@ -42,8 +56,6 @@
                     {
                         text: [
                             '{{$patreferral->refaddress}}\n\n'
-                            // '{!! nl2br(e($refaddress)) !!}\n\n'
-                            // '{!! $refaddress !!}\n\n'
                         ]
                     },
                     'Dear Dr. {{$patreferral->refdoc}}\n\n',
@@ -55,7 +67,6 @@
                     {
                         text: [
                             'Diagnosis: {{$patreferral->refdiag}}\n\n'
-                            // 'Diagnosis: {{nl2br($patreferral->refdiag)}}\n\n'
                         ]
                     },
                     {
