@@ -176,12 +176,12 @@
 
                         body: [
                             [
-								{text: 'Type', style: 'tableHeader'}, 
-								{text: 'Item', style: 'tableHeader'}, 
-								{text: 'UOM', style: 'tableHeader'}, 
-								{text: 'Qty', style: 'tableHeader'},
-								{text: 'Tax\nCode', style: 'tableHeader'}, 
-								{text: 'Unit\nPrice', style: 'tableHeader'}, 
+								{text: 'Costcode', style: 'tableHeader'}, 
+								{text: 'CCDesc', style: 'tableHeader'}, 
+								{text: 'AccNo', style: 'tableHeader'}, 
+								{text: 'AccDesc', style: 'tableHeader'},
+								{text: 'Dr Amount', style: 'tableHeader'}, 
+								{text: 'Cr Amount', style: 'tableHeader'}, 
 								
 							],
 
