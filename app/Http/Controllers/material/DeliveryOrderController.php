@@ -1296,13 +1296,63 @@ class DeliveryOrderController extends defaultController
 
         $totamount_expld = explode(".", (float)$delordhd->totamount);
 
-        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        $cc_acc = [];
+        foreach ($delorddt as $value) {
+            $gltran = DB::table('finance.gltran as gl')
+                   ->where('gl.compcode',session('compcode'))
+                   ->where('gl.auditno',$value->recno)
+                   ->where('gl.lineno_',$value->lineno_)
+                   ->where('gl.source','IV')
+                   ->where('gl.trantype',$delordhd->trantype)
+                   ->first();
 
-        // if(count($totamount_expld) > 1){
-        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        // }
+            $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
+            $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
+
+            if(!array_key_exists($drkey,$cc_acc)){
+                $cc_acc[$drkey] = floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$drkey]);
+                $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
+            }
+            if(!array_key_exists($crkey,$cc_acc)){
+                $cc_acc[$crkey] = -floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$crkey]);
+                $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
+            }
+        }
+
+        $cr_acc=[];
+        $db_acc=[];
+        foreach ($cc_acc as $key => $value) {
+            $cc = explode("_",$key)[0];
+            $acc = explode("_",$key)[1];
+            $cc_desc = '';
+            $acc_desc = '';
+
+            $costcenter = DB::table('finance.costcenter')
+                        ->where('compcode',session('compcode'))
+                        ->where('costcode',$cc);
+
+            $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('glaccno',$acc);
+
+            if($costcenter->exists()){
+                $cc_desc = $costcenter->first()->description;
+            }
+
+            if($glmasref->exists()){
+                $acc_desc = $glmasref->first()->description;
+            }
+
+            if(floatval($value) > 0){
+                array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
+            }else{
+                array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
+            }
+        }
 
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
         $totamt_eng = $totamt_eng_rm."";
@@ -1312,7 +1362,7 @@ class DeliveryOrderController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt'));
+        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));
         
     }
 }

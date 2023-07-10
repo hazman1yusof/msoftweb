@@ -176,23 +176,34 @@
 
                         body: [
                             [
-								{text: 'Type', style: 'tableHeader'}, 
-								{text: 'Item', style: 'tableHeader'}, 
-								{text: 'UOM', style: 'tableHeader'}, 
-								{text: 'Qty', style: 'tableHeader'},
-								{text: 'Tax\nCode', style: 'tableHeader'}, 
-								{text: 'Unit\nPrice', style: 'tableHeader'}, 
+								{text: 'CostCode', style: 'tableHeader'}, 
+								{text: 'CCDesc', style: 'tableHeader'}, 
+								{text: 'AccNo', style: 'tableHeader'}, 
+								{text: 'AccDesc', style: 'tableHeader'},
+								{text: 'Dr Amount', style: 'tableHeader'}, 
+								{text: 'Cr Amount', style: 'tableHeader'}, 
 								
 							],
 
-							@foreach ($delorddt as $obj)
+							@foreach ($db_acc as $obj)
 							[
-								{text:'{{$obj->pricecode}}'},
-								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
-								{text:'{{$obj->uomcode}}'},
-                                {text:'{{$obj->qtydelivered}}'},
-								{text:'{{$obj->taxcode}}'},
-								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+								{text:'{{$obj[0]}}'},
+								{text:'{{$obj[1]}}'},
+								{text:'{{$obj[2]}}'},
+                                {text:'{{$obj[3]}}'},
+								{text:'{{$obj[4]}}'},
+								{text:'{{$obj[5]}}'},
+							],
+							@endforeach
+
+							@foreach ($cr_acc as $obj)
+							[
+								{text:'{{$obj[0]}}'},
+								{text:'{{$obj[1]}}'},
+								{text:'{{$obj[2]}}'},
+                                {text:'{{$obj[3]}}'},
+								{text:'{{$obj[4]}}'},
+								{text:'{{$obj[5]}}'},
 							],
 							@endforeach
                         ]
@@ -260,7 +271,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
+				  url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',
