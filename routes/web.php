@@ -390,13 +390,13 @@ Route::get('/inventoryRequest/form','material\InventoryRequestController@form');
 Route::post('/inventoryRequestDetail/form','material\InventoryRequestDetailController@form');
 Route::get('/inventoryRequest/showpdf','material\InventoryRequestController@showpdf');
 
-
 //// inventory Transaction setup page ///
 Route::get('/inventoryTransaction','material\InventoryTransactionController@show');
 Route::get('/inventoryTransaction/table','material\InventoryTransactionController@table');
 Route::post('/inventoryTransaction/form','material\InventoryTransactionController@form');
 Route::get('/inventoryTransaction/form','material\InventoryTransactionController@form');
 Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
+Route::get('/inventoryTransaction/showpdf','material\InventoryTransactionController@showpdf');
 
 //// purchase Request setup page ///
 Route::get('/purchaseRequest','material\PurchaseRequestController@show');

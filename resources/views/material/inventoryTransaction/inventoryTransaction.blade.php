@@ -172,7 +172,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Inventory Transaction Header
-				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
+				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
 					<span class='fa fa-print'></span> Print 
 				</a>			
 			</div>
