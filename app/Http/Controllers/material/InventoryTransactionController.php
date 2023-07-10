@@ -569,10 +569,10 @@ class InventoryTransactionController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
 
-        // $total_amt = DB::table('material.ivtmpdt')
-        //     ->where('compcode','=',session('compcode'))
-        //     ->where('recno','=',$recno)
-        //     ->sum('totamount');
+        $total_amt = DB::table('material.ivtmpdt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amount');
 
         // $total_tax = DB::table('material.ivtmpdt')
         //     ->where('compcode','=',session('compcode'))
@@ -662,7 +662,7 @@ class InventoryTransactionController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','cr_acc','db_acc'));
+        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc'));
         
     }
 }

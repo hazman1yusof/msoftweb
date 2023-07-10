@@ -38,6 +38,7 @@
 		@endforeach 
 	};
 
+	var total_amt = '{{$total_amt}}';
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -145,7 +146,7 @@
 
                         body: [
                             [
-								{text: 'Total Amount: ', fontSize: 9}, 
+								{text: 'Total Amount: {{number_format($total_amt,2)}}', fontSize: 9}, 
 							],
                         ]
                     },
@@ -177,8 +178,8 @@
 								{text:'{{$obj[1]}}'},
 								{text:'{{$obj[2]}}'},
                                 {text:'{{$obj[3]}}'},
-								{text:'{{$obj[4]}}'},
-								{text:'{{$obj[5]}}'},
+								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'},
+								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'},
 							],
 							@endforeach
 
@@ -188,8 +189,8 @@
 								{text:'{{$obj[1]}}'},
 								{text:'{{$obj[2]}}'},
                                 {text:'{{$obj[3]}}'},
-								{text:'{{$obj[4]}}'},
-								{text:'{{$obj[5]}}'},
+								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'},
+								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'},
 							],
 							@endforeach
 
