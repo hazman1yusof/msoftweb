@@ -1265,14 +1265,18 @@ class DeliveryOrderController extends defaultController
             ->where('recno','=',$recno)
             ->first();
 
-        $delorddt = DB::table('material.delorddt AS dodt', 'material.productmaster AS p', 'material.uom as u')
+        $delorddt = DB::table('material.delorddt AS dodt')
             ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.expdate','dodt.unit', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'dodt.itemcode', '=', 'p.itemcode')
-            ->leftJoin('material.uom as u', 'dodt.uomcode', '=', 'u.uomcode')
+            ->leftJoin('material.productmaster as p', function($join) use ($request){
+                        $join = $join->on('dodt.itemcode', '=', 'p.itemcode')
+                                ->where('p.compcode','=',session('compcode'))
+                    })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                        $join = $join->on('dodt.uomcode', '=', 'u.uomcode')
+                                ->where('u.compcode','=',session('compcode'))
+                    })
             ->where('dodt.compcode','=',session('compcode'))
-            ->where('p.compcode','=',session('compcode'))
-            ->where('u.compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
+            ->where('dodt.recno','=',$recno)
             ->get();
         
         $company = DB::table('sysdb.company')

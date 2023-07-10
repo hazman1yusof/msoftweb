@@ -127,8 +127,8 @@
 								{text:'{{$obj->uomcode}}'},
                                 {text:'{{$obj->qtyonhand}}'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
-                                {text:'{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}'},
+                                {text:'@if(!empty($obj->expdate)){{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->expdate)->format('d-m-Y')}}@endif'},
+                                {text:'@if(!empty($obj->trandate)){{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->trandate)->format('d-m-Y')}}@endif'},
                                 {text:'{{$obj->qtyonhand}}'},
 								
 							],
@@ -171,16 +171,28 @@
 								
 							],
 
-							@foreach ($ivtmpdt as $obj)
+							@foreach ($db_acc as $obj)
 							[
-								// {text:'{{$obj->pricecode}}'},
-								// {text:'{{$obj->itemcode}}\n{{$obj->description}}'},
-								// {text:'{{$obj->uomcode}}'},
-                                // {text:'{{$obj->qtydelivered}}'},
-								// {text:'{{$obj->taxcode}}'},
-								// {text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
+								{text:'{{$obj[0]}}'},
+								{text:'{{$obj[1]}}'},
+								{text:'{{$obj[2]}}'},
+                                {text:'{{$obj[3]}}'},
+								{text:'{{$obj[4]}}'},
+								{text:'{{$obj[5]}}'},
 							],
 							@endforeach
+
+							@foreach ($cr_acc as $obj)
+							[
+								{text:'{{$obj[0]}}'},
+								{text:'{{$obj[1]}}'},
+								{text:'{{$obj[2]}}'},
+                                {text:'{{$obj[3]}}'},
+								{text:'{{$obj[4]}}'},
+								{text:'{{$obj[5]}}'},
+							],
+							@endforeach
+
                         ]
                     },
 			        layout: 'lightHorizontalLines',
@@ -246,7 +258,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
+				  url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',

@@ -550,15 +550,19 @@ class InventoryTransactionController extends defaultController
             ->where('recno','=',$recno)
             ->first();
 
-        $ivtmpdt = DB::table('material.ivtmpdt AS ivdt', 'material.productmaster AS p', 'material.stockloc as s')
-            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','s.maxqty',
+        $ivtmpdt = DB::table('material.ivtmpdt AS ivdt')
+            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv',
             'ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
-            ->leftJoin('material.productmaster as p', 'ivdt.itemcode', '=', 'ivdt.itemcode')
-            ->leftJoin('material.stockloc as s', 'p.itemcode', '=', 's.itemcode')
+            ->leftJoin('material.productmaster as p', function($join) use ($request){
+                        $join = $join->on('ivdt.itemcode', '=', 'p.itemcode')
+                                ->where('p.compcode','=',session('compcode'));
+                    })
+            ->leftJoin('material.ivtmphd as ivh', function($join) use ($request){
+                        $join = $join->on('ivh.recno', '=', 'ivdt.recno')
+                                ->where('ivh.compcode','=',session('compcode'));
+                    })
             ->where('ivdt.compcode','=',session('compcode'))
-            ->where('p.compcode','=',session('compcode'))
-            ->where('s.compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
+            ->where('ivdt.recno','=',$recno)
             ->get();
         
         $company = DB::table('sysdb.company')
@@ -590,6 +594,66 @@ class InventoryTransactionController extends defaultController
         //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         // }
 
+
+        //account
+        $cc_acc = [];
+        foreach ($ivtmpdt as $value) {
+            $gltran = DB::table('finance.gltran as gl')
+                   ->where('gl.compcode',session('compcode'))
+                   ->where('gl.auditno',$value->recno)
+                   ->where('gl.lineno_',$value->lineno_)
+                   ->where('gl.source',$ivtmphd->source)
+                   ->where('gl.trantype',$ivtmphd->trantype)
+                   ->first();
+
+            $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
+            $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
+
+            if(!array_key_exists($drkey,$cc_acc)){
+                $cc_acc[$drkey] = floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$drkey]);
+                $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
+            }
+            if(!array_key_exists($crkey,$cc_acc)){
+                $cc_acc[$crkey] = -floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$crkey]);
+                $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
+            }
+        }
+
+        $cr_acc=[];
+        $db_acc=[];
+        foreach ($cc_acc as $key => $value) {
+            $cc = explode("_",$key)[0];
+            $acc = explode("_",$key)[1];
+            $cc_desc = '';
+            $acc_desc = '';
+
+            $costcenter = DB::table('finance.costcenter')
+                        ->where('compcode',session('compcode'))
+                        ->where('costcode',$cc);
+
+            $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('glaccno',$acc);
+
+            if($costcenter->exists()){
+                $cc_desc = $costcenter->first()->description;
+            }
+
+            if($glmasref->exists()){
+                $acc_desc = $glmasref->first()->description;
+            }
+
+            if(floatval($value) > 0){
+                array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
+            }else{
+                array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
+            }
+        }
+
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
         $totamt_eng = $totamt_eng_rm."";
 
@@ -598,7 +662,7 @@ class InventoryTransactionController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company'));
+        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','cr_acc','db_acc'));
         
     }
 }
