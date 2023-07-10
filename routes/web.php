@@ -873,6 +873,7 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
+Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');
 
 //// Dietetic Care Notes page ///
 Route::get('/dieteticCareNotes','hisdb\DieteticCareNotesController@show');

@@ -561,22 +561,23 @@ function button_state_refLetter(state){
 			$("#toggle_refLetter").removeAttr('data-toggle');
 			$('#cancel_refLetter').data('oper','add');
 			$('#new_refLetter,#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
+			$('#pdfgen1').attr('disabled',false);
 			break;
 		case 'add':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
 			$('#cancel_refLetter').data('oper','add');
-			$("#new_refLetter").attr('disabled',false);
+			$("#new_refLetter,#pdfgen1").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#edit_refLetter').attr('disabled',true);
 			break;
 		case 'edit':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
 			$('#cancel_refLetter').data('oper','edit');
-			$("#edit_refLetter").attr('disabled',false);
+			$("#edit_refLetter,#pdfgen1").attr('disabled',false);
 			$('#save_refLetter,#cancel_refLetter,#new_refLetter').attr('disabled',true);
 			break;
 		case 'wait':
 			$("#toggle_refLetter").attr('data-toggle','collapse');
-			$("#save_refLetter,#cancel_refLetter").attr('disabled',false);
+			$("#save_refLetter,#cancel_refLetter,#pdfgen1").attr('disabled',false);
 			$('#edit_refLetter,#new_refLetter').attr('disabled',true);
 			break;
 	}
@@ -671,6 +672,13 @@ function populate_refLetter(obj){
 	
 	$("#pt_mrn").text($('#mrn_doctorNote').val());
 	$("#pt_name").text($('#ptname_doctorNote').val());
+	
+	// $("#pdfgen1").attr('href','./doctornote/showpdf?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val());
+	
+	$("#pdfgen1").click(function() {
+		// window.location='./doctornote/showpdf?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val();
+		window.open('./doctornote/showpdf?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
+	});
 	
 	var urlparam={
 		action:'get_table_refLetter',

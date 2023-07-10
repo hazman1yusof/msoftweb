@@ -398,6 +398,12 @@
                     <button type="button" class="btn btn-default" id="cancel_refLetter">
                         <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
                     </button>
+                    <!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank">
+                        <input type="button" value="PRINT">
+                    </a> -->
+                    <button type="button" class="btn btn-default" id="pdfgen1">
+                        <span class="fa fa-print fa-lg"> </span> Print
+                    </button>
                 </div>
                 
             </div>

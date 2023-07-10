@@ -7,6 +7,7 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use PDF;
 
 class DoctorNoteController extends defaultController
 {
@@ -1176,6 +1177,37 @@ class DoctorNoteController extends defaultController
             return response($e->getMessage(), 500);
         
         }
+    
+    }
+    
+    public function showpdf(Request $request){
+        
+        $mrn = $request->mrn;
+        $episno = $request->episno;
+        if(!$mrn){
+            abort(404);
+        }
+        
+        $patreferral = DB::table('hisdb.patreferral')
+            ->where('compcode','=',session('compcode'))
+            ->where('mrn','=',$mrn)
+            ->where('episno','=',$episno)
+            ->first();
+            
+        // $refaddress = nl2br($patreferral->refaddress);
+        $refaddress = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refaddress);
+        $reftitle = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->reftitle);
+        $refdiag = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refdiag);
+        $refplan = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refplan);
+        $refprescription = preg_replace("/\r\n|\r|\n/", '<br/>', $patreferral->refprescription);
+        
+        // dd($refprescription);
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+        
+        return view('hisdb.doctornote.refLetter_pdfmake',compact('patreferral', 'refaddress', 'reftitle', 'refdiag', 'refplan', 'refprescription', 'company'));
     
     }
     
