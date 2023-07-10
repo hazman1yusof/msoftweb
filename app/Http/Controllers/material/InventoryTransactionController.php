@@ -550,13 +550,14 @@ class InventoryTransactionController extends defaultController
             ->where('recno','=',$recno)
             ->first();
 
-        $ivtmpdt = DB::table('material.ivtmpdt AS ivdt', 'material.productmaster AS p', 'material.uom as u')
-            ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.qtydelivered','dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.expdate','dodt.unit', 'u.description as uom_desc')
-            ->leftJoin('material.productmaster as p', 'dodt.itemcode', '=', 'p.itemcode')
-            ->leftJoin('material.uom as u', 'dodt.uomcode', '=', 'u.uomcode')
-            ->where('dodt.compcode','=',session('compcode'))
+        $ivtmpdt = DB::table('material.ivtmpdt AS ivdt', 'material.productmaster AS p', 'material.stockloc as s')
+            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv','s.maxqty',
+            'ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
+            ->leftJoin('material.productmaster as p', 'ivdt.itemcode', '=', 'ivdt.itemcode')
+            ->leftJoin('material.stockloc as s', 'p.itemcode', '=', 's.itemcode')
+            ->where('ivdt.compcode','=',session('compcode'))
             ->where('p.compcode','=',session('compcode'))
-            ->where('u.compcode','=',session('compcode'))
+            ->where('s.compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->get();
         
@@ -564,22 +565,22 @@ class InventoryTransactionController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->first();
 
-        $total_amt = DB::table('material.delorddt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('totamount');
+        // $total_amt = DB::table('material.ivtmpdt')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('recno','=',$recno)
+        //     ->sum('totamount');
 
-        $total_tax = DB::table('material.delorddt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('amtslstax');
+        // $total_tax = DB::table('material.ivtmpdt')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('recno','=',$recno)
+        //     ->sum('amtslstax');
         
-        $total_discamt = DB::table('material.delorddt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('amtdisc');
+        // $total_discamt = DB::table('material.ivtmpdt')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('recno','=',$recno)
+        //     ->sum('amtdisc');
 
-        $totamount_expld = explode(".", (float)$delordhd->totamount);
+        $totamount_expld = explode(".", (float)$ivtmphd->amount);
 
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
         // $totamt_bm = $totamt_bm_rm." SAHAJA";
@@ -597,7 +598,7 @@ class InventoryTransactionController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('material.deliveryOrder.deliveryOrder_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt'));
+        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company'));
         
     }
 }
