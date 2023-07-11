@@ -253,7 +253,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
+				url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',
