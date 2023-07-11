@@ -167,8 +167,8 @@
 								{text: 'CCDesc', style: 'tableHeader'}, 
 								{text: 'AccNo', style: 'tableHeader'}, 
 								{text: 'AccDesc', style: 'tableHeader'},
-								{text: 'Dr Amount', style: 'tableHeader'}, 
-								{text: 'Cr Amount', style: 'tableHeader'}, 
+								{text: 'Dr Amount', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Cr Amount', style: 'tableHeader', alignment: 'right'}, 
 								
 							],
 
