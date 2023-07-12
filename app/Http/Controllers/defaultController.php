@@ -905,9 +905,9 @@ abstract class defaultController extends Controller{
                 $tens = ($tens ? '' . $list1[$tens] .' ' : '' );
             } else {
                 $tens = (int)($tens / 10);
-                $tens = '' . $list2[$tens] . '';
+                $tens = '' . $list2[$tens] . ' ';
                 $singles = (int) ($num_levels[$i] % 10);
-                $singles = '' . $list1[$singles] . '';
+                $singles = '' . $list1[$singles] . ' ';
             }
             $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? '' . $list3[$levels] .' ' : '' );
         } //end for loop
