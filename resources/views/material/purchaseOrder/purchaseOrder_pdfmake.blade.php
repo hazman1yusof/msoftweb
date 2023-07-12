@@ -73,7 +73,7 @@
 							[
 								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-								{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+								{text: '\n\nPurchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
 							],
 
 							[

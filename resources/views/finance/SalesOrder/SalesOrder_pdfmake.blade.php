@@ -65,7 +65,7 @@
 							[
 								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-								{text: '{{$title}}', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{}
+								{text: '\n\n{{$title}}', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{}
 							],
 
 							[
