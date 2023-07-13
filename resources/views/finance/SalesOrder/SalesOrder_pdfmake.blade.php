@@ -149,7 +149,7 @@
                                     2. Payment can be made by cash.\n
                                     3. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of	{{$company->name}}.\n
                                     4. Any inquiries must be issue to : \n
-                                        {{$company->name}}\n{{$company->address1}}\n{{$company->address2}} {{$company->address3}}\n{{$company->address4}}\n`
+                                        \u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address1}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address2}} {{$company->address3}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address4}}\n`
 									, colSpan: 10},{},{},{},{},{},{},{},{},{},
 							],
 						]
