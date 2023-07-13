@@ -725,6 +725,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 50, classes: 'wrap', editable: false, hidden: true },
+			{ label: 'rowno', name: 'rowno', width: 50, classes: 'wrap', editable: false, hidden: true },
 			{
 				label: 'Item Code', name: 'chggroup', width: 200, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
@@ -1176,17 +1177,17 @@ $(document).ready(function () {
 		title:"Save All Row",
 		onClickButton: function(){
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-
+			
 			var jqgrid2_data = [];
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
-
+			
 			if(errorField.length>0){
 				console.log(errorField)
 				return false;
 			}
-
-		    for (var i = 0; i < ids.length; i++) {
+			
+			for (var i = 0; i < ids.length; i++) {
 				if(parseInt($('#'+ids[i]+"_quantity").val()) <= 0)return false;
 				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
 				let retval = check_cust_rules("#jqGrid2",data);
@@ -1194,39 +1195,40 @@ $(document).ready(function () {
 					alert(retval[1]);
 					return false;
 				}
-
+				
 				// cust_rules()
-
-		    	var obj = 
-		    	{
-		    		'lineno_' : data.lineno_,
-		    		'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
-		    		'chggroup' : $("#jqGrid2 input#"+ids[i]+"_chggroup").val(),
-		    		'uom' : $("#jqGrid2 input#"+ids[i]+"_uom").val(),
-		    		'pouom' : $("#jqGrid2 input#"+ids[i]+"_pouom").val(),
-		    		'quantity' : $('#'+ids[i]+"_quantity").val(),
-		    		'unitprice': $('#'+ids[i]+"_unitprice").val(),
-		    		'taxcode' : $("#jqGrid2 input#"+ids[i]+"_taxcode").val(),
-                    'perdisc' : $('#'+ids[i]+"_perdisc").val(),
-                    'discamt' : $('#'+ids[i]+"_uom_discamt").val(),
-                    'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
-                    'amount' : $('#'+ids[i]+"_amount").val(),
-                    'taxamt' : $("#"+ids[i]+"_taxamt").val(),
-                    // 'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
-                    // 'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
-		    	}
-
-		    	jqgrid2_data.push(obj);
-		    }
-
+				
+				var obj = 
+				{
+					'lineno_' : data.lineno_,
+					'rowno' : data.rowno,
+					'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
+					'chggroup' : $("#jqGrid2 input#"+ids[i]+"_chggroup").val(),
+					'uom' : $("#jqGrid2 input#"+ids[i]+"_uom").val(),
+					'pouom' : $("#jqGrid2 input#"+ids[i]+"_pouom").val(),
+					'quantity' : $('#'+ids[i]+"_quantity").val(),
+					'unitprice': $('#'+ids[i]+"_unitprice").val(),
+					'taxcode' : $("#jqGrid2 input#"+ids[i]+"_taxcode").val(),
+					'perdisc' : $('#'+ids[i]+"_perdisc").val(),
+					'discamt' : $('#'+ids[i]+"_uom_discamt").val(),
+					'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
+					'amount' : $('#'+ids[i]+"_amount").val(),
+					'taxamt' : $("#"+ids[i]+"_taxamt").val(),
+					// 'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
+					// 'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
+				}
+				
+				jqgrid2_data.push(obj);
+			}
+			
 			var param={
 				_token: $("#_token").val(),
 				source: 'PB',
 				trantype:'IN',
 				auditno: $('#db_auditno').val(),
-    		}
-
-    		$.post( "./SalesOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+			}
+			
+			$.post( "./SalesOrderDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			},'json').fail(function(data) {
 				alert(data.responseText);
 			}).done(function(data){

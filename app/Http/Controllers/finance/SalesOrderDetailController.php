@@ -405,40 +405,39 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function edit_all(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $source = $request->source;
             $trantype = $request->trantype;
             $auditno = $request->auditno;
-
+            
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
                     ->where('auditno','=',$auditno);
-
+            
             $dbacthdr = $dbacthdr->first();
-
-
+            
             foreach ($request->dataobj as $key => $value) {
-
+                
                 $billsum = DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$source)
                             ->where('trantype','=',$trantype)
                             ->where('billno','=',$auditno)
                             ->where('rowno','=',$value['rowno']);
-
+                
                 ///2. update detail
                 $billsum
                     ->update([
                         'unitprice' => $value['unitprice'],
                         'quantity' => $value['quantity'],
                         'amount' => $value['amount'],
-                        'outamount' => $value['outamount'],
+                        // 'outamount' => $value['outamount'],
                         'discamt' => floatval($value['discamt']),
                         'taxamt' => floatval($value['taxamt']),
                         'lastuser' => session('username'), 
@@ -446,35 +445,35 @@ class SalesOrderDetailController extends defaultController
                         // 'billtypeperct' => $value['billtypeperct'],
                         // 'billtypeamt' => $value['billtypeamt'],
                     ]);
-
+                
                 $billsum_obj = $billsum->first();
-
+                
                 $product = DB::table('material.product')
                         ->where('compcode','=',session('compcode'))
                         ->where('uomcode','=',$value['uom'])
                         ->where('itemcode','=',$value['chggroup']);
-
+                
                 if($product->exists()){
                     $product = $product->first();
                     // if($product->groupcode == 'Stock'){
-
+                        
                         $stockloc = DB::table('material.stockloc')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('uomcode','=',$value['uom'])
                                 ->where('itemcode','=',$value['chggroup'])
                                 ->where('deptcode','=',$dbacthdr->deptcode)
                                 ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-
+                        
                         if($stockloc->exists()){
                             $stockloc = $stockloc->first();
                         }else{
                             throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
                         }
-
+                        
                         $ivdspdt = DB::table('material.ivdspdt')
                             ->where('compcode','=',session('compcode'))
                             ->where('recno','=',$billsum_obj->auditno);
-
+                        
                         if($ivdspdt->exists()){
                             $this->updivdspdt($billsum_obj,$request,$dbacthdr);
                             $this->updgltran($ivdspdt->first()->idno,$request,$dbacthdr);
@@ -482,10 +481,10 @@ class SalesOrderDetailController extends defaultController
                             $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
                             $this->crtgltran($ivdspdt_idno,$request,$dbacthdr);
                         }
-
+                        
                     // }
                 }
-
+                
                 ///3. calculate total amount from detail
                 $totalAmount = DB::table('debtor.billsum')
                         ->where('compcode','=',session('compcode'))
@@ -494,7 +493,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('billno','=',$auditno)
                         ->where('recstatus','!=','DELETE')
                         ->sum('amount');
-
+                
                 ///4. then update to header
                 DB::table('debtor.dbacthdr')
                         ->where('compcode','=',session('compcode'))
@@ -504,21 +503,24 @@ class SalesOrderDetailController extends defaultController
                         ->update([
                             'amount' => $totalAmount,
                         ]);
+                
             }
-
+            
             DB::commit();
-
+            
             $responce = new stdClass();
             $responce->totalAmount = $totalAmount;
-
+            
             return json_encode($responce);
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
-
+        
     }
 
     public function del(Request $request){
