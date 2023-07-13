@@ -89,10 +89,10 @@ hr {
 						</tr>
 						<tr >
 							<td colspan="5" height="180"> <!-- description of chgcode from hisdb.chgmast-->
-								@foreach ($billsum as $obj)
+								@foreach ($ as $obj)
 									<p>{{$obj->chgmast_desc}}</p>
 								@endforeach
-							</td>
+							</td>billsum
 							<td> <!-- uomcode -->
 								@foreach ($billsum as $obj)
 									<p>{{$obj->uom}}</p>

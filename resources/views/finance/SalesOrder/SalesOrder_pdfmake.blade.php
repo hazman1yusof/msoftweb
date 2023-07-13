@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Purchase Order</title>
+<title>Sales Order</title>
 
 </head>
 
@@ -16,27 +16,21 @@
 
 <script>
 	
-	var purordhd = {
-		@foreach($purordhd as $key => $val) 
+	var dbacthdr = {
+		@foreach($dbacthdr as $key => $val) 
 			'{{$key}}' : '{{$val}}',
 		@endforeach 
 	};
 
-	var purorddt=[
-		@foreach($purorddt as $key => $podt)
+	var billsum=[
+		@foreach($billsum as $key => $bilsm)
 		[
-			@foreach($podt as $key2 => $val)
+			@foreach($bilsm as $key2 => $val)
 				{'{{$key2}}' : `{{$val}}`},
 			@endforeach
 		],
 		@endforeach 
 	];
-
-	var supplier = {
-		@foreach($supplier as $key => $val) 
-			'{{$key}}' : '{{$val}}',
-		@endforeach 
-	};
 
 	var company = {
 		@foreach($company as $key => $val) 
@@ -44,15 +38,13 @@
 		@endforeach 
 	};
 
-	var deldept = {
-		@foreach($deldept as $key => $val) 
+	var title = {
+		@foreach($company as $key => $val) 
 			'{{$key}}' : '{{$val}}',
 		@endforeach 
 	};
 
-	var totamt_eng = '{{$totamt_eng}}';
-	var total_tax = '{{$total_tax}}';
-	var total_discamt = '{{$total_discamt}}';
+	var totamt_bm = '{{$totamt_bm}}';
 
 	$(document).ready(function () {
 		var docDefinition = {
@@ -66,116 +58,112 @@
 				{
 					style: 'tableExample',
 					table: {
-						widths: ['*','*','*','*','*','*','*','*','*','*','*'],
+						widths: ['*','*','*','*','*','*','*','*','*','*'],
 						// headerRows: 5,
 						// keepWithHeaderRows: 5,
 						body: [
 							[
 								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-								{text: '\n\nPurchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+								{text: '\n\n{{$title}}', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{}
 							],
 
 							[
 								{
-									text: 'Address To:\n{{$supplier->SuppCode}}\n{{$supplier->Name}}\n{{$supplier->Addr1}}\n{{$supplier->Addr2}}\n{{$supplier->Addr3}}\n{{$supplier->Addr4}}', 
+									text: 'Address To:\n\n{{$dbacthdr->debt_name}}\n{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}', 
 									colSpan: 5, 
 									rowSpan: 4,
 									alignment: 'left'},{},{},{},{},
 								{
-								 	text: 'Purchase No.',
+								 	text: 'Document Number',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{$purordhd->prdept}}'+'{{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}',
-								 	colSpan: 4, alignment: 'left'},{},{},{}
+									text: '{{str_pad($dbacthdr->auditno, 7, '0', STR_PAD_LEFT)}}',
+								 	colSpan: 3, alignment: 'left'},{},{}
 							],
 							
 							[
 								{},{},{},{},{},
 								{
-								 	text: 'Purchase Date.',
+								 	text: 'PO Date',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$purordhd->purdate)->format('d-m-Y')}}',
-								 	colSpan: 4, alignment: 'left'},{},{},{}
+									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}',
+								 	colSpan: 3, alignment: 'left'},{},{}
 							],
 
 							[
 								{},{},{},{},{},
 								{
-								 	text: 'Contact Person.',
+								 	text: 'Invoice No',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{$supplier->ContPers}}',
-								 	colSpan: 4, alignment: 'left'},{},{},{}
+									text: '{{str_pad($dbacthdr->invno, 7, '0', STR_PAD_LEFT)}}',
+								 	colSpan: 3, alignment: 'left'},{},{}
 							],
 
-							[{},{},{},{},{},
-							{
-							 	text: 'Contact No.',
-							 	colSpan: 2, alignment: 'left'},{},
-							{
-								text: '{{$supplier->TelNo}}',
-							 	colSpan: 4, alignment: 'left'},{},{},{}],
-
-							[{text:'No.'},{text:'Description',colSpan: 4},{},{},{},{text:'UOM'},{text:'Quantity'},{text:'Unit Price'},{text:'Tax Amt'},{text:'Discount Amount'},{text:'Nett Amount'}],
-
-							@foreach ($purorddt as $index=>$obj)
 							[
-								{text:'{{++$index}}'},
-								{text:`{{$obj->description}}\n{{$obj->remarks}}`,colSpan: 4},{},{},{},
-								{text:'{{$obj->uomcode}}'},
-								{text:'{{$obj->qtyorder}}', alignment: 'right'},
+                                {},{},{},{},{},
+                                {
+                                    text: 'Invoice Date',
+                                    colSpan: 2, alignment: 'left'},{},
+                                {
+                                    text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}',
+                                    colSpan: 3, alignment: 'left'},{},{}
+                            ],
+
+							[
+                                {text:'Description',colSpan: 5, style:'totalbold'},{},{},{},{},
+                                {text:'UOM', style:'totalbold'},
+                                {text:'Quantity', style:'totalbold'},
+                                {text:'Unit Price', style:'totalbold'},
+                                {text:'Tax Amt', style:'totalbold'},
+                                {text:'Amount', style:'totalbold'}
+                            ],
+
+							@foreach ($billsum as $obj)
+							[
+								{text:`{{$obj->chgmast_desc}}`,colSpan: 5},{},{},{},{},
+								{text:'{{$obj->uom}}'},
+								{text:'{{$obj->quantity}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
-								{text:'{{number_format($obj->tot_gst,2)}}', alignment: 'right'},
-								{text:'{{number_format($obj->amtdisc,2)}}', alignment: 'right'},
+								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->amount,2)}}', alignment: 'right'},
 							],
 							@endforeach
 
-							[
-								{text:'TOTAL', style: 'totalbold', colSpan: 5},{},{},{},{},{},{},{},
-								{text:'{{number_format($total_tax,2)}}', alignment: 'right'},
-								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
-								{text:'{{number_format($purordhd->totamount,2)}}', alignment: 'right'}
+                            [
+								{text:'TOTAL', style: 'totalbold', colSpan: 9},{},{},{},{},{},{},{},{},
+								{text:'{{number_format($dbacthdr->amount,2)}}', alignment: 'right'}
 							],
 
 							[
-								{text:'RINGGIT MALAYSIA: {{$totamt_eng}}', style: 'totalbold',  italics: true, colSpan: 11,pageBreak: 'before'}
+								{text:'RINGGIT MALAYSIA: {{$totamt_bm}}', style: 'totalbold',  italics: true, colSpan: 10}
 							],
+						
 							
 							[
 								{text:
 
-									`Please Deliver goods/services/works with original purchase order, delivery order and invoice to:\n\nAddress To:\n{{$deldept->description}}\n{{$deldept->addr1}}\n{{$deldept->addr2}}\n{{$deldept->addr3}}\n{{$deldept->addr4}}\n
-									Contact Person: {{$deldept->contactper}}\n
-									Tel No.: {{$deldept->tel}}\n
-									Email: {{$deldept->email}}\n
-									`
-									,colSpan: 6,rowSpan:4},{},{},{},{},{},
-								{text:'Delivered By: \n\n\n\n\n\n', style: 'totalbold',colSpan: 3,rowSpan:3},{},{},
-								{text:'Approval: \n\n\n\n\n\n', style: 'totalbold',colSpan: 2,rowSpan:3},{}
+								    `ATTENTION:\n\n1. Payment of this bill can be pay to any registration counter of {{$company->name}} by stating the referral invoice number.\n
+                                    2. Payment can be made by cash.\n
+                                    3. Only cross cheque for any registered company with Ministry of Health Malaysia is acceptable and be issue to Director of	{{$company->name}}.\n
+                                    4. Any inquiries must be issue to : \n
+                                        \u200B\t\u200B\t\u200B\t\u200B\t{{$company->name}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address1}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address2}} {{$company->address3}}\n\u200B\t\u200B\t\u200B\t\u200B\t{{$company->address4}}\n`
+									, colSpan: 10},{},{},{},{},{},{},{},{},{},
 							],
-							
-							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
-							],
-							
-							[
-								{},{},{},{},{},{},
-								{},{},{},
-								{},{}
-							],
-							
-							[
-								{},{},{},{},{},{},
-								{text:'Sign: \n\n\n\n\n\n   Position:\n\n Date:\n\n', style: 'totalbold',colSpan: 5},{},{},
-								{},{}
-							]
 						]
 					}
+				},
+               
+                {
+					text: '\nPrinted Date: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}', fontSize: 8, italics: true,
+				},
+				{
+					text: 'Printed Time: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}', fontSize: 8, italics: true,
+				},
+				{
+					text: 'Printed By: {{session('username')}}', fontSize: 8, italics: true,
 				},
 			],
 			styles: {
