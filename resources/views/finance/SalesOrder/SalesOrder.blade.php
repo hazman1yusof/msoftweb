@@ -254,7 +254,9 @@ i.fa {
 
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
-			<div class="panel-heading">Sales Order Header</div>
+			<div class="panel-heading">Sales Order Header
+				<a class='pull-right pointer text-primary' id='pdfgen2' href="" target="_blank"><span class='fa fa-print'></span> Print Sales Invoice</a>
+			</div>
 				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}

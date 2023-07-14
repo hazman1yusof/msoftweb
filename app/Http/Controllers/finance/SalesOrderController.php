@@ -296,38 +296,39 @@ class SalesOrderController extends defaultController
     }
 
     public function del(Request $request){
-
+        
     }
-
+    
     public function posted(Request $request){
+        
         DB::beginTransaction();
-
+        
         try{
-
+            
             foreach ($request->idno_array as $value){
-
+                
                 $invno = $this->recno('PB','INV');
-
+                
                 $dbacthdr = DB::table("debtor.dbacthdr")
                             ->where('idno','=',$value)
                             ->first();
-
+                
                 $billsum = DB::table("debtor.billsum")
                             ->where('source','=',$dbacthdr->source)
                             ->where('trantype','=',$dbacthdr->trantype)
                             ->where('billno','=',$dbacthdr->auditno)
                             ->get();
-
+                
                 foreach ($billsum as $billsum_obj){
-
+                    
                     $chgmast = DB::table("hisdb.chgmast")
                             ->where('compcode','=',session('compcode'))
                             ->where('chgcode','=',$billsum_obj->chggroup)
                             ->where('uom','=',$billsum_obj->uom)
                             ->first();
-
+                    
                     $updinv = ($chgmast->invflag == '1')? 1 : 0;
-
+                    
                     $insertGetId = DB::table("hisdb.chargetrx")
                         ->insertGetId([
                             'auditno' => $billsum_obj->auditno,
@@ -369,7 +370,7 @@ class SalesOrderController extends defaultController
                             'taxcode' => $billsum_obj->taxcode,
                             'recstatus' => 'POSTED',
                         ]);
-
+                    
                     DB::table("hisdb.billdet")
                         ->insert([
                             'auditno' => $billsum_obj->auditno,
@@ -411,61 +412,61 @@ class SalesOrderController extends defaultController
                             'taxcode' => $billsum_obj->taxcode,
                             'recstatus' => 'POSTED',
                         ]);
-
+                    
                     // //product
                     // /*update Product qtyonhand*/
                     // $product = DB::table('material.product')
                     //         ->where('compcode','=',session('compcode'))
                     //         ->where('uomcode','=',$billsum_obj->uom)
                     //         ->where('itemcode','=',$billsum_obj->chggroup);
-
+                    
                     // $stockloc = DB::table('material.stockloc')
                     //         ->where('compcode','=',session('compcode'))
                     //         ->where('uomcode','=',$billsum_obj->uom)
                     //         ->where('itemcode','=',$billsum_obj->chggroup)
                     //         ->where('deptcode','=',$dbacthdr->deptcode)
                     //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-
+                    
                     // if($stockloc->exists()){
                     //     $stockloc = $stockloc->first();
                     // }else{
                     //     throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
                     // }
-
+                    
                     // if($product->exists()){
                     //     $product = $product->first();
                     //     if($product->groupcode == 'Stock'){
-
+                        
                     //         $ivdspdt = DB::table('material.ivdspdt')
                     //             ->where('compcode','=',session('compcode'))
                     //             ->where('recno','=',$billsum_obj->idno);
-
+                    
                     //         if($ivdspdt->exists()){
                     //             $this->updivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
                     //         }else{
                     //             $this->crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc,$insertGetId);
                     //         }
-
+                    
                     //     }
                     // }
-
+                    
                     // if($stockloc->disptype == 'DS'){
                     //     //ignore uom
                     //     // $qtyonhand = $product->qtyonhand - $billsum_obj->quantity;
                         
                     // }
-
+                    
                 }
-
+                
                 DB::table("debtor.billsum")
                     ->where('source','=',$dbacthdr->source)
                     ->where('trantype','=',$dbacthdr->trantype)
-                    ->where('auditno','=',$dbacthdr->auditno)
+                    ->where('billno','=',$dbacthdr->auditno)
                     ->update([
                         'invno' => $invno,
                         'recstatus' => 'POSTED',
                     ]);
-
+                
                 DB::table("debtor.dbacthdr")
                     ->where('idno','=',$value)
                     ->update([
@@ -473,19 +474,22 @@ class SalesOrderController extends defaultController
                         'recstatus' => 'POSTED',
                         'posteddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
-
-
+                
+                
             }
-           
+            
             DB::commit();
-        
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     // public function reopen(Request $request){
 
     //     DB::beginTransaction();
@@ -860,11 +864,11 @@ class SalesOrderController extends defaultController
             $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
         }
         
-        $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        // $pdf = PDF::loadView('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     
-        return $pdf->stream();
+        // return $pdf->stream();
         
-        return view('finance.SalesOrder.SalesOrder_pdf',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
+        return view('finance.SalesOrder.SalesOrder_pdfmake',compact('dbacthdr','billsum','totamt_bm','company', 'title'));
     }
 
     //function sendmeail($data) -- nak kena ada atau tak

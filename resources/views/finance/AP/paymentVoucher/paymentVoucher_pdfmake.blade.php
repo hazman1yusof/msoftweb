@@ -63,11 +63,11 @@
                 {
                     image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
-                {
-                    text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n', 
-                    alignment: 'center',
-                    style: 'comp_header'
-                },
+                // {
+                //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n', 
+                //     alignment: 'center',
+                //     style: 'comp_header'
+                // },
                 {
                     style: 'tableExample',
                     table: {
@@ -119,7 +119,7 @@
 								{text: 'Invoice Date', style: 'tableHeader'}, 
 								{text: 'Invoice No', style: 'tableHeader'}, 
 								{text: 'Description', style: 'tableHeader'}, 
-								{text: 'Amount', style: 'tableHeader'}, 
+								{text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
 							],
 							@foreach ($apalloc as $obj)
 							[
@@ -205,19 +205,19 @@
 			
 				{canvas: [{ type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 }]},
 				{
-					text: '\nDR: {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{number_format($apacthdr->amount,2)}}', fontSize: 10, 
+					text: '\nDR: {{$apacthdr->suppcode}} {{$apacthdr->suppname}} {{number_format($apacthdr->amount,2)}}', fontSize: 9, 
 				},
 				{
-					text: 'CR: {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{number_format($apacthdr->amount,2)}}', fontSize: 10,
+					text: 'CR: {{$apacthdr->bankcode}} {{$apacthdr->bankname}} {{number_format($apacthdr->amount,2)}}', fontSize: 9,
 				},
 				{
-					text: '\nPrinted Date: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}', fontSize: 10, italics: true,
+					text: '\nPrinted Date: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')}}', fontSize: 8, italics: true,
 				},
 				{
-					text: 'Printed Time: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}', fontSize: 10, italics: true,
+					text: 'Printed Time: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}}', fontSize: 8, italics: true,
 				},
 				{
-					text: 'Printed By: {{session('username')}}', fontSize: 10, italics: true,
+					text: 'Printed By: {{session('username')}}', fontSize: 8, italics: true,
 				},
 				
 			],
@@ -253,7 +253,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
+				url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',

@@ -61,12 +61,6 @@
                     image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
                 {
-                    text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n', 
-                    alignment: 'center',
-                    style: 'comp_header'
-                },
-            
-                {
                     style: 'tableExample',
                     table: {
                         headerRows: 1,
@@ -145,26 +139,59 @@
                     },
 			        layout: 'lightHorizontalLines',
 		        },
-                {
-                    style: 'tableExample',
+				{
+                    style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: ['*', '*'],//panjang standard dia 515
+                        widths: ['*','*','*','*','*','*','*','*','*','*','*'],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Sub Amount: ', fontSize: 9}, 
+								{}, 
+								{}, 
+								{}, 
+								{},
+								{}, 
+								{}, 
+								{text: 'Sub Amount: '}, 
+                                {text: '{{number_format($total_amt,2)}}', alignment: 'right'}, 
+								{text: '{{number_format($total_discamt,2)}}', alignment: 'right'}, 
+								{text: '{{number_format($total_amt,2)}}', alignment: 'right'}, 
+                                {}, 
 							],
-                            [
-								{text: 'Amount Discount: {{number_format($total_discamt,2)}}', fontSize: 9}, 
+
+							[
+								{},
+								{},
+								{},
+                                {},
+								{},
+								{},
+                                {text:'Amount Discount: '},
+								{},
+								{},
+								{text:'{{number_format($total_discamt,2)}}', alignment: 'right'},
+                                {},
 							],
-                            [
-								{text: 'Total Amount: {{number_format($total_amt,2)}}', fontSize: 9}, 
+							
+							[
+								{},
+								{},
+								{},
+                                {},
+								{},
+								{},
+                                {text:'Total Amount: ', style:'totalbold', fontSize:7.5},
+								{},
+								{},
+								{text:'{{number_format($total_amt,2)}}', alignment: 'right'},
+                                {},
 							],
                         ]
                     },
 			        layout: 'noBorders',
 		        },
+               
                 {
                     text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 14,
 		        },
@@ -180,8 +207,8 @@
 								{text: 'CCDesc', style: 'tableHeader'}, 
 								{text: 'AccNo', style: 'tableHeader'}, 
 								{text: 'AccDesc', style: 'tableHeader'},
-								{text: 'Dr Amount', style: 'tableHeader'}, 
-								{text: 'Cr Amount', style: 'tableHeader'}, 
+								{text: 'Dr Amount', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Cr Amount', style: 'tableHeader', alignment: 'right'}, 
 								
 							],
 
@@ -191,8 +218,8 @@
 								{text:'{{$obj[1]}}'},
 								{text:'{{$obj[2]}}'},
                                 {text:'{{$obj[3]}}'},
-								{text:'{{$obj[4]}}'},
-								{text:'{{$obj[5]}}'},
+								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'},
+								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'},
 							],
 							@endforeach
 
@@ -202,8 +229,8 @@
 								{text:'{{$obj[1]}}'},
 								{text:'{{$obj[2]}}'},
                                 {text:'{{$obj[3]}}'},
-								{text:'{{$obj[4]}}'},
-								{text:'{{$obj[5]}}'},
+								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'},
+								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'},
 							],
 							@endforeach
                         ]

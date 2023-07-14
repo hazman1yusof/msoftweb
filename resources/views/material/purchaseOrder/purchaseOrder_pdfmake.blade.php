@@ -73,7 +73,7 @@
 							[
 								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
 
-								{text: 'Purchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
+								{text: '\n\nPurchase Order', style: 'tableHeader', colSpan: 6, alignment: 'center'},{},{},{},{},{}
 							],
 
 							[
@@ -205,7 +205,7 @@
 			},
 			images: {
 				letterhead: {
-				  url: 'http://msoftweb.test/img/MSLetterHead.jpg',
+				url: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
 			      headers: {
 			        myheader: '123',
 			        myotherheader: 'abc',

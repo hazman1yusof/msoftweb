@@ -1020,7 +1020,7 @@ class PurchaseRequestController extends defaultController
         // }
         
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
 
         if(count($totamount_expld) > 1){
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";

@@ -16,13 +16,13 @@
     <script>
         var patreferral = {
             @foreach($patreferral as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{{$val}}`,
             @endforeach
         };
         
         var company = {
             @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
+                '{{$key}}' : `{{$val}}`,
             @endforeach
         };
         
@@ -35,48 +35,34 @@
                 },
                 pageSize: 'A4',
                 content: [
-                    // {
-                    //     text: [
-                    //         {text: '{{\Carbon\Carbon::parse($patreferral->refdate)->format('d/m/Y')}}\n\n', margin: [0, 50, 0, 0]},
-                    //         '{{$patreferral->refaddress}}\n\n',
-                    //         'Dear Dr. {{$patreferral->refdoc}}\n\n',
-                    //         '{{$patreferral->reftitle}}\n\n',
-                    //         'Diagnosis: {{$patreferral->refdiag}}\n\n',
-                    //         'Plan: {{$patreferral->refplan}}\n\n',
-                    //         'Prescription: {{$patreferral->refprescription}}\n\n',
-                    //         'If I may be of any further assistance in the care of your patient, please let me know. Thank you for providing me the opportunity to participate in the care of your patients.\n\n',
-                    //         'Sincerely,\n\n',
-                    //         'Dr. {{ucwords(strtolower($patreferral->adduser))}}\n\n',
-                    //     ]
-                    // },
                     {
                         text: '{{\Carbon\Carbon::parse($patreferral->refdate)->format('d/m/Y')}}\n\n',
                         style: 'refdate'
                     },
                     {
                         text: [
-                            '{{$patreferral->refaddress}}\n\n'
+                            `{{$patreferral->refaddress}}\n\n`
                         ]
                     },
                     'Dear Dr. {{$patreferral->refdoc}}\n\n',
                     {
                         text: [
-                            '{{$patreferral->reftitle}}\n\n'
+                            `{{$patreferral->reftitle}}\n\n`
                         ]
                     },
                     {
                         text: [
-                            'Diagnosis: {{$patreferral->refdiag}}\n\n'
+                            `Diagnosis: {{$patreferral->refdiag}}\n\n`
                         ]
                     },
                     {
                         text: [
-                            'Plan: {{$patreferral->refplan}}\n\n'
+                            `Plan: {{$patreferral->refplan}}\n\n`
                         ]
                     },
                     {
                         text: [
-                            'Prescription: {{$patreferral->refprescription}}\n\n'
+                            `Prescription: {{$patreferral->refprescription}}\n\n`
                         ]
                     },
                     {
@@ -115,15 +101,6 @@
                         fontSize: 10,
                     }
                 },
-                images: {
-                    letterhead: {
-                        url: 'http://msoftweb.test/img/MSLetterHead.jpg',
-                        headers: {
-                            myheader: '123',
-                            myotherheader: 'abc',
-                        }
-                    }
-                }
             };
             
             // pdfMake.createPdf(docDefinition).getBase64(function(data) {
