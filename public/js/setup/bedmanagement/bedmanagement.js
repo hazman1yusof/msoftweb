@@ -1,10 +1,8 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
-
-$(document).ready(function () {
-	$("body").show();
-	/////////////////////////validation//////////////////////////
+var myChart = null;
+$(document).ready(function () {	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
 		language : {
@@ -23,9 +21,45 @@ $(document).ready(function () {
 			}
 		},
 	};
+
+	var ctx = document.getElementById("myChart").getContext('2d');
+	var data_chart = {
+	  labels: [],
+	  datasets: [{
+	    label: '# of Patients',
+	    data: [],
+	    borderWidth: 1
+	  }]
+	};
+
+	var config_chart = {
+	  type: 'bar',
+	  data: data_chart,
+	  options: {
+	    scales: {
+	      // y: {
+	      //   beginAtZero: true
+	      // }
+	    	x: {
+		        stacked: true,
+		    },y:{
+		        stacked: true
+		    }
+	    }
+	  },
+	};
+
+	myChart = new Chart(ctx,config_chart);
+
+	$('input[type=radio][name=chart_sel]').change(function(){
+		chg_chart_data($(this).val())
+	});
+
+	$('select[name=chart_type]').change(function(){
+		chg_chart_option($(this).val())
+	});
 	
 	var fdl = new faster_detail_load();
-	$("#jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").hide();
 
 	function cust_rules(value,name){
 		var temp;
@@ -187,7 +221,7 @@ $(document).ready(function () {
 		autowidth: true,
 		multiSort: true,
 		sortname: 'idno',
-		sortorder: 'desc',
+		sortorder: 'asc',
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
@@ -199,21 +233,15 @@ $(document).ready(function () {
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
+
 				$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").hide();
+
 				if(rowData['mrn'] != '') {//kalau mrn ada
 					urlParam2.filterVal[0] = selrowData('#jqGrid').mrn;
 					refreshGrid('#jqGrid_trf', urlParam2);
 					//refreshGrid('#jqGrid_ordcom', urlParam4);
 					$("#pg_jqGridPager3 table, #jqGrid_trf_c, #jqGridTriageInfo_c, #jqGridWard_c, #jqGridDoctorNote_c, #jqGridDietOrder_c, #jqGridDischgSummary_c,#jqGrid_ordcom_c").show();
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").hide();
-
-					populate_triage(selrowData("#jqGrid"));
-					populate_nursAssessment(selrowData("#jqGrid"));
-					populate_doctorNote(selrowData("#jqGrid"));
-					populate_dietOrder(selrowData("#jqGrid"));
-					populate_dischgSummary(selrowData("#jqGrid"));
-					populate_form_trf(selrowData("#jqGrid"));
-					populate_form_ordcom(selrowData("#jqGrid"));
 					
 				}else{
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
@@ -222,8 +250,6 @@ $(document).ready(function () {
 		},
 		loadComplete: function(){
 			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
-
-			button_state_ti('disableAll');
 			calc_jq_height_onchange("jqGrid");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -424,7 +450,7 @@ $(document).ready(function () {
 		},
 		errorfunc: function(rowid,response){
 			$('#p_error').text(response.responseText);
-			refreshGrid('#jqGrid',urlParam2,'edit');
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
@@ -951,8 +977,16 @@ $(document).ready(function () {
 	addParamField('#jqGrid_trf', false, urlParam2);
 	//addParamField('#jqGrid', false, saveParam, ['idno','compcode','adduser','adddate','upduser','upddate','recstatus']);
 
-	$("#jqGrid_trf_panel").on("show.bs.collapse", function(){
+	$("#jqGrid_trf_panel").on("shown.bs.collapse", function(){
+		closealltab("#jqGrid_trf_panel");
+		SmoothScrollTo("#jqGrid_trf_panel");
 		$("#jqGrid_trf").jqGrid ('setGridWidth', Math.floor($("#jqGrid_trf_c")[0].offsetWidth-$("#jqGrid_trf_c")[0].offsetLeft-28));
+	});
+
+	$("#panel_chart").on("shown.bs.collapse", function(){
+		closealltab("#panel_chart");
+		SmoothScrollTo("#panel_chart");
+		chg_chart_data();
 	});
 
 	$("#jqGrid_ordcom_panel").on("show.bs.collapse", function(){
@@ -1325,4 +1359,102 @@ function calc_jq_height_onchange(jqgrid){
 		scrollHeight = 300;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}
+
+function chg_chart_data(chart_sel){
+	if(!chart_sel){
+		chart_sel = $('input[type=radio][name=chart_sel]').val();
+	}
+	$.get( "./bedmanagement/table?action=get_chart&chart_sel="+chart_sel, function( data ) {
+			
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			myChart.data.labels = data.label;
+			myChart.data.datasets = [
+			{
+			    label: 'VACANT',
+			    data: data.data_vac,
+			    borderWidth: 1,
+			    backgroundColor:['rgba(255, 99, 132, 0.2)'],
+			    borderColor:['rgba(255, 99, 132)']
+			},
+			{
+			    label: 'MAINTENANCE',
+			    data: data.data_main,
+			    borderWidth: 1,
+			    backgroundColor:['rgba(168, 205, 120, 0.2)'],
+			    borderColor:['rgba(168, 205, 120)']
+			},{
+			    label: 'OCCUPIED',
+			    data: data.data_occ,
+			    borderWidth: 1,
+			    backgroundColor:['rgba(54, 162, 235, 0.2)'],
+			    borderColor:['rgba(54, 162, 235)']
+			}];
+			set_chart_color();
+			myChart.update();
+		}
+	});
+}
+
+function chg_chart_option(chart_type){
+	if(chart_type == 'bar'){
+		myChart.options.scales = {
+	        x: {
+		        stacked: true,
+		    },y:{
+		        stacked: true
+		    }
+	    };
+	}else if(chart_type == 'line'){
+		myChart.options.scales = {
+	        y:{
+		        beginAtZero: true
+		    }
+	    };
+	}else if(chart_type == 'pie'){
+
+	}
+	myChart.config.type = chart_type;
+	set_chart_color();
+	myChart.update();
+}
+
+function set_chart_color(){
+	let chart_data = myChart.data.datasets[0];
+	var array_color = [
+		'rgba(255, 99, 132, 0.2)',
+		'rgba(255, 159, 64, 0.2)',
+		'rgba(255, 205, 86, 0.2)',
+		'rgba(75, 192, 192, 0.2)',
+		'rgba(54, 162, 235, 0.2)',
+		'rgba(153, 102, 255, 0.2)',
+		'rgba(201, 203, 207, 0.2)',
+		'rgba(168, 205, 120, 0.2)',
+		'rgb(204, 205, 120, 0.2)',
+		'rgb(227, 185, 121, 0.2)',
+		'rgb(227, 121, 185, 0.2)',
+	];
+	var array_border_color = [
+		'rgb(255, 99, 132)',
+		'rgb(255, 159, 64)',
+		'rgb(255, 205, 86)',
+		'rgb(75, 192, 192)',
+		'rgb(54, 162, 235)',
+		'rgb(153, 102, 255)',
+		'rgb(201, 203, 207)',
+		'rgb(168, 205, 120)',
+		'rgb(204, 205, 120)',
+		'rgb(227, 185, 121)',
+		'rgb(227, 121, 185)',
+	];
+
+	if(myChart.config.type == 'pie'){
+		chart_data.backgroundColor=[];
+		chart_data.borderColor=[];
+		for (var i =  0; i <= chart_data.data.length-1; i++) {
+			chart_data.backgroundColor.push(array_color[i]);
+			chart_data.borderColor.push(array_border_color[i]);
+		}
+	}
 }

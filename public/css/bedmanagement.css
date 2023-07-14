@@ -1,0 +1,173 @@
+
+.panel-heading.collapsed .fa-angle-double-up,
+.panel-heading .fa-angle-double-down {
+	display: none;
+}
+
+.panel-heading.collapsed .fa-angle-double-down,
+.panel-heading .fa-angle-double-up {
+	display: inline-block;
+}
+
+.panel-heading i.fa {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
+
+.panel-heading div i {
+	position: relative;
+	line-height: 1;
+	top: -10px;
+}
+
+<!-- /* The sticky class is added to the header with JS when it reaches its scroll position */ -->
+.sticky {
+	z-index: 100;
+	position: fixed;
+	top: 0;
+	width: 100%
+}
+
+.clearfix {
+	overflow: auto;
+}
+
+input.uppercase {
+	text-transform: uppercase;
+}
+
+.justify {
+	text-align: -webkit-center;
+}
+
+row.error td { background-color: red; }
+
+i.arrow {
+	cursor: pointer;
+	float: right;
+	<!--  margin-right: 5px; -->
+}
+
+.position i {
+	position: relative;
+	line-height: 1;
+	top: -10px;
+}
+
+tr.yellow{
+	background-color:yellow !important;
+}
+
+input.yellow{
+	color: black !important;
+	border-color:#9e9e00 !important;
+	background-color:yellow !important;
+}
+
+a.yellow{
+	color: #9e9e00 !important;
+	background-color: #fdffe2 !important;
+	border-color: #9e9e00 !important;
+}
+
+tr.red{
+	color:white;
+	background-color:red !important;
+}
+
+input.red{
+	color: white !important;
+	border-color:red !important;
+	background-color:red !important;
+}
+
+a.red{
+	color: red !important;
+	background-color: #ffe5e5 !important;
+	border-color: red !important;
+}
+
+tr.green{
+	color:white;
+	background-color:green !important;
+}
+
+input.green{
+	color: white !important;
+	border-color:green !important;
+	background-color:green !important;
+}
+
+a.green{
+	color: #3c763d !important;
+	background-color: #dff0d8 !important;
+	border-color: #3c763d !important;
+}
+
+.panelbgcolor {
+	background-color: #C0C0C0 !important;
+}
+
+table tr.active{
+	background-color: #cae6f4 !important;
+}
+
+.myfieldset {
+  	border: 1px solid lightblue;
+    border-radius: 10px;
+  	margin-top: 1em;
+  	padding: 0px 12px;
+}
+
+.myfieldset h1 {
+    font-size: 12px;
+	text-align: center;
+	margin:0px;
+}
+
+.myfieldset h1 span {
+    display: inline;
+    border: 1px solid lightblue;
+    border-radius: 10px;
+    background: #fff;
+    padding: 5px 10px;
+    position: relative;
+    top: -0.5em;
+    background-color: #edfbff;
+}
+table.tableinfo{
+	margin: 0px 10px;
+    border: lightblue solid 0.5px;
+    border-top: #edfbff solid 0.5px;
+    width: -webkit-fill-available;
+    border-radius: 0px 0px 20px 20px;
+    border-collapse: separate;
+    background-color: #edfbff; 
+}
+table.tableinfo td{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+table.tableinfo b, table.tableinfo i{
+	color: grey;
+}
+table.tableinfo b > span{
+	color: black;
+}
+table.tablebed{
+    width: -webkit-fill-available;
+}
+table.tablebed td{
+	padding:10px 20px;
+}
+div.chart_sel{
+	padding: 5px 40px;
+    border: solid 1px lightblue;
+    float: left;
+    background: #edfbff;
+    border-radius: 15px;
+}
+div.chart_sel label{
+	padding: 0px 5px;
+}

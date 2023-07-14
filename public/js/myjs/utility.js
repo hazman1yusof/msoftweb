@@ -2041,6 +2041,15 @@ function SmoothScrollTo(id_or_Name, timelength){
   });
 }
 
+function closealltab(except){
+	$.each($('div.panel-collapse.collapse'),function( index, value ) {
+		let id_ = $(value).attr('id');
+		if(except.replace('#', '') != id_){
+			$(value).collapse('hide');
+		}
+	});
+}
+
 function SmoothScrollToTop(){
   $("html, body").stop().animate({
   		scrollTop:0

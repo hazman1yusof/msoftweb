@@ -73,7 +73,7 @@
 			<ul class="nav navbar-nav navbar-right" style="margin-top: 8px;color: #999">
 				<li><h4 style="font-size: 15px">&nbsp;Department :&nbsp;</h4></li>
 				<li>
-					<input type='text' class="form-control" id="session_deptcode" readonly value="{{Session::get('deptcode')}}">
+					<input type='text' class="form-control" id="session_deptcode" readonly value="{{$dept_desc}}">
 				</li>
 			</ul>
 

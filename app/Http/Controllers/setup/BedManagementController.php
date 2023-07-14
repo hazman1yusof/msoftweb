@@ -55,6 +55,8 @@ class BedManagementController extends defaultController
         switch($request->action){
             case 'get_table':
                 return $this->get_table($request);
+            case 'get_chart':
+                return $this->get_chart($request);
             
             default:
                 return 'error happen..';
@@ -62,94 +64,172 @@ class BedManagementController extends defaultController
     }
 
     public function get_table(Request $request){
-        $table = DB::table('hisdb.bed')
-                    ->select('compcode','bednum','bedtype','room','ward','occup','recstatus','idno','tel_ext','statistic','adduser','adddate','upduser','upddate','lastuser','lastupdate')
-                    ->where('compcode','=',session('compcode'));
-        
-        // $table = $this->defaultGetter($request);
 
-        //////////paginate/////////
-        $paginate = $table->paginate($request->rows);
+        $table = DB::table('hisdb.bed as b')
+                    ->select('b.idno','b.compcode','b.ward','b.room','b.bednum','b.bedtype','b.tel_ext','b.statistic','b.occup','b.isolate','b.baby','b.bedstatus','b.bedchgcode','b.lodchgcode','b.mealschgcode','b.otherchgcode','b.category','b.f1','b.f2','b.f3','b.f4','b.f5','b.lastuser','b.lastupdate','b.adduser','b.adddate','b.upduser','b.upddate','b.deluser','b.deldate','b.computerid','b.lastcomputerid','b.recstatus','b.mrn','b.episno','b.name','b.admdoctor','p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc')
+                    // ->leftJoin('hisdb.episode as e', function($join) use ($request){
+                    //             $join = $join->where('e.mrn','=','b.mrn')
+                    //                          ->where('e.episno','=','b.episno')
+                    //                          ->where('e.compcode','=',session('compcode'));
 
-        foreach ($paginate->items() as $key => $value) {
-            $episode = DB::table('hisdb.episode as e')
-                            ->select('e.mrn','e.episno','p.name')
-                            ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
-                                $join = $join->on("e.mrn", '=', 'p.mrn');    
-                                $join = $join->on('e.compcode','=','p.compcode');
-                            })
-                            ->where('e.compcode','=',session('compcode'))
-                            ->where('e.bed','=',$value->bednum)
-                            ->where('e.episactive','=','1')
-                            ->orderBy('e.idno','DESC');
+                    //         })
+                    ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+                        $join = $join->on("p.mrn", '=', 'b.mrn')
+                                     ->where('p.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('hisdb.racecode', function($join) use ($request){
+                        $join = $join->on('racecode.Code','=','p.RaceCode');
+                        $join = $join->on('racecode.compcode','=','p.CompCode');
+                    })
+                    ->leftJoin('hisdb.religion', function($join) use ($request){
+                        $join = $join->on('religion.Code','=','p.Religion');
+                        $join = $join->on('religion.CompCode','=','p.CompCode');
+                    })
+                    ->leftJoin('hisdb.occupation', function($join) use ($request){
+                        $join = $join->on('occupation.occupcode','=','p.OccupCode');
+                        $join = $join->on('occupation.compcode','=','p.CompCode');
+                    })
+                    ->leftJoin('hisdb.citizen', function($join) use ($request){
+                        $join = $join->on('citizen.Code','=','p.Citizencode');
+                        $join = $join->on('citizen.compcode','=','p.CompCode');
+                    })
+                    ->leftJoin('hisdb.areacode', function($join) use ($request){
+                        $join = $join->on('areacode.areacode','=','p.AreaCode');
+                        $join = $join->on('areacode.compcode','=','p.CompCode');
+                    })
+                    ->where('b.compcode','=',session('compcode'));
 
-            if($episode->exists()){
-                $episode_first = $episode->first();
-                $value->mrn = $episode_first->mrn;
-                $value->episno = $episode_first->episno;
-                $value->name = $episode_first->name;
-            }else{
-                $value->mrn = '';
-                $value->episno = '';
-                $value->name = '';
+        /////////searching/////////
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
             }
         }
 
-        foreach ($paginate->items() as $key => $value) {
-            $pat_mast_obj = DB::table('hisdb.pat_mast AS p')
-                        ->select(['p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc'])
-                        ->leftJoin('hisdb.racecode', function($join) use ($request){
-                            $join = $join->on('racecode.Code','=','p.RaceCode');
-                            $join = $join->on('racecode.compcode','=','p.CompCode');
-                        })
-                        ->leftJoin('hisdb.religion', function($join) use ($request){
-                            $join = $join->on('religion.Code','=','p.Religion');
-                            $join = $join->on('religion.CompCode','=','p.CompCode');
-                        })
-                        ->leftJoin('hisdb.occupation', function($join) use ($request){
-                            $join = $join->on('occupation.occupcode','=','p.OccupCode');
-                            $join = $join->on('occupation.compcode','=','p.CompCode');
-                        })
-                        ->leftJoin('hisdb.citizen', function($join) use ($request){
-                            $join = $join->on('citizen.Code','=','p.Citizencode');
-                            $join = $join->on('citizen.compcode','=','p.CompCode');
-                        })
-                        ->leftJoin('hisdb.areacode', function($join) use ($request){
-                            $join = $join->on('areacode.areacode','=','p.AreaCode');
-                            $join = $join->on('areacode.compcode','=','p.CompCode');
-                        })
-                        ->where('p.MRN','=',$value->mrn)
-                        ->where('p.CompCode','=',session('compcode'));
+        //////////ordering///////// ['expdate asc','idno desc']
+        if(!empty($request->sortby)){
+            $sortby_array = $request->sortby;
 
-            if($pat_mast_obj->exists()){
-                $pat_mast_obj_first = $pat_mast_obj->first();
-                $value->sex = strtoupper($pat_mast_obj_first->Sex);
-                $value->dob = $pat_mast_obj_first->DOB;
-                $value->age = Carbon::parse($pat_mast_obj_first->DOB)->age;
-                $value->race = strtoupper($pat_mast_obj_first->raceDesc);
-                $value->religion = strtoupper($pat_mast_obj_first->religionDesc);
-                $value->occupation = strtoupper($pat_mast_obj_first->occupDesc);
-                $value->citizen = strtoupper($pat_mast_obj_first->citizenDesc);
-                $value->area = strtoupper($pat_mast_obj_first->areaDesc);
+            foreach ($sortby_array as $key => $value) {
+                $pieces = explode(" ", $sortby_array[$key]);
+                $table = $table->orderBy($pieces[0], $pieces[1]);
+            }
+        }else if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
             }else{
-                $value->sex = '';
-                $value->dob = '';
-                $value->age = '';
-                $value->race = '';
-                $value->religion = '';
-                $value->occupation = '';
-                $value->citizen = '';
-                $value->area = '';
-            }       
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
         }
+
+
+        // $table = DB::table('hisdb.bed as b')
+        //             ->select('b.compcode','b.bednum','b.bedtype','b.room','b.ward','b.occup','b.recstatus','b.idno','b.tel_ext','b.statistic','b.adduser','b.adddate','b.upduser','b.upddate','b.lastuser','b.lastupdate')
+        //             ->where('compcode','=',session('compcode'));
+        
+        // // $table = $this->defaultGetter($request);
+
+        // //////////paginate/////////
+        // $paginate = $table->paginate($request->rows);
+
+        // foreach ($paginate->items() as $key => $value) {
+        //     $episode = DB::table('hisdb.episode as e')
+        //                     ->select('e.mrn','e.episno','p.name')
+        //                     ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+        //                         $join = $join->on("e.mrn", '=', 'p.mrn');    
+        //                         $join = $join->on('e.compcode','=','p.compcode');
+        //                     })
+        //                     ->where('e.compcode','=',session('compcode'))
+        //                     ->where('e.bed','=',$value->bednum)
+        //                     ->where('e.episactive','=','1')
+        //                     ->orderBy('e.idno','DESC');
+
+        //     if($episode->exists()){
+        //         $episode_first = $episode->first();
+        //         $value->mrn = $episode_first->mrn;
+        //         $value->episno = $episode_first->episno;
+        //         $value->name = $episode_first->name;
+        //     }else{
+        //         $value->mrn = '';
+        //         $value->episno = '';
+        //         $value->name = '';
+        //     }
+        // }
+
+        // foreach ($paginate->items() as $key => $value) {
+        //     $pat_mast_obj = DB::table('hisdb.pat_mast AS p')
+        //                 ->select(['p.Sex','p.DOB','racecode.Description AS raceDesc','religion.Description AS religionDesc','occupation.description AS occupDesc','citizen.Description AS citizenDesc','areacode.Description AS areaDesc'])
+        //                 ->leftJoin('hisdb.racecode', function($join) use ($request){
+        //                     $join = $join->on('racecode.Code','=','p.RaceCode');
+        //                     $join = $join->on('racecode.compcode','=','p.CompCode');
+        //                 })
+        //                 ->leftJoin('hisdb.religion', function($join) use ($request){
+        //                     $join = $join->on('religion.Code','=','p.Religion');
+        //                     $join = $join->on('religion.CompCode','=','p.CompCode');
+        //                 })
+        //                 ->leftJoin('hisdb.occupation', function($join) use ($request){
+        //                     $join = $join->on('occupation.occupcode','=','p.OccupCode');
+        //                     $join = $join->on('occupation.compcode','=','p.CompCode');
+        //                 })
+        //                 ->leftJoin('hisdb.citizen', function($join) use ($request){
+        //                     $join = $join->on('citizen.Code','=','p.Citizencode');
+        //                     $join = $join->on('citizen.compcode','=','p.CompCode');
+        //                 })
+        //                 ->leftJoin('hisdb.areacode', function($join) use ($request){
+        //                     $join = $join->on('areacode.areacode','=','p.AreaCode');
+        //                     $join = $join->on('areacode.compcode','=','p.CompCode');
+        //                 })
+        //                 ->where('p.MRN','=',$value->mrn)
+        //                 ->where('p.CompCode','=',session('compcode'));
+
+        //     if($pat_mast_obj->exists()){
+        //         $pat_mast_obj_first = $pat_mast_obj->first();
+        //         $value->sex = strtoupper($pat_mast_obj_first->Sex);
+        //         $value->dob = $pat_mast_obj_first->DOB;
+        //         $value->age = Carbon::parse($pat_mast_obj_first->DOB)->age;
+        //         $value->race = strtoupper($pat_mast_obj_first->raceDesc);
+        //         $value->religion = strtoupper($pat_mast_obj_first->religionDesc);
+        //         $value->occupation = strtoupper($pat_mast_obj_first->occupDesc);
+        //         $value->citizen = strtoupper($pat_mast_obj_first->citizenDesc);
+        //         $value->area = strtoupper($pat_mast_obj_first->areaDesc);
+        //     }else{
+        //         $value->sex = '';
+        //         $value->dob = '';
+        //         $value->age = '';
+        //         $value->race = '';
+        //         $value->religion = '';
+        //         $value->occupation = '';
+        //         $value->citizen = '';
+        //         $value->area = '';
+        //     }       
+        // }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         $responce->rows = $paginate->items();
-        $responce->sql = $table->toSql();
-        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -285,8 +365,7 @@ class BedManagementController extends defaultController
                     'tel_ext' => $request->tel_ext, 
                     'statistic' => $request->statistic,    
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'computerid' => strtoupper($request->lastcomputerid),
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]); 
@@ -570,5 +649,85 @@ class BedManagementController extends defaultController
         }
 
         
+    }
+
+    public function get_chart(Request $request){
+        $label = [];
+        $data_occ = [];
+        $data_vac = [];
+        $data_main = [];
+
+        $table = DB::table('hisdb.bed')
+                ->select('compcode','bedtype','ward','bednum','occup','room','statistic','recstatus')
+                ->where('compcode','=',session('compcode'))
+                ->where('statistic','=','1')
+                ->get();
+
+        if($request->chart_sel=='ward'){
+            $bed = DB::table('hisdb.bed')->select('ward')->distinct()->get(['ward']);
+            foreach ($bed as $key => $value) {
+                array_push($label,$value->ward);
+            }
+
+            foreach ($bed as $key_bed => $value_bed) {
+                $value_bed->occ = 0;
+                $value_bed->vac = 0;
+                $value_bed->main = 0;
+                foreach ($table as $key_table => $value_table) {
+                    if($value_table->ward == $value_bed->ward){
+                        if($value_table->occup == 'OCCUPIED'){
+                            $value_bed->occ = $value_bed->occ + 1;
+                        }else if($value_table->occup == 'VACANT'){
+                            $value_bed->vac = $value_bed->vac + 1;
+                        }else if($value_table->occup == 'MAINTENANCE'){
+                            $value_bed->main = $value_bed->main + 1;
+                        }
+                    }
+                }
+            }
+
+            foreach ($bed as $key => $value) {
+                array_push($data_occ,$value->occ);
+                array_push($data_vac,$value->vac);
+                array_push($data_main,$value->main);
+            }
+
+        }else if($request->chart_sel=='bedtype'){
+            $bed = DB::table('hisdb.bed')->select('bedtype')->distinct()->get(['bedtype']);
+            foreach ($bed as $key => $value) {
+                array_push($label,$value->bedtype);
+            }
+
+            foreach ($bed as $key_bed => $value_bed) {
+                $value_bed->occ = 0;
+                $value_bed->vac = 0;
+                $value_bed->main = 0;
+                foreach ($table as $key_table => $value_table) {
+                    if($value_table->bedtype == $value_bed->bedtype){
+                        if($value_table->occup == 'OCCUPIED'){
+                            $value_bed->occ = $value_bed->occ + 1;
+                        }else if($value_table->occup == 'VACANT'){
+                            $value_bed->vac = $value_bed->vac + 1;
+                        }else if($value_table->occup == 'MAINTENANCE'){
+                            $value_bed->main = $value_bed->main + 1;
+                        }
+                    }
+                }
+            }
+
+            foreach ($bed as $key => $value) {
+                array_push($data_occ,$value->occ);
+                array_push($data_vac,$value->vac);
+                array_push($data_main,$value->main);
+            }
+        }
+
+        $responce = new stdClass();
+        $responce->label = $label;
+        $responce->data_occ = $data_occ;
+        $responce->data_vac = $data_vac;
+        $responce->data_main = $data_main;
+
+        return json_encode($responce);
     }
 }

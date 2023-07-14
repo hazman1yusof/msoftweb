@@ -496,7 +496,7 @@
 			<img src="img/biometric.png" width="22" /> Biometric </button>
 		</div>
 
-		@if (!Session::has('isdoctor') && request()->get('curpat') == 'true')
+		@if (request()->get('epistycode') == 'OP' && !Session::has('isdoctor') && request()->get('curpat') == 'true')
 		<div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
 	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
 
@@ -542,6 +542,10 @@
                     <th data-column-id="payername" data-width="15%">Payer</th>
 					@endif
                     <th data-column-id="q_doctorname" data-width="15%">Doctor</th>
+                    @if (request()->get('epistycode') == 'IP')
+                    <th data-column-id="ward" data-width="8%">Ward</th>
+                    <th data-column-id="bednum" data-width="4%">Bed No.</th>
+					@endif
                 	<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
                     <th data-column-id="Newic" data-width="8%">New IC</th>
                     <th data-column-id="telhp" data-width="8%">H/P</th>
@@ -702,6 +706,7 @@
 		@endif
 
 		@if (request()->get('epistycode') == 'IP')
+			<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script>
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
@@ -724,7 +729,6 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
-	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script> -->
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>

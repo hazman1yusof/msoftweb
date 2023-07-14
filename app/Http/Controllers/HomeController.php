@@ -31,8 +31,9 @@ class HomeController extends Controller
             $unit_user = $unit_user_->sector;
         }
         $company = DB::table('sysdb.company')->where('compcode',session('compcode'))->first(); 
+        $dept_desc = $unit_user_->description;
 
-        return view('init.container',compact('menu','units','unit_user','company'));
+        return view('init.container',compact('menu','units','unit_user','company','dept_desc'));
     }
 
     public function ptcare(){
@@ -50,7 +51,8 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        return view('init.container_ptcare',compact('menu','units','unit_user','title'));
+        $dept_desc = $unit_user_->description;
+        return view('init.container_ptcare',compact('menu','units','unit_user','title','dept_desc'));
     }
 
     public function dialysis(){
@@ -68,7 +70,8 @@ class HomeController extends Controller
                 ->first();
             $unit_user = $unit_user_->sector;
         }
-        return view('init.container_ptcare',compact('menu','units','unit_user','title'));
+        $dept_desc = $unit_user_->description;
+        return view('init.container_ptcare',compact('menu','units','unit_user','title','dept_desc'));
     }
 
 

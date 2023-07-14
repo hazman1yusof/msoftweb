@@ -575,7 +575,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
             $('#hid_epis_doctor').val(episdata.admdoctor);
             $('#hid_epis_fin').val(episdata.pay_type);
             $('#txt_epis_fin').val(episdata.dbty_desc).change();
-            if($('#epistycode').val() == 'IP'){
+            if($('#epistycode').val() == 'IP' && bed != null){
                 $("#txt_epis_bed").val(bed.ward);
                 $("#txt_epis_ward").val(bed.ward);
                 $("#txt_epis_room").val(bed.room);

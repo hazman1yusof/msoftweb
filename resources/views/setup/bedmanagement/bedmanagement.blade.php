@@ -2,167 +2,6 @@
 
 @section('title', 'Bed Management Setup')
 
-@section('style')
-
-	.panel-heading.collapsed .fa-angle-double-up,
-	.panel-heading .fa-angle-double-down {
-		display: none;
-	}
-
-	.panel-heading.collapsed .fa-angle-double-down,
-	.panel-heading .fa-angle-double-up {
-		display: inline-block;
-	}
-
-	.panel-heading i.fa {
-		cursor: pointer;
-		float: right;
-		<!--  margin-right: 5px; -->
-	}
-
-	.panel-heading div i {
-		position: relative;
-		line-height: 1;
-		top: -10px;
-	}
-
-	<!-- /* The sticky class is added to the header with JS when it reaches its scroll position */ -->
-	.sticky {
-		z-index: 100;
-		position: fixed;
-		top: 0;
-		width: 100%
-	}
-
-	.clearfix {
-		overflow: auto;
-	}
-
-	input.uppercase {
-		text-transform: uppercase;
-	}
-
-	.justify {
-		text-align: -webkit-center;
-	}
-
-	row.error td { background-color: red; }
-
-	i.arrow {
-		cursor: pointer;
-		float: right;
-		<!--  margin-right: 5px; -->
-	}
-
-	.position i {
-		position: relative;
-		line-height: 1;
-		top: -10px;
-	}
-
-	tr.yellow{
-		background-color:yellow !important;
-	}
-
-	input.yellow{
-		color: black !important;
-		border-color:#9e9e00 !important;
-		background-color:yellow !important;
-	}
-
-	a.yellow{
-		color: #9e9e00 !important;
-		background-color: #fdffe2 !important;
-		border-color: #9e9e00 !important;
-	}
-
-	tr.red{
-		color:white;
-		background-color:red !important;
-	}
-
-	input.red{
-		color: white !important;
-		border-color:red !important;
-		background-color:red !important;
-	}
-
-	a.red{
-		color: red !important;
-		background-color: #ffe5e5 !important;
-		border-color: red !important;
-	}
-
-	tr.green{
-		color:white;
-		background-color:green !important;
-	}
-
-	input.green{
-		color: white !important;
-		border-color:green !important;
-		background-color:green !important;
-	}
-
-	a.green{
-		color: #3c763d !important;
-		background-color: #dff0d8 !important;
-		border-color: #3c763d !important;
-	}
-
-	.panelbgcolor {
-		background-color: #C0C0C0 !important;
-	}
-
-	table tr.active{
-		background-color: #cae6f4 !important;
-	}
-
-	.myfieldset {
-	  	border: 1px solid lightblue;
-	    border-radius: 10px;
-	  	margin-top: 1em;
-	  	padding: 0px 12px;
-	}
-
-	.myfieldset h1 {
-	    font-size: 12px;
-		text-align: center;
-		margin:0px;
-	}
-
-	.myfieldset h1 span {
-	    display: inline;
-	    border: 1px solid lightblue;
-	    border-radius: 10px;
-	    background: #fff;
-	    padding: 5px 10px;
-	    position: relative;
-	    top: -0.5em;
-	    background-color: #edfbff;
-	}
-	table.tableinfo{
-		margin: 0px 10px;
-	    border: lightblue solid 0.5px;
-	    border-top: #edfbff solid 0.5px;
-	    width: -webkit-fill-available;
-	    border-radius: 0px 0px 20px 20px;
-	    border-collapse: separate;
-	    background-color: #edfbff; 
-	}
-	table.tableinfo td{
-		padding-top: 10px;
-		padding-bottom: 10px;
-	}
-	table.tablebed{
-	    width: -webkit-fill-available;
-	}
-	table.tablebed td{
-		padding:10px 20px;
-	}
-
-@endsection
-
 @section('body')
 
 	<!--***************************** Search + table ******************-->
@@ -265,56 +104,43 @@
 					</td>
 			  	</tr></table>
 		    </div>
-		    <div class="row">
-				<div class="myfieldset">
-				  	<h1><span>Bed Information</span></h1>
-				  	<table class="tablebed">
-				  	  <tr>
-						<td align="center">
-							<b>Bed Number</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>Bed Type</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>Bed Status</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>Room</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-			  		  </tr>
-				  	  <tr>
-						<td align="center">
-							<b>Ward</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>Statistic</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>MRN</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-						<td align="center">
-							<b>Name</b>
-							<input id="bedno" name="bedno" type="text" class="form-control input-xs" disabled style="height:30px" value="asdsadsadasd">
-						</td>
-			  		  </tr>
-			  		</table>
-				</div>
-			</div>
 		</div>
 		
 	</div>
 
 	<div class='row'>
-		<div class="panel panel-default" style="position: relative;" id="jqGrid_trf_c">
-			
+		<div class="panel panel-default" style="margin-right:10px;position: relative;">
+			<div class="panel-heading clearfix collapsed position" id="toggle_chart" style="position: sticky;top: 0px;z-index: 3;">
+				<br>
+				<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#panel_chart"></i>
+				<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 10px" data-toggle="collapse" data-target="#panel_chart"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 90px; top: 15px;">
+					<h5><b>Bed Chart</b></h5>
+				</div>	
+			</div>
+			<div id="panel_chart" class="panel-collapse collapse">
+        	<div class="panel-body" style="padding-bottom: 0px;">
+        		<div class="row">
+        			<div class="chart_sel">
+        				<label><input type="radio" name="chart_sel" value="ward" checked> Ward</label>
+						<label><input type="radio" name="chart_sel" value="bedtype"> Bedtype</label>
+
+						<label style="margin-left: 20px;">Chart Type</label>
+						<select name="chart_type" class="form-control input-sm" style="display: inline-block;width: auto;">
+						  <option value="bar">Bar Chart</option>
+						  <option value="line">Line Chart</option>
+						  <option value="pie">Pie Chart</option>
+						</select>
+        			</div>
+        		</div>
+        		<canvas id="myChart" style="display: block; width: 732px; height: 266px;" class="chartjs-render-monitor"></canvas>
+        	</div>
+        	</div>
+		</div>
+	</div>
+
+	<div class='row'>
+		<div class="panel panel-default" style="margin-right:10px;position: relative;" id="jqGrid_trf_c">
 			<div class="panel-heading clearfix collapsed position" id="toggle_trf" style="position: sticky;top: 0px;z-index: 3;">
 				<b>Name: <span id="name_show"></span></b><br>
 					Bed No: <span id="bednum_show"></span>
@@ -486,30 +312,6 @@
 		</div>
 	</div>
 
-	<div class='row'>
-		@include('hisdb.nursing.nursing')
-	</div>
-
-	<div class='row'>
-		@include('hisdb.wardpanel.wardpanel')
-	</div>
-
-	<div class='row'>
-		@include('hisdb.doctornote.doctornote')
-	</div>
-
-	<div class='row'>
-		@include('hisdb.dietorder.dietorder')
-	</div>
-	
-	<div class='row'>
-		@include('hisdb.dischgsummary.dischgsummary')
-	</div>
-
-	<div class='row'>
-		@include('hisdb.ordcom.ordcom')
-	</div>
-
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
 		<div class='panel panel-info'>
 			<div class="panel-body" style="">
@@ -560,12 +362,7 @@
 
 
 @section('scripts')
-
+	<link rel="stylesheet" href="css/bedmanagement.css">
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
-	<script src="js/hisdb/nursing/nursing.js"></script>
-	<script src="js/hisdb/wardpanel/wardpanel.js"></script>
-	<script src="js/hisdb/doctornote/doctornote.js"></script>
-	<script src="js/hisdb/dietorder/dietorder.js"></script>
-	<script src="js/hisdb/dischgsummary/dischgsummary.js"></script>	
-	<script src="js/hisdb/ordcom/ordcom.js"></script>	
 @endsection
