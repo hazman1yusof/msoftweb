@@ -36,7 +36,7 @@ class SalesOrderController extends defaultController
     }
 
     public function maintable(Request $request){
-
+        
         $table = DB::table('debtor.dbacthdr AS db')
                     ->select(
                         'db.debtorcode AS db_debtorcode',
@@ -74,17 +74,18 @@ class SalesOrderController extends defaultController
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode','=',session('compcode'))
                     ->where('db.source','=','PB')
-                    ->where('db.trantype','=','IN');
-
+                    ->where('db.trantype','=','IN')
+                    ->where('db.mrn','=','0');
+        
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
         }
-
+        
         if(!empty($request->filterdate)){
             $table = $table->where('db.entrydate','>',$request->filterdate[0]);
             $table = $table->where('db.entrydate','<',$request->filterdate[1]);
         }
-
+        
         if(!empty($request->searchCol)){
             if($request->searchCol[0] == 'db_invno'){
                 $table = $table->Where(function ($table) use ($request) {
@@ -97,11 +98,11 @@ class SalesOrderController extends defaultController
             }
             
         }
-
+        
         if(!empty($request->sidx)){
-
+            
             $pieces = explode(", ", $request->sidx .' '. $request->sord);
-
+            
             if(count($pieces)==1){
                 $table = $table->orderBy($request->sidx, $request->sord);
             }else{
@@ -114,22 +115,21 @@ class SalesOrderController extends defaultController
         }else{
             $table = $table->orderBy('db.idno','DESC');
         }
-
-
+        
         $paginate = $table->paginate($request->rows);
-
+        
         // foreach ($paginate->items() as $key => $value) {
         //     $apactdtl = DB::table('finance.apactdtl')
         //                 ->where('source','=',$value->apacthdr_source)
         //                 ->where('trantype','=',$value->apacthdr_trantype)
         //                 ->where('auditno','=',$value->apacthdr_auditno);
-
+        
         //     // if($apactdtl->exists()){
         //     //     $value->apactdtl_outamt = $apactdtl->sum('amount');
         //     // }else{
         //     //     $value->apactdtl_outamt = $value->apacthdr_outamount;
         //     // }
-
+        
         //     // $apalloc = DB::table('finance.apalloc')
         //     //             ->select('allocdate')
         //     //             ->where('refsource','=',$value->apacthdr_source)
@@ -137,16 +137,16 @@ class SalesOrderController extends defaultController
         //     //             ->where('refauditno','=',$value->apacthdr_auditno)
         //     //             ->where('recstatus','!=','CANCELLED')
         //     //             ->orderBy('idno', 'desc');
-
+        
         //     // if($apalloc->exists()){
         //     //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
         //     // }else{
         //     //     $value->apalloc_allocdate = '';
         //     // }
         // }
-
+        
         //////////paginate/////////
-
+        
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
@@ -155,9 +155,9 @@ class SalesOrderController extends defaultController
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         $responce->sql_query = $this->getQueries($table);
-
+        
         return json_encode($responce);
-
+        
     }
 
     public function form(Request $request)
@@ -190,22 +190,22 @@ class SalesOrderController extends defaultController
     }
 
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
-        try { 
-
+        
+        try {
+            
             $auditno = $this->recno('PB','IN');
-
+            
             if(!empty($request->db_mrn)){
                 $pat_mast = DB::table('hisdb.pat_mast')
                             ->where('compcode','=',session('compcode'))
                             ->where('MRN','=',$request->db_mrn)
                             ->first();
             }
-
+            
             $array_insert = [
                 'source' => 'PB',
                 'trantype' => 'IN',
@@ -223,7 +223,8 @@ class SalesOrderController extends defaultController
                 'entrydate' => strtoupper($request->db_entrydate),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'hdrtype' => strtoupper($request->db_hdrtype),
-                'mrn' => strtoupper($request->db_mrn),
+                // 'mrn' => strtoupper($request->db_mrn),
+                'mrn' => '0',
                 // 'billno' => $invno,
                 'episno' => (!empty($request->db_mrn))?$pat_mast->Episno:null,
                 'termdays' => strtoupper($request->db_termdays),
@@ -234,22 +235,21 @@ class SalesOrderController extends defaultController
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby
             ];
-
-
+            
             //////////where//////////
             // $table = $table->where('idno','=',$request->idno);
             $idno = $table->insertGetId($array_insert);
-
+            
             $responce = new stdClass();
             $responce->totalAmount = 0.00;
             $responce->idno = $idno;
             $responce->auditno = $auditno;
             echo json_encode($responce);
-
+            
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
         }
     }
@@ -1005,8 +1005,9 @@ class SalesOrderController extends defaultController
             ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
             'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
             ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
-
             ->where('h.idno','=',$idno)
+            ->where('h.mrn','=','0')
+            ->where('h.compcode','=',session('compcode'))
             ->first();
 
         if ( $dbacthdr->recstatus == "OPEN") {
@@ -1030,6 +1031,7 @@ class SalesOrderController extends defaultController
             ->where('b.source','=',$dbacthdr->source)
             ->where('b.trantype','=',$dbacthdr->trantype)
             ->where('b.billno','=',$dbacthdr->auditno)
+            ->where('b.compcode','=',session('compcode'))
             ->get();
 
         // $chgmast = DB::table('debtor.billsum AS b', 'hisdb.chgmast as m')
