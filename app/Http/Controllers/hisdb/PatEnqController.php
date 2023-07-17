@@ -37,6 +37,10 @@ class PatEnqController extends defaultController
                 return $this->mc_list($request);
             case 'pat_enq_payer':
                 return $this->pat_enq_payer($request);
+            case 'gletdept':
+                return $this->gletdept($request);
+            case 'gletitem':
+                return $this->gletitem($request);
             case 'addnotes_epno':
                 return $this->addnotes_epno($request);
             case 'init_vs_diag':
@@ -609,7 +613,7 @@ class PatEnqController extends defaultController
 
     public function pat_enq_payer(Request $request){
         $table = DB::table('hisdb.epispayer as ep')
-                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
+                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','pm.Name','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
                     ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->on('dm.debtorcode', '=', 'ep.payercode')
                                                 ->where('dm.compcode','=',session('compcode'));
@@ -618,6 +622,10 @@ class PatEnqController extends defaultController
                                 $join = $join->on('btm.billtype', '=', 'ep.billtype')
                                                 ->where('btm.compcode','=',session('compcode'))
                                                 ->where('btm.recstatus','=','ACTIVE');
+                            })
+                    ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                                $join = $join->on('pm.MRN', '=', 'ep.mrn')
+                                                ->where('pm.compcode','=',session('compcode'));
                             })
                     ->where('ep.compcode',session('compcode'))
                     ->where('ep.mrn',$request->mrn)
@@ -636,6 +644,51 @@ class PatEnqController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
+    }
+
+    public function gletdept(Request $request){
+        $table = DB::table('hisdb.gletdept as gld')
+                    ->where('gld.compcode',session('compcode'))
+                    ->where('gld.mrn',$request->mrn)
+                    ->where('gld.episno',$request->episno);
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
+    }
+
+    public function gletitem(Request $request){
+        $table = DB::table('hisdb.gletitem as gli')
+                    ->where('ep.compcode',session('compcode'))
+                    ->where('ep.deptcode',$request->deptcode)
+                    ->where('ep.mrn',$request->mrn)
+                    ->where('ep.episno',$request->episno);
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
     }
 
     public function init_vs_diag(Request $request){

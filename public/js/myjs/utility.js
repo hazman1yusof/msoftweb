@@ -569,7 +569,7 @@ function Sequences(trxtype,textfield){
 		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
+			if(!$.isEmptyObject(data) && data.rows.length>0){
 				self.backday = data.rows[0].backday;
 				$(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
 				$(self.textfield).attr('max',moment().format("YYYY-MM-DD"))

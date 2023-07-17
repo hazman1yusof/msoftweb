@@ -5,6 +5,20 @@ var urlParam_epno_payer = {
 	episno:null,
 }
 
+var urlParam_gletdept = {
+	action:'gletdept',
+	url:'./pat_enq/table',
+	mrn:null,
+	episno:null,
+}
+
+var urlParam_gletitem = {
+	action:'gletitem',
+	url:'./pat_enq/table',
+	mrn:null,
+	episno:null,
+}
+
 $(document).ready(function () {
 
 	$('#my_a_payr').click(function(){
@@ -44,6 +58,7 @@ $(document).ready(function () {
             { label: 'billtype_desc', name: 'billtype_desc' , hidden: true },
             { label: 'idno', name: 'idno', hidden: true },
             { label: 'mrn', name: 'mrn', hidden: true  },
+            { label: 'name', name: 'name', hidden: true },
             { label: 'episno', name: 'episno', hidden: true },
             { label: 'epistycode', name: 'epistycode', hidden: true },
             { label: 'pyrmode', name: 'pyrmode' , hidden: true },
@@ -85,6 +100,77 @@ $(document).ready(function () {
 		},
 	});
 
+	$("#jqGrid_gletdept").jqGrid({
+		datatype: "local",
+		colModel: [			
+			{label:'grpcode', name:'grpcode'},
+			{label:'allitem', name:'allitem'},
+			{label:'grplimit', name:'grplimit'},
+			{label:'inditemlimit', name:'inditemlimit'},
+			{label:'compcode', name:'compcode', hidden:true},
+			{label:'payercode', name:'payercode', hidden:true},
+			{label:'mrn', name:'mrn', hidden:true},
+			{label:'episno', name:'episno', hidden:true},
+			{label:'deptcode', name:'deptcode', hidden:true},
+			{label:'deptlimit', name:'deptlimit', hidden:true},
+			{label:'deptbal', name:'deptbal', hidden:true},
+			{label:'grpbal', name:'grpbal', hidden:true},
+			{label:'lastupdate', name:'lastupdate', hidden:true},
+			{label:'lastuser', name:'lastuser', hidden:true},
+		],
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce: false,
+		viewrecords: false,
+		width: 900,
+		height: 150, 
+		rowNum: 30,
+		pager: "#jqGridPager_gletdept",
+		onSelectRow:function(rowid, selected){
+		},
+		loadComplete: function(){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+		gridComplete: function () {
+		},
+	});
+
+	$("#jqGrid_gletitem").jqGrid({
+		datatype: "local",
+		colModel: [
+			{label:'chgcode', name:'chgcode'},
+			{label:'totitemlimit', name:'totitemlimit'},
+			{label:'compcode', name:'compcode',hidden:true},
+			{label:'payercode', name:'payercode',hidden:true},
+			{label:'mrn', name:'mrn',hidden:true},
+			{label:'episno', name:'episno',hidden:true},
+			{label:'deptcode', name:'deptcode',hidden:true},
+			{label:'grpcode', name:'grpcode',hidden:true},
+			{label:'totitembal', name:'totitembal',hidden:true},
+			{label:'lastupdate', name:'lastupdate',hidden:true},
+			{label:'lastuser', name:'lastuser',hidden:true},
+		],
+		autowidth: true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce: false,
+		viewrecords: false,
+		width: 900,
+		height: 150, 
+		rowNum: 30,
+		pager: "#jqGridPager_gletitem",
+		onSelectRow:function(rowid, selected){
+		},
+		loadComplete: function(){
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+		},
+		gridComplete: function () {
+		},
+	});
+
 	$("#jqGrid_epno_payer").inlineNav('#jqGridPager_epno_payer', {edit:false,add:false,del:false,search:false,
 		restoreAfterSelect: false
 	}).jqGrid('navButtonAdd', "#jqGridPager_epno_payer", {
@@ -101,6 +187,11 @@ $(document).ready(function () {
 		$("#jqGrid_epno_payer").jqGrid ('setGridWidth', Math.floor($("#jqGrid_epno_payer_c")[0].offsetWidth-$("#jqGrid_epno_payer_c")[0].offsetLeft-0));
 		urlParam_epno_payer.mrn = $("#mrn_episode").val();
 		urlParam_epno_payer.episno = $("#txt_epis_no").val();
+		urlParam_gletdept.mrn = $("#mrn_episode").val();
+		urlParam_gletdept.episno = $("#txt_epis_no").val();
+		urlParam_gletitem.mrn = $("#mrn_episode").val();
+		urlParam_gletitem.episno = $("#txt_epis_no").val();
+
 		refreshGrid("#jqGrid_epno_payer", urlParam_epno_payer);
 		$('#mrn_epno_payer').val($("#mrn_episode").val());
 		$('#episno_epno_payer').val($("#txt_epis_no").val());
@@ -251,250 +342,28 @@ $(document).ready(function () {
 			}
 		});
 	}
+		
+	$('#except_epno_payer').click(function(){
+        $('#mdl_glet').modal('show');
+	})
+
+	$("#mdl_glet").on("shown.bs.modal", function(){
+		var epno_payer = selrowData("#jqGrid_epno_payer");
+		console.log(epno_payer)
+		$('#glet_mrn').val(epno_payer.mrn);
+		$('#glet_name').val(epno_payer.Name);
+		$('#glet_episno').val(epno_payer.episno);
+		$('#glet_payercode').val(epno_payer.payercode);
+		$('#glet_payercode_desc').val(epno_payer.payercode_desc);
+		$('#glet_totlimit').val(epno_payer.pyrlmtamt);
+		$('#glet_allgroup').val(epno_payer.allgroup);
+		$('#glet_refno').val(epno_payer.refno);
+		$("#jqGrid_gletdept").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
+		$("#jqGrid_gletitem").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
+		
+	});
 
 });
-
-
-// var refno_object = null;
-// function btn_refno_info_onclick(){
-//     if(refno_object == null){
-//         refno_object = new refno_class();
-//         refno_object.show_mdl();
-//     }else{
-//         refno_object.show_mdl();
-//     }
-// }
-
-// function refno_class(){
-//     var self = this;
-//     var selrowdata = null;
-//     $("#btn_epis_new_gl").click(function() {
-//         $('#mdl_new_gl').data('oper','add');
-//         $('#btnglsave').show();
-//         $('#mdl_new_gl').modal('show');
-//     });
-
-//     $("#btn_epis_view_gl").click(function() {
-//         $('#mdl_new_gl').data('oper','edit');
-//         $('#btnglsave').hide();
-//         $('#mdl_new_gl').modal('show');
-//     });
-
-//     $("#btnglclose").click(function() {
-//         $('#glform').find("label").detach();
-//         $("#glform").trigger('reset');
-//         $("#glform").find('.has-error').removeClass("has-error");
-//         $("#glform").find('.error').removeClass("error");
-//         $("#glform").find('.has-success').removeClass("has-success");
-//         $("#glform").find('.valid').removeClass("valid");
-//         self.show_mdl();
-//     });
-
-//     this.refno_table = $('#tbl_epis_reference').DataTable( {
-//         // "ajax": "/pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#hid_epis_payer').val() + "&mrn=" + $('#mrn_episode').val(),
-//         "columns": [
-//                     {'data': 'debtorcode' ,'width':'20%'},
-//                     {'data': 'name' ,'width':'30%'},
-//                     {'data': 'gltype' ,'width':'10%'},
-//                     {'data': 'staffid','width':'10%' },
-//                     {'data': 'refno','width':'10%' },
-//                     {'data': 'startdate','width':'10%' },
-//                     {'data': 'enddate','width':'10%' },
-//                     {'data': 'ourrefno' ,'visible': false},
-//                     {'data': 'childno' , 'visible': false, 'searchable':false}, 
-//                     {'data': 'episno' , 'visible': false, 'searchable':false},
-//                     {'data': 'medcase' , 'visible': false, 'searchable':false},
-//                     {'data': 'mrn' , 'visible': false, 'searchable':false},
-//                     {'data': 'relatecode' , 'visible': false, 'searchable':false},
-//                     {'data': 'remark' , 'visible': false, 'searchable':false},
-//                     {'data': 'startdate' , 'visible': false, 'searchable':false},
-//                     {'data': 'enddate' , 'visible': false, 'searchable':false},
-//             ],
-//     });
-
-//     this.show_mdl = function(first = false){
-//         $('#mdl_reference').modal('show');
-//         $('#btn_epis_view_gl').prop('disabled',true);
-//         this.refno_table.ajax.url("pat_mast/get_entry?action=get_refno_list&debtorcode=" + $('#payercode_epno_payer').val() + "&mrn=" + $('#mrn_epno_payer').val()).load();
-//     }
-
-//     $('#tbl_epis_reference').on('dblclick', 'tr', function () {
-//         let refno_item = self.refno_table.row( this ).data();
-//         $('#ourrefno_epno_payer').val(refno_item["ourrefno"]);
-//         $('#refno_epno_payer').val(refno_item["refno"]);
-        
-//         $('#mdl_reference').modal('hide');
-//     });
-
-//     $('#tbl_epis_reference').on('click', 'tr', function () {
-//         let refno_item = self.refno_table.row( this ).data();
-//         selrowdata = refno_item;
-//         $('#btn_epis_view_gl').prop('disabled',false);
-        
-//         $('#tbl_epis_reference tr').removeClass('active');
-//         $(this).addClass('active');
-//     });
-
-//     $('#mdl_reference').on('shown.bs.modal', function (e) {
-//         self.refno_table.columns.adjust().draw();
-//     });
-
-//     $('#mdl_reference').on('show.bs.modal', function (e) {
-//     	$(this).css('z-index',121);
-//     });
-
-//     $('#mdl_new_gl').on('shown.bs.modal', function (e) {
-//         let oper = $('#mdl_new_gl').data('oper');
-//         $('#newgl-textmrn').text($('#mrn_epno_payer').val());
-//         $('#newgl-textname').text($('#name_epno_payer').val());
-//         $('#newgl-gltype').val('Multi Volume');
-//         $('#select_gl_tab li:first-child a').tab('show');
-//         $('#txt_newgl_corpcomp').val($('#payercode_desc_epno_payer').val());
-//         $('#hid_newgl_corpcomp').val($('#payercode_epno_payer').val());
-
-//         if(oper=='edit'){
-//             autoinsert_rowdata_gl(selrowdata);
-//         }else if(oper=='add'){
-//             loadcorpstaff_gl(selrowdata);
-//         }
-//         onchg_gltype();
-//     });
-
-//     $('#mdl_new_gl').on('show.bs.modal', function (e) {
-//     	$(this).css('z-index',131);
-//     });
-
-//     $('#select_gl_tab a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-//         let selected_tab = $(e.target).text();
-//         $('#newgl-gltype').val(selected_tab);
-//         onchg_gltype();
-//     });
-
-//     function onchg_gltype(){
-//         let selected_tab = $('#newgl-gltype').val();
-//         $('#newgl-effdate').off('change');
-//         $('#newgl-effdate,#newgl-expdate').val('');
-//         $('#newgl-expdate').prop('readonly',false);
-//         $('#newgl-visitno_div,#newgl-expdate_div,#newgl-effdate_div').show();
-//         $('#newgl-effdate_div,#newgl-expdate_div,#newgl-visitno_div').removeClass('form-mandatory');
-
-//         switch(selected_tab){
-//             case 'Multi Volume':
-//                 $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
-//                 $('#newgl-effdate,#newgl-visitno').prop('required',true).addClass('form-mandatory');
-//                 $('#newgl-expdate').prop('required',false);
-//                 $('#newgl-expdate_div').hide();
-//                 break;
-//             case 'Multi Date':
-//                 $('#newgl-effdate,#newgl-expdate').val(moment().format('YYYY-MM-DD'));
-//                 $('#newgl-effdate,#newgl-expdate').prop('required',true).addClass('form-mandatory');
-//                 $('#newgl-visitno').prop('required',false);
-//                 $('#newgl-visitno_div').hide();
-//                 break;
-//             case 'Open':
-//                 $('#newgl-effdate').val(moment().format('YYYY-MM-DD'));
-//                 $('#newgl-effdate').prop('required',true).addClass('form-mandatory');
-//                 $('#newgl-visitno,#newgl-expdate').prop('required',false);
-//                 $('#newgl-visitno_div,#newgl-expdate_div').hide();
-//                 break;
-//             case 'Single Use':
-//                 $('#newgl-effdate,#newgl-expdate').val(moment().format('YYYY-MM-DD'));
-//                 $('#newgl-expdate').prop('readonly',true);
-//                 $('#newgl-effdate').prop('required',true).addClass('form-mandatory');
-//                 $('#newgl-visitno').prop('required',false);
-//                 $('#newgl-visitno_div').hide();
-
-//                 $('#newgl-effdate').on('change',function(){
-//                     $('#newgl-expdate').val($(this).val());
-//                 });
-
-//                 break;
-//             case 'Limit Amount':
-//                 $('#newgl-effdate,#newgl-expdate,#newgl-visitno').prop('required',false);
-//                 break;
-//             case 'Monthly Amount':
-//                 $('#newgl-effdate,#newgl-expdate,#newgl-visitno').prop('required',false);
-//                 break;
-//         }
-//     }
-
-//     $("#btnglsave").on('click',function(){
-//         if($('#glform').valid()){
-//             $("#btnglsave").prop('disabled',true);
-
-//             var _token = $('#csrf_token').val();
-//             let serializedForm = $( "#glform" ).serializeArray();
-//             let obj = {
-//                 'debtorcode':$('#hid_epis_payer').val(),
-//                 'mrn':$('#mrn_epno_payer').val(),
-//                 '_token': _token,
-//                 'episno': $('#episno_epno_payer').val(),
-//             };
-            
-//             $.post('pat_mast/save_gl', $.param(serializedForm)+'&'+$.param(obj) , function( data ) {
-                
-//             },'json').fail(function(data) {
-//                 alert(data.responseText);
-//                 $("#btnglsave").prop('disabled',false);
-//             }).success(function(data){
-//                 $('#ourrefno_epno_payer').val(data.ourrefno);
-//                 $('#refno_epno_payer').val(data.refno);
-//                 $('#mdl_new_gl').modal('hide');
-//                 $('#mdl_reference').modal('hide');
-//                 $("#btnglsave").prop('disabled',false);
-
-//                 $("#glform").trigger('reset');
-//             });
-//         }
-//     });
-
-// }
-
-// function autoinsert_rowdata_gl(selrowdata){
-//     $('#newgl-staffid').val(selrowdata.staffid);
-//     $('#newgl-name').val(selrowdata.name);
-//     $('#txt_newgl_corpcomp').val(selrowdata.debtor_name);
-//     $('#hid_newgl_corpcomp').val(selrowdata.debtorcode);
-//     $('#txt_newgl_occupcode').val(selrowdata.occup_desc);
-//     $('#hid_newgl_occupcode').val(selrowdata.occupcode);
-//     $('#txt_newgl_relatecode').val(selrowdata.relate_desc);
-//     $('#hid_newgl_relatecode').val(selrowdata.relatecode);
-//     $('#newgl-childno').val(selrowdata.childno);
-//     $('#newgl-gltype').val(selrowdata.gltype);
-//     $('#newgl-effdate').val(selrowdata.startdate);
-//     $('#newgl-expdate').val(selrowdata.enddate);
-//     $('#newgl-visitno').val(selrowdata.visitno);
-//     $('#newgl-case').val(selrowdata.case);
-//     $('#newgl-refno').val(selrowdata.refno);
-//     $('#newgl-ourrefno').val(selrowdata.ourrefno);
-//     $('#newgl-remark').val(selrowdata.remark);
-
-
-//     $('#select_gl_tab a[href="'+selrowdata.gltype+'"]').tab('show');
-// }
-
-// function loadcorpstaff_gl(){
-//     let obj_param = {
-//            action:'loadcorpstaff',
-//            mrn:parseInt($('#mrn_epno_payer').val())
-//        };
-
-//     $.get( "pat_mast/get_entry?"+$.param(obj_param), function( data ) {
-        
-//     },'json').done(function(data) {
-//         if(data.data != null){
-//             $('#newgl-staffid').val(data.data.staffid);
-//             $('#newgl-name').val(data.data.name);
-//             $('#txt_newgl_corpcomp').val(data.data.debtor_name);
-//             $('#hid_newgl_corpcomp').val(data.data.debtorcode);
-//             $('#txt_newgl_occupcode').val(data.data.occup_desc);
-//             $('#hid_newgl_occupcode').val(data.data.occupcode);
-//             $('#txt_newgl_relatecode').val(data.data.relate_desc);
-//             $('#hid_newgl_relatecode').val(data.data.relatecode);
-//             $('#newgl-childno').val(data.data.childno);
-//         }
-//     });
-// }
 
 function allgroupformat(cellvalue, options, rowObject){
 	if(cellvalue == '1'){

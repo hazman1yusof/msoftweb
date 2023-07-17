@@ -52,7 +52,7 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.recstatus','st.qtyonhand')
+                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','st.qtyonhand')
                     ->leftjoin('material.stockloc as st', function($join) use ($request){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
@@ -66,7 +66,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('bs.billno','=',$request->billno)
                     ->where('bs.compcode','=',session('compcode'))
                     ->where('bs.recstatus','<>','DELETE')
-                    ->orderBy('bs.id','desc');
+                    ->orderBy('bs.idno','desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -249,6 +249,7 @@ class SalesOrderDetailController extends defaultController
     public function get_itemcode_price_check(Request $request){
         $table =  DB::table('hisdb.chgmast')
                     ->select('chgcode','description')
+                    ->where('compcode',session('compcode'))
                     ->where('chgcode','=',$request->filterVal[2]);
 
         $responce = new stdClass();
@@ -315,8 +316,9 @@ class SalesOrderDetailController extends defaultController
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
-                    'amount' => $request->amount,
-                    'outamt' => $request->outamount,
+                    'amount' => $request->amount, //unitprice * quantity, xde tax
+                    'outamt' => $request->amount,
+                    'totamount' => $request->totamount,
                     'discamt' => floatval($request->discamt),
                     'taxamt' => floatval($request->taxamt),
                     'lastuser' => session('username'), 
@@ -328,7 +330,8 @@ class SalesOrderDetailController extends defaultController
                 ]);
             
             $billsum_obj = db::table('debtor.billsum')
-                            ->where('id', '=', $insertGetId)
+                            ->where('compcode',session('compcode'))
+                            ->where('idno', '=', $insertGetId)
                             ->first();
             
             $product = DB::table('material.product')
@@ -375,7 +378,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('trantype','=',$trantype)
                     ->where('billno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
-                    ->sum('amount');
+                    ->sum('totamount');
             
             ///4. then update to header
             
@@ -437,9 +440,10 @@ class SalesOrderDetailController extends defaultController
                         'unitprice' => $value['unitprice'],
                         'quantity' => $value['quantity'],
                         'amount' => $value['amount'],
-                        // 'outamount' => $value['outamount'],
+                        'outamt' => $value['amount'],
                         'discamt' => floatval($value['discamt']),
                         'taxamt' => floatval($value['taxamt']),
+                        'totamount' => floatval($value['totamount']),
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         // 'billtypeperct' => $value['billtypeperct'],
@@ -492,7 +496,7 @@ class SalesOrderDetailController extends defaultController
                         ->where('trantype','=',$trantype)
                         ->where('billno','=',$auditno)
                         ->where('recstatus','!=','DELETE')
-                        ->sum('amount');
+                        ->sum('totamount');
                 
                 ///4. then update to header
                 DB::table('debtor.dbacthdr')
@@ -543,6 +547,7 @@ class SalesOrderDetailController extends defaultController
             $dbacthdr = $dbacthdr->first();
 
             $billsum = DB::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
                             ->where('idno','=',$idno);
 
             $billsum_obj = $billsum->first();
@@ -641,6 +646,7 @@ class SalesOrderDetailController extends defaultController
 
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
                 ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$request->chggroup)
@@ -768,6 +774,7 @@ class SalesOrderDetailController extends defaultController
 
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
                 ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
@@ -923,6 +930,7 @@ class SalesOrderDetailController extends defaultController
 
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
+                ->where('compcode',session('compcode'))
                 ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
                 ->where('ItemCode','=',$billsum_obj->chggroup)
@@ -1028,6 +1036,7 @@ class SalesOrderDetailController extends defaultController
         $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
         $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode',session('compcode'))
                         ->where('idno','=',$ivdspdt_idno)
                         ->first();
 

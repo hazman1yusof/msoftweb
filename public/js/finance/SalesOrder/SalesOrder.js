@@ -774,6 +774,10 @@ $(document).ready(function () {
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
+			{ label: 'Total Amount <br>Before Tax', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
 			// {
 			// 	label: 'Tax', name: 'taxcode', width: 100, align: 'right', classes: 'wrap',
 			// 	editable: true,
@@ -790,7 +794,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
-			{ label: 'Total Amount <br>Before Tax', name: 'amtb4tax', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Discount Amount', name: 'discamt', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -800,7 +804,7 @@ $(document).ready(function () {
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Total Amount', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Total Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -1001,7 +1005,7 @@ $(document).ready(function () {
 			unsaved = false;
 			mycurrency2.array.length = 0;
 			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeperct']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='amtb4tax']"]);
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='billtypeperct']","#jqGrid2 input[name='billtypeamt']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='amount']"]);
 			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyonhand']","#jqGrid2 input[name='quantity']"]);
 			
 			mycurrency2.formatOnBlur();//make field to currency on leave cursor
@@ -1054,7 +1058,7 @@ $(document).ready(function () {
 					source: 'PB',
 					trantype:'IN',
 					auditno: $('#db_auditno').val(),
-					discamt: $("#jqGrid2 input[name='discamt']").val(),
+					// discamt: $("#jqGrid2 input[name='discamt']").val(),
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -1210,9 +1214,10 @@ $(document).ready(function () {
 					'unitprice': $('#'+ids[i]+"_unitprice").val(),
 					'taxcode' : $("#jqGrid2 input#"+ids[i]+"_taxcode").val(),
 					'perdisc' : $('#'+ids[i]+"_perdisc").val(),
-					'discamt' : $('#'+ids[i]+"_uom_discamt").val(),
+					'discamt' : $('#'+ids[i]+"_discamt").val(),
 					'tot_gst' : $('#'+ids[i]+"_tot_gst").val(),
 					'amount' : $('#'+ids[i]+"_amount").val(),
+					'totamount' : $('#'+ids[i]+"_totamount").val(),
 					'taxamt' : $("#"+ids[i]+"_taxamt").val(),
 					// 'billtypeperct' : $('#'+ids[i]+"_billtypeperct").val(),
 					// 'billtypeamt' : $("#"+ids[i]+"_billtypeamt").val(),
@@ -1427,7 +1432,7 @@ $(document).ready(function () {
        
 		let quantity = parseFloat($("#"+id_optid+"_quantity").val());
 		let unitprice = parseFloat($("#"+id_optid+"_unitprice").val());
-		let billtypeperct = parseFloat($("#"+id_optid+"_billtypeperct").val());
+		let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
 		let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
 		let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
 		if(isNaN(rate)){
@@ -1435,16 +1440,17 @@ $(document).ready(function () {
 		}
 
 
-		var amtb4tax = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
-		// var discamt = (unitprice*quantity) - amount;
+		var amount = (unitprice*quantity);
+		var discamt = ((unitprice*quantity) * billtypeperct / 100) + billtypeamt;
 
-		let taxamt = amtb4tax * rate / 100;
+		let taxamt = amount * rate / 100;
 
-		var totamount = amtb4tax + taxamt;
+		var totamount = amount - discamt + taxamt;
 
 		$("#"+id_optid+"_taxamt").val(taxamt);
-		$("#"+id_optid+"_amount").val(totamount);
-		$("#"+id_optid+"_amtb4tax").val(amtb4tax);
+		$("#"+id_optid+"_discamt").val(discamt);
+		$("#"+id_optid+"_totamount").val(totamount);
+		$("#"+id_optid+"_amount").val(amount);
 		
 		var id="#jqGrid2 #"+id_optid+"_quantity";
 		var fail_msg = "Quantity Request must be greater than 0";
@@ -1830,6 +1836,7 @@ $(document).ready(function () {
 			[
 				{label:'Tax Code', name:'taxcode', width:200, classes:'pointer', canSearch:true, or_search:true},
 				{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+				{label:'Rate', name:'rate', width:100, classes:'pointer'},
 			],
 			urlParam: {
 						filterCol:['compcode','recstatus'],
@@ -1847,6 +1854,7 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
 				let data=selrowData('#'+dialog_tax.gridname);
+				$("#jqGrid2 #"+id_optid+"_uom_rate").val(data['rate']);
 				$("#jqGrid2 input#"+id_optid+"_taxcode").val(data.taxcode);
 			},
 			gridComplete: function(obj){
@@ -1860,7 +1868,7 @@ $(document).ready(function () {
 			}
 			
 		},{
-			title:"Select UOM Code For Item",
+			title:"Select Tax Code For Item",
 			open:function(obj_){
 
 				dialog_tax.urlParam.filterCol=['compcode','recstatus'];

@@ -1030,7 +1030,7 @@ function refno_class(){
 
 }
 
-$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type,#mdl_new_panel").on('show.bs.modal', function () {
+$("#mdl_item_selector,#mdl_epis_pay_mode,#mdl_reference,#mdl_new_gl,#mdl_bill_type,#mdl_new_panel,#mdl_glet").on('show.bs.modal', function () {
     $(this).eq(0).css('z-index','120');
 });
 
