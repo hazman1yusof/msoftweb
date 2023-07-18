@@ -207,10 +207,10 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: false },
-			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap' },
+			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: false, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap', hidden:true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right'},
+			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero5, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero5, unformat: unpadzero },
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
@@ -1272,6 +1272,7 @@ $(document).ready(function () {
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
