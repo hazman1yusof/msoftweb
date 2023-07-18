@@ -207,8 +207,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
 			{ label: 'db_debtorcode', name: 'db_debtorcode', hidden: true},
-			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: false, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: true, classes: 'wrap', hidden:true},
+			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden:true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero5, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero5, unformat: unpadzero },
@@ -512,7 +512,7 @@ $(document).ready(function () {
 		if($('#Scol').val()=='db_entrydate'){
 			$("input[name='Stext'], #customer_text, #department_text").hide("fast");
 			$("#docuDate_text").show("fast");
-		} else if($('#Scol').val() == 'dm_name'){
+		} else if($('#Scol').val() == 'db_payercode'){
 			$("input[name='Stext'],#docuDate_text,#department_text").hide("fast");
 			$("#customer_text").show("fast");
 			customer_search.on();
@@ -563,7 +563,7 @@ $(document).ready(function () {
 			ondblClickRow: function () {
 				let data = selrowData('#' + customer_search.gridname).debtorcode;
 
-				if($('#Scol').val() == 'dm_name'){
+				if($('#Scol').val() == 'db_payercode'){
 					urlParam.searchCol=["db.debtorcode"];
 					urlParam.searchVal=[data];
 				}
