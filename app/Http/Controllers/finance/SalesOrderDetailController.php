@@ -43,6 +43,8 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_table_dtl($request);
             case 'get_itemcode_price':
                 return $this->get_itemcode_price($request);
+            case 'get_itemcode_uom':
+                return $this->get_itemcode_uom($request);
             case 'get_itemcode_price_check':
                 return $this->get_itemcode_price_check($request);
             default:
@@ -52,7 +54,7 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','st.qtyonhand')
+                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','st.qtyonhand')
                     ->leftjoin('material.stockloc as st', function($join) use ($request){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
@@ -85,6 +87,7 @@ class SalesOrderDetailController extends defaultController
     public function get_itemcode_price(Request $request){
         $deptcode = $request->filterVal[0];
         $priceuse = $request->filterVal[1];
+        $entrydate = $request->entrydate;
 
         switch ($priceuse) {
             case 'PRICE1':
@@ -102,25 +105,23 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'cm.uom as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
 
-        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld){
+        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
-                            $join = $join->on('cp.uom', '=', 'cm.uom');
                             $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                            $join = $join->where('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'));
+                            $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
-        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode){
+        $table = $table->join('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
-                            $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.deptcode', '=', $deptcode);
-                            $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
 
         $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -199,7 +200,7 @@ class SalesOrderDetailController extends defaultController
                 ->where('cp.compcode', '=', session('compcode'))
                 ->where('cp.chgcode', '=', $value->chgcode)
                 ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', Carbon::now('Asia/Kuala_Lumpur'))
+                ->whereDate('cp.effdate', '<=', $entrydate)
                 ->orderBy('cp.effdate','desc');
 
             if($chgprice_obj->exists()){
@@ -258,6 +259,102 @@ class SalesOrderDetailController extends defaultController
         return json_encode($responce);
     }
 
+    public function get_itemcode_uom(Request $request){
+        $chgcode = $request->chgcode;
+        $deptcode = $request->deptcode;
+        $entrydate = $request->entrydate;
+
+        $table = DB::table('material.stockloc as st')
+                            ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+                            ->where('st.compcode', '=', session('compcode'))
+                            ->where('st.unit', '=', session('unit'))
+                            ->where('st.deptcode', '=', $deptcode)
+                            ->where('st.itemcode', '=', $chgcode)
+                            ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+
+        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+                                $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+                                            ->where('uom.compcode', '=', session('compcode'))
+                                            ->where('uom.recstatus','=','ACTIVE');
+                        });
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('uom.idno','desc');
+        }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        // $responce->rows = $paginate->items();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+
     public function chgDate($date){
         if(!empty($date)){
             $newstr=explode("/", $date);
@@ -313,6 +410,7 @@ class SalesOrderDetailController extends defaultController
                     'mrn' => (!empty($dbacthdr->mrn))?$dbacthdr->mrn:null,
                     'episno' => (!empty($dbacthdr->episno))?$dbacthdr->episno:null,
                     'uom' => $request->uom,
+                    'uom_recv' => $request->uom_recv,
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,

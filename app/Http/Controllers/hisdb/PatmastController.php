@@ -450,8 +450,14 @@ class PatmastController extends defaultController
                 $data = DB::table('sysdb.department')
                     ->select('deptcode as code','description')
                     ->where('compcode','=',session('compcode'))
-                    ->where('recstatus','=','ACTIVE')
-                    ->where('regdept','=','1');
+                    ->where('recstatus','=','ACTIVE');
+
+                if($request->epistycode == 'IP'){
+                    $data = $data->where('admdept','=','1');
+                }else{
+                    $data = $data->where('regdept','=','1');
+                }
+
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)
@@ -704,7 +710,6 @@ class PatmastController extends defaultController
                         ->select('b.ward','b.room','b.bednum','b.bedtype','b.occup','bt.description as desc_bt','d.description as desc_d')
                         ->leftJoin('hisdb.bedtype as bt', 'b.bedtype', '=', 'bt.bedtype')
                         ->leftJoin('sysdb.department as d', 'b.ward', '=', 'd.deptcode')
-                        ->where('b.occup','=',"VACANT")
                         ->where('b.recstatus','=','ACTIVE')
                         ->where('b.compcode','=',session('compcode'))
                         ->orderBy('b.bedtype', 'desc')

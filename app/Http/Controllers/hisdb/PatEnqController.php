@@ -62,8 +62,10 @@ class PatEnqController extends defaultController
                 return $this->save_epno_addnotes($request);
             case 'save_epno_vitstate':
                 return $this->save_epno_vitstate($request);
-            case 'save_epno_diagnose':
-                return $this->save_epno_diagnose($request);
+            case 'save_gletdept':
+                return $this->save_gletdept($request);
+            case 'save_gletitem':
+                return $this->save_gletitem($request);
             default:
                 return 'error happen..';
         } 
@@ -613,7 +615,7 @@ class PatEnqController extends defaultController
 
     public function pat_enq_payer(Request $request){
         $table = DB::table('hisdb.epispayer as ep')
-                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','pm.Name','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
+                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','pm.Name as name','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
                     ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->on('dm.debtorcode', '=', 'ep.payercode')
                                                 ->where('dm.compcode','=',session('compcode'));
@@ -648,6 +650,11 @@ class PatEnqController extends defaultController
 
     public function gletdept(Request $request){
         $table = DB::table('hisdb.gletdept as gld')
+                    ->select('gld.idno','gld.compcode','gld.payercode','gld.mrn','gld.episno','gld.deptcode','gld.grpcode','gld.deptlimit','gld.deptbal','gld.grplimit','gld.grpbal','gld.inditemlimit','gld.allitem','gld.lastupdate','gld.lastuser','chg.description as grpcode_desc')
+                    ->leftJoin('hisdb.chggroup as chg', function($join) use ($request){
+                                $join = $join->on('chg.grpcode', '=', 'gld.grpcode')
+                                                ->where('chg.compcode','=',session('compcode'));
+                            })
                     ->where('gld.compcode',session('compcode'))
                     ->where('gld.mrn',$request->mrn)
                     ->where('gld.episno',$request->episno);
@@ -670,10 +677,15 @@ class PatEnqController extends defaultController
 
     public function gletitem(Request $request){
         $table = DB::table('hisdb.gletitem as gli')
-                    ->where('ep.compcode',session('compcode'))
-                    ->where('ep.deptcode',$request->deptcode)
-                    ->where('ep.mrn',$request->mrn)
-                    ->where('ep.episno',$request->episno);
+                    ->select('gli.idno','gli.compcode','gli.payercode','gli.mrn','gli.episno','gli.chgcode','gli.deptcode','gli.grpcode','gli.totitemlimit','gli.totitembal','gli.lastupdate','gli.lastuser','gli.computerid','chgm.description as chgcode_desc')
+                    ->leftJoin('hisdb.chgmast as chgm', function($join) use ($request){
+                                $join = $join->on('chgm.chgcode', '=', 'gli.chgcode')
+                                                ->where('chgm.compcode','=',session('compcode'));
+                            })
+                    ->where('gli.compcode',session('compcode'))
+                    ->where('gli.grpcode',$request->grpcode)
+                    ->where('gli.mrn',$request->mrn)
+                    ->where('gli.episno',$request->episno);
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -690,6 +702,125 @@ class PatEnqController extends defaultController
         return json_encode($responce);
 
     }
+
+    public function save_gletdept(Request $request){
+
+        DB::beginTransaction();
+        try {
+            if($request->oper == 'add'){
+                $idno = DB::table('hisdb.gletdept')
+                    ->insertGetId([  
+                        'payercode' => $request->payercode,
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'grpcode' => $request->grpcode,
+                        'allitem' => $request->allitem,
+                        'grplimit' => $request->grplimit,
+                        'grpbal' => $request->grplimit,
+                        'inditemlimit' => $request->inditemlimit,
+                        'compcode' => session('compcode'),
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else if($request->oper == 'edit'){
+                $idno = $request->idno;
+                DB::table('hisdb.gletdept')
+                    ->where('idno',$request->idno)
+                    ->where('compcode',session('compcode'))
+                    ->update([  
+                        'grpcode' => $request->grpcode,
+                        'allitem' => $request->allitem,
+                        'grplimit' => $request->grplimit,
+                        'grpbal' => $request->grplimit,
+                        'inditemlimit' => $request->inditemlimit,
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else if($request->oper == 'del'){
+                $idno = 'none';
+                DB::table('hisdb.gletdept')
+                    ->where('idno',$request->idno)
+                    ->where('compcode',session('compcode'))
+                    ->delete();
+            }
+
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            $responce->idno = $idno;
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = $e->getMessage();
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function save_gletitem(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            if($request->oper == 'add'){
+                $idno = DB::table('hisdb.gletitem')
+                    ->insertGetId([  
+                        'payercode' => $request->payercode,
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'chgcode' => $request->chgcode,
+                        'grpcode' => $request->grpcode,
+                        'totitemlimit' => $request->totitemlimit,
+                        'totitembal' => $request->totitemlimit,
+                        'compcode' => session('compcode'),
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else if($request->oper == 'edit'){
+                $idno = $request->idno;
+                DB::table('hisdb.gletitem')
+                    ->where('idno',$request->idno)
+                    ->where('compcode',session('compcode'))
+                    ->update([  
+                        'chgcode' => $request->chgcode,
+                        'grpcode' => $request->grpcode,
+                        'totitemlimit' => $request->totitemlimit,
+                        'totitembal' => $request->totitemlimit,
+                        'lastuser' => session('username'),
+                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+            }else if($request->oper == 'del'){
+                $idno = 'none';
+                DB::table('hisdb.gletitem')
+                    ->where('idno',$request->idno)
+                    ->where('compcode',session('compcode'))
+                    ->delete();
+            }
+
+            DB::commit();
+            $responce = new stdClass();
+            $responce->res = 'SUCCESS';
+            $responce->idno = $idno;
+            return json_encode($responce);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->res = 'ERROR';
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
 
     public function init_vs_diag(Request $request){
         $responce = new stdClass();

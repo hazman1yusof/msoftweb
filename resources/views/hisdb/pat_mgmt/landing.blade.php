@@ -312,30 +312,25 @@
 	    table#docnote_date_tbl tr.selected{
 	    	background-color: #dfdfdf;
 	    }
-
 	    button.command-otc-episode, button.command-episode{
 	    	border-color: #744747;
 	    	padding: 1px 5px 1px 5px;
 	    }
-
 		.wrap{
 			word-wrap: break-word;
 			white-space: pre-line !important;
 			vertical-align: top !important;
 		}
-
 		.paneldiv{
 			/* padding-top: 5px !important; */
 			overflow-y: auto;
 			height: calc(100vh - 70px);
 		}
-		
 		.paneldiv2{
 			/* padding-top: 5px !important; */
 			overflow-y: auto;
 			height: 682px;
 		}
-		
 		.epis_name_big{
 			display: block;
 		    min-height: 30px;
@@ -346,9 +341,11 @@
 		    overflow: visible;
 		    overflow-wrap: anywhere;
 		}
-
 		#tbl_epis_reference tr.active td{
 			background-color: #e6ffe8 !important;
+		}
+		table#accomodation_table tr.disabled{
+			background: #ff000014;
 		}
 
 	</style>

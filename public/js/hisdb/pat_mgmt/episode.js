@@ -750,6 +750,9 @@ function accomodation_selecter(){
         },
         "createdRow": function( row, data, dataIndex ) {
             $(row).addClass( data['desc_bt'] );
+            if(data.occup != 'VACANT'){
+                $(row).addClass('disabled');
+            }
         },
         "initComplete": function(settings, json) {
             let opt_bt = opt_ward = "";
@@ -797,14 +800,18 @@ function accomodation_selecter(){
 
     $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
         let item = accomodation_table.row( this ).data();
-        if(item != undefined){
+
+        if(item != undefined && item['occup'] == 'VACANT'){
             $('#txt_epis_bed').val(item["bednum"]);
             $('#txt_epis_ward').val(item["ward"]);
             $('#txt_epis_room').val(item["room"]);
             $('#txt_epis_bedtype').val(item["bedtype"]);
                 
             $('#mdl_accomodation').modal('hide');
+            $('#txt_epis_fin').focus();
         }
+
+        
     });
 
     $('#accomodation_table tbody').on('click', 'tr.dtrg-group', function () {    

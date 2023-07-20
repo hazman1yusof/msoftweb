@@ -140,7 +140,11 @@ function textfield_modal(){
                 $('#txt_epis_doctor').focus();
                 break;
             case "epis_doctor":
-                $('#txt_epis_fin').focus();
+                if($('#epistycode').val()=='IP'){
+                    $('#txt_epis_bed').focus();
+                }else{
+                    $('#txt_epis_fin').focus();
+                }
                 break;
             case "epis_fin":
                 $('#txt_epis_payer').focus();
@@ -198,7 +202,7 @@ function textfield_modal(){
                 act = "get_all_company";
                 break;
             case "epis_dept":
-                act = "get_reg_dept";
+                act = "get_reg_dept&epistycode="+$('#epistycode').val();
                 break;
             case "epis_source":
                 act = "get_reg_source";
