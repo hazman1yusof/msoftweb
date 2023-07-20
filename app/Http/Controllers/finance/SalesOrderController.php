@@ -188,7 +188,7 @@ class SalesOrderController extends defaultController
                 return 'Errors happen';
         }
     }
-
+    
     public function add(Request $request){
         
         DB::beginTransaction();
@@ -253,13 +253,13 @@ class SalesOrderController extends defaultController
             return response($e->getMessage(), 500);
         }
     }
-
+    
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         $table = DB::table("debtor.dbacthdr");
-
+        
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
             'unit' => strtoupper($request->db_deptcode),
@@ -267,7 +267,8 @@ class SalesOrderController extends defaultController
             'payercode' => strtoupper($request->db_debtorcode),
             'entrydate' => strtoupper($request->db_entrydate),
             'hdrtype' => strtoupper($request->db_hdrtype),
-            'mrn' => strtoupper($request->db_mrn),
+            // 'mrn' => strtoupper($request->db_mrn),
+            'mrn' => '0',
             'termdays' => strtoupper($request->db_termdays),
             'termmode' => strtoupper($request->db_termmode),
             'orderno' => strtoupper($request->db_orderno),
@@ -276,25 +277,25 @@ class SalesOrderController extends defaultController
             'remark' => strtoupper($request->db_remark),
             'approvedby' => strtoupper($request->db_approvedby)
         ];
-
+        
         try {
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
-
+            
             $responce = new stdClass();
             $responce->totalAmount = $request->purreqhd_totamount;
             echo json_encode($responce);
-
+            
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
         }
-
+        
     }
-
+    
     public function del(Request $request){
         
     }
