@@ -1640,9 +1640,13 @@ $(document).ready(function () {
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
 			],
 			urlParam: {
-				filterCol:['compcode','recstatus','opprice'],
-				filterVal:['session.compcode','ACTIVE','1']
+				url:"./SalesOrder/table",
+				action: 'get_hdrtype'
 			},
+			// urlParam: {
+			// 	filterCol:['compcode','recstatus','opprice'],
+			// 	filterVal:['session.compcode','ACTIVE','1']
+			// },
 			ondblClickRow: function () {
 				// $('#db_mrn').focus();
 			},
@@ -1659,8 +1663,10 @@ $(document).ready(function () {
 		}, {
 			title: "Select Billtype",
 			open: function(){
-				dialog_billtypeSO.urlParam.filterCol=['recstatus', 'compcode','opprice'];
-				dialog_billtypeSO.urlParam.filterVal=['ACTIVE', 'session.compcode','1'];
+				dialog_billtypeSO.urlParam.url = "./SalesOrder/table";
+				dialog_billtypeSO.urlParam.action = 'get_hdrtype';
+				dialog_billtypeSO.urlParam.url_chk = "./SalesOrderDetail/table";
+				dialog_billtypeSO.urlParam.action_chk = "get_hdrtype_check";
 			}
 		},'urlParam','radio','tab'
 	);

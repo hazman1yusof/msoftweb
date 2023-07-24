@@ -229,7 +229,7 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="effdatefrom">Effective Date From</label>  
 					<div class="col-md-3">
-						<input id="effdatefrom" name="effdatefrom" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+						<input id="effdatefrom" name="effdatefrom" type="date" maxlength="12" class="form-control input-sm">
 					</div>
 
 				<label class="col-md-2 control-label" for="effdateto">Effective Date To</label>  

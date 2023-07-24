@@ -54,15 +54,15 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','st.qtyonhand')
-                    ->leftjoin('material.stockloc as st', function($join) use ($request){
-                            $join = $join->where('st.compcode', '=', session('compcode'));
-                            $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->on('st.itemcode', '=', 'bs.chggroup');
-                            $join = $join->on('st.uomcode', '=', 'bs.uom');
-                            $join = $join->where('st.deptcode', '=', $request->deptcode);
-                            $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
-                        })
+                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand')
+                    // ->leftjoin('material.stockloc as st', function($join) use ($request){
+                    //         $join = $join->where('st.compcode', '=', session('compcode'));
+                    //         $join = $join->where('st.unit', '=', session('unit'));
+                    //         $join = $join->on('st.itemcode', '=', 'bs.chggroup');
+                    //         $join = $join->on('st.uomcode', '=', 'bs.uom');
+                    //         $join = $join->where('st.deptcode', '=', $request->deptcode);
+                    //         $join = $join->where('st.year', '=', Carbon::now('Asia/Kuala_Lumpur')->year);
+                    //     })
                     ->where('bs.source','=',$request->source)
                     ->where('bs.trantype','=',$request->trantype)
                     ->where('bs.billno','=',$request->billno)
@@ -414,6 +414,7 @@ class SalesOrderDetailController extends defaultController
                     'taxcode' => $request->taxcode,
                     'unitprice' => $request->unitprice,
                     'quantity' => $request->quantity,
+                    'qtyonhand' => $request->qtyonhand,
                     'amount' => $request->amount, //unitprice * quantity, xde tax
                     'outamt' => $request->amount,
                     'totamount' => $request->totamount,
@@ -537,6 +538,7 @@ class SalesOrderDetailController extends defaultController
                     ->update([
                         'unitprice' => $value['unitprice'],
                         'quantity' => $value['quantity'],
+                        'qtyonhand' => $value['quantity'],
                         'amount' => $value['amount'],
                         'outamt' => $value['amount'],
                         'discamt' => floatval($value['discamt']),
