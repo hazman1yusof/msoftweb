@@ -78,7 +78,7 @@ input.uppercase {
 		</div>
 
 		<div class="panel panel-default" id="jqGridsvc_c">
-			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel1" id="panel_jqGrid3">
 				<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i >Service 
 			</div>
 			<div id="jqGrid3_panel1" class="panel-collapse collapse">

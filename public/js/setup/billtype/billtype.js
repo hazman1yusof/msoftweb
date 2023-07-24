@@ -215,6 +215,11 @@ $(document).ready(function () {
 				if (selrowData("#jqGrid").service == 1) {
 					refreshGrid('#jqGridsvc', urlParam_svc);
 					$("#pg_jqGridPager2 table").hide();
+					$('#jqGrid3_panel1').collapse('hide');
+					$('#panel_jqGrid3').attr('data-target','-');
+				} else {
+					$('#jqGrid3_panel1').collapse('show');
+					$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel1');
 				}
 			}
 
