@@ -30,7 +30,7 @@ $(document).ready(function () {
 	var sequence = new Sequences('SO','#db_entrydate');
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","db_idno","recstatus");
 
-	///////////////////////////////// trandate check date validate from period////////// ////////////////
+	///////////////////////////////// check date validate from period//////////////////////////
 	var actdateObj = new setactdate(["#db_entrydate"]);
 	actdateObj.getdata().set();
 
@@ -123,11 +123,20 @@ $(document).ready(function () {
 		var posteddate = $('#posteddate').val();
 		var db_entrydate = $('#db_entrydate').val();
 
-		$(".noti2 ol").empty();
+		text_success1('#posteddate')
+		text_success1('#db_entrydate')
+		$("#dialogForm .noti2 ol").empty();
 		var failmsg=[];
 
 		if(moment(posteddate).isBefore(db_entrydate)){
 			failmsg.push("Post Date cannot be lower than Document date");
+			text_error1('#posteddate')
+			text_error1('#db_entrydate')
+		}
+
+		if(moment(db_entrydate).isAfter(moment())){
+			failmsg.push("Doc Date cannot be higher than today");
+			text_error1('#db_entrydate')
 		}
 
 		if(failmsg.length){
@@ -383,10 +392,6 @@ $(document).ready(function () {
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
-
-	///////////////////////////////// trandate check date validate from period////////// ////////////////
-	var actdateObj = new setactdate(["#trandate"]);
-	actdateObj.getdata().set();
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$('#jqGrid2_ilcancel').click(function(){
