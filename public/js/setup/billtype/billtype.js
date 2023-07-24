@@ -218,6 +218,7 @@ $(document).ready(function () {
 					$('#jqGrid3_panel1').collapse('hide');
 					$('#panel_jqGrid3').attr('data-target','-');
 				} else {
+					refreshGrid('#jqGridsvc', urlParam_svc);
 					$('#jqGrid3_panel1').collapse('show');
 					$('#panel_jqGrid3').attr('data-target','#jqGrid3_panel1');
 				}
