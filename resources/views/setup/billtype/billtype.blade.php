@@ -227,6 +227,18 @@ input.uppercase {
 			</div>
 
 			<div class="form-group">
+				<label class="col-md-2 control-label" for="effdatefrom">Effective Date From</label>  
+					<div class="col-md-3">
+						<input id="effdatefrom" name="effdatefrom" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" max="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+					</div>
+
+				<label class="col-md-2 control-label" for="effdateto">Effective Date To</label>  
+					<div class="col-md-3">
+						<input id="effdateto" name="effdateto" type="date" maxlength="12" class="form-control input-sm">
+					</div>
+			</div>
+
+			<div class="form-group">
 				<label class="col-md-2 control-label" for="adduser">Created By</label>  
 				<div class="col-md-3">
 					<input id="adduser" name="adduser" type="text" class="form-control input-sm" frozeOnEdit hideOne>

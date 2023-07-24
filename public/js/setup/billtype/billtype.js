@@ -174,6 +174,8 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
+			{ label: 'effdatefrom', name: 'effdatefrom', width: 22, classes: 'wrap text-uppercase', hidden: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'effdateto', name: 'effdateto', width: 22, classes: 'wrap text-uppercase', hidden: true, formatter: dateFormatter, unformat: dateUNFormatter},
 		],
 		autowidth: true,
 		viewrecords: true,
