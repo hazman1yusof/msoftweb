@@ -166,7 +166,7 @@ input.uppercase {
 			<div class="form-group">
 				<label class="col-md-2 control-label" for="billtype">Bill Type</label>  
 				<div class="col-md-3">
-					<input id="billtype" name="billtype" type="text" maxlength="5" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
+					<input id="billtype" name="billtype" type="text" maxlength="25" class="form-control input-sm uppercase" data-validation="required" frozeOnEdit>
 				</div>
 
 				<label class="col-md-2 control-label" for="a.description">Description</label>  

@@ -747,7 +747,7 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},{
-				label: 'UOM Code Recv', name: 'uom_recv', width: 150, classes: 'wrap', editable: true,
+				label: 'UOM Code<br/>Store Dept.', name: 'uom_recv', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:

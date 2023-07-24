@@ -742,8 +742,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Charge Code",
 			open: function(){
-				dialog_chgcode.urlParam.filterCol=['chggroup'],
-				dialog_chgcode.urlParam.filterVal=[$("#Fitem :input[name*='i_chggroup']").val()]
+				dialog_chgcode.urlParam.filterCol=['compcode','recstatus','chggroup'],
+				dialog_chgcode.urlParam.filterVal=['session.compcode','ACTIVE',$("#Fitem :input[name*='i_chggroup']").val()]
 			}
 		},'urlParam', 'radio', 'tab'
 	);
