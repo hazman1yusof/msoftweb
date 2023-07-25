@@ -31,6 +31,9 @@ i.fa {
 input.uppercase {
 	text-transform: uppercase;
 }
+span.input-group-addon > strong,span.input-group-addon > label{
+	color:grey;
+}
 
 @endsection
 

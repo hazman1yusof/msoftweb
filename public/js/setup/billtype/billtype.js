@@ -157,6 +157,8 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Bill Type', name: 'billtype', width: 40, classes: 'wrap', canSearch: true},
 			{ label: 'Description', name: 'description', width: 90, classes: 'wrap', canSearch: true, checked: true},
+			{ label: 'Effective Date<br>From', name: 'effdatefrom', width: 30, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Effective Date<br>To', name: 'effdateto', width: 30, classes: 'wrap text-uppercase', formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Price', name: 'price', width: 40, classes: 'wrap' },
 			{ label: 'OP Price', name: 'opprice', width: 40 ,formatter: formatter, unformat: unformat},
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter: 'currency'  },
@@ -174,8 +176,6 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'computerid', name: 'computerid', width: 90, hidden: true, classes: 'wrap' },
 			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden: true, classes: 'wrap' },
-			{ label: 'effdatefrom', name: 'effdatefrom', width: 22, classes: 'wrap text-uppercase', hidden: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'effdateto', name: 'effdateto', width: 22, classes: 'wrap text-uppercase', hidden: true, formatter: dateFormatter, unformat: dateUNFormatter},
 		],
 		autowidth: true,
 		viewrecords: true,
@@ -578,10 +578,7 @@ $(document).ready(function () {
 			$("#jqGridPager2 td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function () {
-			if (oper == 'add') {
-				$("#jqGridsvc").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
-
+			$("#jqGridsvc").setSelection($("#jqGrid").getDataIDs()[0]);
 			$('#' + $("#jqGridsvc").jqGrid('getGridParam', 'selrow')).focus();
 
 			/////////////////////////////// reccount ////////////////////////////
