@@ -31,9 +31,13 @@ i.fa {
 input.uppercase {
 	text-transform: uppercase;
 }
-span.input-group-addon > strong,span.input-group-addon > label{
+span.input-group-addon > strong, span.input-group-addon > label{
 	color:grey;
 }
+.input-group-addon {
+    color: grey !important;
+}
+
 
 @endsection
 
@@ -71,11 +75,11 @@ span.input-group-addon > strong,span.input-group-addon > label{
 		    </div>
 		</div>
 
-		<div class='click_row'>
+		<div class='click_row' id="click_row">
 			<label class="control-label">Bill Type</label>
 			<span id="showbilltype" style="display: block;">&nbsp</span>
 		</div>
-		<div class='click_row'>
+		<div class='click_row' id="click_row">
 			<label class="control-label">Description</label>
 			<span id="showbilldesc" style="display: block;">&nbsp</span>
 		</div>
