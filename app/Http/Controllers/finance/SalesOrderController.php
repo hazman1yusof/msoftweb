@@ -1316,51 +1316,54 @@ class SalesOrderController extends defaultController
         $billtymst = collect();
         $today = Carbon::now("Asia/Kuala_Lumpur");
 
-        $billtymst1 = DB::table('hisdb.billtymst')
-                            ->where('compcode',session('compcode'))
-                            ->whereNull('effdatefrom')
-                            ->whereNull('effdateto');
-        if($billtymst1->exists()){
-            foreach ($billtymst1->get() as $key => $value) {
-                $billtymst->push($value);
-                // array_push($billtymst, $value);
-            }
-        }
+        // $billtymst1 = DB::table('hisdb.billtymst')
+        //                     ->where('compcode',session('compcode'))
+        //                     ->whereNull('effdatefrom')
+        //                     ->whereNull('effdateto');
+        // if($billtymst1->exists()){
+        //     foreach ($billtymst1->get() as $key => $value) {
+        //         $billtymst->push($value);
+        //         // array_push($billtymst, $value);
+        //     }
+        // }
 
 
         $billtymst2 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
                             ->whereNotNull('effdatefrom')
                             ->whereNotNull('effdatefrom')
+                            ->where('opprice',1)
                             ->whereDate('effdatefrom','<=',$today)
                             ->whereDate('effdateto','>=',$today);
         if($billtymst2->exists()){
-            $billtymst->push($billtymst2->get());
-            // foreach ($billtymst2->get() as $key => $value) {
-            //     $billtymst->push($value);
-            //     // array_push($billtymst, $value);
-            // }
+            // $billtymst->push($billtymst2->get());
+            foreach ($billtymst2->get() as $key => $value) {
+                $billtymst->push($value);
+                // array_push($billtymst, $value);
+            }
         }
 
         $billtymst3 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
                             ->whereNull('effdatefrom')
                             ->whereNotNull('effdateto')
+                            ->where('opprice',1)
                             ->whereDate('effdateto','>=',$today);
         if($billtymst3->exists()){
-            $billtymst->push($billtymst3->get());
-            // foreach ($billtymst3->get() as $key => $value) {
-            //     array_push($billtymst, $value);
-            // }
+            // $billtymst->push($billtymst3->get());
+            foreach ($billtymst3->get() as $key => $value) {
+                $billtymst->push($value);
+                // array_push($billtymst, $value);
+            }
         }
 
         $billtymst4 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
                             ->whereNotNull('effdatefrom')
                             ->whereNull('effdateto')
+                            ->where('opprice',1)
                             ->whereDate('effdatefrom','<=',$today);
         if($billtymst4->exists()){
-            // $billtymst->push($billtymst4->get());
             foreach ($billtymst4->get() as $key => $value) {
                 $billtymst->push($value);
                 // array_push($billtymst, $value);
