@@ -152,13 +152,18 @@ $(document).ready(function () {
 				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
 			}
 		},
-		gridComplete: function () {
+		gridComplete: function (rowid) {
 			if($("#jqGrid").jqGrid('getGridParam', 'selrow') == null){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
 				$("#jqGrid").setSelection( $("#jqGrid").jqGrid('getGridParam', 'selrow'));
 			}
 			$("#searchForm input[name=Stext]").focus();
+			
+			if(rowid == null) {
+				refreshGrid("#detail",null,"kosongkan");
+				refreshGrid("#itemExpiry",null,"kosongkan");
+			}
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");

@@ -284,7 +284,15 @@ input.uppercase {
 					</div>
 
 					<hr>
-
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="cm_invflag">Inv Flag</label>  
+						<div class="col-md-3">
+							<label class="radio-inline"><input type="radio" name="cm_invflag" value='1'>Yes</label>
+							<label class="radio-inline"><input type="radio" name="cm_invflag" value='0'>No</label>
+						</div>
+					</div>
+					
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border">Inventory</legend>
 

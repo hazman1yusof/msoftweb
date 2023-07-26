@@ -11,24 +11,24 @@ use Carbon\Carbon;
 use DateTime;
 
 class ChargeMasterController extends defaultController
-{   
-
+{
+    
     var $table;
     var $duplicateCode;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
         $this->duplicateCode = "chgcode";
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('setup.chargemaster.chargemaster');
     }
-
+    
     public function form(Request $request)
-    {   
+    {
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -40,24 +40,24 @@ class ChargeMasterController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function add(Request $request){
-
+        
         DB::beginTransaction();
         DB::enableQueryLog();
-
-
+        
         try {
-
+            
             $duplicate = DB::table('hisdb.chgmast')->where('chgcode','=',$request->cm_chgcode);
-
+            
             if($duplicate->exists()){
                 throw new \Exception('chgcode already exist', 500);
             }
-
+            
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
+                
                 $recstatus_use = 'DEACTIVE';
-
+                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->cm_chgcode))
@@ -66,9 +66,9 @@ class ChargeMasterController extends defaultController
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+                
             }else{
-
+                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->cm_chgcode))
@@ -77,10 +77,11 @@ class ChargeMasterController extends defaultController
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+                
                 $recstatus_use = 'ACTIVE';
+                
             }
-
+            
             DB::table('hisdb.chgmast')
                 ->insert([
                     'compcode' => session('compcode'),
@@ -111,33 +112,37 @@ class ChargeMasterController extends defaultController
                     'computerid' => session('computerid'),
                     'lastcomputerid' => session('computerid'),
                 ]);
-
-                $queries = DB::getQueryLog();
-
-                $responce = new stdClass();
-                $responce->queries = $queries;
-                $responce->computerid = session('computerid');
-                echo json_encode($responce);
-
-             DB::commit();
+            
+            $queries = DB::getQueryLog();
+            
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            $responce->computerid = session('computerid');
+            echo json_encode($responce);
+            
+            DB::commit();
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
-       
+    
     }
-
+    
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
         DB::enableQueryLog();
-
+        
         try {
-
+            
             if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
+                
                 $recstatus_use = 'DEACTIVE';
-
+                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->cm_chgcode))
@@ -146,9 +151,9 @@ class ChargeMasterController extends defaultController
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+                
             }else{
-
+                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->cm_chgcode))
@@ -157,10 +162,11 @@ class ChargeMasterController extends defaultController
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
-
+                
                 $recstatus_use = 'ACTIVE';
+                
             }
-
+            
             DB::table('hisdb.chgmast')
                 ->where('idno','=',$request->cm_idno)
                 ->update([
@@ -189,30 +195,33 @@ class ChargeMasterController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),
                 ]);
-
-                $queries = DB::getQueryLog();
-
-                $responce = new stdClass();
-                $responce->queries = $queries;
-                $responce->lastcomputerid = session('computerid');
-                echo json_encode($responce);
-
-             DB::commit();
+            
+            $queries = DB::getQueryLog();
+            
+            $responce = new stdClass();
+            $responce->queries = $queries;
+            $responce->lastcomputerid = session('computerid');
+            echo json_encode($responce);
+            
+            DB::commit();
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
-       
+    
     }
-
+    
     public function del(Request $request){
-
+        
         DB::beginTransaction();
         DB::enableQueryLog();
-
+        
         try {
-
+            
             DB::table('hisdb.chgmast')
                 ->where('idno','=',$request->idno)
                 ->update([
@@ -221,23 +230,25 @@ class ChargeMasterController extends defaultController
                     'recstatus' => 'DEACTIVE',
                     'computerid' => session('computerid')
                 ]);
-
             
             $queries = DB::getQueryLog();
-
+            
             $responce = new stdClass();
             $responce->queries = $queries;
             echo json_encode($responce);
-
-             DB::commit();
+            
+            DB::commit();
+        
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+        
         }
-       
+        
     }
-
+    
     public function chgpricelatest(Request $request){
         $table = DB::table('hisdb.chgmast');
 
@@ -312,4 +323,5 @@ class ChargeMasterController extends defaultController
         $responce->sql_bind = $table->getBindings();
         return json_encode($responce);
     }
+    
 }
