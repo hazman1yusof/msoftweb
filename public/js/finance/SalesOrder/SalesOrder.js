@@ -1636,8 +1636,10 @@ $(document).ready(function () {
 		'billtype', 'hisdb.billtymst', '#db_hdrtype', errorField,
 		{
 			colModel: [
-				{ label: 'Billtype', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Bill type', name: 'billtype', width: 200, classes: 'pointer', canSearch: true, or_search: true },
 				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true,checked: true,},
+				{ label: 'Effective Date<br/>From', name: 'effdatefrom',formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },
+				{ label: 'Effective Date<br/>To', name: 'effdateto',formatter: dateFormatter, unformat: dateUNFormatter, width: 150, classes: 'pointer' },
 			],
 			urlParam: {
 				url:"./SalesOrder/table",
