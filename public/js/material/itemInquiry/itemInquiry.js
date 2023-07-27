@@ -150,6 +150,7 @@ $(document).ready(function () {
 				refreshGrid('#detail',urlParam2);
 
 				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
+				refreshGrid('#itemExpiry',urlParam3);
 			}
 		},
 		gridComplete: function (rowid) {
@@ -248,15 +249,23 @@ $(document).ready(function () {
 			}else{
 				$("#detail").setSelection( $("#detail").jqGrid('getGridParam', 'selrow'));
 			}
+
+			if(rowid == null) {
+				refreshGrid("#itemExpiry",null,"kosongkan");
+			}
 		},
 
 		onSelectRow:function(rowid,selected){
 			var jq=$('#detail').jqGrid('getRowData',rowid);
-			urlParam3.filterVal[0]=selrowData('#detail').s_itemcode;
-			urlParam3.filterVal[1]=selrowData('#detail').s_uomcode;
-			urlParam3.filterVal[2]=selrowData('#detail').s_deptcode;
-			$('#deptcodedtl').val(selrowData("#detail").s_deptcode);
-			$('#deptcodedtl_').html(selrowData("#detail").d_description);
+			
+
+			if(rowid != null) {
+				urlParam3.filterVal[0]=selrowData('#detail').s_itemcode;
+				urlParam3.filterVal[1]=selrowData('#detail').s_uomcode;
+				urlParam3.filterVal[2]=selrowData('#detail').s_deptcode;
+				$('#deptcodedtl').val(selrowData("#detail").s_deptcode);
+				$('#deptcodedtl_').html(selrowData("#detail").d_description);
+			}
 
 			refreshGrid('#itemExpiry',urlParam3);
 		},
