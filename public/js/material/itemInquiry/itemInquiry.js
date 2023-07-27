@@ -246,13 +246,12 @@ $(document).ready(function () {
 
 			if($("#detail").jqGrid('getGridParam', 'selrow') == null){
 				$("#detail").setSelection($("#detail").getDataIDs()[0]);
+				refreshGrid("#itemExpiry",null,"kosongkan");
 			}else{
 				$("#detail").setSelection( $("#detail").jqGrid('getGridParam', 'selrow'));
+				refreshGrid('#itemExpiry',urlParam3);
 			}
 
-			if(rowid == null) {
-				refreshGrid("#itemExpiry",null,"kosongkan");
-			}
 		},
 
 		onSelectRow:function(rowid,selected){
