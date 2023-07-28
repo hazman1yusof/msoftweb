@@ -857,6 +857,7 @@ $(document).ready(function () {
 			{ label: 'Group Code', name: 'groupcode', width: 30, sorttype: 'text', classes: 'wrap'  },
 			{ label: 'Class', name: 'Class', width: 40, sorttype: 'text', classes: 'wrap', hidden:true   },
 			{ label: 'Product Category', name: 'productcat', width: 40, sorttype: 'text', classes: 'wrap' ,canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Charge', name: 'chgflag', width: 25, formatter:formatter, unformat:unformat, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td'  },
 			{ label: 'Supplier Code', name: 'suppcode', width: 40, sorttype: 'text', classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'avgcost', name: 'avgcost', width: 50, hidden:true },
 			{ label: 'actavgcost', name: 'actavgcost', width: 50, hidden:true },
@@ -870,7 +871,7 @@ $(document).ready(function () {
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap', cellattr: function(rowid, cellvalue)
 							{return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''}, 
 			},
-			{ label: 'chgflag', name: 'chgflag', width: 50, hidden:true },
+			
 			{ label: 'subcatcode', name: 'subcatcode', width: 50, hidden:true },
 			{ label: 'expdtflg', name: 'expdtflg', width: 50, hidden:true },
 			{ label: 'mstore', name: 'mstore', width: 50, hidden:true },
@@ -953,6 +954,38 @@ $(document).ready(function () {
 		
 	});
 
+	////////////////////unformatter status////////////////////////////////////////
+	function formatterstatus_tick2(cellvalue, option, rowObject) {
+		if (cellvalue == '1') {
+			return `<span class="fa fa-check"></span>`;
+		}else{
+			return '';
+		}
+	}
+
+
+	function unformatstatus_tick2(cellvalue, option, rowObject) {
+		if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
+			return '1';
+		}else{
+			return '0';
+		}
+	}
+
+	function formatter(cellvalue, options, rowObject){
+		return parseInt(cellvalue) ? "Yes" : "No";
+	}
+
+	function unformat(cellvalue, options){
+		//return parseInt(cellvalue) ? "Yes" : "No";
+
+		if (cellvalue == 'Yes') {
+			return "1";
+		}
+		else {
+			return "0";
+		}
+	}
 	////////////////////////////formatter//////////////////////////////////////////////////////////
 
 	function readonlyRTTrue(){
