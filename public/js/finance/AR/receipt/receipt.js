@@ -183,7 +183,7 @@ $(document).ready(function () {
 				}
 			}
 		},{
-			title:"Select Payer code",
+			title:"Select Payer",
 			open: function(){
 				dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
 				dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
@@ -864,10 +864,11 @@ $(document).ready(function () {
 			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
 			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
 			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, //tunjuk
+			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden:true}, //tunjuk
+			{label: 'Posted Date', name: 'dbacthdr_posteddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter}, 
 			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50}, //tunjuk
 			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, canSearch:true}, //tunjuk
-			{label: 'Date', name: 'dbacthdr_entrydate',width: 40,formatter: dateFormatter, unformat: dateUNFormatter, canSearch:true},
+			{label: 'Date', name: 'dbacthdr_entrydate',width: 40,formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
 			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
