@@ -152,7 +152,6 @@ $(document).ready(function () {
 			{label: 'Department', name: 'dept', width: 90, classes: 'wrap', formatter: showdetail,unformat: unformat_showdetail},
 			{label: 'Effect Date', name: 'effectdate', width: 90 },
 			{label: 'defopenamt', name: 'defopenamt', width: 90 , hidden: true},
-			{label: 'User ID', name: 'usrid', width: 90},
 			{label: 'Last User', name: 'lastuser', width: 90},
 			{label: 'Till Status', name: 'tillstatus', width: 90 , canSearch:true},
 			{label: 'lastrcnumber', name: 'lastrcnumber', width: 90 , hidden: true},

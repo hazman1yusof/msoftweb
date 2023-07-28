@@ -195,7 +195,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
+			// $('#jqGrid #' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
 		},
 		onSelectRow: function (rowid, selected) {
@@ -579,7 +579,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$("#jqGridsvc").setSelection($("#jqGrid").getDataIDs()[0]);
-			$('#' + $("#jqGridsvc").jqGrid('getGridParam', 'selrow')).focus();
+			// $('#jqGridsvc #' + $("#jqGridsvc").jqGrid('getGridParam', 'selrow')).focus();
 
 			/////////////////////////////// reccount ////////////////////////////
 			if ($("#jqGridsvc").getGridParam("reccount") >= 1) {
@@ -598,7 +598,7 @@ $(document).ready(function () {
 				$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").hide();
 
 
-				refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
+				// refreshGrid('#jqGridtype', urlParam_type,'kosongkan');
 				$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").hide();
 
 				if (rowData['svc_allitem'] == '0') {
@@ -610,12 +610,12 @@ $(document).ready(function () {
 					$("#pg_jqGridPager3 table, #jqGriditem_c, #click_row2").show();
 				}
 
-				if (rowData['svc_alltype'] == '0') {
-					urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
-					urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
-					refreshGrid('#jqGridtype', urlParam_type);
-					$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").show();
-				}
+				// if (rowData['svc_alltype'] == '0') {
+				// 	urlParam_type.filterVal[0] = selrowData("#jqGridsvc").svc_billtype;
+				// 	urlParam_type.filterVal[2] = selrowData("#jqGridsvc").svc_chggroup;
+				// 	refreshGrid('#jqGridtype', urlParam_type);
+				// 	$("#pg_jqGridPager4 table, #jqGridtype_c, #click_row3").show();
+				// }
 
 
 				dialog_chgtype.urlParam.filterCol=['chggroup'];
@@ -906,7 +906,7 @@ $(document).ready(function () {
 				$("#jqGriditem").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
-			$('#' + $("#jqGriditem").jqGrid('getGridParam', 'selrow')).focus();
+			// $('#jqGriditem #' + $("#jqGriditem").jqGrid('getGridParam', 'selrow')).focus();
 
 			/////////////////////////////// reccount ////////////////////////////
 			if ($("#jqGriditem").getGridParam("reccount") >= 1) {
@@ -1191,7 +1191,7 @@ $(document).ready(function () {
 				$("#jqGridtype").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 
-			$('#' + $("#jqGridtype").jqGrid('getGridParam', 'selrow')).focus();
+			// $('#' + $("#jqGridtype").jqGrid('getGridParam', 'selrow')).focus();
 
 			/////////////////////////////// reccount ////////////////////////////
 			if ($("#jqGridtype").getGridParam("reccount") >= 1) {

@@ -478,9 +478,22 @@
 
 				<div class="form-group">
                 	<label class="col-md-2 control-label" for="itemcode">Item Code</label>  
-                    	<div class="col-md-4">
+                    	<div class="col-md-3">
                       		<input id="itemcodeAddNew" name="itemcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" frozeOnEdit>
                       	</div>
+
+
+                	<label class="col-md-2 control-label" for="uomcodeAddNew">UOM Code</label> 
+                	<div class="col-md-3">
+	  				<div class='input-group'>
+						<input id="uomcodeAddNew" name="uomcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  				</div>
+					<span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group">
 				</div>
                 
                 <div class="form-group">
@@ -503,13 +516,13 @@
 				  		<div class='input-group'>
 
                 			@if (request()->get('groupcode') == 'Stock')
-				  			<input id="productcatAddNew_stock" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  			<input id="productcatAddNew_stock" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@elseif (request()->get('groupcode') == 'Asset')
-				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  			<input id="productcatAddNew_asset" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@else
-				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required">
+				  			<input id="productcatAddNew_other" name="productcat" type="text" class="form-control input-sm text-uppercase" data-validation="required" rdonly>
 				  				<a class='input-group-addon btn btn-primary' id="2"><span class='fa fa-ellipsis-h' id-="3"></span></a>
 				  			@endif
 
@@ -528,7 +541,7 @@
 							<label class="radio-inline"><input type="radio" name="Class" id="a" value='Asset'>Asset</label>
 						</div>
 				</div>
-
+<!-- 
 				<div class="form-group">
 					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
 						<div class="col-md-3">
@@ -540,7 +553,7 @@
 							<input id="ipaddress" name="ipaddress" type="text" maxlength="30" class="form-control input-sm" data-validation="required" frozeOnEdit>
 					  	</div>
 				</div>  
-
+ -->
 			</form>
 		</div>
 

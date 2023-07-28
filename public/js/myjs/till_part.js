@@ -135,12 +135,8 @@
 
 function checkifuserlogin(callback){
 	var param={
-		action:'get_value_default',
-		url:'util/get_value_default',
-		field:['*'],
-		table_name:['debtor.tilldetl'],
-		filterCol:['cashier','compcode','closedate'],
-		filterVal:['session.username','session.compcode','null.null']
+		action:'checkifuserlogin',
+		url:'./till/table'
 	}
 	$.get( param.url+"?"+$.param(param), function( data ) {
 		

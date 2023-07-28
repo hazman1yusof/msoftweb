@@ -178,8 +178,9 @@ abstract class defaultController extends Controller{
                 $table = $table->orWhere(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
-                        if($found !== false){
-                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where($searchCol_array[$key],'like',$search_);
                         }
                     }
                 });
@@ -829,7 +830,23 @@ abstract class defaultController extends Controller{
         return $carbon;
     }
 
-    
+    public static function begins_search_if($col_arr,$search_col,$search_val){
+
+        $found=false;
+        foreach($col_arr as $col_str){
+            if(str_contains($search_col, $col_str)) {
+                $found=true;break;
+            }
+        }  
+
+        if($found){
+            if ($search_val[0] === '%')
+                $search_val = substr($search_val, 1);
+        }
+
+        return $search_val;
+    }
+
     public function convertNumberToWordBM($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));

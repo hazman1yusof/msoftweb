@@ -1426,7 +1426,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#"+obj.gridname).jqGrid({
 			datatype: "local",
 			colModel: obj.field,
-			autowidth: true,viewrecords:true,loadonce:false,width:200,height:200,owNum:30,hoverrows:false,
+			loadonce: (obj.jqgrid_.hasOwnProperty('loadonce'))?obj.jqgrid_.loadonce:false,
+			autowidth: true,viewrecords:true,width:200,height:200,owNum:30,hoverrows:false,
 			pager: "#"+obj.gridname+"Pager",
 			sortname: (obj.jqgrid_.hasOwnProperty('sortname'))?obj.jqgrid_.sortname:'',
 			sortorder: (obj.jqgrid_.hasOwnProperty('sortorder'))?obj.jqgrid_.sortorder:'',
@@ -1500,7 +1501,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function checkInput(errorField,idtopush,jqgrid=null,optid=null,before_check,after_check){
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
-		
+		if(value.trim() == '')return null;
+
 		renull_search(this);
 		if (before_check !== undefined) {
 			renull_search(this);

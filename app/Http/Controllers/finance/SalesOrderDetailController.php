@@ -43,10 +43,10 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_table_dtl($request);
             case 'get_itemcode_price':
                 return $this->get_itemcode_price($request);
-            case 'get_itemcode_uom':
-                return $this->get_itemcode_uom($request);
             case 'get_itemcode_price_check':
                 return $this->get_itemcode_price_check($request);
+            case 'get_itemcode_uom':
+                return $this->get_itemcode_uom($request);
             default:
                 return 'error happen..';
         }
@@ -105,9 +105,13 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
                         ->where('cm.compcode','=',session('compcode'))
-                        ->where('cm.recstatus','<>','DELETE');
+                        ->where('cm.recstatus','<>','DELETE')
+                        ->where(function ($query) {
+                           $query->whereNotNull('st.idno')
+                                 ->orWhere('cm.invflag', '=', 0);
+                        });
 
         $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
@@ -116,10 +120,10 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
-        $table = $table->join('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
-                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                         });
@@ -194,6 +198,7 @@ class SalesOrderDetailController extends defaultController
         $rows = $paginate->items();
 
         foreach ($rows as $key => $value) {
+
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
                 ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')

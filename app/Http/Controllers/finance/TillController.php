@@ -117,9 +117,7 @@ class TillController extends defaultController
                 }
 
             }
-        }
-
-        
+        } 
 
         return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
     }
@@ -144,6 +142,17 @@ class TillController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'checkifuserlogin':
+                return $this->checkifuserlogin($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+
     public function use_till(Request $request){
         DB::beginTransaction();
         try {
@@ -156,8 +165,8 @@ class TillController extends defaultController
                     'compcode' => session('compcode'), 
                     'tillstatus' => 'O', 
                     'dept' => auth()->user()->dept,
-                    'upduser' => session('username'),
                     'lastuser' => session('username'),
+                    'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
@@ -254,5 +263,16 @@ class TillController extends defaultController
                 'deluser' => strtoupper(session('username')),
                 'deldate' => Carbon::now("Asia/Kuala_Lumpur")
             ]);
+    }
+
+    public function checkifuserlogin(Request $request){
+        $tilldetl = DB::table('debtor.tilldetl')
+                    ->where('compcode',session('compcode'))
+                    ->where('cashier',session('username'))
+                    ->whereNull('closedate');
+
+        $responce = new stdClass();
+        $responce->rows = $tilldetl->get();
+        return json_encode($responce);
     }
 }

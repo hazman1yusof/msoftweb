@@ -115,6 +115,39 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog();
 
+
+	var dialog_uomcode_addnew = new ordialog(
+		'dialog_uomcode_addnew','material.uom','#uomcodeAddNew',errorField,
+		{	colModel:[
+				{label:'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['recstatus','compcode'],
+				filterVal:['ACTIVE','session.compcode']
+			},
+			ondblClickRow:function(){
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}	
+		},
+		{
+			title:"Select UOM Code",
+			open: function(){
+				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
+				dialog_uomcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
+			}
+		},'urlParam','radio','tab',false
+	);
+	dialog_uomcode_addnew.makedialog(false);
+
 	var dialog_subcategory = new ordialog(
 		'subcatcode','material.subcategory','#subcatcode','errorField',
 		{	colModel:[
@@ -742,13 +775,7 @@ $(document).ready(function () {
 				dialog_suppcode.check(errorField);
 				dialog_mstore.check(errorField);
 				// dialog_subcategory.check(errorField);
-				dialog_taxCode.check(errorField);	
-				dialog_chgclass.check(errorField);
-				dialog_chgtype.check(errorField);
-				dialog_chggroup.check(errorField);
-				dialog_dosage.check(errorField);
-				dialog_frequency.check(errorField);
-				dialog_instruction.check(errorField);
+				dialog_taxCode.check(errorField);
 			}if(oper == 'add') {
 				dialog_itemcode.on();
 				dialog_pouom.off();
@@ -1060,6 +1087,39 @@ $(document).ready(function () {
 	function showing_charges_fieldset(){
 		if($("input[type='radio'][name='chgflag'][value='1']").is(":checked")){
 			$('#charges_fieldset').show();
+
+			var param={
+				action:'get_charges_from_product',
+				url: './product/table',
+				chgcode:$('#itemcode').val(),
+				uomcode:$('#uomcode').val()
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+				
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.chgmast)){
+					$('#cm_packqty').val(data.chgmast.packqty);
+					$('#cm_druggrcode').val(data.chgmast.druggrcode);
+					$('#cm_subgroup').val(data.chgmast.subgroup);
+					$('#cm_stockcode').val(data.chgmast.stockcode);
+					$('#cm_chgclass').val(data.chgmast.chgclass);
+					$('#cm_dosecode').val(data.chgmast.dosecode);
+					$('#cm_chggroup').val(data.chgmast.chggroup);
+					$('#cm_freqcode').val(data.chgmast.freqcode);
+					$('#cm_chgtype').val(data.chgmast.chgtype);
+					$('#cm_instruction').val(data.chgmast.instruction);
+					$('#cm_invgroup').val(data.chgmast.invgroup);
+
+					dialog_chgclass.check(errorField);
+					dialog_chgtype.check(errorField);
+					dialog_chggroup.check(errorField);
+					dialog_dosage.check(errorField);
+					dialog_frequency.check(errorField);
+					dialog_instruction.check(errorField);
+				}
+			});
+
+
 		}else{
 			$('#charges_fieldset').hide();
 		}
@@ -1283,6 +1343,7 @@ $(document).ready(function () {
 		}
 	}];
 
+	dialog_cat = null;
 	$("#addNewProductDialog")
 		.dialog({
 		width: 6/10 * $(window).width(),
@@ -1291,8 +1352,10 @@ $(document).ready(function () {
 		open: function( event, ui ) {
 			rdonly("#addNewProductDialog");
 
+			dialog_uomcode_addnew.on();
 			if($('#groupcode2').val()=="Stock" && $('#othergrid_productcatAddNew1').length == 0){
-					let dialog_cat1 = new ordialog(
+				if(dialog_cat == null){
+					let dialog_cat = new ordialog(
 						'productcatAddNew1','material.category','#productcatAddNew_stock',errorField,
 						{	colModel:[
 								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
@@ -1308,17 +1371,18 @@ $(document).ready(function () {
 							title:"Select Product Category",
 							open: function(){
 								var gc2 = $('#groupcode2').val();
-								dialog_cat1.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat1.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat.urlParam.filterVal=['Stock', 'PO', 'ACTIVE',$('#Class2').val()];
 							}
 						},'urlParam'
 					);
-					dialog_cat1.makedialog();
-					dialog_cat1.on();
+					dialog_cat.makedialog();
+					dialog_cat.on();
+				}
 
-				} else if($('#groupcode2').val()=="Asset" && $('#othergrid_productcatAddNew2').length == 0) {
-
-					let dialog_cat2 = new ordialog(
+			} else if($('#groupcode2').val()=="Asset" && $('#othergrid_productcatAddNew2').length == 0) {
+				if(dialog_cat == null){
+					let dialog_cat = new ordialog(
 						'productcatAddNew2','finance.facode','#productcatAddNew_asset',errorField,
 						{	colModel:[
 								{label:'Category Code',name:'assetcode',width:100,classes:'pointer',canSearch:true,or_search:true},
@@ -1333,16 +1397,18 @@ $(document).ready(function () {
 						},{
 							title:"Select Product Category",
 							open: function(){
-								dialog_cat2.urlParam.filterCol=['recstatus'];
-								dialog_cat2.urlParam.filterVal=['ACTIVE'];
+								dialog_cat.urlParam.filterCol=['recstatus'];
+								dialog_cat.urlParam.filterVal=['ACTIVE'];
 							}
 						},'urlParam'
 					);
-					dialog_cat2.makedialog();
-					dialog_cat2.on();
+					dialog_cat.makedialog();
+					dialog_cat.on();
+				}
 
-				} else if($('#groupcode2').val()=="Others" && $('#othergrid_productcatAddNew3').length == 0) {
-					let dialog_cat3 = new ordialog(
+			} else if($('#groupcode2').val()=="Others" && $('#othergrid_productcatAddNew3').length == 0) {
+				if(dialog_cat == null){
+					let dialog_cat = new ordialog(
 						'productcatAddNew3','material.category','#productcatAddNew_other',errorField,
 						{	colModel:[
 								{label:'Category Code',name:'catcode',width:100,classes:'pointer',canSearch:true,or_search:true},
@@ -1357,14 +1423,15 @@ $(document).ready(function () {
 						},{
 							title:"Select Product Category",
 							open: function(){
-								dialog_cat3.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
-								dialog_cat3.urlParam.filterVal=['Other', 'PO', 'ACTIVE',$('#Class2').val()];
+								dialog_cat.urlParam.filterCol=['cattype', 'source', 'recstatus','class'];
+								dialog_cat.urlParam.filterVal=['Other', 'PO', 'ACTIVE',$('#Class2').val()];
 							}
 						},'urlParam'
 					);
-					dialog_cat3.makedialog();
-					dialog_cat3.on();
+					dialog_cat.makedialog();
+					dialog_cat.on();
 				}
+			}
 		},
 		close: function( event, ui ) {
 			emptyFormdata([],'#adpFormdata');
