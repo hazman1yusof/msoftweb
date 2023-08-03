@@ -234,10 +234,10 @@
 
 		<div class='col-md-6'>
 			<div class='panel panel-info'>
-				<div class="panel-heading">Choose Payer Code</div>
+				<div class="panel-heading">Choose Payer</div>
 				<div class="panel-body">
 		  			<div class="col-md-12 minuspad-15">
-							<label class="control-label" for="dbacthdr_payercode">Payer Code</label>  
+							<label class="control-label" for="dbacthdr_payercode">Payer</label>  
 			  			<div class='input-group'>
 							<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>

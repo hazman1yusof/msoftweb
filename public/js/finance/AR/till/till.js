@@ -92,18 +92,23 @@ $(document).ready(function () {
 			switch(oper) {
 				case state = 'add':
 					$( this ).dialog( "option", "title", "Add" );
+					rdonly("#formdata");
 					enableForm('#formdata');
+					hideOne("#formdata");
 					break;
 				case state = 'edit':
 					$( this ).dialog( "option", "title", "Edit" );
 					enableForm('#formdata');
 					padArray(["#lastrcnumber","#lastrefundno","#lastinnumber","#lastcrnoteno"]);
 					frozeOnEdit("#dialogForm");
+					rdonly("#formdata");
+					$('#formdata :input[hideOne]').show();
 					break;
 				case state = 'view':
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
 					$(this).dialog("option", "buttons",butt2);
+					$('#formdata :input[hideOne]').show();
 					break;
 			}
 			if(oper!='view'){
@@ -158,6 +163,8 @@ $(document).ready(function () {
 			{label: 'lastrefundno', name: 'lastrefundno', width: 90 , hidden: true},
 			{label: 'lastcrnoteno', name: 'lastcrnoteno', width: 90 , hidden: true},
 			{label: 'lastinnumber', name: 'lastinnumber', width: 90 , hidden: true},
+			{ label: 'lastcomputerid', name: 'lastcomputerid', width: 90, hidden:true},
+			{ label: 'computerid', name: 'computerid', width: 90, hidden:true},
 		],
 		autowidth:true,
         multiSort: true,

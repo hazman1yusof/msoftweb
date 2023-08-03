@@ -217,6 +217,7 @@ class TillController extends defaultController
                     'lastrefundno' => $request->lastrefundno, 
                     'lastcrnoteno' => $request->lastcrnoteno, 
                     'lastinnumber' => $request->lastinnumber,
+                    'computerid' => session('computerid'),
                 ]);
 
              DB::commit();
@@ -245,7 +246,8 @@ class TillController extends defaultController
                     'lastcrnoteno' => $request->lastcrnoteno, 
                     'lastinnumber' => $request->lastinnumber,
                     'upduser' => strtoupper(session('username')),
-                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastcomputerid' => session('computerid'),
                 ]);
             DB::commit();
         } catch (\Exception $e) {
@@ -261,7 +263,8 @@ class TillController extends defaultController
             ->update([  
                 'recstatus' => 'DEACTIVE',
                 'deluser' => strtoupper(session('username')),
-                'deldate' => Carbon::now("Asia/Kuala_Lumpur")
+                'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'computerid' => session('computerid')
             ]);
     }
 

@@ -11,6 +11,7 @@
 		{	colModel:[
 				{label:'Till Code',name:'tillcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Till Name',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Last User',name:'lastuser',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Till Status',name:'tillstatus',hidden:true},
 				{label:'defopenamt',name:'defopenamt',hidden:true}
 			],

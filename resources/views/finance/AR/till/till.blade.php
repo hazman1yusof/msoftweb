@@ -96,16 +96,28 @@
 				</div>
 				
 				<div class="form-group">
-				  <label class="col-md-2 control-label" for="lastcrnoteno">Last No. Credit note</label>  
-				  <div class="col-md-3">
-				  <input id="lastcrnoteno" name="lastcrnoteno" type="text" class="form-control input-sm" value="0000000001"/>
-				  </div>
+					<label class="col-md-2 control-label" for="lastcrnoteno">Last No. Credit note</label>  
+						<div class="col-md-3">
+							<input id="lastcrnoteno" name="lastcrnoteno" type="text" class="form-control input-sm" value="0000000001"/>
+						</div>
 				  
-				  <label class="col-md-2 control-label" for="lastinnumber">Last No. In</label>  
-					<div class="col-md-3">
-					<input id="lastinnumber" name="lastinnumber" type="text" class="form-control input-sm" value="0000000001">
-				  </div>
+				  	<label class="col-md-2 control-label" for="lastinnumber">Last No. In</label>  
+						<div class="col-md-3">
+							<input id="lastinnumber" name="lastinnumber" type="text" class="form-control input-sm" value="0000000001">
+				  		</div>
 				</div>
+
+				<div class="form-group">
+					<label class="col-md-2 control-label" for="computerid">Computer Id</label>  
+						<div class="col-md-3">
+						  	<input id="computerid" name="computerid" type="text" class="form-control input-sm" frozeOnEdit hideOne >
+						</div>
+
+						<label class="col-md-2 control-label" for="lastcomputerid">Last Computer Id</label>  
+						<div class="col-md-3">
+						  	<input id="lastcomputerid" name="lastcomputerid" type="text" class="form-control input-sm" frozeOnEdit hideOne >
+						</div>
+				</div> 
 			</form>
 		</div>
 

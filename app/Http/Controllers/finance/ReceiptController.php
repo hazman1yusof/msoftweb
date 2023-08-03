@@ -94,6 +94,7 @@ class ReceiptController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'posteddate' => $request->dbacthdr_posteddate,
                 'reference' => $request->dbacthdr_reference,
                 'authno' => $request->dbacthdr_authno,
                 'expdate' => $request->dbacthdr_expdate,
