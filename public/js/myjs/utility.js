@@ -1123,6 +1123,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		action:'get_table_default',
 		url:geturl(jqgrid_.urlParam),
 		url_chk:jqgrid_.urlParam.url_chk,
+		action_chk:jqgrid_.urlParam.action_chk,
 		table_name:table,
 		field:getfield(jqgrid_.colModel),
 		table_id:getfield(jqgrid_.colModel)[0],
@@ -1792,7 +1793,7 @@ function faster_detail_load(){
 		let storage_obj = localStorage.getItem(storage_name);
 		let desc_name = param.field[1];
 		if(!storage_obj){
-			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue.trim() != ''){
+			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue != 0 && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {

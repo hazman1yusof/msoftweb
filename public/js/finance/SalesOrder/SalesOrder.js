@@ -224,12 +224,12 @@ $(document).ready(function () {
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
+			{ label: 'O/S<br>Amount', name: 'db_outamount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 10 },
 			{ label: 'lineno_', name: 'db_lineno_', width: 20, hidden: true },
 			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
-			{ label: 'outamount', name: 'db_outamount', width: 20, hidden: true },
 			{ label: 'debtortype', name: 'db_debtortype', hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', hidden: true },
@@ -449,8 +449,8 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			},'json')
 		.fail(function (data) {
-			alert(data.responseJSON.message);
-			$('.noti').text(data.responseJSON.message);
+			$('#db_hdrtype').focus();
+			$('.noti').text(data.responseText);
 		}).done(function (data) {
 			$("#saveDetailLabel").attr('disabled',false)
 			unsaved = false;
@@ -1415,7 +1415,6 @@ $(document).ready(function () {
 			remove_error("#jqGrid2 #"+id_optid+"_pouom");
 		}, 500 );
 
-
 		$(".noti").empty();
 
 	}
@@ -1643,7 +1642,11 @@ $(document).ready(function () {
 			],
 			urlParam: {
 				url:"./SalesOrder/table",
-				action: 'get_hdrtype'
+				action: 'get_hdrtype',
+				url_chk: "./SalesOrder/table",
+				action_chk: "get_hdrtype_check",
+				filterCol:[],
+				filterVal:[]
 			},
 			// urlParam: {
 			// 	filterCol:['compcode','recstatus','opprice'],
@@ -1667,8 +1670,10 @@ $(document).ready(function () {
 			open: function(){
 				dialog_billtypeSO.urlParam.url = "./SalesOrder/table";
 				dialog_billtypeSO.urlParam.action = 'get_hdrtype';
-				dialog_billtypeSO.urlParam.url_chk = "./SalesOrderDetail/table";
+				dialog_billtypeSO.urlParam.url_chk = "./SalesOrder/table";
 				dialog_billtypeSO.urlParam.action_chk = "get_hdrtype_check";
+				dialog_billtypeSO.urlParam.filterCol = [];
+				dialog_billtypeSO.urlParam.filterVal = [];
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1754,12 +1759,19 @@ $(document).ready(function () {
 				{label: 'Price',name:'price',width:100,classes:'pointer'},
 				{label: 'Tax',name:'taxcode',width:100,classes:'pointer'},
 				{label: 'rate',name:'rate',hidden:true},
+				{label: 'st_idno',name:'st_idno',hidden:true},
+				{label: 'invflag',name:'invflag',hidden:true},
+				{label: 'billty_amount',name:'billty_amount',hidden:true},
+				{label: 'billty_percent',name:'billty_percent',hidden:true},
 				
 			],
 			urlParam: {
 					url:"./SalesOrderDetail/table",
 					action: 'get_itemcode_price',
+					url_chk: './SalesOrderDetail/table',
+					action_chk: 'get_itemcode_price_check',
 					entrydate : $('#db_entrydate').val(),
+					billtype : $('#db_hdrtype').val(),
 					filterCol:['deptcode','price'],
 					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
 				},
@@ -1774,18 +1786,29 @@ $(document).ready(function () {
 
 				let data=selrowData('#'+dialog_chggroup.gridname);
 
-				$("#jqGrid2 #"+id_optid+"_chggroup").val(data['chgcode']);
-				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['taxcode']);
-				$("#jqGrid2 #"+id_optid+"_uom_rate").val(data['rate']);
-				$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
-				$("#jqGrid2 #"+id_optid+"_uom").val(data['uom']);
-				$("#jqGrid2 #"+id_optid+"_uom_recv").val(data['uom']);
-				$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
+				if(data.invflag == '1' && data.st_idno == ""){
+					myerrorIt_only2('input#'+id_optid+'_chggroup',true);
+					let name = 'nostock';
+					let fail_msg = 'Not in Stock';
+					$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>")
+					$('span#'+id_optid+'_chggroup').text('Not in Stock');
+					alert('error');
+				}else{
+					$("#jqGrid2 #"+id_optid+"_chggroup").val(data['chgcode']);
+					$("#jqGrid2 #"+id_optid+"_taxcode").val(data['taxcode']);
+					$("#jqGrid2 #"+id_optid+"_uom_rate").val(data['rate']);
+					$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
+					$("#jqGrid2 #"+id_optid+"_uom").val(data['uom']);
+					$("#jqGrid2 #"+id_optid+"_uom_recv").val(data['uom']);
+					$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
+					$("#jqGrid2 #"+id_optid+"_billtypeperct").val(data['billty_percent']);
+					$("#jqGrid2 #"+id_optid+"_billtypeamt").val(data['billty_amount']);
 
-				// dialog_uomcode.check(errorField);
-				// dialog_uomcode_recv.check(errorField);
-				dialog_tax.check(errorField);
-				mycurrency2.formatOn();
+					// dialog_uomcode.check(errorField);
+					// dialog_uomcode_recv.check(errorField);
+					dialog_tax.check(errorField);
+					mycurrency2.formatOn();
+				}
 
 			},
 			gridComplete: function(obj){
@@ -1809,6 +1832,8 @@ $(document).ready(function () {
 				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
 				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 				dialog_chggroup.urlParam.entrydate = $('#db_entrydate').val();
+				dialog_chggroup.urlParam.billtype = $('#db_hdrtype').val();
+
 
 			},
 			close: function(){

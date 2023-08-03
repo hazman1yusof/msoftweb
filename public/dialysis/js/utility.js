@@ -1634,7 +1634,7 @@ function faster_detail_load(){
 		let storage_obj = localStorage.getItem(storage_name);
 		let desc_name = param.field[1];
 		if(!storage_obj){
-			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue.trim() != ''){
+			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue != 0 && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {

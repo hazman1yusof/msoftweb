@@ -42,7 +42,11 @@ class SalesOrderDetailController extends defaultController
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
             case 'get_itemcode_price':
-                return $this->get_itemcode_price($request);
+                if(!empty($request->searchCol2)){
+                    return $this->get_itemcode_price_2($request);
+                }else{
+                    return $this->get_itemcode_price($request);
+                }
             case 'get_itemcode_price_check':
                 return $this->get_itemcode_price_check($request);
             case 'get_itemcode_uom':
@@ -88,6 +92,7 @@ class SalesOrderDetailController extends defaultController
         $deptcode = $request->filterVal[0];
         $priceuse = $request->filterVal[1];
         $entrydate = $request->entrydate;
+        $billtype_obj = $this->billtype_obj_get($request);
 
         switch ($priceuse) {
             case 'PRICE1':
@@ -105,13 +110,13 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode as chgcode','cm.invflag as invflag','cm.description as description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
                         ->where('cm.compcode','=',session('compcode'))
-                        ->where('cm.recstatus','<>','DELETE')
-                        ->where(function ($query) {
-                           $query->whereNotNull('st.idno')
-                                 ->orWhere('cm.invflag', '=', 0);
-                        });
+                        ->where('cm.recstatus','<>','DELETE');
+                        // ->where(function ($query) {
+                        //    $query->whereNotNull('st.idno')
+                        //          ->orWhere('cm.invflag', '=', 0);
+                        // });
 
         $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
@@ -144,9 +149,11 @@ class SalesOrderDetailController extends defaultController
                 $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
                     foreach ($searchCol_array as $key => $value) {
                         $found = array_search($key,$occur_ar);
-                        if($found !== false){
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
                             // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
-                            $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                            // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
                         }
                     }
                 });
@@ -198,6 +205,9 @@ class SalesOrderDetailController extends defaultController
         $rows = $paginate->items();
 
         foreach ($rows as $key => $value) {
+            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+            $value->billty_amount = $billtype_amt_percent->amount; 
+            $value->billty_percent = $billtype_amt_percent->percent_;
 
             $chgprice_obj = DB::table('hisdb.chgprice as cp')
                 ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
@@ -252,11 +262,265 @@ class SalesOrderDetailController extends defaultController
         return json_encode($responce);
     }
 
+    public function get_itemcode_price_2(Request $request){
+        $deptcode = $request->filterVal[0];
+        $priceuse = $request->filterVal[1];
+        $entrydate = $request->entrydate;
+        $serch_chgcode = substr($request->searchVal2[0], 1);
+        $billtype_obj = $this->billtype_obj_get($request);
+
+        switch ($priceuse) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt3';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
+
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->Where('cm.chgcode','like',$serch_chgcode)
+                        ->where('cm.compcode','=',session('compcode'))
+                        ->where('cm.recstatus','<>','DELETE')
+                        ->orderBy('cm.idno','desc');
+                        // ->where(function ($query) {
+                        //    $query->whereNotNull('st.idno')
+                        //          ->orWhere('cm.invflag', '=', 0);
+                        // });
+
+        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            $join = $join->whereNotNull('cp.effdate');
+                            $join = $join->where('cp.effdate', '<=', $entrydate);
+                        });
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
+                        });
+
+        $table_count = $table->count();
+
+        if($table_count>0){
+
+            if(!empty($request->sidx)){
+
+                if(!empty($request->fixPost)){
+                    $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+                }
+                
+                $pieces = explode(", ", $request->sidx .' '. $request->sord);
+                if(count($pieces)==1){
+                    $table = $table->orderBy($request->sidx, $request->sord);
+                }else{
+                    for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                        $pieces_inside = explode(" ", $pieces[$i]);
+                        $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                    }
+                }
+            }else{
+                $table = $table->orderBy('cm.idno','desc');
+            }
+
+            $paginate = $table->paginate($request->rows);
+            $rows = $paginate->items();
+
+            foreach ($rows as $key => $value) {
+                $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+                $value->billty_amount = $billtype_amt_percent->amount; 
+                $value->billty_percent = $billtype_amt_percent->percent_;
+
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+                    ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $value->chgcode)
+                    ->where('cp.uom', '=', $value->uom)
+                    ->whereDate('cp.effdate', '<=', $entrydate)
+                    ->orderBy('cp.effdate','desc');
+
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+
+                    if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                        unset($rows[$key]);
+                        continue;
+                    }
+                }
+            }
+
+            $rows = array_values($rows);
+
+            //////////paginate/////////
+            // $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            // $responce->rows = $paginate->items();
+            $responce->rows = $rows;
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+
+            return json_encode($responce);
+        }else{
+
+            $table = DB::table('hisdb.chgmast as cm')
+                            ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                            ->Where('cm.description','like',$request->searchVal2[0])
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.recstatus','<>','DELETE')
+                            ->orderBy('cm.idno','desc');
+                            // ->where(function ($query) {
+                            //    $query->whereNotNull('st.idno')
+                            //          ->orWhere('cm.invflag', '=', 0);
+                            // });
+
+            $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                                $join = $join->where('cp.compcode', '=', session('compcode'));
+                                $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                $join = $join->whereNotNull('cp.effdate');
+                                $join = $join->where('cp.effdate', '<=', $entrydate);
+                            });
+
+            $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                                $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                                $join = $join->where('st.compcode', '=', session('compcode'));
+                                $join = $join->where('st.unit', '=', session('unit'));
+                                $join = $join->where('st.deptcode', '=', $deptcode);
+                                $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                            });
+
+            $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+                                $join = $join->where('cp.compcode', '=', session('compcode'));
+                                $join = $join->on('cp.optax', '=', 'tm.taxcode');
+                            });
+
+            if(!empty($request->sidx)){
+
+                if(!empty($request->fixPost)){
+                    $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+                }
+                
+                $pieces = explode(", ", $request->sidx .' '. $request->sord);
+                if(count($pieces)==1){
+                    $table = $table->orderBy($request->sidx, $request->sord);
+                }else{
+                    for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                        $pieces_inside = explode(" ", $pieces[$i]);
+                        $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                    }
+                }
+            }else{
+                $table = $table->orderBy('cm.idno','desc');
+            }
+
+            $paginate = $table->paginate($request->rows);
+            $rows = $paginate->items();
+
+            foreach ($rows as $key => $value) {
+                $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+                $value->billty_amount = $billtype_amt_percent->amount; 
+                $value->billty_percent = $billtype_amt_percent->percent_;
+
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                    ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+                    ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+                    ->where('cp.compcode', '=', session('compcode'))
+                    ->where('cp.chgcode', '=', $value->chgcode)
+                    ->where('cp.uom', '=', $value->uom)
+                    ->whereDate('cp.effdate', '<=', $entrydate)
+                    ->orderBy('cp.effdate','desc');
+
+                if($chgprice_obj->exists()){
+                    $chgprice_obj = $chgprice_obj->first();
+
+                    if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                        unset($rows[$key]);
+                        continue;
+                    }
+                }
+            }
+
+            $rows = array_values($rows);
+
+            //////////paginate/////////
+            // $paginate = $table->paginate($request->rows);
+
+            $responce = new stdClass();
+            $responce->page = $paginate->currentPage();
+            $responce->total = $paginate->lastPage();
+            $responce->records = $paginate->total();
+            // $responce->rows = $paginate->items();
+            $responce->rows = $rows;
+            $responce->sql = $table->toSql();
+            $responce->sql_bind = $table->getBindings();
+
+            return json_encode($responce);
+        }
+
+    }
+
     public function get_itemcode_price_check(Request $request){
-        $table =  DB::table('hisdb.chgmast')
-                    ->select('chgcode','description')
-                    ->where('compcode',session('compcode'))
-                    ->where('chgcode','=',$request->filterVal[2]);
+        $deptcode = $request->filterVal[0];
+        $priceuse = $request->filterVal[1];
+        $entrydate = $request->entrydate;
+
+        switch ($priceuse) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt3';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
+
+        $table =  DB::table('hisdb.chgmast as cm')
+                    ->select('cm.chgcode','cm.description')
+                    ->where('cm.compcode',session('compcode'))
+                    ->where('cm.recstatus','<>','DELETE')
+                    ->where('cm.chgcode','=',$request->filterVal[2]);
+
+        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            $join = $join->whereNotNull('cp.effdate');
+                            $join = $join->where('cp.effdate', '<=', $entrydate);
+                        });
+
+        $table = $table->join('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });;
 
         $responce = new stdClass();
         $responce->rows = $table->get();
@@ -439,9 +703,9 @@ class SalesOrderDetailController extends defaultController
                             ->first();
             
             $product = DB::table('material.product')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('uomcode','=',$request->uom)
-                    ->where('itemcode','=',$request->chggroup);
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$request->uom)
+                            ->where('itemcode','=',$request->chggroup);
             
             if($product->exists()){
                 $product = $product->first();
@@ -1334,6 +1598,77 @@ class SalesOrderDetailController extends defaultController
         }else{
             throw new \Exception("Gltran doesnt exists");
         }
+    }
+
+    public function billtype_obj_get(Request $request){
+        $billtype_obj = new stdClass();
+
+        $billtymst = DB::table('hisdb.billtymst')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$request->billtype);
+
+        if($billtymst->exists()){
+            $billtype_obj->billtype = $billtymst->first();
+            $billtype_obj->svc = [];
+
+            $billtysvc = DB::table('hisdb.billtysvc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$request->billtype);
+
+            if($billtysvc->exists()){
+                foreach ($billtysvc->get() as $key => $value) {
+                    $billtysvc_obj = new stdClass();
+                    $billtysvc_obj->chggroup = $value->chggroup;
+                    $billtysvc_obj->svc = $value;
+
+                    $billtyitem = DB::table('hisdb.billtyitem')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('billtype','=',$value->billtype)
+                                    ->where('chggroup','=',$value->chggroup);
+
+                    if($billtyitem->exists()){
+                        $billtysvc_obj->item = $billtyitem->get()->toArray(); 
+                    }
+                    array_push($billtype_obj->svc, $billtysvc_obj);
+                }
+            }
+
+            return $billtype_obj;
+
+        }else{
+            throw new \Exception("Wrong billtype");
+        }
+
+
+    }
+
+    public function get_billtype_amt_percent($billtype_obj,$loop_item){
+        $billtype_amt_percent = new stdClass();
+        $billtype_amt_percent->amount = (empty($billtype_obj->billtype->amount))?0:$billtype_obj->billtype->amount;
+        $billtype_amt_percent->percent_ = (empty($billtype_obj->billtype->percent_))?0:$billtype_obj->billtype->percent_;
+
+        if(count($billtype_obj->svc) > 0){
+
+            foreach ($billtype_obj->svc as $key_svc => $svc_obj) {
+                if($svc_obj->chggroup == $loop_item->chggroup){
+                    $billtype_amt_percent->amount = (empty($svc_obj->svc->amount))?0:$svc_obj->svc->amount;
+                    $billtype_amt_percent->percent_ = (empty($svc_obj->svc->percent_))?0:$svc_obj->svc->percent_;
+
+                    if(count($svc_obj->item) > 0){
+                        foreach ($svc_obj->item as $key_item => $item_obj){
+                            if($item_obj->chgcode == $loop_item->chgcode){
+                                $billtype_amt_percent->amount = (empty($item_obj->amount))?0:$item_obj->amount;
+                                $billtype_amt_percent->percent_ = (empty($item_obj->percent_))?0:$item_obj->percent_;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+        return $billtype_amt_percent;
     }
 
 }

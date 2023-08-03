@@ -1291,6 +1291,8 @@ $(document).ready(function () {
 	        	//$("#alloText").focus();//AlloTotal
 	        	myallocation.retickallotogrid();
 			}, 100 );
+
+			calc_jq_height_onchange("gridAllo");
 		},
 	});
 	

@@ -461,9 +461,9 @@ abstract class defaultController extends Controller{
             $field_value = strtoupper($request[$request->field[$key]]);
 
             if($field_value == null ){
-                continue;
+                $field_value = NULL;
             }else{
-                 $field_value = $field_value;
+                $field_value = $field_value;
             }
 
         	$array_update[$value] = $field_value;

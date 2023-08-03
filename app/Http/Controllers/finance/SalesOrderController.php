@@ -167,7 +167,7 @@ class SalesOrderController extends defaultController
     public function form(Request $request)
     {   
         DB::enableQueryLog();
-        switch($request->oper){
+        switch($request->oper){ //SalesOrder_header_save 
             case 'add':
                 return $this->add($request);
             case 'edit':
@@ -202,6 +202,11 @@ class SalesOrderController extends defaultController
         try {
             
             $auditno = $this->recno('PB','IN');
+            $chk_billtype = $this->chk_billtype($request);
+
+            if($chk_billtype->error){
+                throw new \Exception($chk_billtype->msg,500);
+            }
             
             if(!empty($request->db_mrn)){
                 $pat_mast = DB::table('hisdb.pat_mast')
@@ -283,6 +288,13 @@ class SalesOrderController extends defaultController
         ];
         
         try {
+
+            $chk_billtype = $this->chk_billtype($request);
+
+            if($chk_billtype->error){
+                throw new \Exception($chk_billtype->msg,500);
+            }
+
             //////////where//////////
             $table = $table->where('idno','=',$request->db_idno);
             $table->update($array_update);
@@ -1316,49 +1328,37 @@ class SalesOrderController extends defaultController
         $billtymst = collect();
         $today = Carbon::now("Asia/Kuala_Lumpur");
 
-        // $billtymst1 = DB::table('hisdb.billtymst')
-        //                     ->where('compcode',session('compcode'))
-        //                     ->whereNull('effdatefrom')
-        //                     ->whereNull('effdateto');
-        // if($billtymst1->exists()){
-        //     foreach ($billtymst1->get() as $key => $value) {
-        //         $billtymst->push($value);
-        //         // array_push($billtymst, $value);
-        //     }
-        // }
-
 
         $billtymst2 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
+                            ->where('recstatus','ACTIVE')
                             ->whereNotNull('effdatefrom')
                             ->whereNotNull('effdatefrom')
                             ->where('opprice',1)
                             ->whereDate('effdatefrom','<=',$today)
                             ->whereDate('effdateto','>=',$today);
         if($billtymst2->exists()){
-            // $billtymst->push($billtymst2->get());
             foreach ($billtymst2->get() as $key => $value) {
                 $billtymst->push($value);
-                // array_push($billtymst, $value);
             }
         }
 
         $billtymst3 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
+                            ->where('recstatus','ACTIVE')
                             ->whereNull('effdatefrom')
                             ->whereNotNull('effdateto')
                             ->where('opprice',1)
                             ->whereDate('effdateto','>=',$today);
         if($billtymst3->exists()){
-            // $billtymst->push($billtymst3->get());
             foreach ($billtymst3->get() as $key => $value) {
                 $billtymst->push($value);
-                // array_push($billtymst, $value);
             }
         }
 
         $billtymst4 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
+                            ->where('recstatus','ACTIVE')
                             ->whereNotNull('effdatefrom')
                             ->whereNull('effdateto')
                             ->where('opprice',1)
@@ -1366,29 +1366,129 @@ class SalesOrderController extends defaultController
         if($billtymst4->exists()){
             foreach ($billtymst4->get() as $key => $value) {
                 $billtymst->push($value);
-                // array_push($billtymst, $value);
             }
         }
 
-        // dd($billtymst);
-
-        // $paginate = $billtymst->paginate($request->rows);
         $responce = new stdClass();
         $responce->rows = $billtymst;
-        // $responce->page = $paginate->currentPage();
-        // $responce->total = $paginate->lastPage();
-        // $responce->records = $paginate->total();
-        // $responce->rows = $paginate->items();
-        // $responce->rows = $rows;
-        // $responce->sql = $table->toSql();
-        // $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
     }
 
-    public function get_hdrtype_check(){
+    public function get_hdrtype_check(Request $request){
+        $hdrtype = $request->filterVal[0];
+        $billtymst = collect();
+        $today = Carbon::now("Asia/Kuala_Lumpur");
+
+
+        $billtymst2 = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','ACTIVE')
+                            ->whereNotNull('effdatefrom')
+                            ->whereNotNull('effdatefrom')
+                            ->where('opprice',1)
+                            ->whereDate('effdatefrom','<=',$today)
+                            ->whereDate('effdateto','>=',$today);
+        if($billtymst2->exists()){
+            foreach ($billtymst2->get() as $key => $value) {
+                $billtymst->push($value);
+            }
+        }
+
+        $billtymst3 = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','ACTIVE')
+                            ->whereNull('effdatefrom')
+                            ->whereNotNull('effdateto')
+                            ->where('opprice',1)
+                            ->whereDate('effdateto','>=',$today);
+        if($billtymst3->exists()){
+            foreach ($billtymst3->get() as $key => $value) {
+                $billtymst->push($value);
+            }
+        }
+
+        $billtymst4 = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','ACTIVE')
+                            ->whereNotNull('effdatefrom')
+                            ->whereNull('effdateto')
+                            ->where('opprice',1)
+                            ->whereDate('effdatefrom','<=',$today);
+        if($billtymst4->exists()){
+            foreach ($billtymst4->get() as $key => $value) {
+                $billtymst->push($value);
+            }
+        }
         
+        $responce = new stdClass();
+        $responce->rows = $billtymst;
+
+        return json_encode($responce);
     }
+
+    public function chk_billtype(Request $request){ 
+        $hdrtype = $request->db_hdrtype;
+        $posteddate = $request->db_entrydate;
+        $responce = new stdClass();
+        $responce->error = false;
+        $responce->msg = '';
+
+        $billtymst_active = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','!=','ACTIVE');
+        if($billtymst_active->exists()){
+            $responce->error = true;
+            $responce->msg = 'Billtype deactive, please check..';
+
+            return $responce;
+        }
+
+        $billtymst_opprice = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('opprice','!=','1');
+        if($billtymst_opprice->exists()){
+            $responce->error = true;
+            $responce->msg = 'Billtype setup incorrect, please check..';
+
+            return $responce;
+        }
+
+        $billtymst2 = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','ACTIVE')
+                            ->whereNotNull('effdateto')
+                            ->where('opprice',1)
+                            ->whereDate('effdateto','<=',$posteddate);
+        if($billtymst2->exists()){
+            $responce->error = true;
+            $responce->msg = 'Billtype date exceed , please check..';
+
+            return $responce;
+        }
+
+        $billtymst4 = DB::table('hisdb.billtymst')
+                            ->where('compcode',session('compcode'))
+                            ->where('billtype',$hdrtype)
+                            ->where('recstatus','ACTIVE')
+                            ->whereNotNull('effdatefrom')
+                            ->where('opprice',1)
+                            ->whereDate('effdatefrom','>=',$posteddate);
+        if($billtymst4->exists()){
+            $responce->error = true;
+            $responce->msg = 'Billtype date exceed, please check..';
+
+            return $responce;
+        }
+
+        return $responce;
+    }
+
     
 }
-
