@@ -992,18 +992,7 @@ Route::get('/thumbnail/{folder}/{image_path}','hisdb\ReviewController@thumbnail'
 Route::get('/download/{folder}/{image_path}','hisdb\ReviewController@download');
 
 /// Test route /// 
-// Route::get('/test','util\TestController@show');
-// Route::get('/test2','util\TestController@show2');
-// Route::get('/testpdf','util\TestController@pdf');
-// Route::get('/testpdf2','util\TestController@pdf2');
-// Route::post('/test/form','util\TestController@form'); 
-// Route::get('/testcalander','util\TestController@testcalander');
-// Route::get('/test_grid','util\TestController@test_grid');
-// Route::get('/test_excel','util\TestController@excel');
-
-// Route::get('/test_email','util\TestController@show_email');
-// Route::post('/test_email_send','util\TestController@send_email');
-Route::get('/test','util\TestController@test');
+Route::get('/test/table','util\TestController@table');
 
 Route::get('/barcode','util\BarcodeController@show');
 Route::post('/barcode/form','util\BarcodeController@form');

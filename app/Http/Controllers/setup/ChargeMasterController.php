@@ -40,6 +40,127 @@ class ChargeMasterController extends defaultController
                 return 'error happen..';
         }
     }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'maintable':
+                return $this->maintable($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+
+
+    public function maintable(Request $request){
+
+        $table = DB::table('hisdb.chgmast AS cm')
+                    ->select( 'cm.idno','cm.compcode','cm.unit','cm.chgcode','cm.description','cm.brandname','cm.revcode','cm.uom','cm.packqty','cm.invflag','cm.overwrite','cm.buom','cm.adduser','cm.adddate','cm.lastuser','cm.lastupdate','cm.upduser','cm.upddate','cm.deluser','cm.deldate','cm.recstatus','cm.lastfield','cm.doctorstat','cm.chgtype','cm.chggroup','cm.qflag','cm.costcode','cm.chgflag','cm.ipacccode','cm.opacccode','cm.revdept','cm.chgclass','cm.costdept','cm.invgroup','cm.apprccode','cm.appracct','cm.active','cm.constype','cm.dosage','cm.druggrcode','cm.subgroup','cm.stockcode','cm.seqno','cm.instruction','cm.freqcode','cm.durationcode','cm.strength','cm.durqty','cm.freqqty','cm.doseqty','cm.dosecode','cm.barcode','cm.computerid','cm.ipaddress','cm.lastcomputerid','cm.lastipaddress','cc.description as cc_description','cg.description as cg_description','ct.description as ct_description','p.uomcode as uom_product')
+                    ->where('cm.compcode','=',session('compcode'));
+
+        $table = $table->leftjoin('hisdb.chgclass AS cc', function($join){
+                            $join = $join->where('cc.compcode', '=', session('compcode'));
+                            $join = $join->on('cc.classcode', '=', 'cm.chgclass');
+                        });
+
+        $table = $table->leftjoin('hisdb.chggroup AS cg', function($join){
+                            $join = $join->where('cg.compcode', '=', session('compcode'));
+                            $join = $join->on('cg.grpcode', '=', 'cm.chggroup');
+                        });
+
+        $table = $table->leftjoin('hisdb.chgtype AS ct', function($join){
+                            $join = $join->where('ct.compcode', '=', session('compcode'));
+                            $join = $join->on('ct.chgtype', '=', 'cm.chgtype');
+                        });
+
+        $table = $table->leftjoin('material.product AS p', function($join){
+                            $join = $join->where('p.compcode', '=', session('compcode'));
+                            $join = $join->on('p.uomcode', '=', 'cm.uom');
+                            $join = $join->on('p.itemcode', '=', 'cm.chgcode');
+                        });
+
+        // foreach ($table->get() as $key => $value) {
+        //     $chgmast = DB::table('hisdb.chgmast')
+        //                     ->where('compcode',session('compcode'))
+        //                     ->where('chgcode',$value->itemcode);
+
+
+        //     if($chgmast->exists()){
+        //         $table->get()->put('chgclass', 'class');
+        //     }
+        // }
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false && trim($request->searchVal[$key]) != '%%'){//trim whitespace
+                            $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                            //begins search only
+                            $table->orwhere('cm.'.$searchCol_array[$key],'like',$search_);
+                        }
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('cm.idno','desc');
+        }
+
+
+        //////////paginate/////////
+        // $mypaginate = $this->mypaginate($table,$request->rows);
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+
+        return json_encode($responce);
+    }
     
     public function add(Request $request){
         
@@ -48,19 +169,19 @@ class ChargeMasterController extends defaultController
         
         try {
             
-            $duplicate = DB::table('hisdb.chgmast')->where('chgcode','=',$request->cm_chgcode);
+            $duplicate = DB::table('hisdb.chgmast')->where('chgcode','=',$request->chgcode);
             
             if($duplicate->exists()){
                 throw new \Exception('chgcode already exist', 500);
             }
             
-            if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
+            if($request->chgtype == 'PKG' || $request->chgtype == 'pkg'){
                 
                 $recstatus_use = 'DEACTIVE';
                 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
-                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->where('chgcode','=',strtoupper($request->chgcode))
                     ->update([
                         'pkgstatus' => 1,
                         'lastuser' => session('username'), 
@@ -71,7 +192,7 @@ class ChargeMasterController extends defaultController
                 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
-                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->where('chgcode','=',strtoupper($request->chgcode))
                     ->update([
                         'pkgstatus' => 0,
                         'lastuser' => session('username'), 
@@ -86,27 +207,27 @@ class ChargeMasterController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
-                    'chgcode' => strtoupper($request->cm_chgcode),
-                    'description' => strtoupper($request->cm_description),
-                    'barcode' => strtoupper($request->cm_barcode),
-                    'brandname' => strtoupper($request->cm_brandname),
-                    'chgclass' => $request->cm_chgclass,
-                    'constype' => strtoupper($request->cm_constype),
-                    'chggroup' => $request->cm_chggroup,
-                    'chgtype' => $request->cm_chgtype,
+                    'chgcode' => strtoupper($request->chgcode),
+                    'description' => strtoupper($request->description),
+                    'barcode' => strtoupper($request->barcode),
+                    'brandname' => strtoupper($request->brandname),
+                    'chgclass' => $request->chgclass,
+                    'constype' => strtoupper($request->constype),
+                    'chggroup' => $request->chggroup,
+                    'chgtype' => $request->chgtype,
                     'recstatus' => $recstatus_use,
-                    'uom' => $request->cm_uom,
-                    'invflag' => $request->cm_invflag,
-                    'packqty' => $request->cm_packqty,
-                    'druggrcode' => strtoupper($request->cm_druggrcode),
-                    'subgroup' => strtoupper($request->cm_subgroup),
-                    'stockcode' => strtoupper($request->cm_stockcode),
-                    'invgroup' => strtoupper($request->cm_invgroup),
-                    'costcode' => $request->cm_costcode, 
-                    'revcode' => $request->cm_revcode, 
-                    'seqno' => $request->cm_seqno,
-                    'overwrite' => $request->cm_overwrite, 
-                    'doctorstat' => $request->cm_doctorstat, 
+                    'uom' => $request->uom,
+                    'invflag' => $request->invflag,
+                    'packqty' => $request->packqty,
+                    'druggrcode' => strtoupper($request->druggrcode),
+                    'subgroup' => strtoupper($request->subgroup),
+                    'stockcode' => strtoupper($request->stockcode),
+                    'invgroup' => strtoupper($request->invgroup),
+                    'costcode' => $request->costcode, 
+                    'revcode' => $request->revcode, 
+                    'seqno' => $request->seqno,
+                    'overwrite' => $request->overwrite, 
+                    'doctorstat' => $request->doctorstat, 
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'computerid' => session('computerid'),
@@ -139,13 +260,13 @@ class ChargeMasterController extends defaultController
         
         try {
             
-            if($request->cm_chgtype == 'PKG' || $request->cm_chgtype == 'pkg'){
+            if($request->chgtype == 'PKG' || $request->chgtype == 'pkg'){
                 
                 $recstatus_use = 'DEACTIVE';
                 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
-                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->where('chgcode','=',strtoupper($request->chgcode))
                     ->update([
                         'pkgstatus' => 1,
                         'lastuser' => session('username'), 
@@ -156,7 +277,7 @@ class ChargeMasterController extends defaultController
                 
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
-                    ->where('chgcode','=',strtoupper($request->cm_chgcode))
+                    ->where('chgcode','=',strtoupper($request->chgcode))
                     ->update([
                         'pkgstatus' => 0,
                         'lastuser' => session('username'), 
@@ -168,29 +289,29 @@ class ChargeMasterController extends defaultController
             }
             
             DB::table('hisdb.chgmast')
-                ->where('idno','=',$request->cm_idno)
+                ->where('idno','=',$request->idno)
                 ->update([
-                    'chgcode' => strtoupper($request->cm_chgcode),
-                    'description' => strtoupper($request->cm_description),
-                    'barcode' => strtoupper($request->cm_barcode),
-                    'brandname' => strtoupper($request->cm_brandname),
-                    'chgclass' => $request->cm_chgclass,
-                    'constype' => strtoupper($request->cm_constype),
-                    'chggroup' => $request->cm_chggroup,
-                    'chgtype' => $request->cm_chgtype,
+                    'chgcode' => strtoupper($request->chgcode),
+                    'description' => strtoupper($request->description),
+                    'barcode' => strtoupper($request->barcode),
+                    'brandname' => strtoupper($request->brandname),
+                    'chgclass' => $request->chgclass,
+                    'constype' => strtoupper($request->constype),
+                    'chggroup' => $request->chggroup,
+                    'chgtype' => $request->chgtype,
                     'recstatus' => $recstatus_use,
-                    'uom' => strtoupper($request->cm_uom),
-                    'invflag' => $request->cm_invflag,
-                    'packqty' => $request->cm_packqty,
-                    'druggrcode' => strtoupper($request->cm_druggrcode),
-                    'subgroup' => strtoupper($request->cm_subgroup),
-                    'stockcode' => strtoupper($request->cm_stockcode),
-                    'invgroup' => strtoupper($request->cm_invgroup),
-                    'costcode' => $request->cm_costcode, 
-                    'revcode' => $request->cm_revcode, 
-                    'seqno' => $request->cm_seqno,
-                    'overwrite' => $request->cm_overwrite, 
-                    'doctorstat' => $request->cm_doctorstat,
+                    'uom' => strtoupper($request->uom),
+                    'invflag' => $request->invflag,
+                    'packqty' => $request->packqty,
+                    'druggrcode' => strtoupper($request->druggrcode),
+                    'subgroup' => strtoupper($request->subgroup),
+                    'stockcode' => strtoupper($request->stockcode),
+                    'invgroup' => strtoupper($request->invgroup),
+                    'costcode' => $request->costcode, 
+                    'revcode' => $request->revcode, 
+                    'seqno' => $request->seqno,
+                    'overwrite' => $request->overwrite, 
+                    'doctorstat' => $request->doctorstat,
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'lastcomputerid' => session('computerid'),

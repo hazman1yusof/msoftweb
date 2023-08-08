@@ -1214,7 +1214,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 				textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
 				textfield.focus();
-				$("#"+obj.dialogname).dialog( "close" );
 				// $("#"+obj.gridname).jqGrid("clearGridData", true);
 				$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 				textfield.removeClass( "error" ).addClass( "valid" );
@@ -1222,6 +1221,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
 					// },500);
 				if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
+				$("#"+obj.dialogname).dialog( "close" );
 			}
 
 			// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
@@ -1300,7 +1300,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 					textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
 					textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
 					textfield.focus();
-					$("#"+obj.dialogname).dialog( "close" );
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
 					textfield.removeClass( "error" ).addClass( "valid" );
@@ -1308,6 +1307,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 						textfield.on('blur',{data:obj,errorField:errorField},onBlur);
 					// },500);
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow(event);
+					$("#"+obj.dialogname).dialog( "close" );
 				}
 
 				// var idtopush = (obj.textfield.substring(0, 1) == '#')?obj.textfield.substring(1):obj.textfield;
@@ -2065,9 +2065,9 @@ function ordialog_buang_error_shj(id,errorField){
 	if($.inArray(id,errorField)!==-1){
 		errorField.splice($.inArray(id,errorField), 1);
 	}
-	$( '#'+id ).parent().parent().removeClass( "has-error" );
-	$( '#'+id ).removeClass( "error" );
-	$( '#'+id ).parent().next('span.help-block').text('');
+	$( id ).parent().parent().removeClass( "has-error" ).removeClass( "has-success" );
+	$( id ).removeClass( "error" ).removeClass( "valid" );
+	$( id ).parent().next('span.help-block').text('');
 }
 
 function myerrorIt(id,errorField,fail){

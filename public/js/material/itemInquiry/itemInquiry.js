@@ -150,7 +150,6 @@ $(document).ready(function () {
 				refreshGrid('#detail',urlParam2);
 
 				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
-				refreshGrid('#itemExpiry',urlParam3);
 			}
 		},
 		gridComplete: function (rowid) {

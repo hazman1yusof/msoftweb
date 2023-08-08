@@ -240,7 +240,7 @@ class SalesOrderController extends defaultController
                 'termmode' => strtoupper($request->db_termmode),
                 'orderno' => strtoupper($request->db_orderno),
                 'ponum' => strtoupper($request->db_ponum),
-                'podate' => $request->db_podate,
+                'podate' => (!empty($request->db_podate))?$request->db_podate:null,
                 'remark' => strtoupper($request->db_remark),
                 'approvedby' => $request->db_approvedby
             ];
@@ -282,7 +282,7 @@ class SalesOrderController extends defaultController
             'termmode' => strtoupper($request->db_termmode),
             'orderno' => strtoupper($request->db_orderno),
             'ponum' => strtoupper($request->db_ponum),
-            'podate' => strtoupper($request->db_podate),
+            'podate' => (!empty($request->db_podate))?$request->db_podate:null,
             'remark' => strtoupper($request->db_remark),
             'approvedby' => strtoupper($request->db_approvedby)
         ];

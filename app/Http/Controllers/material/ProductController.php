@@ -209,8 +209,6 @@ class ProductController extends defaultController
         $responce->sql_bind = $table->getBindings();
 
         return json_encode($responce);
-
-
     }
 
     public function get_charges_from_product(Request $request){

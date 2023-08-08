@@ -32,6 +32,12 @@ i.fa {
 	white-space: pre-wrap !important;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 #more {display: none;}
 
 @endsection
@@ -321,9 +327,9 @@ i.fa {
 								</select> 
 							</div>
 
-							<label class="col-md-2 control-label" for="posteddate">Posted Date</label>  
+							<label class="col-md-2 control-label" for="db_posteddate">Posted Date</label>  
 							<div class="col-md-2">
-								<input id="posteddate" name="posteddate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>" rdonly>
+								<input id="db_posteddate" name="db_posteddate" type="text" maxlength="10" class="form-control input-sm" max="<?php echo date("Y-m-d"); ?>" rdonly>
 							</div>
 	
 						</div>
@@ -350,7 +356,7 @@ i.fa {
 
 							<label class="col-md-3 control-label" for="db_podate">PO Date</label>  
 							<div class="col-md-2">
-								<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+								<input id="db_podate" name="db_podate" type="date" maxlength="10" class="form-control input-sm" value="" max="<?php echo date("Y-m-d"); ?>">
 							</div>
 						</div>
 
@@ -404,6 +410,7 @@ i.fa {
 			<div class='panel panel-info'>
 				<div class="panel-heading">Sales Order Detail</div>
 					<div class="panel-body">
+						<div id="fail_msg"></div>
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
 
@@ -413,11 +420,7 @@ i.fa {
 							</div>
 						</form>
 					</div>
-
-					<div class="panel-body">
-						<div class="noti" style="color:red"></div>
-					</div>
-
+				</div>
 			</div>
 				
 			<div id="dialog_remarks" title="Remarks">

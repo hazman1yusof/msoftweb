@@ -58,7 +58,7 @@ class SalesOrderDetailController extends defaultController
 
     public function get_table_dtl(Request $request){
         $table = DB::table('debtor.billsum as bs')
-                    ->select('bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand')
+                    ->select('bs.idno','bs.compcode','bs.lineno_','bs.rowno','bs.chggroup','bs.description','bs.uom','bs.uom_recv','bs.taxcode','bs.unitprice','bs.quantity','bs.billtypeperct','bs.billtypeamt','bs.taxamt','bs.discamt','bs.amount','bs.totamount','bs.recstatus','bs.qtyonhand')
                     // ->leftjoin('material.stockloc as st', function($join) use ($request){
                     //         $join = $join->where('st.compcode', '=', session('compcode'));
                     //         $join = $join->where('st.unit', '=', session('unit'));
@@ -110,7 +110,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -121,16 +121,25 @@ class SalesOrderDetailController extends defaultController
         $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->on('cp.uom', '=', 'cm.uom');
                             $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
         $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -225,23 +234,6 @@ class SalesOrderDetailController extends defaultController
                     unset($rows[$key]);
                     continue;
                 }
-
-                // switch ($request->filterVal[2]) {
-                //     case 'PRICE1':
-                //         $rows[$key]->price = $chgprice_obj->amt1;
-                //         break;
-                //     case 'PRICE2':
-                //         $rows[$key]->price = $chgprice_obj->amt2;
-                //         break;
-                //     case 'PRICE3':
-                //         $rows[$key]->price = $chgprice_obj->amt3;
-                //         break;
-                //     default:
-                //         $rows[$key]->price = $chgprice_obj->costprice;
-                //         break;
-                // }
-                // $rows[$key]->taxcode = $chgprice_obj->optax;
-                // $rows[$key]->rate = $chgprice_obj->rate;
             }
         }
 
@@ -285,7 +277,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -298,6 +290,7 @@ class SalesOrderDetailController extends defaultController
         $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->on('cp.uom', '=', 'cm.uom');
                             $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
                             $join = $join->whereNotNull('cp.effdate');
                             $join = $join->where('cp.effdate', '<=', $entrydate);
@@ -305,10 +298,18 @@ class SalesOrderDetailController extends defaultController
 
         $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
                             $join = $join->where('st.compcode', '=', session('compcode'));
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
         $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
@@ -319,6 +320,44 @@ class SalesOrderDetailController extends defaultController
         $table_count = $table->count();
 
         if($table_count>0){
+
+            $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
+                            ->Where('cm.chgcode','like',$serch_chgcode)
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.recstatus','<>','DELETE');
+                            // ->where(function ($query) {
+                            //    $query->whereNotNull('st.idno')
+                            //          ->orWhere('cm.invflag', '=', 0);
+                            // });
+
+            $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                                $join = $join->where('cp.compcode', '=', session('compcode'));
+                                $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                $join = $join->where('cp.effdate', '<=', $entrydate);
+                            });
+
+            $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                                $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                                $join = $join->on('st.uomcode', '=', 'cm.uom');
+                                $join = $join->where('st.compcode', '=', session('compcode'));
+                                $join = $join->where('st.unit', '=', session('unit'));
+                                $join = $join->where('st.deptcode', '=', $deptcode);
+                                $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                            });
+
+            $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+            $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+                                $join = $join->where('cp.compcode', '=', session('compcode'));
+                                $join = $join->on('cp.optax', '=', 'tm.taxcode');
+                            });
 
             if(!empty($request->sidx)){
 
@@ -384,11 +423,9 @@ class SalesOrderDetailController extends defaultController
         }else{
 
             $table = DB::table('hisdb.chgmast as cm')
-                            ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description', 'st.idno as st_idno', 'st.uomcode as uom', 'st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price')
-                            ->Where('cm.description','like',$request->searchVal2[0])
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
                             ->where('cm.compcode','=',session('compcode'))
-                            ->where('cm.recstatus','<>','DELETE')
-                            ->orderBy('cm.idno','desc');
+                            ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
                             //    $query->whereNotNull('st.idno')
                             //          ->orWhere('cm.invflag', '=', 0);
@@ -397,23 +434,74 @@ class SalesOrderDetailController extends defaultController
             $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                                $join = $join->on('cp.uom', '=', 'cm.uom');
                                 $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
-                                $join = $join->whereNotNull('cp.effdate');
                                 $join = $join->where('cp.effdate', '<=', $entrydate);
                             });
 
             $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                                 $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                                $join = $join->on('st.uomcode', '=', 'cm.uom');
                                 $join = $join->where('st.compcode', '=', session('compcode'));
                                 $join = $join->where('st.unit', '=', session('unit'));
                                 $join = $join->where('st.deptcode', '=', $deptcode);
                                 $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
                             });
 
+            $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
             $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.optax', '=', 'tm.taxcode');
                             });
+
+            if(!empty($request->searchCol)){
+                $searchCol_array = $request->searchCol;
+
+                $count = array_count_values($searchCol_array);
+
+                foreach ($count as $key => $value) {
+                    $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                    $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                        foreach ($searchCol_array as $key => $value) {
+                            $found = array_search($key,$occur_ar);
+                            if($found !== false && trim($request->searchVal[$key]) != '%%'){
+                                $search_ = $this->begins_search_if(['itemcode','chgcode'],$searchCol_array[$key],$request->searchVal[$key]);
+                                $table->Where('cm.'.$searchCol_array[$key],'like',$search_);
+                                // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                                // $table->Where('cm.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                            }
+                        }
+                    });
+                }
+            }
+
+            if(!empty($request->searchCol2)){
+                $searchCol_array = $request->searchCol2;
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key>1) break;
+                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+
+                if(count($searchCol_array)>2){
+                    $table = $table->where(function($table) use ($searchCol_array, $request){
+                        foreach ($searchCol_array as $key => $value) {
+                            if($key<=1) continue;
+                            // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                            $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        }
+                    });
+                }
+            }
 
             if(!empty($request->sidx)){
 
@@ -708,35 +796,30 @@ class SalesOrderDetailController extends defaultController
                             ->where('itemcode','=',$request->chggroup);
             
             if($product->exists()){
-                $product = $product->first();
-                // if($product->groupcode == 'Stock'){
-                    
-                    $stockloc = DB::table('material.stockloc')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom)
-                            ->where('itemcode','=',$request->chggroup)
-                            ->where('deptcode','=',$dbacthdr->deptcode)
-                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                    
-                    if($stockloc->exists()){
-                        $stockloc = $stockloc->first();
-                    }else{
-                        throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
-                    }
-                    
-                    $ivdspdt = DB::table('material.ivdspdt')
+                $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$billsum_obj->auditno);
-                    
-                    if($ivdspdt->exists()){
-                        $this->updivdspdt($billsum_obj,$request,$dbacthdr);
-                        $this->updgltran($ivdspdt->first()->idno,$request,$dbacthdr);
-                    }else{
-                        $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
-                        $this->crtgltran($ivdspdt_idno,$request,$dbacthdr);
-                    }
-                    
-                // }
+                        ->where('uomcode','=',$request->uom)
+                        ->where('itemcode','=',$request->chggroup)
+                        ->where('deptcode','=',$dbacthdr->deptcode)
+                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                
+                if($stockloc->exists()){
+                    $stockloc = $stockloc->first();
+                }else{
+                    throw new \Exception("Stockloc not exists for item: ".$billsum_obj->chggroup." dept: ".$dbacthdr->deptcode." uom: ".$billsum_obj->uom,500);
+                }
+                
+                $ivdspdt = DB::table('material.ivdspdt')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('recno','=',$billsum_obj->auditno);
+                
+                if($ivdspdt->exists()){
+                    $this->updivdspdt($billsum_obj,$dbacthdr);
+                    $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
+                }else{
+                    $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                    $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                }
             }
             
             ///3. calculate total amount from detail
@@ -769,7 +852,7 @@ class SalesOrderDetailController extends defaultController
             
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         
         }
         
@@ -795,67 +878,128 @@ class SalesOrderDetailController extends defaultController
             
             foreach ($request->dataobj as $key => $value) {
                 
-                $billsum = DB::table('debtor.billsum')
+                //billsum lama
+                $billsum_lama = DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$source)
                             ->where('trantype','=',$trantype)
                             ->where('billno','=',$auditno)
-                            ->where('rowno','=',$value['rowno']);
+                            ->where('rowno','=',$value['rowno'])
+                            ->first();
                 
+                $chgmast = DB::table('hisdb.chgmast')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uom','=',$value['uom'])
+                            ->where('chgcode','=',$value['chggroup']);
+
                 ///2. update detail
-                $billsum
-                    ->update([
-                        'unitprice' => $value['unitprice'],
-                        'quantity' => $value['quantity'],
-                        'qtyonhand' => $value['quantity'],
-                        'amount' => $value['amount'],
-                        'outamt' => $value['amount'],
-                        'discamt' => floatval($value['discamt']),
-                        'taxamt' => floatval($value['taxamt']),
-                        'totamount' => floatval($value['totamount']),
-                        'lastuser' => session('username'), 
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        // 'billtypeperct' => $value['billtypeperct'],
-                        // 'billtypeamt' => $value['billtypeamt'],
-                    ]);
+                if($billsum_lama->chggroup != $value['chggroup'] || $billsum_lama->uom != $value['uom']){
+
+                    $edit_lain_chggroup = true;
                 
-                $billsum_obj = $billsum->first();
+                    $product_lama = DB::table('hisdb.product')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('uomcode','=',$billsum_lama->uom)
+                            ->where('itemcode','=',$billsum_lama->chggroup);
+
+                    if($product_lama->exists()){
+                        $this->delivdspdt($billsum_lama,$dbacthdr);
+                    }
+
+                    DB::table('debtor.billsum')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$source)
+                            ->where('trantype','=',$trantype)
+                            ->where('billno','=',$auditno)
+                            ->where('rowno','=',$value['rowno'])
+                            ->update([
+                                'chggroup' => $value['chggroup'],
+                                'description' => $chgmast->first()->description,
+                                'uom' => $value['uom'],
+                                'uom_recv' => $value['uom_recv'],
+                                'taxcode' => $value['taxcode'],
+                                'unitprice' => $value['unitprice'],
+                                'quantity' => $value['quantity'],
+                                'qtyonhand' => $value['qtyonhand'],
+                                'amount' => $value['amount'],
+                                'outamt' => $value['amount'],
+                                'discamt' => floatval($value['discamt']),
+                                'taxamt' => floatval($value['taxamt']),
+                                'totamount' => floatval($value['totamount']),
+                                'lastuser' => session('username'), 
+                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
+
+
+                }else{
+
+                    $edit_lain_chggroup = false;
+
+                    DB::table('debtor.billsum')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$source)
+                            ->where('trantype','=',$trantype)
+                            ->where('billno','=',$auditno)
+                            ->where('rowno','=',$value['rowno'])
+                            ->update([
+                                'unitprice' => $value['unitprice'],
+                                'quantity' => $value['quantity'],
+                                'qtyonhand' => $value['qtyonhand'],
+                                'amount' => $value['amount'],
+                                'outamt' => $value['amount'],
+                                'discamt' => floatval($value['discamt']),
+                                'taxamt' => floatval($value['taxamt']),
+                                'totamount' => floatval($value['totamount']),
+                                'lastuser' => session('username'), 
+                                'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                // 'billtypeperct' => $value['billtypeperct'],
+                                // 'billtypeamt' => $value['billtypeamt'],
+                            ]);
+                }
                 
+                $billsum_obj = DB::table('debtor.billsum')
+                                ->where('compcode','=',session('compcode'))
+                                ->where('source','=',$source)
+                                ->where('trantype','=',$trantype)
+                                ->where('billno','=',$auditno)
+                                ->where('rowno','=',$value['rowno'])
+                                ->first();
+
                 $product = DB::table('material.product')
                         ->where('compcode','=',session('compcode'))
                         ->where('uomcode','=',$value['uom'])
                         ->where('itemcode','=',$value['chggroup']);
                 
                 if($product->exists()){
-                    $product = $product->first();
-                    // if($product->groupcode == 'Stock'){
-                        
-                        $stockloc = DB::table('material.stockloc')
-                                ->where('compcode','=',session('compcode'))
-                                ->where('uomcode','=',$value['uom'])
-                                ->where('itemcode','=',$value['chggroup'])
-                                ->where('deptcode','=',$dbacthdr->deptcode)
-                                ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
-                        
-                        if($stockloc->exists()){
-                            $stockloc = $stockloc->first();
-                        }else{
-                            throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
-                        }
-                        
-                        $ivdspdt = DB::table('material.ivdspdt')
+                    $stockloc = DB::table('material.stockloc')
                             ->where('compcode','=',session('compcode'))
-                            ->where('recno','=',$billsum_obj->auditno);
-                        
+                            ->where('uomcode','=',$value['uom'])
+                            ->where('itemcode','=',$value['chggroup'])
+                            ->where('deptcode','=',$dbacthdr->deptcode)
+                            ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                    
+                    if($stockloc->exists()){
+                        $stockloc = $stockloc->first();
+                    }else{
+                        throw new \Exception("Stockloc not exists for item: ".$value['chggroup']." dept: ".$dbacthdr->deptcode." uom: ".$value['uom'],500);
+                    }
+                    
+                    $ivdspdt = DB::table('material.ivdspdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$billsum_obj->auditno);
+
+                    if($edit_lain_chggroup){
+                        $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                        $this->crtgltran($ivdspdt_idno,$dbacthdr);
+                    }else{
                         if($ivdspdt->exists()){
-                            $this->updivdspdt($billsum_obj,$request,$dbacthdr);
-                            $this->updgltran($ivdspdt->first()->idno,$request,$dbacthdr);
+                            $this->updivdspdt($billsum_obj,$dbacthdr);
+                            $this->updgltran($ivdspdt->first()->idno,$dbacthdr);
                         }else{
-                            $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$request,$dbacthdr);
-                            $this->crtgltran($ivdspdt_idno,$request,$dbacthdr);
+                            $ivdspdt_idno = $this->crtivdspdt($billsum_obj,$dbacthdr);
+                            $this->crtgltran($ivdspdt_idno,$dbacthdr);
                         }
-                        
-                    // }
+                    }
                 }
                 
                 ///3. calculate total amount from detail
@@ -890,7 +1034,7 @@ class SalesOrderDetailController extends defaultController
             
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
             
         }
         
@@ -920,10 +1064,21 @@ class SalesOrderDetailController extends defaultController
                             ->where('idno','=',$idno);
 
             $billsum_obj = $billsum->first();
-            
-            $this->delivdspdt($billsum_obj,$request,$dbacthdr);
+
+            $chgmast_lama = DB::table('hisdb.chgmast')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('uom','=',$billsum_obj->uom)
+                    ->where('chgcode','=',$billsum_obj->chggroup)
+                    ->first();
+
+            if($chgmast_lama->invflag != '0'){
+                $this->delivdspdt($billsum_obj,$dbacthdr);
+            }else{
+                $this->delgltran($billsum_obj,$dbacthdr);
+            }
 
             $billsum->update([
+                        'recstatus' => 'DELETE',
                         'quantity' => 0,
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -934,7 +1089,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('source','=',$source)
                     ->where('trantype','=',$trantype)
-                    ->where('auditno','=',$auditno)
+                    ->where('billno','=',$auditno)
                     ->where('recstatus','!=','DELETE')
                     ->sum('amount');
 
@@ -946,6 +1101,7 @@ class SalesOrderDetailController extends defaultController
                     ->where('auditno','=',$auditno)
                     ->update([
                         'amount' => $totalAmount,
+                        'outamount' => $totalAmount,
                     ]);
 
             DB::commit();
@@ -958,30 +1114,33 @@ class SalesOrderDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
         
     }
 
-    public function crtivdspdt($billsum_obj,Request $request,$dbacthdr){
+    public function crtivdspdt($billsum_obj,$dbacthdr){
+
+        $my_uom = $billsum_obj->uom;
+        $my_chggroup = $billsum_obj->chggroup;
 
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
             ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$request->uom)
-            ->where('itemcode','=',$request->chggroup);
+            ->where('uomcode','=',$my_uom)
+            ->where('itemcode','=',$my_chggroup);
 
         $stockloc = DB::table('material.stockloc')
             ->where('compcode','=',session('compcode'))
             ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$request->uom)
-            ->where('itemcode','=',$request->chggroup)
+            ->where('uomcode','=',$my_uom)
+            ->where('itemcode','=',$my_chggroup)
             ->where('deptcode','=',$dbacthdr->deptcode)
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
+        $curr_netprice = $product->first()->avgcost;
+        $curr_quan = $billsum_obj->quantity;
         if($stockloc->exists()){
-            $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $billsum_obj->quantity;
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
 
@@ -1003,12 +1162,16 @@ class SalesOrderDetailController extends defaultController
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
                                 ->where('unit','=',session('unit'))
-                                ->where('uomcode','=',$request->uom)
-                                ->where('itemcode','=',$request->chggroup)
+                                ->where('uomcode','=',$my_uom)
+                                ->where('itemcode','=',$my_chggroup)
                                 ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                                 ->first();
 
-            $product
+            DB::table('material.product')
+                ->where('compcode','=',session('compcode'))
+                ->where('unit','=',session('unit'))
+                ->where('uomcode','=',$my_uom)
+                ->where('itemcode','=',$my_chggroup)
                 ->update([
                     'qtyonhand' => $sumqtyonhand->sum_qtyonhand,
                 ]);
@@ -1018,8 +1181,8 @@ class SalesOrderDetailController extends defaultController
                 ->where('compcode',session('compcode'))
                 ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
                 ->where('DeptCode','=',$dbacthdr->deptcode)
-                ->where('ItemCode','=',$request->chggroup)
-                ->where('UomCode','=',$request->uom)
+                ->where('ItemCode','=',$my_chggroup)
+                ->where('UomCode','=',$my_uom)
                 ->orderBy('expdate', 'asc');
 
             if($expdate_obj->exists()){
@@ -1080,11 +1243,9 @@ class SalesOrderDetailController extends defaultController
                             ->insertGetId($ivdspdt_arr);
 
         return $insertGetId;
-
-        
     }
 
-    public function updivdspdt($billsum_obj,Request $request,$dbacthdr){
+    public function updivdspdt($billsum_obj,$dbacthdr){
 
         $ivdspdt_lama = DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -1131,8 +1292,8 @@ class SalesOrderDetailController extends defaultController
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
                                 ->where('unit','=',session('unit'))
-                                ->where('uomcode','=',$request->uom)
-                                ->where('itemcode','=',$request->chggroup)
+                                ->where('uomcode','=',$billsum_obj->uom)
+                                ->where('itemcode','=',$billsum_obj->chggroup)
                                 ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                                 ->first();
 
@@ -1159,29 +1320,8 @@ class SalesOrderDetailController extends defaultController
                             'balqty' => $balqty
                         ]);
 
-                // $balqty = 0;
-                // foreach ($expdate_get as $value2) {
-                //     $balqty = $value2->balqty;
-                //     if($txnqty_-$balqty>0){
-                //         $txnqty_ = $txnqty_-$balqty;
-                //         DB::table('material.stockexp')
-                //             ->where('idno','=',$value2->idno)
-                //             ->update([
-                //                 'balqty' => '0'
-                //             ]);
-                //     }else{
-                //         $balqty = $balqty-$txnqty_;
-                //         DB::table('material.stockexp')
-                //             ->where('idno','=',$value2->idno)
-                //             ->update([
-                //                 'balqty' => $balqty
-                //             ]);
-                //         break;
-                //     }
-                // }
-
             }else{
-                throw new \Exception("No stockexp");
+                throw new \Exception("No stockloc");
             }
 
         }
@@ -1199,57 +1339,9 @@ class SalesOrderDetailController extends defaultController
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$billsum_obj->auditno)
             ->update($ivdspdt_arr);
-
-        // $ivtxntype = DB::table('material.ivtxntype')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('trantype','=', $stockloc->disptype)
-        //                 ->first();
-
-        // if($ivtxntype->updamt = 1){
-        //     $category = DB::table('material.category')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('catcode','=', $product->productcat)
-        //                 ->first();
-
-        //     $department = DB::table('sysdb.departmet')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('deptcode','=',$dbacthdr->deptcode)
-        //                 ->first();
-
-        //     $ivdspdt_arr['DrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['DrAccNo'] = $category->cosacct;
-        //     $ivdspdt_arr['CrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['CrAccNo'] = $category->stockacct;
-
-        //     $glinface_arr = [
-        //         'compcode' => session('compcode'),
-        //         'Source' => 'IV',
-        //         'TranType' => $stockloc->disptype,
-        //         'AuditNo' => $insertGetId,
-        //         'LineNo' => 1,
-        //         'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
-        //         'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
-        //         'Description' => 'Posted from Online-Dispensing',
-        //         'Amount' => $billsum_obj->amount,
-        //         'PostDate' => $dbacthdr->entrydate,
-        //         'OprType' => 'A',
-        //         'LastUser' => session('username'),
-        //         'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
-        //     ];
-
-        //     if($ivtxntype->crdbfl = 'OUT'){
-        //         $glinface_arr['DrCcode'] = $department->costcode;
-        //         $glinface_arr['DrAccNo'] = $category->cosacct;
-        //         $glinface_arr['CrCcode'] = $department->costcode;
-        //         $glinface_arr['CrAccNo'] = $category->stockacct;
-        //     }
-
-        //     DB::table('finance.glinface')
-        //         ->insert($glinface_arr);
-        // }
     }
 
-    public function delivdspdt($billsum_obj,Request $request,$dbacthdr){
+    public function delivdspdt($billsum_obj,$dbacthdr){
 
         $ivdspdt_lama = DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -1315,93 +1407,97 @@ class SalesOrderDetailController extends defaultController
                             'balqty' => $balqty
                         ]);
 
-                // $balqty = 0;
-                // foreach ($expdate_get as $value2) {
-                //     $balqty = $value2->balqty;
-                //     if($txnqty_-$balqty>0){
-                //         $txnqty_ = $txnqty_-$balqty;
-                //         DB::table('material.stockexp')
-                //             ->where('idno','=',$value2->idno)
-                //             ->update([
-                //                 'balqty' => '0'
-                //             ]);
-                //     }else{
-                //         $balqty = $balqty-$txnqty_;
-                //         DB::table('material.stockexp')
-                //             ->where('idno','=',$value2->idno)
-                //             ->update([
-                //                 'balqty' => $balqty
-                //             ]);
-                //         break;
-                //     }
-                // }
-
             }else{
                 throw new \Exception("No stockexp");
             }
 
         }
 
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$billsum_obj->auditno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod($ivdspdt_lama->first()->trandate);
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => +$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$billsum_obj->auditno)
+                ->delete();
+        }
+
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$billsum_obj->auditno)
-            ->update([
-                'txnqty' => 0,
-                'upduser' => session('username'),
-                'updddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'updtime' => Carbon::now("Asia/Kuala_Lumpur")
-            ]);
-
-        // $ivtxntype = DB::table('material.ivtxntype')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('trantype','=', $stockloc->disptype)
-        //                 ->first();
-
-        // if($ivtxntype->updamt = 1){
-        //     $category = DB::table('material.category')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('catcode','=', $product->productcat)
-        //                 ->first();
-
-        //     $department = DB::table('sysdb.departmet')
-        //                 ->where('compcode','=', session('compcode'))
-        //                 ->where('deptcode','=',$dbacthdr->deptcode)
-        //                 ->first();
-
-        //     $ivdspdt_arr['DrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['DrAccNo'] = $category->cosacct;
-        //     $ivdspdt_arr['CrCcode'] = $department->costcode;
-        //     $ivdspdt_arr['CrAccNo'] = $category->stockacct;
-
-        //     $glinface_arr = [
-        //         'compcode' => session('compcode'),
-        //         'Source' => 'IV',
-        //         'TranType' => $stockloc->disptype,
-        //         'AuditNo' => $insertGetId,
-        //         'LineNo' => 1,
-        //         'Reference' => $dbacthdr->deptcode.' - '.$billsum_obj->chggroup,
-        //         'IdNo' => $dbacthdr->mrn.' - '.$dbacthdr->episno,
-        //         'Description' => 'Posted from Online-Dispensing',
-        //         'Amount' => $billsum_obj->amount,
-        //         'PostDate' => $dbacthdr->entrydate,
-        //         'OprType' => 'A',
-        //         'LastUser' => session('username'),
-        //         'LastUpdate' => Carbon::now("Asia/Kuala_Lumpur")
-        //     ];
-
-        //     if($ivtxntype->crdbfl = 'OUT'){
-        //         $glinface_arr['DrCcode'] = $department->costcode;
-        //         $glinface_arr['DrAccNo'] = $category->cosacct;
-        //         $glinface_arr['CrCcode'] = $department->costcode;
-        //         $glinface_arr['CrAccNo'] = $category->stockacct;
-        //     }
-
-        //     DB::table('finance.glinface')
-        //         ->insert($glinface_arr);
-        // }
+            ->delete();
     }
 
-    public function crtgltran($ivdspdt_idno,Request $request,$dbacthdr){
+    public function crtgltran($ivdspdt_idno,$dbacthdr){
         $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
         $ivdspdt = DB::table('material.ivdspdt')
@@ -1514,7 +1610,7 @@ class SalesOrderDetailController extends defaultController
         }
     }
 
-    public function updgltran($ivdspdt_idno,Request $request,$dbacthdr){
+    public function updgltran($ivdspdt_idno,$dbacthdr){
         $ivdspdt = DB::table('material.ivdspdt')
                         ->where('idno','=',$ivdspdt_idno)
                         ->first();
@@ -1600,6 +1696,282 @@ class SalesOrderDetailController extends defaultController
         }
     }
 
+    public function delgltran($billsum_obj,$dbacthdr){
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$billsum_obj->auditno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            // $gltran->update([
+            //     'amount' => $ivdspdt->amount
+            // ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => +$OldAmount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            DB::table('finance.gltran')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$billsum_obj->auditno)
+                ->delete();
+        }
+    }
+
+    public function crtgltran_notinv($billsum_obj,$dbacthdr){
+        $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+        //tengok product category
+        $product_obj = DB::table('material.product')
+            ->where('compcode','=', session('compcode'))
+            ->where('unit','=', session('unit'))
+            ->where('itemcode','=', $billsum_obj->chggroup)
+            ->where('uomcode','=', $billsum_obj->uom)
+            ->first();
+
+        $row_dept = DB::table('sysdb.department')
+            ->select('costcode')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$dbacthdr->deptcode)
+            ->first();
+        //utk debit accountcode
+        $row_cat = DB::table('material.category')
+            ->select('stockacct','cosacct')
+            ->where('compcode','=',session('compcode'))
+            ->where('catcode','=',$product_obj->productcat)
+            ->first();
+
+        $drcostcode = $row_dept->costcode;
+        $dracc = $row_cat->cosacct;
+        $crcostcode = $row_dept->costcode;
+        $cracc = $row_cat->stockacct;
+
+        //1. buat gltran
+        DB::table('finance.gltran')
+            ->insert([
+                'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'auditno' => $billsum_obj->auditno,
+                'lineno_' => 1,
+                'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
+                'trantype' => 'DS',
+                'reference' => $billsum_obj->uom,
+                'description' => $billsum_obj->chggroup, 
+                'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'year' => $yearperiod->year,
+                'period' => $yearperiod->period,
+                'drcostcode' => $drcostcode,
+                'dracc' => $dracc,
+                'crcostcode' => $crcostcode,
+                'cracc' => $cracc,
+                'amount' => $billsum_obj->amount
+            ]);
+
+        //2. check glmastdtl utk debit, kalu ada update kalu xde create
+        $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$drcostcode)
+                ->where('glaccount','=',$dracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $billsum_obj->amount + $gltranAmount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $drcostcode,
+                    'glaccount' => $dracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => $billsum_obj->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+
+        //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+        $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+        if($gltranAmount!==false){
+            DB::table('finance.glmasdtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('costcode','=',$crcostcode)
+                ->where('glaccount','=',$cracc)
+                ->where('year','=',$yearperiod->year)
+                ->update([
+                    'upduser' => session('username'),
+                    'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'actamount'.$yearperiod->period => $gltranAmount - $billsum_obj->amount,
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }else{
+            DB::table('finance.glmasdtl')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'costcode' => $crcostcode,
+                    'glaccount' => $cracc,
+                    'year' => $yearperiod->year,
+                    'actamount'.$yearperiod->period => -$billsum_obj->amount,
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                    'recstatus' => 'ACTIVE'
+                ]);
+        }
+    }
+
+    public function updgltran_notinv($billsum_obj,$dbacthdr){
+
+        $gltran = DB::table('finance.gltran')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('auditno','=',$billsum_obj->auditno);
+
+        if($gltran->exists()){
+            $gltran_first = $gltran->first();
+
+            $OldAmount = $gltran_first->amount;
+            $yearperiod = $this->getyearperiod(Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+            $drcostcode = $gltran_first->drcostcode;
+            $dracc = $gltran_first->dracc;
+            $crcostcode = $gltran_first->crcostcode;
+            $cracc = $gltran_first->cracc;
+
+            $gltran->update([
+                'amount' => $ivdspdt->amount
+            ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  $this->isGltranExist($drcostcode,$dracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$drcostcode)
+                    ->where('glaccount','=',$dracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount + $billsum_obj->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $drcostcode,
+                        'glaccount' => $dracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $billsum_obj->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount - $billsum_obj->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => -$billsum_obj->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+        }else{
+            throw new \Exception("Gltran doesnt exists");
+        }
+    }
+
     public function billtype_obj_get(Request $request){
         $billtype_obj = new stdClass();
 
@@ -1638,8 +2010,6 @@ class SalesOrderDetailController extends defaultController
         }else{
             throw new \Exception("Wrong billtype");
         }
-
-
     }
 
     public function get_billtype_amt_percent($billtype_obj,$loop_item){
