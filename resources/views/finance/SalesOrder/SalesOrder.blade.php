@@ -370,6 +370,8 @@ div#fail_msg{
 							<div class="col-md-2">
 									<input id="db_recstatus" name="db_recstatus" maxlength="10" class="form-control input-sm" rdonly>
 							</div>
+
+							<button type="button" id='save' class='btn btn-info btn-sm' style='margin: 0.2%;'>Save</button>
 						</div>
 
 						<hr>

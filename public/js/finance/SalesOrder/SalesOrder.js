@@ -59,6 +59,7 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						rdonly('#formdata');
 						//$("#purreqhd_reqdept").val($("#x").val());
+						$('#save').hide();
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -263,6 +264,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+			$('#save').hide();
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").db_recstatus;
 			let scope = $("#recstatus_use").val();
@@ -284,10 +286,15 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED'){
-				$("#jqGridPager td[title='Edit Selected Row']").click();
-			}else{
+			
+			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
+			}else if (stat == 'OPEN'){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+
+				if (rowid != null) {
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				}
 			}
 		},
 		gridComplete: function () {
@@ -361,6 +368,15 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
+
+			if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$('#db_orderno').prop('readonly',false);
+				$('#db_podate').prop('readonly',false);
+				$('#db_ponum').prop('readonly',false);
+				$("#pg_jqGridPager2 table").hide();
+				$('#save').show();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -1387,6 +1403,18 @@ $(document).ready(function () {
 		refreshGrid("#jqGrid2", urlParam2);
 	});
 
+	$("#save").click(function(){
+		unsaved = false;
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader("#formdata", oper,saveParam,{idno:$('#db_idno').val()},'refreshGrid');
+			unsaved = false;
+			$("#dialogForm").dialog('close');
+		}else{
+			mycurrency.formatOn();
+		}
+	});
 	/////////////calculate conv fac//////////////////////////////////
 
 	function remove_noti(event){
