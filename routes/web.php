@@ -217,6 +217,7 @@ Route::post('/computerid/form','setup\ComputeridController@form');
 Route::get('/receipt','finance\ReceiptController@show');
 Route::get('/receipt/table','finance\ReceiptController@table');
 Route::post('/receipt/form','finance\ReceiptController@form');
+Route::get('/receipt/showpdf','finance\ReceiptController@showpdf');
 
 //// Receipt Transaction AR - report sales ///
 Route::get('/ReceiptAR_Report','finance\ReceiptAR_ReportController@show');

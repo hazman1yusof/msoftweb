@@ -914,6 +914,8 @@ $(document).ready(function () {
 		},
 		onSelectRow: function(rowid){
 			// allocate("#jqGrid");
+			
+			$("#pdfgen1").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").dbacthdr_auditno);
 		},
 		gridComplete: function(){
 			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
