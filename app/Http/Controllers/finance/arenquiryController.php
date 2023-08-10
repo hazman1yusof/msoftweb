@@ -86,9 +86,7 @@ class arenquiryController extends defaultController
                         'db.unallocated AS db_unallocated',
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
-                    ->leftJoin('debtor.till as t', 't.tillcode', '=', 'db.tillcode')
                     ->where('db.compcode','=',session('compcode'))
-                   // ->where('db.deptcode','=','t.deptcode')
                     ->where('db.source','=','PB');
                     // ->where('db.trantype','=','IN','DN',);
         
