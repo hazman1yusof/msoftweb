@@ -1020,11 +1020,11 @@ class PurchaseRequestController extends defaultController
         // }
         
         $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm." ONLY";
+        $totamt_eng = $totamt_eng_rm. " ONLY";
 
         if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1]). "CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen. " ONLY";
         }
 
         // $pdf = PDF::loadView('material.purchaseRequest.purchaseRequest_pdf',compact('purreqhd','purreqdt','totamt_bm','company', 'supplier', 'prdept', 'total_tax', 'total_discamt'));
