@@ -78,6 +78,8 @@ class ReceiptController extends defaultController
                 $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
 
                 $tillcode = $till_obj->tillcode;
+                $tilldeptcode = $till_obj->dept;
+               // dd($tilldeptcode);
                 $tillno = $tilldetl->first()->tillno;
                 $recptno = $till_obj->tillcode.'-'.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
 
@@ -94,7 +96,7 @@ class ReceiptController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                'posteddate' => $request->dbacthdr_posteddate,
+                'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => $request->dbacthdr_reference,
                 'authno' => $request->dbacthdr_authno,
                 'expdate' => $request->dbacthdr_expdate,
@@ -118,6 +120,7 @@ class ReceiptController extends defaultController
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
                 'recptno' => $recptno,     
+                'deptcode' => $tilldeptcode, 
             ];
 
             if($request->dbacthdr_trantype == "RD"){
