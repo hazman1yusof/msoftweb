@@ -61,12 +61,12 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        text: '{{$title}}',
-                        style: 'header',
-                        alignment: 'LEFT'
+                        image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        text: '{{$title}}',
+                        style: 'header',
+                        alignment: 'center'
                     },
                     // {
                     //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
@@ -92,7 +92,11 @@
                                     { text: 'PAY BY : {{$dbacthdr->paymode}}' },
                                 ],
                                 [
-                                    { text: 'MRN : {{$dbacthdr->mrn}}' },
+                                    @if($dbacthdr->mrn == '0')
+                                        { text: 'MRN : ' },
+                                    @else
+                                        { text: 'MRN : {{$dbacthdr->mrn}}' },
+                                    @endif
                                     { text: 'AUTHORISED NO : {{$dbacthdr->authno}}' },
                                 ],
                             ]
@@ -114,10 +118,18 @@
                                 ],
                                 @foreach ($dballoc as $obj)
                                 [
-                                    { text: 'Bill No {{$obj->auditno}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                    { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
                                     { text: '{{$obj->name}}' },
-                                    { text: '{{$obj->mrn}}' },
-                                    { text: '{{$obj->episno}}' },
+                                    @if($obj->mrn == '0')
+                                        { text: ' ' },
+                                    @else
+                                        { text: '{{$obj->mrn}}' },
+                                    @endif
+                                    @if($obj->episno == '0')
+                                        { text: ' ' },
+                                    @else
+                                        { text: '{{$obj->episno}}' },
+                                    @endif
                                     { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
                                 ],
                                 @endforeach
@@ -169,10 +181,13 @@
                     {
                         text: 'Date printed: {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}} {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('H:i')}} by {{session('username')}}', fontSize: 9,
                     },
+                    {
+                        text: '\nTHIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.', fontSize: 10, alignment: 'center'
+                    },
                 ],
                 styles: {
                     header: {
-                        fontSize: 18,
+                        fontSize: 14,
                         bold: true,
                         margin: [0, 0, 0, 10]
                     },
