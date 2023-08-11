@@ -876,7 +876,7 @@ $(document).ready(function () {
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
 			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, 
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/y'},
 				editoptions: {
 					dataInit: function (element) {
 						$(element).datepicker({
