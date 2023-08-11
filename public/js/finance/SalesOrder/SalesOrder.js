@@ -59,6 +59,7 @@ $(document).ready(function () {
 						enableForm('#formdata');
 						rdonly('#formdata');
 						//$("#purreqhd_reqdept").val($("#x").val());
+						$('#save').hide();
 						break;
 					case state = 'edit':
 						$("#pg_jqGridPager2 table").show();
@@ -116,7 +117,7 @@ $(document).ready(function () {
 			},
 		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
-	
+
 	///////////check postdate & docdate///////////////////
 	$("#posteddate,#db_entrydate").blur(checkdate);
 
@@ -220,10 +221,10 @@ $(document).ready(function () {
 			{ label: 'Payer Code', name: 'db_payercode', width: 35, canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Customer', name: 'dm_name', width: 40, canSearch: false, classes: 'wrap', hidden:true},
 			{ label: 'Document Date', name: 'db_entrydate', width: 12, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero5, unformat: unpadzero},
-			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero5, unformat: unpadzero },
+			{ label: 'Audit No', name: 'db_auditno', width: 12, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'Invoice No', name: 'db_invno', width: 10, align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			//{ label: 'Sector', name: 'db_unit', width: 15, canSearch: true, classes: 'wrap' },
-			{ label: 'PO No', name: 'db_ponum', width: 10, formatter: padzero5, unformat: unpadzero },
+			{ label: 'PO No', name: 'db_ponum', width: 10, align: 'right', formatter: padzero5, unformat: unpadzero },
 			{ label: 'Amount', name: 'db_amount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'O/S<br>Amount', name: 'db_outamount', width: 10, align: 'right', formatter: 'currency' },
 			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
@@ -263,6 +264,7 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow: function (rowid, selected) {
+			$('#save').hide();
 			$('#error_infront').text('');
 			let stat = selrowData("#jqGrid").db_recstatus;
 			let scope = $("#recstatus_use").val();
@@ -284,11 +286,25 @@ $(document).ready(function () {
 		},
 		ondblClickRow: function (rowid, iRow, iCol, e) {
 			let stat = selrowData("#jqGrid").db_recstatus;
-			if(stat=='OPEN' || stat=='INCOMPLETED'){
-				$("#jqGridPager td[title='Edit Selected Row']").click();
-			}else{
+			
+			if(stat=='POSTED'){
 				$("#jqGridPager td[title='View Selected Row']").click();
+			}else if (stat == 'OPEN'){
+				$("#jqGridPager td[title='Edit Selected Row']").click();
+				
+				if (rowid != null) {
+					rowData = $('#jqGrid').jqGrid('getRowData', rowid);
+				}
 			}
+			
+			let db_invno = selrowData("#jqGrid").db_invno;
+			let invno = db_invno.toString().padStart(8, '0');
+			
+			let db_auditno = selrowData("#jqGrid").db_auditno;
+			let auditno = db_auditno.toString().padStart(8, '0');
+			
+			$('#db_invno').val(invno);
+			$('#db_auditno').val(auditno);
 		},
 		gridComplete: function () {
 			cbselect.show_hide_table();
@@ -361,6 +377,15 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
 			refreshGrid("#jqGrid2", urlParam2);
+
+			if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
+				disableForm('#formdata');
+				$('#db_orderno').prop('readonly',false);
+				$('#db_podate').prop('readonly',false);
+				$('#db_ponum').prop('readonly',false);
+				$("#pg_jqGridPager2 table").hide();
+				$('#save').show();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -392,6 +417,19 @@ $(document).ready(function () {
 			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
 			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
+	}
+	
+	function padzero(cellvalue, options, rowObject){
+		if(cellvalue == null || cellvalue.toString().trim() == ''){
+			return ''
+		}
+	
+		let padzero = 8, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
@@ -1387,6 +1425,18 @@ $(document).ready(function () {
 		refreshGrid("#jqGrid2", urlParam2);
 	});
 
+	$("#save").click(function(){
+		unsaved = false;
+		mycurrency.formatOff();
+		mycurrency.check0value(errorField);
+		if(checkdate(true) && $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader("#formdata", oper,saveParam,{idno:$('#db_idno').val()},'refreshGrid');
+			unsaved = false;
+			$("#dialogForm").dialog('close');
+		}else{
+			mycurrency.formatOn();
+		}
+	});
 	/////////////calculate conv fac//////////////////////////////////
 
 	function remove_noti(event){

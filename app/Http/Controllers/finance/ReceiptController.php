@@ -78,6 +78,8 @@ class ReceiptController extends defaultController
                 $lastrcnumber = $this->defaultTill($till_obj->tillcode,'lastrcnumber');
 
                 $tillcode = $till_obj->tillcode;
+                $tilldeptcode = $till_obj->dept;
+               // dd($tilldeptcode);
                 $tillno = $tilldetl->first()->tillno;
                 $recptno = $till_obj->tillcode.'-'.str_pad($lastrcnumber, 9, "0", STR_PAD_LEFT);
 
@@ -94,10 +96,10 @@ class ReceiptController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
-                'posteddate' => $request->dbacthdr_posteddate,
+                'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => $request->dbacthdr_reference,
                 'authno' => $request->dbacthdr_authno,
-                'expdate' => $request->dbacthdr_expdate,
+                'expdate' => \Carbon\Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
                 'entryuser' => session('username'),
                 'recstatus' => 'ACTIVE',
                 'source' => 'PB',
@@ -118,6 +120,7 @@ class ReceiptController extends defaultController
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
                 'recptno' => $recptno,     
+                'deptcode' => $tilldeptcode, 
             ];
 
             if($request->dbacthdr_trantype == "RD"){
@@ -449,5 +452,97 @@ class ReceiptController extends defaultController
         }
 
     }
+    
+    public function showpdf(Request $request){
+        
+        $auditno = $request->auditno;
+        if(!$auditno){
+            abort(404);
+        }
+        
+        $tilldetl = DB::table('debtor.tilldetl')
+                    ->where('compcode',session('compcode'))
+                    ->where('cashier',session('username'))
+                    ->whereNull('closedate')
+                    ->first();
+        
+        // dd($tilldetl);
+        
+        // if($tilldetl->exists()){
+        //     $tilldetl = $tilldetl->first();
+            
+        //     $dbacthdr = DB::table('debtor.dbacthdr')
+        //                 ->select($this->fixPost($request->field,"_"))
+        //                 ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+        //                     $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+        //                                 ->where('pat_mast.compcode','=',session('compcode'));
+        //                 })
+        //                 ->where('dbacthdr.tillcode',$tilldetl->tillcode)
+        //                 ->where('dbacthdr.tillno',$tilldetl->tillno)
+        //                 ->where('dbacthdr.compcode',session('compcode'))
+        //                 ->whereIn('dbacthdr.trantype',['RC','RD']);
+        // }
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as d', 'hisdb.pat_mast as p')
+                    ->select('d.idno', 'd.compcode', 'd.source', 'd.trantype', 'd.auditno', 'd.lineno_', 'd.amount', 'd.outamount', 'd.recstatus', 'd.entrydate', 'd.entrytime', 'd.entryuser', 'd.reference', 'd.recptno', 'd.paymode', 'd.tillcode', 'd.tillno', 'd.debtortype', 'd.payercode', 'd.billdebtor', 'd.remark', 'd.mrn', 'd.episno', 'd.authno', 'd.expdate', 'd.adddate', 'd.epistype', 'd.cbflag', 'd.conversion', 'd.payername', 'd.hdrtype', 'd.currency', 'd.rate', 'd.unit', 'd.invno', 'd.paytype', 'd.bankcharges', 'd.RCCASHbalance', 'd.RCOSbalance', 'd.RCFinalbalance', 'd.PymtDescription', 'd.posteddate', 'p.Name', 'p.Newic')
+                    ->leftjoin('hisdb.pat_mast as p', function($join) use ($request){
+                        $join = $join->on('p.MRN', '=', 'd.mrn')
+                                    ->where('p.compcode','=',session('compcode'));
+                    })
+                    ->where('auditno','=',$auditno)
+                    ->first();
+        
+        // if ($dbacthdr->recstatus == "ACTIVE") {
+        //     $title = "DRAFT";
+        // } elseif ($dbacthdr->recstatus == "POSTED"){
+        //     $title = "RECEIPT";
+        // }
+        
+        $title = "OFFICIAL RECEIPT";
+        
+        $dballoc = DB::table('debtor.dballoc as a', 'debtor.debtormast as m')
+                    ->select('a.compcode', 'a.source', 'a.trantype', 'a.auditno', 'a.lineno_', 'a.docsource', 'a.doctrantype', 'a.docauditno', 'a.refsource', 'a.reftrantype', 'a.refauditno', 'a.refamount', 'a.reflineno', 'a.recptno', 'a.mrn', 'a.episno', 'a.allocsts', 'a.amount', 'a.tillcode', 'a.debtortype', 'a.debtorcode', 'a.payercode', 'a.paymode', 'a.allocdate', 'a.remark', 'a.balance', 'a.recstatus', 'm.debtorcode', 'm.name')
+                    ->leftjoin('debtor.debtormast as m', function($join) use ($request){
+                        $join = $join->on('m.debtorcode', '=', 'a.debtorcode')
+                                    ->where('m.compcode','=',session('compcode'));
+                    })
+                    ->where('a.docauditno','=',$auditno)
+                    ->where('a.recstatus', '!=', 'CANCELLED')
+                    ->get();
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $totamount_expld = explode(".", (float)$dbacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        return view('finance.AR.receipt.receipt_pdfmake',compact('tilldetl','dbacthdr','title','dballoc','company','totamt_eng'));
+        
+        // if(empty($request->type)){
+        //     $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        //     return $pdf->stream();
+        //     return view('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        // } else {
+        //     return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        // }
+        
+    }
+
 }
 

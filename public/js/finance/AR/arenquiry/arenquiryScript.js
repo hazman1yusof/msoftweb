@@ -409,7 +409,7 @@ $(document).ready(function () {
 	
 	////////////////////////////////////////////padzero////////////////////////////////////////////
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 8, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -434,9 +434,9 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 35, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
-			{ label: 'Audit No', name: 'db_auditno', width: 8, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
@@ -451,7 +451,7 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 20, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
@@ -517,6 +517,9 @@ $(document).ready(function () {
 			urlParamAlloc.idno=selrowData("#jqGrid").db_idno;
 			urlParamAlloc.auditno=selrowData("#jqGrid").db_auditno;
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
+			
+			$("#pdfgen1").attr('href','./SalesOrder/showpdf?idno='+selrowData("#jqGrid").db_idno);
+			$("#pdfgen2").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").db_auditno);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
@@ -1093,6 +1096,7 @@ $(document).ready(function () {
 		action:'maintable',
 		url: './receipt/table',
 		field:'',
+		
 	}
 
 	var saveParam2_RC={	

@@ -827,13 +827,6 @@ $(document).ready(function () {
 		url: './receipt/table',
 		field:'',
 		fixPost: true
-		// table_name:['debtor.dbacthdr','hisdb.pat_mast'],
-		// table_id:'dbacthdr_idno',
-		// join_type:['LEFT JOIN'],
-		// join_onCol:['dbacthdr.mrn'],
-		// join_onVal:['pat_mast.mrn'],
-		// filterCol:['dbacthdr.trantype',''],
-		// filterVal:['RC']
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -871,25 +864,39 @@ $(document).ready(function () {
 			{label: 'Date', name: 'dbacthdr_entrydate',width: 40,formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
 			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
 			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{label: 'Payer Code', name: 'dbacthdr_payercode', width: 100, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', hidden: true},//tunjuk
 			//{label: 'Debtor Code', name: 'dbacthdr_debtorcode', width: 400, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 50}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 40}, //tunjuk
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
 			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
-			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, 
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/y'},
+				editoptions: {
+					dataInit: function (element) {
+						$(element).datepicker({
+							id: 'expdate_datePicker',
+							dateFormat: 'MM/YYYY',
+							min: now,
+   	 						max: until,
+							changeMonth: true,
+							changeYear: true,
+						});
+					}
+				}
+			},
+			{label: 'Authorization<br>No', name: 'dbacthdr_authno',width: 50},
+			{label: 'Amount', name: 'dbacthdr_amount', width: 50, align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 50,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
 			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
 			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
 			{label: 'units', name: 'dbacthdr_unit', hidden: true},
 			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
@@ -914,6 +921,8 @@ $(document).ready(function () {
 		},
 		onSelectRow: function(rowid){
 			// allocate("#jqGrid");
+			
+			$("#pdfgen1").attr('href','./receipt/showpdf?auditno='+selrowData("#jqGrid").dbacthdr_auditno);
 		},
 		gridComplete: function(){
 			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
@@ -951,6 +960,13 @@ $(document).ready(function () {
 					$("#g_forex").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
 				}, 500 );
 			}else{
+				// $("#dbacthdr_expdate").text(selrowData("#jqGrid").dbacthdr_expdate);
+				var expdate = selrowData("#jqGrid").dbacthdr_expdate;
+				var datearray = expdate.split("/");
+				
+				var newexpdate = datearray[1] + '/' + datearray[2];
+				$("#dbacthdr_expdate").text(newexpdate);
+				
 				$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
 				$( "input:radio[name='optradio'][value='receipt']" ).change();
 				delay(function(){

@@ -167,6 +167,16 @@ class arenquiryController extends defaultController
             }else{
                 $value->unallocated = true;
             }
+            
+            if($value->db_trantype == 'RC'){
+                $till = DB::table('debtor.till')
+                        ->where('tillcode','=',$value->db_tillcode)
+                        ->where('compcode',session('compcode'))
+                        ->first();
+                
+                // dd($till->dept);
+                $value->db_deptcode = $till->dept;
+            }
         }
         
         //////////paginate/////////
