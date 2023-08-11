@@ -392,7 +392,7 @@
 							  		<div class='col-md-6'>
 										<label class="control-label" for="dbacthdr_expdate">Expiry Date</label> 
 								  		<div class=''> 
-											<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="month" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+											<input id="dbacthdr_expdate" name="dbacthdr_expdate" type="month" class="form-control input-sm">
 										</div>
 							  		</div>
 								</div>

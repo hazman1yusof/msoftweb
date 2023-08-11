@@ -960,6 +960,13 @@ $(document).ready(function () {
 					$("#g_forex").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
 				}, 500 );
 			}else{
+				// $("#dbacthdr_expdate").text(selrowData("#jqGrid").dbacthdr_expdate);
+				var expdate = selrowData("#jqGrid").dbacthdr_expdate;
+				var datearray = expdate.split("/");
+				
+				var newexpdate = datearray[1] + '/' + datearray[2];
+				$("#dbacthdr_expdate").text(newexpdate);
+				
 				$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
 				$( "input:radio[name='optradio'][value='receipt']" ).change();
 				delay(function(){
