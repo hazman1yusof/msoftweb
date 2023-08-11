@@ -42,6 +42,16 @@ class ItemEnquiryController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'dialogForm_SalesOrder':
+                return $this->dialogForm_SalesOrder($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function detailMovement(Request $request){
         //yg ni yg keluar kot
         $det_mov_deptcode = DB::table('material.ivtxndt as d')
@@ -136,6 +146,41 @@ class ItemEnquiryController extends defaultController
         $responce = new stdClass();
         $responce->rows = $merged;
         // dd($merged);
+
+        return json_encode($responce);
+    }
+
+
+    public function dialogForm_SalesOrder(Request $request){
+        $billsum = DB::table('debtor.billsum as bs')
+                        ->where('bs.compcode',session('compcode'))
+                        ->where('bs.source','PB')
+                        ->where('bs.trantype','IN')
+                        ->where('bs.auditno',$request->docno);
+
+        $billno = $billsum->first()->billno;
+
+        $dbacthdr = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.source','PB')
+                        ->where('db.trantype','IN')
+                        ->where('db.auditno',$billno);
+
+        $billsum_array = DB::table('debtor.billsum as bs')
+                        ->select('bs.idno','bs.compcode','bs.source','bs.trantype','bs.auditno','bs.quantity','bs.amount','bs.outamt','bs.taxamt','bs.totamt','bs.mrn','bs.episno','bs.paymode','bs.cardno','bs.debtortype','bs.debtorcode','bs.invno','bs.billno','bs.lineno_','bs.rowno','bs.billtype','bs.chgclass','bs.classlevel','bs.chggroup','bs.lastuser','bs.lastupdate','bs.invcode','bs.seqno','bs.discamt','bs.docref','bs.uom','bs.uom_recv','bs.recstatus','bs.unitprice','bs.taxcode','bs.billtypeperct','bs.billtypeamt','bs.totamount','bs.qtyonhand','cm.description')
+                        ->leftJoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->on('cm.chgcode', '=', 'bs.chggroup')
+                                         ->on('cm.uom', '=', 'bs.uom')
+                                         ->where('cm.compcode','=',session('compcode'));
+                        })
+                        ->where('bs.compcode',session('compcode'))
+                        ->where('bs.source','PB')
+                        ->where('bs.trantype','IN')
+                        ->where('bs.billno',$billno);
+
+        $responce = new stdClass();
+        $responce->dbacthdr = $dbacthdr->first();
+        $responce->billsum_array = $billsum_array->get();
 
         return json_encode($responce);
     }

@@ -227,6 +227,10 @@
 		</div>
 	</div>
 
+	<div id="dialogForm" title="Viewing Detail">
+		@include('finance.GL.glmasdtl.SalesOrder_glmasdtl')
+	</div>
+
 @endsection
 
 @section('scripts')

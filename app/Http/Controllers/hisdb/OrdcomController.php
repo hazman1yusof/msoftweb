@@ -20,72 +20,14 @@ class OrdcomController extends defaultController
         // $this->duplicateCode = "chgcode";
     }
 
-    public function table(Request $request)
-    {   
+    public function table(Request $request){   
        switch($request->action){
             case 'chgcode_table':
-                $sysparam = DB::table('sysdb.sysparam')
-                                ->select('pvalue1')
-                                ->where('source','=','OE')
-                                ->where('trantype','=','NURSING')
-                                ->first();
-
-                $data = DB::table('hisdb.chgmast as m')
-                            ->select('m.chgcode','m.description as desc','m.chggroup','g.grpcode','g.description','p.amt1')
-                            ->leftJoin('hisdb.chggroup as g', 'm.chggroup', '=', 'g.grpcode')
-                            ->leftJoin('hisdb.chgprice as p', 'm.chgcode', '=', 'p.chgcode')
-                            ->whereIn('chggroup', explode( ',', $sysparam->pvalue1 ))
-                            ->where('m.recstatus','=','ACTIVE')
-                            ->where('m.recstatus','=','ACTIVE')
-                            ->where('m.compcode','=',session('compcode'))
-                            ->orderBy('m.chggroup', 'desc')
-                            ->get();
+                $data = $this->chgcode_table($request);
                 break;
 
-
             case 'ordcom_table':
-                if($request->rows == null){
-                    $request->rows = 100;
-                }
-
-                $table_chgtrx = DB::table('hisdb.chargetrx as trx')
-                            ->select('trx.auditno',
-                                'trx.chgcode',
-                                'trx.quantity',
-                                'trx.remarks',
-                                'trx.instruction as ins_code',
-                                'trx.doscode as dos_code',
-                                'trx.frequency as fre_code',
-                                'trx.drugindicator as dru_code',
-                                'trx.adddate',
-
-                                'chgmast.description as chg_desc',
-                                'instruction.description as ins_desc',
-                                'dose.dosedesc as dos_desc',
-                                'freq.freqdesc as fre_desc',
-                                'drugindicator.drugindcode as dru_desc')
-
-                            // ->where('trx.mrn' ,'=', $request->mrn)
-                            // ->where('trx.episno' ,'=', $request->episno)
-                            ->where('trx.compcode','=',session('compcode'))
-                            ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
-                            ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
-                            ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
-                            ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
-                            ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator')
-                            ->orderBy('trx.adddate', 'desc');
-                            //////////paginate/////////
-
-                            $paginate = $table_chgtrx->paginate($request->rows);
-
-                            $responce = new stdClass();
-                            $responce->page = $paginate->currentPage();
-                            $responce->total = $paginate->lastPage();
-                            $responce->records = $paginate->total();
-                            $responce->rows = $paginate->items();
-                            $responce->sql = $table_chgtrx->toSql();
-                            $responce->sql_bind = $table_chgtrx->getBindings();
-                            return json_encode($responce);
+                return $this->ordcom_table($request);
                 break;
 
             default:
@@ -99,13 +41,11 @@ class OrdcomController extends defaultController
         return json_encode($responce);
     }
 
-    public function show(Request $request)
-    {   
+    public function show(Request $request){   
         return view('hisdb.ordcom.ordcom');
     }
 
-    public function form(Request $request)
-    {   
+    public function form(Request $request){   
         DB::enableQueryLog();
         switch($request->action){
             case 'save_table_chargetrx':
@@ -264,6 +204,72 @@ class OrdcomController extends defaultController
             return response($e->getMessage(), 500);
         }
         
+    }
+
+    public function chgcode_table(Request $request){
+        $sysparam = DB::table('sysdb.sysparam')
+                        ->select('pvalue1')
+                        ->where('source','=','OE')
+                        ->where('trantype','=','NURSING')
+                        ->first();
+
+        $data = DB::table('hisdb.chgmast as m')
+                    ->select('m.chgcode','m.description as desc','m.chggroup','g.grpcode','g.description','p.amt1')
+                    ->leftJoin('hisdb.chggroup as g', 'm.chggroup', '=', 'g.grpcode')
+                    ->leftJoin('hisdb.chgprice as p', 'm.chgcode', '=', 'p.chgcode')
+                    ->whereIn('chggroup', explode( ',', $sysparam->pvalue1 ))
+                    ->where('m.recstatus','=','ACTIVE')
+                    ->where('m.recstatus','=','ACTIVE')
+                    ->where('m.compcode','=',session('compcode'))
+                    ->orderBy('m.chggroup', 'desc')
+                    ->get();
+
+        return $data;
+    }
+    public function ordcom_table(Request $request){
+        if($request->rows == null){
+            $request->rows = 100;
+        }
+
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx')
+                    ->select('trx.auditno',
+                        'trx.chgcode',
+                        'trx.quantity',
+                        'trx.remarks',
+                        'trx.instruction as ins_code',
+                        'trx.doscode as dos_code',
+                        'trx.frequency as fre_code',
+                        'trx.drugindicator as dru_code',
+                        'trx.adddate',
+
+                        'chgmast.description as chg_desc',
+                        'instruction.description as ins_desc',
+                        'dose.dosedesc as dos_desc',
+                        'freq.freqdesc as fre_desc',
+                        'drugindicator.drugindcode as dru_desc')
+
+                    ->where('trx.mrn' ,'=', $request->mrn)
+                    ->where('trx.episno' ,'=', $request->episno)
+                    ->where('trx.compcode','=',session('compcode'))
+                    ->leftJoin('hisdb.chgmast','chgmast.chgcode','=','trx.chgcode')
+                    ->leftJoin('hisdb.instruction','instruction.inscode','=','trx.instruction')
+                    ->leftJoin('hisdb.freq','freq.freqcode','=','trx.frequency')
+                    ->leftJoin('hisdb.dose','dose.dosecode','=','trx.doscode')
+                    ->leftJoin('hisdb.drugindicator','drugindicator.drugindcode','=','trx.drugindicator')
+                    ->orderBy('trx.adddate', 'desc');
+
+        //////////paginate/////////
+
+        $paginate = $table_chgtrx->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table_chgtrx->toSql();
+        $responce->sql_bind = $table_chgtrx->getBindings();
+        return json_encode($responce);
     }
 
 }

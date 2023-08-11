@@ -1250,7 +1250,7 @@ class SalesOrderController extends defaultController
                 ->insert($ivdspdt_arr);
     }
 
-    public function crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc){
+    public function crtivdspdt($billsum_obj,$product,$dbacthdr,$stockloc){//xguna
         $ivdspdt_arr = [
             'compcode' => session('compcode'),
             'recno' => $billsum_obj->idno,

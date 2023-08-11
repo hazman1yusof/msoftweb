@@ -2163,6 +2163,16 @@ function computerid_set(computerid){
 	}
 }
 
+function calc_jq_height_onchange(jqgrid){
+	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+	if(scrollHeight<80){
+		scrollHeight = 80;
+	}else if(scrollHeight>300){
+		scrollHeight = 300;
+	}
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
+}
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){

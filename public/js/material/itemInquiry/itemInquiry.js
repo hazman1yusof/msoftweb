@@ -3,7 +3,29 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
+	$("#dialogForm").dialog({ 
+		width: 9/10 * $(window).width(),
+		modal: true,
+		autoOpen: false,
+		open: function( event, ui ) {
+			if($("#dialogForm_SalesOrder").is(":visible")){
+				disableForm("#dialogForm_SalesOrder");
+				$("#jqGrid2_salesorder").jqGrid('setGridWidth',Math.floor($("#jqgrid2_salesorder_c")[0].offsetWidth - 25));
+				calc_jq_height_onchange('jqGrid2_salesorder');
+			}
+		},
+		close: function( event, ui ) {
+			if($('#gbox_jqGrid2_salesorder').length > 0){
+				del_jqgrid('#jqGrid2_salesorder');
+			}
+			$('div.dialogdtl').hide();
+		},
+		buttons :[{
+			text: "Close",click: function() {
+				$(this).dialog('close');
+			}
+		}],
+	});
 	
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -24,75 +46,6 @@ $(document).ready(function () {
 		},
 	};
 	var Class2 = $('#Class2').val();
-	
-
-	////////////////////////////////////start dialog///////////////////////////////////////
-	var butt1=[{
-		text: "Save",click: function() {
-			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-			}
-		}
-	},{
-		text: "Cancel",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var butt2=[{
-		text: "Close",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var oper = 'add';
-	$("#dialogForm")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			parent_close_disabled(true);
-			switch(oper) {
-				case state = 'add':
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata');
-					hideOne('#formdata');
-					rdonly('#formdata');
-					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata');
-					rdonly('#formdata');
-					frozeOnEdit("#dialogForm");
-					$('#formdata :input[hideOne]').show();
-					break;
-				case state = 'view':
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#formdata');
-					$('#formdata :input[hideOne]').show();
-					$(this).dialog("option", "buttons",butt2);
-					break;
-			}
-			if(oper!='view'){
-				//dialog_dept.handler(errorField);
-			}
-			if(oper!='add'){
-				toggleFormData('#jqGrid','#formdata');
-				//dialog_dept.check(errorField);
-			}
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			$('#formdata .alert').detach();
-			$("#formdata a").off();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
-		buttons :butt1,
-	  });
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	
@@ -415,14 +368,14 @@ $(document).ready(function () {
 	}
 
 	var DataTable = $('#TableDetailMovement').DataTable({
-		ordering: false,
+    	order: [[ 1, 'desc' ]],
 		responsive: true,
 		scrollY: 500,
 		paging: false,
 		columns: [
-			{ data: 'open' ,"width": "60%"},
-			{ data: 'trandate'},
-			{ data: 'trantype'},
+			{ data: 'open' ,"width": "60%", sClass: "open"},
+			{ data: 'trandate',"type": "date"},
+			{ data: 'trantype', sClass: "trantype"},
 			{ data: 'description'},
 			{ data: 'dept'},
 			{ data: 'qtyin', className: "text-right"},
@@ -431,7 +384,7 @@ $(document).ready(function () {
 			{ data: 'netprice', className: "text-right"},
 			{ data: 'amount', className: "text-right"},
 			{ data: 'balance', className: "text-right"},
-			{ data: 'docno', className: "text-right"},
+			{ data: 'docno', sClass: "text-right docno"},
 			{ data: 'mrn', className: "text-right"},
 			{ data: 'episno', className: "text-right"},
 			{ data: 'adduser'},
@@ -663,6 +616,21 @@ $(document).ready(function () {
 
 	$("#pg_jqGridPager2 table").hide();
 	$("#pg_jqGridPager3 table").hide();
+
+	$('#TableDetailMovement').on('click','td.open', function () {
+		var trantype = $(this).siblings("td.trantype").text();
+		var docno = $(this).siblings("td.docno").text();
+		var obj_id = {
+			trantype: trantype,
+			docno: docno
+		}
+
+		switch(true){
+			case obj_id.trantype=='DS' :
+				dialogForm_SalesOrder(obj_id);
+				break;
+		}
+	});
 });
 
 function calc_jq_height_onchange(jqgrid){
@@ -672,5 +640,92 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
+}
+
+
+function dialogForm_SalesOrder(obj_id){
+	param={
+		url: './itemEnquiry/table',
+		action:'dialogForm_SalesOrder',
+		trantype: obj_id.trantype,
+		docno: obj_id.docno,
+	}
+
+	$.get( param.url+"?"+$.param(param), function( data ) {
+			
+	},'json').done(function(data) {
+		$('#dialogForm_SalesOrder').show();
+		populatedata(data.dbacthdr,'#formdata_SalesOrder');
+		populate_detail(data.billsum_array,'#jqGrid2_salesorder',[
+			{label: 'Item Code', name: 'chggroup', width: 200, classes: 'wrap'},
+			{label: 'Item Description', name: 'description', width: 180, classes: 'wrap'},
+			{label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap'},
+			{label: 'UOM Code<br/>Store Dept.', name: 'uom_recv', width: 150, classes: 'wrap'},
+			{label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap'},
+			{label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap txnum', align: 'right',
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+			{label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", }},
+			{label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter: 'integer', formatoptions: { thousandsSeparator: ",", }},
+			{label: 'Total Amount <br>Before Tax', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+			{label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+			{label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter: 'currency', formatoptions: { thousandsSeparator: ",", }},
+			{label: 'Discount Amount', name: 'discamt', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+			{label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+			{label: 'Total Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum',
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+			{label: 'idno', name: 'idno', width: 10, hidden: true, key:true },
+		]);
+		$('#dialogForm').dialog('open');
+	});
+}
+
+function populatedata(rowData,form){
+	$.each(rowData, function( index, value ) {
+		var input=$(form+" [name='"+index+"']");
+		if(input.is("[type=radio]")){
+			$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+		}else{
+			input.val(decodeEntities(value));
+		}
+	});
+
+	switch(form){
+		case '#formdata_paymentVoucher':
+			$('#formdata_paymentVoucher [name="paymode"]').parent().siblings( ".help-block" ).html(rowData.paymode_desc);
+			$('#formdata_paymentVoucher [name="bankcode"]').parent().siblings( ".help-block" ).html(rowData.bankcode_desc);
+			$('#formdata_paymentVoucher [name="suppcode"]').parent().siblings( ".help-block" ).html(rowData.suppcode_desc);
+			$('#formdata_paymentVoucher [name="payto"]').parent().siblings( ".help-block" ).html(rowData.payto_desc);
+			break;
+	}
+}
+
+function populate_detail(array,gridname,colModel){
+	$(gridname).jqGrid({
+		datatype: "local",
+		colModel: colModel,
+		loadonce: true,
+		autowidth: true,viewrecords:true,width:200,height:200,owNum:30,hoverrows:false,
+		pager: gridname+"Pager",
+		loadComplete:function(data){
+		},
+	});
+
+	array.forEach(function(e,i){
+		$(gridname).jqGrid('addRowData',i,e);
+	});
+}
+
+function del_jqgrid(gridname){
+	let rowdatas = $(gridname).jqGrid('getRowData');
+	rowdatas.forEach(function(e,i){
+		$(gridname).jqGrid ('delRowData',i);
+	});
 }

@@ -1225,7 +1225,7 @@ class SalesOrderDetailController extends defaultController
             'txnqty' => $billsum_obj->quantity,
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'netprice' => $billsum_obj->unitprice,
+            'netprice' => $curr_netprice,
             'productcat' => $product->first()->productcat,
             'issdept' => $dbacthdr->deptcode,
             'reqdept' => $dbacthdr->deptcode,
@@ -1330,7 +1330,7 @@ class SalesOrderDetailController extends defaultController
             'txnqty' => $billsum_obj->quantity,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            'netprice' => $billsum_obj->unitprice,
+            'netprice' => $curr_netprice,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'updtime' => Carbon::now("Asia/Kuala_Lumpur")
         ];
@@ -1535,7 +1535,7 @@ class SalesOrderDetailController extends defaultController
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'auditno' => $ivdspdt->recno,
+                'auditno' => $ivdspdt->recno,//billsum auditno
                 'lineno_' => 1,
                 'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => 'DS',

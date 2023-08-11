@@ -753,12 +753,12 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},{
-				label: 'UOM Code<br/>Store Dept.', name: 'uomcode_recv', width: 150, classes: 'wrap', editable: true,
+				label: 'UOM Code<br/>Store Dept.', name: 'uom_recv', width: 150, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
 				{
-					custom_element: uomcode_recvCustomEdit,
+					custom_element: uom_recvCustomEdit,
 					custom_value: galGridCustomValue
 				},
 			},{
@@ -986,7 +986,7 @@ $(document).ready(function () {
 
 			dialog_chggroup.on();
 			dialog_uomcode.on();
-			dialog_uomcode_recv.on();
+			dialog_uom_recv.on();
 			dialog_tax.on();
 
 			unsaved = false;
@@ -1148,8 +1148,8 @@ $(document).ready(function () {
 			        }
 			    );
 
-			    dialog_uomcode_recv.id_optid = ids[i];
-		        dialog_uomcode_recv.check(errorField,ids[i]+"_uomcode_recv","jqGrid2",null,
+			    dialog_uom_recv.id_optid = ids[i];
+		        dialog_uom_recv.check(errorField,ids[i]+"_uom_recv","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(self){
@@ -1216,7 +1216,7 @@ $(document).ready(function () {
 					'pricecode' : $("#jqGrid2 input#"+ids[i]+"_pricecode").val(),
 					'chggroup' : $("#jqGrid2 input#"+ids[i]+"_chggroup").val(),
 					'uom' : $("#jqGrid2 input#"+ids[i]+"_uom").val(),
-					'uom_recv' : $("#jqGrid2 input#"+ids[i]+"_uomcode_recv").val(),
+					'uom_recv' : $("#jqGrid2 input#"+ids[i]+"_uom_recv").val(),
 					'quantity' : $('#'+ids[i]+"_quantity").val(),
 					'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
 					'unitprice': $('#'+ids[i]+"_unitprice").val(),
@@ -1278,7 +1278,7 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
 			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
-			case 'uomcode_recv':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			case 'uom_recv':field=['uomcode','description'];table="material.uom";case_='uom';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
 			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
@@ -1327,9 +1327,9 @@ $(document).ready(function () {
 			<span><input id="`+opt.id+`_discamt" name="discamt" type="hidden"></span>
 			<span><input id="`+opt.id+`_rate" name="rate" type="hidden"></span>`);
 	}
-	function uomcode_recvCustomEdit(val,opt){  	
+	function uom_recvCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
-		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uomcode_recv" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="uom_recv" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 	}
 	function taxcodeCustomEdit(val,opt){  	
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
@@ -1412,7 +1412,7 @@ $(document).ready(function () {
 		dialog_chggroup.on();
 		dialog_uomcode.on();
 		dialog_tax.on();
-		dialog_uomcode_recv.on();
+		dialog_uom_recv.on();
 		
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np.formatOnBlur();//make field to currency on leave cursor
@@ -1803,7 +1803,7 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_qtyonhand").val('');
 					$("#jqGrid2 #"+id_optid+"_quantity").val('');
 					$("#jqGrid2 #"+id_optid+"_uom").val('');
-					$("#jqGrid2 #"+id_optid+"_uomcode_recv").val('');
+					$("#jqGrid2 #"+id_optid+"_uom_recv").val('');
 					$("#jqGrid2 #"+id_optid+"_unitprice").val('');
 					$("#jqGrid2 #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 					$("#jqGrid2 #"+id_optid+"_billtypeamt").val(data['billty_amount']);
@@ -1822,7 +1822,7 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_qtyonhand").val('');
 					$("#jqGrid2 #"+id_optid+"_quantity").val('');
 					$("#jqGrid2 #"+id_optid+"_uom").val('');
-					$("#jqGrid2 #"+id_optid+"_uomcode_recv").val('');
+					$("#jqGrid2 #"+id_optid+"_uom_recv").val('');
 					$("#jqGrid2 #"+id_optid+"_unitprice").val('');
 					$("#jqGrid2 #"+id_optid+"_billtypeperct").val('');
 					$("#jqGrid2 #"+id_optid+"_billtypeamt").val('');
@@ -1836,13 +1836,13 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
 					$("#jqGrid2 #"+id_optid+"_quantity").val('');
 					$("#jqGrid2 #"+id_optid+"_uom").val(data['uom']);
-					$("#jqGrid2 #"+id_optid+"_uomcode_recv").val(data['uom']);
+					$("#jqGrid2 #"+id_optid+"_uom_recv").val(data['uom']);
 					$("#jqGrid2 #"+id_optid+"_unitprice").val(data['price']);
 					$("#jqGrid2 #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 					$("#jqGrid2 #"+id_optid+"_billtypeamt").val(data['billty_amount']);
 
 					// dialog_uomcode.check(errorField);
-					// dialog_uomcode_recv.check(errorField);
+					// dialog_uom_recv.check(errorField);
 					dialog_tax.check(errorField);
 					mycurrency2.formatOn();
 				}
@@ -1945,8 +1945,8 @@ $(document).ready(function () {
 	);
 	dialog_uomcode.makedialog(false);
 
-	var dialog_uomcode_recv = new ordialog(
-		'uomcode_recv',['material.uom AS u'],"#jqGrid2 input[name='uomcode_recv']",errorField,
+	var dialog_uom_recv = new ordialog(
+		'uom_recv',['material.uom AS u'],"#jqGrid2 input[name='uom_recv']",errorField,
 		{	colModel:
 			[
 				{label:'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -1968,8 +1968,8 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
 
-				let data=selrowData('#'+dialog_uomcode_recv.gridname);
-				$("#jqGrid2 input#"+id_optid+"_uomcode_recv").val(data.uomcode);
+				let data=selrowData('#'+dialog_uom_recv.gridname);
+				$("#jqGrid2 input#"+id_optid+"_uom_recv").val(data.uomcode);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1984,8 +1984,8 @@ $(document).ready(function () {
 		},{
 			title:"Select UOM Code For Item",
 			open:function(obj_){
-				dialog_uomcode_recv.urlParam.filterCol=['compcode','recstatus'];
-				dialog_uomcode_recv.urlParam.filterVal=['session.compcode','ACTIVE'];
+				dialog_uom_recv.urlParam.filterCol=['compcode','recstatus'];
+				dialog_uom_recv.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
 				// $(dialog_uomcode.textfield)			//lepas close dialog focus on next textfield 
@@ -1995,7 +1995,7 @@ $(document).ready(function () {
 			}
 		},'urlParam', 'radio', 'tab' 	
 	);
-	dialog_uomcode_recv.makedialog(false);
+	dialog_uom_recv.makedialog(false);
 
 	var dialog_tax = new ordialog(
 		'taxcode',['hisdb.taxmast'],"#jqGrid2 input[name='taxcode']",errorField,
@@ -2176,7 +2176,7 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 
 function formatterstatus_tick2(cellvalue, option, rowObject) {
@@ -2237,7 +2237,6 @@ function fail_msg_func(fail_msg_div=null){
 		var self=this;
 		$(self.fail_msg_div).html('');
 		this.fail_msg_array.forEach(function(e,i){
-			console.log(e);
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
 		});
 	}

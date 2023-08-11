@@ -53,9 +53,16 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			
+			if($("#dialogForm_SalesOrder").is(":visible")){
+				disableForm("#dialogForm_SalesOrder");
+				$("#jqGrid2_salesorder").jqGrid('setGridWidth',Math.floor($("#jqgrid2_salesorder_c")[0].offsetWidth - 25));
+				calc_jq_height_onchange('jqGrid2_salesorder');
+			}
 		},
 		close: function( event, ui ) {
+			if($('#gbox_jqGrid2_salesorder').length > 0){
+				del_jqgrid('#jqGrid2_salesorder');
+			}
 			$('div.dialogdtl').hide();
 		},
 		buttons :[{
@@ -88,7 +95,8 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'compcode', name: 'compcode', width: 10, hidden: true, key:true},
+			{label: 'idno', name: 'idno', width: 10, hidden: true,key:true},
+			{label: 'compcode', name: 'compcode', width: 10, hidden: true},
 			{label: 'Cost code', name: 'glmasdtl_costcode', width: 90, canSearch:true, checked:true},
 			{label: 'Description', name: 'costcenter_description', width: 90, canSearch:true, checked:true},
 			{label: 'GL Account', name: 'glmasdtl_glaccount', width: 90, canSearch:true },
@@ -117,13 +125,21 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#jqGrid').data('lastselrow',rowid);
 			hidetbl(true);
 			populateTable();
 			getTotal();
 			getBalance();
 		},
 		gridComplete: function(){
-			$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			let lastselrow = $('#jqGrid').data('lastselrow');
+			if(lastselrow == undefined){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			}else{
+				$("#jqGrid").setSelection(lastselrow);
+				$('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus().click();
+			}
 		},
 		loadComplete: function(){
 			calc_jq_height_onchange("jqGrid");
@@ -182,6 +198,8 @@ $(document).ready(function () {
 		var latest_tblid = false;
 		if($("#TableGlmasdtl td[id^='glmasdtl_actamount']").hasClass("bg-primary")){
 			latest_tblid = $("#TableGlmasdtl td[class='bg-primary']").attr('id')
+		}else{
+			latest_tblid = "glmasdtl_actamount"+moment().format("M");
 		}
 		$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 
@@ -245,6 +263,7 @@ $(document).ready(function () {
 
 	var DataTable = $('#TableGlmasTran').DataTable({
     	ajax: './glenquiry/table?action=getdata',
+    	order: [[ 4, 'desc' ]],
 		scrollY: 500,
     	deferRender: true,
     	scroller: true,
@@ -254,7 +273,7 @@ $(document).ready(function () {
 			{ data: 'source', "sClass": "source"},
 			{ data: 'trantype', "sClass": "trantype"},
 			{ data: 'auditno', "sClass": "auditno"},
-			{ data: 'postdate' ,"width": "15%", "sClass": "postdate"},
+			{ data: 'postdate' ,"width": "15%", "sClass": "postdate","type": "date"},
 			{ data: 'description'},
 			{ data: 'reference'},
 			{ data: 'acccode'},
@@ -265,6 +284,10 @@ $(document).ready(function () {
 			{targets: 0,
 	        	createdCell: function (td, cellData, rowData, row, col) {
 					$(td).html(`<i class='fa fa-folder-open-o'></i>`);
+	   			}
+	   		},{targets: 3,
+	        	createdCell: function (td, cellData, rowData, row, col) {
+	        		$(td).html(pad('00000000',cellData,true));
 	   			}
 	   		},{targets: 7,
 	        	createdCell: function (td, cellData, rowData, row, col) {
@@ -310,6 +333,14 @@ $(document).ready(function () {
 		switch(true){
 			case obj_id.source=='AP':
 				dialogForm_paymentVoucher(obj_id);
+				break;
+
+			case obj_id.source=='IV' && obj_id.trantype=='DS' :
+				dialogForm_OE_IN_IV_DS(obj_id);
+				break;
+
+			case obj_id.source=='OE' && obj_id.trantype=='IN' :
+				dialogForm_OE_IN_IV_DS(obj_id);
 				break;
 		}
 	});
@@ -430,230 +461,6 @@ $(document).ready(function () {
 		});
 	}
 
-	// function detail_button(){
-	// 	this.pagesList = [
-	// 		{
-	// 			source:'CM',
-	// 			trantype:'FT',
-	// 			loadurl:"../../CM/bankTransfer/bankTransfer.php #dialogForm",
-	// 			urlParam:{
-	// 				action:'get_value_default',
-	// 				field: ['auditno','pvno','actdate','paymode','bankcode','cheqno','cheqdate','amount','payto','remarks'],
-	// 				table_name:'finance.apacthdr',
-	// 				table_id:'auditno',
-	// 				filterCol: ['source', 'trantype','auditno'],
-	// 				filterVal: ['CM', 'FT',''],
-	// 			}
-	// 		},{
-	// 			source:'CM',
-	// 			trantype:'DP',
-	// 			loadurl:"../../CM/Direct%20Payment/DirectPayment.php #dialogForm",
-	// 			urlParam:{
-	// 				action:'get_value_default',
-	// 				field:['*'],
-	// 				table_name:'finance.apacthdr',
-	// 				table_id:'auditno',
-	// 				filterCol: ['source', 'trantype','auditno'],
-	// 				filterVal: ['CM', 'DP', ''],
-	// 			},
-	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-	// 				{
-	// 					id:'#jqGrid2',
-	// 					urlParam:{
-	// 						action:'get_table_default',
-	// 						field:[
-	// 							{label:'Department',name:'deptcode'},
-	// 							{label:'Category',name:'category'},
-	// 							{label:'Document',name:'document'},
-	// 							{label:'Amount Before GST',name:'AmtB4GST'},
-	// 							{label:'GST Code',name:'GSTCode'},
-	// 							{label:'Total Amount',name:'amount'}
-	// 						],
-	// 						table_name:'finance.apactdtl',
-	// 						table_id:'none_',
-	// 						filterCol:['auditno', 'recstatus','trantype','source'],
-	// 						filterVal:['', 'ACTIVE','DP','CM'],
-	// 					}
-	// 				}
-	// 			]
-	// 		},{
-	// 			source:'PB',
-	// 			trantype:'RC',
-	// 			loadurl:"../../AR/receipt/receipt.php #dialogForm",
-	// 			urlParam:{
-	// 				action:'get_value_default',
-	// 				field:["*"],
-	// 				table_name:'debtor.dbacthdr',
-	// 				table_id:'auditno',
-	// 				filterCol:['source', 'trantype','auditno'],
-	// 				filterVal:['PB', 'RC','']
-	// 			}
-	// 		},{
-	// 			source:'CM',
-	// 			trantype:'CA',
-	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-	// 			urlParam:{
-	// 				action:'get_value_default',
-	// 				field:["*"],
-	// 				table_name:'finance.apacthdr',
-	// 				table_id:'auditno',
-	// 				filterCol:['source', 'trantype','auditno'],
-	// 				filterVal:['CM', 'CA','']
-	// 			},
-	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-	// 				{
-	// 					id:'#jqGrid2',
-	// 					urlParam:{
-	// 						action:'get_table_default',
-	// 						field:[
-	// 							{label:'Department',name:'deptcode'},
-	// 							{label:'Category',name:'category'},
-	// 							{label:'Document',name:'document'},
-	// 							{label:'Amount Before GST',name:'AmtB4GST'},
-	// 							{label:'GST Code',name:'GSTCode'},
-	// 							{label:'Total Amount',name:'amount'}
-	// 						],
-	// 						table_name:'finance.apactdtl',
-	// 						table_id:'none_',
-	// 						filterCol:['auditno', 'recstatus','trantype','source'],
-	// 						filterVal:['', 'ACTIVE','','CM'],
-	// 					}
-	// 				}
-	// 			]
-	// 		},{
-	// 			source:'CM',
-	// 			trantype:'DA',
-	// 			loadurl:"../../CM/Credit%20Debit%20Transaction/creditDebitTrans.php #dialogForm",
-	// 			urlParam:{
-	// 				action:'get_value_default',
-	// 				field:["*"],
-	// 				table_name:'finance.apacthdr',
-	// 				table_id:'auditno',
-	// 				filterCol:['source', 'trantype','auditno'],
-	// 				filterVal:['CM', 'DA','']
-	// 			},
-	// 			jqgrid:[ //rightnow only handle 1 jqgrid inside page, change if later need more
-	// 				{
-	// 					id:'#jqGrid2',
-	// 					urlParam:{
-	// 						action:'get_table_default',
-	// 						field:[
-	// 							{label:'Department',name:'deptcode'},
-	// 							{label:'Category',name:'category'},
-	// 							{label:'Document',name:'document'},
-	// 							{label:'Amount Before GST',name:'AmtB4GST'},
-	// 							{label:'GST Code',name:'GSTCode'},
-	// 							{label:'Total Amount',name:'amount'}
-	// 						],
-	// 						table_name:'finance.apactdtl',
-	// 						table_id:'none_',
-	// 						filterCol:['auditno', 'recstatus','trantype','source'],
-	// 						filterVal:['', 'ACTIVE','','CM'],
-	// 					}
-	// 				}
-	// 			]
-	// 		}
-	// 	];
-
-	// 	this.show = function(obj){
-	// 		mymodal.show("body");
-	// 		var source = obj.children("td:nth-child(2)").text();
-	// 		var trantype = obj.children("td:nth-child(3)").text();
-	// 		var auditno = obj.children("td:nth-child(4)").text();
-	// 		var pageUse = this.pagesList.find(function(obj){
-	// 			return (obj.source === source && obj.trantype === trantype);
-	// 		});
-	// 		if(pageUse == undefined){
-	// 			mymodal.hide();
-	// 			alert('Unknown source: '+source+' | trantype: '+trantype+' or no selected row');
-	// 			return false;
-	// 		}
-	// 		pageUse.urlParam.filterVal[2] = auditno;
-
-	// 		$.get( "../../../../assets/php/entry.php?"+$.param(pageUse.urlParam), function( data ) {
-				
-	// 		},'json').done(function(data) {
-	// 			mymodal.hide();
-	// 			if(!$.isEmptyObject(data.rows)){
-	// 				$( "#dialogForm" ).load( pageUse.loadurl, function(){
-	// 					populatePage(data.rows[0],'#formdata',source,trantype);
-	// 					disableForm('#formdata');
-	// 					if(source=="PB" && trantype=="RC"){
-	// 						$(".nav-tabs a[form='"+data.rows[0].paytype+"']").tab('show');
-	// 						populatePage(data.rows[0],data.rows[0].paytype,source,trantype);
-	// 						disableForm(data.rows[0].paytype);
-	// 					}
-	// 					$("#dialogForm").dialog("open");
-	// 					if(pageUse.hasOwnProperty('jqgrid')){
-	// 						pageUse.jqgrid[0].urlParam.filterVal[0] = auditno;
-	// 						pageUse.jqgrid[0].urlParam.filterVal[2] = trantype;
-	// 						jqgrid_inpage(
-	// 							pageUse.jqgrid[0].id,
-	// 							populate_colmodel(pageUse.jqgrid[0].urlParam.field),
-	// 							pageUse.jqgrid[0].urlParam
-	// 						);//change here
-	// 					}
-	// 				});
-	// 			}
-	// 		});
-	// 	}
-
-	// 	function populate_colmodel(field){
-	// 		console.log(field);
-	// 		var colmodel = [];
-	// 		field.forEach(function(element){
-	// 			colmodel.push({label:element.label,name:element.name,formatter:showdetail,classes: 'wrap'});
-	// 		});
-	// 		return colmodel;
-	// 	}
-
-	// 	function showdetail(cellvalue, options, rowObject){
-	// 		var field,table;
-	// 		switch(options.colModel.name){
-	// 			case 'deptcode':field=['deptcode','description'];table="sysdb.department";break;
-	// 			case 'category':field=['catcode','description'];table="material.category";break;
-	// 			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";break;
-	// 			default: return cellvalue;
-	// 		}
-	// 		var param={action:'input_check',table:table,field:field,value:cellvalue};
-	// 		$.get( "../../../../assets/php/entry.php?"+$.param(param), function( data ) {
-				
-	// 		},'json').done(function(data) {
-	// 			if(!$.isEmptyObject(data.row)){
-	// 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.row.description+"</span>");
-	// 			}
-	// 		});
-	// 		return cellvalue;
-	// 	}
-
-	// 	function jqgrid_inpage(jqgrid,colmodel,urlParam){
-	// 		var jqgrid = $("#dialogForm "+jqgrid).jqGrid({
-	// 			datatype: "local",
-	// 			colModel: colmodel,
-	// 			autowidth:true,
-	// 			viewrecords: true,
-	// 			loadonce:false,
-	// 			width: 200,
-	// 			height: 200,
-	// 			rowNum: 300,
-	// 		});
-
-	// 		addParamField(jqgrid,true,urlParam);
-	// 	}
-
-	// 	function populatePage(obj,form,source,trantype){
-	// 		$.each(obj, function( index, value ) {
-	// 			if(source=="PB" && trantype=="RC")index = "dbacthdr_"+index;
-	// 			var input=$(form+" [name='"+index+"']");
-	// 			if(input.is("[type=radio]")){
-	// 				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-	// 			}else{
-	// 				input.val(value);
-	// 			}
-	// 		});
-	// 	}
-	// }
-
 	set_yearperiod();
 	function set_yearperiod(){
 		param={
@@ -683,7 +490,7 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
 
 function dialogForm_paymentVoucher(obj_id){
@@ -714,6 +521,59 @@ function dialogForm_paymentVoucher(obj_id){
 
 	});
 }
+function dialogForm_OE_IN_IV_DS(obj_id){
+	param={
+		url: './glenquiry/table',
+		action:'dialogForm_SalesOrder',
+		source: obj_id.source,
+		trantype: obj_id.trantype,
+		auditno: obj_id.auditno,
+	}
+
+	$.get( param.url+"?"+$.param(param), function( data ) {
+			
+	},'json').done(function(data) {
+		if(data.dbacthdr!=undefined){
+			if(data.dbacthdr.mrn==null || data.dbacthdr.mrn=='0'){
+				populate_SalesOrder(data);
+			}
+		}
+	});
+}
+
+function populate_SalesOrder(data){
+	$('#dialogForm_SalesOrder').show();
+	populatedata(data.dbacthdr,'#formdata_SalesOrder');
+	populate_detail(data.billsum_array,'#jqGrid2_salesorder',[
+		{label: 'Item Code', name: 'chggroup', width: 200, classes: 'wrap'},
+		{label: 'Item Description', name: 'description', width: 180, classes: 'wrap'},
+		{label: 'UOM Code', name: 'uom', width: 150, classes: 'wrap'},
+		{label: 'UOM Code<br/>Store Dept.', name: 'uom_recv', width: 150, classes: 'wrap'},
+		{label: 'Tax', name: 'taxcode', width: 100, classes: 'wrap'},
+		{label: 'Unit Price', name: 'unitprice', width: 100, classes: 'wrap txnum', align: 'right',
+			formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+		{label: 'Unit Cost', name: 'netprice', width: 100, classes: 'wrap txnum', align: 'right',
+			formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+		{label: 'Quantity', name: 'quantity', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter: 'integer', formatoptions: { thousandsSeparator: ",", }},
+		{label: 'Quantity on Hand', name: 'qtyonhand', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter: 'integer', formatoptions: { thousandsSeparator: ",", }},
+		{label: 'Total Amount <br>Before Tax', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+		{label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+		{label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter: 'currency', formatoptions: { thousandsSeparator: ",", }},
+		{label: 'Discount Amount', name: 'discamt', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+		{label: 'Tax Amount', name: 'taxamt', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+		{label: 'Total Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum',
+			formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
+		{label: 'idno', name: 'idno', width: 10, hidden: true, key:true },
+	]);
+	$('#dialogForm').dialog('open');
+}
 
 function populatedata(rowData,form){
 	$.each(rowData, function( index, value ) {
@@ -732,6 +592,33 @@ function populatedata(rowData,form){
 			$('#formdata_paymentVoucher [name="suppcode"]').parent().siblings( ".help-block" ).html(rowData.suppcode_desc);
 			$('#formdata_paymentVoucher [name="payto"]').parent().siblings( ".help-block" ).html(rowData.payto_desc);
 			break;
+		case '#formdata_SalesOrder':
+			$('#formdata_SalesOrder [name="paymode"]').parent().siblings( ".help-block" ).html(rowData.paymode_desc);
+			$('#formdata_SalesOrder [name="bankcode"]').parent().siblings( ".help-block" ).html(rowData.bankcode_desc);
+			$('#formdata_SalesOrder [name="suppcode"]').parent().siblings( ".help-block" ).html(rowData.suppcode_desc);
+			break;
 	}
 }
-		
+
+function populate_detail(array,gridname,colModel){
+	$(gridname).jqGrid({
+		datatype: "local",
+		colModel: colModel,
+		loadonce: true,
+		autowidth: true,viewrecords:true,width:200,height:200,owNum:30,hoverrows:false,
+		pager: gridname+"Pager",
+		loadComplete:function(data){
+		},
+	});
+
+	array.forEach(function(e,i){
+		$(gridname).jqGrid('addRowData',i,e);
+	});
+}
+
+function del_jqgrid(gridname){
+	let rowdatas = $(gridname).jqGrid('getRowData');
+	rowdatas.forEach(function(e,i){
+		$(gridname).jqGrid ('delRowData',i);
+	});
+}
