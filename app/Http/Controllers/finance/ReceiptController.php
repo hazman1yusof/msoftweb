@@ -99,7 +99,7 @@ class ReceiptController extends defaultController
                 'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => $request->dbacthdr_reference,
                 'authno' => $request->dbacthdr_authno,
-                'expdate' => $request->dbacthdr_expdate,
+                'expdate' => \Carbon\Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
                 'entryuser' => session('username'),
                 'recstatus' => 'ACTIVE',
                 'source' => 'PB',

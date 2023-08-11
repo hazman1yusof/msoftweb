@@ -875,7 +875,21 @@ $(document).ready(function () {
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter},
+			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, 
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
+				editoptions: {
+					dataInit: function (element) {
+						$(element).datepicker({
+							id: 'expdate_datePicker',
+							dateFormat: 'MM/YYYY',
+							min: now,
+   	 						max: until,
+							changeMonth: true,
+							changeYear: true,
+						});
+					}
+				}
+			},
 			{label: 'Authorization<br>No', name: 'dbacthdr_authno',width: 50},
 			{label: 'Amount', name: 'dbacthdr_amount', width: 50, align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 50,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
