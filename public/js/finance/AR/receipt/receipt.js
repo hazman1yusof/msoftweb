@@ -876,7 +876,7 @@ $(document).ready(function () {
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
 			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, 
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/y'},
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
 				editoptions: {
 					dataInit: function (element) {
 						$(element).datepicker({
@@ -960,12 +960,11 @@ $(document).ready(function () {
 					$("#g_forex").jqGrid('setSelection', selrowData('#jqGrid').dbacthdr_paymode, true);
 				}, 500 );
 			}else{
-				// $("#dbacthdr_expdate").text(selrowData("#jqGrid").dbacthdr_expdate);
 				var expdate = selrowData("#jqGrid").dbacthdr_expdate;
 				var datearray = expdate.split("/");
 				
-				var newexpdate = datearray[1] + '/' + datearray[2];
-				$("#dbacthdr_expdate").text(newexpdate);
+				var newexpdate = datearray[1] + '-' + datearray[0];
+				$("#dbacthdr_expdate").val(newexpdate);
 				
 				$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
 				$( "input:radio[name='optradio'][value='receipt']" ).change();
@@ -983,7 +982,7 @@ $(document).ready(function () {
 			if(selform!=''){
 				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
 				// disabledPill();
-				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view');
+				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view',['dbacthdr_expdate']);
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
