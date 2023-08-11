@@ -170,15 +170,12 @@ class arenquiryController extends defaultController
             
             if($value->db_trantype == 'RC'){
                 $till = DB::table('debtor.till')
+                        ->where('tillcode','=',$value->db_tillcode)
                         ->where('compcode',session('compcode'))
-                        ->where('tillstatus','O')
-                        ->where('lastuser',session('username'));
+                        ->first();
                 
-                if($till->exists()){
-                    $till_obj = $till->first();
-                
-                    $value->db_deptcode = $till_obj->dept;
-                }
+                // dd($till->dept);
+                $value->db_deptcode = $till->dept;
             }
         }
         
