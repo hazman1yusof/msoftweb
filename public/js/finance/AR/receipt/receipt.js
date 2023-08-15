@@ -875,7 +875,7 @@ $(document).ready(function () {
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
 			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70}, //tunjuk
-			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, 
+			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, align:'right',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
 				editoptions: {
 					dataInit: function (element) {
@@ -890,7 +890,7 @@ $(document).ready(function () {
 					}
 				}
 			},
-			{label: 'Authorization<br>No', name: 'dbacthdr_authno',width: 50},
+			{label: 'Authorization<br>No', name: 'dbacthdr_authno', width: 50, align:'right'},
 			{label: 'Amount', name: 'dbacthdr_amount', width: 50, align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 50,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
