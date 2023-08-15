@@ -241,7 +241,7 @@
 		  			<div class="col-md-12 minuspad-15">
 							<label class="control-label" for="dbacthdr_payercode">Payer</label>  
 			  			<div class='input-group'>
-							<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
+							<input id="dbacthdr_payercode" name="dbacthdr_payercode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value"/>
 							<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 			  			</div>
 		  			</div>
