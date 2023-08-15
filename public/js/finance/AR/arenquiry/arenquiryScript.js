@@ -476,6 +476,11 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
+			$('#payercode_show').text(selrowData("#jqGrid").db_debtorcode);
+			$('#docno_show').text(selrowData("#jqGrid").db_recptno);
+			$('#amount_show').text(selrowData("#jqGrid").db_amount);
+			$('#outamount_show').text(selrowData("#jqGrid").db_outamount);
+
 			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c').hide();
 			
 			if(selrowData("#jqGrid").db_trantype=='CN'){	//CN
