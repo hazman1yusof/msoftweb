@@ -385,6 +385,7 @@ $(document).ready(function () {
 				$('#db_ponum').prop('readonly',false);
 				$("#pg_jqGridPager2 table").hide();
 				$('#save').show();
+				refreshGrid("#jqGrid2", urlParam2);
 			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
