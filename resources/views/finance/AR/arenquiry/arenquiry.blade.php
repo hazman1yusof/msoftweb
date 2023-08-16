@@ -193,9 +193,14 @@
 
 		<div class="panel panel-default" style="position: relative;" id="jqGridAlloc_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGridAlloc_panel">
+				<b>PAYER CODE: </b><span id="payercode_show"></span> &nbsp;
+				<b>DOCUMENT NO: </b><span id="docno_show"></span><br>
+				<b>AMOUNT: </b><span id="amount_show"></span> &nbsp;
+				<b>OUTAMOUNT: </b><span id="outamount_show"></span><br>
+
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 35px;">
 					<h5>Allocation</h5>
 				</div>
 			</div>
