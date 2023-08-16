@@ -325,3 +325,16 @@ fieldset.mycss {
 table#accomodation_table tr.disabled{
 	background: #ff000014;
 }
+div#tab-phar input[type=text]{
+	padding: 5px !important;
+}
+div#fail_msg_ordcom{
+	padding: 10px;
+    color: darkred;
+}
+label.customelement{
+	margin: 5px 0px 0px 0px;
+}
+.ui-jqgrid-bdiv{
+	overflow-x: hidden;
+}

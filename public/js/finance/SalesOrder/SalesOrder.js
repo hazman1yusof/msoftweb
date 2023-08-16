@@ -1817,6 +1817,8 @@ $(document).ready(function () {
 					action_chk: 'get_itemcode_price_check',
 					entrydate : $('#db_entrydate').val(),
 					billtype : $('#db_hdrtype').val(),
+					deptcode : $('#db_deptcode').val(),
+					price : $('#pricebilltype').val(),
 					filterCol:['deptcode','price'],
 					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
 				},
@@ -1920,6 +1922,9 @@ $(document).ready(function () {
 				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
 				dialog_chggroup.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_chggroup.urlParam.billtype = $('#db_hdrtype').val();
+				dialog_chggroup.urlParam.deptcode = $('#db_deptcode').val();
+				dialog_chggroup.urlParam.price = $('#pricebilltype').val();
+
 
 			},
 			close: function(obj){

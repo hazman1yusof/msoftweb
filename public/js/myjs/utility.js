@@ -1212,7 +1212,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
 				textfield.off('blur',onBlur);
 				textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
-				textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+				if(textfield.parent().next().is(".help-block")){
+					textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+				}
 				textfield.focus();
 				// $("#"+obj.gridname).jqGrid("clearGridData", true);
 				$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
@@ -1298,7 +1300,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
 					textfield.off('blur',onBlur);
 					textfield.val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
-					textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					if(textfield.parent().next().is(".help-block")){
+						textfield.parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					}
 					textfield.focus();
 					// $("#"+obj.gridname).jqGrid("clearGridData", true);
 					$(obj.textfield).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
@@ -1439,7 +1443,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 				if(!obj.jqgrid_.hasOwnProperty('ondblClickRow_off')){
 					$(obj.textfield).off('blur',onBlur);
 					$(obj.textfield).val(selrowData("#"+obj.gridname)[getfield(obj.field)[0]]);
-					$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					if(textfield.parent().next().is(".help-block")){
+						$(obj.textfield).parent().next().html(selrowData("#"+obj.gridname)[getfield(obj.field)[1]]);
+					}
 					$(obj.textfield).focus();
 					if(obj.jqgrid_.hasOwnProperty('ondblClickRow'))obj.jqgrid_.ondblClickRow();
 					$("#"+obj.dialogname).dialog( "close" );

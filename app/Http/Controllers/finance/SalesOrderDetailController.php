@@ -89,8 +89,8 @@ class SalesOrderDetailController extends defaultController
     }
    
     public function get_itemcode_price(Request $request){
-        $deptcode = $request->filterVal[0];
-        $priceuse = $request->filterVal[1];
+        $deptcode = $request->deptcode;
+        $priceuse = $request->price;
         $entrydate = $request->entrydate;
         $billtype_obj = $this->billtype_obj_get($request);
 
@@ -110,7 +110,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -255,8 +255,8 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function get_itemcode_price_2(Request $request){
-        $deptcode = $request->filterVal[0];
-        $priceuse = $request->filterVal[1];
+        $deptcode = $request->deptcode;
+        $priceuse = $request->price;
         $entrydate = $request->entrydate;
         $serch_chgcode = substr($request->searchVal2[0], 1);
         $billtype_obj = $this->billtype_obj_get($request);
@@ -277,7 +277,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -322,7 +322,7 @@ class SalesOrderDetailController extends defaultController
         if($table_count>0){
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
                             ->Where('cm.chgcode','like',$serch_chgcode)
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
@@ -423,7 +423,7 @@ class SalesOrderDetailController extends defaultController
         }else{
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
@@ -569,8 +569,8 @@ class SalesOrderDetailController extends defaultController
     }
 
     public function get_itemcode_price_check(Request $request){
-        $deptcode = $request->filterVal[0];
-        $priceuse = $request->filterVal[1];
+        $deptcode = $request->deptcode;
+        $priceuse = $request->price;
         $entrydate = $request->entrydate;
 
         switch ($priceuse) {

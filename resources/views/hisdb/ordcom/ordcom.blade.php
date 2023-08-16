@@ -43,9 +43,10 @@
 				<li><a data-toggle="tab" href="#tab-labo" data-ord_chgtype='RAD'>Radiology</a></li>
 				<li><a data-toggle="tab" href="#tab-labo" data-ord_chgtype='OTH'>Others</a></li>
 			</ul>
+			<div id="fail_msg_ordcom"></div>
 			<div class="tab-content" style="padding: 10px 5px;">
 			  <div id="tab-phar" class="active in tab-pane fade">
-				<div class='col-md-12' style="padding:0 0 15px 0" >
+				<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
 					<table id="jqGrid_ordcom" class="table table-striped"></table>
 					<div id="jqGrid_ordcom_pager"></div>
 				</div>
@@ -57,7 +58,7 @@
 				</div>
 			  </div> -->
 			  <div id="tab-labo" class="tab-pane fade">
-				<div class='col-md-12' style="padding:0 0 15px 0" >
+				<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
 					<table id="jqGrid_ordcom-labo" class="table table-striped"></table>
 					<div id="jqGrid_ordcom-labo_pager"></div>
 				</div>
