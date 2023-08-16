@@ -377,7 +377,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', ['db_termmode']);
 			refreshGrid("#jqGrid2", urlParam2);
-
+			
 			if(selrowData("#jqGrid").db_recstatus == 'POSTED'){
 				disableForm('#formdata');
 				$('#db_orderno').prop('readonly',false);
@@ -387,6 +387,15 @@ $(document).ready(function () {
 				$('#save').show();
 				refreshGrid("#jqGrid2", urlParam2);
 			}
+			
+			let db_invno = selrowData("#jqGrid").db_invno;
+			let invno = db_invno.toString().padStart(8, '0');
+			
+			let db_auditno = selrowData("#jqGrid").db_auditno;
+			let auditno = db_auditno.toString().padStart(8, '0');
+			
+			$('#db_invno').val(invno);
+			$('#db_auditno').val(auditno);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
