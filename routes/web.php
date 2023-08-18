@@ -808,6 +808,12 @@ Route::get('/arenquiry/table','finance\arenquiryController@table');
 Route::post('/arenquiry/form','finance\arenquiryController@form');
 Route::get('/arenquiry/form','finance\arenquiryController@form');
 
+//// Till Enquiry
+Route::get('/tillenquiry','finance\TillEnquiryController@show');
+Route::get('/tillenquiry/table','finance\TillEnquiryController@table');
+Route::post('/tillenquiry/form','finance\TillEnquiryController@form');
+Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
