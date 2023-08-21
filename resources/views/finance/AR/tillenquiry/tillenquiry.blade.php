@@ -124,10 +124,206 @@
             </div>
             <div id="jqGridSummary_panel" class="panel-collapse collapse">
                 <div class="panel-body">
-                    <div class='col-md-12' style="padding:0 0 15px 0">
+                    <div class='col-md-12'>
+                        <div class='panel panel-info' style="margin: auto;width: 60%;padding: 10px;">
+                            <div class="panel-body">
+                                <div class="col-md-4  col-md-offset-1" style="text-align: center;margin-bottom: 10px;padding-left: 60px;"><h6><b>Amount Collected: </b></h6></div>
+                                <div class="col-md-7" style="text-align: center;margin-bottom: 10px;"><h6><b>Amount Refund: </b></h6></div>
+                                <div class=""></div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="CashCollected">Cash</label>
+                                    <div class="col-md-3">
+                                        <input id="CashCollected" name="CashCollected" type="text" class="form-control input-sm" readonly>
+                                        <!-- value="@if(!empty($sum_cash)){{$sum_cash}}@else{{number_format(0.00,2)}}@endif"  -->
+                                    </div>
+                                    
+                                    <label class="col-md-2 control-label" for="CashRefund">Cash</label>
+                                    <div class="col-md-3">
+                                        <input id="CashRefund" name="CashRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="ChequeCollected">Cheque</label>
+                                    <div class="col-md-3">
+                                        <input id="ChequeCollected" name="ChequeCollected" type="text" class="form-control input-sm" readonly>
+                                        <!-- value="@if(!empty($sum_chq)){{$sum_chq}}@else{{number_format(0.00,2)}}@endif"  -->
+                                    </div>
+                                    
+                                    <label class="col-md-2 control-label" for="ChequeRefund">Cheque</label>
+                                    <div class="col-md-3">
+                                        <input id="ChequeRefund" name="ChequeRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="CardCollected">Card</label>
+                                    <div class="col-md-3">
+                                        <input id="CardCollected" name="CardCollected" type="text" class="form-control input-sm" readonly>
+                                        <!-- value="@if(!empty($sum_card)){{$sum_card}}@else{{number_format(0.00,2)}}@endif"  -->
+                                    </div>
+                                    
+                                    <label class="col-md-2 control-label" for="CardRefund">Card</label>
+                                    <div class="col-md-3">
+                                        <input id="CardRefund" name="CardRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="DebitCollected">Auto Debit</label>
+                                    <div class="col-md-3">
+                                        <input id="DebitCollected" name="DebitCollected" type="text" class="form-control input-sm" readonly>
+                                        <!-- value="@if(!empty($sum_bank)){{$sum_bank}}@else{{number_format(0.00,2)}}@endif"  -->
+                                    </div>
+                                    
+                                    <label class="col-md-2 control-label" for="DebitRefund">Auto Debit</label>
+                                    <div class="col-md-3">
+                                        <input id="DebitRefund" name="DebitRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+                                    </div>
+                                    <br><br>
+                                </div>
+                                
+                                <!-- <div class="form-group">
+                                    <div class='col-md-10' style="padding-right: 0px;">
+                                        <div class="panel panel-info"><br>
+                                            <div class="col-md-4  col-md-offset-1" style="text-align: center;margin-bottom: 10px;padding-left: 60px;"><h6><b>Denomination: </b></h6></div><br><br>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm100">RM 100</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm100" type="number" class="form-control input-sm" value="0" data-bill='100'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm100" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm50">RM 50</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm50" type="number" class="form-control input-sm" value="0"  data-bill='50'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm50" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm20">RM 20</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm20" type="number" class="form-control input-sm" value="0"  data-bill='20'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm20" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm10">RM 10</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm10" type="number" class="form-control input-sm" value="0"  data-bill='10'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm10" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm5">RM 5</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm5" type="number" class="form-control input-sm" value="0"  data-bill='5'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm5" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="rm1">RM 1</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilrm1" type="number" class="form-control input-sm" value="0"  data-bill='1'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalrm1" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label" for="cents">CENTS</label>
+                                                    <label class="col-md-1 control-label" for="darab">X</label>
+                                                    
+                                                    <div class="col-md-3">
+                                                        <input name="bilcents" type="number" class="form-control input-sm" value="0.00"  data-bill='1'>
+                                                    </div>
+                                                    
+                                                    <label class="col-md-1 control-label" for="abortus">=</label>
+                                                    <div class="col-md-3">
+                                                        <input name="totalcents" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-md-7 control-label" for="grandTotal">TOTAL</label>
+                                                    <div class="col-md-4">
+                                                        <input name="grandTotal" type="number" class="form-control input-sm" value="0.00" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>								
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class='col-md-12' style="padding:0 0 15px 0">
                         <table id="jqGridSummary" class="table table-striped"></table>
                         <div id="jqGridPagerSummary"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
