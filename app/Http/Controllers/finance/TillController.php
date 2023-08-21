@@ -76,6 +76,7 @@ class TillController extends defaultController
                                                         ->where('pm.compcode',session('compcode'));
                                     })
                                     ->sum('amount');
+
                     $sum_chq = DB::table('debtor.dbacthdr as db')
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
@@ -87,6 +88,7 @@ class TillController extends defaultController
                                                         ->where('pm.compcode',session('compcode'));
                                     })
                                     ->sum('amount');
+
                     $sum_card = DB::table('debtor.dbacthdr as db')
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
@@ -98,6 +100,7 @@ class TillController extends defaultController
                                                         ->where('pm.compcode',session('compcode'));
                                     })
                                     ->sum('amount');
+
                     $sum_bank = DB::table('debtor.dbacthdr as db')
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
@@ -109,16 +112,17 @@ class TillController extends defaultController
                                                         ->where('pm.compcode',session('compcode'));
                                     })
                                     ->sum('amount');
+                                    
                     $sum_all = DB::table('debtor.dbacthdr as db')
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
                                     ->where('db.tillno',$tilldetl->tillno)
                                     ->sum('amount');
                 }
-
             }
         } 
-
+        // $responce = new stdClass();
+        // return json_encode($responce);
         return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
     }
 
@@ -139,6 +143,8 @@ class TillController extends defaultController
                 }
             case 'use_till':
                 return $this->use_till($request);
+            case 'till_close':
+                return $this->till_close($request);
         }
     }
 

@@ -1,4 +1,102 @@
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
+
 $(document).ready(function () {
+	$("body").show();
+	/////////////////////////validation//////////////////////////
+		$.validate({
+			modules : 'sanitize',
+			language : {
+				requiredFields: 'Please Enter Value'
+			},
+		});
+
+		var errorField=[];
+		conf = {
+			onValidate : function($form) {
+				if(errorField.length>0){
+					show_errors(errorField,'#formdata');
+					return [{
+						element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+						message : ''
+					}];
+				}
+			},
+		};
+
+		var fdl = new faster_detail_load();
+
+	////////////////////////////////////ordialog/////////////////////////////////////////////////////////
+	var dialog_tillcode = new ordialog(
+		'tillcode',['debtor.tilldetl AS td','debtor.till AS t'],'#tillcode',errorField,
+		{	colModel:[
+				{label:'Till Code',name:'td_tillcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'t_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'dept',name:'t_dept',width:400,classes:'pointer', hidden:true},
+				{label:'opendate',name:'td_opendate',width:400,classes:'pointer', hidden:true},
+				{label:'opentime',name:'td_opentime',width:400,classes:'pointer', hidden:true},
+				{label:'openamt',name:'td_openamt',width:400,classes:'pointer', hidden:true},
+				{label:'cashier',name:'td_cashier',width:400,classes:'pointer', hidden:true},
+			],
+			sortname: 'td_tillcode',
+			sortorder: "desc",
+			urlParam: {
+				filterCol:['td.compcode','td.cashier', 'td.opendate'],
+				filterVal:['session.compcode','session.username', '']
+		},
+		ondblClickRow: function () {
+			let data = selrowData('#' + dialog_tillcode.gridname);
+			$("#dept").val(data['t_dept']);
+			$("#opendate").val(data['td_opendate']);
+			$("#opentime").val(data['td_opentime']);
+			$("#openamt").val(data['td_openamt']);
+			$("#cashier").val(data['td_cashier']);
+
+			var param={
+				action:'till_close',
+				url: './till_close/form',
+				tillcode:$('#tillcode').val(),
+				//tillno:$('#tillno').val(),
+			}
+			$.get( param.url+"?"+$.param(param), function( data ) {
+			},'json').done(function(data) {
+				if(!$.isEmptyObject(data.dbacthdr)){
+
+				$("#CashCollected").val(data.sum_cash);
+				// $("#ChequeCollected").val(data['$sum_chq']);
+				// $("#CardCollected").val(data['$sum_card']);
+				// $("#DebitCollected").val(data['$sum_bank']);
+				console.log($("#CashCollected").val());
+				}
+			});
+			
+			dialog_tillcode.check(errorField);
+
+		},
+		gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#actdebglacc').focus();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+
+		},{
+			title:"Select Till Code",
+			open: function(){
+				dialog_tillcode.urlParam.fixPost = "true";
+				dialog_tillcode.urlParam.filterCol=['td.compcode','td.cashier', 'td.opendate'];
+				dialog_tillcode.urlParam.filterVal=['session.compcode','session.username', ''];
+				dialog_tillcode.urlParam.join_type = ['LEFT JOIN'];
+				dialog_tillcode.urlParam.join_onCol = ['td.tillcode'];
+				dialog_tillcode.urlParam.join_onVal = ['t.tillcode'];
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_tillcode.makedialog(true);
 
 	$('input[name=bilrm100],input[name=bilrm50],input[name=bilrm20],input[name=bilrm10],input[name=bilrm5],input[name=bilrm1],input[name=bilcents]').on( "change", function() {
 		let bill = $(this).data('bill');
