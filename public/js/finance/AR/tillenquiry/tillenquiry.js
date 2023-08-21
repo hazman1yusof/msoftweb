@@ -354,7 +354,7 @@ $(document).ready(function () {
 		$.get( param.url+"?"+$.param(param), function( data ) {
 			
 		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.till)){
+			if(!$.isEmptyObject(data.dbacthdr)){
 				$("#CashCollected").val(data.sum_cash);
 				$("#ChequeCollected").val(data.sum_chq);
 				$("#CardCollected").val(data.sum_card);

@@ -118,8 +118,8 @@ class TillEnquiryController extends defaultController
         
     }
     
-    public function get_tillclose(Request $request){   
-
+    public function get_tillclose(Request $request){
+        
         $till = null;
         $tilldetl = null;
         $sum_cash = null;
@@ -127,102 +127,104 @@ class TillEnquiryController extends defaultController
         $sum_card = null;
         $sum_bank = null;
         $sum_all = null;
-
+        
         // $till_ = DB::table('debtor.till')
-        //                 ->where('compcode',session('compcode'))
-        //                 ->where('tillstatus','O')
-        //                 ->where('lastuser',session('username'));
-
+        //         ->where('compcode',session('compcode'))
+        //         ->where('tillstatus','O')
+        //         ->where('lastuser',session('username'));
+        
         // if($till_->exists()){
         //     $till = $till_->first();
-
+            
         //     $tilldetl_ = DB::table('debtor.tilldetl')
         //                 ->where('compcode',session('compcode'))
         //                 ->where('cashier',$till->lastuser);
-
+            
         //     if($tilldetl_->exists()){
         //         $tilldetl = $tilldetl_->first();
-
+                
                 $dbacthdr = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        ->where('db.tillcode',$request->tillcode)
-                        ->where('db.tillno',$request->tillno)
-                        // ->where('db.hdrtype','A')
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.tillcode',$request->tillcode)
+                            ->where('db.tillno',$request->tillno)
+                            // ->where('db.hdrtype','A')
+                            ->join('debtor.paymode as pm', function($join) use ($request){
+                                $join = $join->on('pm.paymode', '=', 'db.paymode')
                                             ->where('pm.source','AR')
                                             ->where('pm.compcode',session('compcode'));
-                        });
-
+                            });
+                
                 if($dbacthdr->exists()){
                     $sum_cash = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$request->tillcode)
-                                    ->where('db.tillno',$request->tillno)
-                                    ->join('debtor.paymode as pm', function($join) use ($request){
-                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                                        ->where('pm.source','AR')
-                                                        ->where('pm.paytype','CASH')
-                                                        ->where('pm.compcode',session('compcode'));
-                                    })
-                                    ->sum('amount');
-
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.tillcode',$request->tillcode)
+                                ->where('db.tillno',$request->tillno)
+                                ->join('debtor.paymode as pm', function($join) use ($request){
+                                    $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                ->where('pm.source','AR')
+                                                ->where('pm.paytype','CASH')
+                                                ->where('pm.compcode',session('compcode'));
+                                })
+                                ->sum('amount');
+                    
                     $sum_chq = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$request->tillcode)
-                                    ->where('db.tillno',$request->tillno)
-                                    ->join('debtor.paymode as pm', function($join) use ($request){
-                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                                        ->where('pm.source','AR')
-                                                        ->where('pm.paytype','CHEQUE')
-                                                        ->where('pm.compcode',session('compcode'));
-                                    })
-                                    ->sum('amount');
-
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.tillcode',$request->tillcode)
+                                ->where('db.tillno',$request->tillno)
+                                ->join('debtor.paymode as pm', function($join) use ($request){
+                                    $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                ->where('pm.source','AR')
+                                                ->where('pm.paytype','CHEQUE')
+                                                ->where('pm.compcode',session('compcode'));
+                                })
+                                ->sum('amount');
+                    
                     $sum_card = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$request->tillcode)
-                                    ->where('db.tillno',$request->tillno)
-                                    ->join('debtor.paymode as pm', function($join) use ($request){
-                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                                        ->where('pm.source','AR')
-                                                        ->where('pm.paytype','CARD')
-                                                        ->where('pm.compcode',session('compcode'));
-                                    })
-                                    ->sum('amount');
-
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.tillcode',$request->tillcode)
+                                ->where('db.tillno',$request->tillno)
+                                ->join('debtor.paymode as pm', function($join) use ($request){
+                                    $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                ->where('pm.source','AR')
+                                                ->where('pm.paytype','CARD')
+                                                ->where('pm.compcode',session('compcode'));
+                                })
+                                ->sum('amount');
+                    
                     $sum_bank = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$request->tillcode)
-                                    ->where('db.tillno',$request->tillno)
-                                    ->join('debtor.paymode as pm', function($join) use ($request){
-                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                                        ->where('pm.source','AR')
-                                                        ->where('pm.paytype','BANK')
-                                                        ->where('pm.compcode',session('compcode'));
-                                    })
-                                    ->sum('amount');
-                                    
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.tillcode',$request->tillcode)
+                                ->where('db.tillno',$request->tillno)
+                                ->join('debtor.paymode as pm', function($join) use ($request){
+                                    $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                ->where('pm.source','AR')
+                                                ->where('pm.paytype','BANK')
+                                                ->where('pm.compcode',session('compcode'));
+                                })
+                                ->sum('amount');
+                    
                     $sum_all = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$request->tillcode)
-                                    ->where('db.tillno',$request->tillno)
-                                    ->sum('amount');
+                                ->where('db.compcode',session('compcode'))
+                                ->where('db.tillcode',$request->tillcode)
+                                ->where('db.tillno',$request->tillno)
+                                ->sum('amount');
                 }
-        //     }
-        // } 
-
+            // }
+        // }
+        
         $responce = new stdClass();
         $responce->till = $till;
         $responce->tilldetl = $tilldetl;
+        $responce->dbacthdr = $dbacthdr;
         $responce->sum_cash = $sum_cash;
         $responce->sum_chq = $sum_chq;
         $responce->sum_card = $sum_card;
         $responce->sum_bank = $sum_bank;
         $responce->sum_all = $sum_all;
-
+        
         return json_encode($responce);
         // return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
+        
     }
     
 }
