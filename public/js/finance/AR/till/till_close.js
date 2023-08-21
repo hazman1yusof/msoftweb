@@ -25,6 +25,28 @@ $(document).ready(function () {
 		};
 
 		var fdl = new faster_detail_load();
+	
+	////////////////////////////////////start dialog///////////////////////////////////////
+	var butt1=[{
+		text: "Save",click: function() {
+			mycurrency.formatOff();
+			mycurrency.check0value(errorField);
+			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
+				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+			}
+		}
+	},{
+		text: "Cancel",click: function() {
+			$(this).dialog('close');
+		}
+	}];
+
+	var butt2=[{
+		text: "Close",click: function() {
+			$(this).dialog('close');
+		}
+	}];
+	
 
 	////////////////////////////////////ordialog/////////////////////////////////////////////////////////
 	var dialog_tillcode = new ordialog(
@@ -65,6 +87,7 @@ $(document).ready(function () {
 					$("#ChequeCollected").val(data.sum_chq);
 					$("#CardCollected").val(data.sum_card);
 					$("#DebitCollected").val(data.sum_bank);
+					$("#cashBal").val(data.sum_all);
 				}
 			});
 			

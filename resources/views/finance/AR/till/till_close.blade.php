@@ -281,7 +281,7 @@
 
 								<label class="col-md-2 control-label" for="Cashier">Cashier</label>  
 									<div class="col-md-3">
-										<input id="Cashier" name="Cashier" type="text" class="form-control input-sm" readonly>
+										<input id="Cashier" name="Cashier" type="text" class="form-control input-sm" value="{{Auth::user()->username}}" readonly>
 										<!-- value="{{Auth::user()->username}}" -->
 								</div>
 							</div>
@@ -308,6 +308,7 @@
 										<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
 									</div>
 							</div>
+							<!-- <button type="button" id='save' class='btn btn-info btn-sm' style='margin: 0.2%;'>Save</button> -->
 						</div>
 					</div>
 				</div>
