@@ -106,6 +106,7 @@ $(document).ready(function () {
 			
 			urlParamTillDetl.tillno=selrowData("#jqGrid").tillno;
 			refreshGrid("#jqGridTillDetl",urlParamTillDetl);
+			populate_summary();
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
@@ -341,6 +342,25 @@ $(document).ready(function () {
 			$('#jqGrid').data('inputfocus',$(this).attr('id'));
 			refreshGrid('#jqGrid', urlParam);
 		}
+	}
+
+	function populate_summary(){
+		var param={
+			action: 'get_tillclose',
+			url: './tillenquiry/table',
+			tillcode: selrowData('#jqGrid').tillcode,
+			tillno: selrowData('#jqGrid').tillno,
+		}
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(!$.isEmptyObject(data.till)){
+				$("#CashCollected").val(data.sum_cash);
+				$("#ChequeCollected").val(data.sum_chq);
+				$("#CardCollected").val(data.sum_card);
+				$("#DebitCollected").val(data.sum_bank);
+			}
+		});
 	}
 });
 
