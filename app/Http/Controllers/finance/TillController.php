@@ -26,8 +26,48 @@ class TillController extends defaultController
         return view('finance.AR.till.till');
     }
 
-    public function till_close(Request $request)
+
+    public function till_close(Request $request){  
+        // $responce = new stdClass();
+        // return json_encode($responce);
+        return view('finance.AR.till.till_close');
+    }
+
+    public function form(Request $request)
     {   
+
+        switch($request->action){
+            case 'default':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);break;
+                    case 'edit':
+                        return $this->edit($request);break;
+                    case 'del':
+                        return $this->del($request);break;
+                    default:
+                        return 'error happen..';
+                }
+            case 'use_till':
+                return $this->use_till($request);
+        }
+    }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'checkifuserlogin':
+                return $this->checkifuserlogin($request);
+            case 'get_tillclose':
+                return $this->get_tillclose($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+
+
+    public function get_tillclose(Request $request){   
 
         $till = null;
         $tilldetl = null;
@@ -47,8 +87,7 @@ class TillController extends defaultController
 
             $tilldetl_ = DB::table('debtor.tilldetl')
                         ->where('compcode',session('compcode'))
-                        ->where('cashier',$till->lastuser)
-                        ->whereDate('opendate',$till->upddate);
+                        ->where('cashier',$till->lastuser);
 
             if($tilldetl_->exists()){
                 $tilldetl = $tilldetl_->first();
@@ -121,41 +160,18 @@ class TillController extends defaultController
                 }
             }
         } 
-        // $responce = new stdClass();
-        // return json_encode($responce);
-        return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
-    }
 
-    public function form(Request $request)
-    {   
+        $responce = new stdClass();
+        $responce->till = $till;
+        $responce->tilldetl = $tilldetl;
+        $responce->sum_cash = $sum_cash;
+        $responce->sum_chq = $sum_chq;
+        $responce->sum_card = $sum_card;
+        $responce->sum_bank = $sum_bank;
+        $responce->sum_all = $sum_all;
 
-        switch($request->action){
-            case 'default':
-                switch($request->oper){
-                    case 'add':
-                        return $this->add($request);break;
-                    case 'edit':
-                        return $this->edit($request);break;
-                    case 'del':
-                        return $this->del($request);break;
-                    default:
-                        return 'error happen..';
-                }
-            case 'use_till':
-                return $this->use_till($request);
-            case 'till_close':
-                return $this->till_close($request);
-        }
-    }
-
-    public function table(Request $request)
-    {   
-        switch($request->action){
-            case 'checkifuserlogin':
-                return $this->checkifuserlogin($request);
-            default:
-                return 'error happen..';
-        }
+        return json_encode($responce);
+        // return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
     }
 
 

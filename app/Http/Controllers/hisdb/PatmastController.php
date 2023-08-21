@@ -28,13 +28,48 @@ class PatmastController extends defaultController
 
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
 
-        return view('hisdb.pat_mgmt.landing',
-            [
+        $data_send = [
                 'userdeptcode' => $dept->deptcode,
                 'userdeptdesc' => $dept->description,
                 'billtype_def_code' => $btype_->billtype,
                 'billtype_def_desc' => $btype_->description
-            ]);
+            ];
+
+        if(Auth::user()->billing == 1){
+            $ordcomtt_phar = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PHAR')->first();
+            $ordcomtt_disp = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DISP')->first();
+            $ordcomtt_rad = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','RAD')->first();
+            $ordcomtt_lab = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','LAB')->first();
+            $ordcomtt_phys = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PHYSIOTERAPHY')->first();
+            $ordcomtt_dfee = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DOCTORFEES')->first();
+
+            $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
+            $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
+            $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
+            $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
+            $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
+            $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
+        }
+
+        return view('hisdb.pat_mgmt.landing',$data_send);
     }
 
     public function save_patient(Request $request){

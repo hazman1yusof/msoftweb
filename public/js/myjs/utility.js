@@ -2169,14 +2169,17 @@ function computerid_set(computerid){
 	}
 }
 
-function calc_jq_height_onchange(jqgrid){
+function calc_jq_height_onchange(jqgrid,resizeGrid=false){
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
+	if(resizeGrid){
+		$('#'+jqgrid).jqGrid('resizeGrid');
+	}
 }
 
 $(document).ready(function () {

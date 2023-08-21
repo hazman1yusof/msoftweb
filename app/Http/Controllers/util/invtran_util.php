@@ -83,7 +83,7 @@ class invtran_util extends defaultController{
 
 			        switch (strtoupper($trantype_obj->accttype)) {
 			        	case 'ADJUSTMENT':
-			        		$craccno = $category_obj->stockacct;
+			        		$craccno = $category_obj->expacct;
 	        				$crccode = $dept_obj->costcode;
 			        	break;
 			        	case 'EXPENSE':

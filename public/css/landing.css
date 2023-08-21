@@ -328,13 +328,17 @@ table#accomodation_table tr.disabled{
 div#tab-phar input[type=text]{
 	padding: 5px !important;
 }
-div#fail_msg_ordcom{
+div.fail_msg{
 	padding: 10px;
     color: darkred;
 }
-label.customelement{
+.ui-jqgrid-bdiv label{
 	margin: 5px 0px 0px 0px;
 }
 .ui-jqgrid-bdiv{
 	overflow-x: hidden;
+}
+div#jqGrid_ordcom_panel a.input-group-addon.btn.btn-primary{
+	padding: 6px;
+    color: white;
 }

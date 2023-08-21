@@ -51,6 +51,8 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_itemcode_price_check($request);
             case 'get_itemcode_uom':
                 return $this->get_itemcode_uom($request);
+            case 'get_itemcode_uom_check':
+                return $this->get_itemcode_uom_check($request);
             default:
                 return 'error happen..';
         }
@@ -110,7 +112,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -146,6 +148,12 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.optax', '=', 'tm.taxcode');
                         });
+
+        $table = $table->join('material.uom as uom', function($join){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -187,6 +195,12 @@ class SalesOrderDetailController extends defaultController
                         $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
                     }
                 });
+            }
+        }
+
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
             }
         }
 
@@ -277,7 +291,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -317,12 +331,24 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->on('cp.optax', '=', 'tm.taxcode');
                         });
 
+        $table = $table->join('material.uom as uom', function($join){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
+
         $table_count = $table->count();
 
         if($table_count>0){
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->Where('cm.chgcode','like',$serch_chgcode)
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
@@ -358,6 +384,18 @@ class SalesOrderDetailController extends defaultController
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.optax', '=', 'tm.taxcode');
                             });
+        
+            $table = $table->join('material.uom as uom', function($join){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+            if(!empty($request->filterCol)){
+                foreach ($request->filterCol as $key => $value) {
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
 
             if(!empty($request->sidx)){
 
@@ -423,7 +461,7 @@ class SalesOrderDetailController extends defaultController
         }else{
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
@@ -459,6 +497,12 @@ class SalesOrderDetailController extends defaultController
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.optax', '=', 'tm.taxcode');
                             });
+
+            $table = $table->join('material.uom as uom', function($join){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
 
             if(!empty($request->searchCol)){
                 $searchCol_array = $request->searchCol;
@@ -500,6 +544,12 @@ class SalesOrderDetailController extends defaultController
                             $table->orwhere('cm.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
                         }
                     });
+                }
+            }
+
+            if(!empty($request->filterCol)){
+                foreach ($request->filterCol as $key => $value) {
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
                 }
             }
 
@@ -608,7 +658,7 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('st.unit', '=', session('unit'));
                             $join = $join->where('st.deptcode', '=', $deptcode);
                             $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
-                        });;
+                        });
 
         $responce = new stdClass();
         $responce->rows = $table->get();
@@ -620,20 +670,78 @@ class SalesOrderDetailController extends defaultController
         $chgcode = $request->chgcode;
         $deptcode = $request->deptcode;
         $entrydate = $request->entrydate;
+        $priceuse = $request->price;
+        $billtype_obj = $this->billtype_obj_get($request);
 
-        $table = DB::table('material.stockloc as st')
-                            ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
-                            ->where('st.compcode', '=', session('compcode'))
-                            ->where('st.unit', '=', session('unit'))
-                            ->where('st.deptcode', '=', $deptcode)
-                            ->where('st.itemcode', '=', $chgcode)
-                            ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+        switch ($priceuse) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt3';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
 
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.chgcode','=',$chgcode)
+                            ->where('cm.recstatus','<>','DELETE');
+                            // ->where(function ($query) {
+                            //    $query->whereNotNull('st.idno')
+                            //          ->orWhere('cm.invflag', '=', 0);
+                            // });
         $table = $table->join('material.uom as uom', function($join) use ($chgcode){
-                                $join = $join->on('uom.uomcode', '=', 'st.uomcode')
-                                            ->where('uom.compcode', '=', session('compcode'))
-                                            ->where('uom.recstatus','=','ACTIVE');
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->on('cp.uom', '=', 'cm.uom');
+                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                        $join = $join->where('pt.compcode', '=', session('compcode'));
+                        $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                        $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                        $join = $join->where('pt.unit', '=', session('unit'));
+                    });
+
+        $table = $table->join('hisdb.taxmast as tm', function($join){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
+                        });
+
+        // $table = DB::table('material.stockloc as st')
+        //                     ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+        //                     ->where('st.compcode', '=', session('compcode'))
+        //                     ->where('st.unit', '=', session('unit'))
+        //                     ->where('st.deptcode', '=', $deptcode)
+        //                     ->where('st.itemcode', '=', $chgcode)
+        //                     ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+
+        
+
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -676,6 +784,12 @@ class SalesOrderDetailController extends defaultController
             }
         }
 
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
+
         if(!empty($request->sidx)){
 
             if(!empty($request->fixPost)){
@@ -698,15 +812,71 @@ class SalesOrderDetailController extends defaultController
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
 
+        $rows = $paginate->items();
+
+        foreach ($rows as $key => $value) {
+            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+            $value->billty_amount = $billtype_amt_percent->amount; 
+            $value->billty_percent = $billtype_amt_percent->percent_;
+
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $value->chgcode)
+                ->where('cp.uom', '=', $value->uomcode)
+                ->whereDate('cp.effdate', '<=', $entrydate)
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+
+                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                    unset($rows[$key]);
+                    continue;
+                }
+            }
+        }
+
+
+        $rows = array_values($rows);
+
+        //////////paginate/////////
+        // $paginate = $table->paginate($request->rows);
+
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
         // $responce->rows = $paginate->items();
-        $responce->rows = $paginate->items();
+        $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
-        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function get_itemcode_uom_check(Request $request){
+        $deptcode = $request->deptcode;
+        $chgcode = $request->chgcode;
+        $entrydate = $request->entrydate;
+
+        $table = DB::table('material.stockloc as st')
+                            ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+                            ->where('st.compcode', '=', session('compcode'))
+                            ->where('st.unit', '=', session('unit'))
+                            ->where('st.deptcode', '=', $deptcode)
+                            ->where('st.itemcode', '=', $chgcode)
+                            ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+
+        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
 
         return json_encode($responce);
     }
@@ -725,7 +895,7 @@ class SalesOrderDetailController extends defaultController
         
         $source = $request->source;
         $trantype = $request->trantype;
-        $auditno = $request->auditno;
+        $auditno = ltrim($request->auditno,"0");
         
         $recno = $this->recno('OE','IN');
         
@@ -866,7 +1036,7 @@ class SalesOrderDetailController extends defaultController
             
             $source = $request->source;
             $trantype = $request->trantype;
-            $auditno = $request->auditno;
+            $auditno = ltrim($request->auditno, "0");
             
             $dbacthdr = DB::table('debtor.dbacthdr')
                     ->where('compcode','=',session('compcode'))

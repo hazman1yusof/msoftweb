@@ -53,20 +53,18 @@ $(document).ready(function () {
 			$("#cashier").val(data['td_cashier']);
 
 			var param={
-				action:'till_close',
-				url: './till_close/form',
+				action:'get_tillclose',
+				url: './till/table',
 				tillcode:$('#tillcode').val(),
 				//tillno:$('#tillno').val(),
 			}
 			$.get( param.url+"?"+$.param(param), function( data ) {
 			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.dbacthdr)){
-
-				$("#CashCollected").val(data.sum_cash);
-				// $("#ChequeCollected").val(data['$sum_chq']);
-				// $("#CardCollected").val(data['$sum_card']);
-				// $("#DebitCollected").val(data['$sum_bank']);
-				console.log($("#CashCollected").val());
+				if(!$.isEmptyObject(data.till)){
+					$("#CashCollected").val(data.sum_cash);
+					$("#ChequeCollected").val(data.sum_chq);
+					$("#CardCollected").val(data.sum_card);
+					$("#DebitCollected").val(data.sum_bank);
 				}
 			});
 			

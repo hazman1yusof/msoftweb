@@ -700,17 +700,6 @@ $(document).ready(function() {
 
 });
 
-function calc_jq_height_onchange(jqgrid,max_height=300){
-    let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-    if(scrollHeight<50){
-        scrollHeight = 50;
-    }else if(scrollHeight>300){
-        scrollHeight = max_height;
-    }
-    $('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-
-}
-
 var textfield_modal = new textfield_modal();
 textfield_modal.ontabbing();
 textfield_modal.checking();

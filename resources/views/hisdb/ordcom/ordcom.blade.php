@@ -35,46 +35,69 @@
 	    	<input type="hidden" id="episno_ordcom" name="episno_ordcom">
 			<input type="hidden" id="ordcom_deptcode_hide" value="{{Auth::user()->deptcode}}">
 			<input type="hidden" id="ordcom_priceview_hide" value="{{Auth::user()->priceview}}">
+			<input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
+			<input type="hidden" id="ordcomtt_disp" value="{{$ordcomtt_disp ?? ''}}">
+			<input type="hidden" id="ordcomtt_rad" value="{{$ordcomtt_rad ?? ''}}">
+			<input type="hidden" id="ordcomtt_lab" value="{{$ordcomtt_lab ?? ''}}">
+			<input type="hidden" id="ordcomtt_phys" value="{{$ordcomtt_phys ?? ''}}">
+			<input type="hidden" id="ordcomtt_dfee" value="{{$ordcomtt_dfee ?? ''}}">
+			<input type="hidden" id="ordcomtt_oth" value="oth">
 
 			<ul class="nav nav-tabs">
-				<li class="active"><a data-toggle="tab" href="#tab-phar" aria-expanded="true" data-ord_chgtype='PHAR'>Pharmcay</a></li>
-				<li><a data-toggle="tab" href="#tab-phar" data-ord_chgtype='DISP'>Disposable</a></li>
-				<li><a data-toggle="tab" href="#tab-labo" data-ord_chgtype='LAB'>Laboratory</a></li>
-				<li><a data-toggle="tab" href="#tab-labo" data-ord_chgtype='RAD'>Radiology</a></li>
-				<li><a data-toggle="tab" href="#tab-labo" data-ord_chgtype='OTH'>Others</a></li>
+				<li class="active"><a data-toggle="tab" id="ordcom_navtab_phar" href="#tab-phar" aria-expanded="true" data-ord_chgtype='PHAR'>Pharmacy</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_disp" href="#tab-disp" data-ord_chgtype='DISP'>Disposable</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_lab" href="#tab-lab" data-ord_chgtype='LAB'>Laboratory</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_rad" href="#tab-rad" data-ord_chgtype='RAD'>Radiology</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_dfee" href="#tab-dfee" data-ord_chgtype='DFEE'>Doctor Fees</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_phys" href="#tab-phys" data-ord_chgtype='PHYS'>Physioteraphy</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_oth" href="#tab-oth" data-ord_chgtype='OTH'>Others</a></li>
 			</ul>
-			<div id="fail_msg_ordcom"></div>
 			<div class="tab-content" style="padding: 10px 5px;">
 			  <div id="tab-phar" class="active in tab-pane fade">
+				<div id="fail_msg_phar" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
-					<table id="jqGrid_ordcom" class="table table-striped"></table>
-					<div id="jqGrid_ordcom_pager"></div>
+					<table id="jqGrid_phar" class="table table-striped"></table>
+					<div id="jqGrid_phar_pager"></div>
 				</div>
 			  </div>
-			  <!-- <div id="tab-disp" class="tab-pane fade">
+			  <div id="tab-disp" class="tab-pane fade">
+				<div id="fail_msg_disp" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0 0 15px 0" >
-					<table id="jqGrid_ordcom-disp" class="table table-striped"></table>
-					<div id="jqGrid_ordcom-disp_pager"></div>
-				</div>
-			  </div> -->
-			  <div id="tab-labo" class="tab-pane fade">
-				<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
-					<table id="jqGrid_ordcom-labo" class="table table-striped"></table>
-					<div id="jqGrid_ordcom-labo_pager"></div>
+					<table id="jqGrid_disp" class="table table-striped"></table>
+					<div id="jqGrid_disp_pager"></div>
 				</div>
 			  </div>
-			  <!-- <div id="tab-radi" class="tab-pane fade">
+			  <div id="tab-lab" class="tab-pane fade">
+				<div id="fail_msg_lab" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0 0 15px 0" >
-					<table id="jqGrid_ordcom-radi" class="table table-striped"></table>
-					<div id="jqGrid_ordcom-radi_pager"></div>
+					<table id="jqGrid_lab" class="table table-striped"></table>
+					<div id="jqGrid_lab_pager"></div>
 				</div>
 			  </div>
-			  <div id="tab-othe" class="tab-pane fade">
+			  <div id="tab-rad" class="tab-pane fade">
 				<div class='col-md-12' style="padding:0 0 15px 0" >
-					<table id="jqGrid_ordcom-othe" class="table table-striped"></table>
-					<div id="jqGrid_ordcom-othe_pager"></div>
+					<table id="jqGrid_rad" class="table table-striped"></table>
+					<div id="jqGrid_rad_pager"></div>
 				</div>
-			  </div> -->
+			  </div>
+			  <div id="tab-dfee" class="tab-pane fade">
+				<div class='col-md-12' style="padding:0 0 15px 0" >
+					<table id="jqGrid_dfee" class="table table-striped"></table>
+					<div id="jqGrid_dfee_pager"></div>
+				</div>
+			  </div>
+			  <div id="tab-phys" class="tab-pane fade">
+				<div class='col-md-12' style="padding:0 0 15px 0" >
+					<table id="jqGrid_phys" class="table table-striped"></table>
+					<div id="jqGrid_phys_pager"></div>
+				</div>
+			  </div>
+			  <div id="tab-oth" class="tab-pane fade">
+				<div class='col-md-12' style="padding:0 0 15px 0" >
+					<table id="jqGrid_oth" class="table table-striped"></table>
+					<div id="jqGrid_oth_pager"></div>
+				</div>
+			  </div>
 
 			</div>
 		</div>
