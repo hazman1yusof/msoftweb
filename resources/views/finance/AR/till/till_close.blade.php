@@ -13,10 +13,11 @@
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<div class="form-group">
 								<div class='col-md-2'>
+									<label class="control-label">Till Code: </label>
 									<div class='input-group'>
-										<label class="control-label">Till Code: </label><input id="tillcode" name="tillcode" type="text" class="form-control input-sm" data-validation="required"> 
+										<input id="tillcode" name="tillcode" type="text" class="form-control input-sm" data-validation="required">
 										<!-- value="@if (!empty($till)){{$till->tillcode}}@endif" -->
-											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
 								</div>
