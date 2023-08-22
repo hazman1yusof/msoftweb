@@ -57,13 +57,15 @@ $(document).ready(function () {
 				{label:'dept',name:'t_dept',width:400,classes:'pointer', hidden:true},
 				{label:'opendate',name:'td_opendate',width:400,classes:'pointer', hidden:true},
 				{label:'opentime',name:'td_opentime',width:400,classes:'pointer', hidden:true},
+				{label:'closedate',name:'td_closedate',width:400,classes:'pointer', hidden:true},
+				{label:'closetime',name:'td_closetime',width:400,classes:'pointer', hidden:true},
 				{label:'openamt',name:'td_openamt',width:400,classes:'pointer', hidden:true},
 				{label:'cashier',name:'td_cashier',width:400,classes:'pointer', hidden:true},
 			],
 			sortname: 'td_tillcode',
 			sortorder: "desc",
 			urlParam: {
-				filterCol:['td.compcode','td.cashier', 'td.opendate'],
+				filterCol:['td.compcode','td.cashier', 'td.closedate'],
 				filterVal:['session.compcode','session.username', '']
 		},
 		ondblClickRow: function () {
@@ -109,7 +111,7 @@ $(document).ready(function () {
 			title:"Select Till Code",
 			open: function(){
 				dialog_tillcode.urlParam.fixPost = "true";
-				dialog_tillcode.urlParam.filterCol=['td.compcode','td.cashier', 'td.opendate'];
+				dialog_tillcode.urlParam.filterCol=['td.compcode','td.cashier', 'td.closedate'];
 				dialog_tillcode.urlParam.filterVal=['session.compcode','session.username', ''];
 				dialog_tillcode.urlParam.join_type = ['LEFT JOIN'];
 				dialog_tillcode.urlParam.join_onCol = ['td.tillcode'];

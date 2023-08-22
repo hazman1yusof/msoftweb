@@ -343,7 +343,7 @@ $(document).ready(function () {
 			refreshGrid('#jqGrid', urlParam);
 		}
 	}
-
+	
 	function populate_summary(){
 		var param={
 			action: 'get_tillclose',
