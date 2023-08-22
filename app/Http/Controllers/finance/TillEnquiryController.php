@@ -54,7 +54,7 @@ class TillEnquiryController extends defaultController
     public function maintable(Request $request){
         
         $table = DB::table('debtor.tilldetl')
-                ->select('compcode', 'tillcode', 'tillno', 'opendate', 'opentime', 'openamt', 'closedate', 'closetime', 'cashamt', 'cardamt', 'cheqamt', 'cnamt', 'otheramt', 'refcashamt', 'refcardamt', 'refchqamt', 'actclosebal', 'reason', 'cashier', 'upddate', 'upduser', 'adddate', 'adduser', 'deldate', 'deluser', 'recstatus')
+                ->select('idno', 'compcode', 'tillcode', 'tillno', 'opendate', 'opentime', 'openamt', 'closedate', 'closetime', 'cashamt', 'cardamt', 'cheqamt', 'cnamt', 'otheramt', 'refcashamt', 'refcardamt', 'refchqamt', 'actclosebal', 'reason', 'cashier', 'upddate', 'upduser', 'adddate', 'adduser', 'deldate', 'deluser', 'recstatus')
                 ->where('compcode','=',session('compcode'));
         
         if(!empty($request->filterCol)){
@@ -78,6 +78,24 @@ class TillEnquiryController extends defaultController
             // }
         }
         
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            $table = $table->orderBy($request->sidx, $request->sord);
+            
+            // if(count($pieces)==1){
+            //     $table = $table->orderBy($request->sidx, $request->sord);
+            // }else{
+            //     foreach ($pieces as $key => $value) {
+            //         $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+            //         $pieces_inside = explode(" ", $value_);
+            //         $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+            //     }
+            // }
+        }else{
+            $table = $table->orderBy('idno','DESC');
+        }
+        
         $paginate = $table->paginate($request->rows);
         
         ////////////paginate////////////
@@ -97,11 +115,34 @@ class TillEnquiryController extends defaultController
     
     public function get_tilldetl(Request $request){
         
-        $table = DB::table('debtor.dbacthdr')
-                ->select('idno', 'compcode', 'source', 'trantype', 'auditno', 'lineno_', 'amount', 'outamount', 'recstatus', 'entrydate', 'entrytime', 'entryuser', 'reference', 'recptno', 'paymode', 'tillcode', 'tillno', 'debtortype', 'debtorcode', 'payercode', 'billdebtor', 'remark', 'mrn', 'episno', 'authno', 'expdate', 'adddate', 'adduser', 'upddate', 'upduser', 'epistype', 'cbflag', 'conversion', 'payername', 'hdrtype', 'currency', 'rate', 'unit', 'invno', 'paytype', 'bankcharges', 'RCCASHbalance', 'RCOSbalance', 'RCFinalbalance', 'PymtDescription', 'posteddate')
-                ->where('compcode','=',session('compcode'))
-                ->where('trantype','=','RC')
-                ->where('tillno','=',$request->tillno);
+        $table = DB::table('debtor.dbacthdr as dh')
+                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype')
+                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                ->where('dm.compcode', '=', session('compcode'));
+                })
+                ->where('dh.compcode','=',session('compcode'))
+                // ->where('dh.trantype','=','RC')
+                ->where('dh.tillno','=',$request->tillno);
+        
+        //////////////////////////////////////////////////////////
+        if(!empty($request->sidx)){
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            $table = $table->orderBy($request->sidx, $request->sord);
+            
+            // if(count($pieces)==1){
+            //     $table = $table->orderBy($request->sidx, $request->sord);
+            // }else{
+            //     foreach ($pieces as $key => $value) {
+            //         $value_ = substr_replace($value,"dh.",0,strpos($value,"_")+1);
+            //         $pieces_inside = explode(" ", $value_);
+            //         $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+            //     }
+            // }
+        }else{
+            $table = $table->orderBy('dh.idno','DESC');
+        }
         
         ////////////paginate////////////
         $paginate = $table->paginate($request->rows);

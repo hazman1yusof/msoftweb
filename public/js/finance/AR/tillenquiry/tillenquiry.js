@@ -57,6 +57,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
+			{ label: 'idno', name: 'idno', hidden: true },
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'Till Code', name: 'tillcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Till No', name: 'tillno', width: 15, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
@@ -85,12 +86,14 @@ $(document).ready(function () {
 			{ label: 'recstatus', name: 'recstatus', width: 10, hidden: true },
 		],
 		autowidth:true,
-		multiSort: true,
+		// multiSort: true,
 		viewrecords: true,
 		loadonce:false,
 		width: 900,
 		height: 400,
 		rowNum: 30,
+		sortname: 'idno',
+		sortorder: "desc",
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
 			$('#tillcode1_show, #tillcode2_show').text(selrowData("#jqGrid").tillcode);
@@ -158,11 +161,13 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./tillenquiry/form",
 		colModel: [
-			{ label: 'Seq No', name: 'seqno', width: 20, align: 'right' },
-			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
-			{ label: 'FC', name: 'fc', width: 50, classes: 'wrap' },
+			{ label: 'idno', name: 'idno', width: 20, hidden: true },
+			{ label: 'compcode', name: 'compcode', width: 20, hidden: true },
+			{ label: 'Debtor Code', name: 'debtorcode', width: 50, classes: 'wrap text-uppercase', hidden: true },
+			{ label: 'Payer Code', name: 'payercode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'FC', name: 'debtortype', width: 50, classes: 'wrap', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Amount', name: 'amount', width: 40, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Payer', name: 'payername', width: 60, classes: 'wrap text-uppercase' },
+			{ label: 'Payer', name: 'payername', width: 60, classes: 'wrap text-uppercase', hidden: true },
 			{ label: 'Mode', name: 'paymode', width: 50, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Reference', name: 'reference', width: 50, classes: 'wrap' },
 			{ label: 'Receipt No', name: 'recptno', width: 50, classes: 'wrap' },
@@ -170,9 +175,11 @@ $(document).ready(function () {
 		],
 		shrinkToFit: true,
 		autowidth:true,
-		multiSort: true,
+		// multiSort: true,
 		viewrecords: true,
 		rowNum: 30,
+		sortname: 'idno',
+		sortorder: "desc",
 		pager: "#jqGridPagerTillDetl",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGridTillDetl");
@@ -200,8 +207,12 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
+			// jqGrid
 			case 'tillcode':field=['tillcode','description'];table="debtor.till";case_='tillcode';break;
-			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
+			
+			// jqGridTillDetl
+			case 'payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='payercode';break;
+			case 'debtortype':field=['debtortycode','description'];table="debtor.debtortype";case_='debtortype';break;
 			case 'paymode':field=['paymode','description'];table="debtor.paymode";case_='paymode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
