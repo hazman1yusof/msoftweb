@@ -264,9 +264,9 @@
 										<input id="closedate" name="closedate" type="date" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" readonly>
 								</div>
 
-								<label class="col-md-2 control-label" for="closetime">TIme</label>  
+								<label class="col-md-2 control-label" for="closetime">Time</label>  
 									<div class="col-md-3">
-										<input id="closetime" name="closetime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('H:i:s')}}" readonly>
+										<input id="closetime" name="closetime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('h:i:s')}}" readonly>
 								</div>
 							</div>
 						</div>
