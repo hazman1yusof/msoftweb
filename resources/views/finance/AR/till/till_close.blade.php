@@ -3,6 +3,7 @@
 @section('title', 'Close Till')
 
 @section('body')
+<form class='form-horizontal' style='width:99%' id='ctformdata'>
 	<div class="panel panel-default" style="margin:20px">
 	    <div class="panel-heading">Close Till</div>
 			<div class="panel-body">
@@ -12,19 +13,21 @@
 
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<div class="form-group">
-								<div class='col-md-2'>
+								<!-- <div class='col-md-2'>
 									<label class="control-label">Till Code: </label>
 									<div class='input-group'>
 										<input id="tillcode" name="tillcode" type="text" class="form-control input-sm" data-validation="required">
-										<!-- value="@if (!empty($till)){{$till->tillcode}}@endif" -->
+										value="@if (!empty($till)){{$till->tillcode}}@endif"
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>
-								</div>
+								</div> -->
 								
 								<div class='col-md-2'>
-									<label>Department: </label><input id="dept" name="dept" type="text" class="form-control input-sm" readonly>
-									<!-- value="@if (!empty($till)){{$till->dept}}@endif" -->
+									<label>Till Code: </label><input id="tillcode" name="tillcode" type="text" class="form-control input-sm" value="@if (!empty($till)){{$till->tillcode}}@endif" readonly>
+								</div>
+								<div class='col-md-2'>
+									<label>Department: </label><input id="dept" name="dept" type="text" class="form-control input-sm" value="@if (!empty($till)){{$till->dept}}@endif" readonly>
 								</div>
 							</div>		
 						</div>
@@ -32,13 +35,11 @@
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<div class="form-group">
 								<div class='col-md-2'>
-									<label>Open Date: </label><input id="opendate" name="opendate" type="date" class="form-control input-sm" readonly>
-									<!-- value="@if (!empty($tilldetl)){{$tilldetl->opendate}}@endif" -->
+									<label>Open Date: </label><input id="opendate" name="opendate" type="date" class="form-control input-sm" value="@if (!empty($tilldetl)){{$tilldetl->opendate}}@endif" readonly>
 								</div>
 
 								<div class='col-md-2 '>
-									<label>Time: </label><input id="opentime" name="opentime" type="text" class="form-control input-sm" readonly>
-									<!-- value="@if (!empty($tilldetl)){{$tilldetl->opentime}}@endif" -->
+									<label>Time: </label><input id="opentime" name="opentime" type="text" class="form-control input-sm" value="@if (!empty($tilldetl)){{$tilldetl->opentime}}@endif" readonly>
 								</div>
 							</div>		
 						</div>
@@ -46,13 +47,11 @@
 						<div class='col-md-12' style="padding:0 0 15px 0">
 							<div class="form-group">
 								<div class='col-md-2'>
-									<label>Cash Opening Amount: </label><input id="openamt" name="openamt" type="text" class="form-control input-sm" data-validation="required" readonly>
-									<!-- value="@if (!empty($tilldetl)){{$tilldetl->openamt}}@endif" -->
+									<label>Cash Opening Amount: </label><input id="openamt" name="openamt" type="text" class="form-control input-sm" data-validation="required" value="@if (!empty($tilldetl)){{$tilldetl->openamt}}@endif" readonly>
 								</div>
 
 								<div class='col-md-2'>
-									<label>Cashier: </label><input id="cashier" name="cashier" type="text" class="form-control input-sm" readonly>
-									<!-- value="{{Auth::user()->username}}" -->
+									<label>Cashier: </label><input id="cashier" name="cashier" type="text" class="form-control input-sm" value="{{Auth::user()->username}}" readonly>
 								</div>
 							</div>		
 						</div>
@@ -68,8 +67,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="CashCollected">Cash</label>  
 									<div class="col-md-3">
-										<input id="CashCollected" name="CashCollected" type="text" class="form-control input-sm" readonly>
-										<!-- value="@if(!empty($sum_cash)){{$sum_cash}}@else{{number_format(0.00,2)}}@endif"  -->
+										<input id="CashCollected" name="CashCollected" type="text" class="form-control input-sm" value="@if(!empty($sum_cash)){{$sum_cash}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="CashRefund">Cash</label>  
@@ -83,8 +81,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="ChequeCollected">Cheque</label>  
 									<div class="col-md-3">
-										<input id="ChequeCollected" name="ChequeCollected" type="text" class="form-control input-sm" readonly>
-										<!-- value="@if(!empty($sum_chq)){{$sum_chq}}@else{{number_format(0.00,2)}}@endif"  -->
+										<input id="ChequeCollected" name="ChequeCollected" type="text" class="form-control input-sm" value="@if(!empty($sum_chq)){{$sum_chq}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="ChequeRefund">Cheque</label>  
@@ -98,8 +95,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="CardCollected">Card</label>  
 									<div class="col-md-3">
-										<input id="CardCollected" name="CardCollected" type="text" class="form-control input-sm" readonly>
-										<!-- value="@if(!empty($sum_card)){{$sum_card}}@else{{number_format(0.00,2)}}@endif"  -->
+										<input id="CardCollected" name="CardCollected" type="text" class="form-control input-sm" value="@if(!empty($sum_card)){{$sum_card}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="CardRefund">Card</label>  
@@ -113,8 +109,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="DebitCollected">Auto Debit</label>  
 									<div class="col-md-3">
-										<input id="DebitCollected" name="DebitCollected" type="text" class="form-control input-sm" readonly>
-										<!-- value="@if(!empty($sum_bank)){{$sum_bank}}@else{{number_format(0.00,2)}}@endif"  -->
+										<input id="DebitCollected" name="DebitCollected" type="text" class="form-control input-sm" value="@if(!empty($sum_bank)){{$sum_bank}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="DebitRefund">Auto Debit</label>  
@@ -261,35 +256,36 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="closedate">Close Date</label>  
 									<div class="col-md-3">
-										<input id="closedate" name="closedate" type="date" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}" readonly>
+										<input id="closedate" name="closedate" type="date" class="form-control input-sm" readonly>
+										<!-- value="{{Carbon\Carbon::now()->format('Y-m-d')}}" -->
 								</div>
 
 								<label class="col-md-2 control-label" for="closetime">Time</label>  
 									<div class="col-md-3">
-										<input id="closetime" name="closetime" type="time" class="form-control input-sm" value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('h:i:s')}}" readonly>
+										<input id="closetime" name="closetime" type="time" class="form-control input-sm" readonly>
+										<!-- value="{{Carbon\Carbon::now('Asia/Kuala_Lumpur')->format('H:i:s')}}" -->
 								</div>
 							</div>
 						</div>
 
 						<div class="panel-body">
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="cashCloseBal">Cash Closing Bal.</label>  
+								<label class="col-md-2 control-label" for="cashCloseBal">Cash Closing <br>Balance</label>  
 									<div class="col-md-3">
-										<input id="cashBal" name="cashBal" type="text" class="form-control input-sm" readonly>
-										<!-- value="@if(!empty($sum_all)){{$sum_all}}@else{{number_format(0.00,2)}}@endif"  -->
+										<input id="cashBal" name="cashBal" type="text" class="form-control input-sm" value="0.00" readonly>
+										<!-- value="@if(!empty($cash_closingbal)){{$cash_closingbal}}@else{{number_format(0.00,2)}}@endif" -->
 								</div>
 
 								<label class="col-md-2 control-label" for="Cashier">Cashier</label>  
 									<div class="col-md-3">
 										<input id="Cashier" name="Cashier" type="text" class="form-control input-sm" value="{{Auth::user()->username}}" readonly>
-										<!-- value="{{Auth::user()->username}}" -->
 								</div>
 							</div>
 						</div>
 
 						<div class="panel-body">
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="ActCloseBal">Actual Closing Balance</label>  
+								<label class="col-md-2 control-label" for="ActCloseBal">Actual Closing<br>Balance</label>  
 									<div class="col-md-3">
 										<input id="ActCloseBal" name="ActCloseBal" type="text" class="form-control input-sm" value="0.00">
 								</div>
@@ -303,17 +299,22 @@
 
 						<div class="panel-body">
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="remarks">Reason</label> 
+								<label class="col-md-2 control-label" for="reason">Reason</label> 
 									<div class="col-md-8"> 
-										<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" ></textarea>
+										<textarea class="form-control input-sm text-uppercase" name="reason" rows="2" cols="55" maxlength="400" id="reason" ></textarea>
 									</div>
 							</div>
-							<!-- <button type="button" id='save' class='btn btn-info btn-sm' style='margin: 0.2%;'>Save</button> -->
+								<!-- <button type="button" id='save' class='btn btn-info sm pull-right' style="margin: 0.2%;">Save</button>
+								<button type="button" id='cancel' class='btn btn-info sm pull-right' style="margin: 0.2%;">Cancel</button>
+							 -->
+							 <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+
 						</div>
 					</div>
 				</div>
 			</div>
 	</div>
+</form>
 @endsection
 
 

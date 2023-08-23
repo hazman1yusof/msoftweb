@@ -1,125 +1,8 @@
-$.jgrid.defaults.responsive = true;
-$.jgrid.defaults.styleUI = 'Bootstrap';
+// $.jgrid.defaults.responsive = true;
+// $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
-	$("body").show();
-	/////////////////////////validation//////////////////////////
-		$.validate({
-			modules : 'sanitize',
-			language : {
-				requiredFields: 'Please Enter Value'
-			},
-		});
-
-		var errorField=[];
-		conf = {
-			onValidate : function($form) {
-				if(errorField.length>0){
-					show_errors(errorField,'#formdata');
-					return [{
-						element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
-						message : ''
-					}];
-				}
-			},
-		};
-
-		var fdl = new faster_detail_load();
-	
-	////////////////////////////////////start dialog///////////////////////////////////////
-	var butt1=[{
-		text: "Save",click: function() {
-			mycurrency.formatOff();
-			mycurrency.check0value(errorField);
-			if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-				saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-			}
-		}
-	},{
-		text: "Cancel",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-
-	var butt2=[{
-		text: "Close",click: function() {
-			$(this).dialog('close');
-		}
-	}];
-	
-
-	////////////////////////////////////ordialog/////////////////////////////////////////////////////////
-	var dialog_tillcode = new ordialog(
-		'tillcode',['debtor.tilldetl AS td','debtor.till AS t'],'#tillcode',errorField,
-		{	colModel:[
-				{label:'Till Code',name:'td_tillcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'t_description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'dept',name:'t_dept',width:400,classes:'pointer', hidden:true},
-				{label:'opendate',name:'td_opendate',width:400,classes:'pointer', hidden:true},
-				{label:'opentime',name:'td_opentime',width:400,classes:'pointer', hidden:true},
-				{label:'closedate',name:'td_closedate',width:400,classes:'pointer', hidden:true},
-				{label:'closetime',name:'td_closetime',width:400,classes:'pointer', hidden:true},
-				{label:'openamt',name:'td_openamt',width:400,classes:'pointer', hidden:true},
-				{label:'cashier',name:'td_cashier',width:400,classes:'pointer', hidden:true},
-			],
-			sortname: 'td_tillcode',
-			sortorder: "desc",
-			urlParam: {
-				filterCol:['td.compcode','td.cashier', 'td.closedate'],
-				filterVal:['session.compcode','session.username', '']
-		},
-		ondblClickRow: function () {
-			let data = selrowData('#' + dialog_tillcode.gridname);
-			$("#dept").val(data['t_dept']);
-			$("#opendate").val(data['td_opendate']);
-			$("#opentime").val(data['td_opentime']);
-			$("#openamt").val(data['td_openamt']);
-			$("#cashier").val(data['td_cashier']);
-
-			var param={
-				action:'get_tillclose',
-				url: './till/table',
-				tillcode:$('#tillcode').val(),
-				//tillno:$('#tillno').val(),
-			}
-			$.get( param.url+"?"+$.param(param), function( data ) {
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.till)){
-					$("#CashCollected").val(data.sum_cash);
-					$("#ChequeCollected").val(data.sum_chq);
-					$("#CardCollected").val(data.sum_card);
-					$("#DebitCollected").val(data.sum_bank);
-					$("#cashBal").val(data.sum_all);
-				}
-			});
-			
-			dialog_tillcode.check(errorField);
-
-		},
-		gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#actdebglacc').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-
-		},{
-			title:"Select Till Code",
-			open: function(){
-				dialog_tillcode.urlParam.fixPost = "true";
-				dialog_tillcode.urlParam.filterCol=['td.compcode','td.cashier', 'td.closedate'];
-				dialog_tillcode.urlParam.filterVal=['session.compcode','session.username', ''];
-				dialog_tillcode.urlParam.join_type = ['LEFT JOIN'];
-				dialog_tillcode.urlParam.join_onCol = ['td.tillcode'];
-				dialog_tillcode.urlParam.join_onVal = ['t.tillcode'];
-			}
-		},'urlParam', 'radio', 'tab'
-	);
-	dialog_tillcode.makedialog(true);
+	calc_cash_bal();
 
 	$('input[name=bilrm100],input[name=bilrm50],input[name=bilrm20],input[name=bilrm10],input[name=bilrm5],input[name=bilrm1],input[name=bilcents]').on( "change", function() {
 		let bill = $(this).data('bill');
@@ -133,6 +16,62 @@ $(document).ready(function () {
 
 	});
 
+	var errorField=[];
+	conf = {
+		onValidate : function($form) {
+			if(errorField.length>0){
+				show_errors(errorField,'#ctformdata');
+				return [{
+					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
+					message : ''
+				}];
+			}
+		},
+	};
+	/////////////////////////////////save close till//////////////////////////////////////////////////////////
+	var saveParam = {
+		action: 'use_till',
+		url:'./till/form',
+		field: '',
+		//oper: 'use_till',
+		fixPost: true,
+	}
+
+	function saveHeader(form, selfoper, saveParam, obj) {
+		if (obj == null) {
+			obj = {};
+		}
+		saveParam.oper = selfoper;
+
+		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
+			},'json')
+		.fail(function (data) {
+			$('.noti').text(data.responseText);
+		}).done(function (data) {
+			unsaved = false;
+
+			if (selfoper == 'use_till') {
+				oper = 'use_till';
+				$('#tillcode').val(data.tillcode);
+				$('#ActCloseBal').val(data.ActCloseBal);
+
+			} else if (selfoper == 'edit') {
+				//doesnt need to do anything
+			}
+		})
+	}
+
+	$("#save").click(function(){
+		unsaved = false;
+		// mycurrency.formatOff();
+		// mycurrency.check0value(errorField);
+		if($('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader("#ctformdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
+			unsaved = false;
+		}else{
+			//mycurrency.formatOn();
+		}
+	});
 
 });
 
@@ -171,4 +110,13 @@ function calc_discrepancy(){
 
 	$('#discrepancy').val(parseFloat(disc).toFixed(2));
 
+}
+
+function calc_cash_bal() {
+	let open_amt = parseFloat($('#openamt').val());
+	let cash_amt = parseFloat($('#CashCollected').val());
+	let refund_amt = parseFloat($('#CashRefund').val());
+
+	var close_cashbal = open_amt + cash_amt - refund_amt;
+	$('input[name=cashBal]').val(parseFloat(close_cashbal).toFixed(2));
 }

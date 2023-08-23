@@ -28,47 +28,6 @@ class TillController extends defaultController
 
 
     public function till_close(Request $request){  
-        // $responce = new stdClass();
-        // return json_encode($responce);
-        return view('finance.AR.till.till_close');
-    }
-
-    public function form(Request $request)
-    {   
-
-        switch($request->action){
-            case 'default':
-                switch($request->oper){
-                    case 'add':
-                        return $this->add($request);break;
-                    case 'edit':
-                        return $this->edit($request);break;
-                    case 'del':
-                        return $this->del($request);break;
-                    default:
-                        return 'error happen..';
-                }
-            case 'use_till':
-                return $this->use_till($request);
-        }
-    }
-
-    public function table(Request $request)
-    {   
-        switch($request->action){
-            case 'checkifuserlogin':
-                return $this->checkifuserlogin($request);
-            case 'get_tillclose':
-                return $this->get_tillclose($request);
-            default:
-                return 'error happen..';
-        }
-    }
-
-
-
-    public function get_tillclose(Request $request){   
-
         $till = null;
         $tilldetl = null;
         $sum_cash = null;
@@ -87,7 +46,8 @@ class TillController extends defaultController
 
             $tilldetl_ = DB::table('debtor.tilldetl')
                         ->where('compcode',session('compcode'))
-                        ->where('cashier',$till->lastuser);
+                        ->where('cashier',$till->lastuser)
+                        ->where('closedate',$request->closedate);
 
             if($tilldetl_->exists()){
                 $tilldetl = $tilldetl_->first();
@@ -102,8 +62,9 @@ class TillController extends defaultController
                                             ->where('pm.source','AR')
                                             ->where('pm.compcode',session('compcode'));
                         });
-
+                
                 if($dbacthdr->exists()){
+
                     $sum_cash = DB::table('debtor.dbacthdr as db')
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
@@ -151,42 +112,57 @@ class TillController extends defaultController
                                                         ->where('pm.compcode',session('compcode'));
                                     })
                                     ->sum('amount');
-                                    
-                    $sum_all = DB::table('debtor.dbacthdr as db')
-                                    ->where('db.compcode',session('compcode'))
-                                    ->where('db.tillcode',$tilldetl->tillcode)
-                                    ->where('db.tillno',$tilldetl->tillno)
-                                    ->sum('amount');
+                        
                 }
             }
         } 
+        return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank'));
 
-        $responce = new stdClass();
-        $responce->till = $till;
-        $responce->tilldetl = $tilldetl;
-        $responce->sum_cash = $sum_cash;
-        $responce->sum_chq = $sum_chq;
-        $responce->sum_card = $sum_card;
-        $responce->sum_bank = $sum_bank;
-        $responce->sum_all = $sum_all;
-
-        return json_encode($responce);
-        // return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_all'));
     }
 
+    public function form(Request $request)
+    {   
+
+        switch($request->action){
+            case 'default':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add($request);break;
+                    case 'edit':
+                        return $this->edit($request);break;
+                    case 'del':
+                        return $this->del($request);break;
+                    case 'use_till':
+                        return $this->use_till($request);break;
+                    default:
+                        return 'error happen..';
+                }
+           
+        }
+    }
+
+    public function table(Request $request)
+    {   
+        switch($request->action){
+            case 'checkifuserlogin':
+                return $this->checkifuserlogin($request);
+            default:
+                return 'error happen..';
+        }
+    }
 
     public function use_till(Request $request){
         DB::beginTransaction();
         try {
 
-            $tillno = $this->defaultSysparam('AR','TN');
+            //$tillno = $this->defaultSysparam('AR','TN');
 
             DB::table('debtor.till')
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
                     'compcode' => session('compcode'), 
-                    'tillstatus' => 'O', 
-                    'dept' => auth()->user()->dept,
+                    'tillstatus' => 'C', 
+                    //'dept' => auth()->user()->dept,
                     'lastuser' => session('username'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
@@ -196,12 +172,12 @@ class TillController extends defaultController
                 ->insert([
                     'compcode' => session('compcode'), 
                     'tillcode' => $request->tillcode,
-                    'tillno' => $tillno,
-                    'openamt' => $request->openamt,
-                    'cashamt' => $request->openamt,
+                   // 'tillno' => $tillno,
+                    'actclosebal' => $request->actclosebal,
+                    'reason' => $request->reason,
                     'cashier' => session('username'),
-                    'opendate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'opentime' => Carbon::now("Asia/Kuala_Lumpur")
+                    'closedate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'closetime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
              DB::commit();
