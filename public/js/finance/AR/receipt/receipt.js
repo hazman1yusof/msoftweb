@@ -670,6 +670,7 @@ $(document).ready(function () {
 				if (callback !== undefined) {
 					callback();
 				}
+				$("#allocateDialog").dialog('open');
 			}
 		});
 	}

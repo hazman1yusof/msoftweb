@@ -1928,8 +1928,8 @@ $(document).ready(function () {
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
 				dialog_chggroup.urlParam.url_chk = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action_chk = "get_itemcode_price_check";
-				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
-				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
+				dialog_chggroup.urlParam.filterCol = [];
+				dialog_chggroup.urlParam.filterVal = [];
 				dialog_chggroup.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_chggroup.urlParam.billtype = $('#db_hdrtype').val();
 				dialog_chggroup.urlParam.deptcode = $('#db_deptcode').val();
@@ -1992,8 +1992,8 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.action = 'get_itemcode_uom';
 				dialog_uomcode.urlParam.url_chk = "./SalesOrderDetail/table";
 				dialog_uomcode.urlParam.action_chk = "get_itemcode_uom_check";
-				dialog_uomcode.urlParam.filterCol = ['chgcode','price'];
-				dialog_uomcode.urlParam.filterVal = [$("#jqGrid2 #"+id_optid+"_chggroup").val(),$('#pricebilltype').val()];
+				dialog_uomcode.urlParam.filterCol = [];
+				dialog_uomcode.urlParam.filterVal = [];
 				dialog_uomcode.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_uomcode.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
 				dialog_uomcode.urlParam.deptcode = $('#db_deptcode').val();
