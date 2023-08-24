@@ -121,8 +121,8 @@ class TillController extends defaultController
     }
 
     public function form(Request $request)
-    {   
-
+    {
+        
         switch($request->action){
             case 'default':
                 switch($request->oper){
@@ -132,8 +132,16 @@ class TillController extends defaultController
                         return $this->edit($request);break;
                     case 'del':
                         return $this->del($request);break;
+                    // case 'use_till':
+                    //     return $this->use_till($request);break;
+                    default:
+                        return 'error happen..';
+                }
+                
+            case 'save_till':
+                switch($request->oper){
                     case 'use_till':
-                        return $this->use_till($request);break;
+                        return $this->use_till($request);
                     default:
                         return 'error happen..';
                 }
@@ -150,47 +158,51 @@ class TillController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function use_till(Request $request){
+        
         DB::beginTransaction();
-
+        
         try {
-
-            //$tillno = $this->defaultSysparam('AR','TN');
-
+            
+            // dd($request->tillcode);
+            
+            // $tillno = $this->defaultSysparam('AR','TN');
+            
             DB::table('debtor.till')
                 ->where('compcode',session('compcode'))
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
-                    'compcode' => session('compcode'), 
-                    'tillstatus' => 'C', 
-                    //'dept' => auth()->user()->dept,
+                    'tillstatus' => 'C',
+                    // 'dept' => auth()->user()->dept,
                     'lastuser' => session('username'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-
+        
             DB::table('debtor.tilldetl')
                 ->where('compcode',session('compcode'))
-                ->where('cashier',$request->lastuser)
-                ->where('closedate',$request->closedate)
+                ->where('cashier',$request->tillcode)
+                // ->where('closedate',$request->closedate)
                 ->update([
-                    'compcode' => session('compcode'), 
-                    'tillcode' => $request->tillcode,
-                   // 'tillno' => $tillno,
+                    // 'tillno' => $tillno,
                     'actclosebal' => $request->actclosebal,
                     'reason' => $request->reason,
-                    'cashier' => session('username'),
+                    // 'cashier' => session('username'),
                     'closedate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'closetime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-dd($request->tillcode);
-             DB::commit();
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
 
     public function add(Request $request){

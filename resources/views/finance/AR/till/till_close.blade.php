@@ -308,7 +308,7 @@
 								<!-- <button type="button" id='save' class='btn btn-info sm pull-right' style="margin: 0.2%;">Save</button>
 								<button type="button" id='cancel' class='btn btn-info sm pull-right' style="margin: 0.2%;">Cancel</button>
 							 -->
-							 <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+							<button type="button" id='save' data-oper='use_till' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 
 						</div>
 					</div>

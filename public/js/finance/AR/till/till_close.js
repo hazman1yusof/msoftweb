@@ -61,11 +61,11 @@ $(document).ready(function () {
 
 	// 	})
 	// }
-
+	
 	function saveHeader(callback){
-		//let oper = $("#save").data('oper', 'add');
+		// let oper = $("#save").data('oper', 'use_till');
 		var saveParam={
-			action:'use_till',
+			action:'save_till',
 			oper:$("#save").data('oper')
 		}
 		
@@ -79,6 +79,7 @@ $(document).ready(function () {
 		
 		var postobj={
 			_token : $('#_token').val(),
+			tillcode : $('#tillcode').val(),
 		};
 		
 		$.post( './till/form?'+$.param(saveParam),  $.param(postobj), function( data ) {
@@ -89,17 +90,17 @@ $(document).ready(function () {
 			callback(data);
 		});
 	}
-
+	
 	$("#save").click(function(){
-        if( $('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
-            saveHeader(function(data){
-                disableForm('#ctformdata');
-            });
-        }else{
-            enableForm('#ctformdata');
-            rdonly('#ctformdata');
-        }
-    });
+		if( $('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader(function(data){
+				disableForm('#ctformdata');
+			});
+		}else{
+			enableForm('#ctformdata');
+			rdonly('#ctformdata');
+		}
+	});
 
 });
 
