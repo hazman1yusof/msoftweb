@@ -141,7 +141,7 @@ class TillController extends defaultController
             case 'save_till':
                 switch($request->oper){
                     case 'use_till':
-                        return $this->use_till($request);
+                        return $this->use_till($request);break;
                     default:
                         return 'error happen..';
                 }
