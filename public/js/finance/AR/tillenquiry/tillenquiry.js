@@ -110,6 +110,7 @@ $(document).ready(function () {
 			urlParamTillDetl.tillno=selrowData("#jqGrid").tillno;
 			refreshGrid("#jqGridTillDetl",urlParamTillDetl);
 			populate_summary();
+			$("#pdfgen1").attr('href','./tillenquiry/showpdf?tillno='+selrowData("#jqGrid").tillno+'&tillcode='+selrowData("#jqGrid").tillcode);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
