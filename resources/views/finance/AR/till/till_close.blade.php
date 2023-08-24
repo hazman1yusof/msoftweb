@@ -4,6 +4,7 @@
 
 @section('body')
 <form class='form-horizontal' style='width:99%' id='ctformdata'>
+<input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
 	<div class="panel panel-default" style="margin:20px">
 	    <div class="panel-heading">Close Till</div>
 			<div class="panel-body">

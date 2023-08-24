@@ -1,5 +1,5 @@
-// $.jgrid.defaults.responsive = true;
-// $.jgrid.defaults.styleUI = 'Bootstrap';
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	calc_cash_bal();
@@ -16,62 +16,90 @@ $(document).ready(function () {
 
 	});
 
+	/////////////////////////////////////////validation//////////////////////////
+	$.validate({
+		modules: 'logic',
+		language: {
+			requiredFields: ''
+		},
+	});
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			if(errorField.length>0){
-				show_errors(errorField,'#ctformdata');
-				return [{
-					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
-					message : ''
-				}];
+			if (errorField.length > 0) {
+				return {
+					element: $(errorField[0]),
+					message: ''
+				}
 			}
 		},
 	};
 	/////////////////////////////////save close till//////////////////////////////////////////////////////////
-	var saveParam = {
-		action: 'use_till',
-		url:'./till/form',
-		field: '',
-		//oper: 'use_till',
-		fixPost: true,
-	}
+	
+	// var saveParam = {
+	// 	action: 'use_till',
+	// 	url:'./till/form',
+	// 	field: '',
+	// 	oper: 'use_till',
+	// 	table_name:'debtor.tilldetl',
+	// 	table_id:'tillcode',
+	// }
 
-	function saveHeader(form, selfoper, saveParam, obj) {
-		if (obj == null) {
-			obj = {};
+	// function saveHeader(form, oper, saveParam, obj) {
+	// 	if (obj == null) {
+	// 		obj = {};
+	// 	}
+	// 	saveParam.oper = oper();
+
+	// 	$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(obj) , function( data ) {
+	// 		},'json')
+	// 	.fail(function (data) {
+	// 		alert(data.responseText);
+	// 	}).done(function (data) {
+	// 		unsaved = false;
+
+	// 	})
+	// }
+
+	function saveHeader(callback){
+		//let oper = $("#save").data('oper', 'add');
+		var saveParam={
+			action:'use_till',
+			oper:$("#save").data('oper')
 		}
-		saveParam.oper = selfoper;
-
-		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-			},'json')
-		.fail(function (data) {
-			$('.noti').text(data.responseText);
-		}).done(function (data) {
-			unsaved = false;
-
-			if (selfoper == 'use_till') {
-				oper = 'use_till';
-				$('#tillcode').val(data.tillcode);
-				$('#ActCloseBal').val(data.ActCloseBal);
-
-			} else if (selfoper == 'edit') {
-				//doesnt need to do anything
-			}
-		})
+		
+		// if(oper == 'use_till'){
+		// 	saveParam.tillcode = $('#tillcode').val();
+		// }else if(oper == 'edit'){
+		// 	saveParam.tillcode = $('#tillcode').val();
+		// }else{
+		// 	return;
+		// }
+		
+		var postobj={
+			_token : $('#_token').val(),
+		};
+		
+		$.post( './till/form?'+$.param(saveParam),  $.param(postobj), function( data ) {
+			
+		},'json').done(function(data) {
+			callback(data);
+		}).fail(function(data){
+			callback(data);
+		});
 	}
 
 	$("#save").click(function(){
-		unsaved = false;
-		// mycurrency.formatOff();
-		// mycurrency.check0value(errorField);
-		if($('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#ctformdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
-			unsaved = false;
-		}else{
-			//mycurrency.formatOn();
-		}
-	});
+        if( $('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
+            saveHeader(function(data){
+                disableForm('#ctformdata');
+            });
+        }else{
+            enableForm('#ctformdata');
+            rdonly('#ctformdata');
+        }
+    });
 
 });
 

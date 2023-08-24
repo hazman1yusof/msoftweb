@@ -153,11 +153,13 @@ class TillController extends defaultController
 
     public function use_till(Request $request){
         DB::beginTransaction();
+
         try {
 
             //$tillno = $this->defaultSysparam('AR','TN');
 
             DB::table('debtor.till')
+                ->where('compcode',session('compcode'))
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
                     'compcode' => session('compcode'), 
@@ -169,7 +171,10 @@ class TillController extends defaultController
                 ]);
 
             DB::table('debtor.tilldetl')
-                ->insert([
+                ->where('compcode',session('compcode'))
+                ->where('cashier',$request->lastuser)
+                ->where('closedate',$request->closedate)
+                ->update([
                     'compcode' => session('compcode'), 
                     'tillcode' => $request->tillcode,
                    // 'tillno' => $tillno,
@@ -179,7 +184,7 @@ class TillController extends defaultController
                     'closedate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'closetime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-
+dd($request->tillcode);
              DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
