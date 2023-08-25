@@ -79,7 +79,10 @@ $(document).ready(function () {
 		
 		var postobj={
 			_token : $('#_token').val(),
+			tillno : $('#tillno').val(),
 			tillcode : $('#tillcode').val(),
+			actclosebal : $('#actclosebal').val(),
+			reason : $('#reason').val(),
 		};
 		
 		$.post( './till/form?'+$.param(saveParam),  $.param(postobj), function( data ) {
@@ -91,10 +94,55 @@ $(document).ready(function () {
 		});
 	}
 	
+	function getdata_till(){
+		var urlparam={
+			action:'get_table_till',
+		}
+		
+		var postobj={
+			_token : $('#_token').val(),
+			tillno : $('#tillno').val(),
+			tillcode : $('#tillcode').val(),
+		};
+		
+		$.post( "./till/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+			
+		},'json').fail(function(data) {
+			alert('there is an error');
+		}).done(function(data){
+			if(!$.isEmptyObject(data)){
+				autoinsert_rowdata("#ctformdata",data.till);
+				autoinsert_rowdata("#ctformdata",data.tilldetl);
+			}
+		});
+	}
+	
+	function autoinsert_rowdata(form,rowData){
+		$.each(rowData, function( index, value ) {
+			var input=$(form+" [name='"+index+"']");
+			if(input.is("[type=radio]")){
+				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+			}else if(input.is("[type=checkbox]")){
+				if(value==1){
+					$(form+" [name='"+index+"']").prop('checked', true);
+				}
+			}else if(input.is("textarea")){
+				if(value !== null){
+					let newval = value.replaceAll("</br>",'\n');
+					input.val(newval);
+				}
+			}else{
+				input.val(value);
+			}
+		});
+	}
+	
 	$("#save").click(function(){
 		if( $('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
 			saveHeader(function(data){
 				disableForm('#ctformdata');
+				$('#save').attr('disabled',true);
+				getdata_till();
 			});
 		}else{
 			enableForm('#ctformdata');
@@ -127,14 +175,14 @@ function calc_grandtotal(){
 
 	var grandtotal = totalrm100+totalrm50+totalrm20+totalrm10+totalrm5+totalrm1+totalcents;
 	$('input[name=grandTotal]').val(parseFloat(grandtotal).toFixed(2));
-	$('#ActCloseBal').val(parseFloat(grandtotal).toFixed(2));
+	$('#actclosebal').val(parseFloat(grandtotal).toFixed(2));
 
 	calc_discrepancy();
 }
 
 function calc_discrepancy(){
 	let close_bal = parseFloat($('#cashBal').val());
-	let act_bal = parseFloat($('#ActCloseBal').val());
+	let act_bal = parseFloat($('#actclosebal').val());
 	let disc = act_bal - close_bal;
 
 	$('#discrepancy').val(parseFloat(disc).toFixed(2));

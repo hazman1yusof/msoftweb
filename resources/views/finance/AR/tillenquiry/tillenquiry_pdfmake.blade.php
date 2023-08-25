@@ -160,7 +160,7 @@
                         },
                         layout: 'lightHorizontalLines',
                     },
-                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
+                    { canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ] },
                     {
                         style: 'tableExample',
                         table: {
