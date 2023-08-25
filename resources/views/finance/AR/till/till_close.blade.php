@@ -4,6 +4,7 @@
 
 @section('body')
 <form class='form-horizontal' style='width:99%' id='ctformdata'>
+<input id="_token" name="_token" value="{{ csrf_token() }}" type="hidden">
 	<div class="panel panel-default" style="margin:20px">
 	    <div class="panel-heading">Close Till</div>
 			<div class="panel-body">
@@ -22,7 +23,7 @@
 									</div>
 									<span class="help-block"></span>
 								</div> -->
-								
+								<input id="tillno" name="tillno" type="hidden" value="@if (!empty($till)){{$tilldetl->tillno}}@endif" readonly>
 								<div class='col-md-2'>
 									<label>Till Code: </label><input id="tillcode" name="tillcode" type="text" class="form-control input-sm" value="@if (!empty($till)){{$till->tillcode}}@endif" readonly>
 								</div>
@@ -285,9 +286,9 @@
 
 						<div class="panel-body">
 							<div class="form-group">
-								<label class="col-md-2 control-label" for="ActCloseBal">Actual Closing<br>Balance</label>  
+								<label class="col-md-2 control-label" for="actclosebal">Actual Closing<br>Balance</label>  
 									<div class="col-md-3">
-										<input id="ActCloseBal" name="ActCloseBal" type="text" class="form-control input-sm" value="0.00">
+										<input id="actclosebal" name="actclosebal" type="text" class="form-control input-sm" value="0.00">
 								</div>
 
 								<label class="col-md-2 control-label" for="discrepancy">Discrepancy</label>  
@@ -307,7 +308,7 @@
 								<!-- <button type="button" id='save' class='btn btn-info sm pull-right' style="margin: 0.2%;">Save</button>
 								<button type="button" id='cancel' class='btn btn-info sm pull-right' style="margin: 0.2%;">Cancel</button>
 							 -->
-							 <button type="button" id='save' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
+							<button type="button" id='save' data-oper='use_till' class='btn btn-info btn-sm pull-right' style='margin: 0.2%;'>Save</button>
 
 						</div>
 					</div>

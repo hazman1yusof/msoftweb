@@ -121,8 +121,8 @@ class TillController extends defaultController
     }
 
     public function form(Request $request)
-    {   
-
+    {
+        
         switch($request->action){
             case 'default':
                 switch($request->oper){
@@ -132,12 +132,22 @@ class TillController extends defaultController
                         return $this->edit($request);break;
                     case 'del':
                         return $this->del($request);break;
+                    // case 'use_till':
+                    //     return $this->use_till($request);break;
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_till':
+                switch($request->oper){
                     case 'use_till':
                         return $this->use_till($request);break;
                     default:
                         return 'error happen..';
                 }
-           
+            
+            case 'get_table_till':
+                return $this->get_table_till($request);
         }
     }
 
@@ -150,42 +160,79 @@ class TillController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function use_till(Request $request){
+        
         DB::beginTransaction();
+        
         try {
-
-            //$tillno = $this->defaultSysparam('AR','TN');
-
+            
+            // dd($request->actclosebal);
+            
+            // $tillno = $this->defaultSysparam('AR','TN');
+            
             DB::table('debtor.till')
+                ->where('compcode',session('compcode'))
                 ->where('tillcode','=',$request->tillcode)
                 ->update([
-                    'compcode' => session('compcode'), 
-                    'tillstatus' => 'C', 
-                    //'dept' => auth()->user()->dept,
-                    'lastuser' => session('username'),
+                    'tillstatus' => 'C',
+                    // 'dept' => auth()->user()->dept,
+                    // 'lastuser' => session('username'),
                     'upduser' => session('username'),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-
+        
             DB::table('debtor.tilldetl')
-                ->insert([
-                    'compcode' => session('compcode'), 
-                    'tillcode' => $request->tillcode,
-                   // 'tillno' => $tillno,
+                ->where('compcode',session('compcode'))
+                ->where('tillno',$request->tillno)
+                ->where('tillcode',$request->tillcode)
+                // ->where('closedate',$request->closedate)
+                ->update([
+                    // 'tillno' => $tillno,
                     'actclosebal' => $request->actclosebal,
                     'reason' => $request->reason,
-                    'cashier' => session('username'),
+                    // 'cashier' => session('username'),
                     'closedate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'closetime' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
-
-             DB::commit();
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
+    }
+    
+    public function get_table_till(Request $request){
+        
+        $till_obj = DB::table('debtor.till')
+                ->where('compcode','=',session('compcode'))
+                ->where('tillcode','=',$request->tillcode);
+        
+        $tilldetl_obj = DB::table('debtor.tilldetl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('tillno','=',$request->tillno)
+                    ->where('tillcode','=',$request->tillcode);
+        
+        $responce = new stdClass();
+        
+        if($till_obj->exists()){
+            $till_obj = $till_obj->first();
+            $responce->till = $till_obj;
+        }
+        
+        if($tilldetl_obj->exists()){
+            $tilldetl_obj = $tilldetl_obj->first();
+            $responce->tilldetl = $tilldetl_obj;
+        }
+        
+        return json_encode($responce);
+        
     }
 
     public function add(Request $request){

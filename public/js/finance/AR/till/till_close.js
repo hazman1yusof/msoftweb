@@ -1,5 +1,5 @@
-// $.jgrid.defaults.responsive = true;
-// $.jgrid.defaults.styleUI = 'Bootstrap';
+$.jgrid.defaults.responsive = true;
+$.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	calc_cash_bal();
@@ -16,60 +16,137 @@ $(document).ready(function () {
 
 	});
 
+	/////////////////////////////////////////validation//////////////////////////
+	$.validate({
+		modules: 'logic',
+		language: {
+			requiredFields: ''
+		},
+	});
+
 	var errorField=[];
 	conf = {
 		onValidate : function($form) {
-			if(errorField.length>0){
-				show_errors(errorField,'#ctformdata');
-				return [{
-					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
-					message : ''
-				}];
+			if (errorField.length > 0) {
+				return {
+					element: $(errorField[0]),
+					message: ''
+				}
 			}
 		},
 	};
 	/////////////////////////////////save close till//////////////////////////////////////////////////////////
-	var saveParam = {
-		action: 'use_till',
-		url:'./till/form',
-		field: '',
-		//oper: 'use_till',
-		fixPost: true,
-	}
+	
+	// var saveParam = {
+	// 	action: 'use_till',
+	// 	url:'./till/form',
+	// 	field: '',
+	// 	oper: 'use_till',
+	// 	table_name:'debtor.tilldetl',
+	// 	table_id:'tillcode',
+	// }
 
-	function saveHeader(form, selfoper, saveParam, obj) {
-		if (obj == null) {
-			obj = {};
+	// function saveHeader(form, oper, saveParam, obj) {
+	// 	if (obj == null) {
+	// 		obj = {};
+	// 	}
+	// 	saveParam.oper = oper();
+
+	// 	$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(obj) , function( data ) {
+	// 		},'json')
+	// 	.fail(function (data) {
+	// 		alert(data.responseText);
+	// 	}).done(function (data) {
+	// 		unsaved = false;
+
+	// 	})
+	// }
+	
+	function saveHeader(callback){
+		// let oper = $("#save").data('oper', 'use_till');
+		var saveParam={
+			action:'save_till',
+			oper:$("#save").data('oper')
 		}
-		saveParam.oper = selfoper;
-
-		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-			},'json')
-		.fail(function (data) {
-			$('.noti').text(data.responseText);
-		}).done(function (data) {
-			unsaved = false;
-
-			if (selfoper == 'use_till') {
-				oper = 'use_till';
-				$('#tillcode').val(data.tillcode);
-				$('#ActCloseBal').val(data.ActCloseBal);
-
-			} else if (selfoper == 'edit') {
-				//doesnt need to do anything
-			}
-		})
+		
+		// if(oper == 'use_till'){
+		// 	saveParam.tillcode = $('#tillcode').val();
+		// }else if(oper == 'edit'){
+		// 	saveParam.tillcode = $('#tillcode').val();
+		// }else{
+		// 	return;
+		// }
+		
+		var postobj={
+			_token : $('#_token').val(),
+			tillno : $('#tillno').val(),
+			tillcode : $('#tillcode').val(),
+			actclosebal : $('#actclosebal').val(),
+			reason : $('#reason').val(),
+		};
+		
+		$.post( './till/form?'+$.param(saveParam),  $.param(postobj), function( data ) {
+			
+		},'json').done(function(data) {
+			callback(data);
+		}).fail(function(data){
+			callback(data);
+		});
 	}
-
+	
+	function getdata_till(){
+		var urlparam={
+			action:'get_table_till',
+		}
+		
+		var postobj={
+			_token : $('#_token').val(),
+			tillno : $('#tillno').val(),
+			tillcode : $('#tillcode').val(),
+		};
+		
+		$.post( "./till/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+			
+		},'json').fail(function(data) {
+			alert('there is an error');
+		}).done(function(data){
+			if(!$.isEmptyObject(data)){
+				autoinsert_rowdata("#ctformdata",data.till);
+				autoinsert_rowdata("#ctformdata",data.tilldetl);
+			}
+		});
+	}
+	
+	function autoinsert_rowdata(form,rowData){
+		$.each(rowData, function( index, value ) {
+			var input=$(form+" [name='"+index+"']");
+			if(input.is("[type=radio]")){
+				$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+			}else if(input.is("[type=checkbox]")){
+				if(value==1){
+					$(form+" [name='"+index+"']").prop('checked', true);
+				}
+			}else if(input.is("textarea")){
+				if(value !== null){
+					let newval = value.replaceAll("</br>",'\n');
+					input.val(newval);
+				}
+			}else{
+				input.val(value);
+			}
+		});
+	}
+	
 	$("#save").click(function(){
-		unsaved = false;
-		// mycurrency.formatOff();
-		// mycurrency.check0value(errorField);
-		if($('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
-			saveHeader("#ctformdata", oper,saveParam,{idno:$('#idno').val()},'refreshGrid');
-			unsaved = false;
+		if( $('#ctformdata').isValid({requiredFields: ''}, conf, true) ) {
+			saveHeader(function(data){
+				disableForm('#ctformdata');
+				$('#save').attr('disabled',true);
+				getdata_till();
+			});
 		}else{
-			//mycurrency.formatOn();
+			enableForm('#ctformdata');
+			rdonly('#ctformdata');
 		}
 	});
 
@@ -98,14 +175,14 @@ function calc_grandtotal(){
 
 	var grandtotal = totalrm100+totalrm50+totalrm20+totalrm10+totalrm5+totalrm1+totalcents;
 	$('input[name=grandTotal]').val(parseFloat(grandtotal).toFixed(2));
-	$('#ActCloseBal').val(parseFloat(grandtotal).toFixed(2));
+	$('#actclosebal').val(parseFloat(grandtotal).toFixed(2));
 
 	calc_discrepancy();
 }
 
 function calc_discrepancy(){
 	let close_bal = parseFloat($('#cashBal').val());
-	let act_bal = parseFloat($('#ActCloseBal').val());
+	let act_bal = parseFloat($('#actclosebal').val());
 	let disc = act_bal - close_bal;
 
 	$('#discrepancy').val(parseFloat(disc).toFixed(2));

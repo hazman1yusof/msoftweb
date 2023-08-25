@@ -813,6 +813,7 @@ Route::get('/tillenquiry','finance\TillEnquiryController@show');
 Route::get('/tillenquiry/table','finance\TillEnquiryController@table');
 Route::post('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
+Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 

@@ -268,4 +268,138 @@ class TillEnquiryController extends defaultController
         
     }
     
+    public function showpdf(Request $request){
+        
+        $tillno = $request->tillno;
+        $tillcode = $request->tillcode;
+        if(!$tillno){
+            abort(404);
+        }
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
+                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
+                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                ->where('dm.compcode', '=', session('compcode'));
+                })
+                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                ->where('dt.compcode', '=', session('compcode'));
+                })
+                ->where('dh.compcode','=',session('compcode'))
+                // ->where('dh.trantype','=','RC')
+                ->where('dh.tillno','=',$request->tillno)
+                ->get();
+        
+        $totalAmount = $dbacthdr->sum('amount');
+        
+        $db_dbacthdr = DB::table('debtor.dbacthdr as db')
+                    ->where('db.compcode',session('compcode'))
+                    ->where('db.tillcode',$request->tillcode)
+                    ->where('db.tillno',$request->tillno)
+                    // ->where('db.hdrtype','A')
+                    ->join('debtor.paymode as pm', function($join) use ($request){
+                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                    ->where('pm.source','AR')
+                                    ->where('pm.compcode',session('compcode'));
+                    });
+        
+        if($db_dbacthdr->exists()){
+            $sum_cash = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->join('debtor.paymode as pm', function($join) use ($request){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                        ->where('pm.source','AR')
+                                        ->where('pm.paytype','CASH')
+                                        ->where('pm.compcode',session('compcode'));
+                        })
+                        ->sum('amount');
+            
+            $sum_chq = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->join('debtor.paymode as pm', function($join) use ($request){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                        ->where('pm.source','AR')
+                                        ->where('pm.paytype','CHEQUE')
+                                        ->where('pm.compcode',session('compcode'));
+                        })
+                        ->sum('amount');
+            
+            $sum_card = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->join('debtor.paymode as pm', function($join) use ($request){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                        ->where('pm.source','AR')
+                                        ->where('pm.paytype','CARD')
+                                        ->where('pm.compcode',session('compcode'));
+                        })
+                        ->sum('amount');
+            
+            $sum_bank = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->join('debtor.paymode as pm', function($join) use ($request){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                        ->where('pm.source','AR')
+                                        ->where('pm.paytype','BANK')
+                                        ->where('pm.compcode',session('compcode'));
+                        })
+                        ->sum('amount');
+            
+            $sum_all = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->sum('amount');
+        }
+        
+        // if ($dbacthdr->recstatus == "ACTIVE") {
+        //     $title = "DRAFT";
+        // } elseif ($dbacthdr->recstatus == "POSTED"){
+        //     $title = "RECEIPT";
+        // }
+        
+        $title = "TILL ENQUIRY";
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        $totamount_expld = explode(".", (float)$totalAmount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        return view('finance.AR.tillenquiry.tillenquiry_pdfmake',compact('dbacthdr','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','title','company','totamt_eng'));
+        
+        // if(empty($request->type)){
+        //     $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        //     return $pdf->stream();
+        //     return view('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        // } else {
+        //     return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        // }
+        
+    }
+    
 }

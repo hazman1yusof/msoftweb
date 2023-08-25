@@ -1992,8 +1992,8 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.action = 'get_itemcode_uom';
 				dialog_uomcode.urlParam.url_chk = "./SalesOrderDetail/table";
 				dialog_uomcode.urlParam.action_chk = "get_itemcode_uom_check";
-				dialog_uomcode.urlParam.filterCol = ['chgcode','price'];
-				dialog_uomcode.urlParam.filterVal = [$("#jqGrid2 #"+id_optid+"_chggroup").val(),$('#pricebilltype').val()];
+				dialog_uomcode.urlParam.filterCol = [];
+				dialog_uomcode.urlParam.filterVal = [];
 				dialog_uomcode.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_uomcode.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
 				dialog_uomcode.urlParam.deptcode = $('#db_deptcode').val();
