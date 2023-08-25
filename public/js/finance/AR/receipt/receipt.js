@@ -764,16 +764,12 @@ $(document).ready(function () {
 					rdonly('#formdata');
 					rdonly(tabform);
 					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata');
-					frozeOnEdit("#dialogForm");
-					rdonly('#formdata');
-					break;
 				case state = 'view':
 					mycurrency.formatOn();
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
+					disableForm('.tab-content');
+					rdonly('#formdata');
 					disableForm(selrowData('#jqGrid').dbacthdr_paytype);
 					$(this).dialog("option", "buttons",butt2);
 
@@ -984,7 +980,7 @@ $(document).ready(function () {
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
 			if(selform!=''){
 				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
-				// disabledPill();
+				disabledPill();
 				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view',['dbacthdr_expdate']);
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
