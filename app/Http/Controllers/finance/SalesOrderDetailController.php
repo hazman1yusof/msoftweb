@@ -1076,6 +1076,16 @@ class SalesOrderDetailController extends defaultController
                         $this->delivdspdt($billsum_lama,$dbacthdr);
                     }
 
+                    $billsum_lama = DB::table('debtor.billsum')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$source)
+                            ->where('trantype','=',$trantype)
+                            ->where('billno','=',$auditno)
+                            ->where('rowno','=',$value['rowno'])
+                            ->first();
+
+                    $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
+
                     DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$source)
@@ -1104,6 +1114,19 @@ class SalesOrderDetailController extends defaultController
                 }else{
 
                     $edit_lain_chggroup = false;
+
+                    //pindah yang lama ke billsumlog sebelum update
+                    //recstatus->update
+
+                    $billsum_lama = DB::table('debtor.billsum')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('source','=',$source)
+                            ->where('trantype','=',$trantype)
+                            ->where('billno','=',$auditno)
+                            ->where('rowno','=',$value['rowno'])
+                            ->first();
+
+                    $this->sysdb_log('update',$billsum_lama,'sysdb.billsumlog');
 
                     DB::table('debtor.billsum')
                             ->where('compcode','=',session('compcode'))
@@ -1247,12 +1270,20 @@ class SalesOrderDetailController extends defaultController
                 $this->delgltran($billsum_obj,$dbacthdr);
             }
 
-            $billsum->update([
-                        'recstatus' => 'DELETE',
-                        'quantity' => 0,
-                        'lastuser' => session('username'), 
-                        'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+            //pindah yang lama ke billsumlog sebelum update
+            //recstatus->delete
+
+            $billsum_lama = DB::table('debtor.billsum')
+                            ->where('compcode',session('compcode'))
+                            ->where('idno','=',$idno)
+                            ->first();
+
+            $this->sysdb_log('delete',$billsum_lama,'sysdb.billsumlog');
+
+            DB::table('debtor.billsum')
+                    ->where('compcode',session('compcode'))
+                    ->where('idno','=',$idno)
+                    ->delete();
 
             ///3. calculate total amount from detail
             $totalAmount = DB::table('debtor.billsum')
@@ -1505,6 +1536,15 @@ class SalesOrderDetailController extends defaultController
             'updtime' => Carbon::now("Asia/Kuala_Lumpur")
         ];
 
+        // pindah ke ivdspdtlog
+        // recstatus->update
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$billsum_obj->auditno)
+                        ->first();
+
+        $this->sysdb_log('update',$ivdspdt_lama,'sysdb.ivdspdtlog');
+
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$billsum_obj->auditno)
@@ -1660,6 +1700,15 @@ class SalesOrderDetailController extends defaultController
                 ->where('auditno','=',$billsum_obj->auditno)
                 ->delete();
         }
+
+        // pindah ke ivdspdtlog
+        // recstatus->delete
+        $ivdspdt_lama = DB::table('material.ivdspdt')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$billsum_obj->auditno)
+                        ->first();
+
+        $this->sysdb_log('delete',$ivdspdt_lama,'sysdb.ivdspdtlog');
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
@@ -2209,6 +2258,14 @@ class SalesOrderDetailController extends defaultController
             }
         }
         return $billtype_amt_percent;
+    }
+
+    public function sysdb_log($oper,$array,$log_table){
+        $array_lama = (array)$array;
+        $array_lama['logstatus'] = $oper;
+
+        DB::table($log_table)
+                ->insert($array_lama);
     }
 
 }

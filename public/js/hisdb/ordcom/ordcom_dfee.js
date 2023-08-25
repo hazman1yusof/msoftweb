@@ -85,6 +85,8 @@ $(document).ready(function(){
 			{ label: 'Total<br>Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},{
+				label: 'Note', name: 'remarks', width: 220, classes: 'wrap', editable: true,edittype: 'textarea',editoptions: {rows:"4"}
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
@@ -112,6 +114,9 @@ $(document).ready(function(){
 			myfail_msg_dfee.clear_fail;
 		},
 		afterShowForm: function (rowid) {
+		},
+		ondblClickRow: function(rowId) {
+			$('#jqGrid_dfee_iledit').click();
 		}
     });
 	

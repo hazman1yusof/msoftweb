@@ -1829,8 +1829,8 @@ $(document).ready(function () {
 					billtype : $('#db_hdrtype').val(),
 					deptcode : $('#db_deptcode').val(),
 					price : $('#pricebilltype').val(),
-					filterCol:['deptcode','price'],
-					filterVal:[$('#db_deptcode').val(),$('#pricebilltype').val()]
+					filterCol:[],
+					filterVal:[]
 				},
 			ondblClickRow:function(event){
 				if(event.type == 'keydown'){
@@ -1928,8 +1928,8 @@ $(document).ready(function () {
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
 				dialog_chggroup.urlParam.url_chk = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action_chk = "get_itemcode_price_check";
-				dialog_chggroup.urlParam.filterCol = ['deptcode','price'];
-				dialog_chggroup.urlParam.filterVal = [$('#db_deptcode').val(),$('#pricebilltype').val()];
+				dialog_chggroup.urlParam.filterCol = [];
+				dialog_chggroup.urlParam.filterVal = [];
 				dialog_chggroup.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_chggroup.urlParam.billtype = $('#db_hdrtype').val();
 				dialog_chggroup.urlParam.deptcode = $('#db_deptcode').val();

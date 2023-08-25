@@ -143,6 +143,9 @@ $(document).ready(function(){
 			myfail_msg_phar.clear_fail;
 		},
 		afterShowForm: function (rowid) {
+		},
+		ondblClickRow: function(rowId) {
+			$('#jqGrid_phar_iledit').click();
 		}
     });
 	
@@ -251,7 +254,7 @@ var myEditOptions_phar = {
 		$("#jqGrid_phar input[name='chgcode']").focus();
 	},
 	aftersavefunc: function (rowid, response, options) {
-    	//state true maksudnyer ada isi, tak kosong
+		calc_jq_height_onchange("jqGrid_phar",true);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
@@ -297,6 +300,7 @@ var myEditOptions_phar = {
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_phar')[0]);
 		// }, 500 );
 		calc_jq_height_onchange("jqGrid_phar",true);
+		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     },
     errorTextFormat: function (data) {
     	alert(data);
@@ -1095,6 +1099,8 @@ function deptcodeCustomEdit_phar(val,opt){
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
 function remarkCustomEdit_phar(val,opt){
+	console.log(selrowData('#jqGrid_phar'));
+	console.log(opt);
 	var myreturn = `<label>Dose</label><div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="dosage" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
 	myreturn += `<label>Frequency</label><div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="frequency" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
 	myreturn += `<label>Instruction</label><div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="instruction" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;

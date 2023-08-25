@@ -1803,7 +1803,7 @@ function faster_detail_load(){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows)){
+					if(!$.isEmptyObject(data.rows) && data.rows.length>0){
 						$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0][desc_name]+"</span>");
 
 						let desc = data.rows[0][desc_name];

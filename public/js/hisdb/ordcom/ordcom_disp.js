@@ -77,7 +77,7 @@ $(document).ready(function(){
 				label: 'Cost Price', name: 'cost_price', width: 100, classes: 'wrap txnum', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
-				editrules: { required: true },editoptions:{readonly: "readonly"}
+				editrules: { required: false },editoptions:{readonly: "readonly"}
 			},
 			{
 				label: 'Unit Price', name: 'unitprce', width: 100, classes: 'wrap txnum', align: 'right',
@@ -109,13 +109,7 @@ $(document).ready(function(){
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},{
-				label: 'Dosage', name: 'remark', width: 200, classes: 'wrap', editable: true,
-				editrules: { custom: true, custom_func: cust_rules_disp },formatter:remark_formatter,unformat:remark_unformatter,
-				edittype: 'custom', editoptions:
-				{
-					custom_element: remarkCustomEdit_disp,
-					custom_value: galGridCustomValue_disp
-				},
+				label: 'Note', name: 'remarks', width: 220, classes: 'wrap', editable: true,edittype: 'textarea',editoptions: {rows:"4"}
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
@@ -143,6 +137,9 @@ $(document).ready(function(){
 			myfail_msg_disp.clear_fail;
 		},
 		afterShowForm: function (rowid) {
+		},
+		ondblClickRow: function(rowId) {
+			$('#jqGrid_disp_iledit').click();
 		}
     });
 	
