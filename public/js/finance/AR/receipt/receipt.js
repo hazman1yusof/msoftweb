@@ -670,7 +670,6 @@ $(document).ready(function () {
 				if (callback !== undefined) {
 					callback();
 				}
-				$("#allocateDialog").dialog('open');
 			}
 		});
 	}
@@ -682,6 +681,9 @@ $(document).ready(function () {
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata_receipt("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
+				//$("#refresh_jqGrid").click();
+				//refreshGrid("#jqGrid",urlParam);
+				$("#allocate").click();
 			}else{
 				mycurrency.formatOn();
 			}
@@ -1195,6 +1197,7 @@ $(document).ready(function () {
 			$('#AlloTotal').val(0);
 			$('#AlloAuditno').val(selrowData(grid).dbacthdr_auditno);
 			urlParamAllo.filterVal[0]=selrowData(grid).dbacthdr_payercode;
+			console.log(selrowData(grid).dbacthdr_auditno);
 			refreshGrid("#gridAllo",urlParamAllo);
 			parent_close_disabled(true);
 			myallocation.renewAllo(selrowData(grid).dbacthdr_outamount);
@@ -1312,7 +1315,7 @@ $(document).ready(function () {
 			calc_jq_height_onchange("gridAllo");
 		},
 	});
-	
+
 	AlloSearch("#gridAllo",urlParamAllo);
 	function AlloSearch(grid,urlParam){
 		$("#alloText").on( "keyup", function() {
@@ -1474,6 +1477,7 @@ $(document).ready(function () {
 		},
 	})
 
+	
 	$('#allocate').click(function(){
 		$( "#allocateDialog" ).dialog( "open" );
 	});
