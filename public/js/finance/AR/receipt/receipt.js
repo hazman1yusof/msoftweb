@@ -56,11 +56,13 @@ $(document).ready(function () {
 	function disabledPill(){
 		$('.nav li').not('.active').addClass('disabled');
 		$('.nav li').not('.active').find('a').removeAttr("data-toggle");
+		$('.nav li').not('.active').hide();
 	}
 
 	function enabledPill(){
 		$('.nav li').removeClass('disabled');
 		$('.nav li').find('a').attr("data-toggle","tab");
+		$('.nav li').show();
 	}
 
 	///////////////////  for handling amount based on trantype/////////////////////////
@@ -929,8 +931,9 @@ $(document).ready(function () {
 			if(oper == 'add'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
-
+			
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			enabledPill();
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");

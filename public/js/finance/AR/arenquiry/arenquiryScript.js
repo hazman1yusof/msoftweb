@@ -480,7 +480,7 @@ $(document).ready(function () {
 			$('#docno_show').text(selrowData("#jqGrid").db_recptno);
 			$('#amount_show').text(selrowData("#jqGrid").db_amount);
 			$('#outamount_show').text(selrowData("#jqGrid").db_outamount);
-
+			
 			$('#jqGrid3_CN_c,#jqGrid3_DN_c,#jqGrid3_IN_c').hide();
 			
 			if(selrowData("#jqGrid").db_trantype=='CN'){	//CN
@@ -531,6 +531,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);	// highlight 1st record
+			enabledPill();
 			
 			if($('#jqGrid').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
@@ -2151,39 +2152,41 @@ dialog_payercode.makedialog(true);
 
 function populateform_rc(idno){
 	var param={
-			action:'populate_rc',
-			url:'./arenquiry/table',
-			field:['dbacthdr_compcode','dbacthdr_auditno','dbacthdr_lineno_','dbacthdr_billdebtor','dbacthdr_conversion','dbacthdr_hdrtype','dbacthdr_currency','dbacthdr_tillcode','dbacthdr_tillno','dbacthdr_debtortype','dbacthdr_adddate','dbacthdr_PymtDescription','dbacthdr_recptno','dbacthdr_entrydate','dbacthdr_entrytime','dbacthdr_entryuser','dbacthdr_payercode','dbacthdr_payername','dbacthdr_mrn','dbacthdr_episno','dbacthdr_remark','dbacthdr_authno','dbacthdr_epistype','dbacthdr_cbflag','dbacthdr_reference','dbacthdr_paymode','dbacthdr_amount','dbacthdr_outamount','dbacthdr_source','dbacthdr_trantype','dbacthdr_recstatus','dbacthdr_bankcharges','dbacthdr_expdate','dbacthdr_rate','dbacthdr_unit','dbacthdr_invno','dbacthdr_paytype','dbacthdr_RCCASHbalance','dbacthdr_RCFinalbalance','dbacthdr_RCOSbalance','dbacthdr_idno'],
-			idno:idno,
+		action:'populate_rc',
+		url:'./arenquiry/table',
+		field:['dbacthdr_compcode','dbacthdr_auditno','dbacthdr_lineno_','dbacthdr_billdebtor','dbacthdr_conversion','dbacthdr_hdrtype','dbacthdr_currency','dbacthdr_tillcode','dbacthdr_tillno','dbacthdr_debtortype','dbacthdr_adddate','dbacthdr_PymtDescription','dbacthdr_recptno','dbacthdr_entrydate','dbacthdr_entrytime','dbacthdr_entryuser','dbacthdr_payercode','dbacthdr_payername','dbacthdr_mrn','dbacthdr_episno','dbacthdr_remark','dbacthdr_authno','dbacthdr_epistype','dbacthdr_cbflag','dbacthdr_reference','dbacthdr_paymode','dbacthdr_amount','dbacthdr_outamount','dbacthdr_source','dbacthdr_trantype','dbacthdr_recstatus','dbacthdr_bankcharges','dbacthdr_expdate','dbacthdr_rate','dbacthdr_unit','dbacthdr_invno','dbacthdr_paytype','dbacthdr_RCCASHbalance','dbacthdr_RCFinalbalance','dbacthdr_RCOSbalance','dbacthdr_idno','paycard_description','paybank_description'],
+		idno:idno,
+	}
+	
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data.rows)){
+			$.each(data.rows, function( index, value ) {
+				var input=$("#dialogForm_RC [name='"+index+"']");
+				if(input.is("[type=radio]")){
+					$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+				}else{
+					input.val(value);
+				}
+			});
+			$(".nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
+			dialog_payercode.check('errorField');
+			disabledPill();
 		}
-
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data.rows)){
-				$.each(data.rows, function( index, value ) {
-					var input=$("#dialogForm_RC [name='"+index+"']");
-					if(input.is("[type=radio]")){
-						$(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-					}else{
-						input.val(value);
-					}
-				});
-				$(".nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
-				dialog_payercode.check('errorField');
-				disabledPill();
-			}
-		});
+	});
 }
 
 function disabledPill(){
 	$('#dialogForm_RC .nav li').not('.active').addClass('disabled');
 	$('#dialogForm_RC .nav li').not('.active').find('a').removeAttr("data-toggle");
+	$('#dialogForm_RC .nav li').not('.active').hide();
 }
 
 function enabledPill(){
 	$('#dialogForm_RC .nav li').removeClass('disabled');
 	$('#dialogForm_RC .nav li').find('a').attr("data-toggle","tab");
+	$('#dialogForm_RC .nav li').show();
 }
 
 function init_jq2(oper){
