@@ -146,6 +146,7 @@ class ChargeMasterDetailController extends defaultController
                         'costprice' => $value['costprice'],
                         'autopull' => $value['autopull'],
                         'addchg' => $value['addchg'],
+                        'recstatus' => 'ACTIVE', 
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);

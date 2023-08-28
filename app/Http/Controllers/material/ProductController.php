@@ -60,6 +60,8 @@ class ProductController extends defaultController
                 return $this->get_table_product($request);
             case 'get_charges_from_product':
                 return $this->get_charges_from_product($request);
+            case 'get_product_detail':
+                return $this->get_product_detail($request);
             default:
                 return 'error happen..';
         }
@@ -223,6 +225,49 @@ class ProductController extends defaultController
         $responce = new stdClass();
         $responce->chgmast = $chgmast;
         return json_encode($responce);
+    }
+
+    public function get_product_detail(Request $request){
+
+        $responce = new stdClass();
+
+        $product = DB::table('material.product')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('groupcode',$request->groupcode)
+                        ->where('Class',$request->Class)
+                        ->where('itemcode',$request->itemcode)
+                        ->where('uomcode',$request->uomcode);
+
+        if($product->exists()){
+            $responce->error = true;
+            $responce->msg = 'Product Already Exists';
+            return json_encode($responce);
+        }else{
+
+            $productmaster = DB::table('material.productmaster')
+                        ->where('compcode',session('compcode'))
+                        ->where('recstatus','ACTIVE')
+                        ->where('groupcode',$request->groupcode)
+                        ->where('Class',$request->Class)
+                        ->where('itemcode',$request->itemcode);
+
+            if($productmaster->exists()){
+                $productmaster_first = $productmaster->first();
+                $responce->error = false;
+                $responce->productmaster = $productmaster_first;
+
+                return json_encode($responce);
+            }else{
+                $responce->error = true;
+                $responce->msg = 'Productmaster Not Exists';
+                return json_encode($responce);
+            }
+
+        }
+
+
+
     }
 
     public function save_productmaster(Request $request)

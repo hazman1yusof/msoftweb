@@ -4,7 +4,6 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
 	/////////////////////////validation//////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -107,6 +106,7 @@ $(document).ready(function () {
 		},
 		{
 			title:"Select UOM Code",
+			min_search_length:1,
 			open: function(){
 				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_uomcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
@@ -140,6 +140,7 @@ $(document).ready(function () {
 		},
 		{
 			title:"Select UOM Code",
+			min_search_length:1,
 			open: function(){
 				dialog_uomcode.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_uomcode.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
@@ -1107,6 +1108,8 @@ $(document).ready(function () {
 			
 			$("#formdata [name=groupcode][value='"+groupcode+"']").prop('checked', true);
 			$("#formdata [name=Class][value='"+Class+"']").prop('checked', true);
+
+			get_product_detail();
 		}
 	});
 
@@ -1755,7 +1758,6 @@ $(document).ready(function () {
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amt1","#"+ids[i]+"_amt2","#"+ids[i]+"_amt3","#"+ids[i]+"_costprice"]);
 			    }
 			    mycurrency2.formatOnBlur();
-		    	onall_editfunc();
 				hideatdialogForm(true,'saveallrow');
 			},
 		}).jqGrid('navButtonAdd',"#jqGridPager2",{
@@ -1902,3 +1904,30 @@ $(document).ready(function () {
 		}
 
 });
+
+function get_product_detail(){
+	var param={
+		action:'get_product_detail',
+		url:'./product/table',
+		itemcode:$('#itemcodesearch').val(),
+		uomcode:$('#uomcodesearch').val(),
+		groupcode:$('#groupcode2').val(),
+		Class:$('#Class2').val()
+	}
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			if(data.error == true){
+				alert(data.msg);
+				disableForm('#formdata');
+			}else{
+				$("#formdata :input[name='description']").val(data.productmaster.description);
+				$("#formdata :input[name='productcat']").val(data.productmaster.productcat);
+				
+				$("#formdata [name=groupcode][value='"+data.productmaster.groupcode+"']").prop('checked', true);
+				$("#formdata [name=Class][value='"+data.productmaster.Class+"']").prop('checked', true);
+			}
+		}
+	});
+}

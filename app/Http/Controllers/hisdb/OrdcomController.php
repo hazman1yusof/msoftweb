@@ -626,12 +626,25 @@ class OrdcomController extends defaultController
             ->where('deptcode','=',$chargetrx_obj->reqdept)
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$chargetrx_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$chargetrx_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
         if($stockloc->exists()){
 
             $prev_netprice = $product->first()->avgcost; 
             $prev_quan = $ivdspdt_lama->first()->txnqty;
             $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $chargetrx_obj->quantity;
+            $curr_quan = $chargetrx_obj->quantity * ($convuom_recv / $conv_uom);
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
 
@@ -688,7 +701,7 @@ class OrdcomController extends defaultController
         }
 
         $ivdspdt_arr = [
-            'txnqty' => $chargetrx_obj->quantity,
+            'txnqty' => $curr_quan,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,
@@ -816,8 +829,21 @@ class OrdcomController extends defaultController
             ->where('deptcode','=',$my_deptcode)
             ->where('year','=',$my_year);
 
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$chargetrx_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$chargetrx_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
         $curr_netprice = $product->first()->avgcost;
-        $curr_quan = $chargetrx_obj->quantity;
+        $curr_quan = $chargetrx_obj->quantity * ($convuom_recv / $conv_uom);
         if($stockloc->exists()){
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
@@ -900,7 +926,7 @@ class OrdcomController extends defaultController
             'lineno_' => 1,
             'itemcode' => $chargetrx_obj->chgcode,
             'uomcode' => $chargetrx_obj->uom,
-            'txnqty' => $chargetrx_obj->quantity,
+            'txnqty' => $curr_quan,
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,

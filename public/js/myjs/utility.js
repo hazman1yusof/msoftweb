@@ -1136,6 +1136,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	this.needTab=needTab;
 	this.dcolrType=dcolrType;
 	this.required=required;
+	this.min_search_length=1;
 	this.on = function(){
 		this.eventstat='on';
 
@@ -1347,7 +1348,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		renull_search(event.data.data);
 		let obj = event.data.data;
 		let Dtext=$("#Dtext_"+obj.unique).val().trim();
-		if(Dtext.length == 1){
+		if(Dtext.length == 1 && obj.min_search_length>1){
 			return false;
 		}
 		if(obj.dcolrType == 'radio'){
@@ -1406,6 +1407,9 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function makedialog(obj){
 		let width = 7/10 * $(window).width();
+		if(obj.dialog_.hasOwnProperty('min_search_length')){
+			obj.min_search_length = obj.dialog_.min_search_length;
+		}
 		if(obj.dialog_.hasOwnProperty('width')){
 			width = obj.dialog_.width;
 		}

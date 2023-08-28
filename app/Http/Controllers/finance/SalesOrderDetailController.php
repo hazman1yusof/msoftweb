@@ -86,6 +86,7 @@ class SalesOrderDetailController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -264,6 +265,7 @@ class SalesOrderDetailController extends defaultController
         $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -346,7 +348,6 @@ class SalesOrderDetailController extends defaultController
         $table_count = $table->count();
 
         if($table_count>0){
-
             $table = DB::table('hisdb.chgmast as cm')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->Where('cm.chgcode','like',$serch_chgcode)
@@ -360,6 +361,7 @@ class SalesOrderDetailController extends defaultController
             $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                                $join = $join->on('cp.uom', '=', 'cm.uom');
                                 $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
                                 $join = $join->where('cp.effdate', '<=', $entrydate);
                             });
@@ -456,6 +458,7 @@ class SalesOrderDetailController extends defaultController
             $responce->rows = $rows;
             $responce->sql = $table->toSql();
             $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
 
             return json_encode($responce);
         }else{
@@ -612,6 +615,7 @@ class SalesOrderDetailController extends defaultController
             $responce->rows = $rows;
             $responce->sql = $table->toSql();
             $responce->sql_bind = $table->getBindings();
+            $responce->sql_query = $this->getQueries($table);
 
             return json_encode($responce);
         }
@@ -852,6 +856,7 @@ class SalesOrderDetailController extends defaultController
         $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
@@ -1339,8 +1344,21 @@ class SalesOrderDetailController extends defaultController
             ->where('deptcode','=',$dbacthdr->deptcode)
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
         $curr_netprice = $product->first()->avgcost;
-        $curr_quan = $billsum_obj->quantity;
+        $curr_quan = $billsum_obj->quantity * ($convuom_recv / $conv_uom);
         if($stockloc->exists()){
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
@@ -1423,7 +1441,7 @@ class SalesOrderDetailController extends defaultController
             'lineno_' => 1,
             'itemcode' => $billsum_obj->chggroup,
             'uomcode' => $billsum_obj->uom,
-            'txnqty' => $billsum_obj->quantity,
+            'txnqty' => $curr_quan,
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,
@@ -1466,12 +1484,25 @@ class SalesOrderDetailController extends defaultController
             ->where('deptcode','=',$dbacthdr->deptcode)
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
+        // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
+        $convuom_recv = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom_recv)
+            ->first();
+        $convuom_recv = $convuom_recv->convfactor;
+
+        $conv_uom = DB::table('material.uom')
+            ->where('compcode','=',session('compcode'))
+            ->where('uomcode','=',$billsum_obj->uom)
+            ->first();
+        $conv_uom = $conv_uom->convfactor;
+
         if($stockloc->exists()){
 
             $prev_netprice = $product->first()->avgcost; 
             $prev_quan = $ivdspdt_lama->first()->txnqty;
             $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $billsum_obj->quantity;
+            $curr_quan = $billsum_obj->quantity * ($convuom_recv / $conv_uom);
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
 
@@ -1528,7 +1559,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $ivdspdt_arr = [
-            'txnqty' => $billsum_obj->quantity,
+            'txnqty' => $curr_quan,
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,
@@ -1575,8 +1606,6 @@ class SalesOrderDetailController extends defaultController
 
             $prev_netprice = $ivdspdt_lama->first()->netprice; 
             $prev_quan = $ivdspdt_lama->first()->txnqty;
-            $curr_netprice = $billsum_obj->unitprice;
-            $curr_quan = $billsum_obj->quantity;
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) + floatval($prev_quan);
 

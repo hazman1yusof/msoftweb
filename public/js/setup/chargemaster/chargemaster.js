@@ -242,7 +242,8 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-			urlParam2.filterVal[1]=selrowData("#jqGrid").chgcode;
+			urlParam2.filterVal[2]=selrowData("#jqGrid").chgcode;
+			urlParam2.filterVal[3]=selrowData("#jqGrid").uom;
 			refreshGrid("#jqGrid3",urlParam2);
 
 			$("#jqGrid4_c,#jqGridPkg3_c,#click_row").hide();
@@ -490,7 +491,8 @@ $(document).ready(function () {
 				$('#computerid').val(data.computerid);
 				$('#lastcomputerid').val(data.lastcomputerid);
 				
-				urlParam2.filterVal[1]=$('#chgcode').val();
+				urlParam2.filterVal[2]=$('#chgcode').val();
+				urlParam2.filterVal[3]=$('#uom').val();
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
 			}
@@ -519,8 +521,10 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['cp.chgcode'],
 		join_onVal:['cm.chgcode'],
-		filterCol:['cp.compcode','cp.chgcode'],
-		filterVal:['session.compcode','']
+        join_filterCol : [['cm.uom on =']],
+        join_filterVal : [['cp.uom']],
+		filterCol:['cp.compcode','cp.unit','cp.chgcode','cp.uom'],
+		filterVal:['session.compcode','session.unit','','']
 	};
 
 	var addmore_jqgrid2={more:false,state:false,edit:false} // if addmore is true, auto add after refresh jqgrid2, state true kalu
@@ -2972,7 +2976,6 @@ $(document).ready(function () {
 				filterVal:['ACTIVE','session.compcode']
 			},
 			ondblClickRow:function(){
-				console.log(oper);
 				if(oper == 'add'){
 					get_chg_productmaster($('#chgcode').val(),$(dialog_uom.textfield).val());
 				}
@@ -2990,6 +2993,7 @@ $(document).ready(function () {
 		},
 		{
 			title:"Select UOM",
+			min_search_length:1,
 			open: function(){
 				dialog_uom.urlParam.filterCol = ['recstatus','compcode'];
 				dialog_uom.urlParam.filterVal = [ 'ACTIVE','session.compcode'];	
