@@ -358,6 +358,26 @@
 									</div>
 								</div>
 							</div>
+							<div id="g_paycard_c" class='col-md-4 minuspad-15'>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th scope="col">Pay Mode</th>
+											<th scope="col">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+											<td>
+												<input id="paycard_description" name="paycard_description" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 							<div class='col-md-8'>
 								<div class="form-group">
 							  		<div class='col-md-4'> 
@@ -447,6 +467,26 @@
 										<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
 									</div>
 								</div>
+							</div>
+							<div id="g_paybank_c" class='col-md-4 minuspad-15'>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th scope="col">Pay Mode</th>
+											<th scope="col">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+											<td>
+												<input id="paybank_description" name="paybank_description" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
 							<div class='col-md-8'>
 								<div class="form-group">

@@ -1896,7 +1896,7 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_logindeptcode.makedialog();
-
+	
 	var dialog_mrn = new ordialog(
 		'mrn','hisdb.pat_mast','#dbacthdr_mrn',errorField,
 		{
@@ -1928,11 +1928,11 @@ $(document).ready(function () {
 		},{
 			title:"Select MRN",
 			open: function(){
-				dialog_payercode.urlParam.filterCol=['compcode'],
-				dialog_payercode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
+				dialog_mrn.urlParam.filterCol=['compcode'],
+				dialog_mrn.urlParam.filterVal=['session.compcode']
+			}
+		},'urlParam','radio','tab'
+	);
 	dialog_mrn.makedialog(true);
 
 	//RF
