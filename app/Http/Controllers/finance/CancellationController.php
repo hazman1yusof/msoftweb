@@ -56,6 +56,7 @@ class CancellationController extends defaultController
                     'db.compcode AS db_compcode',
                     'db.debtorcode AS db_debtorcode',
                     'db.payercode AS db_payercode',
+                    'db.payername AS db_payername',
                     'dm.name AS dm_name', 
                     'db.entrydate AS db_entrydate',
                     'db.auditno AS db_auditno', //search
@@ -211,6 +212,7 @@ class CancellationController extends defaultController
                     'db.compcode AS db_compcode',
                     'db.debtorcode AS db_debtorcode',
                     'db.payercode AS db_payercode',
+                    'db.payername AS db_payername',
                     'dm.name AS dm_name', 
                     'db.entrydate AS db_entrydate',
                     'db.auditno AS db_auditno', //search
