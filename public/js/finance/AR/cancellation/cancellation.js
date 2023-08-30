@@ -25,16 +25,16 @@ $(document).ready(function () {
                 }];
             }
         },
-    };
-    
-    /////////////////////////////////currency/////////////////////////////////
-    var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
+	};
+	
+	/////////////////////////////////currency/////////////////////////////////
+	var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
 	var mycurrency2 =new currencymode(['#db_outamount', '#db_amount']);
-	var myallocation = new Allocation();
-	var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);
+	var myallocation = new Allocation();	// allocateDialog
+	var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);	// allocateDialog
 	var fdl = new faster_detail_load();
-    
-    ///////////////////for handling amount based on trantype///////////////////
+	
+	///////////////////for handling amount based on trantype///////////////////
     /////////////////////////////////RC STARTS/////////////////////////////////
     function handleAmount(){
         if($("input:radio[name='optradio'][value='receipt']").is(':checked')){
@@ -597,7 +597,7 @@ $(document).ready(function () {
 			enabledPill();
 			
 			populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
-			getdata('RD',selrowData("#jqGrid_rd").db_idno);
+			getdata('RC',selrowData("#jqGrid_rd").db_idno);
 			refreshGrid("#sysparam",urlParam_sys);
 		},
 	});
