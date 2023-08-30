@@ -461,6 +461,82 @@ $(document).ready(function () {
 	});
 	//////////////////////////////////////////////end jqGrid_rc//////////////////////////////////////////////
 	
+	/////////////////////////////////////parameter for jqGrid_rd url/////////////////////////////////////
+	var urlParam_rd={
+		action: 'get_jqGrid_rd',
+		url: './cancellation/table',
+		// source: $('#db_source').val(),
+		// trantype: $('#db_trantype').val(),
+	}
+	
+	//////////////////////////////////////////////jqGrid_rd//////////////////////////////////////////////
+	$("#jqGrid_rd").jqGrid({
+		datatype: "local",
+		colModel: $("#jqGrid_rc").jqGrid('getGridParam','colModel'),
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		loadonce:false,
+		width: 900,
+		height: 400,
+		rowNum: 30,
+		pager: "#jqGridPager_rd",
+		onSelectRow:function(rowid, selected){
+			if(rowid != null) {
+				var rowData = $('#jqGrid_rd').jqGrid('getRowData', rowid);
+				// $("#pg_jqGridPager3 table").hide();
+				// $("#pg_jqGridPager2 table").show();
+			}
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGridPager_rd td[title='View Selected Row']").click();
+		},
+		gridComplete: function () {
+			$("#jqGrid_rd").setSelection($("#jqGrid_rd").getDataIDs()[0]); // highlight 1st record
+			init_btn();
+			
+			if($('#jqGrid_rd').data('inputfocus') == 'customer_search'){
+				$("#customer_search").focus();
+				$('#jqGrid_rd').data('inputfocus','');
+				$('#customer_search_hb').text('');
+				removeValidationClass(['#customer_search']);
+			}else if($('#jqGrid_rd').data('inputfocus') == 'department_search'){
+				$("#department_search").focus();
+				$('#jqGrid_rd').data('inputfocus','');
+				$('#department_search_hb').text('');
+				removeValidationClass(['#department_search']);
+			}else{
+				$("#searchForm input[name=Stext]").focus();
+			}
+			fdl.set_array().reset();
+		},
+		loadComplete: function(data){
+			calc_jq_height_onchange("jqGrid_rd");
+		},
+	});
+	
+	//////////////////////////////////////////////jqGridPager_rd//////////////////////////////////////////////
+	$("#jqGrid_rd").jqGrid('navGrid', '#jqGridPager_rd', {
+		view: false, edit: false, add: false, del: false, search: false,
+		beforeRefresh: function () {
+			refreshGrid("#jqGrid_rd", urlParam_rd);
+		},
+	}).jqGrid('navButtonAdd',"#jqGridPager_rd",{
+		caption:"",cursor: "pointer",position: "first",
+		buttonicon:"glyphicon glyphicon-info-sign",
+		title:"View Selected Row",
+		onClickButton: function(){
+			oper='view';
+			selRowId = $("#jqGrid_rd").jqGrid ('getGridParam', 'selrow');
+			enabledPill();
+			
+			populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
+			getdata('RD',selrowData("#jqGrid_rd").db_idno);
+			refreshGrid("#sysparam",urlParam_sys);
+		},
+	});
+	//////////////////////////////////////////////end jqGrid_rd//////////////////////////////////////////////
+	
 	//////////////////////////////////////////////////start//////////////////////////////////////////////////
 	var urlParam_sys={
 		action: 'get_table_default',
