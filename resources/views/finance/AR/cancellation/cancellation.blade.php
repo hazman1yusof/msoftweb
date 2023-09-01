@@ -43,17 +43,17 @@
     }
     
     <!-- allocation -->
-    #gridAllo_c input[type='text'][rowid]{
+    #gridAlloc_c input[type='text'][rowid]{
         height: 30%;
         padding: 4px 12px 4px 12px;
     }
-    #alloText{width:9%;}#alloText{width:60%;}#alloCol{width: 30%;}
-    #alloCol, #alloText{
+    #allocText{width:9%;}#allocText{width:60%;}#allocCol{width: 30%;}
+    #allocCol, #allocText{
         display: inline-block;
         height: 70%;
         padding: 4px 12px 4px 12px;
     }
-    #alloSearch{
+    #allocSearch{
         border-style: solid;
         border-width: 0px 1px 1px 1px;
         padding-top: 5px;
@@ -624,16 +624,16 @@
             </div>
         </form>
         
-        <div class='col-md-12' id='gridAllo_c' style="padding:0">
+        <div class='col-md-12' id='gridAlloc_c' style="padding:0">
             <hr>
-            <table id="gridAllo" class="table table-striped"></table>
-            <div id="pagerAllo"></div>
+            <table id="gridAlloc" class="table table-striped"></table>
+            <div id="pagerAlloc"></div>
         </div>
         
-        <div class="col-md-10 col-md-offset-1" id="alloSearch">
-            <label class="control-label" id='alloLabel'>Search</label>
-            <input id="alloText" type="text" class="form-control input-sm">
-            <select class="form-control" id="alloCol">
+        <div class="col-md-10 col-md-offset-1" id="allocSearch">
+            <label class="control-label" id='allocLabel'>Search</label>
+            <input id="allocText" type="text" class="form-control input-sm">
+            <select class="form-control" id="allocCol">
                 <option value="invno" >Invoice No</option>
                 <option value="auditno" >Audit No</option>
                 <option value="mrn" >MRN</option>

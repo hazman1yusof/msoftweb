@@ -332,7 +332,7 @@ $(document).ready(function () {
 		open: function(){
 			disableForm('#formallo');
 			dialog_allodebtor.off();
-			$("#gridAllo").jqGrid ('setGridWidth', Math.floor($("#gridAllo_c")[0].offsetWidth-$("#gridAllo_c")[0].offsetLeft));
+			$("#gridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
 			grid='#jqGrid_rc';
 			$('#AlloDtype').val(selrowData(grid).db_trantype);
 			$('#AlloDtype2').html(selrowData(grid).db_PymtDescription);
@@ -346,9 +346,9 @@ $(document).ready(function () {
 			$('#AlloBalance').val(selrowData(grid).db_outamount);
 			$('#AlloTotal').val(0);
 			$('#AlloAuditno').val(selrowData(grid).db_auditno);
-			urlParamAllo.filterVal[0]=selrowData(grid).db_payercode;
+			urlParamAlloc.filterVal[0]=selrowData(grid).db_payercode;
 			console.log(selrowData(grid).db_auditno);
-			refreshGrid("#gridAllo",urlParamAllo);
+			refreshGrid("#gridAlloc",urlParamAlloc);
 			parent_close_disabled(true);
 			myallocation.renewAllo(selrowData(grid).db_outamount);
 		},
@@ -356,36 +356,38 @@ $(document).ready(function () {
 			dialog_allodebtor.off();
 			parent_close_disabled(false);
 		},
-		buttons:
-			[{
-				text: "Save",click: function() {
-					var obj={
-						allo:myallocation.arrayAllo
-					}
+		buttons: [
+			// {
+			// 	text: "Save",click: function() {
+			// 		var obj={
+			// 			allo:myallocation.arrayAllo
+			// 		}
 					
-					var saveParam={
-						action: 'receipt_save',
-						url: 'receipt/form',
-						oper: 'allocate',
-						debtorcode: $('#AlloDebtor').val(),
-						payercode: $('#AlloPayer').val(),
-						_token: $('#csrf_token').val(),
-						auditno: $('#AlloAuditno').val()
-					}
+			// 		var saveParam={
+			// 			action: 'receipt_save',
+			// 			url: 'receipt/form',
+			// 			oper: 'allocate',
+			// 			debtorcode: $('#AlloDebtor').val(),
+			// 			payercode: $('#AlloPayer').val(),
+			// 			_token: $('#csrf_token').val(),
+			// 			auditno: $('#AlloAuditno').val()
+			// 		}
 					
-					$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
+			// 		$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
 						
-					}).fail(function(data) {
-					}).success(function(data){
-						refreshGrid('#jqGrid', urlParam);
-						$('#allocateDialog').dialog('close');
-					});
-				}
-			},{
-				text: "Cancel",click: function() {
+			// 		}).fail(function(data) {
+			// 		}).success(function(data){
+			// 			refreshGrid('#jqGrid', urlParam);
+			// 			$('#allocateDialog').dialog('close');
+			// 		});
+			// 	}
+			// },
+			{
+				text: "Close",click: function() {
 					$(this).dialog('close');
 				}
-			}],
+			}
+		],
 	});
 	//////////////////////////////////RC ENDS//////////////////////////////////
 
@@ -461,9 +463,14 @@ $(document).ready(function () {
 		},
 		buttons :butt1,
 	  });
-
+	
 	///allocation///
-
+	var urlParamAllo={
+		action: 'refund_allo_table',
+		url: 'refund/table',
+		payercode: ''
+	}
+	
 	$("#gridAllo").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -898,7 +905,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////////////////////////////////btn_alloc////////////////////////////////////////////////
-	var urlParamAllo={
+	var urlParamAlloc={
 		action: 'get_table_default',
 		url: 'util/get_table_default',
 		field: '',
@@ -911,7 +918,7 @@ $(document).ready(function () {
 		WhereInVal: [['DN','IN']]
 	}
 	
-	$("#gridAllo").jqGrid({
+	$("#gridAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true },
@@ -935,16 +942,16 @@ $(document).ready(function () {
 		height: 400,
 		scroll:true,
 		rowNum: 9,
-		pager: "#pagerAllo",
+		pager: "#pagerAlloc",
 		onSelectRow: function(rowid){
 		},
 		onPaging: function(button){
 		},
 		gridComplete: function(rowid){
 			startEdit();
-			$("#gridAllo_c input[type='checkbox']").on('click',function(){
+			$("#gridAlloc_c input[type='checkbox']").on('click',function(){
 				var idno = $(this).attr("rowid");
-				var rowdata = $("#gridAllo").jqGrid ('getRowData', idno);
+				var rowdata = $("#gridAlloc").jqGrid ('getRowData', idno);
 				if($(this).prop("checked") == true){
 					$("#"+idno+"_amtpaid").val(rowdata.outamount).addClass( "valid" ).removeClass( "error" );
 					setbal(idno,0);
@@ -959,7 +966,7 @@ $(document).ready(function () {
 					$("#"+idno+"_amtpaid").trigger("change");
 				}
 			});
-			$("#gridAllo_c input[type='text'][rowid]").on('click',function(){
+			$("#gridAlloc_c input[type='text'][rowid]").on('click',function(){
 				var idno = $(this).attr("rowid");
 				if(!myallocation.alloInArray(idno)){
 					myallocation.addAllo(idno,' ',0);
@@ -967,38 +974,38 @@ $(document).ready(function () {
 			});
 			
 			delay(function(){
-				// $("#alloText").focus();//AlloTotal
+				// $("#allocText").focus();//AlloTotal
 				myallocation.retickallotogrid();
 			}, 100 );
 			
-			calc_jq_height_onchange("gridAllo");
+			calc_jq_height_onchange("gridAlloc");
 		},
 	});
 	
-	AlloSearch("#gridAllo",urlParamAllo);
-	function AlloSearch(grid,urlParam){
-		$("#alloText").on( "keyup", function() {
+	AllocSearch("#gridAlloc",urlParamAlloc);
+	function AllocSearch(grid,urlParam){
+		$("#allocText").on( "keyup", function() {
 			delay(function(){
-				search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+				search(grid,$("#allocText").val(),$("#allocCol").val(),urlParam);
 			}, 500 );
 		});
 		
-		$("#alloCol").on( "change", function() {
-			search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+		$("#allocCol").on( "change", function() {
+			search(grid,$("#allocText").val(),$("#allocCol").val(),urlParam);
 		});
 	}
 	
 	function startEdit() {
-		var ids = $("#gridAllo").jqGrid('getDataIDs');
+		var ids = $("#gridAlloc").jqGrid('getDataIDs');
 		
 		for (var i = 0; i < ids.length; i++) {
-			var entrydate = $("#gridAllo").jqGrid ('getRowData', ids[i]).entrydate;
-			$("#gridAllo").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
-			$("#gridAllo").jqGrid('editRow',ids[i]);
+			var entrydate = $("#gridAlloc").jqGrid ('getRowData', ids[i]).entrydate;
+			$("#gridAlloc").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
+			$("#gridAlloc").jqGrid('editRow',ids[i]);
 		}
 	};
 	
-	addParamField('#gridAllo',false,urlParamAllo,['tick','amtpaid','amtbal']);
+	addParamField('#gridAlloc',false,urlParamAlloc,['tick','amtpaid','amtbal']);
 	
 	function Allocation(){
 		this.arrayAllo=[];
@@ -1031,7 +1038,7 @@ $(document).ready(function () {
 			var idno = obj.handleObj.data[0];
 			var arrayAllo = obj.handleObj.data[1];
 			var alloIndex = getIndex(arrayAllo,idno);
-			var outamt = $("#gridAllo").jqGrid('getRowData', idno).outamount;
+			var outamt = $("#gridAlloc").jqGrid('getRowData', idno).outamount;
 			var newamtpaid = parseFloat(obj.target.value);
 			newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
 			if(parseFloat(newamtpaid)>parseFloat(outamt)){
@@ -1120,19 +1127,19 @@ $(document).ready(function () {
 		}
 		
 		function getlAlloFromGrid(idno){
-			var temp=$("#gridAllo").jqGrid ('getRowData', idno);
+			var temp=$("#gridAlloc").jqGrid ('getRowData', idno);
 			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
 		}
 	}
 	
 	function setbal(idno,balance){
-		$("#gridAllo").jqGrid('setCell', idno, 'amtbal', balance);
+		$("#gridAlloc").jqGrid('setCell', idno, 'amtbal', balance);
 	}
 	
-	$("#gridAllo").jqGrid('navGrid','#pagerAllo',{
+	$("#gridAlloc").jqGrid('navGrid','#pagerAlloc',{
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#gridAllo",urlParamAllo);
+			refreshGrid("#gridAlloc",urlParamAlloc);
 		},
 	})
 	//////////////////////////////////////////////end btn_alloc//////////////////////////////////////////////
@@ -1688,8 +1695,8 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_allodebtor.gridname);
 				$('#AlloDebtor').val(data.debtorcode);
-				urlParamAllo.filterVal[0]=data.debtorcode;
-				refreshGrid("#gridAllo",urlParamAllo);
+				urlParamAlloc.filterVal[0]=data.debtorcode;
+				refreshGrid("#gridAlloc",urlParamAlloc);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
