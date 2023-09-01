@@ -120,7 +120,7 @@
             </fieldset>
         </form>
         
-        <div class="panel panel-default">
+        <div class="panel panel-default" id="jqGrid_cancel_c">
             <div class="panel-heading">Cancellation</div>
             <div class="panel-body">
                 <div class='col-md-12' style="padding:0 0 15px 0">
