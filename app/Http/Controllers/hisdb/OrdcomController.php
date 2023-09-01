@@ -247,7 +247,7 @@ class OrdcomController extends defaultController
         }
 
         $table_chgtrx = DB::table('hisdb.chargetrx as trx')
-                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','dos.dosedesc as ftxtdosage_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc')
                     ->where('trx.mrn' ,'=', $request->mrn)
                     ->where('trx.episno' ,'=', $request->episno)
                     ->where('trx.compcode','=',session('compcode'))
@@ -258,8 +258,28 @@ class OrdcomController extends defaultController
         $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
                             $join = $join->where('pt.compcode', '=', session('compcode'));
                             $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
-                            $join = $join->on('pt.uomcode', '=', 'trx.uom');
+                            $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
                             $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->where('dos.compcode', '=', session('compcode'));
+                            $join = $join->on('dos.dosecode', '=', 'trx.ftxtdosage');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->where('fre.compcode', '=', session('compcode'));
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->where('ins.compcode', '=', session('compcode'));
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->where('dru.compcode', '=', session('compcode'));
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
                         });
 
         //////////paginate/////////
@@ -279,7 +299,7 @@ class OrdcomController extends defaultController
     public function order_entry_add(Request $request){
         
         DB::beginTransaction();
-        
+
         try {
             $recno = $this->recno('OE','IN');
 
@@ -288,7 +308,7 @@ class OrdcomController extends defaultController
                     ->where('chgcode','=',$request->chgcode)
                     ->where('uom','=',$request->uom)
                     ->first();
-            
+
             $updinv = ($chgmast->invflag == '1')? 1 : 0;
 
             $insertGetId = DB::table("hisdb.chargetrx")
@@ -306,7 +326,7 @@ class OrdcomController extends defaultController
                         'amount' => $request->amount,
                         'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                         'chggroup' => $chgmast->chggroup,
-                        'taxamount' => $request->taxamt,
+                        'taxamount' => $request->taxamount,
                         'uom' => $request->uom,
                         'uom_recv' => $request->uom_recv,
                         'invgroup' => $chgmast->invgroup,
@@ -315,7 +335,7 @@ class OrdcomController extends defaultController
                         'invcode' => $chgmast->chggroup,
                         'inventory' => $updinv,
                         'updinv' =>  $updinv,
-                        'discamt' => $request->discamt,
+                        'discamt' => $request->discamount,
                         'qtyorder' => $request->quantity,
                         'qtyissue' => $request->quantity,
                         'unit' => session('unit'),
@@ -341,13 +361,13 @@ class OrdcomController extends defaultController
             
             $product = DB::table('material.product')
                             ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom)
+                            ->where('uomcode','=',$request->uom_recv)
                             ->where('itemcode','=',$request->chgcode);
             
             if($product->exists()){
                 $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom)
+                        ->where('uomcode','=',$request->uom_recv)
                         ->where('itemcode','=',$request->chgcode)
                         ->where('deptcode','=',$request->deptcode)
                         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
@@ -355,7 +375,7 @@ class OrdcomController extends defaultController
                 if($stockloc->exists()){
                     $stockloc = $stockloc->first();
                 }else{
-                    throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom,500);
+                    throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom_recv,500);
                 }
                 
                 $ivdspdt = DB::table('material.ivdspdt')
@@ -385,7 +405,6 @@ class OrdcomController extends defaultController
     public function order_entry_edit(Request $request){
         
         DB::beginTransaction();
-        
         try {
 
             $chargetrx_lama = DB::table("hisdb.chargetrx")
@@ -396,18 +415,17 @@ class OrdcomController extends defaultController
             $chgmast = DB::table("hisdb.chgmast")
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',$request->chgcode)
-                    ->where('uom','=',$request->uom)
+                    ->where('uom','=',$request->uom_recv)
                     ->first();
             
             $updinv = ($chgmast->invflag == '1')? 1 : 0;
 
-
-            if($chargetrx_lama->chgcode != $request->chgcode || $chargetrx_lama->uom != $request->uom){
+            if($chargetrx_lama->chgcode != $request->chgcode || $chargetrx_lama->uom_recv != $request->uom_recv){
 
                 $edit_lain_chggroup = true;
                 $product_lama = DB::table('hisdb.product')
                         ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$chargetrx_lama->uom)
+                        ->where('uomcode','=',$chargetrx_lama->uom_recv)
                         ->where('itemcode','=',$chargetrx_lama->chgcode);
 
                 if($product_lama->exists()){
@@ -418,7 +436,7 @@ class OrdcomController extends defaultController
 
                 DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
-                        ->where('id', '=', $insertGetId)
+                        ->where('id', '=', $request->id)
                         ->update([
                             'trxdate' => $request->trxdate,
                             'chgcode' => $request->chgcode,
@@ -428,7 +446,7 @@ class OrdcomController extends defaultController
                             'amount' => $request->amount,
                             'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'chggroup' => $chgmast->chggroup,
-                            'taxamount' => $request->taxamt,
+                            'taxamount' => $request->taxamount,
                             'uom' => $request->uom,
                             'uom_recv' => $request->uom_recv,
                             'invgroup' => $chgmast->invgroup,
@@ -442,8 +460,6 @@ class OrdcomController extends defaultController
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),
                             'chgtype' => $chgmast->chgtype,
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'lastuser' => session('username'),
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'qtydispense' => $request->quantity,
@@ -462,7 +478,7 @@ class OrdcomController extends defaultController
 
                 DB::table('hisdb.chargetrx')
                         ->where('compcode',session('compcode'))
-                        ->where('id', '=', $insertGetId)
+                        ->where('id', '=', $request->id)
                         ->update([
                             'trxdate' => $request->trxdate,
                             'chgcode' => $request->chgcode,
@@ -472,7 +488,7 @@ class OrdcomController extends defaultController
                             'amount' => $request->amount,
                             'trxtime' => Carbon::now("Asia/Kuala_Lumpur"),
                             'chggroup' => $chgmast->chggroup,
-                            'taxamount' => $request->taxamt,
+                            'taxamount' => $request->taxamount,
                             'uom' => $request->uom,
                             'uom_recv' => $request->uom_recv,
                             'invgroup' => $chgmast->invgroup,
@@ -486,8 +502,6 @@ class OrdcomController extends defaultController
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),
                             'chgtype' => $chgmast->chgtype,
-                            'upduser' => session('username'),
-                            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'lastuser' => session('username'),
                             'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'qtydispense' => $request->quantity,
@@ -507,13 +521,13 @@ class OrdcomController extends defaultController
             
             $product = DB::table('material.product')
                             ->where('compcode','=',session('compcode'))
-                            ->where('uomcode','=',$request->uom)
+                            ->where('uomcode','=',$request->uom_recv)
                             ->where('itemcode','=',$request->chgcode);
             
             if($product->exists()){
                 $stockloc = DB::table('material.stockloc')
                         ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom)
+                        ->where('uomcode','=',$request->uom_recv)
                         ->where('itemcode','=',$request->chgcode)
                         ->where('deptcode','=',$request->deptcode)
                         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
@@ -566,7 +580,7 @@ class OrdcomController extends defaultController
 
             $chgmast_lama = DB::table('hisdb.chgmast')
                     ->where('compcode','=',session('compcode'))
-                    ->where('uom','=',$chargetrx_obj->uom)
+                    ->where('uom','=',$chargetrx_obj->uom_recv)
                     ->where('chgcode','=',$chargetrx_obj->chgcode)
                     ->first();
 
@@ -615,13 +629,13 @@ class OrdcomController extends defaultController
         $product = DB::table('material.product')
             ->where('compcode','=',session('compcode'))
             ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$chargetrx_obj->uom)
+            ->where('uomcode','=',$chargetrx_obj->uom_recv)
             ->where('itemcode','=',$chargetrx_obj->chgcode);
 
         $stockloc = DB::table('material.stockloc')
             ->where('compcode','=',session('compcode'))
             ->where('unit','=',session('unit'))
-            ->where('uomcode','=',$chargetrx_obj->uom)
+            ->where('uomcode','=',$chargetrx_obj->uom_recv)
             ->where('itemcode','=',$chargetrx_obj->chgcode)
             ->where('deptcode','=',$chargetrx_obj->reqdept)
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
@@ -644,7 +658,7 @@ class OrdcomController extends defaultController
             $prev_netprice = $product->first()->avgcost; 
             $prev_quan = $ivdspdt_lama->first()->txnqty;
             $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $chargetrx_obj->quantity * ($convuom_recv / $conv_uom);
+            $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
 
@@ -666,7 +680,7 @@ class OrdcomController extends defaultController
                                 ->select(DB::raw('SUM(qtyonhand) AS sum_qtyonhand'))
                                 ->where('compcode','=',session('compcode'))
                                 ->where('unit','=',session('unit'))
-                                ->where('uomcode','=',$chargetrx_obj->uom)
+                                ->where('uomcode','=',$chargetrx_obj->uom_recv)
                                 ->where('itemcode','=',$chargetrx_obj->chgcode)
                                 ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year)
                                 ->first();
@@ -682,7 +696,7 @@ class OrdcomController extends defaultController
                 ->where('Year','=',defaultController::toYear($chargetrx_obj->trxdate))
                 ->where('DeptCode','=',$chargetrx_obj->reqdept)
                 ->where('ItemCode','=',$chargetrx_obj->chgcode)
-                ->where('UomCode','=',$chargetrx_obj->uom)
+                ->where('UomCode','=',$chargetrx_obj->uom_recv)
                 ->orderBy('expdate', 'asc');
 
             if($expdate_obj->exists()){
@@ -810,7 +824,7 @@ class OrdcomController extends defaultController
 
     public function crtivdspdt($chargetrx_obj){
 
-        $my_uom = $chargetrx_obj->uom;
+        $my_uom = $chargetrx_obj->uom_recv;
         $my_chgcode = $chargetrx_obj->chgcode;
         $my_deptcode = $chargetrx_obj->reqdept;
         $my_year = defaultController::toYear($chargetrx_obj->trxdate);
@@ -843,7 +857,7 @@ class OrdcomController extends defaultController
         $conv_uom = $conv_uom->convfactor;
 
         $curr_netprice = $product->first()->avgcost;
-        $curr_quan = $chargetrx_obj->quantity * ($convuom_recv / $conv_uom);
+        $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
         if($stockloc->exists()){
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);
@@ -925,7 +939,7 @@ class OrdcomController extends defaultController
             'recno' => $chargetrx_obj->auditno,//OE IN
             'lineno_' => 1,
             'itemcode' => $chargetrx_obj->chgcode,
-            'uomcode' => $chargetrx_obj->uom,
+            'uomcode' => $chargetrx_obj->uom_recv,
             'txnqty' => $curr_quan,
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1065,7 +1079,7 @@ class OrdcomController extends defaultController
 
     public function delivdspdt($chargetrx_obj){
 
-        $my_uom = $chargetrx_obj->uom;
+        $my_uom = $chargetrx_obj->uom_recv;
         $my_chgcode = $chargetrx_obj->chgcode;
         $my_deptcode = $chargetrx_obj->reqdept;
         $my_year = defaultController::toYear($chargetrx_obj->trxdate);
@@ -1117,7 +1131,7 @@ class OrdcomController extends defaultController
             //4. tolak expdate, kalu ada batchno
             $expdate_obj = DB::table('material.stockexp')
                 ->where('compcode',session('compcode'))
-                ->where('Year','=',defaultController::toYear($dbacthdr->entrydate))
+                ->where('Year','=',$my_year)
                 ->where('DeptCode','=',$my_deptcode)
                 ->where('ItemCode','=',$my_chgcode)
                 ->where('UomCode','=',$my_uom)
@@ -1125,7 +1139,6 @@ class OrdcomController extends defaultController
 
             if($expdate_obj->exists()){
                 $expdate_first = $expdate_obj->first();
-                $txnqty_ = $curr_quan;
                 $balqty = floatval($expdate_first->balqty) + floatval($prev_quan);
                 $expdate_obj
                         ->update([
@@ -1212,7 +1225,7 @@ class OrdcomController extends defaultController
 
             DB::table('finance.gltran')
                 ->where('compcode','=',session('compcode'))
-                ->where('auditno','=',$billsum_obj->auditno)
+                ->where('auditno','=',$chargetrx_obj->auditno)
                 ->delete();
         }
 
@@ -1227,7 +1240,7 @@ class OrdcomController extends defaultController
 
         DB::table('material.ivdspdt')
             ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$billsum_obj->auditno)
+            ->where('recno','=',$chargetrx_obj->auditno)
             ->delete();
     }
 

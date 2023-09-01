@@ -2149,14 +2149,12 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_suppcode.gridname);
 				$("#delordhd_credcode").val(data['suppcode']);
-				$('#delordhd_delordno').focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#delordhd_delordno').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -2166,6 +2164,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_suppcode.urlParam.filterCol=['recstatus','compcode'];
 				dialog_suppcode.urlParam.filterVal=['ACTIVE','session.compcode'];
+			},
+			close: function(){
+				$('#delordhd_delordno').focus();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2182,7 +2183,6 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(){
-				$('#delordhd_invoiceno').focus();//focus ni xjadis
 			},
 			gridComplete: function(obj){
     			calc_jq_height_onchange("jqGrid2");
@@ -2190,7 +2190,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#delordhd_invoiceno').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -2200,6 +2199,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_credcode.urlParam.filterCol=['recstatus','compcode'];
 				dialog_credcode.urlParam.filterVal=['ACTIVE','session.compcode'];
+			},
+			close: function(){
+				$('#delordhd_invoiceno').focus();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2217,7 +2219,6 @@ $(document).ready(function () {
 						filterVal:['1', 'ACTIVE', 'session.compcode', 'session.unit']
 					},
 			ondblClickRow:function(){
-				$('#delordhd_credcode').focus();
 			},
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
@@ -2225,7 +2226,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#delordhd_credcode').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -2235,6 +2235,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_deldept.urlParam.filterCol=['storedept', 'recstatus','compcode','sector'];
 				dialog_deldept.urlParam.filterVal=['1', 'ACTIVE', 'session.compcode', 'session.unit'];
+			},
+			close: function(){
+				$('#delordhd_credcode').focus();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -2302,7 +2305,7 @@ $(document).ready(function () {
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 				}
@@ -2314,6 +2317,7 @@ $(document).ready(function () {
 				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
+				$("#jqGrid2 input[name='itemcode']").focus();
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}
 		},'urlParam','radio','tab'
@@ -2390,7 +2394,7 @@ $(document).ready(function () {
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 				}
@@ -2511,7 +2515,7 @@ $(document).ready(function () {
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					// $(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
@@ -2611,7 +2615,7 @@ $(document).ready(function () {
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					// $(obj.textfield).closest('td').next().find("input[type=text]").focus().select();
@@ -2662,7 +2666,7 @@ $(document).ready(function () {
 			gridComplete: function(obj){
         		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1){
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
 					//$(obj.textfield).closest('td').next().find("input[type=text]").focus().select();

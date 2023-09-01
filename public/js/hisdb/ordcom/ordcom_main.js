@@ -21,11 +21,14 @@ $(document).ready(function(){
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+
+		let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
+		let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+		write_detail_phar('#jqgrid_detail_phar_docname',getCurrentRow.q_doctorname);
 	});
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		let ordcomtype = $(this).data('ord_chgtype');
-
 		switch(ordcomtype){
 			case 'PHAR':
 				$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
@@ -96,10 +99,19 @@ function populate_ordcom_currpt(obj){
 }
 
 function remark_formatter(cellvalue, options, rowdata){
-	var return_remark=`<label>Dose</label><br><span name='span_dose'>`+rowdata.ftxtdosage+`</span><br>`;
-	return_remark+=`<label>Frequency</label><br><span name='span_freq'>`+rowdata.frequency+`</span><br>`;
-	return_remark+=`<label>Instruction</label><br><span name='span_ins'>`+rowdata.addinstruction+`</span><br>`;
-	return_remark+=`<label>Indicator</label><br><span name='span_ind'>`+rowdata.drugindicator+`</span><br>`;
+	var return_remark=``;
+	if(rowdata.ftxtdosage != null){
+		return_remark+=`<label>Dose</label><br><span name='span_dose'>`+rowdata.ftxtdosage+`</span><br>`;
+	}
+	if(rowdata.frequency != null){
+		return_remark+=`<label>Frequency</label><br><span name='span_freq'>`+rowdata.frequency+`</span><br>`;
+	}
+	if(rowdata.addinstruction != null){
+		return_remark+=`<label>Instruction</label><br><span name='span_ins'>`+rowdata.addinstruction+`</span><br>`;
+	}
+	if(rowdata.drugindicator != null){
+		return_remark+=`<label>Indicator</label><br><span name='span_ind'>`+rowdata.drugindicator+`</span><br>`;
+	}
 
 	return return_remark;
 }

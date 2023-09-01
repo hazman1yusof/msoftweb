@@ -1515,7 +1515,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		if(value.trim() == '')return null;
 
 		renull_search(this);
-		if (before_check !== undefined) {
+		if (before_check !== undefined && before_check !== null) {
 			renull_search(this);
 			before_check(self);
 		}
@@ -1656,6 +1656,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			if(self.dialog_.hasOwnProperty('after_check')){
 				self.dialog_.after_check(data,self,id,fail);
+			}
+
+			if (after_check !== undefined && after_check !== null) {
+				after_check(data,self,id,fail);
 			}
 			
 		});
@@ -1867,6 +1871,8 @@ function faster_detail_load(){
 			if(except == undefined || except.indexOf(options.colModel.name) === -1){
 				if($("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").children('span.help-block').length==0){//kalau xde help-block baru letak
 					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+desc+"</span>");
+				}else{
+					$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+") span.help-block").text(desc);
 				}
 			}else if(except != undefined && except.indexOf(options.colModel.name) !== -1){
 				$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").text('');
@@ -2173,17 +2179,22 @@ function computerid_set(computerid){
 	}
 }
 
-function calc_jq_height_onchange(jqgrid,resizeGrid=false){
+function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
+	console.log(maxHeight);
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
+	}else if(scrollHeight>maxHeight){
+		scrollHeight = maxHeight;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
 	if(resizeGrid){
 		$('#'+jqgrid).jqGrid('resizeGrid');
 	}
+}
+
+function get_char_str_pos(string, symbol, nth) {
+  return string.indexOf(symbol, (string.indexOf(symbol) + nth));
 }
 
 $(document).ready(function () {

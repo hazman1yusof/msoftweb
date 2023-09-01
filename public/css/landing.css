@@ -342,3 +342,34 @@ div#jqGrid_ordcom_panel a.input-group-addon.btn.btn-primary{
 	padding: 6px;
     color: white;
 }
+div#jqGrid_ordcom_panel div.ui-jqgrid-bdiv{
+	overflow-x: hidden !important;
+}
+label.oe_phar_label{
+	width: 15% !important;
+	margin: 0px;
+}
+div.oe_phar_div{
+    width: 84% !important;
+    display: inline-table !important;
+}
+div.panel.jqgrid_detail{
+    background: #e6ffff;
+    margin: 10px 5px;
+    width: 49%;
+}
+div.panel.jqgrid_detail div.panel-body{
+	padding: 5px 15px;
+}
+div.panel.jqgrid_detail span.label_d{
+	color: #727272;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+div.panel.jqgrid_detail span.label_p{
+    display: inline-block;
+    min-width: 120px;
+}
+div.jqgrid_detail_dose input[type=text]{
+	height: 25px !important;
+}
