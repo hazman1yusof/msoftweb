@@ -116,6 +116,21 @@ $(document).ready(function () {
         mycurrency.formatOn();
     }
     //////////////////////////////////RC ENDS//////////////////////////////////
+	//////////////////////////////////RF STARTS//////////////////////////////////
+	function amountchgOnRF(){
+		$("input[name='dbacthdr_amount']").on('blur',amountFunctionRF);
+	}
+
+	function amountchgOffRF(){
+		$("input[name='dbacthdr_amount']").off('blur',amountFunctionRF);
+	}
+
+	function amountFunctionRF(event){
+		let outamount = $(event.currentTarget).val();
+		myallocation.outamt = outamount;
+	}
+
+	//////////////////////////////////RF ENDS//////////////////////////////////
     ///////////////////end handling amount based on trantype///////////////////
     
     ////////////////////////////////saveFormdata////////////////////////////////
@@ -402,7 +417,7 @@ $(document).ready(function () {
 			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 			parent_close_disabled(true);
-			amountchgOn();
+			amountchgOnRF();
 			switch(oper) {
 				case state = 'add':
 					mycurrency.formatOnBlur();
@@ -447,7 +462,7 @@ $(document).ready(function () {
 			}
 		},
 		close: function( event, ui ) {
-			amountchgOff();
+			amountchgOffRF();
 			parent_close_disabled(false);
 			emptyFormdata(errorField,'#formdata_RF');
 			emptyFormdata(errorField, "#f_tab-cash");
