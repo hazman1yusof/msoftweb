@@ -796,6 +796,12 @@ Route::get('/CreditNoteAR_Report/table','finance\CreditNoteAR_ReportController@t
 Route::post('/CreditNoteAR_Report/form','finance\CreditNoteAR_ReportController@form');
 Route::get('/CreditNoteAR_Report/showExcel','finance\CreditNoteAR_ReportController@showExcel');
 
+//// Cancellation
+Route::get('/cancellation','finance\CancellationController@show');
+Route::get('/cancellation/table','finance\CancellationController@table');
+Route::post('/cancellation/form','finance\CancellationController@form');
+Route::get('/cancellation/form','finance\CancellationController@form');
+
 //// AP Enquiry
 Route::get('/apenquiry','finance\APEnquiryController@show');
 Route::get('/apenquiry/table','finance\APEnquiryController@table');

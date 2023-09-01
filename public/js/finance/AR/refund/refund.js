@@ -38,11 +38,13 @@ $(document).ready(function () {
 	function disabledPill(){
 		$('.nav li').not('.active').addClass('disabled');
 		$('.nav li').not('.active').find('a').removeAttr("data-toggle");
+		$('.nav li').not('.active').hide();
 	}
 
 	function enabledPill(){
 		$('.nav li').removeClass('disabled');
 		$('.nav li').find('a').attr("data-toggle","tab");
+		$('.nav li').show();
 	}
 
 	function amountchgOn(){
@@ -125,6 +127,7 @@ $(document).ready(function () {
 			},
 			close: function(){
 				let data=selrowData('#'+dialog_payercode.gridname);
+				get_debtorcode_outamount(data.debtorcode);
 				// $('#dbacthdr_remark').focus();
 			}
 		},'urlParam','radio','tab'
@@ -463,6 +466,8 @@ $(document).ready(function () {
 			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
 			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
 			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
+			{label: 'paycard_description', name: 'paycard_description', hidden: true },
+			{label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -476,8 +481,12 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
+			$("#gridAllo input[name='tick']").hide();
 		},
 		onSelectRow: function(rowid){
+			urlParamAllo.payercode = selrowData("#jqGrid").dbacthdr_payercode;
+			refreshGrid("#gridAllo",urlParamAllo);
+			$("#gridAllo input[name='tick']").hide();
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -485,6 +494,7 @@ $(document).ready(function () {
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
+			enabledPill();
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
@@ -516,6 +526,8 @@ $(document).ready(function () {
 			}
 			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 			$("#dialogForm").dialog( "open" );
+			$("#g_paycard_c, #g_paybank_c").show();
+			$("#g_paymodecard_c, #g_paymodebank_c").hide();
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -526,6 +538,8 @@ $(document).ready(function () {
 			enabledPill();
 			$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			$( "#dialogForm" ).dialog( "open" );
+			$("#g_paymodecard_c, #g_paymodebank_c").show();
+			$("#g_paycard_c, #g_paybank_c").hide();
 		},
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
@@ -538,6 +552,23 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 	addParamField('#jqGrid',false,saveParam,['patmast_name','dbacthdr_idno','dbacthdr_amount']);
 
+	function get_debtorcode_outamount(payercode){
+		var param={
+			url: './refund/table',
+			action:'get_debtorcode_outamount',
+			payercode:payercode
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(data.result == 'true'){
+				$('input[name="dbacthdr_outamount"]').val(data.outamount);
+			}else{
+				// alert('Payer doesnt have outstanding amount');
+			}
+		});
+	}
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
@@ -655,7 +686,7 @@ $(document).ready(function () {
 			// { label: 'Batchno', name: 'NULL', width: 40},
 			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50},
 			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50},
-			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center'},
+			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center', formatter: checkbox_jqg2},
 			{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true},
 			{ label: 'Balance', name: 'amtbal', width: 50,formatter:'currency',formatoptions:{prefix: ""} },
 		],
@@ -702,6 +733,18 @@ $(document).ready(function () {
 			}, 100 );
 		},
 	});
+
+	function checkbox_jqg2(cellvalue, options, rowObject){
+		if(options.gid == "gridAllo"){
+			return '';
+		}else{
+			if(parseFloat(rowObject.amtpaid) > 0){
+				return '';
+			}else{
+				return `<input class='checkbox_jqg2' type="checkbox" name="checkbox" data-rowid="`+options.rowId+`">`;	
+			}
+		}
+	}
 
 	AlloSearch("#gridAllo",urlParamAllo);
 	function AlloSearch(grid,urlParam){

@@ -166,6 +166,18 @@ class ReceiptController extends defaultController
                                 $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
                                             ->where('pat_mast.compcode','=',session('compcode'));
                             })
+                            ->leftjoin('debtor.paymode as paycard', function($join) use ($request){
+                                $join = $join->on('paycard.paymode', '=', 'dbacthdr.paymode')
+                                            ->where('paycard.compcode','=',session('compcode'))
+                                            ->where('paycard.source','=','AR')
+                                            ->where('paycard.paytype','=','CARD');
+                            })
+                            ->leftjoin('debtor.paymode as paybank', function($join) use ($request){
+                                $join = $join->on('paybank.paymode', '=', 'dbacthdr.paymode')
+                                            ->where('paybank.compcode','=',session('compcode'))
+                                            ->where('paybank.source','=','AR')
+                                            ->where('paybank.paytype','=','BANK');
+                            })
                             ->where('dbacthdr.tillcode',$tilldetl->tillcode)
                             ->where('dbacthdr.tillno',$tilldetl->tillno)
                             ->where('dbacthdr.compcode',session('compcode'))

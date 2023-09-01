@@ -204,7 +204,20 @@ class arenquiryController extends defaultController
                 ->leftjoin('hisdb.pat_mast', function($join) use ($request){
                     $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
                                 ->where('pat_mast.compcode','=',session('compcode'));
-                })->where('dbacthdr.idno','=',$request->idno);
+                })
+                ->leftjoin('debtor.paymode as paycard', function($join) use ($request){
+                    $join = $join->on('paycard.paymode', '=', 'dbacthdr.paymode')
+                                ->where('paycard.compcode','=',session('compcode'))
+                                ->where('paycard.source','=','AR')
+                                ->where('paycard.paytype','=','CARD');
+                })
+                ->leftjoin('debtor.paymode as paybank', function($join) use ($request){
+                    $join = $join->on('paybank.paymode', '=', 'dbacthdr.paymode')
+                                ->where('paybank.compcode','=',session('compcode'))
+                                ->where('paybank.source','=','AR')
+                                ->where('paybank.paytype','=','BANK');
+                })
+                ->where('dbacthdr.idno','=',$request->idno);
         
         $responce = new stdClass();
         $responce->rows = $table->first();
