@@ -910,7 +910,7 @@ $(document).ready(function () {
 			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
 		autowidth:true,
-		multiSort: true,
+		//multiSort: true,
 		viewrecords: true,
 		loadonce:false,
 		sortname:'dbacthdr_idno',
