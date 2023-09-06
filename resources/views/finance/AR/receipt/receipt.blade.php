@@ -358,7 +358,7 @@
 									</div>
 								</div>
 							</div>
-							<div id="g_paycard_c" class='col-md-4 minuspad-15'>
+							<!-- <div id="g_paycard_c" class='col-md-4 minuspad-15'>
 								<table class="table table-bordered">
 									<thead>
 										<tr>
@@ -377,7 +377,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</div> -->
 							<div class='col-md-8'>
 								<div class="form-group">
 							  		<div class='col-md-4'> 
@@ -468,7 +468,7 @@
 									</div>
 								</div>
 							</div>
-							<div id="g_paybank_c" class='col-md-4 minuspad-15'>
+							<!-- <div id="g_paybank_c" class='col-md-4 minuspad-15'>
 								<table class="table table-bordered">
 									<thead>
 										<tr>
@@ -487,7 +487,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</div> -->
 							<div class='col-md-8'>
 								<div class="form-group">
 							  		<div class='col-md-4'> 

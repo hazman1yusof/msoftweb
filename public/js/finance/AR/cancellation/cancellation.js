@@ -30,8 +30,7 @@ $(document).ready(function () {
 	/////////////////////////////////currency/////////////////////////////////
 	var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
 	var mycurrency2 =new currencymode(['#db_outamount', '#db_amount']);
-	var myallocation = new Allocation();	// allocateDialog
-	var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);	// allocateDialog
+	var myallocation = new Allocation();	//Refund
 	var fdl = new faster_detail_load();
 	
 	///////////////////for handling amount based on trantype///////////////////
@@ -115,21 +114,21 @@ $(document).ready(function () {
         }
         mycurrency.formatOn();
     }
-    //////////////////////////////////RC ENDS//////////////////////////////////
+	//////////////////////////////////RC ENDS//////////////////////////////////
+	
 	//////////////////////////////////RF STARTS//////////////////////////////////
 	function amountchgOnRF(){
 		$("input[name='dbacthdr_amount']").on('blur',amountFunctionRF);
 	}
-
+	
 	function amountchgOffRF(){
 		$("input[name='dbacthdr_amount']").off('blur',amountFunctionRF);
 	}
-
+	
 	function amountFunctionRF(event){
 		let outamount = $(event.currentTarget).val();
 		myallocation.outamt = outamount;
 	}
-
 	//////////////////////////////////RF ENDS//////////////////////////////////
     ///////////////////end handling amount based on trantype///////////////////
     
@@ -293,15 +292,19 @@ $(document).ready(function () {
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
 						disableForm('#formdata_RC');
-						disableForm(selrowData('#jqGrid2_RC').dbacthdr_paytype);
+						disableForm(selrowData('#jqGrid_rc').db_paytype);
 						$(this).dialog("option", "buttons",butt2);
 						
-						switch(selrowData('#jqGrid2_RC').dbacthdr_paytype) {
+						// console.log(selrowData('#jqGrid_rc').db_paytype);
+						
+						switch(selrowData('#jqGrid_rc').db_paytype) {
 							case state = '#f_tab-card':
-								refreshGrid("#g_paymodecard",urlParam3_rc);
+								urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								refreshGrid("#g_paymodecard",urlParam_card);
 								break;
 							case state = '#f_tab-debit':
-								refreshGrid("#g_paymodebank",urlParam2_rc);
+								urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								refreshGrid("#g_paymodebank",urlParam_bank);
 								break;
 							case state = '#f_tab-forex':
 								refreshGrid("#g_forex",urlParam4_rc);
@@ -317,7 +320,7 @@ $(document).ready(function () {
 				if(oper!='add'){
 					// dialog_logintillcode.check(errorField);
 					// dialog_payercode.check(errorField);
-					showingForCash(selrowData("#jqGrid2_RC").dbacthdr_amount,selrowData("#jqGrid2_RC").dbacthdr_outamount,selrowData("#jqGrid2_RC").dbacthdr_RCCASHbalance,selrowData("#jqGrid2_RC").dbacthdr_RCFinalbalance,selrowData("#jqGrid2_RC").dbacthdr_paytype);
+					showingForCash(selrowData("#jqGrid_rc").db_amount,selrowData("#jqGrid_rc").db_outamount,selrowData("#jqGrid_rc").db_RCCASHbalance,selrowData("#jqGrid_rc").db_RCFinalbalance,selrowData("#jqGrid_rc").db_paytype);
 				}
 			},
 			close: function( event, ui ) {
@@ -340,35 +343,19 @@ $(document).ready(function () {
 			buttons :butt1,
 		});
 	
-	$("#allocateDialog").dialog({
+	$("#dialog_allocation").dialog({
 		autoOpen: false,
 		width: 9/10 * $(window).width(),
 		modal: true,
 		open: function(){
-			disableForm('#formallo');
-			dialog_allodebtor.off();
-			$("#gridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
+			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
 			grid='#jqGrid_rc';
-			$('#AlloDtype').val(selrowData(grid).db_trantype);
-			$('#AlloDtype2').html(selrowData(grid).db_PymtDescription);
-			$('#AlloDno').val(selrowData(grid).db_recptno);
-			$('#AlloDebtor').val(selrowData(grid).db_payercode);
-			$('#AlloDebtor2').html(selrowData(grid).db_payername);
-			$('#AlloPayer').val(selrowData(grid).db_payercode);
-			$('#AlloPayer2').html(selrowData(grid).db_payername);
-			$('#AlloAmt').val(selrowData(grid).db_amount);
-			$('#AlloOutamt').val(selrowData(grid).db_outamount);
-			$('#AlloBalance').val(selrowData(grid).db_outamount);
-			$('#AlloTotal').val(0);
-			$('#AlloAuditno').val(selrowData(grid).db_auditno);
-			urlParamAlloc.filterVal[0]=selrowData(grid).db_payercode;
-			console.log(selrowData(grid).db_auditno);
-			refreshGrid("#gridAlloc",urlParamAlloc);
+			urlParamAlloc.idno=selrowData(grid).db_idno;
+			urlParamAlloc.auditno=selrowData(grid).db_auditno;
+			refreshGrid("#jqGridAlloc",urlParamAlloc);
 			parent_close_disabled(true);
-			myallocation.renewAllo(selrowData(grid).db_outamount);
 		},
 		close: function( event, ui ){
-			dialog_allodebtor.off();
 			parent_close_disabled(false);
 		},
 		buttons: [
@@ -393,7 +380,7 @@ $(document).ready(function () {
 			// 		}).fail(function(data) {
 			// 		}).success(function(data){
 			// 			refreshGrid('#jqGrid', urlParam);
-			// 			$('#allocateDialog').dialog('close');
+			// 			$('#dialog_allocation').dialog('close');
 			// 		});
 			// 	}
 			// },
@@ -405,79 +392,79 @@ $(document).ready(function () {
 		],
 	});
 	//////////////////////////////////RC ENDS//////////////////////////////////
-
+	
 	/////////////////////////////////RF STARTS/////////////////////////////////
 	$("#dialogForm_RF")
-	.dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			$("#gridAllo").jqGrid ('setGridWidth', $("#gridAllo_c")[0].clientWidth);
-			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-			parent_close_disabled(true);
-			amountchgOnRF();
-			switch(oper) {
-				case state = 'add':
-					mycurrency.formatOnBlur();
-					$('#dbacthdr_paytype').val(tabform);
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata_RF');
-					enableForm('.tab-content');
-					rdonly('#formdata_RF');
-					rdonly(tabform);
-					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata_RF');
-					frozeOnEdit("#dialogForm_RF");
-					rdonly('#formdata_RF');
-					break;
-				case state = 'view':
-					mycurrency.formatOn();
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#formdata_RF');
-					disableForm(selrowData('#jqGrid_RF').dbacthdr_paytype);
-					$(this).dialog("option", "buttons",butt2);
-
-					switch(selrowData('#jqGrid_RF').dbacthdr_paytype) {
-						case state = '#f_tab-card':
-							refreshGrid("#g_paymodecard",urlParam3_rc);
-							break;
-						case state = '#f_tab-debit':
-							refreshGrid("#g_paymodebank",urlParam2_rc);
-							break;
-					}
-				
-					break;
-			}
-			if(oper!='view'){
-				dialog_payercode.on();
-				myallocation.renewAllo(0);
-			}
-			if(oper!='add'){
-				dialog_payercode.check(errorField);
-				showingForCash(selrowData("#jqGrid_RF").dbacthdr_amount,selrowData("#jqGrid_RF").dbacthdr_outamount,selrowData("#jqGrid_RF").dbacthdr_RCCASHbalance,selrowData("#jqGrid_RF").dbacthdr_RCFinalbalance,selrowData("#jqGrid_RF").dbacthdr_paytype);
-			}
-		},
-		close: function( event, ui ) {
-			amountchgOffRF();
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata_RF');
-			emptyFormdata(errorField, "#f_tab-cash");
-			emptyFormdata(errorField, "#f_tab-card");
-			emptyFormdata(errorField, "#f_tab-cheque");
-			emptyFormdata(errorField, "#f_tab-debit");
-			$('.alert').detach();
-			$("#formdata_RF a").off();
-			$("#refresh_jqGrid").click();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
-		buttons :butt1,
-	  });
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				$("#gridAllo").jqGrid ('setGridWidth', $("#gridAllo_c")[0].clientWidth);
+				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+				parent_close_disabled(true);
+				amountchgOnRF();
+				switch(oper) {
+					case state = 'add':
+						mycurrency.formatOnBlur();
+						$('#dbacthdr_paytype').val(tabform);
+						$( this ).dialog( "option", "title", "Add" );
+						enableForm('#formdata_RF');
+						enableForm('.tab-content');
+						rdonly('#formdata_RF');
+						rdonly(tabform);
+						break;
+					case state = 'edit':
+						$( this ).dialog( "option", "title", "Edit" );
+						enableForm('#formdata_RF');
+						frozeOnEdit("#dialogForm_RF");
+						rdonly('#formdata_RF');
+						break;
+					case state = 'view':
+						mycurrency.formatOn();
+						$( this ).dialog( "option", "title", "View" );
+						disableForm('#formdata_RF');
+						disableForm(selrowData('#jqGrid_RF').dbacthdr_paytype);
+						$(this).dialog("option", "buttons",butt2);
+					
+						switch(selrowData('#jqGrid_RF').dbacthdr_paytype) {
+							case state = '#f_tab-card':
+								refreshGrid("#g_paymodecard",urlParam3_rc);
+								break;
+							case state = '#f_tab-debit':
+								refreshGrid("#g_paymodebank",urlParam2_rc);
+								break;
+						}
+					
+						break;
+				}
+				if(oper!='view'){
+					dialog_payercode.on();
+					myallocation.renewAllo(0);
+				}
+				if(oper!='add'){
+					dialog_payercode.check(errorField);
+					showingForCash(selrowData("#jqGrid_RF").dbacthdr_amount,selrowData("#jqGrid_RF").dbacthdr_outamount,selrowData("#jqGrid_RF").dbacthdr_RCCASHbalance,selrowData("#jqGrid_RF").dbacthdr_RCFinalbalance,selrowData("#jqGrid_RF").dbacthdr_paytype);
+				}
+			},
+			close: function( event, ui ) {
+				amountchgOffRF();
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata_RF');
+				emptyFormdata(errorField, "#f_tab-cash");
+				emptyFormdata(errorField, "#f_tab-card");
+				emptyFormdata(errorField, "#f_tab-cheque");
+				emptyFormdata(errorField, "#f_tab-debit");
+				$('.alert').detach();
+				$("#formdata_RF a").off();
+				$("#refresh_jqGrid").click();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",butt1);
+				}
+			},
+			buttons :butt1,
+		});
 	
 	///allocation///
 	var urlParamAllo={
@@ -489,19 +476,19 @@ $(document).ready(function () {
 	$("#gridAllo").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true}, 
-			{ label: 'Document No', name: 'auditno', width: 40},
-			{ label: 'Document Date', name: 'entrydate', width: 50},
-			{ label: 'MRN', name: 'mrn', width: 50},
-			{ label: 'EpisNo', name: 'episno', width: 50},
-			{ label: 'Src', name: 'source', width: 20, hidden: true}, 
-			{ label: 'Type', name: 'trantype', width: 20 , hidden: true},
-			{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true},
-			// { label: 'Batchno', name: 'NULL', width: 40},
-			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50},
-			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50},
-			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center'},
-			{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true},
+			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true }, 
+			{ label: 'Document No', name: 'auditno', width: 40 },
+			{ label: 'Document Date', name: 'entrydate', width: 50 },
+			{ label: 'MRN', name: 'mrn', width: 50 },
+			{ label: 'EpisNo', name: 'episno', width: 50 },
+			{ label: 'Src', name: 'source', width: 20, hidden: true }, 
+			{ label: 'Type', name: 'trantype', width: 20 , hidden: true },
+			{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true },
+			// { label: 'Batchno', name: 'NULL', width: 40 },
+			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50 },
+			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50 },
+			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center' },
+			{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true },
 			{ label: 'Balance', name: 'amtbal', width: 50,formatter:'currency',formatoptions:{prefix: ""} },
 		],
 		autowidth: true,
@@ -540,13 +527,126 @@ $(document).ready(function () {
 					myallocation.addAllo(idno,' ',0);
 				}
 			});
-
+			
 			delay(function(){
 				//$("#alloText").focus();//AlloTotal
 				myallocation.retickallotogrid();
 			}, 100 );
 		},
 	});
+	
+	AlloSearch("#gridAllo",urlParamAllo);
+	function AlloSearch(grid,urlParam){
+		$("#alloText").on( "keyup", function() {
+			delay(function(){
+				search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+			}, 500 );
+		});
+		
+		$("#alloCol").on( "change", function() {
+			search(grid,$("#alloText").val(),$("#alloCol").val(),urlParam);
+		});
+	}
+	
+	function startEdit() {
+		var ids = $("#gridAllo").jqGrid('getDataIDs');
+		
+		for (var i = 0; i < ids.length; i++) {
+			var entrydate = $("#gridAllo").jqGrid ('getRowData', ids[i]).entrydate;
+			$("#gridAllo").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
+			$("#gridAllo").jqGrid('editRow',ids[i]);
+		}
+	};
+	
+	function Allocation(){
+		this.arrayAllo=[];
+		this.alloBalance=0;
+		this.alloTotal=0;
+		this.outamt=0;
+		
+		this.renewAllo = function(os){
+			this.arrayAllo.length = 0;
+			this.alloTotal=0;
+			this.alloBalance=parseFloat(os);
+			this.outamt=parseFloat(os);
+			
+			this.updateAlloField();
+		}
+		this.addAllo = function(idno,paid,bal){
+			var obj=getlAlloFromGrid(idno);
+			obj.amtpaid = paid;
+			obj.amtbal = bal;
+			var fieldID="#"+idno+"_amtpaid";
+			var self=this;
+			
+			this.arrayAllo.push({idno:idno,obj:obj});
+			
+			$(fieldID).on('change',[idno,self.arrayAllo],onchangeField);
+			
+			this.updateAlloField();
+		}
+		this.deleteAllo = function(idno){
+			var self=this;
+			$.each(self.arrayAllo, function( index, obj ) {
+				if(obj.idno==idno){
+					self.arrayAllo.splice(index, 1);
+					return false;
+				}
+			});
+		}
+		this.alloInArray = function(idno){
+			var retval=false;
+			$.each(this.arrayAllo, function( index, obj ) {
+				if(obj.idno==idno){
+					retval=true;
+					return false;//bila return false, skip .each terus pegi return retval
+				}
+			});
+			return retval;
+		}
+		this.retickallotogrid = function(){
+			var self=this;
+			console.log(this);
+			$.each(this.arrayAllo, function( index, obj ) {
+				$("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
+				if(obj.obj.amtpaid != " "){
+					$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
+					setbal(obj.idno,obj.obj.amtbal);
+				}
+			});
+		}
+		this.updateAlloField = function(){
+			var self=this;
+			this.alloTotal = 0;
+			$.each(this.arrayAllo, function( index, obj ) {
+				if(obj.obj.amtpaid != " "){
+					self.alloTotal += parseFloat(obj.obj.amtpaid);
+				}
+			});
+			this.alloBalance = this.outamt - this.alloTotal;
+			
+			$("input[name=dbacthdr_allocamt]").val(this.alloTotal);
+			$("#AlloBalance").val(this.alloBalance);
+			if(this.alloBalance<0){
+				$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
+				alert("Balance cannot in negative values");
+			}else{
+				$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
+			}
+			allocurrency.formatOn();
+		}
+	}
+	
+	function setbal(idno,balance){
+		$("#gridAllo").jqGrid('setCell', idno, 'amtbal', balance);
+	}
+	
+	$("#gridAllo").jqGrid('navGrid','#pagerAllo',{
+		view:false,edit:false,add:false,del:false,search:false,
+		beforeRefresh: function(){
+			refreshGrid("#gridAllo",urlParamAllo);
+		},
+	})
 	//////////////////////////////////RF ENDS//////////////////////////////////
     /////////////////////////////////end dialog/////////////////////////////////
     
@@ -590,16 +690,17 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
 			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 12 },
+			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Status', name: 'db_recstatus', width: 10 },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
@@ -610,11 +711,11 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
-			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: ' ', width: 15, classes: 'wrap', formatter: buttonformatter },
-			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -702,16 +803,17 @@ $(document).ready(function () {
 		// colModel: $("#jqGrid_rc").jqGrid('getGridParam','colModel'),
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
 			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Amount', name: 'db_amount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Outamount', name: 'db_outamount', width: 12, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 12 },
+			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Status', name: 'db_recstatus', width: 10 },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
@@ -722,11 +824,11 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
-			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			// { label: ' ', width: 15, classes: 'wrap', formatter: buttonformatter },
-			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', hidden: true },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -802,70 +904,70 @@ $(document).ready(function () {
 	
 	/////////////////////////////////////parameter for jqGrid_rf url///////////////////////////////////////
 	var urlParam_rf={
-		action:'get_jqGrid_rf',
+		action: 'get_jqGrid_rf',
 		url: './refund/table',
-		field:''
+		field: ''
 	}
-
+	
 	var saveParam_RF={	
-		action:'refund_save',
+		action: 'refund_save',
 		url: 'refund/form',
-		oper:'add',
-		field:'',
-		table_name:'debtor.dbacthdr',
-		table_id:'auditno',
-		fixPost:true,
+		oper: 'add',
+		field: '',
+		table_name: 'debtor.dbacthdr',
+		table_id: 'auditno',
+		fixPost: true,
 		skipduplicate: true,
-		returnVal:true,
-		sysparam:{source:'PB',trantype:'RF',useOn:'auditno'}  /////PB, RF, pValue +1
+		returnVal: true,
+		sysparam: {source:'PB',trantype:'RF',useOn:'auditno'}	/////PB, RF, pValue +1
 	};
-
+	
 	//////////////////////////////////////////////jqGrid_rf/////////////////////////////////////////////////
 	$("#jqGrid_rf").jqGrid({
 		datatype: "local",
-		 colModel: [
-			{label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
-			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true},
-			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50, hidden: true},
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30}, //tunjuk
-			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 30}, //tunjuk
-			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
-			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
-			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
-			{label: 'currency', name: 'dbacthdr_currency', hidden: true},
-			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
-			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
-			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true},
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},
-			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
-			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
-			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
-			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
-			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
-			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70, hidden: true}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
-			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
-			{label: 'units', name: 'dbacthdr_unit', hidden: true},
-			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
-			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
-			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
-			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
-			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
-			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
-			{label: 'paycard_description', name: 'paycard_description', hidden: true },
-			{label: 'paybank_description', name: 'paybank_description', hidden: true },
+		colModel: [
+			{ label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
+			{ label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true },
+			{ label: 'source', name: 'dbacthdr_source', hidden: true, checked:true },
+			{ label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50, hidden: true },
+			{ label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30 }, //tunjuk
+			{ label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 30 }, //tunjuk
+			{ label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true },
+			{ label: 'conversion', name: 'dbacthdr_conversion', hidden: true },
+			{ label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true },
+			{ label: 'currency', name: 'dbacthdr_currency', hidden: true },
+			{ label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true },
+			{ label: 'tillno', name: 'dbacthdr_tillno', hidden: true },
+			{ label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true },
+			{ label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
+			{ label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, hidden: true },
+			{ label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true },
+			{ label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true },
+			{ label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true },
+			{ label: 'Payer', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true },
+			{ label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true },
+			{ label: 'remark', name: 'dbacthdr_remark', hidden: true },
+			{ label: 'authno', name: 'dbacthdr_authno', hidden: true },
+			{ label: 'epistype', name: 'dbacthdr_epistype', hidden: true },
+			{ label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true },
+			{ label: 'reference', name: 'dbacthdr_reference', hidden: true },
+			{ label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70, hidden: true }, //tunjuk
+			{ label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{ label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{ label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true },
+			{ label: 'expdate', name: 'dbacthdr_expdate', hidden: true },
+			{ label: 'rate', name: 'dbacthdr_rate', hidden: true },
+			{ label: 'units', name: 'dbacthdr_unit', hidden: true },
+			{ label: 'invno', name: 'dbacthdr_invno', hidden: true },
+			{ label: 'paytype', name: 'dbacthdr_paytype', hidden: true },
+			{ label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true },
+			{ label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true },
+			{ label: 'Status', name: 'dbacthdr_recstatus',width: 50 }, //tunjuk
+			{ label: 'idno', name: 'dbacthdr_idno', hidden: true },
+			{ label: 'paycard_description', name: 'paycard_description', hidden: true },
+			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
 		autowidth:true,
 		multiSort: true,
@@ -897,7 +999,7 @@ $(document).ready(function () {
 			calc_jq_height_onchange("jqGrid_rf");
 		}	
 	});
-
+	
 	//////////////////////////////////////////////jqGridPager_rd//////////////////////////////////////////////
 	$("#jqGrid_rf").jqGrid('navGrid','#jqGridPager_rf',{	
 		view:false,edit:false,add:false,del:false,search:false,
@@ -918,245 +1020,55 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid_rf",urlParam_rf);
 		},
 	});
-
+	
 	////////////////////////////////////////////////btn_alloc////////////////////////////////////////////////
 	var urlParamAlloc={
-		action: 'get_table_default',
-		url: 'util/get_table_default',
-		field: '',
-		table_name: 'debtor.dbacthdr',
-		table_id: 'idno',
-		sort_idno: true,
-		filterCol: ['payercode','source','recstatus','outamount'],
-		filterVal: ['','PB','POSTED','>.0'],
-		WhereInCol: ['trantype'],
-		WhereInVal: [['DN','IN']]
-	}
-	
-	$("#gridAlloc").jqGrid({
-		datatype: "local",
-		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, hidden: true },
-			{ label: 'Document No', name: 'auditno', width: 40 },
-			{ label: 'Document Date', name: 'entrydate', width: 50 },
-			{ label: 'MRN', name: 'mrn', width: 50 },
-			{ label: 'EpisNo', name: 'episno', width: 50 },
-			{ label: 'Src', name: 'source', width: 20, hidden: true },
-			{ label: 'Type', name: 'trantype', width: 20 , hidden: true },
-			{ label: 'Line No', name: 'lineno_', width: 20 , hidden: true },
-			// { label: 'Batchno', name: 'NULL', width: 40 },
-			{ label: 'Amount', name: 'amount',formatter:'currency', width: 50 },
-			{ label: 'O/S Amount', name: 'outamount',formatter:'currency', width: 50 },
-			{ label: ' ', name: 'tick', width: 20, editable: true, edittype:"checkbox", align:'center' },
-			{ label: 'Amount Paid', name: 'amtpaid', width: 50, editable: true },
-			{ label: 'Balance', name: 'amtbal', width: 50,formatter:'currency',formatoptions:{prefix: ""} },
-		],
-		autowidth: true,
-		viewrecords: true,
-		multiSort: true,
-		height: 400,
-		scroll:true,
-		rowNum: 9,
-		pager: "#pagerAlloc",
-		onSelectRow: function(rowid){
-		},
-		onPaging: function(button){
-		},
-		gridComplete: function(rowid){
-			startEdit();
-			$("#gridAlloc_c input[type='checkbox']").on('click',function(){
-				var idno = $(this).attr("rowid");
-				var rowdata = $("#gridAlloc").jqGrid ('getRowData', idno);
-				if($(this).prop("checked") == true){
-					$("#"+idno+"_amtpaid").val(rowdata.outamount).addClass( "valid" ).removeClass( "error" );
-					setbal(idno,0);
-					if(!myallocation.alloInArray(idno)){
-						myallocation.addAllo(idno,rowdata.outamount,0);
-					}else{
-						$("#"+idno+"_amtpaid").trigger("change");
-					}
-				}else{
-					$("#"+idno+"_amtpaid").val(0).addClass( "valid" ).removeClass( "error" );
-					setbal(idno,rowdata.outamount);
-					$("#"+idno+"_amtpaid").trigger("change");
-				}
-			});
-			$("#gridAlloc_c input[type='text'][rowid]").on('click',function(){
-				var idno = $(this).attr("rowid");
-				if(!myallocation.alloInArray(idno)){
-					myallocation.addAllo(idno,' ',0);
-				}
-			});
-			
-			delay(function(){
-				// $("#allocText").focus();//AlloTotal
-				myallocation.retickallotogrid();
-			}, 100 );
-			
-			calc_jq_height_onchange("gridAlloc");
-		},
-	});
-	
-	AllocSearch("#gridAlloc",urlParamAlloc);
-	function AllocSearch(grid,urlParam){
-		$("#allocText").on( "keyup", function() {
-			delay(function(){
-				search(grid,$("#allocText").val(),$("#allocCol").val(),urlParam);
-			}, 500 );
-		});
-		
-		$("#allocCol").on( "change", function() {
-			search(grid,$("#allocText").val(),$("#allocCol").val(),urlParam);
-		});
-	}
-	
-	function startEdit() {
-		var ids = $("#gridAlloc").jqGrid('getDataIDs');
-		
-		for (var i = 0; i < ids.length; i++) {
-			var entrydate = $("#gridAlloc").jqGrid ('getRowData', ids[i]).entrydate;
-			$("#gridAlloc").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
-			$("#gridAlloc").jqGrid('editRow',ids[i]);
-		}
+		action: 'get_alloc',
+		url: './arenquiry/table',
+		idno: '',
+		auditno: ''
 	};
 	
-	addParamField('#gridAlloc',false,urlParamAlloc,['tick','amtpaid','amtbal']);
-	
-	function Allocation(){
-		this.arrayAllo=[];
-		this.alloBalance=0;
-		this.alloTotal=0;
-		this.outamt=0;
-		
-		this.renewAllo = function(os){
-			this.arrayAllo.length = 0;
-			this.alloTotal=0;
-			this.alloBalance=parseFloat(os);
-			this.outamt=parseFloat(os);
+	$("#jqGridAlloc").jqGrid({
+		datatype: "local",
+		editurl: "./arenquiry/form",
+		colModel: [
+			{ label: 'compcode', name: 'compcode', width: 20, hidden:true },
+			{ label: 'lineno_', name: 'lineno_', width: 20, hidden:true },
+			{ label: 'idno', name: 'idno', width: 20, hidden:true },
+			{ label: 'System Auto No.', name: 'sysAutoNo', width: 35, classes: 'wrap' },
+			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero, hidden: true },
+			{ label: 'Debtor', name: 'debtorcode', width: 40, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Payer', name: 'payercode', width: 40, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Amount', name: 'amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Document No', name: 'recptno', width: 35, align: 'right' },
+			{ label: 'Paymode', name: 'paymode', width: 30, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Alloc Date', name: 'allocdate', width: 30, formatter: dateFormatter, unformat: dateUNFormatter },
+			{ label: 'MRN', name: 'mrn', width: 15, align: 'right', classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Episno', name: 'episno', width: 15, align: 'right' },
+			{ label: ' ', width: 25, classes: 'wrap', formatter: btncancelformatter },
+		],
+		shrinkToFit: true,
+		autowidth:true,
+		multiSort: true,
+		viewrecords: true,
+		rowNum: 30,
+		pager: "#jqGridPagerAlloc",
+		loadComplete: function(data){
+			calc_jq_height_onchange("jqGridAlloc");
+			urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
 			
-			this.updateAlloField();
-		}
-		this.addAllo = function(idno,paid,bal){
-			var obj=getlAlloFromGrid(idno);
-			obj.amtpaid = paid;
-			obj.amtbal = bal;
-			var fieldID="#"+idno+"_amtpaid";
-			var self=this;
-			
-			this.arrayAllo.push({idno:idno,obj:obj});
-			
-			$(fieldID).on('change',[idno,self.arrayAllo],onchangeField);
-			
-			this.updateAlloField();
-		}
-		function onchangeField(obj){
-			var idno = obj.handleObj.data[0];
-			var arrayAllo = obj.handleObj.data[1];
-			var alloIndex = getIndex(arrayAllo,idno);
-			var outamt = $("#gridAlloc").jqGrid('getRowData', idno).outamount;
-			var newamtpaid = parseFloat(obj.target.value);
-			newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
-			if(parseFloat(newamtpaid)>parseFloat(outamt)){
-				alert("Amount paid exceed O/S amount");
-				$("#"+idno+"_amtpaid").addClass( "error" ).removeClass( "valid" );
-				obj.target.focus();
-				return false;
-			}
-			$("#"+idno+"_amtpaid").removeClass( "error" ).addClass( "valid" );
-			var balance = outamt - newamtpaid;
-			
-			obj.target.value = numeral(newamtpaid).format('0,0.00');;
-			arrayAllo[alloIndex].obj.amtpaid = newamtpaid;
-			arrayAllo[alloIndex].obj.amtbal = balance;
-			setbal(idno,balance);
-			
-			myallocation.updateAlloField();
-		}
-		function getIndex(array,idno){
-			var retval=0;
-			$.each(array, function( index, obj ) {
-				if(obj.idno==idno){
-					retval=index;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-			return retval;
-		}
-		this.deleteAllo = function(idno){
-			var self=this;
-			$.each(self.arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					self.arrayAllo.splice(index, 1);
-					return false;
-				}
-			});
-		}
-		this.alloInArray = function(idno){
-			var retval=false;
-			$.each(this.arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					retval=true;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-			return retval;
-		}
-		this.retickallotogrid = function(){
-			var self=this;
-			$.each(this.arrayAllo, function( index, obj ) {
-				$("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
-				if(obj.obj.amtpaid != " "){
-					$("#"+obj.idno+"_amtpaid").val(obj.obj.amtpaid).removeClass( "error" ).addClass( "valid" );
-					setbal(obj.idno,obj.obj.amtbal);
-				}
-			});
-		}
-		this.updateAlloField = function(){
-			var self=this;
-			this.alloTotal = 0;
-			$.each(this.arrayAllo, function( index, obj ) {
-				if(obj.obj.amtpaid != " "){
-					self.alloTotal += parseFloat(obj.obj.amtpaid);
-				}
-			});
-			this.alloBalance = this.outamt - this.alloTotal;
-			
-			$("#AlloTotal").val(this.alloTotal);
-			$("#AlloBalance").val(this.alloBalance);
-			if(this.alloBalance<0){
-				$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
-				alert("Balance cannot in negative values");
-			}else{
-				$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
-			}
-			allocurrency.formatOn();
-		}
-		
-		function updateAllo(idno,amtpaid,arrayAllo){
-			$.each(arrayAllo, function( index, obj ) {
-				if(obj.idno==idno){
-					obj.obj.amtpaid=amtpaid;
-					return false;//bila return false, skip .each terus pegi return retval
-				}
-			});
-		}
-		
-		function getlAlloFromGrid(idno){
-			var temp=$("#gridAlloc").jqGrid ('getRowData', idno);
-			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
-		}
-	}
-	
-	function setbal(idno,balance){
-		$("#gridAlloc").jqGrid('setCell', idno, 'amtbal', balance);
-	}
-	
-	$("#gridAlloc").jqGrid('navGrid','#pagerAlloc',{
-		view:false,edit:false,add:false,del:false,search:false,
-		beforeRefresh: function(){
-			refreshGrid("#gridAlloc",urlParamAlloc);
+			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
 		},
-	})
+		gridComplete: function(){
+			$("#jqGridAlloc").setSelection($("#jqGridAlloc").getDataIDs()[0]); // highlight 1st record
+			init_btncancel();
+			fdl.set_array().reset();
+		},
+	});
+	jqgrid_label_align_right("#jqGridAlloc");
 	//////////////////////////////////////////////end btn_alloc//////////////////////////////////////////////
 	
 	//////////////////////////////////////////////////start//////////////////////////////////////////////////
@@ -1238,6 +1150,16 @@ $(document).ready(function () {
 		filterVal: ['AR','BANK','session.compcode'],
 	}
 	
+	var urlParam_bank={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','BANK','session.compcode',''],
+	}
+	
 	$("#g_paymodebank").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -1276,6 +1198,16 @@ $(document).ready(function () {
 		table_id: 'paymode',
 		filterCol: ['source','paytype','compcode'],
 		filterVal: ['AR','CARD','session.compcode'],
+	}
+	
+	var urlParam_card={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','CARD','session.compcode',''],
 	}
 	
 	$("#g_paymodecard").jqGrid({
@@ -1381,7 +1313,7 @@ $(document).ready(function () {
 	
 	function buttonformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`'>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-paytype='`+rowObject.db_paytype+`' data-paymode='`+rowObject.db_paymode+`'>`
 			retbut += 	    `Detail`
 			retbut += 	  `</button>&nbsp;`
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
@@ -1391,10 +1323,26 @@ $(document).ready(function () {
 	}
 	
 	function init_btn(){
+		// if(selrowData('#jqGrid_rc').db_amount !== selrowData('#jqGrid_rc').db_outamount){
+		// 	$('button.btn_detail').prop('disabled', true);
+		// }else{
+		// 	$('button.btn_detail').prop('disabled', false);
+		// }
+		
 		$('button.btn_detail').on('click',function(e){
 			oper='view';
 			var idno = $(this).data('idno');
+			var paytype = $(this).data('paytype');
+			var paymode = $(this).data('paymode');
 			enabledPill();
+			
+			if(paytype == "#F_TAB-DEBIT"){
+				urlParam_bank.filterVal[3]=paymode;
+				refreshGrid("#g_paymodebank",urlParam_bank);
+			}else if(paytype == "#F_TAB-CARD"){
+				urlParam_card.filterVal[3]=paymode;
+				refreshGrid("#g_paymodecard",urlParam_card);
+			}
 			
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
 			getdata('RC',idno);
@@ -1404,7 +1352,50 @@ $(document).ready(function () {
 		$('button.btn_alloc').on('click',function(e){
 			var idno = $(this).data('idno');
 			$("#jqGrid_rc").jqGrid('setSelection', idno);
-			$("#allocateDialog").dialog("open");
+			$("#dialog_allocation").dialog("open");
+		});
+	}
+	
+	function btncancelformatter(cellvalue, options, rowObject){
+		var retbut = `<div class="mini ui icon buttons"`+rowObject.idno+`>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_cancel" data-idno='`+rowObject.idno+`'>`
+			retbut += 	    `Cancel Alloc`
+			retbut += 	  `</button></div>`;
+		return retbut;
+	}
+	
+	function init_btncancel(){
+		$('button.btn_cancel').on('click',function(e){
+			var idno = $(this).data('idno');
+			
+			bootbox.confirm({
+				message: "Are you sure you want to cancel this allocation?",
+				buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
+				callback: function (result) {
+					if(result == true){
+						var urlparam={
+							oper: 'cancel_alloc',
+							idno: idno,
+						}
+						
+						var postobj={
+							_token : $('#csrf_token').val(),
+						};
+						
+						$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+							
+						},'json').fail(function(data) {
+							alert('there is an error');
+						}).success(function(data){
+							refreshGrid("#jqGridAlloc",urlParamAlloc);
+							refreshGrid('#jqGrid_rc', urlParam_rcpt);
+						});
+					}else{
+						refreshGrid("#jqGridAlloc",urlParamAlloc);
+						refreshGrid('#jqGrid_rc', urlParam_rcpt);
+					}
+				}
+			});
 		});
 	}
 	//////////////////////////////////////////////////end//////////////////////////////////////////////////
@@ -1420,8 +1411,15 @@ $(document).ready(function () {
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
+			case 'db_paymode':field=['paymode','description'];table="debtor.paymode";case_='db_paymode';break;
 			case 'db_mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='db_mrn';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			
+			// jqGridAlloc
+			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
+			case 'payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='payercode';break;
+			case 'paymode':field=['paymode','description'];table="debtor.paymode";case_='paymode';break;
+			case 'mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='mrn';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
@@ -1696,43 +1694,6 @@ $(document).ready(function () {
 	);
 	dialog_mrn.makedialog(true);
 	
-	var dialog_allodebtor = new ordialog(
-		'AlloDebtor','debtor.debtormast','#AlloDebtor',errorField,
-		{
-			colModel:[
-				{ label:'Code',name:'debtorcode',width:100,classes:'pointer',canSearch:true,or_search:true },
-				{ label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true },
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus'],
-				filterVal:['session.compcode','ACTIVE']
-			},
-			ondblClickRow:function(){
-				let data=selrowData('#'+dialog_allodebtor.gridname);
-				$('#AlloDebtor').val(data.debtorcode);
-				urlParamAlloc.filterVal[0]=data.debtorcode;
-				refreshGrid("#gridAlloc",urlParamAlloc);
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					// $('#apacthdr_actdate').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},{
-			title:"Select Debtor",
-			open: function(){
-				dialog_allodebtor.urlParam.filterCol=['compcode','recstatus'],
-				dialog_allodebtor.urlParam.filterVal=['session.compcode','ACTIVE']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_allodebtor.makedialog(true);
-	
 	//////////////////////////////////RC//////////////////////////////////
 	$( "#divMrnEpisode" ).hide();
 	amountchgOn(true);
@@ -1766,7 +1727,6 @@ $(document).ready(function () {
 	$("#jqGrid_rc").jqGrid ('setGridWidth', Math.floor($("#jqGrid_cancel_c")[0].offsetWidth-$("#jqGrid_cancel_c")[0].offsetLeft-30));
 	$("#jqGrid_rd").jqGrid ('setGridWidth', Math.floor($("#jqGrid_cancel_c")[0].offsetWidth-$("#jqGrid_cancel_c")[0].offsetLeft-30));
 	$("#jqGrid_rf").jqGrid ('setGridWidth', Math.floor($("#jqGrid_cancel_c")[0].offsetWidth-$("#jqGrid_cancel_c")[0].offsetLeft-30));
-
 });
 
 function calc_jq_height_onchange(jqgrid){
@@ -1884,7 +1844,7 @@ function disabledPill(){
 	$('#dialogForm_RC .nav li').not('.active').addClass('disabled');
 	$('#dialogForm_RC .nav li').not('.active').find('a').removeAttr("data-toggle");
 	$('#dialogForm_RC .nav li').not('.active').hide();
-
+	
 	$('#dialogForm_RF .nav li').not('.active').addClass('disabled');
 	$('#dialogForm_RF .nav li').not('.active').find('a').removeAttr("data-toggle");
 	$('#dialogForm_RF .nav li').not('.active').hide();
@@ -1894,7 +1854,7 @@ function enabledPill(){
 	$('#dialogForm_RC .nav li').removeClass('disabled');
 	$('#dialogForm_RC .nav li').find('a').attr("data-toggle","tab");
 	$('#dialogForm_RC .nav li').show();
-
+	
 	$('#dialogForm_RF .nav li').removeClass('disabled');
 	$('#dialogForm_RF .nav li').find('a').attr("data-toggle","tab");
 	$('#dialogForm_RF .nav li').show();
