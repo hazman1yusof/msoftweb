@@ -258,39 +258,49 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				dialog_payercode.off();
 				
+				$('.nav-tabs a').on('shown.bs.tab', function(e){
+					tabform=$(this).attr('form');
+					rdonly(tabform);
+					handleAmount();
+					$('#dbacthdr_paytype').val(tabform);
+					switch(tabform) {
+						case state = '#f_tab-cash':
+							getcr('CASH');
+							break;
+						case state = '#f_tab-card':
+							if(oper="view"){
+								urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								refreshGrid("#g_paymodecard",urlParam_card);
+							}else{
+								refreshGrid("#g_paymodecard",urlParam3_rc);
+							}
+							break;
+						case state = '#f_tab-cheque':
+							getcr('cheque');
+							break;
+						case state = '#f_tab-debit':
+							if(oper="view"){
+								urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								refreshGrid("#g_paymodebank",urlParam_bank);
+							}else{
+								refreshGrid("#g_paymodebank",urlParam2_rc);
+							}
+							break;
+						case state = '#f_tab-forex':
+							refreshGrid("#g_forex",urlParam4_rc);
+							break;
+					}
+					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+				});
+				
 				$("#sysparam").jqGrid ('setGridWidth', Math.floor($("#sysparam_c")[0].offsetWidth));
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 				$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 				switch(oper) {
 					case state = 'add':
-						$('.nav-tabs a').on('shown.bs.tab', function(e){
-							tabform=$(this).attr('form');
-							rdonly(tabform);
-							handleAmount();
-							$('#dbacthdr_paytype').val(tabform);
-							switch(tabform) {
-								case state = '#f_tab-cash':
-									getcr('CASH');
-									break;
-								case state = '#f_tab-card':
-									refreshGrid("#g_paymodecard",urlParam3_rc);
-									break;
-								case state = '#f_tab-cheque':
-									getcr('cheque');
-									break;
-								case state = '#f_tab-debit':
-									refreshGrid("#g_paymodebank",urlParam2_rc);
-									break;
-								case state = '#f_tab-forex':
-									refreshGrid("#g_forex",urlParam4_rc);
-									break;
-							}
-							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-						});
-						
 						mycurrency.formatOnBlur();
 						$('#dbacthdr_paytype').val(tabform);
 						$( this ).dialog( "option", "title", "Add" );
@@ -306,42 +316,11 @@ $(document).ready(function () {
 						rdonly('#formdata_RC');
 						break;
 					case state = 'view':
-						$('.nav-tabs a').on('shown.bs.tab', function(e){
-							tabform=$(this).attr('form');
-							rdonly(tabform);
-							handleAmount();
-							$('#dbacthdr_paytype').val(tabform);
-							switch(tabform) {
-								case state = '#f_tab-cash':
-									getcr('CASH');
-									break;
-								case state = '#f_tab-card':
-									urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
-									refreshGrid("#g_paymodecard",urlParam_card);
-									break;
-								case state = '#f_tab-cheque':
-									getcr('cheque');
-									break;
-								case state = '#f_tab-debit':
-									urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
-									refreshGrid("#g_paymodebank",urlParam_bank);
-									break;
-								case state = '#f_tab-forex':
-									refreshGrid("#g_forex",urlParam4_rc);
-									break;
-							}
-							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-						});
-						
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
 						disableForm('#formdata_RC');
 						disableForm(selrowData('#jqGrid_rc').db_paytype);
 						$(this).dialog("option", "buttons",butt2);
-						
-						// console.log(selrowData('#jqGrid_rc').db_paytype);
 						
 						// switch(selrowData('#jqGrid_rc').db_paytype) {
 						// 	case state = '#f_tab-card':
@@ -827,16 +806,6 @@ $(document).ready(function () {
 			oper='view';
 			selRowId = $("#jqGrid_rc").jqGrid ('getGridParam', 'selrow');
 			enabledPill();
-			
-			if(selrowData("#jqGrid_rc").db_paytype == "#F_TAB-DEBIT"){
-				urlParam_bank.filterVal[3]=selrowData("#jqGrid_rc").db_paymode;
-				refreshGrid("#g_paymodebank",urlParam_bank);
-				// $('#g_paymodebank').trigger( 'reloadGrid' );
-			}else if(selrowData("#jqGrid_rc").db_paytype == "#F_TAB-CARD"){
-				urlParam_card.filterVal[3]=selrowData("#jqGrid_rc").db_paymode;
-				refreshGrid("#g_paymodecard",urlParam_card);
-				// $('#g_paymodecard').trigger( 'reloadGrid' );
-			}
 			
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
 			getdata('RC',selrowData("#jqGrid_rc").db_idno);
@@ -1369,7 +1338,7 @@ $(document).ready(function () {
 	
 	function buttonformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-paytype='`+rowObject.db_paytype+`' data-paymode='`+rowObject.db_paymode+`'>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
 			retbut += 	    `Detail`
 			retbut += 	  `</button>&nbsp;`
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
@@ -1379,7 +1348,7 @@ $(document).ready(function () {
 	}
 	
 	function init_btn(){
-		// if(selrowData('#jqGrid_rc').db_amount !== selrowData('#jqGrid_rc').db_outamount){
+		// if($($('button.btn_detail')).data('amount') !== $($('button.btn_detail')).data('outamount')){
 		// 	$('button.btn_detail').prop('disabled', true);
 		// }else{
 		// 	$('button.btn_detail').prop('disabled', false);
@@ -1388,17 +1357,7 @@ $(document).ready(function () {
 		$('button.btn_detail').on('click',function(e){
 			oper='view';
 			var idno = $(this).data('idno');
-			var paytype = $(this).data('paytype');
-			var paymode = $(this).data('paymode');
 			enabledPill();
-			
-			if(paytype == "#F_TAB-DEBIT"){
-				urlParam_bank.filterVal[3]=paymode;
-				refreshGrid("#g_paymodebank",urlParam_bank);
-			}else if(paytype == "#F_TAB-CARD"){
-				urlParam_card.filterVal[3]=paymode;
-				refreshGrid("#g_paymodecard",urlParam_card);
-			}
 			
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
 			getdata('RC',idno);
