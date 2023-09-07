@@ -2051,13 +2051,20 @@ function if_none(str, none_return = 'NONE'){
 	return (str)?str:none_return;
 }
 
-function SmoothScrollTo(id_or_Name, timelength){
-  var timelength = timelength || 500;
-  $('html, body').animate({
-      scrollTop: $(id_or_Name).offset().top-60
-  }, timelength, function(){
 
-  });
+function SmoothScrollTo(id_or_Name, timelength,minustop=50,callback){
+  var timelength = timelength || 500;
+  if($(id_or_Name).offset() != undefined){
+	  $('html, body').animate({
+	      scrollTop: $(id_or_Name).offset().top-minustop
+	  }, timelength, function(){
+	  	
+	  });
+  }
+  
+  if (callback !== undefined) {
+    callback();
+  }
 }
 
 function closealltab(except){
@@ -2180,7 +2187,6 @@ function computerid_set(computerid){
 }
 
 function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
-	console.log(maxHeight);
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;

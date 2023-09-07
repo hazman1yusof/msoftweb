@@ -14,6 +14,7 @@
 	<div class="panel-heading clearfix collapsed position" id="toggle_ordcom" data-toggle="collapse" data-target="#jqGrid_ordcom_panel">
 		<b>NAME: <span id="name_show_ordcom"></span></b><br>
 		MRN: <span id="mrn_show_ordcom"></span>
+		BILL TYPE: <span id="billtype_show_ordcom"></span>
 		SEX: <span id="sex_show_ordcom"></span>
 		DOB: <span id="dob_show_ordcom"></span>
 		AGE: <span id="age_show_ordcom"></span>
@@ -53,67 +54,77 @@
 				<li><a data-toggle="tab" id="ordcom_navtab_oth" href="#tab-oth" data-ord_chgtype='OTH'>Others</a></li>
 			</ul>
 			<div class="tab-content" style="padding: 10px 5px;">
-			  <div id="tab-phar" class="active in tab-pane fade">
-				<div id="fail_msg_phar" class="fail_msg"></div>
-				<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
-					<table id="jqGrid_phar" class="table table-striped"></table>
-					<div id="jqGrid_phar_pager"></div>
-
-					<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:left;">
-						<div class="panel-heading">
-							<b><span>Chgcode </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode"></span></b>
-							<b><span>Description </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode_desc"></span></b>
-							<b><span>Department </span>:<span class="label_d" id="jqgrid_detail_phar_dept"></span></b><br>
-						</div>
-						<div class="panel-body">
-							<b><span class="label_p">Doctor</span>:<span class="label_d" id="jqgrid_detail_phar_docname"></span></b><br>
-							<b><span class="label_p">Cost Price</span>:<span class="label_d" id="jqgrid_detail_phar_cost_price"></span></b><br>
-							<b><span class="label_p">Unit Price</span>:<span class="label_d" id="jqgrid_detail_phar_unitprice"></span></b><br>
-							<b><span class="label_p">Discount Amount</span>:<span class="label_d" id="jqgrid_detail_phar_discamt"></span></b><br>
-							<b><span class="label_p">Tax Amount</span>:<span class="label_d" id="jqgrid_detail_phar_taxamt"></span></b><br>
-						</div>
+			@if (Auth::user()->doctor == 1)
+				<div id="tab-phar" class="active in tab-pane fade">
+					<div id="fail_msg_phar" class="fail_msg"></div>
+					<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
+						<table id="jqGrid_phar" class="table table-striped"></table>
+						<div id="jqGrid_phar_pager"></div>
 					</div>
-					<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:right;">
-						<div class="panel-heading">
-							<b>Dosage</b>
+				</div>
+			@else
+				<div id="tab-phar" class="active in tab-pane fade">
+					<div id="fail_msg_phar" class="fail_msg"></div>
+					<div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
+						<table id="jqGrid_phar" class="table table-striped"></table>
+						<div id="jqGrid_phar_pager"></div>
+
+						<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:left;">
+							<div class="panel-heading">
+								<b><span>Chgcode </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode"></span></b>
+								<b><span>Description </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode_desc"></span></b>
+								<b><span>Department </span>:<span class="label_d" id="jqgrid_detail_phar_dept"></span></b><br>
+							</div>
+							<div class="panel-body">
+								<b><span class="label_p">Doctor</span>:<span class="label_d" id="jqgrid_detail_phar_docname"></span></b><br>
+								<b><span class="label_p">Cost Price</span>:<span class="label_d" id="jqgrid_detail_phar_cost_price"></span></b><br>
+								<b><span class="label_p">Unit Price</span>:<span class="label_d" id="jqgrid_detail_phar_unitprice"></span></b><br>
+								<b><span class="label_p">Discount Amount</span>:<span class="label_d" id="jqgrid_detail_phar_discamt"></span></b><br>
+								<b><span class="label_p">Tax Amount</span>:<span class="label_d" id="jqgrid_detail_phar_taxamt"></span></b><br>
+							</div>
 						</div>
-						<div class="panel-body jqgrid_detail_dose">
-							<div>
-								<label class="oe_phar_label">Dose</label>
-								<div class="input-group oe_phar_div">
-									<input autocomplete="off" name="dosage" id="dosage_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
-									<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-								</div>
-								<input type="hidden" id="dosage_phar_code">
+						<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:right;">
+							<div class="panel-heading">
+								<b>Dosage</b>
 							</div>
-							<div>
-								<label class="oe_phar_label">Frequency</label>
-								<div class="input-group oe_phar_div">
-									<input autocomplete="off" name="frequency" id="frequency_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
-									<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+							<div class="panel-body jqgrid_detail_dose">
+								<div>
+									<label class="oe_phar_label">Dose</label>
+									<div class="input-group oe_phar_div">
+										<input autocomplete="off" name="dosage" id="dosage_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<input type="hidden" id="dosage_phar_code">
 								</div>
-								<input type="hidden" id="frequency_phar_code">
-							</div>
-							<div>
-								<label class="oe_phar_label">Instruction</label>
-								<div class="input-group oe_phar_div">
-									<input autocomplete="off" name="instruction" id="instruction_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
-									<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+								<div>
+									<label class="oe_phar_label">Frequency</label>
+									<div class="input-group oe_phar_div">
+										<input autocomplete="off" name="frequency" id="frequency_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<input type="hidden" id="frequency_phar_code">
 								</div>
-								<input type="hidden" id="instruction_phar_code">
-							</div>
-							<div>
-								<label class="oe_phar_label">Indicator</label>
-								<div class="input-group oe_phar_div">
-									<input autocomplete="off" name="drugindicator" id="drugindicator_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
-									<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+								<div>
+									<label class="oe_phar_label">Instruction</label>
+									<div class="input-group oe_phar_div">
+										<input autocomplete="off" name="instruction" id="instruction_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<input type="hidden" id="instruction_phar_code">
 								</div>
-								<input type="hidden" id="drugindicator_phar_code">
+								<div>
+									<label class="oe_phar_label">Indicator</label>
+									<div class="input-group oe_phar_div">
+										<input autocomplete="off" name="drugindicator" id="drugindicator_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
+										<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+									</div>
+									<input type="hidden" id="drugindicator_phar_code">
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			  </div>
+			@endif
 			  <div id="tab-disp" class="tab-pane fade">
 				<div id="fail_msg_disp" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0 0 15px 0" >
