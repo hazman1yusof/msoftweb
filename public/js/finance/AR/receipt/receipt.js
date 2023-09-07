@@ -365,7 +365,7 @@ $(document).ready(function () {
 			refreshGrid('#sysparam',urlParam_sys);
 			$('#dbacthdr_trantype').val('');
 			$('#dbacthdr_PymtDescription').val('');
-
+		
 		}else if($("input:radio[name='optradio'][value='deposit']").is(':checked')){
 			amountchgOff(false);
 			$( "#divMrnEpisode" ).show();
@@ -463,6 +463,17 @@ $(document).ready(function () {
 		filterCol:['source','paytype','compcode'],
 		filterVal:['AR','BANK','session.compcode'],
 	}
+	
+	var urlParam_bank={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','BANK','session.compcode',''],
+	}
+	
 	$("#g_paymodebank").jqGrid({
 		datatype: "local",
 		 colModel: [
@@ -507,6 +518,17 @@ $(document).ready(function () {
 		filterCol:['source','paytype','compcode'],
 		filterVal:['AR','CARD','session.compcode'],
 	}
+	
+	var urlParam_card={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','CARD','session.compcode',''],
+	}
+	
 	$("#g_paymodecard").jqGrid({
 		datatype: "local",
 		 colModel: [
@@ -683,8 +705,9 @@ $(document).ready(function () {
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata_receipt("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-				//$("#refresh_jqGrid").click();
-				//refreshGrid("#jqGrid",urlParam);
+				// $("#refresh_jqGrid").click();
+				// refreshGrid("#jqGrid",urlParam);
+				// $("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 				$("#allocate").click();
 			}else{
 				mycurrency.formatOn();
@@ -706,120 +729,149 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog////////////////////////////////////
 	var oper = 'add';
-
+	
 	$("#dialogForm")
-	  .dialog({ 
-		width: 9/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {			
-			////// Popup login //////
-			// var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
-
-			// bootbox.confirm(bootboxHtml, function(result) {
-			// 	console.log($('#ex1', '.LoginBootboxForm').val());
-			// 	console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val()); 
-
-			// });
-			////// End Popup login //////
-
-			parent_close_disabled(true);
-
-			$('.nav-tabs a').on('shown.bs.tab', function(e){
-				tabform=$(this).attr('form');
-				rdonly(tabform);
-				handleAmount();
-				$('#dbacthdr_paytype').val(tabform);
-				switch(tabform) {
-					case state = '#f_tab-cash':
-						getcr('CASH');
-						break;
-					case state = '#f_tab-card':
-						refreshGrid("#g_paymodecard",urlParam3);
-						break;
-					case state = '#f_tab-cheque':
-						getcr('cheque');
-						break;
-					case state = '#f_tab-debit':
-						refreshGrid("#g_paymodebank",urlParam2);
-						break;
-					case state = '#f_tab-forex':
-						refreshGrid("#g_forex",urlParam4);
-						break;
-				}
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				////// Popup login //////
+				// var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
+				
+				// bootbox.confirm(bootboxHtml, function(result) {
+				//     console.log($('#ex1', '.LoginBootboxForm').val());
+				//     console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val());
+				// });
+				////// End Popup login //////
+				
+				parent_close_disabled(true);
+				
+				$("#sysparam").jqGrid ('setGridWidth', Math.floor($("#sysparam_c")[0].offsetWidth));
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 				$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-
-			});
-			$("#sysparam").jqGrid ('setGridWidth', Math.floor($("#sysparam_c")[0].offsetWidth));
-			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-			$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-			switch(oper) {
-				case state = 'add':
-					mycurrency.formatOnBlur();
-					$('#dbacthdr_paytype').val(tabform);
-					$( this ).dialog( "option", "title", "Add" );
-					enableForm('#formdata');
-					enableForm('.tab-content');
-					rdonly('#formdata');
-					rdonly(tabform);
-					break;
-				case state = 'view':
-					mycurrency.formatOn();
-					$( this ).dialog( "option", "title", "View" );
-					disableForm('#formdata');
-					disableForm('.tab-content');
-					rdonly('#formdata');
-					disableForm(selrowData('#jqGrid').dbacthdr_paytype);
-					$(this).dialog("option", "buttons",butt2);
-
-					switch(selrowData('#jqGrid').dbacthdr_paytype) {
-						case state = '#f_tab-card':
-							refreshGrid("#g_paymodecard",urlParam3);
-							break;
-						case state = '#f_tab-debit':
-							refreshGrid("#g_paymodebank",urlParam2);
-							break;
-						case state = '#f_tab-forex':
-							refreshGrid("#g_forex",urlParam4);
-							break;
-					}
-				
-					break;
-			}
-			if(oper!='view'){
-				dialog_payercode.on();
-				dialog_logindeptcode.on();
-				// dialog_logintillcode.on();
-			}
-			if(oper!='add'){
-				dialog_logindeptcode.check(errorField);
-				// dialog_logintillcode.check(errorField);
-				dialog_payercode.check(errorField);
-				showingForCash(selrowData("#jqGrid").dbacthdr_amount,selrowData("#jqGrid").dbacthdr_outamount,selrowData("#jqGrid").dbacthdr_RCCASHbalance,selrowData("#jqGrid").dbacthdr_RCFinalbalance,selrowData("#jqGrid").dbacthdr_paytype);
-			}
-		},
-		close: function( event, ui ) {
-			parent_close_disabled(false);
-			emptyFormdata(errorField,'#formdata');
-			emptyFormdata(errorField, "#f_tab-cash");
-			emptyFormdata(errorField, "#f_tab-card");
-			emptyFormdata(errorField, "#f_tab-cheque");
-			emptyFormdata(errorField, "#f_tab-debit");
-			emptyFormdata(errorField, '#f_tab-forex');
-			$('.alert').detach();
-			dialog_logindeptcode.off();
-			// dialog_logintillcode.off();
-			$("#formdata a").off();
-			$("#refresh_jqGrid").click();
-			if(oper=='view'){
-				$(this).dialog("option", "buttons",butt1);
-			}
-		},
-		buttons :butt1,
-	  });
+				switch(oper) {
+					case state = 'add':
+						$('.nav-tabs a').on('shown.bs.tab', function(e){
+							tabform=$(this).attr('form');
+							rdonly(tabform);
+							handleAmount();
+							$('#dbacthdr_paytype').val(tabform);
+							switch(tabform) {
+								case state = '#f_tab-cash':
+									getcr('CASH');
+									break;
+								case state = '#f_tab-card':
+									refreshGrid("#g_paymodecard",urlParam3);
+									break;
+								case state = '#f_tab-cheque':
+									getcr('cheque');
+									break;
+								case state = '#f_tab-debit':
+									refreshGrid("#g_paymodebank",urlParam2);
+									break;
+								case state = '#f_tab-forex':
+									refreshGrid("#g_forex",urlParam4);
+									break;
+							}
+							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+						});
+						
+						mycurrency.formatOnBlur();
+						$('#dbacthdr_paytype').val(tabform);
+						$( this ).dialog( "option", "title", "Add" );
+						enableForm('#formdata');
+						enableForm('.tab-content');
+						rdonly('#formdata');
+						rdonly(tabform);
+						break;
+					case state = 'view':
+						$('.nav-tabs a').on('shown.bs.tab', function(e){
+							tabform=$(this).attr('form');
+							rdonly(tabform);
+							handleAmount();
+							$('#dbacthdr_paytype').val(tabform);
+							switch(tabform) {
+								case state = '#f_tab-cash':
+									getcr('CASH');
+									break;
+								case state = '#f_tab-card':
+									urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+									refreshGrid("#g_paymodecard",urlParam_card);
+									break;
+								case state = '#f_tab-cheque':
+									getcr('cheque');
+									break;
+								case state = '#f_tab-debit':
+									urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+									refreshGrid("#g_paymodebank",urlParam_bank);
+									break;
+								case state = '#f_tab-forex':
+									refreshGrid("#g_forex",urlParam4);
+									break;
+							}
+							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+						});
+						
+						mycurrency.formatOn();
+						$( this ).dialog( "option", "title", "View" );
+						disableForm('#formdata');
+						disableForm('.tab-content');
+						rdonly('#formdata');
+						disableForm(selrowData('#jqGrid').dbacthdr_paytype);
+						$(this).dialog("option", "buttons",butt2);
+						
+						// switch(selrowData('#jqGrid').dbacthdr_paytype) {
+						// 	case state = '#f_tab-card':
+						// 		urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+						// 		refreshGrid("#g_paymodecard",urlParam_card);
+						// 		break;
+						// 	case state = '#f_tab-debit':
+						// 		urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+						// 		refreshGrid("#g_paymodebank",urlParam_bank);
+						// 		break;
+						// 	case state = '#f_tab-forex':
+						// 		refreshGrid("#g_forex",urlParam4);
+						// 		break;
+						// }
+						// break;
+				}
+				if(oper!='view'){
+					dialog_payercode.on();
+					dialog_logindeptcode.on();
+					// dialog_logintillcode.on();
+				}
+				if(oper!='add'){
+					dialog_logindeptcode.check(errorField);
+					// dialog_logintillcode.check(errorField);
+					dialog_payercode.check(errorField);
+					showingForCash(selrowData("#jqGrid").dbacthdr_amount,selrowData("#jqGrid").dbacthdr_outamount,selrowData("#jqGrid").dbacthdr_RCCASHbalance,selrowData("#jqGrid").dbacthdr_RCFinalbalance,selrowData("#jqGrid").dbacthdr_paytype);
+				}
+			},
+			close: function( event, ui ) {
+				parent_close_disabled(false);
+				emptyFormdata(errorField,'#formdata');
+				emptyFormdata(errorField, "#f_tab-cash");
+				emptyFormdata(errorField, "#f_tab-card");
+				emptyFormdata(errorField, "#f_tab-cheque");
+				emptyFormdata(errorField, "#f_tab-debit");
+				emptyFormdata(errorField, '#f_tab-forex');
+				$('.alert').detach();
+				dialog_logindeptcode.off();
+				// dialog_logintillcode.off();
+				$("#formdata a").off();
+				$("#refresh_jqGrid").click();
+				if(oper=='view'){
+					$(this).dialog("option", "buttons",butt1);
+				}
+			},
+			buttons :butt1,
+		});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -875,7 +927,7 @@ $(document).ready(function () {
 			{ label: 'epistype', name: 'dbacthdr_epistype', hidden: true },
 			{ label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true },
 			{ label: 'reference', name: 'dbacthdr_reference', hidden: true },
-			{ label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70 }, //tunjuk
+			{ label: 'Payment Mode', name: 'dbacthdr_paymode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },	//tunjuk
 			{ label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, align:'right',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
 				editoptions: {
@@ -990,10 +1042,19 @@ $(document).ready(function () {
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
+			
+			if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-DEBIT"){
+				urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+				refreshGrid("#g_paymodebank",urlParam_bank);
+			}else if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-CARD"){
+				urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+				refreshGrid("#g_paymodecard",urlParam_card);
+			}
+			
 			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 			$("#dialogForm").dialog( "open" );
-			$("#g_paycard_c, #g_paybank_c").show();
-			$("#g_paymodecard_c, #g_paymodebank_c").hide();
+			// $("#g_paycard_c, #g_paybank_c").show();
+			// $("#g_paymodecard_c, #g_paymodebank_c").hide();
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -1009,8 +1070,8 @@ $(document).ready(function () {
 			$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			enabledPill();
 			$( "#dialogForm" ).dialog( "open" );
-			$("#g_paymodecard_c, #g_paymodebank_c").show();
-			$("#g_paycard_c, #g_paybank_c").hide();
+			// $("#g_paymodecard_c, #g_paymodebank_c").show();
+			// $("#g_paycard_c, #g_paybank_c").hide();
 		},
 	});
 
@@ -1047,9 +1108,10 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field,table, case_;
 		switch(options.colModel.name){
-			case 'dbacthdr_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_debtorcode';break;
 			case 'dbacthdr_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_payercode';break;
-			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;		
+			case 'dbacthdr_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_debtorcode';break;
+			case 'dbacthdr_paymode':field=['paymode','description'];table="debtor.paymode";case_='dbacthdr_paymode';break;
+			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		fdl.get_array('receipt',options,param,case_,cellvalue);

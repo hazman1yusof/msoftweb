@@ -16,14 +16,14 @@ class arenquiryController extends defaultController
     {
         $this->middleware('auth');
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('finance.AR.arenquiry.arenquiry');
     }
-
+    
     public function table(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->action){
             case 'maintable':
@@ -38,7 +38,7 @@ class arenquiryController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function maintable(Request $request){
         
         $table = DB::table('debtor.dbacthdr AS db')
@@ -84,6 +84,8 @@ class arenquiryController extends defaultController
                         'db.recptno AS db_recptno',
                         'db.paymode AS db_paymode',
                         'db.unallocated AS db_unallocated',
+                        'db.RCCASHbalance AS db_RCCASHbalance',
+                        'db.RCFinalbalance AS db_RCFinalbalance',
                     )
                     ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                     ->where('db.compcode','=',session('compcode'))
@@ -193,7 +195,7 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function populate_rc(Request $request){
         
         $table = DB::table('debtor.dbacthdr')
@@ -225,9 +227,9 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function form(Request $request)
-    {   
+    {
         switch($request->oper){
             case 'add':
                 return $this->defaultAdd($request);
@@ -239,7 +241,7 @@ class arenquiryController extends defaultController
                 return 'error happen..';
         }
     }
-
+    
     public function get_alloc(Request $request){
         
         $dbacthdr = DB::table('debtor.dbacthdr')
@@ -263,6 +265,9 @@ class arenquiryController extends defaultController
                             'dc.allocdate',
                             'dc.mrn',
                             'dc.episno',
+                            'dc.compcode',
+                            'dc.lineno_',
+                            'dc.idno',
                         )
                         ->join('debtor.dbacthdr as da', function($join) use ($request){
                                     $join = $join->on('dc.docsource', '=', 'da.source')
@@ -312,6 +317,9 @@ class arenquiryController extends defaultController
                             'dc.allocdate',
                             'dc.mrn',
                             'dc.episno',
+                            'dc.compcode',
+                            'dc.lineno_',
+                            'dc.idno',
                         )
                         ->join('debtor.dbacthdr as da', function($join) use ($request){
                                     $join = $join->on('dc.refsource', '=', 'da.source')
@@ -347,7 +355,7 @@ class arenquiryController extends defaultController
         }
         
     }
-
+    
     public function get_table_dtl(Request $request){
         
         $table = DB::table('debtor.dbactdtl')
@@ -372,5 +380,5 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
 }
