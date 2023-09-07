@@ -288,6 +288,36 @@ $(document).ready(function () {
 				errorField.length=0;
 			},
 		});
+		
+	$('.nav-tabs a').on('shown.bs.tab', function(e){
+		tabform=$(this).attr('form');
+		rdonly(tabform);
+		handleAmount();
+		$('#dbacthdr_paytype').val(tabform);
+		console.log(tabform)
+		switch(tabform) {
+			case '#f_tab-cash':
+				getcr('CASH');
+				break;
+			case '#f_tab-card':
+				urlParam_card.filterVal[3]=selrowData('#jqGrid').db_paymode;
+				refreshGrid("#g_paymodecard",urlParam_card);
+				break;
+			case '#f_tab-cheque':
+				getcr('cheque');
+				break;
+			case '#f_tab-debit':
+				urlParam_bank.filterVal[3]=selrowData('#jqGrid').db_paymode;
+				refreshGrid("#g_paymodebank",urlParam_bank);
+				break;
+			case '#f_tab-forex':
+				refreshGrid("#g_forex",urlParam4_rc);
+				break;
+		}
+		$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+		$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+	});
 
 	$("#dialogForm_RC")
 		.dialog({
@@ -305,43 +335,6 @@ $(document).ready(function () {
 				////// End Popup login //////
 				
 				parent_close_disabled(true);
-				
-				$('.nav-tabs a').on('shown.bs.tab', function(e){
-					tabform=$(this).attr('form');
-					rdonly(tabform);
-					handleAmount();
-					$('#dbacthdr_paytype').val(tabform);
-					switch(tabform) {
-						case '#f_tab-cash':
-							getcr('CASH');
-							break;
-						case '#f_tab-card':
-							if(oper=="view"){
-								urlParam_card.filterVal[3]=selrowData('#jqGrid').db_paymode;
-								refreshGrid("#g_paymodecard",urlParam_card);
-							}else{
-								refreshGrid("#g_paymodecard",urlParam3_rc);
-							}
-							break;
-						case '#f_tab-cheque':
-							getcr('cheque');
-							break;
-						case '#f_tab-debit':
-							if(oper=="view"){
-								urlParam_bank.filterVal[3]=selrowData('#jqGrid').db_paymode;
-								refreshGrid("#g_paymodebank",urlParam_bank);
-							}else{
-							refreshGrid("#g_paymodebank",urlParam2_rc);
-							}
-							break;
-						case '#f_tab-forex':
-							refreshGrid("#g_forex",urlParam4_rc);
-							break;
-					}
-					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-				});
 				
 				$("#sysparam").jqGrid ('setGridWidth', Math.floor($("#sysparam_c")[0].offsetWidth));
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
@@ -2205,11 +2198,17 @@ function populateform_rc(idno){
 					input.val(value);
 				}
 			});
+			resetpill();
 			$(".nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
 			dialog_payercode.check('errorField');
 			disabledPill();
 		}
 	});
+}
+
+function resetpill(){
+	$('#dialogForm_RC ul.nav-tabs li').removeClass('active');
+	$('#dialogForm_RC ul.nav-tabs li a').attr('aria-expanded',false);
 }
 
 function disabledPill(){

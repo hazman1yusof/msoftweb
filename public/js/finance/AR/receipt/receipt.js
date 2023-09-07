@@ -726,6 +726,43 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog////////////////////////////////////
 	var oper = 'add';
+
+	$('.nav-tabs a').on('shown.bs.tab', function(e){
+		tabform=$(this).attr('form');
+		rdonly(tabform);
+		handleAmount();
+		$('#dbacthdr_paytype').val(tabform);
+		switch(tabform) {
+			case '#f_tab-cash':
+				getcr('CASH');
+				break;
+			case '#f_tab-card':
+				if(oper=="view"){
+					urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					refreshGrid("#g_paymodecard",urlParam_card);
+				}else{
+					refreshGrid("#g_paymodecard",urlParam3);
+				}
+				break;
+			case '#f_tab-cheque':
+				getcr('cheque');
+				break;
+			case '#f_tab-debit':
+				if(oper=="view"){
+					urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					refreshGrid("#g_paymodebank",urlParam_bank);
+				}else{
+				refreshGrid("#g_paymodebank",urlParam2);
+				}
+				break;
+			case '#f_tab-forex':
+				refreshGrid("#g_forex",urlParam4);
+				break;
+		}
+		$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+		$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+	});
 	
 	$("#dialogForm")
 		.dialog({
@@ -749,48 +786,8 @@ $(document).ready(function () {
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 				$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 				
-				$('.nav-tabs a').on('shown.bs.tab', function(e){
-					tabform=$(this).attr('form');
-					rdonly(tabform);
-					handleAmount();
-					$('#dbacthdr_paytype').val(tabform);
-					switch(tabform) {
-						case '#f_tab-cash':
-							getcr('CASH');
-							break;
-						case '#f_tab-card':
-							if(oper=="view"){
-								urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-								refreshGrid("#g_paymodecard",urlParam_card);
-							}else{
-								refreshGrid("#g_paymodecard",urlParam3);
-							}
-							break;
-						case '#f_tab-cheque':
-							getcr('cheque');
-							break;
-						case '#f_tab-debit':
-							if(oper=="view"){
-								urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-								refreshGrid("#g_paymodebank",urlParam_bank);
-							}else{
-							refreshGrid("#g_paymodebank",urlParam2);
-							}
-							break;
-						case '#f_tab-forex':
-							refreshGrid("#g_forex",urlParam4);
-							break;
-					}
-					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-				});
-				
 				switch(oper) {
 					case 'add':
-
-						console.log('add ioper');
-						
 						mycurrency.formatOnBlur();
 						$('#dbacthdr_paytype').val(tabform);
 						$( this ).dialog( "option", "title", "Add" );
@@ -800,35 +797,6 @@ $(document).ready(function () {
 						rdonly(tabform);
 						break;
 					case 'view':
-						// $('.nav-tabs a').on('shown.bs.tab', function(e){
-						// 	tabform=$(this).attr('form');
-						// 	rdonly(tabform);
-						// 	handleAmount();
-						// 	$('#dbacthdr_paytype').val(tabform);
-						// 	switch(tabform) {
-						// 		case '#f_tab-cash':
-						// 			getcr('CASH');
-						// 			break;
-						// 		case '#f_tab-card':
-						// 			urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-						// 			refreshGrid("#g_paymodecard",urlParam_card);
-						// 			break;
-						// 		case '#f_tab-cheque':
-						// 			getcr('cheque');
-						// 			break;
-						// 		case '#f_tab-debit':
-						// 			urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-						// 			refreshGrid("#g_paymodebank",urlParam_bank);
-						// 			break;
-						// 		case '#f_tab-forex':
-						// 			refreshGrid("#g_forex",urlParam4);
-						// 			break;
-						// 	}
-						// 	$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-						// 	$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-						// 	$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-						// });
-						
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
 						disableForm('#formdata');
@@ -1053,6 +1021,7 @@ $(document).ready(function () {
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
+			resetpill();
 			if(selform!=''){
 				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
 				disabledPill();
@@ -1080,6 +1049,7 @@ $(document).ready(function () {
 		title:"Add New Row", 
 		onClickButton: function(){
 			oper='add';
+			resetpill();
 			$('#dbacthdr_recptno').hide();
 			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
 			$( "input:radio[name='optradio'][value='receipt']" ).change();
@@ -1578,3 +1548,8 @@ function calc_jq_height_onchange(jqgrid){
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }	
+
+function resetpill(){
+	$('#dialogForm ul.nav-tabs li').removeClass('active');
+	$('#dialogForm ul.nav-tabs li a').attr('aria-expanded',false);
+}
