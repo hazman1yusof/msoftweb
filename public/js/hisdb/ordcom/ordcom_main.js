@@ -17,14 +17,16 @@ var conf_ordco = {
 
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
-		SmoothScrollTo("#jqGrid_ordcom_panel", 500);
+		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 
 		let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
-		let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
-		write_detail_phar('#jqgrid_detail_phar_docname',getCurrentRow.q_doctorname);
+		if($('#isdoctor').val() != '1'){
+			let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+			write_detail_phar('#jqgrid_detail_phar_docname',getCurrentRow.q_doctorname);
+		}
 	});
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
@@ -69,6 +71,7 @@ function populate_ordcom_currpt(obj){
 	//panel header	
 	$('#name_show_ordcom').text(if_none(obj.Name));
 	$('#mrn_show_ordcom').text(if_none(("0000000" + obj.MRN).slice(-7)));
+	$('#billtype_show_ordcom').text(if_none($('#billtype_def_desc').val()));
 	$('#sex_show_ordcom').text(if_none(obj.Sex).toUpperCase());
 	$('#dob_show_ordcom').text(dob_chg(obj.DOB));
 	$('#age_show_ordcom').text(dob_age(obj.DOB)+' (YRS)');

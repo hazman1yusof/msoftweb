@@ -150,6 +150,7 @@
 		<input type="hidden" name="billtype_def_desc" id="billtype_def_desc" value="{{$billtype_def_desc ?? ''}}">
         <input name="lastMrn" id="lastMrn" type="hidden" >
         <input name="lastidno" id="lastidno" type="hidden" >
+        <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
 
         <div id="info"></div>
 
@@ -370,13 +371,23 @@
 
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
+				@if (Auth::user()->doctor == 1)
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
+				@else
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
+				@endif
 			@endif
 		@endif
 
@@ -396,13 +407,23 @@
 
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
+				@if (Auth::user()->doctor == 1)
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
+				@else
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
+				@endif
 			@endif
 		@endif
 	@endif
