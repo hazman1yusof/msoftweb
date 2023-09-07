@@ -748,7 +748,7 @@ $(document).ready(function () {
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 				$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-
+				
 				$('.nav-tabs a').on('shown.bs.tab', function(e){
 					tabform=$(this).attr('form');
 					rdonly(tabform);
@@ -760,7 +760,7 @@ $(document).ready(function () {
 							break;
 						case '#f_tab-card':
 							if(oper=="view"){
-								urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
 								refreshGrid("#g_paymodecard",urlParam_card);
 							}else{
 								refreshGrid("#g_paymodecard",urlParam3);
@@ -785,7 +785,7 @@ $(document).ready(function () {
 					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 				});
-
+				
 				switch(oper) {
 					case 'add':
 
@@ -1061,13 +1061,13 @@ $(document).ready(function () {
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
 			
-			if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-DEBIT"){
-				urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-				refreshGrid("#g_paymodebank",urlParam_bank);
-			}else if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-CARD"){
-				urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-				refreshGrid("#g_paymodecard",urlParam_card);
-			}
+			// if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-DEBIT"){
+			// 	urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+			// 	refreshGrid("#g_paymodebank",urlParam_bank);
+			// }else if(selrowData('#jqGrid').dbacthdr_paytype == "#F_TAB-CARD"){
+			// 	urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+			// 	refreshGrid("#g_paymodecard",urlParam_card);
+			// }
 			
 			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 			$("#dialogForm").dialog( "open" );

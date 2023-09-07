@@ -264,29 +264,29 @@ $(document).ready(function () {
 					handleAmount();
 					$('#dbacthdr_paytype').val(tabform);
 					switch(tabform) {
-						case state = '#f_tab-cash':
+						case '#f_tab-cash':
 							getcr('CASH');
 							break;
-						case state = '#f_tab-card':
-							if(oper="view"){
+						case '#f_tab-card':
+							if(oper=="view"){
 								urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
 								refreshGrid("#g_paymodecard",urlParam_card);
 							}else{
 								refreshGrid("#g_paymodecard",urlParam3_rc);
 							}
 							break;
-						case state = '#f_tab-cheque':
+						case '#f_tab-cheque':
 							getcr('cheque');
 							break;
-						case state = '#f_tab-debit':
-							if(oper="view"){
+						case '#f_tab-debit':
+							if(oper=="view"){
 								urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
 								refreshGrid("#g_paymodebank",urlParam_bank);
 							}else{
-								refreshGrid("#g_paymodebank",urlParam2_rc);
+							refreshGrid("#g_paymodebank",urlParam2_rc);
 							}
 							break;
-						case state = '#f_tab-forex':
+						case '#f_tab-forex':
 							refreshGrid("#g_forex",urlParam4_rc);
 							break;
 					}
