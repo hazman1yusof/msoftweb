@@ -671,7 +671,7 @@ $(document).ready(function () {
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	
-	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,obj,callback,uppercase=true){
+	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,callback,uppercase=true){
 
 		var formname = $("a[aria-expanded='true']").attr('form')
 
@@ -688,6 +688,7 @@ $(document).ready(function () {
 			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 		}).success(function(data){
 			if(grid!=null){
+				$(grid).data('need_allocate','1');
 				refreshGrid(grid,urlParam,oper);
 				$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 				$(dialog).dialog('close');
@@ -705,10 +706,6 @@ $(document).ready(function () {
 			mycurrency.check0value(errorField);
 			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata_receipt("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam);
-				// $("#refresh_jqGrid").click();
-				// refreshGrid("#jqGrid",urlParam);
-				// $("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-				$("#allocate").click();
 			}else{
 				mycurrency.formatOn();
 			}
@@ -751,34 +748,48 @@ $(document).ready(function () {
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 				$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-				switch(oper) {
-					case state = 'add':
-						$('.nav-tabs a').on('shown.bs.tab', function(e){
-							tabform=$(this).attr('form');
-							rdonly(tabform);
-							handleAmount();
-							$('#dbacthdr_paytype').val(tabform);
-							switch(tabform) {
-								case state = '#f_tab-cash':
-									getcr('CASH');
-									break;
-								case state = '#f_tab-card':
-									refreshGrid("#g_paymodecard",urlParam3);
-									break;
-								case state = '#f_tab-cheque':
-									getcr('cheque');
-									break;
-								case state = '#f_tab-debit':
-									refreshGrid("#g_paymodebank",urlParam2);
-									break;
-								case state = '#f_tab-forex':
-									refreshGrid("#g_forex",urlParam4);
-									break;
+
+				$('.nav-tabs a').on('shown.bs.tab', function(e){
+					tabform=$(this).attr('form');
+					rdonly(tabform);
+					handleAmount();
+					$('#dbacthdr_paytype').val(tabform);
+					switch(tabform) {
+						case '#f_tab-cash':
+							getcr('CASH');
+							break;
+						case '#f_tab-card':
+							if(oper=="view"){
+								urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+								refreshGrid("#g_paymodecard",urlParam_card);
+							}else{
+								refreshGrid("#g_paymodecard",urlParam3);
 							}
-							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-						});
+							break;
+						case '#f_tab-cheque':
+							getcr('cheque');
+							break;
+						case '#f_tab-debit':
+							if(oper=="view"){
+								urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+								refreshGrid("#g_paymodebank",urlParam_bank);
+							}else{
+							refreshGrid("#g_paymodebank",urlParam2);
+							}
+							break;
+						case '#f_tab-forex':
+							refreshGrid("#g_forex",urlParam4);
+							break;
+					}
+					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+				});
+
+				switch(oper) {
+					case 'add':
+
+						console.log('add ioper');
 						
 						mycurrency.formatOnBlur();
 						$('#dbacthdr_paytype').val(tabform);
@@ -788,35 +799,35 @@ $(document).ready(function () {
 						rdonly('#formdata');
 						rdonly(tabform);
 						break;
-					case state = 'view':
-						$('.nav-tabs a').on('shown.bs.tab', function(e){
-							tabform=$(this).attr('form');
-							rdonly(tabform);
-							handleAmount();
-							$('#dbacthdr_paytype').val(tabform);
-							switch(tabform) {
-								case state = '#f_tab-cash':
-									getcr('CASH');
-									break;
-								case state = '#f_tab-card':
-									urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-									refreshGrid("#g_paymodecard",urlParam_card);
-									break;
-								case state = '#f_tab-cheque':
-									getcr('cheque');
-									break;
-								case state = '#f_tab-debit':
-									urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
-									refreshGrid("#g_paymodebank",urlParam_bank);
-									break;
-								case state = '#f_tab-forex':
-									refreshGrid("#g_forex",urlParam4);
-									break;
-							}
-							$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-							$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-							$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-						});
+					case 'view':
+						// $('.nav-tabs a').on('shown.bs.tab', function(e){
+						// 	tabform=$(this).attr('form');
+						// 	rdonly(tabform);
+						// 	handleAmount();
+						// 	$('#dbacthdr_paytype').val(tabform);
+						// 	switch(tabform) {
+						// 		case '#f_tab-cash':
+						// 			getcr('CASH');
+						// 			break;
+						// 		case '#f_tab-card':
+						// 			urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+						// 			refreshGrid("#g_paymodecard",urlParam_card);
+						// 			break;
+						// 		case '#f_tab-cheque':
+						// 			getcr('cheque');
+						// 			break;
+						// 		case '#f_tab-debit':
+						// 			urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+						// 			refreshGrid("#g_paymodebank",urlParam_bank);
+						// 			break;
+						// 		case '#f_tab-forex':
+						// 			refreshGrid("#g_forex",urlParam4);
+						// 			break;
+						// 	}
+						// 	$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+						// 	$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+						// 	$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+						// });
 						
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
@@ -827,15 +838,15 @@ $(document).ready(function () {
 						$(this).dialog("option", "buttons",butt2);
 						
 						// switch(selrowData('#jqGrid').dbacthdr_paytype) {
-						// 	case state = '#f_tab-card':
+						// 	case '#f_tab-card':
 						// 		urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
 						// 		refreshGrid("#g_paymodecard",urlParam_card);
 						// 		break;
-						// 	case state = '#f_tab-debit':
+						// 	case '#f_tab-debit':
 						// 		urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
 						// 		refreshGrid("#g_paymodebank",urlParam_bank);
 						// 		break;
-						// 	case state = '#f_tab-forex':
+						// 	case '#f_tab-forex':
 						// 		refreshGrid("#g_forex",urlParam4);
 						// 		break;
 						// }
@@ -982,12 +993,19 @@ $(document).ready(function () {
 		gridComplete: function(){
 			// $('#' + $("#jqGrid").jqGrid('getGridParam', 'selrow')).focus();
 			fdl.set_array().reset();
-			if(oper == 'add'){
+			if(oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			enabledPill();
+
+			let allocate = $("#jqGrid").data('need_allocate');
+			if(allocate!=undefined && allocate=='1'){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+				$('#allocate').click();
+				$(grid).data('need_allocate','0');
+			}
 		},
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
@@ -1264,7 +1282,6 @@ $(document).ready(function () {
 			$('#AlloTotal').val(0);
 			$('#AlloAuditno').val(selrowData(grid).dbacthdr_auditno);
 			urlParamAllo.filterVal[0]=selrowData(grid).dbacthdr_payercode;
-			console.log(selrowData(grid).dbacthdr_auditno);
 			refreshGrid("#gridAllo",urlParamAllo);
 			parent_close_disabled(true);
 			myallocation.renewAllo(selrowData(grid).dbacthdr_outamount);

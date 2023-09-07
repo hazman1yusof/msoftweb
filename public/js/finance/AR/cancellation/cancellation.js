@@ -804,7 +804,11 @@ $(document).ready(function () {
 		title:"View Selected Row",
 		onClickButton: function(){
 			oper='view';
-			selRowId = $("#jqGrid_rc").jqGrid ('getGridParam', 'selrow');
+			let selRowId = $("#jqGrid_rc").jqGrid ('getGridParam', 'selrow');
+			let rowData = $('#jqGrid_rc').jqGrid('getRowData', selRowId);
+			if(parseFloat(rowData.db_amount) != parseFloat(rowData.db_outamount)){
+				return false;
+			}
 			enabledPill();
 			
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
@@ -1338,7 +1342,12 @@ $(document).ready(function () {
 	
 	function buttonformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
+		if(parseFloat(rowObject.db_amount) != parseFloat(rowObject.db_outamount)){
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`' disabled>`
+		}else{
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
+		}
+
 			retbut += 	    `Detail`
 			retbut += 	  `</button>&nbsp;`
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`

@@ -1914,8 +1914,18 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 					$("#jqGrid2 #"+id_optid+"_billtypeamt").val(data['billty_amount']);
 
-					// dialog_uomcode.check(errorField);
-					// dialog_uom_recv.check(errorField);
+					dialog_chggroup.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
+					dialog_chggroup.urlParam.uom = $("#jqGrid2 #"+id_optid+"_uom").val();
+
+					dialog_uomcode.urlParam.entrydate = $('#db_entrydate').val();
+					dialog_uomcode.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
+					dialog_uomcode.urlParam.uom = $("#jqGrid2 #"+id_optid+"_uom").val();
+					dialog_uomcode.urlParam.deptcode = $('#db_deptcode').val();
+					dialog_uomcode.urlParam.price = 'PRICE2';
+					dialog_uomcode.urlParam.billtype = $('#db_hdrtype').val();
+
+					dialog_uomcode.check(errorField);
+					dialog_uom_recv.check(errorField);
 					dialog_tax.check(errorField);
 					mycurrency2.formatOn();
 				}
@@ -1935,12 +1945,15 @@ $(document).ready(function () {
 		},{
 			title:"Select Item For Sales Order",
 			open:function(obj_){
+				let id_optid = obj_.id_optid;
+
 				dialog_chggroup.urlParam.url = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action = 'get_itemcode_price';
 				dialog_chggroup.urlParam.url_chk = "./SalesOrderDetail/table";
 				dialog_chggroup.urlParam.action_chk = "get_itemcode_price_check";
 				dialog_chggroup.urlParam.entrydate = $('#db_entrydate').val();
-				// dialog_chggroup.urlParam.chgcode = $("#jqGrid2 input[name='chggroup']").val();
+				dialog_chggroup.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
+				dialog_chggroup.urlParam.uom = $("#jqGrid2 #"+id_optid+"_uom").val();
 				dialog_chggroup.urlParam.billtype = $('#db_hdrtype').val();
 				dialog_chggroup.urlParam.deptcode = $('#db_deptcode').val();
 				dialog_chggroup.urlParam.price = $('#pricebilltype').val();
@@ -2074,6 +2087,9 @@ $(document).ready(function () {
 					$("#jqGrid2 #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 					$("#jqGrid2 #"+id_optid+"_billtypeamt").val(data['billty_amount']);
 
+					dialog_uomcode.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
+					dialog_uomcode.urlParam.uom = $("#jqGrid2 #"+id_optid+"_uom").val();
+
 					// dialog_uomcode.check(errorField);
 					// dialog_uom_recv.check(errorField);
 					dialog_tax.check(errorField);
@@ -2101,6 +2117,7 @@ $(document).ready(function () {
 				dialog_uomcode.urlParam.action_chk = "get_itemcode_uom_check";
 				dialog_uomcode.urlParam.entrydate = $('#db_entrydate').val();
 				dialog_uomcode.urlParam.chgcode = $("#jqGrid2 #"+id_optid+"_chggroup").val();
+				dialog_uomcode.urlParam.uom = $("#jqGrid2 #"+id_optid+"_uom").val();
 				dialog_uomcode.urlParam.deptcode = $('#db_deptcode').val();
 				dialog_uomcode.urlParam.price = 'PRICE2';
 				dialog_uomcode.urlParam.billtype = $('#db_hdrtype').val();
