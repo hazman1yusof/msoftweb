@@ -26,6 +26,22 @@ $(document).ready(function () {
 			}
 		},
 	};
+
+	$('.nav-tabs a').on('shown.bs.tab', function(e){
+		let trantype = $(this).data('trantype');
+		switch(trantype){
+			case 'RC':
+				$("#jqGrid_rc").jqGrid ('setGridWidth', Math.floor($("#tab-rc")[0].offsetWidth-$("#tab-rc")[0].offsetLeft-28));
+				break;
+			case 'RD':
+				$("#jqGrid_rd").jqGrid ('setGridWidth', Math.floor($("#tab-rd")[0].offsetWidth-$("#tab-rd")[0].offsetLeft-28));
+				break;
+			case 'RF':
+				$("#jqGrid_rf").jqGrid ('setGridWidth', Math.floor($("#tab-rf")[0].offsetWidth-$("#tab-rf")[0].offsetLeft-28));
+				break;
+		}
+
+	});
 	
 	/////////////////////////////////currency/////////////////////////////////
 	var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
