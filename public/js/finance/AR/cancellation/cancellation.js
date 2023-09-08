@@ -198,6 +198,9 @@ $(document).ready(function () {
         },'json').done(function(data) {
             $("#formdata_RC input[name='dbacthdr_drcostcode']").val(data.rows[0].ccode);
             $("#formdata_RC input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
+
+			$("#formdata_RF input[name='dbacthdr_drcostcode']").val(data.rows[0].ccode);
+            $("#formdata_RF input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
         });
     }
     
@@ -417,7 +420,30 @@ $(document).ready(function () {
 			$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 			$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 			parent_close_disabled(true);
+			dialog_payercode.off();
 			amountchgOnRF();
+
+			$('.nav-tabs a').on('shown.bs.tab', function(e){
+				tabform=$(this).attr('form');
+				rdonly(tabform);
+				$('#dbacthdr_paytype').val(tabform);
+				switch(tabform) {
+					case state = '#f_tab-cash':
+						getcr('CASH');
+						break;
+					case state = '#f_tab-card':
+						$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+						refreshGrid("#g_paymodecard",urlParam3_rc);
+						break;
+					case state = '#f_tab-cheque':
+						getcr('cheque');
+						break;
+					case state = '#f_tab-debit':
+						$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+						refreshGrid("#g_paymodebank",urlParam2_rc);
+						break;
+				}
+			});
 			switch(oper) {
 				case state = 'add':
 					mycurrency.formatOnBlur();
@@ -438,10 +464,10 @@ $(document).ready(function () {
 					mycurrency.formatOn();
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata_RF');
-					disableForm(selrowData('#jqGrid_RF').dbacthdr_paytype);
+					disableForm(selrowData('#jqGrid_rf').dbacthdr_paytype);
 					$(this).dialog("option", "buttons",butt2);
 
-					switch(selrowData('#jqGrid_RF').dbacthdr_paytype) {
+					switch(selrowData('#jqGrid_rf').dbacthdr_paytype) {
 						case state = '#f_tab-card':
 							refreshGrid("#g_paymodecard",urlParam3_rc);
 							break;
@@ -453,12 +479,12 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				dialog_payercode.on();
+				dialog_payercode.off();
 				myallocation.renewAllo(0);
 			}
 			if(oper!='add'){
 				dialog_payercode.check(errorField);
-				showingForCash(selrowData("#jqGrid_RF").dbacthdr_amount,selrowData("#jqGrid_RF").dbacthdr_outamount,selrowData("#jqGrid_RF").dbacthdr_RCCASHbalance,selrowData("#jqGrid_RF").dbacthdr_RCFinalbalance,selrowData("#jqGrid_RF").dbacthdr_paytype);
+				showingForCash(selrowData("#jqGrid_rf").dbacthdr_amount,selrowData("#jqGrid_rf").dbacthdr_outamount,selrowData("#jqGrid_rf").dbacthdr_RCCASHbalance,selrowData("#jqGrid_rf").dbacthdr_RCFinalbalance,selrowData("#jqGrid_rf").dbacthdr_paytype);
 			}
 		},
 		close: function( event, ui ) {
@@ -547,6 +573,25 @@ $(document).ready(function () {
 			}, 100 );
 		},
 	});
+
+	
+	function get_debtorcode_outamountRF(payercode){
+		var param={
+			url: './refund/table',
+			action:'get_debtorcode_outamount',
+			payercode:payercode
+		}
+
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+			if(data.result == 'true'){
+				$('input[name="dbacthdr_outamount"]').val(data.outamount);
+			}else{
+				// alert('Payer doesnt have outstanding amount');
+			}
+		});
+	}
 	//////////////////////////////////RF ENDS//////////////////////////////////
     /////////////////////////////////end dialog/////////////////////////////////
     
@@ -803,7 +848,7 @@ $(document).ready(function () {
 	/////////////////////////////////////parameter for jqGrid_rf url///////////////////////////////////////
 	var urlParam_rf={
 		action:'get_jqGrid_rf',
-		url: './refund/table',
+		url: './cancellation/table',
 		field:''
 	}
 
@@ -824,46 +869,46 @@ $(document).ready(function () {
 	$("#jqGrid_rf").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
-			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true},
-			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
-			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50, hidden: true},
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30}, //tunjuk
-			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 30}, //tunjuk
-			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
-			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
-			{label: 'hdrtype', name: 'dbacthdr_hdrtype', hidden: true},
-			{label: 'currency', name: 'dbacthdr_currency', hidden: true},
-			{label: 'tillcode', name: 'dbacthdr_tillcode', hidden: true},
-			{label: 'tillno', name: 'dbacthdr_tillno', hidden: true},
-			{label: 'debtortype', name: 'dbacthdr_debtortype', hidden: true},
-			{label: 'Date', name: 'dbacthdr_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true},
-			{label: 'Receipt No.', name: 'dbacthdr_recptno', classes: 'wrap',width: 60, hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entrydate', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entrytime', hidden: true},
-			{label: 'entrydate', name: 'dbacthdr_entryuser', hidden: true},
-			{label: 'Payer', name: 'dbacthdr_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{label: 'Payer Name', name: 'dbacthdr_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},
+			{label: 'Audit No', name: 'db_auditno', width: 30 },
+			{label: 'lineno_', name: 'db_lineno_', width: 30, hidden: true},
+			{label: 'source', name: 'db_source', hidden: true, checked:true},
+			{label: 'Trantype', name: 'db_trantype', width: 45},
+			{label: 'Type', name: 'db_PymtDescription', classes: 'wrap', width: 50, hidden: true},
+			{label: 'MRN', name: 'db_mrn',align:'right', width: 30}, //tunjuk
+			{label: 'Epis', name: 'db_episno',align:'right', width: 30}, //tunjuk
+			{label: 'billdebtor', name: 'db_billdebtor', hidden: true},
+			{label: 'conversion', name: 'db_conversion', hidden: true},
+			{label: 'hdrtype', name: 'db_hdrtype', hidden: true},
+			{label: 'currency', name: 'db_currency', hidden: true},
+			{label: 'tillcode', name: 'db_tillcode', hidden: true},
+			{label: 'tillno', name: 'db_tillno', hidden: true},
+			{label: 'debtortype', name: 'db_debtortype', hidden: true},
+			{label: 'Date', name: 'db_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true},
+			{label: 'Receipt No.', name: 'db_recptno', classes: 'wrap',width: 60, hidden: true},
+			{label: 'entrydate', name: 'db_entrydate', hidden: true},
+			{label: 'entrydate', name: 'db_entrytime', hidden: true},
+			{label: 'entrydate', name: 'db_entryuser', hidden: true},
+			{label: 'Payer', name: 'db_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{label: 'Payer Name', name: 'db_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true},
 			{label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true},
-			{label: 'remark', name: 'dbacthdr_remark', hidden: true},
-			{label: 'authno', name: 'dbacthdr_authno', hidden: true},
-			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
-			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
-			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70, hidden: true}, //tunjuk
-			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
-			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
-			{label: 'units', name: 'dbacthdr_unit', hidden: true},
-			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
-			{label: 'paytype', name: 'dbacthdr_paytype', hidden: true},
-			{label: 'RCcashbalance', name: 'dbacthdr_RCCASHbalance', hidden: true},
-			{label: 'RCFinalbalance', name: 'dbacthdr_RCFinalbalance', hidden: true},
-			{label: 'Status', name: 'dbacthdr_recstatus',width: 50}, //tunjuk
-			{label: 'idno', name: 'dbacthdr_idno', hidden: true},
+			{label: 'remark', name: 'db_remark', hidden: true},
+			{label: 'authno', name: 'db_authno', hidden: true},
+			{label: 'epistype', name: 'db_epistype', hidden: true},
+			{label: 'cbflag', name: 'db_cbflag', hidden: true},
+			{label: 'reference', name: 'db_reference', hidden: true},
+			{label: 'Payment Mode', name: 'db_paymode',width: 70, hidden: true}, //tunjuk
+			{label: 'Amount', name: 'db_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'O/S Amount', name: 'db_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'bankchg', name: 'db_bankcharges', hidden: true},
+			{label: 'expdate', name: 'db_expdate', hidden: true},
+			{label: 'rate', name: 'db_rate', hidden: true},
+			{label: 'units', name: 'db_unit', hidden: true},
+			{label: 'invno', name: 'db_invno', hidden: true},
+			{label: 'paytype', name: 'db_paytype', hidden: true},
+			{label: 'RCcashbalance', name: 'db_RCCASHbalance', hidden: true},
+			{label: 'RCFinalbalance', name: 'db_RCFinalbalance', hidden: true},
+			{label: 'Status', name: 'db_recstatus',width: 50}, //tunjuk
+			{label: 'idno', name: 'db_idno', hidden: true},
 			{label: 'paycard_description', name: 'paycard_description', hidden: true },
 			{label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
@@ -871,7 +916,7 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		loadonce:false,
-		sortname:'dbacthdr_idno',
+		sortname:'db_idno',
 		sortorder:'desc',
 		width: 900,
 		height: 300,
@@ -882,7 +927,7 @@ $(document).ready(function () {
 			$("#gridAllo input[name='tick']").hide();
 		},
 		onSelectRow: function(rowid){
-			urlParamAllo.payercode = selrowData("#jqGrid_rf").dbacthdr_payercode;
+			urlParamAllo.payercode = selrowData("#jqGrid_rf").db_payercode;
 			refreshGrid("#gridAllo",urlParamAllo);
 			$("#gridAllo input[name='tick']").hide();
 		},
@@ -892,8 +937,11 @@ $(document).ready(function () {
 			
 			$('#'+$("#jqGrid_rf").jqGrid ('getGridParam', 'selrow')).focus();
 			enabledPill();
+			refreshGrid("#jqGrid_rf",urlParam_rf);
+
 		},
 		loadComplete:function(data){
+			refreshGrid("#jqGrid_rf",urlParam_rf);
 			calc_jq_height_onchange("jqGrid_rf");
 		}	
 	});
@@ -914,7 +962,7 @@ $(document).ready(function () {
 			enabledPill();
 			
 			populateFormdata("#jqGrid_rf", "#dialogForm_RF", "#formdata_RF", selRowId, 'view', '');
-			getdata('RF',selrowData("#jqGrid_rf").dbacthdr_idno);
+			getdata('RF',selrowData("#jqGrid_rf").db_idno);
 			refreshGrid("#jqGrid_rf",urlParam_rf);
 		},
 	});
@@ -1422,6 +1470,7 @@ $(document).ready(function () {
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
 			case 'db_mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='db_mrn';break;
 			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			case 'db_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_payercode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
@@ -1835,6 +1884,54 @@ var dialog_payercode = new ordialog(
 	},'urlParam','radio','tab'
 );
 dialog_payercode.makedialog(true);
+
+///RF
+var dialog_payercode = new ordialog(
+	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
+	{	colModel:[
+			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label:'debtortype',name:'debtortype',hidden:true},
+			{label:'actdebccode',name:'actdebccode',hidden:true},
+			{label:'actdebglacc',name:'actdebglacc',hidden:true},
+		],
+		urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+		ondblClickRow:function(){
+			let data=selrowData('#'+dialog_payercode.gridname);
+			//$('#apacthdr_actdate').focus();
+			$('#dbacthdr_payername').val(data.name);
+			$('#dbacthdr_debtortype').val(data.debtortype);
+			urlParamAllo.payercode = data.debtorcode;
+			myallocation.renewAllo(0);
+			refreshGrid("#gridAllo",urlParamAllo);
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				//$('#apacthdr_actdate').focus();
+			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+				$('#'+obj.dialogname).dialog('close');
+			}
+		}
+	},{
+		title:"Select Payer code",
+		open: function(){
+			dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
+			dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
+		},
+		close: function(){
+			let data=selrowData('#'+dialog_payercode.gridname);
+			get_debtorcode_outamountRF(data.debtorcode);
+			// $('#dbacthdr_remark').focus();
+		}
+	},'urlParam','radio','tab'
+);
+dialog_payercode.makedialog();
 
 function populateform_rc(idno){
 	var param={

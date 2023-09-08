@@ -1037,9 +1037,9 @@
 	<!-- ***************End View Form for Receipt ********************* -->
 
 	<!-- *************** View Form for Refund ********************* -->
-	<!-- <div id="dialogForm_RF" title="Refund">
+	<div id="dialogForm_RF" title="Refund">
 		<div class='panel panel-info'>
-			<div class="panel-heading">Refund Header</div>
+			<div class="panel-heading">Refund</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
 				<form class='form-horizontal' style='width:99%' id='formdata_RF'>
 					{{ csrf_field() }}
@@ -1263,7 +1263,7 @@
 						<div id="pagerAllo"></div>
 					</div>
 
-					<div class="col-md-10 col-md-offset-1" id="alloSearch">
+					<!-- <div class="col-md-10 col-md-offset-1" id="alloSearch">
 						<label class="control-label" id='alloLabel'>Search</label>
 						<input id="alloText" type="text" class="form-control input-sm">
 						<select class="form-control" id="alloCol">
@@ -1275,11 +1275,11 @@
 							<option value="staffid" >staffid</option>
 							<option value="batchno" >batchno</option>
 						</select>
-					</div>
+					</div> -->
 				</form>
 			</div>
 		</div>
-	</div> -->
+	</div>
 	<!-- ***************End View Form for Refund ********************* -->
 
 @endsection

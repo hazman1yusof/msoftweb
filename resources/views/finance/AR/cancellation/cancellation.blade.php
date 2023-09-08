@@ -746,6 +746,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="g_paybank_c" class='col-md-4 minuspad-15'>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th scope="col">Pay Mode</th>
+											<th scope="col">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+											<td>
+												<input id="paybank_description" name="paybank_description" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
                             <div class='col-md-8'>
                                 <div class="form-group">
                                     <div class='col-md-4'> 
@@ -824,6 +844,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="g_paycard_c" class='col-md-4 minuspad-15'>
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th scope="col">Pay Mode</th>
+											<th scope="col">Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<input id="dbacthdr_paymode" name="dbacthdr_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+											<td>
+												<input id="paycard_description" name="paycard_description" type="text" rdonly class="form-control input-sm text-uppercase">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
                             <div class='col-md-8'>
                                 <div class="form-group">
                                     <div class='col-md-4'> 
@@ -871,10 +911,10 @@
             <div id="pagerAllo"></div>
         </div>
 
-        <div class="col-md-10 col-md-offset-1" id="alloSearch">
-            <label class="control-label" id='alloLabel'>Search</label>
-            <input id="alloText" type="text" class="form-control input-sm">
-            <select class="form-control" id="alloCol">
+        <div class="col-md-10 col-md-offset-1" id="allocSearch">
+            <label class="control-label" id='allocLabel'>Search</label>
+            <input id="allocText" type="text" class="form-control input-sm">
+            <select class="form-control" id="allocCol">
                 <option value="invno" >invoice no</option>
                 <option value="auditno" >auditno</option>
                 <option value="mrn" >mrn</option>

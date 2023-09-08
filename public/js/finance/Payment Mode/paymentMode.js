@@ -99,8 +99,8 @@ $(document).ready(function () {
 	var dialog_cardbank = new ordialog(
 		'cardcent','finance.bank','#cardcent',errorField,
 		{	colModel:[
-				{label:'Code',name:'code',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Bank Code',name:'bankcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'bankname',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
 					filterCol:['compcode','recstatus'],
