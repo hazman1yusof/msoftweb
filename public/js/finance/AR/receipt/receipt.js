@@ -670,16 +670,14 @@ $(document).ready(function () {
 	//dialog_dept=new makeDialog('sysdb.department','#dept',['deptcode','description'], 'Department');
 
 	////////////////////////////////////start dialog//////////////////////////////////////
-	
 	function saveFormdata_receipt(grid,dialog,form,oper,saveParam,urlParam,callback,uppercase=true){
-
 		var formname = $("a[aria-expanded='true']").attr('form')
-
+		
 		var paymentform =  $( formname ).serializeArray();
-
+		
 		$('.ui-dialog-buttonset button[role=button]').prop('disabled',true);
 		saveParam.oper=oper;
-
+		
 		let serializedForm = trimmall(form,uppercase);
 		$.post( saveParam.url+'?'+$.param(saveParam), serializedForm+'&'+$.param(paymentform) , function( data ) {
 			
@@ -698,8 +696,7 @@ $(document).ready(function () {
 			}
 		});
 	}
-
-
+	
 	var butt1=[{
 		text: "Save",click: function() {
 			mycurrency.formatOff();
@@ -715,18 +712,18 @@ $(document).ready(function () {
 			$(this).dialog('close');
 		}
 	}];
-
+	
 	var butt2=[{
 		text: "Close",click: function() {
 			$(this).dialog('close');
 		}
 	}];
-
+	
 	$("input[name=dbacthdr_entrydate]").keydown(false);
-
+	
 	////////////////////////////////////start dialog////////////////////////////////////
 	var oper = 'add';
-
+	
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		tabform=$(this).attr('form');
 		rdonly(tabform);
@@ -752,7 +749,7 @@ $(document).ready(function () {
 					urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
 					refreshGrid("#g_paymodebank",urlParam_bank);
 				}else{
-				refreshGrid("#g_paymodebank",urlParam2);
+					refreshGrid("#g_paymodebank",urlParam2);
 				}
 				break;
 			case '#f_tab-forex':
@@ -967,7 +964,7 @@ $(document).ready(function () {
 			
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			enabledPill();
-
+			
 			let allocate = $("#jqGrid").data('need_allocate');
 			if(allocate!=undefined && allocate=='1'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
@@ -978,9 +975,8 @@ $(document).ready(function () {
 		loadComplete:function(data){
 			calc_jq_height_onchange("jqGrid");
 		}
-		
 	});
-
+	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
@@ -1547,7 +1543,7 @@ function calc_jq_height_onchange(jqgrid){
 		scrollHeight = 300;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-}	
+}
 
 function resetpill(){
 	$('#dialogForm ul.nav-tabs li').removeClass('active');

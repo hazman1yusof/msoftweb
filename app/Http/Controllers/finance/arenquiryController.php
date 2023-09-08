@@ -30,6 +30,8 @@ class arenquiryController extends defaultController
                 return $this->maintable($request);
             case 'populate_rc':
                 return $this->populate_rc($request);
+            case 'populate_rf':
+                return $this->populate_rf($request);
             case 'get_alloc':
                 return $this->get_alloc($request);
             case 'get_table_dtl':
@@ -37,6 +39,7 @@ class arenquiryController extends defaultController
             default:
                 return 'error happen..';
         }
+       
     }
     
     public function maintable(Request $request){
@@ -227,7 +230,40 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-    
+
+    public function populate_rf(Request $request){
+        
+        $table = DB::table('debtor.dbacthdr')
+                ->where('idno','=',$request->idno);
+        
+        $table = DB::table('debtor.dbacthdr')
+                ->select($this->fixPost($request->field,"_"))
+                ->leftjoin('hisdb.pat_mast', function($join) use ($request){
+                    $join = $join->on('pat_mast.MRN', '=', 'dbacthdr.mrn')
+                                ->where('pat_mast.compcode','=',session('compcode'));
+                })
+                ->leftjoin('debtor.paymode as paycard', function($join) use ($request){
+                    $join = $join->on('paycard.paymode', '=', 'dbacthdr.paymode')
+                                ->where('paycard.compcode','=',session('compcode'))
+                                ->where('paycard.source','=','AR')
+                                ->where('paycard.paytype','=','CARD');
+                })
+                ->leftjoin('debtor.paymode as paybank', function($join) use ($request){
+                    $join = $join->on('paybank.paymode', '=', 'dbacthdr.paymode')
+                                ->where('paybank.compcode','=',session('compcode'))
+                                ->where('paybank.source','=','AR')
+                                ->where('paybank.paytype','=','BANK');
+                })
+                ->where('dbacthdr.idno','=',$request->idno)
+                ->where('dbacthdr.trantype','RF');;
+        
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+        
+        return json_encode($responce);
+        
+    }
+
     public function form(Request $request)
     {
         switch($request->oper){
