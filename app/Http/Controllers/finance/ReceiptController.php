@@ -317,12 +317,7 @@ class ReceiptController extends defaultController
             $amt_paid = 0;
             foreach ($request->allo as $key => $value) {
                 $invoice = DB::table('debtor.dbacthdr')
-                            ->where('compcode',session('compcode'))
-                            ->where('source','PB')
-                            ->whereIn('trantype',['IN','DN'])
-                            ->where('debtorcode',$request->debtorcode)
-                            ->where('auditno',$value['obj']['auditno'])
-                            ->where('outamount','>',0);
+                            ->where('idno',$value['obj']['idno']);
 
                 if($invoice->exists()){
 
