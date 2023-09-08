@@ -406,7 +406,8 @@ $(document).ready(function () {
 	var urlParam={
 		action:'maintable',
 		url: './refund/table',
-		field:''
+		field:'',
+		fixPost: true
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -426,6 +427,7 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
+			{label: 'compcode', name: 'dbacthdr_compcode', width: 90, hidden: true },
 			{label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true},
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},

@@ -442,27 +442,6 @@ $(document).ready(function () {
 			dialog_payercode.off();
 			amountchgOnRF();
 
-			$('.nav-tabs a').on('shown.bs.tab', function(e){
-				tabform=$(this).attr('form');
-				rdonly(tabform);
-				$('#dbacthdr_paytype').val(tabform);
-				switch(tabform) {
-					case state = '#f_tab-cash':
-						getcr('CASH');
-						break;
-					case state = '#f_tab-card':
-						$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-						refreshGrid("#g_paymodecard",urlParam3_rc);
-						break;
-					case state = '#f_tab-cheque':
-						getcr('cheque');
-						break;
-					case state = '#f_tab-debit':
-						$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-						refreshGrid("#g_paymodebank",urlParam2_rc);
-						break;
-				}
-			});
 			switch(oper) {
 				case state = 'add':
 					mycurrency.formatOnBlur();
@@ -1684,7 +1663,8 @@ $(document).ready(function () {
 	var urlParam_rf={
 		action:'maintable',
 		url: './refund/table',
-		field:''
+		field:'',
+		fixPost: true
 	}
 	var saveParam={	
 		action:'refund_save',
@@ -2465,9 +2445,9 @@ function getdata(mode,idno){
 	case 'RF':
 		populateform_rf(idno);
 		break;
+		
 	}
 }
-
 //RC
 var dialog_payercode = new ordialog(
 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',

@@ -1779,52 +1779,52 @@ var dialog_payercode = new ordialog(
 dialog_payercode.makedialog(true);
 
 ///RF
-var dialog_payercode = new ordialog(
-	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
-	{	colModel:[
-			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'debtortype',name:'debtortype',hidden:true},
-			{label:'actdebccode',name:'actdebccode',hidden:true},
-			{label:'actdebglacc',name:'actdebglacc',hidden:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(){
-			let data=selrowData('#'+dialog_payercode.gridname);
-			//$('#apacthdr_actdate').focus();
-			$('#dbacthdr_payername').val(data.name);
-			$('#dbacthdr_debtortype').val(data.debtortype);
-			urlParamAllo.payercode = data.debtorcode;
-			myallocation.renewAllo(0);
-			refreshGrid("#gridAllo",urlParamAllo);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				//$('#apacthdr_actdate').focus();
-			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-				$('#'+obj.dialogname).dialog('close');
-			}
-		}
-	},{
-		title:"Select Payer code",
-		open: function(){
-			dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
-			dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
-		},
-		close: function(){
-			let data=selrowData('#'+dialog_payercode.gridname);
-			get_debtorcode_outamountRF(data.debtorcode);
-			// $('#dbacthdr_remark').focus();
-		}
-	},'urlParam','radio','tab'
-);
-dialog_payercode.makedialog();
+// var dialog_payercode = new ordialog(
+// 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
+// 	{	colModel:[
+// 			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+// 			{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+// 			{label:'debtortype',name:'debtortype',hidden:true},
+// 			{label:'actdebccode',name:'actdebccode',hidden:true},
+// 			{label:'actdebglacc',name:'actdebglacc',hidden:true},
+// 		],
+// 		urlParam: {
+// 					filterCol:['compcode','recstatus'],
+// 					filterVal:['session.compcode','ACTIVE']
+// 				},
+// 		ondblClickRow:function(){
+// 			let data=selrowData('#'+dialog_payercode.gridname);
+// 			//$('#apacthdr_actdate').focus();
+// 			$('#dbacthdr_payername').val(data.name);
+// 			$('#dbacthdr_debtortype').val(data.debtortype);
+// 			urlParamAllo.payercode = data.debtorcode;
+// 			myallocation.renewAllo(0);
+// 			refreshGrid("#gridAllo",urlParamAllo);
+// 		},
+// 		gridComplete: function(obj){
+// 			var gridname = '#'+obj.gridname;
+// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+// 				$(gridname+' tr#1').click();
+// 				$(gridname+' tr#1').dblclick();
+// 				//$('#apacthdr_actdate').focus();
+// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+// 				$('#'+obj.dialogname).dialog('close');
+// 			}
+// 		}
+// 	},{
+// 		title:"Select Payer code",
+// 		open: function(){
+// 			dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
+// 			dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
+// 		},
+// 		close: function(){
+// 			let data=selrowData('#'+dialog_payercode.gridname);
+// 			get_debtorcode_outamountRF(data.debtorcode);
+// 			// $('#dbacthdr_remark').focus();
+// 		}
+// 	},'urlParam','radio','tab'
+// );
+// dialog_payercode.makedialog();
 
 function populateform_rc(idno){
 	var param={

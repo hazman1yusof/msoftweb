@@ -39,6 +39,7 @@ class arenquiryController extends defaultController
             default:
                 return 'error happen..';
         }
+       
     }
     
     public function maintable(Request $request){
