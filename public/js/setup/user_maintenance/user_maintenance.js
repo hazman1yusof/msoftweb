@@ -69,10 +69,12 @@ $("body").show();
 			if(oper!='view'){
 				dialog_txndept.on();
 				dialog_deptcode.on();
+				dialog_doctorcode.on();
 			}
 			if(oper!='add'){
 				setColor();
 				dialog_txndept.check(errorField);
+				dialog_doctorcode.check(errorField);
 				// dialog_deptcode.check(errorField);
 			}
 		},
@@ -81,6 +83,7 @@ $("body").show();
 
 			dialog_txndept.off();
 			dialog_deptcode.off();
+			dialog_doctorcode.off();
 
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
@@ -120,6 +123,7 @@ $("body").show();
             {label:'Price View',name:'priceview', width:90, formatter:formatter, unformat:unformat, formatter:formatterstatus_tick2, unformat:unformatstatus_tick2, classes: 'center_td' },   
             {label:'programmenu',name:'programmenu',width:50,hidden:true},
             {label:'password',name:'password',width:50,hidden:true},
+            {label:'doctorcode',name:'doctorcode',width:50,hidden:true},
             {label:'id',name:'id',width:50,hidden:true},
             {label:'ALcolor',name:'ALcolor',hidden:true},
             {label:'DiscPTcolor',name:'DiscPTcolor',hidden:true},
@@ -307,6 +311,38 @@ $("body").show();
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_deptcode.makedialog();
+
+
+	var dialog_doctorcode = new ordialog(
+		'doctorcode','hisdb.doctor','#doctorcode',errorField,
+		{	colModel:[
+				{label:'Doctor ID',name:'doctorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Doctor Name',name:'doctorname',width:400,classes:'pointer',canSearch:true,or_search:true},
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Transaction Department",
+			open: function(){
+				dialog_doctorcode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_doctorcode.urlParam.filterVal=['session.compcode','ACTIVE']
+			}
+		},'urlParam', 'radio', 'tab'
+	);
+	dialog_doctorcode.makedialog();
 
 
 	// function savecolor(){

@@ -70,6 +70,16 @@
 					</div>
 
                 </div>
+                <div class="form-group">
+				  <label class="col-md-2 control-label" for="doctorcode">Doctor ID</label>  
+					<div class="col-md-4">
+					  <div class='input-group'>
+						<input id="doctorcode" name="doctorcode" type="text" class="form-control input-sm text-uppercase">
+						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+					  </div>
+					  <span class="help-block"></span>
+					</div>
+                </div>
 
                 <div class="form-group">
                 	<label class="control-label col-md-2">Annual Leave Color</label>

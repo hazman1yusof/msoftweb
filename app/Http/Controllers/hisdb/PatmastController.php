@@ -99,6 +99,7 @@ class PatmastController extends defaultController
 
         if($request->curpat == 'true'){
 
+            $isdoctor = Auth::user()->doctor;
             $request->rows = $request->rowCount;
 
             $sel_epistycode = $request->epistycode;
@@ -133,10 +134,6 @@ class PatmastController extends defaultController
                                 $join = $join->on('epispayer.payercode', '=', 'debtormast.debtorcode')
                                                 ->where('epispayer.compcode','=',session('compcode'));
                             })
-                            ->leftJoin('hisdb.doctor', function($join) use ($request){
-                                $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
-                                                ->where('doctor.compcode','=',session('compcode'));
-                            })
                             ->leftJoin('hisdb.racecode', function($join) use ($request){
                                 $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
                                                 ->where('racecode.compcode','=',session('compcode'));
@@ -157,6 +154,21 @@ class PatmastController extends defaultController
                                 $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
                                                 ->where('areacode.compcode','=',session('compcode'));
                             });
+
+            if($isdoctor){
+                $table_patm = $table_patm->join('hisdb.doctor', function($join) use ($request){
+                                $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+                                            ->where('queue.admdoctor', '=', Auth::user()->doctorcode)
+                                            ->where('doctor.compcode','=',session('compcode'));
+                            });
+            }else{
+                $table_patm = $table_patm->leftJoin('hisdb.doctor', function($join) use ($request){
+                                $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
+                                            ->where('doctor.compcode','=',session('compcode'));
+                            });
+            }
+
+
                             
             if($sel_epistycode == 'IP'){
                 $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){

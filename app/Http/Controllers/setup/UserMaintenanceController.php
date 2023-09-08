@@ -22,8 +22,43 @@ class UserMaintenanceController extends defaultController
         $this->duplicateCode = "username";
     }
 
-    public function duplicate($check){
-        return $this->table->where('compcode',session('compcode'))->where($this->duplicateCode,'=',$check)->count();
+    public function duplicate($check,$mode,$idno){
+        if($mode == 'add'){
+            $users = DB::table('users')
+                        ->where('compcode',session('compcode'))
+                        ->where('username',$check)
+                        ->exists();
+
+            return $users;
+        }else if($mode == 'edit'){
+            $users = DB::table('users')
+                        ->where('compcode',session('compcode'))
+                        ->where('username',$check)
+                        ->where('id','!=',$idno)
+                        ->exists();
+
+            return $users;
+        }
+        // return $this->table->where('compcode',session('compcode'))->where($this->duplicateCode,'=',$check)->count();
+    }
+
+    public function duplicate_doctorcode($doctorcode,$mode,$idno){
+        if($mode == 'add'){
+            $users = DB::table('users')
+                        ->where('compcode',session('compcode'))
+                        ->where('doctorcode',$doctorcode)
+                        ->exists();
+
+            return $users;
+        }else if($mode == 'edit'){
+            $users = DB::table('users')
+                        ->where('compcode',session('compcode'))
+                        ->where('doctorcode',$doctorcode)
+                        ->where('id','!=',$idno)
+                        ->exists();
+
+            return $users;
+        }
     }
 
     public function show(Request $request)
@@ -91,8 +126,12 @@ class UserMaintenanceController extends defaultController
 
         DB::beginTransaction();
 
-        if($this->duplicate($request->username)){
-            return response('duplicate', 500);
+        if($this->duplicate($request->username,'add',null)){
+            return response('duplicate username', 500);
+        }
+
+        if($this->duplicate_doctorcode($request->doctorcode,'add',null)){
+            return response('duplicate doctor code', 500);
         }
 
         try {
@@ -114,6 +153,7 @@ class UserMaintenanceController extends defaultController
                 'DiscPTcolor' => $request->DiscPTcolor,
                 'CancelPTcolor' => $request->CancelPTcolor,
                 'CurrentPTcolor' => $request->CurrentPTcolor,
+                'doctorcode' => $request->doctorcode,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now(),
@@ -134,6 +174,14 @@ class UserMaintenanceController extends defaultController
 
         try {
 
+            if($this->duplicate($request->username,'edit',$request->id)){
+                return response('duplicate username', 500);
+            }
+
+            if($this->duplicate_doctorcode($request->doctorcode,'edit',$request->id)){
+                return response('duplicate doctor code', 500);
+            }
+
             $table = DB::table('sysdb.users')->where('id','=',$request->id)->where('compcode',session('compcode'));
             $table->update([
                 'username' => $request->username,
@@ -152,6 +200,7 @@ class UserMaintenanceController extends defaultController
                 'DiscPTcolor' => $request->DiscPTcolor,
                 'CancelPTcolor' => $request->CancelPTcolor,
                 'CurrentPTcolor' => $request->CurrentPTcolor,
+                'doctorcode' => $request->doctorcode,
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now(),
