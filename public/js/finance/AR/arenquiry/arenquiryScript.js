@@ -2543,7 +2543,6 @@ function populateform_rc(idno){
 	});
 }
 
-<<<<<<< HEAD
 //RF
 // var dialog_payercode = new ordialog(
 // 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
@@ -2604,11 +2603,11 @@ function populateform_rf(idno){
 		dialog_payercode.check('errorField');
 		disabledPill();
 	});
-=======
+}
+
 function resetpill(){
 	$('#dialogForm_RC ul.nav-tabs li').removeClass('active');
 	$('#dialogForm_RC ul.nav-tabs li a').attr('aria-expanded',false);
->>>>>>> beb93290c9c69c255dd83d4f079d016ed36218f5
 }
 
 function disabledPill(){

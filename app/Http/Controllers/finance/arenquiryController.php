@@ -229,7 +229,6 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-<<<<<<< HEAD
 
     public function populate_rf(Request $request){
         
@@ -264,9 +263,6 @@ class arenquiryController extends defaultController
         
     }
 
-=======
-    
->>>>>>> beb93290c9c69c255dd83d4f079d016ed36218f5
     public function form(Request $request)
     {
         switch($request->oper){
