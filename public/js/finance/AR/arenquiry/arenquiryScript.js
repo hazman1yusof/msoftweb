@@ -227,7 +227,7 @@ $(document).ready(function () {
 		});
 	}
 	//end RC
-
+	
 	///////////////////////////////////////////start dialogForm///////////////////////////////////////////
 	$("#dialogForm_CN")
 		.dialog({
@@ -307,13 +307,12 @@ $(document).ready(function () {
 				errorField.length=0;
 			},
 		});
-		
+	
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		tabform=$(this).attr('form');
 		rdonly(tabform);
 		handleAmount();
 		$('#dbacthdr_paytype').val(tabform);
-		console.log(tabform)
 		switch(tabform) {
 			case '#f_tab-cash':
 				getcr('CASH');
@@ -337,7 +336,7 @@ $(document).ready(function () {
 		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 		$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 	});
-
+	
 	$("#dialogForm_RC")
 		.dialog({
 			width: 9/10 * $(window).width(),
@@ -429,7 +428,7 @@ $(document).ready(function () {
 			},
 			buttons :butt1,
 		});
-
+	
 	$("#dialogForm_RF")
 	.dialog({ 
 		width: 9/10 * $(window).width(),

@@ -242,8 +242,7 @@ $(document).ready(function () {
     }
     
     //////////////////////////////start dialogForm//////////////////////////////
-    /////////////////////////////////RC STARTS/////////////////////////////////
-				
+	/////////////////////////////////RC STARTS/////////////////////////////////
 	$('#dialogForm_RC .nav-tabs a').on('shown.bs.tab', function(e){
 		tabform=$(this).attr('form');
 		rdonly(tabform);
@@ -254,23 +253,15 @@ $(document).ready(function () {
 				getcr('CASH');
 				break;
 			case '#f_tab-card':
-				if(oper=="view"){
-					urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
-					refreshGrid("#g_paymodecard",urlParam_card);
-				}else{
-					refreshGrid("#g_paymodecard",urlParam3_rc);
-				}
+				urlParam_card.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+				refreshGrid("#g_paymodecard",urlParam_card);
 				break;
 			case '#f_tab-cheque':
 				getcr('cheque');
 				break;
 			case '#f_tab-debit':
-				if(oper=="view"){
-					urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
-					refreshGrid("#g_paymodebank",urlParam_bank);
-				}else{
-				refreshGrid("#g_paymodebank",urlParam2_rc);
-				}
+				urlParam_bank.filterVal[3]=selrowData('#jqGrid_rc').db_paymode;
+				refreshGrid("#g_paymodebank",urlParam_bank);
 				break;
 			case '#f_tab-forex':
 				refreshGrid("#g_forex",urlParam4_rc);
@@ -280,7 +271,7 @@ $(document).ready(function () {
 		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 		$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
 	});
-
+	
 	$("#dialogForm_RC")
 		.dialog({
 			width: 9/10 * $(window).width(),
@@ -1314,7 +1305,6 @@ $(document).ready(function () {
 		}else{
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
 		}
-
 			retbut += 	    `Detail`
 			retbut += 	  `</button>&nbsp;`
 			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
