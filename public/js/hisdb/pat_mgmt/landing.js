@@ -740,7 +740,12 @@ epis_desc_show.load_desc();
 
 function stop_scroll_on(){
     $('div.paneldiv').on('mouseenter',function(){
-        SmoothScrollTo('#'+$(this).parent('div.panel-collapse').attr('id'), 300,undefined,40);
+        let parentdiv = $(this).parent('div.panel-collapse').attr('id');
+        switch(parentdiv){
+            case 'jqGrid_ordcom_panel': SmoothScrollTo('#'+parentdiv, 300,70);break;
+            default : SmoothScrollTo('#'+parentdiv, 300);break;
+        }
+
         $('body').addClass('stop-scrolling');
     });
 

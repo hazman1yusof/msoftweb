@@ -348,10 +348,10 @@ class OrdcomController extends defaultController
                         'taxcode' => $request->taxcode,
                         'remarks' => $request->remarks,
                         'recstatus' => 'POSTED',
-                        'drugindicator' => $request->drugindicator,
-                        'frequency' => $request->frequency,
-                        'ftxtdosage' => $request->ftxtdosage,
-                        'addinstruction' => $request->addinstruction,
+                        'drugindicator' => $this->givenullifempty($request->drugindicator),
+                        'frequency' => $this->givenullifempty($request->frequency),
+                        'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
+                        'addinstruction' => $this->givenullifempty($request->addinstruction)
                     ]);
             
             $chargetrx_obj = db::table('hisdb.chargetrx')
@@ -455,7 +455,7 @@ class OrdcomController extends defaultController
                             'invcode' => $chgmast->chggroup,
                             'inventory' => $updinv,
                             'updinv' =>  $updinv,
-                            'discamt' => $request->discamt,
+                            'discamt' => $request->discamount,
                             'qtyorder' => $request->quantity,
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),
@@ -497,7 +497,7 @@ class OrdcomController extends defaultController
                             'invcode' => $chgmast->chggroup,
                             'inventory' => $updinv,
                             'updinv' =>  $updinv,
-                            'discamt' => $request->discamt,
+                            'discamt' => $request->discamount,
                             'qtyorder' => $request->quantity,
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),

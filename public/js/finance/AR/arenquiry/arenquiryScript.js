@@ -307,52 +307,54 @@ $(document).ready(function () {
 				errorField.length=0;
 			},
 		});
+		
+	$('.nav-tabs a').on('shown.bs.tab', function(e){
+		tabform=$(this).attr('form');
+		rdonly(tabform);
+		handleAmount();
+		$('#dbacthdr_paytype').val(tabform);
+		console.log(tabform)
+		switch(tabform) {
+			case '#f_tab-cash':
+				getcr('CASH');
+				break;
+			case '#f_tab-card':
+				urlParam_card.filterVal[3]=selrowData('#jqGrid').db_paymode;
+				refreshGrid("#g_paymodecard",urlParam_card);
+				break;
+			case '#f_tab-cheque':
+				getcr('cheque');
+				break;
+			case '#f_tab-debit':
+				urlParam_bank.filterVal[3]=selrowData('#jqGrid').db_paymode;
+				refreshGrid("#g_paymodebank",urlParam_bank);
+				break;
+			case '#f_tab-forex':
+				refreshGrid("#g_forex",urlParam4_rc);
+				break;
+		}
+		$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
+		$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
+	});
 
 	$("#dialogForm_RC")
 		.dialog({
 			width: 9/10 * $(window).width(),
 			modal: true,
 			autoOpen: false,
-			open: function( event, ui ) {		
+			open: function( event, ui ) {
 				////// Popup login //////
 				// var bootboxHtml = $('#LoginDiv').html().replace('LoginForm', 'LoginBootboxForm');
-	
+				
 				// bootbox.confirm(bootboxHtml, function(result) {
-				// 	console.log($('#ex1', '.LoginBootboxForm').val());
-				// 	console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val()); 
-	
+				//     console.log($('#ex1', '.LoginBootboxForm').val());
+				//     console.log($('#till_tillcode','#description','#till_dept','#tillstatus','#defopenamt', '.LoginBootboxForm').val());
 				// });
 				////// End Popup login //////
-	
+				
 				parent_close_disabled(true);
-	
-				$('.nav-tabs a').on('shown.bs.tab', function(e){
-					tabform=$(this).attr('form');
-					rdonly(tabform);
-					handleAmount();
-					$('#dbacthdr_paytype').val(tabform);
-					switch(tabform) {
-						case state = '#f_tab-cash':
-							getcr('CASH');
-							break;
-						case state = '#f_tab-card':
-							refreshGrid("#g_paymodecard",urlParam3_rc);
-							break;
-						case state = '#f_tab-cheque':
-							getcr('cheque');
-							break;
-						case state = '#f_tab-debit':
-							refreshGrid("#g_paymodebank",urlParam2_rc);
-							break;
-						case state = '#f_tab-forex':
-							refreshGrid("#g_forex",urlParam4_rc);
-							break;
-					}
-					$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-					$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-					$("#g_forex").jqGrid ('setGridWidth', $("#g_forex_c")[0].clientWidth);
-	
-				});
+				
 				$("#sysparam").jqGrid ('setGridWidth', Math.floor($("#sysparam_c")[0].offsetWidth));
 				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
 				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
@@ -377,22 +379,25 @@ $(document).ready(function () {
 						mycurrency.formatOn();
 						$( this ).dialog( "option", "title", "View" );
 						disableForm('#formdata_RC');
-						disableForm(selrowData('#jqGrid2_RC').dbacthdr_paytype);
+						disableForm(selrowData('#jqGrid').db_paytype);
 						$(this).dialog("option", "buttons",butt2);
-	
-						switch(selrowData('#jqGrid2_RC').dbacthdr_paytype) {
-							case state = '#f_tab-card':
-								refreshGrid("#g_paymodecard",urlParam3_rc);
-								break;
-							case state = '#f_tab-debit':
-								refreshGrid("#g_paymodebank",urlParam2_rc);
-								break;
-							case state = '#f_tab-forex':
-								refreshGrid("#g_forex",urlParam4_rc);
-								break;
-						}
-					
-						break;
+						
+						// switch(selrowData('#jqGrid').db_paytype) {
+						// 	case state = '#f_tab-card':
+						// 		urlParam_card.filterVal[3]=selrowData("#jqGrid").db_paymode;
+						// 		refreshGrid("#g_paymodecard",urlParam_card);
+						// 		// $('#g_paymodecard').trigger( 'reloadGrid' );
+						// 		break;
+						// 	case state = '#f_tab-debit':
+						// 		urlParam_bank.filterVal[3]=selrowData("#jqGrid").db_paymode;
+						// 		refreshGrid("#g_paymodebank",urlParam_bank);
+						// 		// $('#g_paymodebank').trigger( 'reloadGrid' );
+						// 		break;
+						// 	case state = '#f_tab-forex':
+						// 		refreshGrid("#g_forex",urlParam4_rc);
+						// 		break;
+						// }
+						// break;
 				}
 				if(oper!='view'){
 					dialog_payercode.on();
@@ -402,7 +407,7 @@ $(document).ready(function () {
 				if(oper!='add'){
 					// dialog_logintillcode.check(errorField);
 					// dialog_payercode.check(errorField);
-					showingForCash(selrowData("#jqGrid2_RC").dbacthdr_amount,selrowData("#jqGrid2_RC").dbacthdr_outamount,selrowData("#jqGrid2_RC").dbacthdr_RCCASHbalance,selrowData("#jqGrid2_RC").dbacthdr_RCFinalbalance,selrowData("#jqGrid2_RC").dbacthdr_paytype);
+					showingForCash(selrowData("#jqGrid").db_amount,selrowData("#jqGrid").db_outamount,selrowData("#jqGrid").db_RCCASHbalance,selrowData("#jqGrid").db_RCFinalbalance,selrowData("#jqGrid").db_paytype);
 				}
 			},
 			close: function( event, ui ) {
@@ -672,7 +677,10 @@ $(document).ready(function () {
 			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
-			{ label: 'paytype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
+			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
+			{ label: 'RCCASHbalance', name: 'db_RCCASHbalance', width: 10, hidden: true },
+			{ label: 'RCFinalbalance', name: 'db_RCFinalbalance', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Paymode', name: 'db_paymode', width: 25, classes: 'wrap text-uppercase', hidden: true },
@@ -1491,15 +1499,25 @@ $(document).ready(function () {
 			}
 		}
 	});
-
+	
 	var urlParam2_rc={
-		action:'get_table_default',
+		action: 'get_table_default',
 		url: 'util/get_table_default',
-		field:'',
-		table_name:'debtor.paymode',
-		table_id:'paymode',
-		filterCol:['source','paytype','compcode'],
-		filterVal:['AR','BANK','session.compcode'],
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode'],
+		filterVal: ['AR','BANK','session.compcode'],
+	}
+	
+	var urlParam_bank={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','BANK','session.compcode',''],
 	}
 	
 	$("#g_paymodebank").jqGrid({
@@ -1534,17 +1552,27 @@ $(document).ready(function () {
 			}
 		}
 	});
-
+	
 	var urlParam3_rc={
-		action:'get_table_default',
+		action: 'get_table_default',
 		url: 'util/get_table_default',
-		field:'',
-		table_name:'debtor.paymode',
-		table_id:'paymode',
-		filterCol:['source','paytype','compcode'],
-		filterVal:['AR','CARD','session.compcode'],
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode'],
+		filterVal: ['AR','CARD','session.compcode'],
 	}
-
+	
+	var urlParam_card={
+		action: 'get_table_default',
+		url: 'util/get_table_default',
+		field: '',
+		table_name: 'debtor.paymode',
+		table_id: 'paymode',
+		filterCol: ['source','paytype','compcode','paymode'],
+		filterVal: ['AR','CARD','session.compcode',''],
+	}
+	
 	$("#g_paymodecard").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -2507,6 +2535,7 @@ function populateform_rc(idno){
 					input.val(value);
 				}
 			});
+			resetpill();
 			$(".nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
 			dialog_payercode.check('errorField');
 			disabledPill();
@@ -2514,6 +2543,7 @@ function populateform_rc(idno){
 	});
 }
 
+<<<<<<< HEAD
 //RF
 // var dialog_payercode = new ordialog(
 // 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
@@ -2574,6 +2604,11 @@ function populateform_rf(idno){
 		dialog_payercode.check('errorField');
 		disabledPill();
 	});
+=======
+function resetpill(){
+	$('#dialogForm_RC ul.nav-tabs li').removeClass('active');
+	$('#dialogForm_RC ul.nav-tabs li a').attr('aria-expanded',false);
+>>>>>>> beb93290c9c69c255dd83d4f079d016ed36218f5
 }
 
 function disabledPill(){

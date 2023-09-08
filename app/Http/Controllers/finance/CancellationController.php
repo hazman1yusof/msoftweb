@@ -40,12 +40,8 @@ class CancellationController extends defaultController
     public function form(Request $request)
     {
         switch($request->oper){
-            case 'add':
-                return $this->add($request);
-            case 'edit':
-                return $this->edit($request);
-            case 'del':
-                return $this->del($request);
+            case 'cancel_alloc':
+                return $this->cancel_alloc($request);
             default:
                 return 'error happen..';
         }
@@ -362,7 +358,7 @@ class CancellationController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function get_jqGrid_rf(Request $request){
         
         $table = DB::table('debtor.dbacthdr AS db')
@@ -519,4 +515,78 @@ class CancellationController extends defaultController
         
     }
     
+    public function cancel_alloc(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            $dballoc = DB::table('debtor.dballoc')
+                        ->where('idno','=',$request->idno)
+                        ->first();
+            
+            $alloc_amt = floatval($dballoc->amount);
+            
+            $hdr_doc = DB::table('debtor.dbacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$dballoc->docsource)
+                        ->where('trantype','=',$dballoc->doctrantype)
+                        ->where('auditno','=',$dballoc->docauditno)
+                        ->first();
+            
+            $doc_outamt = floatval($hdr_doc->outamount);
+            $doc_newoutamt = floatval($doc_outamt + $alloc_amt);
+            
+            $hdr_ref = DB::table('debtor.dbacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$dballoc->refsource)
+                        ->where('trantype','=',$dballoc->reftrantype)
+                        ->where('auditno','=',$dballoc->refauditno)
+                        ->first();
+            
+            $ref_outamt = floatval($hdr_ref->outamount);
+            $ref_newoutamt = floatval($ref_outamt + $alloc_amt);
+            // dd($ref_newoutamt);
+            
+            DB::table('debtor.dballoc')
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+            
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dballoc->docsource)
+                ->where('trantype','=',$dballoc->doctrantype)
+                ->where('auditno','=',$dballoc->docauditno)
+                ->update([
+                    'outamount' => $doc_newoutamt
+                ]);
+            
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dballoc->refsource)
+                ->where('trantype','=',$dballoc->reftrantype)
+                ->where('auditno','=',$dballoc->refauditno)
+                ->update([
+                    'outamount' => $ref_newoutamt
+                ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->result = 'success';
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+            
+        }
+        
+    }
+
 }
