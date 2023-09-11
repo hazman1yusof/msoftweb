@@ -35,8 +35,8 @@ Route::get('/util/mycard_read','util\MycardController@get_data');
 Route::get('/util/mycard_read','util\MycardController@get_data');
 Route::get('/mykadFP','util\MycardController@mykadFP');
 Route::post('/mykadfp_store','util\MycardController@mykadfp_store');
-Route::get('/get_mykad_local','MycardController@get_mykad_local');
-Route::post('/save_mykad_local','MycardController@save_mykad_local');
+Route::get('/get_mykad_local','util\MycardController@get_mykad_local');
+Route::post('/save_mykad_local','util\MycardController@save_mykad_local');
 
 /// announcement thingy ///
 Route::get('/announcement/generate','setup\AnnouncementController@generate');
