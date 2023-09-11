@@ -499,10 +499,25 @@ $(document).ready(function() {
                 ondblClickRow: function(rowid, iRow, iCol, e){
                 },
                 gridComplete: function () {
+                    $('#jqGrid_preepis_ilsave').hide();
                 },
             });
 
             addParamField('#jqGrid_preepis', false, this.urlParam_preepis);
+            $("#jqGrid_preepis").inlineNav('#jqGridPager_preepis', {
+                add: false,
+                edit: false,
+                cancel: false,
+            }).jqGrid('navButtonAdd', "#jqGridPager_preepis", {   
+                id: "jqGrid_preepis_pagerRefresh", 
+                caption: "", cursor: "pointer", position: "last",   
+                buttonicon: "glyphicon glyphicon-refresh",  
+                title: "Refresh Table", 
+                onClickButton: function () {
+                    refreshGrid("#jqGrid_preepis", self.urlParam_preepis); 
+                },  
+            });
+
             var self = this;
             $("#tabpreepis").on("shown.bs.collapse", function(){
                 $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
