@@ -23,109 +23,109 @@
 
 </head>
 <script type="text/javascript">
-    var desc_show = null;
+    // var desc_show = null;
 
-    function mykadscantype(){
-    	return $("#patientBox").data('scantype');
-    }
+    // function mykadscantype(){
+    // 	return $("#patientBox").data('scantype');
+    // }
 
-    function closemodalfp(){
-       $('#mdl_biometric').modal('hide');
-       if($("#patientBox").data('gotpat') == true){
-       		$("#patientBox").click();
-       }
-    }
+    // function closemodalfp(){
+    //    $('#mdl_biometric').modal('hide');
+    //    if($("#patientBox").data('gotpat') == true){
+    //    		$("#patientBox").click();
+    //    }
+    // }
 
-    function gettheage(dob){
-    	console.log(dob);
-        if(dob != ''){
-            var day = new Date();
-            var dob = new Date(dob);
-            var age_val =  day.getFullYear() - dob.getFullYear();
-            if(isNaN(age_val))return null;
-            return age_val;
-        }
-        return null;
-    }
+    // function gettheage(dob){
+    // 	console.log(dob);
+    //     if(dob != ''){
+    //         var day = new Date();
+    //         var dob = new Date(dob);
+    //         var age_val =  day.getFullYear() - dob.getFullYear();
+    //         if(isNaN(age_val))return null;
+    //         return age_val;
+    //     }
+    //     return null;
+    // }
 
-    function populatefromfp(obj){
-    	$("#patientBox").data('gotpat',true);
-        $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
-        $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
+    // function populatefromfp(obj){
+    // 	$("#patientBox").data('gotpat',true);
+    //     $('#first_visit_date').val(moment().format('DD/MM/YYYY'));
+    //     $('#last_visit_date').val(moment().format('DD/MM/YYYY'));
 
-        $('#txt_pat_name').val(obj.name);
-        $('#txt_pat_newic').val(obj.icnum).blur();
-        if(obj.gender == 'P' || obj.gender == 'F' || obj.gender == 'FEMALE'){
-        	$('#cmb_pat_sex').val('F');
-        }else if(obj.gender == 'L' || obj.gender == 'M' || obj.gender == 'MALE'){
-        	$('#cmb_pat_sex').val('M');
-        }
-        $('#txt_ID_Type').val("O");
+    //     $('#txt_pat_name').val(obj.name);
+    //     $('#txt_pat_newic').val(obj.icnum).blur();
+    //     if(obj.gender == 'P' || obj.gender == 'F' || obj.gender == 'FEMALE'){
+    //     	$('#cmb_pat_sex').val('F');
+    //     }else if(obj.gender == 'L' || obj.gender == 'M' || obj.gender == 'MALE'){
+    //     	$('#cmb_pat_sex').val('M');
+    //     }
+    //     $('#txt_ID_Type').val("O");
 
-        var olddob = obj.dob;
-		// newdob = [olddob.slice(0, 4), '-', olddob.slice(4,6), '-', olddob.slice(6)].join('');
+    //     var olddob = obj.dob;
+	// 	// newdob = [olddob.slice(0, 4), '-', olddob.slice(4,6), '-', olddob.slice(6)].join('');
 
-        // $('#txt_pat_dob').val(olddob);
-        // $('#txt_pat_age').val(gettheage(olddob));
-        $('#hid_RaceCode').val(obj.race);
+    //     // $('#txt_pat_dob').val(olddob);
+    //     // $('#txt_pat_age').val(gettheage(olddob));
+    //     $('#hid_RaceCode').val(obj.race);
 
-        $('#hid_Religion').val(obj.religion);
-        $('#cmb_pat_category').val('LOCAL');
-        $('#hid_pat_citizen').val(obj.citizenship);
+    //     $('#hid_Religion').val(obj.religion);
+    //     $('#cmb_pat_category').val('LOCAL');
+    //     $('#hid_pat_citizen').val(obj.citizenship);
 
-        $('#txt_pat_curradd1').val(obj.address1);
-        $('#txt_pat_curradd2').val(obj.address2);
-        $('#txt_pat_curradd3').val(obj.address3);
-        $('#txt_pat_currpostcode').val(obj.postcode);
-        $("img#photobase64").attr('src','data:image/png;base64,'+obj.base64);
+    //     $('#txt_pat_curradd1').val(obj.address1);
+    //     $('#txt_pat_curradd2').val(obj.address2);
+    //     $('#txt_pat_curradd3').val(obj.address3);
+    //     $('#txt_pat_currpostcode').val(obj.postcode);
+    //     $("img#photobase64").attr('src','data:image/png;base64,'+obj.base64);
 
-        mykad_check_existing_patient(function(obj){
-        	$('.search-field').val(obj.MRN);
-        	$('#btn_register_episode').data('mrn',obj.MRN);
-        	$('#Scol').val('MRN');
-            $("#grid-command-buttons").bootgrid('reload');
-        });
+    //     mykad_check_existing_patient(function(obj){
+    //     	$('.search-field').val(obj.MRN);
+    //     	$('#btn_register_episode').data('mrn',obj.MRN);
+    //     	$('#Scol').val('MRN');
+    //         $("#grid-command-buttons").bootgrid('reload');
+    //     });
 
-        auto_save('race',{
-            _token : $('#csrf_token').val(),
-        	table_name: 'hisdb.racecode',
-        	code_name: 'Code',
-        	desc_name: 'Description',
-        	Code: obj.race,
-        	Description: obj.race,
-        },function(){desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race')});
+    //     auto_save('race',{
+    //         _token : $('#csrf_token').val(),
+    //     	table_name: 'hisdb.racecode',
+    //     	code_name: 'Code',
+    //     	desc_name: 'Description',
+    //     	Code: obj.race,
+    //     	Description: obj.race,
+    //     },function(){desc_show.load_sp_desc('race','pat_mast/get_entry?action=get_patient_race')});
 
-        auto_save('religioncode',{
-            _token : $('#csrf_token').val(),
-        	table_name: 'hisdb.religion',
-        	code_name: 'Code',
-        	desc_name: 'Description',
-        	Code: obj.religion,
-        	Description: obj.religion,
-        },function(){desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode')});
+    //     auto_save('religioncode',{
+    //         _token : $('#csrf_token').val(),
+    //     	table_name: 'hisdb.religion',
+    //     	code_name: 'Code',
+    //     	desc_name: 'Description',
+    //     	Code: obj.religion,
+    //     	Description: obj.religion,
+    //     },function(){desc_show.load_sp_desc('religioncode','pat_mast/get_entry?action=get_patient_religioncode')});
 
-        auto_save('citizencode',{
-            _token : $('#csrf_token').val(),
-        	table_name: 'hisdb.citizen',
-        	code_name: 'Code',
-        	desc_name: 'Description',
-        	Code: obj.citizenship,
-        	Description: obj.citizenship,
-        },function(){desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen')});
+    //     auto_save('citizencode',{
+    //         _token : $('#csrf_token').val(),
+    //     	table_name: 'hisdb.citizen',
+    //     	code_name: 'Code',
+    //     	desc_name: 'Description',
+    //     	Code: obj.citizenship,
+    //     	Description: obj.citizenship,
+    //     },function(){desc_show.load_sp_desc('citizencode','pat_mast/get_entry?action=get_patient_citizen')});
 
-        desc_show.write_desc();
-    }
+    //     desc_show.write_desc();
+    // }
 
-    function auto_save(id,obj,callback){
-        if(desc_show.get_desc(obj.Code,id) == "N/A"){
-        	$.post( './pat_mast/auto_save', obj , function( data ) {
-	        }).fail(function(data) {
-	            console.log(data.responseText);
-	        }).success(function(data){
-	        	callback();
-	        });
-        }
-    }
+    // function auto_save(id,obj,callback){
+    //     if(desc_show.get_desc(obj.Code,id) == "N/A"){
+    //     	$.post( './pat_mast/auto_save', obj , function( data ) {
+	//         }).fail(function(data) {
+	//             console.log(data.responseText);
+	//         }).success(function(data){
+	//         	callback();
+	//         });
+    //     }
+    // }
 </script>
 
 <body class="header-fixed">
@@ -133,6 +133,7 @@
         <div class="cssload-speeding-wheel"></div>
     </div>
 	<input type="hidden" name="_token" id="csrf_token" value="{{ csrf_token() }}">
+	<input type="hidden" name="rng" id="rng">
 
     <div class="wrapper">
     	<input type="hidden" id="load_from_addupd" data-info="false" data-oper="edit">

@@ -881,6 +881,25 @@
 
 
 <div id="mdl_biometric" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mymdl_biometric" aria-hidden="true" style="display: none;">
-    <iframe src="mykadFP" style="display:block; border:none; height:100vh; width:100%;" id="mykadFPiframe">
-    </iframe>
+    <div class="modal-dialog" style="width: 100%; height: 100%; margin: auto;">
+            
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button onclick="mykadclosemodal()" id="mykadclosemodal" type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+                        color: white;
+                        background: #d34242;
+                        border-radius: 5px;
+                        padding: 5px 10px;">
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span><b> Close</b>
+                </button>
+                <h2 class="modal-title" id="txt_item_selector">&nbsp;</h2>
+            </div>
+            <div class="modal-body">
+                <iframe style="display:block; border:none; height:90vh; width:100%;" id="mykadFPiframe"></iframe>
+            </div>
+        </div>
+        
+    </div>
+    
 </div>
