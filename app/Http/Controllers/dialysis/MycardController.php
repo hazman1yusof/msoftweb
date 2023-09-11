@@ -107,7 +107,7 @@ class MycardController extends Controller
     }
 
     public function save_mykad_local(Request $request){
-        
+
         // $religion_db = DB::table('hisdb.religion')
         //                     ->where('compcode',$request->CompCode)
         //                     ->where('Code',$request->Religion);
@@ -140,7 +140,7 @@ class MycardController extends Controller
 
         DB::table('hisdb.pre_pat_mast')
                 ->insert([
-                    'CompCode' => $request->CompCode,
+                    'CompCode' => '9A',
                     // 'Newic' => $request->Newic,
                     // 'DOB' => $request->DOB,
                     // 'Name' => $request->Name,
