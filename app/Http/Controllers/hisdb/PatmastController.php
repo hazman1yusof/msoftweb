@@ -1632,6 +1632,63 @@ class PatmastController extends defaultController
                     ]);
             }
 
+            $dialysis_epis = DB::table('hisdb.dialysis_episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$epis_mrn)
+                                ->where('episno',$epis_no)
+                                ->whereDate('arrival_date',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+            if(!$dialysis_epis->exists()){
+                $dialysis_epis = DB::table('hisdb.dialysis_episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$epis_mrn)
+                                ->where('episno',$epis_no);
+
+                if($dialysis_epis->exists()){
+                    $lineno_ = intval($dialysis_epis->max('lineno_')) + 1;
+
+                    $dialysis_epis_latest = DB::table('hisdb.dialysis_episode')
+                                    ->where('compcode',session('compcode'))
+                                    ->where('mrn',$epis_mrn)
+                                    ->where('episno',$epis_no)
+                                    ->where('lineno_',intval($dialysis_epis->max('lineno_')));
+
+                    $mcrstat = $dialysis_epis_latest->first()->mcrstat;
+                    $hdstat = $dialysis_epis_latest->first()->hdstat;
+                    $packagecode = $dialysis_epis_latest->first()->packagecode;
+                }else{
+                    $lineno_ = 1;
+                    $mcrstat = 0;
+                    $hdstat = 0;
+                    $packagecode = 'EPO';
+                }
+
+                $array_insert = [
+                    'compcode'=>session('compcode'),
+                    'mrn'=>$epis_mrn,
+                    'episno'=>$epis_no,
+                    'lineno_'=>$lineno_,
+                    'mcrstat'=>$mcrstat,
+                    'hdstat'=>$hdstat,
+                    'arrival_date'=>Carbon::now("Asia/Kuala_Lumpur"),
+                    'arrival_time'=>Carbon::now("Asia/Kuala_Lumpur"),
+                    'packagecode'=>$packagecode,
+                    'order'=>0,
+                    'complete'=>0
+                ];
+        
+                $latest_idno = DB::table('hisdb.dialysis_episode')->insertGetId($array_insert);
+
+                DB::table('hisdb.episode')
+                    ->where('mrn',$epis_mrn)
+                    ->where('episno',$epis_no)
+                    ->update([
+                        'lastarrivalno' => $latest_idno,
+                        'lastarrivaldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'lastarrivaltime' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
+
             // if(!empty($epis_apptidno)){
             //     DB::table('hisdb.pre_episode')
             //             ->where('apptidno','=',$epis_apptidno)

@@ -112,9 +112,9 @@ class HomeController extends Controller
 
         $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='ptcare_doctornote' >Case Note</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='ptcare_eis' >Episode Statistics</a></li>";
+        // $menu.="<li><a style='padding-left:9px;' title='Episode Statistics' class='clickable' programid='estats' targetURL='ptcare_eis' >Episode Statistics</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='ptcare_reveis' >Revenue Statistics</a></li>";
+        // $menu.="<li><a style='padding-left:9px;' title='Revenue Statistics' class='clickable' programid='rstats' targetURL='ptcare_reveis' >Revenue Statistics</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Prescription' class='clickable' programid='prescription' targetURL='ptcare_prescription' >Prescription</a></li>";
 
@@ -132,7 +132,7 @@ class HomeController extends Controller
 
         // $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='ptcare_emergency' >Document Upload</a></li>";
 
-        $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='dialysis_doctornote' >Case Note</a></li>";
+        // $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='dialysis_doctornote' >Case Note</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='dialysis' targetURL='dialysis_dialysis' >Dialysis</a></li>";
 
