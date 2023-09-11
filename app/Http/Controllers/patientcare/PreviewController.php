@@ -81,7 +81,7 @@ class PreviewController extends defaultController
 
     
     public function thumbnail($folder,$image_path){
-        $mypath = 'C:\laragon\www\msoftweb';
+        $mypath = 'C:\laragon\www\msdemo';
 
         if($folder == 'pat_enq'){ //image
             $img = Image::make($mypath.'/uploads/'.$folder.'/'.$image_path)->resize(96, 96);
@@ -135,7 +135,7 @@ class PreviewController extends defaultController
     }
 
     public function download(Request $request,$folder,$image_path){
-        $mypath = 'C:\laragon\www\msoftweb';
+        $mypath = 'C:\laragon\www\msdemo';
         $file = $mypath."\\uploads\\".$folder."\\".$image_path;
         // dump($file);
         return Response::download($file,$request->filename);
