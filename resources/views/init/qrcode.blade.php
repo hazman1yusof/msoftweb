@@ -17,6 +17,14 @@
         <title>Pre Register</title>
         <!-- Styles -->
         <style>
+            body {
+              background-image:url( {{ asset('img/page-hospital.jpg') }} ) !important;
+              background-repeat: no-repeat !important;
+              background-size: cover !important;
+              background-position: bottom !important;
+              height: 100vh;
+              width: 100vw;
+            }
         </style>
     </head>
     <script type="text/javascript">
