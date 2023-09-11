@@ -1,4 +1,4 @@
-@extends('dialysis.layouts.main')
+@extends('layouts.main')
 
 @section('title', 'Patient Enquiry')
 @section('style')
@@ -48,7 +48,7 @@
 
         <div id="tab_weekly" class="panel-collapse collapse">
             <div class="panel-body paneldiv">
-                @include('dialysis.weekly_clinical_record')
+                @include('weekly_clinical_record')
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
 
         <div id="tab_monthly" class="panel-collapse collapse">
             <div class="panel-body paneldiv" style="position: relative;">
-                @include('dialysis.monthly_clinical_record')
+                @include('monthly_clinical_record')
             </div>
         </div>
     </div>
@@ -87,21 +87,76 @@
 
         <div id="tab_yearly" class="panel-collapse collapse">
             <div class="panel-body paneldiv" style="position: relative;">
-                @include('dialysis.yearly_clinical_record')
+                @include('yearly_clinical_record')
             </div>
         </div>
     </div>
 
+    <div class="panel panel-default" style="position: relative;margin: 10px 0px 10px 0px" id="tab_bloodres_panel">
+        <div class="panel-heading clearfix collapsed mainpanel" id="toggle_bloodres" data-toggle="collapse" data-target="#tab_bloodres">
+
+        <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+        <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+        <div>
+            <h5><strong>Blood Test Result</strong>&nbsp;&nbsp;
+                <span class="metal"></span>
+            </h5>
+        </div> 
+        </div>
+
+        <div id="tab_bloodres" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" style="position: relative;">
+                @include('blood_test_result')
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" style="position: relative;margin: 10px 0px 10px 0px" id="tab_absent_panel">
+        <div class="panel-heading clearfix collapsed mainpanel" id="toggle_absent" data-toggle="collapse" data-target="#tab_absent">
+
+        <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+        <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+        <div>
+            <h5><strong>Absent Patient Record</strong>&nbsp;&nbsp;
+                <span class="metal"></span>
+            </h5>
+        </div> 
+        </div>
+
+        <div id="tab_absent" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" style="position: relative;">
+                @include('absent_record')
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="panel panel-default" style="position: relative;margin: 10px 0px 10px 0px" id="tab_userlog_panel">
+        <div class="panel-heading clearfix collapsed mainpanel" id="toggle_userlog" data-toggle="collapse" data-target="#tab_userlog">
+
+        <i class="glyphicon glyphicon-chevron-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+        <i class="glyphicon glyphicon-chevron-down" style="font-size:24px;margin: 0 0 0 12px"></i >
+        <div>
+            <h5><strong>User Activity Log</strong>&nbsp;&nbsp;
+                <span class="metal"></span>
+            </h5>
+        </div> 
+        </div>
+
+        <div id="tab_userlog" class="panel-collapse collapse">
+            <div class="panel-body paneldiv" style="position: relative;">
+                @include('user_activity_log')
+            </div>
+        </div>
+    </div> -->
 
 @endsection
 
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/DataTables/datatables.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/se/dt-1.13.1/fh-3.3.1/r-2.4.0/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -111,23 +166,25 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/css/dialysis.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/dialysis.css') }}">
 @endsection
 
 @section('js')
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/i18n/grid.locale-en.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/jquery.jqGrid.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('dialysis/assets/DataTables/datatables.min.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
+    <script type="text/ecmascript" src="{{ asset('assets/trirand/i18n/grid.locale-en.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('assets/trirand/jquery.jqGrid.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/printThis.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/se/dt-1.13.1/fh-3.3.1/r-2.4.0/datatables.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="{{ asset('dialysis/js/enquiry_main.js') }}?v=1"></script>
-    <script type="text/javascript" src="{{ asset('dialysis/js/enquiry.js') }}?v=2"></script>
+	<script type="text/javascript" src="{{ asset('js/enquiry_main.js') }}?v=3.1"></script>
+    <script type="text/javascript" src="{{ asset('js/blood_test_result.js') }}?v=3"></script>
+    <script type="text/javascript" src="{{ asset('js/enquiry.js') }}?v=4.1"></script>
+    <script type="text/javascript" src="{{ asset('js/absent.js') }}?v=1"></script>
 @endsection
 
 

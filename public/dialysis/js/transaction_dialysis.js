@@ -19,6 +19,10 @@ $(document).ready(function () {
 		},90);
 	});
 
+	$("#tab_trans").on("hide.bs.collapse", function(){
+		// $('button#timer_refresh').click();
+	});
+
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans").jqGrid({
 		datatype: "local",
@@ -33,27 +37,8 @@ $(document).ready(function () {
 				    {  custom_element:chgcodeCustomEdit,
 				       custom_value:galGridCustomValue 	
 				    },},
-			{ label: 'Date', name: 'trxdate', width: 30 , editable:true,
-				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d-m-Y'},
-				editoptions: {
-                    dataInit: function (element) {
-                        $(element).datepicker({
-                            id: 'trxdate_datePicker',
-                            dateFormat: 'yy-mm-dd',
-                            showOn: 'focus',
-                            changeMonth: true,
-		  					changeYear: true,
-							onSelect : function(){
-								// $(this).focus();
-							}
-                        });
-                    }
-                }
-			},
-			{ label: 'Time', name: 'trxtime', width: 30 , editable:true,edittype:'custom',editoptions:
-				    {  custom_element:trxtimeCustomEdit,
-				       custom_value:galGridCustomValue 	
-				    },},
+			{ label: 'Date', name: 'trxdate', width: 30 , editable:false,},
+			{ label: 'Time', name: 'trxtime', width: 30 , editable:false},
 			{ label: 'Qty', name: 'quantity', width: 20 , align: 'right', editable:true, classes: 'input',
 				editrules:{required: true, custom:true, custom_func:cust_rules},
 				formatter: 'number',formatoptions:{decimalPlaces: 0, defaultValue: '1'}},
@@ -94,13 +79,12 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
         	$('#jqGrid_trans_ildelete').addClass('ui-disabled');
 			calc_jq_height_onchange("jqGrid_trans");
-			if(!$('#jqGrid_trans_iladd').hasClass('ui-disabled') && selrowData('#jqGrid_trans').patmedication != '1'){
+			if(!$('#jqGrid_trans_iladd').hasClass('ui-disabled')){
 				var trxdate = selrowData('#jqGrid_trans').trxdate;
-				if(moment().isSame(moment(trxdate, "DD-MM-YYYY"), 'day')){
+				
+				if(moment().isSame(moment(trxdate, "YYYY-MM-DD"),'day') && selrowData('#jqGrid_trans').patmedication != '1'){
         			$('#jqGrid_trans_ildelete').removeClass('ui-disabled');
-				}
-
-				if($('#viewallcenter').val() == 1){
+				}else if($('#viewallcenter').val() == 1){
         			$('#jqGrid_trans_ildelete').removeClass('ui-disabled');
 				}
 			}
@@ -141,21 +125,39 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
         	calc_jq_height_onchange("jqGrid_trans");
         	addmore_onadd = true;
-        	$("#jqGrid_trans input[name='trxdate']").val(moment().format("YYYY-MM-DD"));
-        	$("#jqGrid_trans input[name='trxtime']").val(moment().format("HH:MM"));
+        	// $("#jqGrid_trans input[name='trxdate']").val(moment().format("YYYY-MM-DD"));
+        	// $("#jqGrid_trans input[name='trxtime']").val(moment().format("HH:MM"));
 
         	$('#jqGrid_trans_ildelete').addClass('ui-disabled');
 
 			$("#jqGrid_trans").jqGrid("setRowData", rowid, {
-					t_trxdate:$('#sel_date').val(),
-					t_trxtime:moment().format("hh:mm A"),
-					t_isudept:$('#user_dept').val()
+					trxdate:$('#sel_date').val(),
+					trxtime:moment().format("hh:mm A"),
+					isudept:$('#user_dept').val()
 				});
 
 			$("#jqGrid_trans input[name='chgcode'],#jqGrid_trans input[name='dosecode'],#jqGrid_trans input[name='freqcode'],#jqGrid_trans input[name='inscode']").on('keydown',{data:this},onTab);
         },
         aftersavefunc: function (rowid, response, options) {
         	curpage_tran = null;
+        	let retjson = JSON.parse(response.responseText);
+        	if(retjson.alert.return == 'yes'){
+        		$.confirm({
+        			closeIcon: true,
+				    title: 'Patient Limit Exceed',
+				    content: 'Total Limit: '+parseFloat(retjson.alert.limit).toFixed(2)+'<br>'+'Total Amount: '+parseFloat(retjson.alert.sum).toFixed(2),
+				    type: 'red',
+				    typeAnimated: true,
+				    buttons: {
+				        OK: {
+				            text: 'OK',
+				            btnClass: 'btn-red',
+				            action: function(){
+				            }
+				        }
+				    }
+				});
+        	}
 			refreshGrid("#jqGrid_trans", urlParam_trans);
         }, 
         errorfunc: function(rowid,response){
@@ -166,7 +168,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./dialysis_transaction_save?"+
+			let editurl = "./dialysis_dialysis_transaction_save?"+
 				$.param({
 					dialysis_episode_idno: $('#dialysis_episode_idno').val(),
 					mrn: selrow.MRN,
@@ -213,7 +215,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./dialysis_transaction_save?"+
+			let editurl = "./dialysis_dialysis_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -441,7 +443,7 @@ function pop_item_select(type,id,rowid,ontab=false){
 	$('body,#mdl_item_selector').addClass('scrolling');
     
     selecter = $('#tbl_item_select').DataTable( {
-            "ajax": "./dialysis/table?action=" + act,
+            "ajax": "./dialysis_dialysis/table?action=" + act,
             "ordering": false,
             "lengthChange": false,
             "info": true,

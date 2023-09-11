@@ -189,15 +189,35 @@
     }
 
     function default_click_register(){
-        if($('#frm_patient_info').valid()){
-            if($(this).data('oper') == 'add'){
+        // if($('#frm_patient_info').valid()){
+        //     if($(this).data('oper') == 'add'){
+        //         save_patient('add');
+        //     }else{
+        //         save_patient($(this).data('oper'),$(this).data('idno'));
+        //     }
+        // }else{
+        //     alert('Please enter all required data');
+        // }
+
+        if($(this).data('oper') == 'add'){
+            if($('#frm_patient_info').valid()){
                 save_patient('add');
             }else{
-                save_patient($(this).data('oper'),$(this).data('idno'));
+                alert('Please enter all required data');
             }
         }else{
-            alert('Please enter all required data');
+            if($('#cmb_pat_active').val() == 0){
+                save_patient($(this).data('oper'),$(this).data('idno'));
+            }else{
+                if($('#frm_patient_info').valid()){
+                    save_patient($(this).data('oper'),$(this).data('idno'));
+                }else{
+                    alert('Please enter all required data');
+                }
+            }
         }
+
+
     }
 
     function default_click_proceed(){

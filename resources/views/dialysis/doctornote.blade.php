@@ -239,7 +239,7 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{asset('dialysis/css/doctornote.css') }}">
+    <link rel="stylesheet" href="{{asset('dialysis/css/doctornote.css')}}?v=2">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/fullcalendar-3.7.0/fullcalendar.min.css') }}">
@@ -266,10 +266,11 @@
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/ecmascript" src="{{ asset('dialysis/assets/form-validator/jquery.form-validator.min.js') }}/"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script type="text/javascript" src="{{ asset('dialysis/js/userfile.js') }}"></script>
     <script type="text/javascript" src="{{ asset('dialysis/js/transaction.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('dialysis/js/doctornote.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('dialysis/js/nursing.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/doctornote.js') }}?v=2"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/nursing.js') }}?v=3"></script>
     <script type="text/javascript" src="{{ asset('dialysis/js/doctornote_main.js') }}"></script>
 @endsection
 

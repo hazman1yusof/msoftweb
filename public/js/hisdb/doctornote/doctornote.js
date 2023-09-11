@@ -169,6 +169,24 @@ $(document).ready(function () {
 		$("#dialogForm").dialog("open");
 		populate_refLetter();
 	});
+
+	$("#dialog_medc")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+            	epno_medc_init();
+			},
+			close: function( event, ui ) {
+
+			},
+		});
+
+	$("#doctornote_medc").click(function(){
+		// oper_refletter='add';
+		$("#dialog_medc").dialog("open");
+	});
 	
 	$("#new_refLetter").click(function(){
 		$('#cancel_refLetter').data('oper','add');
@@ -207,6 +225,23 @@ $(document).ready(function () {
 		disableForm('#form_refLetter');
 		button_state_refLetter($(this).data('oper'));
 	
+	});
+
+	$("#dialog_bpgraph")
+		.dialog({
+			width: 9/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+            	bpgraph_init();
+			},
+			close: function( event, ui ) {
+
+			},
+		});
+
+	$("#doctornote_bpgraph").click(function(){
+		window.open('./bpgraph?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
 	});
 	
 	//////////////////////////////////////parameter for saving url//////////////////////////////////////
@@ -1132,6 +1167,10 @@ function textare_init_doctornote(){
 	  		this.style.height = (40) + 'px';
 		}
 	});
+}
+
+function bpgraph_init(){
+	fetchdata_bpgrah(true);
 }
 
 // function calc_jq_height_onchange(jqgrid){

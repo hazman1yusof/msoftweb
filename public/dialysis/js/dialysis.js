@@ -257,11 +257,16 @@ $(document).ready(function () {
 
 	// });
 
+	$('#month_year_calendar').calendar({
+    	initialDate: new Date(),
+   		type: 'month'
+ 	});
+
 	$('#rec_monthly_but').click(function(){
 		cleartabledata('monthly');
 		var param = {
 			action: 'get_dia_monthly',
-			date:$("#selectmonth").val(),
+			date: moment($('#month_year_calendar').calendar('get date')).format('YYYY-MM'),
 			mrn:$("#mrn").val(),
 			episno:$("#episno").val()
 		}
@@ -398,7 +403,7 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			let data = $('#jqGridAddNotesDialysis').jqGrid ('getRowData', rowid);
 
-			let editurl = "./dialysis/form?"+
+			let editurl = "./dialysis_dialysis/form?"+
 				$.param({
 					action:'additionalnote',
 					mrn:$("#mrn").val(),
@@ -438,6 +443,39 @@ $(document).ready(function () {
 		},
 	});
 
+	$('#print_rec_m').click(function(){
+		var selrowdata = selrowData('#jqGrid');
+		var header = `
+			<table style='margin:10px'>
+				<tr>
+					<td style='padding:0px 25px'><b>Patient Name:</b> `+selrowdata.Name+`</td>
+					<td style='padding:0px 25px'><b>I/C:</b> `+selrowdata.Newic+`</td>
+				</tr>
+				<tr>
+					<td style='padding:0px 25px'><b>Payer:</b> `+selrowdata.payer+`</td>
+				</tr>
+			</table>`
+		$('table#dia_monthly').printThis({
+			header: header
+		});
+	});
+
+	$('#print_rec_w').click(function(){
+		var selrowdata = selrowData('#jqGrid');
+		var header = `
+			<table style='margin:10px'>
+				<tr>
+					<td style='padding:0px 25px'><b>Patient Name:</b> `+selrowdata.Name+`</td>
+					<td style='padding:0px 25px'><b>I/C:</b> `+selrowdata.Newic+`</td>
+				</tr>
+				<tr>
+					<td style='padding:0px 25px'><b>Payer:</b> `+selrowdata.payer+`</td>
+				</tr>
+			</table>`
+		$('table#dia_weekly').printThis({
+			header: header
+		});
+	});
 });
 var urlParam_AddNotesDialysis = {
 	action: 'get_table_addnotes',
@@ -461,7 +499,7 @@ function populate_data(type,data){
 			$('table#dia_monthly tr#prehd_bp_m').children('td').eq(i+1).text(e.prehd_systolic+' / '+e.prehd_diastolic);
 			$('table#dia_monthly tr#pulse_pre_m').children('td').eq(i+1).text(e.prehd_pulse);
 			$('table#dia_monthly tr#prehd_bfr_m').children('td').eq(i+1).text(e['0_bfr']);
-			$('table#dia_monthly tr#prehd_dfr_m').children('td').eq(i+1).text(e.prehd_dfr);
+			$('table#dia_monthly tr#prehd_dfr_m').children('td').eq(i+1).text(e.dialysate_flow);
 			$('table#dia_monthly tr#prehd_vp_m').children('td').eq(i+1).text(e['0_vp']);
 			$('table#dia_monthly tr#user_prehd_m').children('td').eq(i+1).text(e['user_prehd']);
 
@@ -520,7 +558,7 @@ function populate_data(type,data){
 			$('table#dia_monthly tr#5_f_m').children('td').eq(i+1).text(e['5_f']);
 			$('table#dia_monthly tr#user_5_m').children('td').eq(i+1).text(e['user_5']);
 
-			$('table#dia_monthly tr#posthd_bp_m').children('td').eq(i+1).text(e.posthd_bp);
+			$('table#dia_monthly tr#posthd_bp_m').children('td').eq(i+1).text(e.posthd_systolic+' / '+e.posthd_diastolic);
 			$('table#dia_monthly tr#posthd_temperatue_m').children('td').eq(i+1).text(e.posthd_temperatue);
 			$('table#dia_monthly tr#posthd_pulse_m').children('td').eq(i+1).text(e.posthd_pulse);
 			$('table#dia_monthly tr#posthd_respiratory_m').children('td').eq(i+1).text(e.posthd_respiratory);
@@ -535,7 +573,7 @@ function populate_data(type,data){
 			if(e.table_patmedication != undefined || e.table_patmedication != null){
 				let patmed = `<ol>`;
 				e.table_patmedication.forEach(function(e,i){
-					patmed = patmed +  `<li>`+e.chg_desc+` - `+e.enteredby+`</li>`;
+					patmed = patmed +  `<li>`+e.chg_desc+`</br>`+e.dose+`</br>qty:`+parseInt(e.quantity)+`</br>`+e.enteredby+`</li>`;
 				});
 				patmed = patmed + `</ol>`
 				$('table#dia_monthly tr#medication_m').children('td').eq(i+1).html(patmed);
@@ -560,7 +598,7 @@ function populate_data(type,data){
 			$('table#dia_weekly tr#prehd_bp_w').children('td').eq(i+1).text(e.prehd_systolic+' / '+e.prehd_diastolic);
 			$('table#dia_weekly tr#pulse_pre_w').children('td').eq(i+1).text(e.prehd_pulse);
 			$('table#dia_weekly tr#prehd_bfr_w').children('td').eq(i+1).text(e['0_bfr']);
-			$('table#dia_weekly tr#prehd_dfr_w').children('td').eq(i+1).text(e.prehd_dfr);
+			$('table#dia_weekly tr#prehd_dfr_w').children('td').eq(i+1).text(e.dialysate_flow);
 			$('table#dia_weekly tr#prehd_vp_w').children('td').eq(i+1).text(e['0_vp']);
 			$('table#dia_weekly tr#user_prehd_w').children('td').eq(i+1).text(e['user_prehd']);
 
@@ -633,7 +671,7 @@ function populate_data(type,data){
 			if(e.table_patmedication != undefined || e.table_patmedication != null){
 				let patmed = `<ol>`;
 				e.table_patmedication.forEach(function(e,i){
-					patmed = patmed +  `<li>`+e.chg_desc+` - `+e.enteredby+`</li>`;
+					patmed = patmed +  `<li>`+e.chg_desc+` - `+e.dose+` - qty:`+parseInt(e.quantity)+`<br> - `+e.enteredby+`</li>`;
 				});
 				patmed = patmed + `</ol>`
 				$('table#dia_weekly tr#medication_w').children('td').eq(i+1).html(patmed);
@@ -678,6 +716,12 @@ function populatedialysis(data){
 	$('span.metal').text(data.Name+' - MRN:'+data.MRN);
 	$('#mrn').val(data.MRN);
 	$('#episno').val(data.Episno);
+
+	if(data.dialysis_status == 'ABSENT'){
+		$('#absent_label').show();
+	}else{
+		$('#absent_label').hide();
+	}
 }
 
 function empty_dialysis(){
@@ -1071,6 +1115,12 @@ function dropdown_dialysisb4(datab4){
 				$('#visit_date').val($('#sel_date').val());
 				populate_other_data();
 			}
+			
+			urlParam_AddNotesDialysis.mrn=$("#mrn").val();
+			urlParam_AddNotesDialysis.episno=$("#episno").val();
+			urlParam_AddNotesDialysis.arrivalno=$('#arrivalno').val();
+
+			refreshGrid("#jqGridAddNotesDialysis", urlParam_AddNotesDialysis);
 		}
 	});
 }
@@ -1089,7 +1139,14 @@ function get_dialysis_daily(idno){
 		autoinsert_rowdata_dialysis('form#daily_form',data.data);
 		autoinsert_rowdata_dialysis('form#daily_form_completed',data.data);
 		$('#visit_date').val(data.data.visit_date);
+		load_patmedication_trx(data.data.mrn,data.data.episno,data.data.visit_date);
 		load_patmedication(data.data.mrn,data.data.episno,data.data.visit_date);
+
+		urlParam_AddNotesDialysis.mrn=$("#mrn").val();
+		urlParam_AddNotesDialysis.episno=$("#episno").val();
+		urlParam_AddNotesDialysis.arrivalno=$('#arrivalno').val();
+
+		refreshGrid("#jqGridAddNotesDialysis", urlParam_AddNotesDialysis);
     }).fail(function(data){
 		loader_daily(false);
         alert('error in get data');

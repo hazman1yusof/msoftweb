@@ -1,11 +1,47 @@
 <div class="ui mini form" style="width: 70% !important;margin: auto;">
-  <div class="three fields">
-    <div class="field">
-      <label>Select Month</label>
-      <input type="month" id="selectmonth" >&nbsp;&nbsp;
+  <button class="ui basic small button right floated"  id="print_rec_m">
+    <i class="print icon"></i> Print
+  </button>
+
+  <form method="post" action="./pivot_post?action=pat_monthly">
+    {{ csrf_field() }}
+    <input type="hidden" name="pat_name" id="excel_pat_name_m" required>
+    <input type="hidden" name="mrn" id="excel_mrn_m" required>
+    <input type="hidden" name="episno" id="excel_episno_m" required>
+    <input type="hidden" name="month" id="excel_month_m" required>
+    <input type="hidden" name="year" id="excel_year_m" required>
+      <button class="ui blue small button right floated" type="submit" id="print_excel_m">
+        <i class="file excel icon"></i> Download Excel
+      </button>
+  </form>
+
+  <div class="two fields" style="margin-top:12px;">
+    <div class="inline field">
+        <label>Select Month</label>
+        <div class="ui calendar" id="month_year_calendar">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Date" id="month_year">
+          </div>
+        </div>
+
       <button type="button" class="ui mini blue submit button" id="rec_monthly_but">Go</button>
     </div>
   </div>
+
+  <!-- <div class="three fields">
+    <div class="field">
+      <label>Select Month</label>
+      <input type="month" id="selectmonth" >&nbsp;&nbsp;
+      <div class="ui calendar" id="month_year_calendar">
+          <div class="ui input left icon">
+            <i class="calendar icon"></i>
+            <input type="text" placeholder="Date" id="trxdate">
+          </div>
+        </div>
+      <button type="button" class="ui mini blue submit button" id="rec_monthly_but">Go</button>
+    </div>
+  </div> -->
 </div>
     
 <table class="table table-bordered diatbl" id="dia_monthly">

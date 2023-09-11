@@ -77,6 +77,7 @@ $(document).ready(function () {
 			},
             onSelectRow: function () {
 				let data = selrowData('#' + dialog_name.gridname);
+				$('#reminder_doc_name').text(data['a_description']);
 
 				var session_param ={
 					action:"get_table_default",
@@ -144,7 +145,7 @@ $(document).ready(function () {
 		let data = selrowData('#' + dialog_name.gridname);
 		let interval = data['a_intervaltime'];
 		let apptsession = $("#grid_session").jqGrid('getRowData');
-		$('.fc-myCustomButton-button').show();
+		// $('.fc-myCustomButton-button').show();
 
 		td_from.addSessionInterval(interval,apptsession);
 		td_to.addSessionInterval(interval,apptsession);
@@ -334,6 +335,52 @@ $(document).ready(function () {
 		}		
 	});
 
+
+	$("#dialogForm_reminder").dialog({
+    	autoOpen : false, 
+    	modal : true,
+		width: 9/10 * $(window).width(),
+		open: function(){
+		},
+		close:function(){
+		}
+    });
+
+    $('#rembtn_wassap').click(function(){
+    	var telhp_arr=[];
+    	$('#table_reminder tbody tr').each(function(){
+    		let telhp = $(this).children('td.reminder_telhp').text().trim();
+    		let pat_name = $(this).children('td.reminder_pat_name').text().trim();
+    		let time = $(this).children('td.reminder_start').text().trim();
+    		let date = $('#reminder_date').text().trim();
+    		let doc_name = $('#reminder_doc_name').text().trim();
+
+    		let msg = `*APPOINTMENT REMINDER* \n\n`+pat_name+`\n*Time:* `+time+` *Date:* `+date+`\n*Doctor :* `+doc_name;
+    		if(telhp != ''){
+    			if(telhp.substring(0, 1) != '6'){
+    				telhp = '6'+telhp;
+    			}
+    			telhp_arr.push({
+    				'phone':telhp,
+    				'message':msg
+    			});
+
+    		}
+    	});
+
+    	let param = {
+			action: 'wassap_appt',
+			telhp_arr:telhp_arr
+		}
+
+
+		$.get( "./apptrsc/table"+"?"+$.param(param), function( data ) {
+		
+		},'json').done(function(data) {
+			alert('Message Send!');
+		});
+    });
+
 	var session_field = new session_field();
 
 	$("#start_time_dialog").dialog({
@@ -489,11 +536,11 @@ $(document).ready(function () {
 		header: {
 			left: 'prev,next today myCustomButton',
 			center: 'title',
-			right: 'month,agendaWeek,agendaDay'
+			right: 'wassapbtn month,agendaWeek,agendaDay'
 		},
 		customButtons: {
 	        myCustomButton: {
-	            text: 'Make Appointment',
+	            text: 'Make Appointment',	            
 	            click: function() {
 	            	oper='add';
 
@@ -505,6 +552,24 @@ $(document).ready(function () {
 					
 					$("#dialogForm").dialog("open");
             	}
+        	},
+	        wassapbtn: {
+	            text: 'Reminder',
+	            click: function() {
+					var events = $('#calendar').fullCalendar( 'clientEvents');
+					var start = $(".fc-wassapbtn-button").data("start");
+					$('#reminder_date').text(moment(start).format('DD/MM/YYYY'));
+					var pat_arr = [];
+
+					events.forEach(function(elem,id){
+						if(elem.start.isSame(moment(start).format('YYYY-MM-DD'),'day')){
+							pat_arr.push(elem);
+						}
+					});
+					console.log(pat_arr);
+					populatereminder(pat_arr);
+					$("#dialogForm_reminder").dialog("open");
+            	}
         	}
     	},
 		defaultDate: d,
@@ -514,17 +579,17 @@ $(document).ready(function () {
   			if(view.name == 'agendaDay'){
   				$(".fc-myCustomButton-button").data( "start", start );
   				var events = $('#calendar').fullCalendar('clientEvents');
-				$(".fc-myCustomButton-button").show();
+				$(".fc-myCustomButton-button,.fc-wassapbtn-button").show();
 				events.forEach(function(elem,id){
 					if(elem.allDay){
 						let elem_end = (elem.end==null)?elem.start:elem.end;
 						if(start.isBetween(elem.start,elem_end, null, '[)')){
-							$(".fc-myCustomButton-button").hide();
+							$(".fc-myCustomButton-button,.fc-wassapbtn-button").hide();
 						}
 					}
 				});
 				if(!start.isSameOrAfter(moment().subtract(1, 'days'))){
-					$(".fc-myCustomButton-button").hide();
+					$(".fc-myCustomButton-button,.fc-wassapbtn-button").hide();
 				}
   			}
   		},
@@ -536,18 +601,19 @@ $(document).ready(function () {
 		select: function(start, end, jsEvent, view, resource) {
 			$('#calendar').fullCalendar( 'gotoDate', start )
 			$(".fc-myCustomButton-button").data( "start", start );
+			$(".fc-wassapbtn-button").data( "start", start );
 			var events = $('#calendar').fullCalendar( 'clientEvents');
-			$(".fc-myCustomButton-button").show();
+			$(".fc-myCustomButton-button,.fc-wassapbtn-button").show();
 			events.forEach(function(elem,id){
 				if(elem.allDay){
 					let elem_end = (elem.end==null)?elem.start:elem.end;
 					if(start.isBetween(elem.start,elem_end, null, '[)')){
-						$(".fc-myCustomButton-button").hide();
+						$(".fc-myCustomButton-button,.fc-wassapbtn-button").hide();
 					}
 				}
 			});
 			if(!start.isSameOrAfter(moment().subtract(1, 'days'))){
-				$(".fc-myCustomButton-button").hide();
+				$(".fc-myCustomButton-button,.fc-wassapbtn-button").hide();
 			}
 
 		},
@@ -697,7 +763,7 @@ $(document).ready(function () {
 			}
 	    ]
 	});
-	$('.fc-myCustomButton-button').hide();
+	$('.fc-myCustomButton-button,.fc-wassapbtn-button').hide();
 	
 	var oper = 'add';
 	$('#submit').click(function(){
@@ -1199,6 +1265,19 @@ var epis_desc_show = new loading_desc_epis([
     {code:'#hid_newgl_relatecode',desc:'#txt_newgl_relatecode',id:'newgl_relatecode'}
 ]);
 
+function populatereminder(pat_arr,empty=false){
+	if(empty){
+		$('#table_reminder tbody').html(``);
+		return 0;
+	}
+	$('#table_reminder tbody').html('');
+	pat_arr.forEach(function(elem,id){
+		$('#table_reminder tbody').append(`<tr><td class='reminder_start'>`+elem.start.format('hh:mm A')+`</td><td class='reminder_mrn'>`+elem.mrn+`</td><td class='reminder_pat_name'>`+elem.pat_name+`</td><td class='reminder_icnum'>`+ret_if_null(elem.icnum)+`</td><td class='reminder_telhp'>`+ret_if_null(elem.telhp)+`</td></tr>`);
+
+
+	});
+}
+
 function populate_new_episode_by_mrn_apptrsc(mrn){
 	var param={
 		url:'./apptrsc/table',
@@ -1265,3 +1344,11 @@ function populate_new_episode_by_mrn_apptrsc(mrn){
 ]);
 
 epis_desc_show.load_desc();
+
+function ret_if_null(str){
+	if (str == null || str == undefined){
+		return '';
+	}else{
+		return str;
+	}
+}

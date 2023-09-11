@@ -99,7 +99,7 @@ $(document).ready(function () {
 			// 			        reg_date: $('#sel_date').val()
 			// 			    }
 
-			// 				$.post( "./doctornote/form?action=submit_patient", postobj , function( data ) {
+			// 				$.post( "./dialysis_doctornote/form?action=submit_patient", postobj , function( data ) {
 		        	
 			// 			    },'json').done(function(data) {
 			// 			    	SmoothScrollToTop();
@@ -302,7 +302,7 @@ $(document).ready(function () {
 	// 	switch(options.colModel.name){
 	// 		case 't_chgcode':field=['chgcode','description'];table="chgmast";case_='chgcode';break;
 	// 	}
-	// 	var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+	// 	var param={action:'input_check',url:'./dialysis_util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 	// 	fdl.get_array('deliveryOrder',options,param,case_,cellvalue);
 	// 	// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));

@@ -1,4 +1,7 @@
 <div class="ui mini form" style="width: 70% !important;margin: auto;">
+	<button class="ui basic small button right floated" style="margin-top:12px;" id="print_rec_w">
+    <i class="print icon"></i> Print
+  </button>
   <div class="four fields">
     <div class="field">
       <label>Week From:</label>

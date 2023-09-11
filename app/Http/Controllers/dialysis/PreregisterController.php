@@ -94,11 +94,13 @@ class PreregisterController extends defaultController
                                     ->where('lineno_',intval($dialysis_epis->max('lineno_')));
 
                     $mcrstat = $dialysis_epis_latest->first()->mcrstat;
+                    $mcrtype = $dialysis_epis_latest->first()->mcrtype; 
                     $hdstat = $dialysis_epis_latest->first()->hdstat;
                     $packagecode = $dialysis_epis_latest->first()->packagecode;
                 }else{
                     $lineno_ = 1;
                     $mcrstat = 0;
+                    $mcrtype = null;
                     $hdstat = 0;
                     $packagecode = 'EPO';
                 }
@@ -113,6 +115,7 @@ class PreregisterController extends defaultController
                     'arrival_date'=>Carbon::now("Asia/Kuala_Lumpur"),
                     'arrival_time'=>Carbon::now("Asia/Kuala_Lumpur"),
                     'packagecode'=>$packagecode,
+                    'mcrtype'=>$mcrtype,
                     'order'=>0,
                     'complete'=>0
                 ];

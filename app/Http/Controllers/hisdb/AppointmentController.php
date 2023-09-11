@@ -45,6 +45,8 @@ class AppointmentController extends defaultController
         switch($request->action){
             case 'populate_new_episode_by_mrn_apptrsc':
                 return $this->populate_new_episode_by_mrn_apptrsc($request);
+            case 'wassap_appt':
+                return $this->wassap_appt($request);
                 
             default:
                 return 'error happen..';
@@ -479,6 +481,58 @@ class AppointmentController extends defaultController
         $responce = new stdClass();
         $responce->episode = $episode_latest;
         $responce->pat_mast = $pat_mast;
+        echo json_encode($responce);
+    }
+
+    public function wassap_appt(Request $request){
+        // $curl = curl_init();
+        // $token = "fKG1hEhWH4GgWiVrxcrz7GTqmClByf9hDl3ahpcQ6oyyYNAPvaAq8AcXhPO7f82O";
+        // $data = [
+        //     'phone' => $request->telhp_arr,
+        //     'message' => $request->msg,
+        // ];
+        // curl_setopt($curl, CURLOPT_HTTPHEADER,
+        //     array(
+        //         "Authorization: $token",
+        //     )
+        // );
+        // curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        // curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        // curl_setopt($curl, CURLOPT_URL,  "https://jogja.wablas.com/api/send-message");
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        // curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+        // $result = curl_exec($curl);
+        // curl_close($curl);
+        // echo "<pre>";
+        // print_r($result);
+        // dump('habis');
+        // dump($result);
+        $curl = curl_init();
+        $token = "fKG1hEhWH4GgWiVrxcrz7GTqmClByf9hDl3ahpcQ6oyyYNAPvaAq8AcXhPO7f82O";
+        $random = true;
+        $payload = [
+            "data" => $request->telhp_arr
+        ];
+        curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array(
+                "Authorization: $token",
+                "Content-Type: application/json"
+            )
+        );
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($payload) );
+        curl_setopt($curl, CURLOPT_URL,  "https://jogja.wablas.com/api/v2/send-message");
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $result = curl_exec($curl);
+        curl_close($curl);
+        
+
+        $responce = new stdClass();
+        $responce->done = 'done';
         echo json_encode($responce);
     }
 

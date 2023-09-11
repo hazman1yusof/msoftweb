@@ -16,6 +16,20 @@ var urlParam_AddNotesTriage = {
 
 $(document).ready(function () {
 
+	$("form#formTriageInfo").validate({
+		ignore: [], //check jgk hidden
+		rules:{
+		},
+		messages: {
+		},
+	  	invalidHandler: function(event, validator) {
+	  		$(validator.errorList[0].element).focus();
+	  		alert('Please fill all mandatory field before patient completion');
+	  	},
+	  	errorPlacement: function(error, element) {
+	  	}
+	});
+
 	$('textarea#medicalhistory,textarea#surgicalhistory,textarea#currentmedication,textarea#drugs_remarks,textarea#food_remarks,textarea#others_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc').each(function () {
 		this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
 	}).on('input', function () {
@@ -39,6 +53,8 @@ $(document).ready(function () {
 		enableForm('#formTriageInfo');
 		rdonly('#formTriageInfo');
 		// dialog_mrn_edit.on();
+		emptyFormdata(errorField,"#formTriageInfo",['#mrn_ti','#episno_ti']);
+		$('#reg_date').val(moment().format('YYYY-MM-DD'));
 		
 	});
 
@@ -59,13 +75,18 @@ $(document).ready(function () {
 	});
 
 	$("#save_ti").click(function(){
-		if( $('#formTriageInfo').isValid({requiredFields: ''}, conf, true) ) {
+		if( $('#formTriageInfo').valid() ) {
 			readonlyForm('#formTriageInfo');
 			saveForm_ti(function(){
 				unreadonlyForm('#formTriageInfo');
 				rdonly('#formTriageInfo');
 				$("#cancel_ti").data('oper','edit');
 				$("#cancel_ti").click();
+				on_toggling_curr_past_nurse();
+
+			    nursing_date_tbl.ajax.url( "./dialysis_nursing/table?"+$.param(dateParam_nurse) ).load(function(data){
+					emptyFormdata(errorField,"#formTriageInfo",['#mrn_ti','#episno_ti']);
+			    });
 			});
 
 		}
@@ -235,7 +256,7 @@ $(document).ready(function () {
 	// 					action: 'addNotesTriage_save',
 	// 					idno: selrowData('#jqGridAddNotesTriage').idno,
 	// 				}
-	// 				$.post( "./nursing/form?"+$.param(param),{oper:'del'}, function( data ){
+	// 				$.post( "./dialysis_nursing/form?"+$.param(param),{oper:'del'}, function( data ){
 	// 				}).fail(function (data) {
 	// 					//////////////////errorText(dialog,data.responseText);
 	// 				}).done(function (data) {
@@ -369,9 +390,21 @@ $(document).ready(function () {
 		$("#dialognewexamFormTriage").dialog('open');
 	});
 
+	function chk_got_same_data(){
+		var got_today = false;
+		nursing_date_tbl.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+	    	var data = this.data();
+	    	if(moment(data.date, 'DD-MM-YYYY').isSame(moment(),'day')){
+	    		got_today = true;
+	    	}
+		});
+	    return got_today;
+	}
+
 
 	$('#nursing_date_tbl tbody').on('click', 'tr', function () { 
 	    var data = nursing_date_tbl.row( this ).data();
+	    var datas = nursing_date_tbl.rows().data();
 
 		if(data == undefined){
 			return;
@@ -410,9 +443,13 @@ $(document).ready(function () {
 	    		$('#reg_date').val(data.triage_regdate);
 	    		if(data.triage != undefined){
 					autoinsert_rowdata("#formTriageInfo",data.triage);
-	    			button_state_ti('edit');
+					if(chk_got_same_data()){
+	    				button_state_ti('edit');
+					}else{
+	    				button_state_ti('edit');
+					}
 	    		}else{
-	    			button_state_ti('add');
+	    			button_state_ti('edit');
 	    		}
 
 	    		if(data.triage_gen != undefined){
@@ -518,6 +555,12 @@ function button_state_ti(state){
 			$("#new_ti").attr('disabled',false);
 			$('#save_ti,#cancel_ti,#edit_ti').attr('disabled',true);
 			break;
+		case 'add_edit':
+			$("#toggle_ti").attr('data-toggle','collapse');
+			$('#cancel_ti').data('oper','add');
+			$("#new_ti,#edit_ti").attr('disabled',false);
+			$('#save_ti,#cancel_ti').attr('disabled',true);
+			break;
 		case 'edit':
 			$("#toggle_ti").attr('data-toggle','collapse');
 			$('#cancel_ti').data('oper','edit');
@@ -585,6 +628,14 @@ function autoinsert_rowdata(form,rowData){
 			}
 		}else{
 			input.val(value);
+		}
+
+		if(input.is('textarea')){
+			let textarea = document.getElementById(index);
+			if(textarea != null){
+				textarea.style.height = 'auto';
+				textarea.style.height = (textarea.scrollHeight) + 'px';
+			}
 		}
 	});
 }
@@ -864,8 +915,15 @@ function calc_jq_height_onchange(jqgrid){
 
 function loader_nursing(load){
 	if(load){
+		reset_textarea();
 		$('#loader_nursing').addClass('active');
 	}else{
 		$('#loader_nursing').removeClass('active');
 	}
+}
+
+function reset_textarea(){
+	$('textarea#medicalhistory,textarea#surgicalhistory,textarea#currentmedication,textarea#drugs_remarks,textarea#food_remarks,textarea#others_remarks,textarea#br_breathingdesc,textarea#br_coughdesc,textarea#br_smokedesc,textarea#ed_eatdrinkdesc').each(function () {
+		this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	})
 }

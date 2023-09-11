@@ -446,8 +446,8 @@ $(document).ready(function() {
         this.makejqgrid = function(){
 
             this.urlParam_preepis = {
-                    action:'get_table_default',
-                    url:'./util/get_table_default',
+                    action:'preepisode_table',
+                    url:'./pat_mast/table',
                     field: '',
                     table_name: ['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
                     join_type : ['LEFT JOIN'],
@@ -461,16 +461,16 @@ $(document).ready(function() {
             $("#jqGrid_preepis").jqGrid({
                 datatype: "local",
                 colModel: [
-                    { label: 'MRN', name: 'pe_mrn' , width: 5, formatter: padzero, unformat: unpadzero},
-                    { label: 'Name', name: 'pe_Name' , width: 30},
-                    { label: 'Newic', name: 'pe_Newic', width: 15 },
-                    { label: 'apptidno', name: 'pe_apptidno', hidden: true},
-                    { label: 'Handphone', name: 'pe_telhp' , width: 10},
-                    { label: 'Episode No.', name: 'pe_episno', width: 10 },
-                    { label: 'Birth Date.', name: 'p_DOB', width: 10 },
-                    { label: 'Sex', name: 'p_sex', width: 5 },
+                    { label: 'MRN', name: 'mrn' , width: 5, formatter: padzero, unformat: unpadzero},
+                    { label: 'Name', name: 'Name' , width: 30},
+                    { label: 'Newic', name: 'Newic', width: 15 },
+                    { label: 'apptidno', name: 'apptidno', hidden: true},
+                    { label: 'Handphone', name: 'telhp' , width: 10},
+                    { label: 'Episode No.', name: 'episno', width: 10 },
+                    { label: 'Birth Date.', name: 'DOB', width: 10 },
+                    { label: 'Sex', name: 'sex', width: 5 },
                     { label: 'Info &nbsp;&nbsp;&nbsp;&nbsp; Type', name: 'action', width: 12, formatter:formataction , classes: 'td_nowhitespace'},
-                    { label: 'idno', name: 'pe_idno', hidden:true},
+                    { label: 'idno', name: 'idno', hidden:true},
                 ],
                 autowidth: true,
                 multiSort: true,
@@ -485,7 +485,7 @@ $(document).ready(function() {
                 },
                 beforeProcessing: function(data, status, xhr){
                     data.rows.forEach(function(e,i,a){
-                        e.action=e.pe_mrn+','+e.pe_episno+','+e.pe_apptidno;
+                        e.action=e.mrn+','+e.episno+','+e.apptidno;
                     })
                 },
                 loadComplete: function(data){
@@ -525,7 +525,7 @@ $(document).ready(function() {
                 let mrn = cellvalue.split(',')[0];
                 let episno = cellvalue.split(',')[1];
                 let apptidno = cellvalue.split(',')[2];
-                let idno = rowObject.pe_idno;
+                let idno = rowObject.idno;
 
                 let return_val = "";
 
@@ -574,8 +574,10 @@ $(document).ready(function() {
                 $("#episode_oper").val('add');
 
                 var param={
-                    action:'get_value_default',
-                    field:"*",
+                    action:'preepisode_epis',
+                    url:'./pat_mast/table',
+                    mrn:mrn,
+                    episno:episno,
                     table_name:['hisdb.pre_episode AS pe','hisdb.pat_mast AS p'],
                     join_type : ['LEFT JOIN'],
                     join_onCol : ['pe.mrn'],
@@ -585,7 +587,7 @@ $(document).ready(function() {
                     filterVal:['session.compcode',mrn,episno],
                 };
 
-                $.get( "./util/get_value_default?"+$.param(param), function( data ) {
+                $.get( "./pat_mast/table?"+$.param(param), function( data ) {
 
                 },'json').done(function(data) {
 
@@ -596,7 +598,7 @@ $(document).ready(function() {
                         var episdata = data.rows[0];
                         $('#mrn_episode').val(episdata.MRN);
                         $('#txt_epis_name').text(episdata.Name);
-                        $('#txt_epis_mrn').text(('0000000' + episdata.MRN).slice(-7));
+                        $('#txt_epis_mrn').val(('0000000' + episdata.MRN).slice(-7));
 
                         $('#txt_epis_dept').val($('#userdeptdesc').val());
                         $('#hid_epis_dept').val($('#userdeptcode').val());

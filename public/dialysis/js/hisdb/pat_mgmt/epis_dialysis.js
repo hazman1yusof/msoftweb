@@ -20,6 +20,50 @@ $(document).ready(function () {
 		},
 	};
 
+	$('#absent_dialysis').click(function(){
+	    var postobj={
+	        oper:'absent',
+	    	_token : $('#csrf_token').val(),
+	    	mrn : $("#mrn_episode").val(),
+	    	episno : $("#txt_epis_no").val(),
+	    	packagecode : $("#dialysis_pkgcode").val(),
+	    	arrival_date : $("#dialysis_date").val(),
+			arrival_time : $("#dialysis_time").val(),
+	    	idno: $('#dialysis_idno').val()
+	    };
+
+	    $.post( "./save_epis_dialysis", $.param(postobj) , function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        alert(data.responseText);
+			refreshGrid("#jqGrid_dialysis", urlParam_dialysis);
+	    }).success(function(data){
+			refreshGrid("#jqGrid_dialysis", urlParam_dialysis);
+	    });
+	});
+
+	$('#arriveback_dialysis').click(function(){
+	    var postobj={
+	        oper:'arriveback',
+	    	_token : $('#csrf_token').val(),
+	    	mrn : $("#mrn_episode").val(),
+	    	episno : $("#txt_epis_no").val(),
+	    	packagecode : $("#dialysis_pkgcode").val(),
+	    	arrival_date : $("#dialysis_date").val(),
+			arrival_time : $("#dialysis_time").val(),
+	    	idno: $('#dialysis_idno').val()
+	    };
+
+	    $.post( "./save_epis_dialysis", $.param(postobj) , function( data ) {
+	        
+	    },'json').fail(function(data) {
+	        alert(data.responseText);
+			refreshGrid("#jqGrid_dialysis", urlParam_dialysis);
+	    }).success(function(data){
+			refreshGrid("#jqGrid_dialysis", urlParam_dialysis);
+	    });
+	});
+
 	var last_lineno_ = 1;
 	$("#jqGrid_dialysis").jqGrid({
 		datatype: "local",
@@ -27,10 +71,11 @@ $(document).ready(function () {
             { label: 'idno', name: 'de_idno' , hidden: true,sortable: false },
             { label: 'MRN', name: 'de_mrn', hidden: true ,sortable: false },
             { label: 'Epis no', name: 'de_episno' , hidden: true,sortable: false },
-            { label: 'No.', name: 'de_lineno_' , width: 20,sortable: false},
-            { label: 'Arrival Date', name: 'de_arrival_date' , width: 40 ,sortable: false,sortable: false, formatter: dateFormatter, unformat: dateUNFormatter},
-            { label: 'Arrival Time', name: 'de_arrival_time' , width: 40 ,sortable: false},
-            { label: 'Package', name: 'de_packagecode' , hidden: false ,sortable: false},
+            { label: 'No.', name: 'de_lineno_' , width: 10,sortable: false},
+            { label: 'Arrival Date', name: 'de_arrival_date' , width: 30 ,sortable: false,sortable: false, formatter: dateFormatter, unformat: dateUNFormatter},
+            { label: 'Arrival Time', name: 'de_arrival_time' , width: 30 ,sortable: false},
+            { label: 'Package', name: 'de_packagecode' , width: 40, hidden: false ,sortable: false},
+            { label: 'Status', name: 'de_status' , width: 40, hidden: false ,sortable: false, formatter: status_Formatter, unformat: status_UNFormatter},
 		],
 		autowidth: true,
 		multiSort: false,
@@ -43,7 +88,13 @@ $(document).ready(function () {
 		rowNum: 100,
 		pager: "#jqGridPager_dialysis",
 		onSelectRow:function(rowid, selected){
-			console.log();
+			if(selrowData("#jqGrid_dialysis").de_status == 'ABSENT'){
+				$('#arriveback_dialysis').show();
+				$('#absent_dialysis').hide();
+			}else if(selrowData("#jqGrid_dialysis").de_status == 'ARRIVE'){
+				$('#absent_dialysis').show();
+				$('#arriveback_dialysis').hide();
+			}
 			if(moment(selrowData("#jqGrid_dialysis").de_arrival_date).isSame(moment(), 'day') == true){
 				$('#del_dialysis').show();
 			}else{
@@ -109,7 +160,7 @@ $(document).ready(function () {
 
 	$("#edit_dialysis").click(function(){
 		button_state_dialysis('wait');
-		enableForm('#form_dialysis',['dialysis_no','dialysis_patname','dialysis_date','dialysis_time']);
+		enableForm('#form_dialysis',['dialysis_no','dialysis_patname']);
 		$("#save_dialysis").data('oper','edit');
 		
 	});
@@ -260,3 +311,17 @@ function autoadd_dialysis(){
 		refreshGrid("#jqGrid_dialysis", urlParam_dialysis);
     });
 }
+
+function status_Formatter(cellvalue, options, rowObject){
+	if(cellvalue == null) return '';
+	if(cellvalue == 'ABSENT'){
+		return `<span data-original='`+cellvalue+`' style='color:darkred'>`+cellvalue+`<span>`;
+	}else{
+		return `<span data-original='`+cellvalue+`'>`+cellvalue+`<span>`;
+	}
+}
+
+function status_UNFormatter(cellvalue, options, cell){
+	return $(cell).children('span').data('original');
+}
+

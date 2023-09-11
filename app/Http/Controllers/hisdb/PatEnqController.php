@@ -244,6 +244,7 @@ class PatEnqController extends defaultController
     public function mrn_range(Request $request){
         if($request->PatClass == 'HIS'){
             $table = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
                         ->where('source','=','HIS')
                         ->where('trantype','=','MRN')
                         ->first();
@@ -251,6 +252,7 @@ class PatEnqController extends defaultController
             return explode(',', $table->pvalue2);
         }else if($request->PatClass == 'OTC'){
             $table = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
                         ->where('source','=','OTC')
                         ->where('trantype','=','MRN')
                         ->first();
@@ -294,6 +296,11 @@ class PatEnqController extends defaultController
         DB::beginTransaction();
         try {
 
+            $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->first();
+
             $idno = DB::table('hisdb.patmc')
                 ->insertGetId([  
                     'compcode' => session('compcode'),
@@ -301,7 +308,7 @@ class PatEnqController extends defaultController
                     'dateto' => $request->dateto ,
                     'mrn' => $request->mrn ,
                     'episno' => $request->episno ,
-                    'patfrom' => $request->patfrom ,
+                    'patfrom' => $pat_mast->Name ,
                     'mccnt' => $request->mccnt ,
                     'serialno' => $request->serialno ,
                     'dateresume' => $request->dateresume ,

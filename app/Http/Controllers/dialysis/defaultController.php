@@ -11,10 +11,11 @@ use DateTime;
 
 class defaultController extends Controller{
 
+    public $dialysis_public_path = 'C:\laragon\www\dialysis\public';
+
     public function __construct(){
         
     }
-    
 
     public function get_maiwp_center_dept(){
         $centers = DB::table('sysdb.department')

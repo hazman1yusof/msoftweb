@@ -6,7 +6,7 @@ var editedRow=0;
 /////////////////////parameter for jqGridAddNotes url/////////////////////////////////////////////////
 var urlParam_AddNotes = {
 	action: 'get_table_default',
-	url: './util/get_table_default',
+	url: './dialysis_util/get_table_default',
 	field: '',
 	table_name: 'hisdb.pathealthadd',
 	table_id: 'idno',
@@ -99,7 +99,7 @@ $(document).ready(function () {
 	///////////////////////////////////jqGridAddNotes///////////////////////////////////////////////////
 	$("#jqGridAddNotes").jqGrid({
 		datatype: "local",
-		editurl: "/dialysis_doctornote/form",
+		editurl: "/doctornote/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
@@ -172,7 +172,7 @@ $(document).ready(function () {
 
 			let data = $('#jqGridAddNotes').jqGrid ('getRowData', rowid);
 
-			let editurl = "/dialysis_doctornote/form?"+
+			let editurl = "/doctornote/form?"+
 				$.param({
     				_token : $('#_token').val(),
 					episno:$('#episno_doctorNote_past').val(),
@@ -287,7 +287,7 @@ var dialog_icd = new ordialog(
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
 		],
 		urlParam: {
-			url : "dialysis_doctornote/table",
+			url : "doctornote/table",
 			filterCol:['sp.compcode'],
 			filterVal:['session.compcode'],
 		},
@@ -310,7 +310,7 @@ var dialog_icd = new ordialog(
 	},{
 		title:"Select ICD",
 		open: function(){
-			dialog_icd.urlParam.url = "dialysis_doctornote/table";
+			dialog_icd.urlParam.url = "doctornote/table";
 			dialog_icd.urlParam.action = "dialog_icd";
 			dialog_icd.urlParam.table_name = ['hisdb.diagtab AS dt','sysdb.sysparam AS sp'];
 			dialog_icd.urlParam.join_type = ['LEFT JOIN'];
@@ -480,7 +480,6 @@ function autoinsert_rowdata_doctorNote(form,rowData){
 				input.val(newval);
 			}
 		}else{
-			console.log(value);
 			input.val(value);
 		}
 	});

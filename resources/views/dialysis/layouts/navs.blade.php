@@ -11,6 +11,9 @@
                     @endforeach
                 </div>
             </div>
+
+        @elseif (strtoupper(Auth::user()->groupid) == 'PATHLAB')
+            <div class="item" style="color:white;">PATHLAB</div>
         @else
             <div class="item" style="color:white;">{{ session('dept_desc') }}</div>
         @endif
@@ -105,6 +108,10 @@
         <a class="item @if(Request::is('dialysis') || Request::is('dialysis/*')) {{'active'}} @endif" href="{{ url('/dialysis')}}"><i style="float: left" class="big procedures icon"></i>Dialysis</a>
 
         <a class="item @if(Request::is('enquiry') || Request::is('enquiry/*')) {{'active'}} @endif" href="{{ url('/enquiry')}}"><i style="float: left" class="big address card icon"></i>Patient Enquiry</a>
+
+        <a class="item @if(Request::is('enquiry_order') || Request::is('enquiry_order/*')) {{'active'}} @endif" href="{{ url('/enquiry_order')}}"><i style="float: left" class="big address card outline icon"></i>Patient Order Enquiry</a>
+
+        <a class="item @if(Request::is('eis') || Request::is('eis/*')) {{'active'}} @endif" href="{{ url('/eis')}}"><i style="float: left" class="chart bar big link icon"></i>EIS</a>
         
         <a class="item @if(Request::is('user_maintenance') || Request::is('user_maintenance/*')) {{'active'}} @endif" href="{{ url('/user_maintenance')}}"><i style="float: left" class="big user icon"></i>User</a>
 
@@ -124,6 +131,8 @@
 
         <a class="item {{(Request::is('emergency') ? 'active' : '')}}" href="{{ url('/emergency')}}"><i style="float: left" class="folder open inverted big icon link"></i>Document Upload</a>
 
+    @elseif (strtoupper(Auth::user()->groupid) == 'PATHLAB')
+        <a class="item {{(Request::is('labresult') ? 'active' : '')}}" href="{{ url('/labresult')}}"><i style="float: left" class="folder open inverted big icon link"></i>Lab Result Upload</a>
 
     @else
         <a class="item {{(Request::is('mainlanding') ? 'active' : '')}}" href="{{url('/mainlanding')}}"><i style="float: left" class="users inverted icon big link"></i>Patient List</a>

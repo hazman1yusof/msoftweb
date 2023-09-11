@@ -25,6 +25,17 @@ class DoctorNoteController extends defaultController
     {
         return view('hisdb.doctornote.doctornote');
     }
+
+    public function bpgraph(Request $request)
+    {
+        $pat = DB::table('hisdb.pat_mast')
+                    ->where('compcode',session('compcode'))
+                    ->where('MRN',$request->mrn)
+                    ->first();
+
+
+        return view('hisdb.doctornote.doctornote_bpgraph',compact('pat'));
+    }
     
     public function table(Request $request)
     {
@@ -37,6 +48,8 @@ class DoctorNoteController extends defaultController
                 return $this->get_table_doctornote($request);
             case 'dialog_icd':
                 return $this->dialog_icd($request);
+            case 'get_bp_graph':
+                return $this->get_bp_graph($request);
             
             // transaction stuff
             case 'get_transaction_table':
@@ -1053,6 +1066,16 @@ class DoctorNoteController extends defaultController
         return json_encode($responce);
     
     }
+
+    public function get_bp_graph(Request $request){
+        $table = DB::table('hisdb.bp_graph')
+                        ->get();
+
+        $responce = new stdClass();
+        $responce->data = $table;
+        return json_encode($responce);
+    
+    }
     
     public function add_notes(Request $request){
         
@@ -1188,19 +1211,33 @@ class DoctorNoteController extends defaultController
             abort(404);
         }
         
-        $patreferral = DB::table('hisdb.patreferral')
-            ->where('compcode','=',session('compcode'))
-            ->where('mrn','=',$mrn)
-            ->where('episno','=',$episno)
+        $patreferral = DB::table('hisdb.patreferral as ptrf')
+            ->select('ptrf.idno','ptrf.compcode','ptrf.mrn','ptrf.episno','ptrf.adduser','ptrf.adddate','ptrf.upduser','ptrf.upddate','ptrf.computerid','ptrf.refdate','ptrf.refaddress','ptrf.refdoc','ptrf.reftitle','ptrf.refdiag','ptrf.refplan','ptrf.refprescription','pm.Name','pm.Newic')
+            ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
+                $join = $join->on('pm.MRN', '=', 'ptrf.mrn')
+                                ->where('pm.compcode','=',session('compcode'));
+            })
+            ->where('ptrf.compcode','=',session('compcode'))
+            ->where('ptrf.mrn','=',$mrn)
+            ->where('ptrf.episno','=',$episno)
             ->first();
-        
-        // dd($patreferral);
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
+
+        $ini_array = [
+            'docname' => $patreferral->refdoc,
+            'name' => $patreferral->Name,
+            'newic' => $patreferral->Newic,
+            'reftitle' => $patreferral->reftitle,
+            'reffor' => $patreferral->refdiag,
+            'exam' => $patreferral->refplan,
+            'invest' => $patreferral->refprescription,
+            'refdate' => $patreferral->refdate
+        ];
         
-        return view('hisdb.doctornote.refLetter_pdfmake',compact('patreferral', 'company'));
+        return view('hisdb.doctornote.refLetter_pdfmake',compact('ini_array'));
         
     }
     

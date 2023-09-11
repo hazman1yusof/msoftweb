@@ -65,6 +65,8 @@ class DashboardController extends Controller
             return redirect('/dialysis');
         }else if(strtoupper(Auth::user()->groupid) == 'MR'){
             return redirect('/dialysis');
+        }else if(strtoupper(Auth::user()->groupid) == 'PATHLAB'){
+            return redirect('/labresult');
         }else{
             return redirect('/dialysis');
         }

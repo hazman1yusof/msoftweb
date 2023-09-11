@@ -601,6 +601,12 @@
                 case "epis_fin":
                     act = "get_reg_fin";
                     break;
+                case "admdoctor":
+                    act = "get_reg_admdoctor";
+                    break;
+                case "attndoctor":
+                    act = "get_reg_attndoctor";
+                    break;
             }
             return act;
         }

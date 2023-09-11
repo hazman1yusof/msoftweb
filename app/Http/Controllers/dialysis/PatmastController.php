@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\dialysis;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\dialysis\defaultController;
+use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
@@ -27,7 +27,7 @@ class PatmastController extends defaultController
         if(!empty($request->changedept)){
 
             $department = DB::table('sysdb.department')
-                            ->where('compcode', '13A')
+                            ->where('compcode', session('compcode'))
                             ->where('deptcode', $request->changedept);
 
             if($department->exists()){
@@ -41,8 +41,8 @@ class PatmastController extends defaultController
 
     public function show(Request $request)
     {       
-        $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode','=','13A')->first();
-        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode','=','13A')->first();
+        $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode','=',session('compcode'))->first();
+        $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode','=',session('compcode'))->first();
         return view('hisdb.pat_mgmt.landing',
             [
                 'userdeptcode' => $dept->deptcode,
@@ -84,34 +84,29 @@ class PatmastController extends defaultController
 
             // $sel_epistycode = $request->epistycode;
 
-            if(empty(session('dept'))){
-                $dept = 'BM';
-            }else{
-                $dept = session('dept');
-            }
-
             $table_patm = DB::table('hisdb.episode') //ambil dari patmast balik
-                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','debtormast.name as payer','epispayer.pay_type','dialysis_episode.packagecode','dialysis_episode.arrival_date','dialysis_episode.arrival_time','dialysis_episode.idno as arrival','dialysis_episode.complete','dialysis_episode.order','episode.nurse_stat as nurse'])
-                            ->where('episode.regdept','=',$dept)
-                            ->where('episode.compcode','=','13A')
+                            ->select(['pat_mast.idno','pat_mast.CompCode','pat_mast.MRN','pat_mast.Episno','pat_mast.Name','pat_mast.Call_Name','pat_mast.addtype','pat_mast.Address1','pat_mast.Address2','pat_mast.Address3','pat_mast.Postcode','pat_mast.citycode','pat_mast.AreaCode','pat_mast.StateCode','pat_mast.CountryCode','pat_mast.telh','pat_mast.telhp','pat_mast.telo','pat_mast.Tel_O_Ext','pat_mast.ptel','pat_mast.ptel_hp','pat_mast.ID_Type','pat_mast.idnumber','pat_mast.Newic','pat_mast.Oldic','pat_mast.icolor','pat_mast.Sex','pat_mast.DOB','pat_mast.Religion','pat_mast.AllergyCode1','pat_mast.AllergyCode2','pat_mast.Century','pat_mast.Citizencode','pat_mast.OccupCode','pat_mast.Staffid','pat_mast.MaritalCode','pat_mast.LanguageCode','pat_mast.TitleCode','pat_mast.RaceCode','pat_mast.bloodgrp','pat_mast.Accum_chg','pat_mast.Accum_Paid','pat_mast.first_visit_date','pat_mast.last_visit_date','pat_mast.last_episno','pat_mast.PatStatus','pat_mast.Confidential','pat_mast.Active','pat_mast.FirstIpEpisNo','pat_mast.FirstOpEpisNo','pat_mast.AddUser','pat_mast.AddDate','pat_mast.Lastupdate','pat_mast.LastUser','pat_mast.OffAdd1','pat_mast.OffAdd2','pat_mast.OffAdd3','pat_mast.OffPostcode','pat_mast.MRFolder','pat_mast.MRLoc','pat_mast.MRActive','pat_mast.OldMrn','pat_mast.NewMrn','pat_mast.Remarks','pat_mast.RelateCode','pat_mast.ChildNo','pat_mast.CorpComp','pat_mast.Email','pat_mast.Email_official','pat_mast.CurrentEpis','pat_mast.NameSndx','pat_mast.BirthPlace','pat_mast.TngID','pat_mast.PatientImage','pat_mast.pAdd1','pat_mast.pAdd2','pat_mast.pAdd3','pat_mast.pPostCode','pat_mast.DeptCode','pat_mast.DeceasedDate','pat_mast.PatientCat','pat_mast.PatType','pat_mast.PatClass','pat_mast.upduser','pat_mast.upddate','pat_mast.recstatus','pat_mast.loginid','pat_mast.pat_category','pat_mast.idnumber_exp','pat_mast.PatientImage','racecode.Description as raceDesc','religion.Description as religionDesc','occupation.description as occupDesc','citizen.Description as cityDesc','areacode.Description as areaDesc','doctor.doctorname as q_doctorname','queue.epistycode as q_epistycode', 'queue.reg_date', 'queue.QueueNo','debtormast.name as payer','epispayer.pay_type','dialysis_episode.packagecode','dialysis_episode.arrival_date','dialysis_episode.arrival_time','dialysis_episode.idno as arrival','dialysis_episode.complete','dialysis_episode.order','dialysis_episode.status as dialysis_status','episode.nurse_stat as nurse'])
+                            ->where('episode.regdept','=',session('dept'))
+                            ->where('episode.compcode','=',session('compcode'))
                             ->where('episode.episactive','=','1')
                             ->join('hisdb.queue', function($join) use ($request){
                                 $join = $join->on('queue.mrn', '=', 'episode.mrn')
                                             ->where('queue.billflag','=',0)
                                             ->where('queue.deptcode','=',"ALL")
-                                            ->where('queue.compcode','=','13A');
+                                            ->where('queue.compcode','=',session('compcode'));
                             })
                             ->join('hisdb.pat_mast', function($join) use ($request){
                                 $join = $join->on('pat_mast.MRN', '=', 'episode.mrn')
+                                            ->where('pat_mast.Active','=','1')
                                             ->where('pat_mast.PatStatus','=','1')
-                                            ->where('pat_mast.compcode','=','13A');
+                                            ->where('pat_mast.compcode','=',session('compcode'));
                             });
 
                             if($showall == 'false'){
                                 $table_patm = $table_patm->join('hisdb.dialysis_episode', function($join) use ($request,$showcomplete){
                                     $join = $join->on('dialysis_episode.mrn', '=', 'episode.mrn')
                                                 ->on('dialysis_episode.episno', '=', 'episode.episno')
-                                                ->where('dialysis_episode.compcode','=','13A')
+                                                ->where('dialysis_episode.compcode','=',session('compcode'))
                                                 ->whereDate('dialysis_episode.arrival_date',Carbon::today("Asia/Kuala_Lumpur"));
 
                                     if($showcomplete == 'false'){
@@ -125,43 +120,43 @@ class PatmastController extends defaultController
                                     $join = $join->on('dialysis_episode.mrn', '=', 'episode.mrn')
                                                 ->on('dialysis_episode.episno','=','episode.episno')
                                                 ->on('dialysis_episode.idno','episode.lastarrivalno')
-                                                ->where('dialysis_episode.compcode','=','13A');
+                                                ->where('dialysis_episode.compcode','=',session('compcode'));
                                 });
                             }
 
                             $table_patm = $table_patm->join('hisdb.epispayer', function($join) use ($request){
                                 $join = $join->on('epispayer.mrn', '=', 'episode.mrn')
                                             ->on('epispayer.episno','=','episode.episno')
-                                            ->where('epispayer.compcode','=','13A');
+                                            ->where('epispayer.compcode','=',session('compcode'));
 
                             })
                             ->leftJoin('debtor.debtormast', function($join) use ($request){
                                 $join = $join->on('debtormast.debtorcode', '=', 'epispayer.payercode')
-                                                ->where('debtormast.compcode','=','13A');
+                                                ->where('debtormast.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.doctor', function($join) use ($request){
                                 $join = $join->on('doctor.doctorcode', '=', 'queue.admdoctor')
-                                                ->where('doctor.compcode','=','13A');
+                                                ->where('doctor.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.racecode', function($join) use ($request){
                                 $join = $join->on('racecode.Code', '=', 'pat_mast.RaceCode')
-                                                ->where('racecode.compcode','=','13A');
+                                                ->where('racecode.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.religion', function($join) use ($request){
                                 $join = $join->on('religion.Code', '=', 'pat_mast.Religion')
-                                                ->where('religion.compcode','=','13A');
+                                                ->where('religion.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.occupation', function($join) use ($request){
                                 $join = $join->on('occupation.occupcode', '=', 'pat_mast.OccupCode')
-                                                ->where('occupation.compcode','=','13A');
+                                                ->where('occupation.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.citizen', function($join) use ($request){
                                 $join = $join->on('citizen.Code', '=', 'pat_mast.Citizencode')
-                                                ->where('citizen.compcode','=','13A');
+                                                ->where('citizen.compcode','=',session('compcode'));
                             })
                             ->leftJoin('hisdb.areacode', function($join) use ($request){
                                 $join = $join->on('areacode.areacode', '=', 'pat_mast.AreaCode')
-                                                ->where('areacode.compcode','=','13A');
+                                                ->where('areacode.compcode','=',session('compcode'));
                             });
 
             // dump($table_patm->get());
@@ -244,7 +239,7 @@ class PatmastController extends defaultController
 
             $table_patm = $table_patm
                         ->where('Active','=','1')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
                         // ->whereBetween('MRN',$mrn_range);
 
 
@@ -306,7 +301,7 @@ class PatmastController extends defaultController
             case 'get_pat':
                 $data = DB::table('hisdb.pat_mast')
                         ->where('mrn','=',$request->mrn)
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->first();
                 break;
 
@@ -314,7 +309,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.occupation')
                         ->select('occupcode as code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -328,7 +323,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.title')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->orderBy('idno', 'desc');
 
                 if(!empty($request->search)){
@@ -343,7 +338,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.citizen')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -357,7 +352,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.areacode')
                         ->select('areacode as code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->orderBy('idno', 'desc');
 
                 if(!empty($request->search)){
@@ -372,7 +367,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.sex')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -386,7 +381,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.racecode')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -400,7 +395,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.religion')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -414,7 +409,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.marital')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -428,7 +423,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.languagecode')
                         ->select('code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -442,7 +437,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.relationship')
                         ->select('relationshipcode as code','description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -455,7 +450,7 @@ class PatmastController extends defaultController
             case 'get_reg_dept':
                 $data = DB::table('sysdb.department')
                     ->select('deptcode as code','description')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('recstatus','=','ACTIVE')
                     ->where('regdept','=','1');
 
@@ -470,7 +465,7 @@ class PatmastController extends defaultController
             case 'get_reg_source':
                 $data = DB::table('hisdb.admissrc')
                         ->select('admsrccode as code','description')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('recstatus','=','ACTIVE')
                         ->orderBy('idno', 'desc');
 
@@ -485,7 +480,7 @@ class PatmastController extends defaultController
             case 'get_reg_case':
                 $data = DB::table('hisdb.casetype')
                         ->select('case_code as code','description')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('recstatus','=','ACTIVE');
 
                 if(!empty($request->search)){
@@ -499,7 +494,7 @@ class PatmastController extends defaultController
             case 'get_reg_fin':
                 $data = DB::table('debtor.debtortype')
                         ->select('debtortycode as code','description')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('recstatus','=','ACTIVE');
 
                 if(!empty($request->search)){
@@ -514,7 +509,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.bed')
                         ->select('bednum as code','ward as description')
                         ->where('occup','=',"VACANT")
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('recstatus','=','ACTIVE')
                         ->get();
 
@@ -528,7 +523,7 @@ class PatmastController extends defaultController
                 $data = DB::table('hisdb.doctor')
                         ->select('doctorcode as code','doctorname as description')
                         ->where('recstatus','=','ACTIVE')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -543,7 +538,7 @@ class PatmastController extends defaultController
                         ->select('doctorcode as code','doctorname as description')
                         ->where('recstatus','=','ACTIVE')
                         ->where('specialitycode','=','NEPHR')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -558,7 +553,7 @@ class PatmastController extends defaultController
                         ->select('doctorcode as code','doctorname as description')
                         ->where('recstatus','=','ACTIVE')
                         ->where('specialitycode','=','PIC')
-                        ->where('compcode','=','13A');
+                        ->where('compcode','=',session('compcode'));
 
                 if(!empty($request->search)){
                     $data = $data->where('description','=',$request->search)->first();
@@ -580,18 +575,18 @@ class PatmastController extends defaultController
                                 ->select('dm.debtortype','dm.debtorcode','dm.name','dm.billtype as billtype','bm.description as billtype_desc')
                                     ->leftJoin('hisdb.billtymst AS bm', function($join) use ($request){
                                         $join = $join->on('bm.billtype', '=', 'dm.billtype')
-                                                        ->where('bm.compcode','=','13A');
+                                                        ->where('bm.compcode','=',session('compcode'));
                                     });
                     }else{
                         $data = DB::table('debtor.debtormast AS dm')
                                 ->select('dm.debtortype','dm.debtorcode','dm.name','dm.billtypeop as billtype','bm.description as billtype_desc')
                                 ->leftJoin('hisdb.billtymst AS bm', function($join) use ($request){
                                     $join = $join->on('bm.billtype', '=', 'dm.billtypeop')
-                                                    ->where('bm.compcode','=','13A');
+                                                    ->where('bm.compcode','=',session('compcode'));
                                 });
                     }
 
-                    $data = $data->where('dm.compcode','=','13A')
+                    $data = $data->where('dm.compcode','=',session('compcode'))
                                     ->whereIn('dm.debtortype', ['PR', 'PT'])
                                     ->get();
 
@@ -602,18 +597,18 @@ class PatmastController extends defaultController
                                 ->select('dm.debtortype','dm.debtorcode','dm.name','dm.billtype as billtype','bm.description as billtype_desc')
                                 ->leftJoin('hisdb.billtymst AS bm', function($join) use ($request){
                                     $join = $join->on('bm.billtype', '=', 'dm.billtype')
-                                                    ->where('bm.compcode','=','13A');
+                                                    ->where('bm.compcode','=',session('compcode'));
                                 });
                     }else{
                         $data = DB::table('debtor.debtormast AS dm')
                                 ->select('dm.debtortype','dm.debtorcode','dm.name','dm.billtypeop as billtype','bm.description as billtype_desc')
                                 ->leftJoin('hisdb.billtymst AS bm', function($join) use ($request){
                                     $join = $join->on('bm.billtype', '=', 'dm.billtypeop')
-                                                    ->where('bm.compcode','=','13A');
+                                                    ->where('bm.compcode','=',session('compcode'));
                                 });
                     }
 
-                    $data = $data->where('dm.compcode','=','13A') 
+                    $data = $data->where('dm.compcode','=',session('compcode')) 
                                     ->whereNotIn('dm.debtortype', ['PR', 'PT'])
                                     ->get();
 
@@ -621,7 +616,7 @@ class PatmastController extends defaultController
                 }else{
                     $data = DB::table('debtor.debtormast')
                             ->select('debtorcode','name')
-                            ->where('compcode','=','13A')  
+                            ->where('compcode','=',session('compcode'))  
                             ->whereIn('debtortype', ['PR', 'PT'])
                             // ->where('debtorcode','=',ltrim($request->mrn, '0'))
                             ->get();
@@ -632,21 +627,21 @@ class PatmastController extends defaultController
                 if($request->type == "OP"){
                     $data = DB::table('hisdb.billtymst')
                             ->select('billtype','description')
-                            ->where('compcode','=','13A')  
+                            ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','1')
                             ->where('recstatus','=','ACTIVE')
                             ->get();
                 }else if($request->type == "IP"){
                     $data = DB::table('hisdb.billtymst')
                             ->select('billtype','description')
-                            ->where('compcode','=','13A')  
+                            ->where('compcode','=',session('compcode'))  
                             ->where('opprice','=','0')
                             ->where('recstatus','=','ACTIVE')
                             ->get();
                 }else{
                     $data = DB::table('hisdb.billtymst')
                             ->select('billtype','description')
-                            ->where('compcode','=','13A')
+                            ->where('compcode','=',session('compcode'))
                             ->where('recstatus','=','ACTIVE')
                             ->get();
                 }
@@ -662,7 +657,7 @@ class PatmastController extends defaultController
 
             case 'get_bed_type':
                 $data = DB::table('hisdb.bedtype')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('recstatus','=','ACTIVE')
                     ->get();
                 break;
@@ -670,7 +665,7 @@ class PatmastController extends defaultController
             case 'get_bed_ward':
                 $data = DB::table('sysdb.department')
                     ->where('warddept','=','1')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('recstatus','=','ACTIVE')
                     ->get();
                 break;
@@ -691,7 +686,7 @@ class PatmastController extends defaultController
                         ->leftJoin('sysdb.department as d', 'b.ward', '=', 'd.deptcode')
                         ->where('b.occup','=',"VACANT")
                         ->where('b.recstatus','=','ACTIVE')
-                        ->where('b.compcode','=','13A')
+                        ->where('b.compcode','=',session('compcode'))
                         ->orderBy('b.bedtype', 'desc')
                         ->get();
 
@@ -702,7 +697,7 @@ class PatmastController extends defaultController
                 $data = DB::table('debtor.debtormast')
                         ->select('debtormast.debtorcode as code','debtormast.name as description')
                         ->leftJoin('debtor.debtortype', 'debtortype.debtortycode', '=', 'debtormast.debtortype')
-                        ->where('debtormast.compcode','=','13A')
+                        ->where('debtormast.compcode','=',session('compcode'))
                         ->whereNotIn('debtormast.debtortype',['PT','PR']);
 
                 if(!empty($request->search)){
@@ -734,7 +729,7 @@ class PatmastController extends defaultController
             case 'get_billtype_default':
 
                 $data = DB::table('sysdb.sysparam')
-                            ->where('compcode','=','13A')
+                            ->where('compcode','=',session('compcode'))
                             ->where('source','=','PB')
                             ->where('trantype','=','PRICE')
                             ->first();
@@ -744,7 +739,7 @@ class PatmastController extends defaultController
             case 'get_default_value':
                 $pat = DB::table('hisdb.pat_mast')
                             ->select('Episno')
-                            ->where('compcode','=','13A')
+                            ->where('compcode','=',session('compcode'))
                             ->where('mrn',$request->mrn)
                             ->first();
 
@@ -773,7 +768,7 @@ class PatmastController extends defaultController
                                 ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
                                 ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
                                 ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
-                                ->where('e.compcode','=','13A')
+                                ->where('e.compcode','=',session('compcode'))
                                 ->where('e.mrn',$request->mrn)
                                 ->where('e.episno',$pat->Episno);
 
@@ -791,7 +786,7 @@ class PatmastController extends defaultController
 
                         $admdoctor_desc = DB::table('hisdb.doctor')
                                         ->where('doctorcode',$data->admdoctor)
-                                        ->where('compcode','=','13A');
+                                        ->where('compcode','=',session('compcode'));
 
                         if($admdoctor_desc->exists()){
                             $data->admdoctor_desc = $admdoctor_desc->first()->doctorname;
@@ -801,7 +796,7 @@ class PatmastController extends defaultController
 
                         $attndoctor_desc = DB::table('hisdb.doctor')
                                         ->where('doctorcode',$data->attndoctor)
-                                        ->where('compcode','=','13A');
+                                        ->where('compcode','=',session('compcode'));
 
                         if($attndoctor_desc->exists()){
                             $data->attndoctor_desc = $attndoctor_desc->first()->doctorname;
@@ -821,9 +816,9 @@ class PatmastController extends defaultController
 
                 if($data->empty == 'yes'){
 
-                    $admissrc = DB::table('hisdb.admissrc')->where('admsrccode','APPT')->where('compcode','=','13A');
-                    $casetype = DB::table('hisdb.casetype')->where('case_code','HDS')->where('compcode','=','13A');
-                    $billtymst = DB::table('hisdb.billtymst')->where('billtype','OP')->where('compcode','=','13A');
+                    $admissrc = DB::table('hisdb.admissrc')->where('admsrccode','APPT')->where('compcode','=',session('compcode'));
+                    $casetype = DB::table('hisdb.casetype')->where('case_code','HDS')->where('compcode','=',session('compcode'));
+                    $billtymst = DB::table('hisdb.billtymst')->where('billtype','OP')->where('compcode','=',session('compcode'));
 
                     $data->adm_desc = $admissrc->first()->description;
                     $data->admsrccode = $admissrc->first()->admsrccode;
@@ -866,7 +861,7 @@ class PatmastController extends defaultController
 
             $array_insert = [
                 'loginid' => $loginid,
-                'compcode' => '13A',
+                'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'A',
@@ -893,7 +888,7 @@ class PatmastController extends defaultController
                 foreach ($nok_arr as $key => $value) {
                     DB::table('hisdb.nok_ec')
                         ->insert([
-                            'compcode' => '13A',
+                            'compcode' => session('compcode'),
                             'mrn'    =>  $mrn,
                             'episno'  =>  1,
                             'name'  =>  strtoupper($value['name']),
@@ -931,7 +926,7 @@ class PatmastController extends defaultController
         $table = DB::table('hisdb.pat_mast');
 
         $array_update = [
-            'compcode' => '13A',
+            'compcode' => session('compcode'),
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'A'
@@ -1034,7 +1029,7 @@ class PatmastController extends defaultController
         $table = DB::table('sysdb.users');
 
         $array_insert = [
-            'compcode' => '13A',
+            'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'recstatus' => 'A',
@@ -1123,7 +1118,7 @@ class PatmastController extends defaultController
 
             DB::table("hisdb.episode")
                 ->insert([
-                    "compcode" => '13A',
+                    "compcode" => session('compcode'),
                     "mrn" => $epis_mrn,
                     "episno" => $epis_no,
                     "epistycode" => $epis_type,
@@ -1157,7 +1152,7 @@ class PatmastController extends defaultController
                 //LastUser=session.user
 
             DB::table("hisdb.pat_mast")
-                ->where("compcode",'=','13A')
+                ->where("compcode",'=',session('compcode'))
                 ->where("mrn",'=',$epis_mrn)
                 ->update([
                     'episno' => $epis_no,
@@ -1169,7 +1164,7 @@ class PatmastController extends defaultController
 
             if($epis_no == 1){
                 DB::table("hisdb.pat_mast")
-                    ->where("compcode",'=','13A')
+                    ->where("compcode",'=',session('compcode'))
                     ->where("mrn",'=',$epis_mrn)
                     ->update([
                         'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1178,7 +1173,7 @@ class PatmastController extends defaultController
 
             $patmast_data = DB::table("hisdb.pat_mast")
                                 ->where('MRN','=',$epis_mrn)
-                                ->where('compcode','=','13A')
+                                ->where('compcode','=',session('compcode'))
                                 ->first();
 
             //if pay_type = PT
@@ -1197,12 +1192,12 @@ class PatmastController extends defaultController
 
             if($epis_fin == "PT"){
                 $debtortype_data = DB::table('debtor.debtortype')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('DebtorTyCode','=',$epis_fin)
                     ->first();
 
                 $debtormast_obj = DB::table('debtor.debtormast')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('debtorcode','=',$epis_payer);
 
 
@@ -1210,7 +1205,7 @@ class PatmastController extends defaultController
                     //kalu xjumpa debtormast, buat baru
                     DB::table('debtor.debtormast')
                         ->insert([
-                            'CompCode' => '13A',
+                            'CompCode' => session('compcode'),
                             'DebtorCode' => $epis_payer,
                             'Name' => $patmast_data->Name,
                             'Address1' => $patmast_data->Address1,
@@ -1252,7 +1247,7 @@ class PatmastController extends defaultController
                 // computerid
 
             $epispayer_obj = DB::table('hisdb.epispayer')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$epis_mrn)
                 ->where('Episno','=',$epis_no);
 
@@ -1260,7 +1255,7 @@ class PatmastController extends defaultController
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
                     ->insert([
-                        'CompCode' => '13A',
+                        'CompCode' => session('compcode'),
                         'MRN' => $epis_mrn,
                         'Episno' => $epis_no,
                         'EpisTyCode' => $epis_type,
@@ -1297,7 +1292,7 @@ class PatmastController extends defaultController
                   //adduser
                   // computerid
             // $docalloc_obj=DB::table('hisdb.docalloc')
-            //     ->where('compcode','=','13A')
+            //     ->where('compcode','=',session('compcode'))
             //     ->where('Mrn','=',$epis_mrn)
             //     ->where('Episno','=',$epis_no);
 
@@ -1306,7 +1301,7 @@ class PatmastController extends defaultController
             //     DB::table('hisdb.docalloc')
             //         ->insert([
             //             'mrn' => $epis_mrn,
-            //             'compcode' => '13A',
+            //             'compcode' => session('compcode'),
             //             'episno' => $epis_no,
             //             'AllocNo' => 1,
             //             'AStatus' => "ADMITTING",
@@ -1331,7 +1326,7 @@ class PatmastController extends defaultController
             // if($epis_type == "IP" || $epis_type == "DP"){
 
             //     $bed_obj = DB::table('hisdb.bed')
-            //             ->where('compcode','=','13A')
+            //             ->where('compcode','=',session('compcode'))
             //             ->where('bednum','=',$epis_bednum);
 
             //     if($bed_obj->exists()){
@@ -1347,7 +1342,7 @@ class PatmastController extends defaultController
             //                 'bednum' =>  $bed_first->bednum,
             //                 'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
             //                 'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-            //                 'compcode' => '13A',
+            //                 'compcode' => session('compcode'),
             //                 'adduser' => strtoupper(session('username')),
             //                 'adddate' => Carbon::now("Asia/Kuala_Lumpur")
             //             ]);
@@ -1377,7 +1372,7 @@ class PatmastController extends defaultController
 
             //cari queue utk source que dgn trantype epistycode
             $queue_obj = DB::table('sysdb.sysparam')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('source','=','QUE')
                 ->where('trantype','=',$epistycode_q);
 
@@ -1385,7 +1380,7 @@ class PatmastController extends defaultController
             if(!$queue_obj->exists()){
                 DB::table('sysdb.sysparam')
                     ->insert([
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'source' => 'QUE',
                         'trantype' => $epistycode_q,
                         'description' => $epistycode_q.' Queue No.',
@@ -1393,7 +1388,7 @@ class PatmastController extends defaultController
                     ]);
 
                 $queue_obj = DB::table('sysdb.sysparam')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('source','=','QUE')
                     ->where('trantype','=',$epistycode_q);
             }
@@ -1434,7 +1429,7 @@ class PatmastController extends defaultController
                         'AttnDoctor' => $admdoctor,
                         'BedType' => '',
                         'Case_Code' => "MED",
-                        'CompCode' => '13A',
+                        'CompCode' => session('compcode'),
                         'Episno' => $epis_no,
                         'EpisTyCode' => $epistycode_q,
                         'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
@@ -1473,7 +1468,7 @@ class PatmastController extends defaultController
                         'AttnDoctor' => $admdoctor,
                         'BedType' => '',
                         'Case_Code' => "MED",
-                        'CompCode' => '13A',
+                        'CompCode' => session('compcode'),
                         'Episno' => $epis_no,
                         'EpisTyCode' => "OP",
                         'LastTime' => Carbon::now("Asia/Kuala_Lumpur")->toTimeString(),
@@ -1508,14 +1503,14 @@ class PatmastController extends defaultController
 
             //check if date,mrn,episno duplicate
             $dialysis_epis = DB::table('hisdb.dialysis_episode')
-                                ->where('compcode','13A')
+                                ->where('compcode',session('compcode'))
                                 ->where('mrn',$epis_mrn)
                                 ->where('episno',$epis_no)
                                 ->whereDate('arrival_date',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
 
             if(!$dialysis_epis->exists()){
                 $dialysis_epis = DB::table('hisdb.dialysis_episode')
-                                ->where('compcode','13A')
+                                ->where('compcode',session('compcode'))
                                 ->where('mrn',$epis_mrn)
                                 ->where('episno',$epis_no);
 
@@ -1523,7 +1518,7 @@ class PatmastController extends defaultController
                     $lineno_ = intval($dialysis_epis->max('lineno_')) + 1;
 
                     $dialysis_epis_latest = DB::table('hisdb.dialysis_episode')
-                                    ->where('compcode','13A')
+                                    ->where('compcode',session('compcode'))
                                     ->where('mrn',$epis_mrn)
                                     ->where('episno',$epis_no)
                                     ->where('lineno_',intval($dialysis_epis->max('lineno_')));
@@ -1531,17 +1526,15 @@ class PatmastController extends defaultController
                     $mcrstat = $dialysis_epis_latest->first()->mcrstat;
                     $hdstat = $dialysis_epis_latest->first()->hdstat;
                     $packagecode = $dialysis_epis_latest->first()->packagecode;
-                    $mcrtype = $dialysis_epis_latest->first()->mcrtype;
                 }else{
                     $lineno_ = 1;
                     $mcrstat = 0;
                     $hdstat = 0;
                     $packagecode = 'EPO';
-                    $mcrtype = null;
                 }
 
                 $array_insert = [
-                    'compcode'=>'13A',
+                    'compcode'=>session('compcode'),
                     'mrn'=>$epis_mrn,
                     'episno'=>$epis_no,
                     'lineno_'=>$lineno_,
@@ -1551,8 +1544,7 @@ class PatmastController extends defaultController
                     'arrival_time'=>Carbon::now("Asia/Kuala_Lumpur"),
                     'packagecode'=>$packagecode,
                     'order'=>0,
-                    'complete'=>0,
-                    'mcrtype'=>$mcrtype
+                    'complete'=>0
                 ];
         
                 $latest_idno = DB::table('hisdb.dialysis_episode')->insertGetId($array_insert);
@@ -1634,7 +1626,7 @@ class PatmastController extends defaultController
                 ->where("mrn",'=',$epis_mrn)
                 ->where("episno",'=',$epis_no)
                 ->update([
-                    "compcode" => '13A',
+                    "compcode" => session('compcode'),
                     "regdept" => $epis_dept,
                     "admsrccode" => $epis_src,
                     "case_code" => $epis_case,
@@ -1663,7 +1655,7 @@ class PatmastController extends defaultController
 
             if($epis_no == 1){
                 DB::table("hisdb.pat_mast")
-                    ->where("compcode",'=','13A')
+                    ->where("compcode",'=',session('compcode'))
                     ->where("mrn",'=',$epis_mrn)
                     ->update([
                         'first_visit_date' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -1672,7 +1664,7 @@ class PatmastController extends defaultController
 
             $patmast_data = DB::table("hisdb.pat_mast")
                                 ->where('MRN','=',$epis_mrn)
-                                ->where('compcode','=','13A')
+                                ->where('compcode','=',session('compcode'))
                                 ->first();
 
             //if pay_type = PT
@@ -1691,12 +1683,12 @@ class PatmastController extends defaultController
 
             if($epis_fin == "PT"){
                 $debtortype_data = DB::table('debtor.debtortype')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('DebtorTyCode','=',$epis_fin)
                     ->first();
 
                 $debtormast_obj = DB::table('debtor.debtormast')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('debtorcode','=',$epis_payer);
 
 
@@ -1704,7 +1696,7 @@ class PatmastController extends defaultController
 
                     DB::table('debtor.debtormast')
                         ->insert([
-                            'CompCode' => '13A',
+                            'CompCode' => session('compcode'),
                             'DebtorCode' => $epis_payer,
                             'Name' => $patmast_data->Name,
                             'Address1' => $patmast_data->Address1,
@@ -1744,7 +1736,7 @@ class PatmastController extends defaultController
                 // computerid
 
             $epispayer_obj = DB::table('hisdb.epispayer')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$epis_mrn)
                 ->where('Episno','=',$epis_no);
 
@@ -1752,7 +1744,7 @@ class PatmastController extends defaultController
                 //kalu xjumpa epispayer, buat baru
                 DB::table('hisdb.epispayer')
                     ->insert([
-                        'CompCode' => '13A',
+                        'CompCode' => session('compcode'),
                         'MRN' => $epis_mrn,
                         'Episno' => $epis_no,
                         'refno' => $epis_ourrefno,
@@ -1768,7 +1760,7 @@ class PatmastController extends defaultController
                     ]);
             }else{
                 DB::table('hisdb.epispayer')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$epis_mrn)
                     ->where('Episno','=',$epis_no)
                     ->update([
@@ -1803,7 +1795,7 @@ class PatmastController extends defaultController
                   //adduser
                   // computerid
             $docalloc_obj=DB::table('hisdb.docalloc')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('Mrn','=',$epis_mrn)
                 ->where('Episno','=',$epis_no);
 
@@ -1814,7 +1806,7 @@ class PatmastController extends defaultController
                 DB::table('hisdb.docalloc')
                     ->insert([
                         'mrn' => $epis_mrn,
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'episno' => $epis_no,
                         'AllocNo' => 1,
                         'AStatus' => "ADMITTING",
@@ -1835,7 +1827,7 @@ class PatmastController extends defaultController
                 DB::table('hisdb.docalloc')
                     ->insert([
                         'mrn' => $epis_mrn,
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'episno' => $epis_no,
                         'AllocNo' => 1,
                         'AStatus' => "ADMITTING",
@@ -1860,7 +1852,7 @@ class PatmastController extends defaultController
             if($epis_type == "IP" || $epis_type == "DP"){
 
                 $bedalloc_oldidno=DB::table('hisdb.bedalloc')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$epis_mrn)
                     ->where('episno','=',$epis_no);
 
@@ -1870,7 +1862,7 @@ class PatmastController extends defaultController
                         ->first();
 
                     $bed_old = DB::table('hisdb.bed')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('bednum','=',$bedalloc_old->bednum)
                         ->update([
                             'occup' => "VACANT"
@@ -1879,7 +1871,7 @@ class PatmastController extends defaultController
                 }
 
                 $bed_obj = DB::table('hisdb.bed')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('bednum','=',$epis_bednum);
 
                 if($bed_obj->exists()){
@@ -1895,7 +1887,7 @@ class PatmastController extends defaultController
                             'bednum' =>  $bed_obj->bednum,
                             'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'compcode' => '13A',
+                            'compcode' => session('compcode'),
                             'adduser' => strtoupper(session('username')),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
@@ -1939,7 +1931,7 @@ class PatmastController extends defaultController
 
         $debtormast =  DB::table('debtor.debtormast')
                     ->where('debtorcode','=',$request->mrn_trailzero)
-                    ->where('compcode','=','13A');
+                    ->where('compcode','=',session('compcode'));
 
         if($debtormast->exists()){
             return $debtormast->first();
@@ -1953,13 +1945,13 @@ class PatmastController extends defaultController
 
                 $debtortype = DB::table("debtor.debtortype")
                     ->select('actdebccode', 'actdebglacc', 'depccode', 'depglacc')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('debtortycode', '=', 'PT')
                     ->first();
 
                 DB::table('debtor.debtormast')
                     ->insert([
-                        'compcode'    =>  '13A',
+                        'compcode'    =>  session('compcode'),
                         'debtortype'  =>  "PT",    
                         'debtorcode'  =>  $request->mrn_trailzero,
                         'name'        =>  $pat_mast->Name, 
@@ -1977,7 +1969,7 @@ class PatmastController extends defaultController
 
                 $debtormast =  DB::table('debtor.debtormast')
                     ->where('debtorcode','=',$request->mrn_trailzero)
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->first();
 
                 DB::commit();
@@ -2014,7 +2006,7 @@ class PatmastController extends defaultController
 
                 DB::table('hisdb.admissrc')
                     ->insert([
-                        'compcode'    =>  '13A',
+                        'compcode'    =>  session('compcode'),
                         'description'  =>  strtoupper($request->adm_desc),
                         'addr1'        =>  $request->adm_addr1, 
                         'addr2'    =>  $request->adm_addr2,
@@ -2045,7 +2037,7 @@ class PatmastController extends defaultController
 
         try {
             $bedalloc_oldidno =  DB::table('hisdb.bedalloc')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
 
@@ -2055,7 +2047,7 @@ class PatmastController extends defaultController
                     ->first();
 
                 $bed_old = DB::table('hisdb.bed')
-                                ->where('compcode','=','13A')
+                                ->where('compcode','=',session('compcode'))
                                 ->where('bednum','=',$bedalloc_old->bednum)
                                 ->update([
                                     'occup' => "VACANT"
@@ -2064,7 +2056,7 @@ class PatmastController extends defaultController
             }
 
             $bed_obj = DB::table('hisdb.bed')
-                    ->where('compcode','=','13A')
+                    ->where('compcode','=',session('compcode'))
                     ->where('bednum','=',$request->bed_bednum);
 
             if($bed_obj->exists()){
@@ -2082,7 +2074,7 @@ class PatmastController extends defaultController
                         'lodgerno' =>  $request->bed_lodger,
                         'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'adduser' => strtoupper(session('username')),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
@@ -2121,7 +2113,7 @@ class PatmastController extends defaultController
 
             if($request->oper == 'add'){
                 $docalloc_obj = DB::table('hisdb.docalloc')
-                            ->where('compcode','=','13A')
+                            ->where('compcode','=',session('compcode'))
                             ->where('mrn','=',$request->mrn)
                             ->where('episno','=',$request->episno);
 
@@ -2133,7 +2125,7 @@ class PatmastController extends defaultController
 
                 DB::table('hisdb.docalloc')
                     ->insert([
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
                         'AllocNo' =>   $allocno,
@@ -2149,7 +2141,7 @@ class PatmastController extends defaultController
                     ]);
             }else if($request->oper == 'edit'){
                 $docalloc_obj = DB::table('hisdb.docalloc')
-                        ->where('compcode','=','13A')
+                        ->where('compcode','=',session('compcode'))
                         ->where('mrn','=',$request->mrn)
                         ->where('episno','=',$request->episno)
                         ->where('allocno','=',$request->allocno);
@@ -2185,7 +2177,7 @@ class PatmastController extends defaultController
         try {
 
             $debtormast = DB::table('debtor.debtormast')
-                ->where('compcode','=', '13A')
+                ->where('compcode','=', session('compcode'))
                 ->where('debtorcode','=',$request['hid_newgl_corpcomp'])
                 ->first();
 
@@ -2204,7 +2196,7 @@ class PatmastController extends defaultController
                 ]);
             }else{
                 DB::table('sysdb.sysparam')->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'pvalue1' => 1,
                     'source' => 'GL',
                     'trantype' => $debtormast->debtortype,
@@ -2214,7 +2206,7 @@ class PatmastController extends defaultController
 
              DB::table('hisdb.guarantee')
                 ->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'mrn'    =>  $request->mrn,
                     'episno' =>   $request->episno,
                     'ourrefno' =>   $ourrefno,
@@ -2252,7 +2244,7 @@ class PatmastController extends defaultController
             if($request->oper == 'add'){
                 DB::table('hisdb.nok_ec')
                     ->insert([
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'episno'  =>  $request->episno,
                         'name'  =>  strtoupper($request->name),
@@ -2310,7 +2302,7 @@ class PatmastController extends defaultController
             if($request->oper == 'add'){
                 DB::table('hisdb.pat_emergency')
                     ->insert([
-                        'compcode' => '13A',
+                        'compcode' => session('compcode'),
                         'mrn'    =>  $request->mrn,
                         'name'  =>  $request->name,
                         'relationship' =>  $request->relationshipcode, 
@@ -2326,7 +2318,7 @@ class PatmastController extends defaultController
                 if($pat_emergency_obj->exists()){
                     $pat_emergency_obj
                         ->update([
-                            'compcode' => '13A',
+                            'compcode' => session('compcode'),
                             'mrn'    =>  $request->mrn,
                             'name'  =>  $request->name,
                             'relationship' =>  $request->relationshipcode, 
@@ -2376,7 +2368,7 @@ class PatmastController extends defaultController
                             'e.attndoctor',
                             'e.pay_type',
                             'e.pyrmode',
-                            'e.payer',
+                            'epy.payercode as payer',
                             'e.billtype',
                             'e.bed',
                             'dpt.description as rdp_desc',
@@ -2388,16 +2380,21 @@ class PatmastController extends defaultController
                         ->leftJoin('hisdb.admissrc as adm', 'adm.admsrccode', '=', 'e.admsrccode')
                         ->leftJoin('hisdb.casetype as cas', 'cas.case_code', '=', 'e.case_code')
                         ->leftJoin('debtor.debtortype as dbty', 'dbty.debtortycode', '=', 'e.pay_type')
-                        ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'e.payer')
                         ->leftJoin('hisdb.billtymst as bmst', 'bmst.billtype', '=', 'e.billtype')
                         ->leftJoin('sysdb.department as dpt', 'dpt.deptcode', '=', 'e.regdept')
-                        ->where('e.compcode','=','13A')
+                        ->leftJoin('hisdb.epispayer as epy', function($join) use ($request){
+                                    $join = $join->on('epy.mrn', '=', 'e.mrn')
+                                                ->on('epy.episno','=','e.episno')
+                                                ->where('epy.compcode',session('compcode'));
+                                })
+                        ->leftJoin('debtor.debtormast as dbms', 'dbms.debtorcode', '=', 'epy.payercode')
+                        ->where('e.compcode','=',session('compcode'))
                         ->where('e.mrn',$request->mrn)
                         ->where('e.episno',$request->episno)
                         ->first();
 
         $epispayer = DB::table('hisdb.epispayer')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('Episno','=',$request->episno)
                 ->first();
@@ -2424,7 +2421,7 @@ class PatmastController extends defaultController
         $txt_epis_our_refno = "";
         if(!empty($epispayer->refno)){
             $guarantee = DB::table('hisdb.guarantee')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$request->mrn)
                 ->where('episno','=',$request->episno)
                 ->where('ourrefno','=',$epispayer->refno);
@@ -2440,21 +2437,21 @@ class PatmastController extends defaultController
         if($episode->pay_type == 'PT' || $episode->pay_type == 'PR'){
 
             $debtormast = DB::table('debtor.debtormast')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',str_pad($epispayer->payercode, 7, "0", STR_PAD_LEFT))
                 // ->where('debtortype','=',$epispayer->pay_type)
                 ->first();
         }else{
 
             $debtormast = DB::table('debtor.debtormast')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',$epispayer->payercode)
                 ->first();
         }
 
 
         $bed = DB::table('hisdb.bed')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('bednum','=',$episode->bed)
                 ->first();
 
@@ -2480,7 +2477,7 @@ class PatmastController extends defaultController
 
             DB::table('hisdb.occupation')
                 ->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'occupcode' => intval($idno) + 1,
                     'description' => $request->occup_desc,
                     'recstatus' => 'A',
@@ -2509,7 +2506,7 @@ class PatmastController extends defaultController
 
             DB::table('hisdb.title')
                 ->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'Code' => $request->title_code,
                     'description' => $request->title_desc,
                     'recstatus' => 'ACTIVE',
@@ -2537,7 +2534,7 @@ class PatmastController extends defaultController
 
             DB::table('hisdb.areacode')
                 ->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'areacode' => intval($idno) + 1,
                     'description' => $request->areacode_desc,
                     'recstatus' => 'A',
@@ -2565,7 +2562,7 @@ class PatmastController extends defaultController
 
             DB::table('hisdb.relationship')
                 ->insert([
-                    'compcode' => '13A',
+                    'compcode' => session('compcode'),
                     'areacode' => intval($idno) + 1,
                     'description' => $request->relationship_desc,
                     'recstatus' => 'A',
@@ -2678,7 +2675,7 @@ class PatmastController extends defaultController
 
             DB::table($request->table_name)
                 ->insert([
-                    'compcode'          =>  '13A',
+                    'compcode'          =>  session('compcode'),
                     $request->code_name =>  $request[$request->code_name],
                     $request->desc_name =>  $request[$request->desc_name],
                     'recstatus'         =>  'ACTIVE',
@@ -2707,24 +2704,24 @@ class PatmastController extends defaultController
     public function savetofile($mrn,$episno,$savelocation){
 
         $pat_mast = DB::table("hisdb.pat_mast")
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$mrn)
                 ->first();
 
         $episode = DB::table('hisdb.episode')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$mrn)
                 ->where('episno','=',$episno)
                 ->first();
 
         $epispayer = DB::table('hisdb.epispayer')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('mrn','=',$mrn)
                 ->where('Episno','=',$episno)
                 ->first();
 
         $debtormast = DB::table('debtor.debtormast')
-                ->where('compcode','=','13A')
+                ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',$epispayer->payercode)
                 ->first();
 
@@ -2753,7 +2750,7 @@ class PatmastController extends defaultController
         if($savelocation == 'local'){
 
             $company = DB::table('sysdb.company')
-                    ->where('compcode','13A')
+                    ->where('compcode',session('compcode'))
                     ->first();
 
             $path_patm = $company->mykadfolder."patmast".Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d').'.txt';

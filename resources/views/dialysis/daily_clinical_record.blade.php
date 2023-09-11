@@ -12,6 +12,10 @@
 		  <option value="">Dialysis Before</option>
 		</select>
 
+		<div class="ui red label" id="absent_label" style="display: none;">
+		  ABSENT
+		</div>
+
 		<button class="ui yellow small button" id="edit_permission" style="display: none;"><i class="unlock icon"></i> Edit Permission</button>
 
 		<div class="ui small blue icon buttons" id="btn_grp_dialysis" style="position: absolute;

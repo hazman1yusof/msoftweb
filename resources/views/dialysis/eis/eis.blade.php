@@ -1,8 +1,6 @@
 @extends('layouts.main')
 
-@section('title')
-EIS
-@endsection
+@section('title', 'EIS')
 
 @section('stylesheet')
     <style id="plotly.js-style-global"></style>
@@ -43,7 +41,7 @@ EIS
 @section('content')
 <section class="section">
   <div class="section-header">
-    <h1>EIS - Episode Statistics</h1>
+    <h1>Patient Statistics</h1>
   </div>
   <hr>
 
@@ -56,7 +54,7 @@ EIS
 
         <form class="form-inline">
           <div class="form-group">
-            <div class="form-check">
+            <!-- <div class="form-check">
               <label class="form-check-label" for="fromdate">
                 Date From: 
               </label>
@@ -67,25 +65,22 @@ EIS
                 To: 
               </label>
               <input class="form-control" type="month" id="todate" name="todate" >
-            </div>
-            <button class="btn btn-primary" type="button" id="fetch">Fetch Data</button>
+            </div> -->
+            <!-- <button class="btn btn-primary" type="button" id="fetch">Fetch Data</button> -->
           </div>
         </form>
 
-        <form class="form-inline">
+        <form class="form-inline" method="post" action="./pivot_post?action=patmast_excel">
+          {{ csrf_field() }}
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="radio" name="type" id="dis" value="dis" checked>
-              <label class="form-check-label" for="dis">
-                Discharge
+              <input class="form-check-input" type="radio" name="type" id="patmast" value="patmast" checked>
+              <label class="form-check-label" for="patmast">
+                Patient Master
               </label>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="type" id="reg" value="reg">
-              <label class="form-check-label" for="reg">
-                Registration
-              </label>
-            </div>
+            <button class="btn btn-primary" type="button" id="fetch">Fetch Data</button>
+            <button class="btn btn-primary" type="submit" id="submit" style="margin: 10px;">Download Excel</button>
           </div>
         </form>
 
@@ -109,7 +104,4 @@ EIS
     <script src="https://pivottable.js.org/dist/pivot.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/c3_renderers.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/plotly_renderers.min.js"></script>
-@endsection
-
-@section('stylesheet')
 @endsection

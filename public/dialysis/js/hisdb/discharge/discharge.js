@@ -135,7 +135,7 @@ $(document).ready(function () {
 		sortorder: 'asc',
 		height: 250, 
 		rowNum: 30,
-		pager: "#jqGridPager_doctor_disc",
+		pager: "#jqGridPager_doctor",
 		onSelectRow:function(rowid, selected){
 		},
 		loadComplete: function(){

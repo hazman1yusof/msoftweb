@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
-    document.getElementById('fromdate').valueAsDate = new Date();
-    document.getElementById('todate').valueAsDate = new Date();
+    // document.getElementById('fromdate').valueAsDate = new Date();
+    // document.getElementById('todate').valueAsDate = new Date();
 
     var opts = {
         angle: -0.2, // The span of the gauge arc
@@ -34,11 +34,9 @@ $(document).ready(function() {
     gauge.setMinValue(0);  // Prefer setter over gauge.minValue = 0
     gauge.set(0); // set actual value
 
-    var dis = localforage.createInstance({name: "db_dis"});
-    var reg = localforage.createInstance({name: "db_reg"});
+    var db_pm = localforage.createInstance({name: "db_pm"});
 
-    dis.removeItem(moment().format('YYYY-MM')); // remove current month
-    reg.removeItem(moment().format('YYYY-MM')); // remove current month
+    db_pm.removeItem(moment().format('YYYY-MM')); // remove current month
 
     var db_loaded = [];
 
@@ -47,7 +45,8 @@ $(document).ready(function() {
     });
 
     $('#fetch').click(function(){
-        getDB($('input[type="radio"][name="type"]:checked').val());
+        // getDB($('input[type="radio"][name="type"]:checked').val());
+        getDB2();
     });
 
     // getDB('dis');
@@ -59,7 +58,7 @@ $(document).ready(function() {
     var x=0;
     function getDB(type){
         gauge.set(0);
-        let db = (type == 'reg')?reg:dis;
+        let db = db_pm;
         let dbname = makedbname();
         var dbtosearch = [];
         var dbnottosearch = [];
@@ -119,6 +118,25 @@ $(document).ready(function() {
     var renderers = $.extend($.pivotUtilities.renderers,$.pivotUtilities.plotly_renderers);
 
     function pivot(){
+        var mps = db_loaded;
+        var type = $('input[type="radio"][name="type"]:checked').val();
+
+        mps.filter(function(e,i){
+            if(e.datetype == type){
+                return true;
+            }
+        });
+        
+        $("#output").pivotUI(mps, {
+            renderers: renderers,
+            unusedAttrsVertical: false,
+            cols: ["year","month"], rows: ["units"],
+            rendererName: "Table",
+            rowOrder: "key_a_to_z", colOrder: "key_a_to_z",
+        }, true);
+    }
+
+    function pivot2(){
         var mps = db_loaded;
         var type = $('input[type="radio"][name="type"]:checked').val();
 
@@ -213,6 +231,25 @@ $(document).ready(function() {
             localforage.dropInstance({name: "db_reg"});
             location.reload();
         }
+    }
+
+    function getDB2(){
+        gauge.set(100);
+
+        $.get( "pivot_get?action=get_patmast", function() {
+          
+        },"json").done(function(mps){
+            // loadDB(db,mps.data,dbtosearch,dbnottosearch);
+            $("#output").pivotUI(mps.data, {
+                renderers: renderers,
+                unusedAttrsVertical: false,
+                cols: ["regdept"], rows: ["Sex"],
+                rendererName: "Table",
+                rowOrder: "key_a_to_z", colOrder: "key_a_to_z",
+            }, true);
+
+            gauge.set(300);
+        });
     }
 
 } );

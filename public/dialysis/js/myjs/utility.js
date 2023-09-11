@@ -932,7 +932,7 @@ function checkbox_selection(grid,colname,idno='idno',recstatus = "recstatus"){
 	}
 }
 
-function setactdate(target,cantmorethantoday = false){
+function setactdate(target){
 	this.actdateopen=[];
 	this.lowestdate;
 	this.highestdate;
@@ -968,11 +968,7 @@ function setactdate(target,cantmorethantoday = false){
 
 				self.target.forEach(function(element,i){
 					$(element).attr('min',self.actdateopen[0].from);
-					if(cantmorethantoday){
-						$(element).attr('max',moment().format("YYYY-MM-DD"));
-					}else{
-						$(element).attr('max',self.highestdate);
-					}
+					$(element).attr('max',self.highestdate);
 				});
 			}
 		});
@@ -1773,35 +1769,35 @@ function faster_detail_load(){
 }
 
 fixPositionsOfFrozenDivs = function () {
-    // var $rows;
-    // if (typeof this.grid.fbDiv !== "undefined") {
-    //     $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
-    //     $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
-    //         var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-    //         if ($(this).hasClass("jqgrow")) {
-    //             $(this).height(rowHight);
-    //             rowHightFrozen = $(this).height();
-    //             if (rowHight !== rowHightFrozen) {
-    //                 $(this).height(rowHight + (rowHight - rowHightFrozen));
-    //             }
-    //         }
-    //     });
-    //     $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
-    //     $(this.grid.fbDiv).css($(this.grid.bDiv).position());
-    // }
-    // if (typeof this.grid.fhDiv !== "undefined") {
-    //     $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
-    //     $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
-    //         var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-    //         $(this).height(rowHight);
-    //         rowHightFrozen = $(this).height();
-    //         if (rowHight !== rowHightFrozen) {
-    //             $(this).height(rowHight + (rowHight - rowHightFrozen));
-    //         }
-    //     });
-    //     $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
-    //     $(this.grid.fhDiv).css($(this.grid.hDiv).position());
-    // }
+    var $rows;
+    if (typeof this.grid.fbDiv !== "undefined") {
+        $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
+        $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
+            var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+            if ($(this).hasClass("jqgrow")) {
+                $(this).height(rowHight);
+                rowHightFrozen = $(this).height();
+                if (rowHight !== rowHightFrozen) {
+                    $(this).height(rowHight + (rowHight - rowHightFrozen));
+                }
+            }
+        });
+        $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
+        $(this.grid.fbDiv).css($(this.grid.bDiv).position());
+    }
+    if (typeof this.grid.fhDiv !== "undefined") {
+        $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
+        $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
+            var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+            $(this).height(rowHight);
+            rowHightFrozen = $(this).height();
+            if (rowHight !== rowHightFrozen) {
+                $(this).height(rowHight + (rowHight - rowHightFrozen));
+            }
+        });
+        $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
+        $(this.grid.fhDiv).css($(this.grid.hDiv).position());
+    }
 }
 
 function recstatusDisable(recstatus = 'recstatus'){

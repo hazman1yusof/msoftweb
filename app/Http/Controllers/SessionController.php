@@ -8,6 +8,7 @@ use App\User;
 use DB;
 use Auth;
 use Hash;
+use Carbon\Carbon;
 use Session;
 
 class SessionController extends Controller
@@ -26,6 +27,10 @@ class SessionController extends Controller
         $company = company::all();
 
         return view('init.login2',compact("company"));
+    }
+
+    public function qrcode(){
+        return view('init.qrcode');
     }
 
     public function store(Request $request){
@@ -75,6 +80,90 @@ class SessionController extends Controller
     	}else{
     		return back();
     	}
+    }
+
+    public function qrcode_prereg(Request $request){
+        if($request->select == 'ic'){
+            $validatedData = $request->validate([
+                'ic' => 'required|max:20|min:10',
+            ]);
+        }else{
+            $validatedData = $request->validate([
+                'idnumber' => 'required|max:20|min:5',
+            ]);
+        }
+
+        DB::beginTransaction();
+        
+        try {
+
+            if($request->select == 'ic'){
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('Active','1')
+                            ->where('Newic','=', $request->ic);
+
+                if($pat_mast->exists()){
+                    $pat_mast_obj = $pat_mast->first();
+                    
+                }else{
+                    // pleae register at counter alert
+                    return redirect()->back()->withErrors('No I/C in Database, please register at the counter first');
+                }
+            }else{
+                $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('Active','1')
+                            ->where('idnumber','=', $request->idnumber);
+
+                if($pat_mast->exists()){
+                    $pat_mast_obj = $pat_mast->first();
+                    
+                }else{
+                    // pleae register at counter alert
+                    return redirect()->back()->withErrors('No passport / idnumber in Database, please register at the counter first');
+                }
+            }
+
+            $mrn = $pat_mast_obj->MRN;
+            $episno = $pat_mast_obj->Episno;
+
+            if(intval($episno) < 1){
+                return redirect()->back()->withErrors('Episode not registered yet, please register at the counter first');
+            }
+
+            //check if date,mrn duplicate
+            $pre_episode = DB::table('hisdb.pre_episode')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',$mrn)
+                                ->whereDate('adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+
+            if(!$pre_episode->exists()){
+                DB::table("hisdb.pre_episode")
+                    ->insert([
+                        "compcode" => '9A',
+                        "mrn" => $mrn,
+                        "episno" => 0,
+                        "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
+                        "adduser" => 'SYSTEM-QRCODE',
+                        'Newic'    => $pat_mast_obj->Newic,
+                        'Name'    => $pat_mast_obj->Name,
+                        'telhp'    => $pat_mast_obj->telhp,
+                        'telno'    => $pat_mast_obj->telh,
+                        'apptdate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);     
+
+            }else{
+                return redirect()->back()->withSuccess("You already registered today");
+            }
+
+            DB::commit();
+
+            return redirect()->back()->withSuccess("Thank you, you have succesfully pre-registered");
+
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
 
     public function destroy(){

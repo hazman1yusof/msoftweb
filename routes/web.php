@@ -19,6 +19,8 @@ Route::get('/home','HomeController@dialysis');
 Route::post('/sessionUnit','HomeController@changeSessionUnit');
 Route::get('/login','SessionController@create')->name('login');
 Route::get('/loginappt','SessionController@create2')->name('login2');
+Route::get('/qrcode','SessionController@qrcode');
+Route::post('/qrcode','SessionController@qrcode_prereg');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
 
@@ -826,6 +828,7 @@ Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 //// pat_mast registration ////
 Route::get('/pat_mast','hisdb\PatmastController@show');
 Route::get('/pat_mast/get_entry','hisdb\PatmastController@get_entry');
+Route::get('/pat_mast/table','hisdb\PatmastController@table');
 Route::post('/pat_mast/post_entry','hisdb\PatmastController@post_entry');
 Route::post('/pat_mast/save_patient','hisdb\PatmastController@save_patient');
 Route::post('/pat_mast/save_episode','hisdb\PatmastController@save_episode');
@@ -885,6 +888,7 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
+Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
 Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
 Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');
@@ -1096,6 +1100,8 @@ Route::post('/dialysis_dialysis_transaction_save', "dialysis\DialysisController@
 Route::get('/dialysis_check_pt_mode', "dialysis\DialysisController@check_pt_mode");
 Route::get('/dialysis_verifyuser_dialysis', "dialysis\DialysisController@verifyuser_dialysis");
 Route::get('/dialysis_verifyuser_admin_dialysis', "dialysis\DialysisController@verifyuser_admin_dialysis");
+
+Route::get('/dialysis_bloodtest/table', "DialysisController@bloodtesttable");
 
 Route::get('/dialysis_enquiry','dialysis\enquiryController@show');
 Route::get('/dialysis_enquiry/table','dialysis\enquiryController@table');

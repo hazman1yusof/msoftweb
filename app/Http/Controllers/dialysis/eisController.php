@@ -1,16 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\dialysis;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Auth;
 use Carbon\Carbon;
 use DateTime;
 use Session;
+use App\Exports\PatmastExport;
+use App\Exports\pat_monthly;
+use Maatwebsite\Excel\Facades\Excel;
 
-class eisController extends Controller
+class eisController extends defaultController
 {
     public function __construct()
     {
@@ -19,7 +23,21 @@ class eisController extends Controller
 
     public function show(Request $request)
     {
-        return view('eis.eis');
+        $centers = $this->get_maiwp_center_dept();  
+
+        if(!empty($request->changedept)){
+
+            $department = DB::table('sysdb.department')
+                            ->where('compcode', session('compcode'))
+                            ->where('deptcode', $request->changedept);
+
+            if($department->exists()){
+                $request->session()->put('dept', $department->first()->deptcode);
+                $request->session()->put('dept_desc', $department->first()->description);
+            }
+        }
+
+        return view('eis.eis',compact('centers'));
     }
 
 	public function reveis(Request $request)
@@ -38,10 +56,51 @@ class eisController extends Controller
             case 'get_month':
                 return $this->get_month($request);
                 break;
+            case 'get_patmast':
+                return $this->get_patmast($request);
+                break;
             default:
                 # code...
                 break;
         }
+    }
+
+    public function form(Request $request){
+        switch ($request->action) {
+            case 'patmast_excel':
+                return $this->patmast_excel($request);
+                break;
+            case 'pat_monthly':
+                return $this->pat_monthly($request);
+                break;
+            default:
+                # code...
+                break;
+        }
+    }
+
+    public function get_patmast(Request $request){
+        $pat_mast = DB::table('hisdb.pat_mast as p')
+                    ->select('p.mrn','p.Sex','p.RaceCode','p.Religion','p.Citizencode','p.AreaCode','p.Postcode','e.regdept','e.admdoctor','e.attndoctor','e.pay_type','epy.payercode')
+                    ->leftJoin('hisdb.episode as e', function($join) use ($request){
+                        $join = $join->on('e.mrn', '=', 'p.mrn')
+                                    ->on('e.episno','=','p.episno')
+                                    ->where('e.compcode','13A');
+                    })
+                    ->leftJoin('hisdb.epispayer as epy', function($join) use ($request){
+                        $join = $join->on('epy.mrn', '=', 'p.mrn')
+                                    ->on('epy.episno','=','p.episno')
+                                    ->where('epy.compcode','13A');
+                    })
+                    ->where('p.active','=','1')
+                    ->where('p.compcode','=','13A')
+                    ->get();
+
+
+        $responce = new stdClass();
+        $responce->data = $pat_mast;
+
+        echo json_encode($responce);
     }
 
     public function get_json_pivot_epis(Request $request){
@@ -163,8 +222,7 @@ class eisController extends Controller
         echo json_encode($responce);
     }
 
-    public function dashboard(Request $request)
-    {
+    public function dashboard(Request $request){
         $month = 6;
         $year = 2021;
         $ip_rev = DB::table('hisdb.patsumepis')
@@ -227,8 +285,15 @@ class eisController extends Controller
         return view('eis.dashboard',compact('ip_month','op_month','ip_month_epis','op_month_epis','groupdesc','groupdesc_val_op','groupdesc_val_ip','groupdesc_cnt_op','groupdesc_cnt_ip','groupdesc_val'));
     }
 
-    public function getQueries($builder){
-        $addSlashes = str_replace('?', "'?'", $builder->toSql());
-        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    public function patmast_excel(Request $request){
+        return Excel::download(new PatmastExport(), 'PatmastList.xlsx');
+    }
+
+    public function pat_monthly(Request $request){
+
+        $excel_name = 'Patient Month-'.$request->month.' Year-'.$request->year.' '.$request->pat_name;
+        $excel_name = $excel_name.' '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i:s');
+
+        return Excel::download(new pat_monthly($request), $excel_name.'.xlsx');
     }
 }

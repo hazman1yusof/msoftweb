@@ -1,4 +1,11 @@
 
+form#formTriageInfo .error{
+    border-color: #df7676;
+}
+form#formTriageInfo span.error, form#formTriageInfolabel.error{
+    color: darkred;
+}
+
 .stop-scrolling {
     padding-right: 16px;
     overflow: hidden;

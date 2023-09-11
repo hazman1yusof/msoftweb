@@ -373,3 +373,56 @@ div.panel.jqgrid_detail span.label_p{
 div.jqgrid_detail_dose input[type=text]{
 	height: 25px !important;
 }
+form#form_medc .form-control{
+	display: unset !important;
+  width: unset !important;
+  height: 26px !important;
+}
+form#.form_medc p{
+	margin: 12px !important;
+}
+.sistole{color: blue}
+.diastole{color: blue}
+.pulse{color: red}
+.temp{color: darkorange}
+.legendtepi{position:absolute;left:-200px;color:#666;font-size:small;
+	-webkit-transform: rotate(270deg);
+	-moz-transform: rotate(270deg);
+	-o-transform: rotate(270deg);
+	writing-mode: lr-tb;
+	width: 40%;
+}
+#tooltip hr { 
+    display: block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-color: black;
+} 
+#placeholder_bpgraph{
+	line-height: 1;
+}
+#placeholder2_bpgraph .y1Axis, #placeholder3_bpgraph .y1Axis{
+	line-height: 1;
+}
+
+#doctornote_bpgraph{
+	background-repeat: unset;
+	background-image: linear-gradient(to bottom, #8BC34A 0%, #a0c772 100%);
+    color: white;
+    border-color: #009688;
+}
+#doctornote_medc{
+	background-repeat: unset;
+	background-image: linear-gradient(to bottom, #5ecddb 0%, #00BCD4 100%);
+    color: white;
+    border-color: #2196F3;
+}
+#referLetter{
+	background-repeat: unset;
+    background-image: linear-gradient(to bottom, #fde403 0%, #FFC107 100%);
+    color: white;
+    border-color: #FF9800;
+}

@@ -298,7 +298,7 @@ function emptyFormdata_div(div,except){
 	$( div+' input' ).removeClass( "error" );
 	$( div+' textarea' ).removeClass( "error" );
 
-	$( div+' span.help-block').text('');
+	$(div+' .help-block').html('');
 	if(except!=null){
 		$.each(except, function( index, value ) {
 			$(value).val(temp[index]);
@@ -1634,11 +1634,11 @@ function faster_detail_load(){
 		let storage_obj = localStorage.getItem(storage_name);
 		let desc_name = param.field[1];
 		if(!storage_obj){
-			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue != 0 && cellvalue.trim() != ''){
+			if(cellvalue !== null && cellvalue !== undefined && cellvalue !== 'undefined<span class="help-block"></span>' && cellvalue.trim() != ''){
 				$.get( param.url+"?"+$.param(param), function( data ) {
 						
 				},'json').done(function(data) {
-					if(!$.isEmptyObject(data.rows) && data.rows.length>0){
+					if(!$.isEmptyObject(data.rows)){
 						$("#"+options.gid+" #"+options.rowId+" td:nth-child("+(options.pos+1)+")").append("<span class='help-block'>"+data.rows[0][desc_name]+"</span>");
 
 						let desc = data.rows[0][desc_name];

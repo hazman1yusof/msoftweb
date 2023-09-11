@@ -20,11 +20,11 @@
     padding-top:90px;
 }
 .ui.left.fixed.vertical.icon.menu {
-    display: none;
+        display: none;
 }
 .container_sem {
     padding-left: 15px;
-    padding-top: 10px;
+    padding-top: 50px;
 }
 /*@media (max-width: 768px) {
     .ui.left.fixed.vertical.icon.menu {

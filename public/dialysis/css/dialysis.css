@@ -228,3 +228,7 @@ table#dia_monthly ol,table#dia_weekly ol,table#dia_yearly ol{
 table#dia_monthly td.med_td,table#dia_yearly td.med_td{
     font-size: 9px !important;
 }
+div.divpanel_disable{
+    opacity: .4;
+    pointer-events: none;
+}

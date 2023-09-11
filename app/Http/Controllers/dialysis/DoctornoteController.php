@@ -9,7 +9,6 @@ use DB;
 use Carbon\Carbon;
 use Auth;
 use Session;
-use App\Http\Controllers\dialysis\Controller;
 
 class DoctornoteController extends Controller
 {

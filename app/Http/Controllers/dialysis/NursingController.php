@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use stdClass;
 use DB;
 use Carbon\Carbon;
-use App\Http\Controllers\dialysis\defaultController;
 
-class NursingController extends defaultController
+class NursingController extends Controller
 {   
 
     var $table;
@@ -22,7 +21,7 @@ class NursingController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('dialysis.hisdb.nursing.nursing');
+        return view('dialysis.nursing');
     }
 
 
@@ -1478,64 +1477,116 @@ class NursingController extends defaultController
 
         $data = [];
 
-        $dialysis_episode = DB::table('hisdb.dialysis_episode')
-            ->select('mrn','episno','arrival_time','arrival_date')
-            ->where('compcode','=',session('compcode'))
-            ->where('mrn','=',$request->mrn)
-            ->where('episno','=',$request->episno)
-            ->orderBy('arrival_date','desc');
+        // $dialysis_episode = DB::table('hisdb.dialysis_episode')
+        //     ->select('mrn','episno','arrival_time','arrival_date')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('mrn','=',$request->mrn)
+        //     ->where('episno','=',$request->episno)
+        //     ->orderBy('arrival_date','desc');
 
-        if($dialysis_episode->exists()){
-            $dialysis_episode = $dialysis_episode->get();
+        // if($dialysis_episode->exists()){
+        //     $dialysis_episode = $dialysis_episode->get();
 
-            foreach ($dialysis_episode as $key => $value) {
+        //     foreach ($dialysis_episode as $key => $value) {
 
-                $pathealth = DB::table('nursing.nursassessment')
-                    ->select('mrn','episno','admwardtime','adduser','adddate')
-                    ->where('compcode','=',session('compcode'))
-                    ->where('mrn','=',$value->mrn)
-                    ->where('episno','=',$value->episno)
-                    ->where('arrival_date','=',$value->arrival_date)
-                    ->orderBy('idno','desc');
+        //         $pathealth = DB::table('nursing.nursassessment')
+        //             ->select('mrn','episno','admwardtime','adduser','adddate')
+        //             ->where('compcode','=',session('compcode'))
+        //             ->where('mrn','=',$value->mrn)
+        //             ->where('episno','=',$value->episno)
+        //             ->where('arrival_date','=',$value->arrival_date)
+        //             ->orderBy('idno','desc');
 
-                if($pathealth->exists()){
+        //         if($pathealth->exists()){
                     
-                    $pathealth = $pathealth->get();
+        //             $pathealth = $pathealth->get();
 
-                    foreach ($pathealth as $key2 => $value2) {
-                        $date['date'] = Carbon::createFromFormat('Y-m-d', $value->arrival_date)->format('d-m-Y');
-                        $date['mrn'] = $value2->mrn;
-                        $date['episno'] = $value2->episno;
-                        $date['adduser'] = $value2->adduser;
-                        $date['adddate'] = $value2->adddate;
-                        $date['recordtime'] = $value2->admwardtime;
-                        $date['type'] = 'nursassessment';
+        //             foreach ($pathealth as $key2 => $value2) {
+        //                 $date['date'] = Carbon::createFromFormat('Y-m-d', $value->arrival_date)->format('d-m-Y');
+        //                 $date['mrn'] = $value2->mrn;
+        //                 $date['episno'] = $value2->episno;
+        //                 $date['adduser'] = $value2->adduser;
+        //                 $date['adddate'] = $value2->adddate;
+        //                 $date['recordtime'] = $value2->admwardtime;
+        //                 $date['type'] = 'nursassessment';
 
-                        array_push($data,$date);
-                    }
+        //                 array_push($data,$date);
+        //             }
 
-                }else{
+        //         }else{
                     
-                    if(!Carbon::createFromFormat('Y-m-d', $value->arrival_date)->isToday()){
-                        continue;
-                    }
+        //             if(!Carbon::createFromFormat('Y-m-d', $value->arrival_date)->isToday()){
+        //                 continue;
+        //             }
                     
-                    $date['date'] = Carbon::createFromFormat('Y-m-d', $value->arrival_date)->format('d-m-Y');
-                    $date['mrn'] = $value->mrn;
-                    $date['episno'] = $value->episno;
-                    $date['adduser'] = session('username');
-                    $date['adddate'] = $value->arrival_date;
-                    $date['recordtime'] = $value->arrival_time;
-                    $date['type'] = 'episode';
+        //             $date['date'] = Carbon::createFromFormat('Y-m-d', $value->arrival_date)->format('d-m-Y');
+        //             $date['mrn'] = $value->mrn;
+        //             $date['episno'] = $value->episno;
+        //             $date['adduser'] = session('username');
+        //             $date['adddate'] = $value->arrival_date;
+        //             $date['recordtime'] = $value->arrival_time;
+        //             $date['type'] = 'episode';
 
-                    array_push($data,$date);
+        //             array_push($data,$date);
+        //         }
+        //     }
+
+        $pathealth = DB::table('nursing.nursassessment')
+                ->where('compcode','=',session('compcode'))
+                ->where('mrn','=',$request->mrn)
+                ->where('episno','=',$request->episno)
+                ->whereYear('arrival_date', '=', Carbon::now("Asia/Kuala_Lumpur")->year)
+                ->whereMonth('arrival_date', '=', Carbon::now("Asia/Kuala_Lumpur")->month)
+                ->orderBy('idno','desc');
+
+        if($pathealth->exists()){
+            
+            $pathealth = $pathealth->get();
+
+            $gottoday = false;
+            foreach ($pathealth as $key2 => $value2) {
+
+                if(Carbon::createFromFormat('Y-m-d', $value2->arrival_date)->isToday()){
+                    $gottoday = true;
                 }
+
+                $date['date'] = Carbon::createFromFormat('Y-m-d', $value2->arrival_date)->format('d-m-Y');
+                $date['mrn'] = $value2->mrn;
+                $date['episno'] = $value2->episno;
+                $date['adduser'] = $value2->adduser;
+                $date['adddate'] = $value2->adddate;
+                $date['recordtime'] = $value2->admwardtime;
+                $date['type'] = 'nursassessment';
+
+                array_push($data,$date);
             }
 
-            $responce->data = $data;
+            if(!$gottoday){
+
+                $date['date'] = Carbon::now()->format('d-m-Y');
+                $date['mrn'] = $request->mrn;
+                $date['episno'] = $request->episno;
+                $date['adduser'] = 'system';
+                $date['adddate'] = Carbon::now()->format('d-m-Y');
+                $date['recordtime'] = Carbon::now()->format('H:i:s');
+                $date['type'] = 'episode';
+
+                array_unshift($data , $date);
+            }
+
         }else{
-            $responce->data = [];
+            $date['date'] = Carbon::now()->format('d-m-Y');
+            $date['mrn'] = $request->mrn;
+            $date['episno'] = $request->episno;
+            $date['adduser'] = 'system';
+            $date['adddate'] = Carbon::now()->format('d-m-Y');
+            $date['recordtime'] = Carbon::now()->format('H:i:s');
+            $date['type'] = 'episode';
+
+            array_push($data , $date);
         }
+
+        $responce->data = $data;
 
         return json_encode($responce);
     }

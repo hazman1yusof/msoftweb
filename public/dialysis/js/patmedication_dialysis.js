@@ -244,7 +244,8 @@ var patmedication_tbl = $('#patmedication_tbl').DataTable({
 					});
 				}else{
 					if(rowData.ownmed == '1' && $('#user_groupid').val().trim().toUpperCase() == 'ADMIN'){
-						$(td).html(`<i class="check icon green"></i><a class="circular mini red ui button right floated" onclick="delete_ownmed('`+rowData.idno+`')">Delete</a>`);
+						// $(td).html(`<i class="check icon green"></i><a class="circular mini red ui button right floated" onclick="delete_ownmed('`+rowData.idno+`')">Delete</a>`);
+						$(td).html(`<i class="check icon green"></i>`);
 					}else{
 						$(td).html(`<i class="check icon green"></i>`);
 					}
@@ -368,7 +369,7 @@ function pop_item_select_patmedication(){
 	$('body,#mdl_item_selector').addClass('scrolling');
     
     selecter = $('#tbl_item_select').DataTable( {
-            "ajax": "./dialysis/table?action=" + act,
+            "ajax": "./dialysis_dialysis/table?action=" + act,
             "ordering": false,
             "lengthChange": false,
             "info": true,

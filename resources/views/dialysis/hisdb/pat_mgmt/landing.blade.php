@@ -490,24 +490,24 @@
 				</strong></h5>
 			</div>
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
-                <thead>
-                <tr>
-                	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
-                    @if (request()->get('curpat') == 'true')
-                    <th data-column-id="QueueNo" data-width="3%">Queue</th>
-                    <th data-column-id="reg_date" data-width="7%">Reg Date</th>
-					@endif
-                    <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
-                    <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="20%">Name</th>
-                	<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
-                    <th data-column-id="q_doctorname" data-width="20%" data-css-class="hiddentab" data-header-css-class="hiddentab">Doctor</th>
-                    <th data-column-id="Newic" data-width="8%">New IC</th>
-                    <th data-column-id="telhp" data-width="8%">H/P</th>
-                    <th data-column-id="DOB" data-formatter="col_dob" data-width="6%" data-css-class="hiddentab" data-header-css-class="hiddentab">DOB</th>
-                    <th data-column-id="Sex" data-width="2%">Sex</th>
-                    <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
-				</tr>
+          <thead>
+          <tr>
+          		<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
+              @if (request()->get('curpat') == 'true')
+              <th data-column-id="QueueNo" data-width="3%">Queue</th>
+              <th data-column-id="reg_date" data-width="7%">Reg Date</th>
+							@endif
+              <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
+              <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="18%">Name</th>
+          		<th data-column-id="pregnant" data-formatter="col_preg" data-width="5%"></th>
+              <th data-column-id="q_doctorname" data-width="20%" data-css-class="hiddentab" data-header-css-class="hiddentab">Doctor</th>
+              <th data-column-id="Newic" data-width="8%">New IC</th>
+              <th data-column-id="telhp" data-width="8%">H/P</th>
+              <th data-column-id="DOB" data-formatter="col_dob" data-width="6%" data-css-class="hiddentab" data-header-css-class="hiddentab">DOB</th>
+              <th data-column-id="Sex" data-width="2%">Sex</th>
+              <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
+							<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Info &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type</th>
+						</tr>
 				</thead>
 
 			</table>
@@ -632,8 +632,8 @@
 	<script type="text/javascript" src="plugins/bootgrid/js/jquery.bootgrid.js"></script>
 	<script type="text/javascript" src="js/myjs/modal-fix.js"></script>
 	<script type="text/javascript" src="js/myjs/global.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js"></script>
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/biodata.js?v=2"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/episode.js?v=2"></script>
 
 	<input type="hidden" id="user_billing" value="{{Auth::user()->billing}}">
 	<input type="hidden" id="user_nurse" value="{{Auth::user()->nurse}}">
@@ -682,7 +682,7 @@
 
 
 	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script> -->
-	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_dialysis.js"></script>
+	<script type="text/javascript" src="{{ asset('js/hisdb/pat_mgmt/epis_dialysis.js') }}?v=2"></script>
 	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script> -->
 	<!-- <script type="text/javascript" src="js/hisdb/pat_mgmt/epis_bed.js"></script> -->
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>

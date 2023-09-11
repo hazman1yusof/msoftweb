@@ -129,6 +129,18 @@ i.fa {
 	float: right;
 	<!--  margin-right: 5px; -->
 }
+#rembtn_wassap{
+	background: #25D366;
+    color: white;
+}
+#rembtn_email{
+	background: #71b9d1;
+    color: white;
+}
+#rembtn_wassap > i.fa, #rembtn_email > i.fa{
+	float: left;
+	margin: 2px 9px;
+}
 
 @endsection
 
@@ -320,6 +332,33 @@ i.fa {
 						</div>
 					</form>
 			</div>
+		</div>
+
+
+		<!-- Dialog reminder-->
+		<div id="dialogForm_reminder" title="Reminder">
+			<br>
+			<label>Reminder Date: </label><span id="reminder_date"></span><br>
+			<label>Doctor: </label><span id="reminder_doc_name"></span>
+			<br>
+			<table class="table table-bordered" id="table_reminder">
+				<thead>
+					<tr class="active">
+					  <th>Time</th>
+					  <th>MRN</th>
+					  <th>Name</th>
+					  <th>I/C</th>
+					  <th>Phone</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+			<br>
+			<!-- <textarea id="reminder_text" rows="5" id='remarks' name='remarks' class="form-control input-sm"></textarea> -->
+			<button type="button" class="btn" id="rembtn_wassap"><i class="fa fa-whatsapp fa-lg" aria-hidden="true"></i>Remind Using WhatsApp</button>
+			<button type="button" class="btn" id="rembtn_email"><i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>Remind Using E-mail</button>
+
+
 		</div>
     </div>
 

@@ -333,6 +333,12 @@
     <script type="text/javascript">$.fn.modal.Constructor.prototype.enforceFocus = function() {};</script>
     <script type="text/ecmascript" src="plugins/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 	<script type="text/ecmascript" src="plugins/form-validator/jquery.form-validator.min.js"></script>
+
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.errorbars.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.navigate.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.crosshair.js"></script>
+	<script language="javascript" type="text/javascript" src="plugins/flot/jquery.flot.symbol.js"></script>
     
     <script type="text/ecmascript" src="plugins/numeral.min.js"></script>
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
@@ -364,6 +370,8 @@
 				<script type="text/javascript" src="js/hisdb/paediatric/paediatric.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
@@ -399,6 +407,8 @@
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_medc.js"></script>
+				<script type="text/javascript" src="js/hisdb/doctornote/doctornote_bpgraph.js"></script>
 				<script type="text/javascript" src="js/hisdb/dieteticCareNotes/dieteticCareNotes.js"></script>
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>

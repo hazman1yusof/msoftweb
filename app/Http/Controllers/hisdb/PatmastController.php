@@ -19,6 +19,15 @@ class PatmastController extends defaultController
         $this->middleware('auth');
     }
 
+    public function table(Request $request){
+        switch($request->action){
+            case 'preepisode_table':
+                return $this->preepisode_table($request);
+            case 'preepisode_epis':
+                return $this->preepisode_epis($request);
+        }
+    }
+
     public function show(Request $request)
     {       
         $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
@@ -244,7 +253,7 @@ class PatmastController extends defaultController
 
         }else{
 
-            // SELECT COUNT(*) FROM `pat_mast` WHERE idno <= 62863
+            // SELECT COUNT(*) FROM 'pat_mast' WHERE idno <= 62863
             // if(!empty($request->lastidno)){
                 // $count_ = DB::table('hisdb.pat_mast')
                 //             ->where('idno','<=','62863')
@@ -2988,6 +2997,60 @@ class PatmastController extends defaultController
                         ->where('debtorcode',$request['newpanel_corpcomp'])
                         ->where('staffid',$request['newpanel_staffid'])
                         ->exists();
+    }
+
+    public function preepisode_table(Request $request){
+
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pm.compcode','pm.Name','pm.mrn','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.PatStatus','!=','1')
+                                        ->where('pm.Active','=','1');
+                    });
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+
+    public function preepisode_epis(Request $request){
+
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pre.case_code','pre.admdoctor','pm.compcode','pm.Name','pm.MRN','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->where('pre.MRN',$request->mrn)
+                    ->where('pm.episno',$request->episno)
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.Active','=','1');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
     }
 
 
