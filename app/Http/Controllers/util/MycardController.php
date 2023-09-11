@@ -45,7 +45,7 @@ class MycardController extends defaultController
         $img = base64_decode($request->base64);
         file_put_contents($path_img, $img);
     }
-    
+
 
     public function get_mykad_local(Request $request){
         DB::beginTransaction();
@@ -110,7 +110,6 @@ class MycardController extends defaultController
     }
 
     public function save_mykad_local(Request $request){
-
         // $religion_db = DB::table('hisdb.religion')
         //                     ->where('compcode',$request->CompCode)
         //                     ->where('Code',$request->Religion);
