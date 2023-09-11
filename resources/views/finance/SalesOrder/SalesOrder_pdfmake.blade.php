@@ -88,7 +88,7 @@
 								 	text: 'PO Date',
 								 	colSpan: 2, alignment: 'left'},{},
 								{
-									text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->podate)->format('d-m-Y')}}',
+									text: dbacthdr.podate,
 								 	colSpan: 3, alignment: 'left'},{},{}
 							],
 
@@ -108,7 +108,7 @@
                                     text: 'Invoice Date',
                                     colSpan: 2, alignment: 'left'},{},
                                 {
-                                    text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}',
+                                    text: dbacthdr.entrydate,
                                     colSpan: 3, alignment: 'left'},{},{}
                             ],
 
@@ -124,7 +124,7 @@
 							@foreach ($billsum as $obj)
 							[
 								{text:`{{$obj->chgmast_desc}}`,colSpan: 5},{},{},{},{},
-								{text:'{{$obj->uom}}'},
+								{text:`{!!$obj->uom!!}`},
 								{text:'{{$obj->quantity}}', alignment: 'right'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},
 								{text:'{{number_format($obj->taxamt,2)}}', alignment: 'right'},

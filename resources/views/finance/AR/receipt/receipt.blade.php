@@ -85,7 +85,7 @@
 		</div>
 
 		<div class="StextClass">
-			<div class=Stext2 id='allocate' style="padding:0 30px 0 15px">
+			<div class=Stext2 id='allocate' style="padding:0px 0px 0px 15px;right: 100px;">
 				<a href="#" class="btn-sm allobtn" role="button">Allocate</a>
 			</div>
 		</div>
