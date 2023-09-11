@@ -69,7 +69,7 @@ return [
 
         'ptcare_uploads' => [
             'driver' => 'local',
-            'root'   => 'C:/laragon/www/msoftweb/uploads',
+            'root'   => 'C:/laragon/www/msdemo/uploads',
         ],
 
         's3' => [
