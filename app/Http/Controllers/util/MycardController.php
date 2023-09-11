@@ -141,25 +141,25 @@ class MycardController extends defaultController
         // }
 
 
-        DB::table('hisdb.pre_pat_mast')
-                ->insert([
-                    'CompCode' => '9A',
-                    // 'Newic' => $request->Newic,
-                    // 'DOB' => $request->DOB,
-                    // 'Name' => $request->Name,
-                    // 'Religion' => $request->Religion,
-                    // 'Sex' => $request->Sex,
-                    // 'RaceCode' => $request->RaceCode,
-                    // 'Address1' => $request->Address1,
-                    // 'Address2' => $request->Address2,
-                    // 'Address3' => $request->Address3,
-                    // 'Postcode' => $request->Postcode,
-                    // 'Citizencode' => $request->Citizencode,
-                    // 'ID_Type' => 'O',
-                    // 'PatientImage' => $request->PatientImage,
-                    // 'rng' => $request->rng,
-                    // 'read_date' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+        // DB::table('hisdb.pre_pat_mast')
+        //         ->insert([
+        //             'CompCode' => '9A',
+        //             // 'Newic' => $request->Newic,
+        //             // 'DOB' => $request->DOB,
+        //             // 'Name' => $request->Name,
+        //             // 'Religion' => $request->Religion,
+        //             // 'Sex' => $request->Sex,
+        //             // 'RaceCode' => $request->RaceCode,
+        //             // 'Address1' => $request->Address1,
+        //             // 'Address2' => $request->Address2,
+        //             // 'Address3' => $request->Address3,
+        //             // 'Postcode' => $request->Postcode,
+        //             // 'Citizencode' => $request->Citizencode,
+        //             // 'ID_Type' => 'O',
+        //             // 'PatientImage' => $request->PatientImage,
+        //             // 'rng' => $request->rng,
+        //             // 'read_date' => Carbon::now("Asia/Kuala_Lumpur")
+        //         ]);
     }
 
 }
