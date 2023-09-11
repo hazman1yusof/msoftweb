@@ -7,8 +7,9 @@ use App\Http\Controllers\defaultController;
 use stdClass;
 use DB;
 use Carbon\Carbon;
+use App\Http\Controllers\dialysis\Controller;
 
-class enquiryController extends defaultController
+class enquiryController extends Controller
 {
     //
     public function __construct(){
