@@ -42,6 +42,8 @@ class CancellationController extends defaultController
         switch($request->oper){
             case 'cancel_alloc':
                 return $this->cancel_alloc($request);
+            case 'cancel_receipt':
+                return $this->cancel_receipt($request);
             default:
                 return 'error happen..';
         }
@@ -97,7 +99,8 @@ class CancellationController extends defaultController
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
-                ->where('db.trantype','=','RC');
+                ->where('db.trantype','=','RC')
+                ->where('db.recstatus','=','ACTIVE');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -253,7 +256,8 @@ class CancellationController extends defaultController
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
-                ->where('db.trantype','=','RD');
+                ->where('db.trantype','=','RD')
+                ->where('db.recstatus','=','ACTIVE');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -588,5 +592,35 @@ class CancellationController extends defaultController
         }
         
     }
-
+    
+    public function cancel_receipt(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('debtor.dbacthdr')
+                // ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->result = 'success';
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+            
+        }
+        
+    }
+    
 }
