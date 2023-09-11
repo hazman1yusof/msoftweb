@@ -295,118 +295,115 @@ class ReceiptController extends defaultController
 
         return json_encode($responce);
     }
-
+    
     public function allocate(Request $request){
+        
         DB::beginTransaction();
-
+        
         try{
-
+            
             $receipt = DB::table('debtor.dbacthdr')
-                            ->where('compcode',session('compcode'))
-                            ->where('source','PB')
-                            ->where('trantype','RC')
-                            ->where('payercode',$request->payercode)
-                            ->where('auditno',$request->auditno);
-
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('trantype','RC')
+                        ->where('payercode',$request->payercode)
+                        ->where('auditno',$request->auditno);
+            
             if($receipt->exists()){
                 $receipt_first = $receipt->first();
             }else{
                 throw new \Exception("Error no receipt");
             }
-
+            
             $amt_paid = 0;
             foreach ($request->allo as $key => $value) {
-                // $invoice = DB::table('debtor.dbacthdr')
-                //             ->where('compcode',session('compcode'))
-                //             ->where('source','PB')
-                //             ->whereIn('trantype',['IN','DN'])
-                //             ->where('debtorcode',$request->debtorcode)
-                //             ->where('auditno',$value['obj']['auditno'])
-                //             ->where('outamount','>',0);
-                 $invoice = DB::table('debtor.dbacthdr')
-                                    ->where('compcode',session('compcode'))
-                                    ->where('idno',$value['obj']['idno']);
-
+                $invoice = DB::table('debtor.dbacthdr')
+                            // ->where('compcode',session('compcode'))
+                            // ->where('source','PB')
+                            // ->whereIn('trantype',['IN','DN'])
+                            // ->where('debtorcode',$request->debtorcode)
+                            // ->where('auditno',$value['obj']['auditno'])
+                            // ->where('outamount','>',0);
+                            ->where('idno',$value['obj']['idno']);
                 if($invoice->exists()){
-
                     $invoice_first = $invoice->first();
                     
                     $invoice->update([
                         'outamount' => $value['obj']['amtbal']
                     ]);
-
+                    
                     $amt_paid+=floatval($value['obj']['amtpaid']);
-
                 }else{
                     throw new \Exception("Error no Invoice");
                 }
-
-
-                $auditno = $this->defaultSysparam('AR','AL');
-
-                DB::table('debtor.dballoc')
-                        ->insert([
-                            'compcode' => session('compcode'),
-                            'source' => 'AR',
-                            'trantype' => 'AL',
-                            'auditno' => $auditno,
-                            'lineno_' => intval($key)+1,
-                            'docsource' => $receipt_first->source,
-                            'doctrantype' => $receipt_first->trantype,
-                            'docauditno' => $receipt_first->auditno,
-                            'refsource' => $invoice_first->source,
-                            'reftrantype' => $invoice_first->trantype,
-                            'refauditno' => $invoice_first->auditno,
-                            'refamount' => $invoice_first->amount,
-                            'reflineno' => $invoice_first->lineno_,
-                            'recptno' => $receipt_first->recptno,
-                            'mrn' => $receipt_first->mrn,
-                            'episno' => $receipt_first->episno,
-                            'allocsts' => 'ACTIVE',
-                            'amount' => floatval($value['obj']['amtpaid']),
-                            'tillcode' => $receipt_first->tillcode,
-                            'debtortype' => $this->get_debtortype($invoice_first->payercode),
-                            'debtorcode' => $invoice_first->payercode,
-                            'payercode' => $receipt_first->payercode,
-                            'paymode' => $receipt_first->paymode,
-                            'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'remark' => 'Allocation '.$receipt_first->source,
-                            'balance' => $value['obj']['amtbal'],
-                            'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'adduser' => session('username'),
-                            'recstatus' => 'POSTED'
-                        ]);
-            }
-
-            if($amt_paid > 0){
                 
+                $auditno = $this->defaultSysparam('AR','AL');
+                
+                DB::table('debtor.dballoc')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'source' => 'AR',
+                        'trantype' => 'AL',
+                        'auditno' => $auditno,
+                        'lineno_' => intval($key)+1,
+                        'docsource' => $receipt_first->source,
+                        'doctrantype' => $receipt_first->trantype,
+                        'docauditno' => $receipt_first->auditno,
+                        'refsource' => $invoice_first->source,
+                        'reftrantype' => $invoice_first->trantype,
+                        'refauditno' => $invoice_first->auditno,
+                        'refamount' => $invoice_first->amount,
+                        'reflineno' => $invoice_first->lineno_,
+                        'recptno' => $receipt_first->recptno,
+                        'mrn' => $receipt_first->mrn,
+                        'episno' => $receipt_first->episno,
+                        'allocsts' => 'ACTIVE',
+                        'amount' => floatval($value['obj']['amtpaid']),
+                        'tillcode' => $receipt_first->tillcode,
+                        'debtortype' => $this->get_debtortype($invoice_first->payercode),
+                        'debtorcode' => $invoice_first->payercode,
+                        'payercode' => $receipt_first->payercode,
+                        'paymode' => $receipt_first->paymode,
+                        'allocdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'remark' => 'Allocation '.$receipt_first->source,
+                        'balance' => $value['obj']['amtbal'],
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'adduser' => session('username'),
+                        'recstatus' => 'POSTED'
+                    ]);
+            }
+            
+            if($amt_paid > 0){
                 $receipt = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
                             ->where('source','PB')
                             ->where('trantype','RC')
                             ->where('payercode',$request->payercode)
                             ->where('auditno',$request->auditno);
-
+                
                 if($receipt->exists()){
-
                     $receipt_first = $receipt->first();
                     
                     $out_amt = floatval($receipt_first->outamount) - floatval($amt_paid);
-
+                    
                     $receipt->update([
                         'outamount' => $out_amt
                     ]);
                 }
             }
-
+            
             DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage().$e, 500);
+            
         }
+        
     }
-
+    
     public function paymode_chg($paytype,$paymode){
         $paytype_ = '';
         $mode = false;
