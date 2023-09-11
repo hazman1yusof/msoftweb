@@ -1104,7 +1104,7 @@ Route::get('/dialysis_check_pt_mode', "dialysis\DialysisController@check_pt_mode
 Route::get('/dialysis_verifyuser_dialysis', "dialysis\DialysisController@verifyuser_dialysis");
 Route::get('/dialysis_verifyuser_admin_dialysis', "dialysis\DialysisController@verifyuser_admin_dialysis");
 
-Route::get('/dialysis_bloodtest/table', "DialysisController@bloodtesttable");
+Route::get('/dialysis_bloodtest/table', "dialysis\DialysisController@bloodtesttable");
 
 Route::get('/dialysis_enquiry','dialysis\enquiryController@show');
 Route::get('/dialysis_enquiry/table','dialysis\enquiryController@table');
