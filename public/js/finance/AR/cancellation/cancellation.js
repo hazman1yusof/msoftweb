@@ -714,7 +714,7 @@ $(document).ready(function () {
 			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
 			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 10 },
+			{ label: 'Status', name: 'db_recstatus', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
@@ -729,7 +729,7 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			{ label: ' ', width: 15, classes: 'wrap', formatter: buttonformatter },
+			{ label: ' ', width: 20, classes: 'wrap', formatter: buttonformatter },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -831,7 +831,7 @@ $(document).ready(function () {
 			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
 			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 10 },
+			{ label: 'Status', name: 'db_recstatus', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
 			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
@@ -846,7 +846,7 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			// { label: ' ', width: 15, classes: 'wrap', formatter: buttonformatter },
+			// { label: ' ', width: 20, classes: 'wrap', formatter: buttonformatter },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -1331,6 +1331,7 @@ $(document).ready(function () {
 		mycurrency.formatOn();
 	}
 	
+	//////////////////////////////////////////////jqGrid_rc//////////////////////////////////////////////
 	function buttonformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
 		if(parseFloat(rowObject.db_amount) != parseFloat(rowObject.db_outamount)){
@@ -1370,6 +1371,7 @@ $(document).ready(function () {
 		});
 	}
 	
+	//////////////////////////////////////////////jqGridAlloc//////////////////////////////////////////////
 	function btncancelformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.idno+`>`
 			retbut += 	  `<button type='button' class="btn btn-danger btn-sm btn_cancel" data-idno='`+rowObject.idno+`'>`
@@ -1813,7 +1815,7 @@ var dialog_payercode = new ordialog(
 );
 dialog_payercode.makedialog(true);
 
-///RF
+///////////////////////////////////////////////////////RF///////////////////////////////////////////////////////
 // var dialog_payercode = new ordialog(
 // 	'payercode','debtor.debtormast','#dbacthdr_payercode','errorField',
 // 	{
