@@ -32,6 +32,22 @@ $(document).ready(function () {
         let href = $(e.target).eq(0).attr('href');
     });
 
+    $('#form_medc [name=datefrom]').on('change',function(){
+        let mccnt=$('#form_medc [name=mccnt]').val();
+        let datefrom=$('#form_medc [name=datefrom]');
+
+        let dateto = moment(datefrom).add(mccnt-1, "days");
+        $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
+    });
+
+    // $('#form_medc [name=mccnt]').on('change',function(){
+    //     let mccnt=$('#form_medc [name=mccnt]').val();
+    //     let datefrom=$('#form_medc [name=datefrom]');
+
+    //     let dateto = moment(datefrom).add(mccnt-1, "days");
+    //     $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
+    // });
+
     var mclist_table = $('#mclist_table').DataTable({
         "ajax": "",
         "sDom": "",
