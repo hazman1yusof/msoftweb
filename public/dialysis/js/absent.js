@@ -26,7 +26,7 @@ $(document).ready(function () {
 });
 
 var table_absent = $('#table_absent').DataTable({
-    ajax: './get_data_dialysis?action=get_absent',
+    ajax: './dialysis_get_data_dialysis?action=get_absent',
 	scrollY: 450,
 	paging: false,
     order: [[ 0, "desc" ]],

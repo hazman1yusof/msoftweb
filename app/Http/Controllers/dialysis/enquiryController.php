@@ -126,7 +126,7 @@ class enquiryController extends Controller
             $responce->total = $paginate_patm->lastPage();
             $responce->records = $paginate_patm->total();
             $responce->rows = $paginate_patm->items();
-            $responce->query = $this->getQueries($table_patm);
+            // $responce->query = $this->getQueries($table_patm);
             
             return json_encode($responce);
     }
@@ -191,7 +191,7 @@ class enquiryController extends Controller
             $responce->total = $paginate_patm->lastPage();
             $responce->records = $paginate_patm->total();
             $responce->rows = $paginate_patm->items();
-            $responce->query = $this->getQueries($table_patm);
+            // $responce->query = $this->getQueries($table_patm);
             
             return json_encode($responce);
     }
@@ -278,7 +278,7 @@ class enquiryController extends Controller
         $responce->rows = $paginate->items();
         $responce->sql = $table_chgtrx->toSql();
         $responce->sql_bind = $table_chgtrx->getBindings();
-        $responce->sql_query = $this->getQueries($table_chgtrx);
+        // $responce->sql_query = $this->getQueries($table_chgtrx);
         return json_encode($responce);
 
     }
