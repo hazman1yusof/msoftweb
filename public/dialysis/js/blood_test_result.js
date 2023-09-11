@@ -71,7 +71,7 @@ function get_pagination_br(page=1){
 		page:page
     };
 
-    $.get( "./bloodtest/table?"+$.param(param), function( data ) {
+    $.get( "./dialysis_bloodtest/table?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	make_pagintaion_br(data);
