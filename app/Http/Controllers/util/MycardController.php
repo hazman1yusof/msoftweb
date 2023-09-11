@@ -17,7 +17,6 @@ class MycardController extends defaultController
 
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     public function mykadFP(Request $request)
