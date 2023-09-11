@@ -673,7 +673,12 @@ $(document).ready(function () {
 	}
 
 	///allocation///
-
+	var urlParamAllo={
+		action:'refund_allo_table',
+		url: 'refund/table',
+		payercode:''
+	}
+	
 	$("#gridAllo").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -914,12 +919,6 @@ function getIndex(array,idno){
 		}
 	});
 	return retval;
-}
-
-var urlParamAllo={
-	action:'refund_allo_table',
-	url: 'refund/table',
-	payercode:''
 }
 
 function calc_jq_height_onchange(jqgrid){
