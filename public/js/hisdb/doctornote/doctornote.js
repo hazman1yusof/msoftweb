@@ -239,10 +239,6 @@ $(document).ready(function () {
 
 			},
 		});
-
-	$("#doctornote_bpgraph").click(function(){
-		window.open('./bpgraph?mrn='+$('#mrn_doctorNote').val()+'&episno='+$("#episno_doctorNote").val(), '_blank');
-	});
 	
 	//////////////////////////////////////parameter for saving url//////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}

@@ -43,6 +43,10 @@ class UserMaintenanceController extends defaultController
     }
 
     public function duplicate_doctorcode($doctorcode,$mode,$idno){
+        if(empty($doctorcode)){
+            return false;
+        }
+
         if($mode == 'add'){
             $users = DB::table('users')
                         ->where('compcode',session('compcode'))

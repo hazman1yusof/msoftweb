@@ -717,6 +717,11 @@ $(document).ready(function() {
         var accomodation_selecter_ = new accomodation_selecter();
     });
 
+    $("#doctornote_bpgraph").click(function(){
+        let justbc = $("#grid-command-buttons tr.justbc").data("rowId");
+        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[justbc];
+        window.open('./bpgraph?mrn='+rowdata.MRN+'&episno='+rowdata.Episno, '_blank');
+    });
 
 });
 
