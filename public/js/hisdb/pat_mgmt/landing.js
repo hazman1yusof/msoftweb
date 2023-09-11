@@ -702,85 +702,85 @@ $(document).ready(function() {
         var accomodation_selecter_ = new accomodation_selecter();
     });
 
-    function mykadclosemodal(){
-        var param={
-            action: 'get_mykad_local',
-            rng: $('#rng').val()
-        };
-
-        $.get( "./get_mykad_local?"+$.param(param), function( data ) {
-
-        },'json').done(function(data) {
-            if(data.exists==true){
-                if(data.pm_exists==true){
-                    var form = '#frm_patient_info';
-                    $("#btn_register_patient").data("oper_mykad","edit");
-                    $("#btn_register_patient").data("oper","edit");
-                    $("#btn_register_patient").data('idno',data.data.idno);
-                    $("#pat_mrn").val(data.data.MRN);
-                    $("#txt_pat_idno").val(data.data.idno);
-                    
-                    $("img#photobase64").attr('src',data.data.PatientImage);
-                    $.each(data.data, function( index, value ) {
-                        var input=$(form+" [name='"+index+"']");
-                        
-                        if(input.val() != '' || input.val() != undefined){
-                            if(input.is("[type=radio]")){
-                                $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-                            }else{
-                                input.val(value);
-                            }
-                        }
-                    });
-                    desc_show.write_desc();
-                    $('#txt_pat_newic').blur();
-
-                    delay(function(){
-                        $("#patientBox").click();
-                        $('.search-field').val(data.data.MRN);
-                        $('#btn_register_episode').data('mrn',data.data.MRN);
-                        $('#Scol').val('MRN');
-                        $("#grid-command-buttons").bootgrid('reload');
-                    }, 300 );
-
-                }else{
-                    var form = '#frm_patient_info';
-                    $("#btn_register_patient").data("oper_mykad","add");
-                    $("#btn_register_patient").data("oper","add");
-                    
-                    $("img#photobase64").attr('src',data.data.PatientImage);
-                    $.each(data.data, function( index, value ) {
-                        var input=$(form+" [name='"+index+"']");
-                        
-                        if(input.val() != '' || input.val() != undefined){
-                            if(input.is("[type=radio]")){
-                                $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
-                            }else{
-                                input.val(value);
-                            }
-                        }
-                    });
-                    desc_show.write_desc();
-                    $('#txt_pat_newic').blur();
-
-                    delay(function(){
-                        $("#patientBox").click();
-                    }, 300 );
-
-                }
-            }else{
-
-            }
-
-        }).fail(function(data){
-
-        });
-
-        
-    }
-
 
 });
+
+function mykadclosemodal(){
+    var param={
+        action: 'get_mykad_local',
+        rng: $('#rng').val()
+    };
+
+    $.get( "./get_mykad_local?"+$.param(param), function( data ) {
+
+    },'json').done(function(data) {
+        if(data.exists==true){
+            if(data.pm_exists==true){
+                var form = '#frm_patient_info';
+                $("#btn_register_patient").data("oper_mykad","edit");
+                $("#btn_register_patient").data("oper","edit");
+                $("#btn_register_patient").data('idno',data.data.idno);
+                $("#pat_mrn").val(data.data.MRN);
+                $("#txt_pat_idno").val(data.data.idno);
+                
+                $("img#photobase64").attr('src',data.data.PatientImage);
+                $.each(data.data, function( index, value ) {
+                    var input=$(form+" [name='"+index+"']");
+                    
+                    if(input.val() != '' || input.val() != undefined){
+                        if(input.is("[type=radio]")){
+                            $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+                        }else{
+                            input.val(value);
+                        }
+                    }
+                });
+                desc_show.write_desc();
+                $('#txt_pat_newic').blur();
+
+                delay(function(){
+                    $("#patientBox").click();
+                    $('.search-field').val(data.data.MRN);
+                    $('#btn_register_episode').data('mrn',data.data.MRN);
+                    $('#Scol').val('MRN');
+                    $("#grid-command-buttons").bootgrid('reload');
+                }, 300 );
+
+            }else{
+                var form = '#frm_patient_info';
+                $("#btn_register_patient").data("oper_mykad","add");
+                $("#btn_register_patient").data("oper","add");
+                
+                $("img#photobase64").attr('src',data.data.PatientImage);
+                $.each(data.data, function( index, value ) {
+                    var input=$(form+" [name='"+index+"']");
+                    
+                    if(input.val() != '' || input.val() != undefined){
+                        if(input.is("[type=radio]")){
+                            $(form+" [name='"+index+"'][value='"+value+"']").prop('checked', true);
+                        }else{
+                            input.val(value);
+                        }
+                    }
+                });
+                desc_show.write_desc();
+                $('#txt_pat_newic').blur();
+
+                delay(function(){
+                    $("#patientBox").click();
+                }, 300 );
+
+            }
+        }else{
+
+        }
+
+    }).fail(function(data){
+
+    });
+
+    
+}
 
 function randomString(length, chars) {
     var mask = '';
