@@ -9,7 +9,7 @@ var urlParam = {
 }
 
 $(document).ready(function () {
-	
+	stop_scroll_on();
 	$('#calendar').fullCalendar({
 		// events: events,
 		defaultView: 'month',
@@ -610,4 +610,16 @@ function getoper_status(){
 	});
 	return {value:string_value.slice(0,-1)};
 	return {value:"MAJOR:MAJOR;MINOR:MINOR"};
+}
+
+function stop_scroll_on(){
+    $('div.paneldiv').on('mouseenter',function(){
+        let parentdiv = $(this).parent('div.panel-collapse').attr('id');
+        SmoothScrollTo('#'+parentdiv, 300,114);
+        $('body').addClass('stop-scrolling');
+    });
+
+    $('div.paneldiv').on('mouseleave',function(){
+        $('body').removeClass('stop-scrolling')
+    });
 }

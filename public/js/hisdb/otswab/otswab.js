@@ -509,7 +509,7 @@ function textare_init_otswab(){
 }
 
 $('#tab_otswab').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_otswab', 300);
+    SmoothScrollTo('#tab_otswab', 300,114);
     $("#jqGrid_otswab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_otswab_c")[0].offsetWidth-$("#jqGrid_otswab_c")[0].offsetLeft-14));
     
     if($('#mrn_otswab').val() != ''){

@@ -196,3 +196,7 @@ table#medication_tbl th {
 .normal_label{
     font-weight: 100 !important;
 }
+.stop-scrolling {
+    padding-right: 16px;
+    overflow: hidden;
+}

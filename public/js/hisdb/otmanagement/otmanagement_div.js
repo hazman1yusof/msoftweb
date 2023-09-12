@@ -272,7 +272,7 @@ function saveForm_otmgmt_div(callback){
 }
 
 $('#tab_otmgmt_div').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_otmgmt_div', 300);
+    SmoothScrollTo('#tab_otmgmt_div', 300,114);
     
     if($('#mrn_otmgmt_div').val() != ''){
         getdata_otmgmt();

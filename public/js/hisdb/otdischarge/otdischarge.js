@@ -284,7 +284,7 @@ function textare_init_otdischarge(){
 }
 
 $('#tab_otdischarge').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_otdischarge', 300);
+    SmoothScrollTo('#tab_otdischarge', 300,114);
     
     if($('#mrn_otdischarge').val() != ''){
         getdata_otdischarge();

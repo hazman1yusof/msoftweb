@@ -389,7 +389,7 @@ function textare_init_oper_team(){
 }
 
 $('#tab_oper_team').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_oper_team', 300);
+    SmoothScrollTo('#tab_oper_team', 300,114);
     
     if($('#mrn_oper_team').val() != ''){
         getdata_oper_team();

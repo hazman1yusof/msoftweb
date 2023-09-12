@@ -290,7 +290,7 @@ function textare_init_ottime(){
 }
 
 $('#tab_ottime').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_ottime', 300);
+    SmoothScrollTo('#tab_ottime', 300,114);
     
     if($('#mrn_ottime').val() != ''){
         getdata_ottime();

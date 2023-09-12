@@ -301,7 +301,7 @@ function textare_init_preoperative(){
 }
 
 $('#tab_preoperative').on('shown.bs.collapse', function () {
-    SmoothScrollTo('#tab_preoperative', 300);
+    SmoothScrollTo('#tab_preoperative', 300,114);
     
     if($('#mrn_preoperative').val() != ''){
         getdata_preoperative();
