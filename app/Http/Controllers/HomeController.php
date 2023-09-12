@@ -43,7 +43,7 @@ class HomeController extends Controller
                 ->where('compcode','=',$user->compcode)
                 ->get();
         $unit_user = '';
-        $title="Ambulatory Care";
+        $title="Allied Healthcare";
         if($user->dept != ''){
             $unit_user_ = DB::table('sysdb.department')
                 ->where('compcode','=',$user->compcode)
