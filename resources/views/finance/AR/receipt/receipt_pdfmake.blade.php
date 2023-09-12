@@ -81,7 +81,11 @@
                             body: [
                                 [
                                     { text: 'RECEIVED FROM : {{$dbacthdr->payername}}' },
-                                    { text: 'DATE : {{$dbacthdr->posteddate}}' },
+                                    @if(!empty($obj->posteddate))
+                                        { text: 'DATE : {{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
+                                    @else
+                                        { text: 'DATE : ' },
+                                    @endif
                                 ],
                                 [
                                     { text: 'RECEIPT NO : {{$dbacthdr->recptno}}' },
@@ -118,7 +122,11 @@
                                 ],
                                 @foreach ($dballoc as $obj)
                                 [
-                                    { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                    @if(!empty($obj->allocdate))
+                                        { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}} dated {{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                    @else
+                                        { text: 'Bill No {{str_pad($obj->refauditno, 8, "0", STR_PAD_LEFT)}}' },
+                                    @endif
                                     { text: '{{$obj->name}}' },
                                     @if($obj->mrn == '0')
                                         { text: ' ' },
