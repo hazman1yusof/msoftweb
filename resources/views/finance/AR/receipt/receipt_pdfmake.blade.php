@@ -81,7 +81,7 @@
                             body: [
                                 [
                                     { text: 'RECEIVED FROM : {{$dbacthdr->payername}}' },
-                                    @if(!empty($obj->posteddate))
+                                    @if(!empty($dbacthdr->posteddate))
                                         { text: 'DATE : {{\Carbon\Carbon::parse($dbacthdr->posteddate)->format('d/m/Y')}}' },
                                     @else
                                         { text: 'DATE : ' },
