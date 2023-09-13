@@ -305,7 +305,7 @@ class ReceiptController extends defaultController
             $receipt = DB::table('debtor.dbacthdr')
                         ->where('compcode',session('compcode'))
                         ->where('source','PB')
-                        ->where('trantype','RC')
+                        ->where('trantype',$request->trantype)
                         ->where('payercode',$request->payercode)
                         ->where('auditno',$request->auditno);
             
@@ -325,6 +325,7 @@ class ReceiptController extends defaultController
                             // ->where('auditno',$value['obj']['auditno'])
                             // ->where('outamount','>',0);
                             ->where('idno',$value['obj']['idno']);
+                
                 if($invoice->exists()){
                     $invoice_first = $invoice->first();
                     
@@ -377,7 +378,7 @@ class ReceiptController extends defaultController
                 $receipt = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
                             ->where('source','PB')
-                            ->where('trantype','RC')
+                            ->where('trantype',$request->trantype)
                             ->where('payercode',$request->payercode)
                             ->where('auditno',$request->auditno);
                 

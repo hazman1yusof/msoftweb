@@ -1260,27 +1260,32 @@ $(document).ready(function () {
 		buttons:
 			[{
 				text: "Save",click: function() {
-					var obj={
-						allo:myallocation.arrayAllo
+					if(parseFloat($("#AlloBalance").val())<0){
+						alert("Balance cannot in negative values");
+					}else{
+						var obj={
+							allo: myallocation.arrayAllo
+						}
+						
+						var saveParam={
+							action: 'receipt_save',
+							url: 'receipt/form',
+							oper: 'allocate',
+							debtorcode: $('#AlloDebtor').val(),
+							payercode: $('#AlloPayer').val(),
+							_token: $('#csrf_token').val(),
+							auditno: $('#AlloAuditno').val(),
+							trantype: $('#AlloDtype').val(),
+						}
+						
+						$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
+							
+						}).fail(function(data) {
+						}).success(function(data){
+							refreshGrid('#jqGrid', urlParam);
+							$('#allocateDialog').dialog('close');
+						});
 					}
-
-					var saveParam={
-						action:'receipt_save',
-						url: 'receipt/form',
-						oper:'allocate',
-						debtorcode:$('#AlloDebtor').val(),
-						payercode:$('#AlloPayer').val(),
-						_token:$('#csrf_token').val(),
-						auditno:$('#AlloAuditno').val()
-					}
-
-					$.post( saveParam.url+'?'+$.param(saveParam), obj , function( data ) {
-			
-					}).fail(function(data) {
-					}).success(function(data){
-						refreshGrid('#jqGrid', urlParam);
-						$('#allocateDialog').dialog('close');
-					});
 				}
 			},{
 				text: "Cancel",click: function() {
