@@ -1260,8 +1260,12 @@ $(document).ready(function () {
 		buttons:
 			[{
 				text: "Save",click: function() {
-					if(parseFloat($("#AlloBalance").val())<0){
+					console.log();
+
+					if( parseFloat($("#AlloBalance").val())<0){
 						alert("Balance cannot in negative values");
+					}else if(myallocation.allo_error.length>0){
+						alert("Amount paid exceed O/S amount");
 					}else{
 						var obj={
 							allo: myallocation.arrayAllo
@@ -1401,6 +1405,7 @@ $(document).ready(function () {
 		this.alloBalance=0;
 		this.alloTotal=0;
 		this.outamt=0;
+		this.allo_error=[];
 
 		this.renewAllo = function(os){
 			this.arrayAllo.length = 0;
@@ -1419,13 +1424,15 @@ $(document).ready(function () {
 
 			this.arrayAllo.push({idno:idno,obj:obj});
 			
-			$(fieldID).on('change',[idno,self.arrayAllo],onchangeField);
+			$(fieldID).on('change',[idno,self.arrayAllo,self.allo_error],onchangeField);
 
 			this.updateAlloField();
 		}
 		function onchangeField(obj){
 			var idno = obj.handleObj.data[0];
 			var arrayAllo = obj.handleObj.data[1];
+			var allo_error = obj.handleObj.data[2];
+
 			var alloIndex = getIndex(arrayAllo,idno);
 			var outamt = $("#gridAllo").jqGrid('getRowData', idno).outamount;
 			var newamtpaid = parseFloat(obj.target.value);
@@ -1433,10 +1440,12 @@ $(document).ready(function () {
 			if(parseFloat(newamtpaid)>parseFloat(outamt)){
 				alert("Amount paid exceed O/S amount");
 				$("#"+idno+"_amtpaid").addClass( "error" ).removeClass( "valid" );
+				adderror_allo(allo_error,idno);
 				obj.target.focus();
 				return false;
 			}
 			$("#"+idno+"_amtpaid").removeClass( "error" ).addClass( "valid" );
+			delerror_allo(allo_error,idno);
 			var balance = outamt - newamtpaid;
 
 			obj.target.value = numeral(newamtpaid).format('0,0.00');;
@@ -1518,6 +1527,18 @@ $(document).ready(function () {
 		function getlAlloFromGrid(idno){
 			var temp=$("#gridAllo").jqGrid ('getRowData', idno);
 			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
+		}
+
+		function adderror_allo(array,idno){
+			if($.inArray(idno,array)===-1){//xjumpa
+				array.push(idno);
+			}
+		}
+
+		function delerror_allo(array,idno){
+			if($.inArray(idno,array)!==-1){//jumpa
+				array.splice($.inArray(idno,array), 1);
+			}
 		}
 	}
 	
