@@ -1041,7 +1041,7 @@
 		<div class='panel panel-info'>
 			<div class="panel-heading">Refund</div>
 			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-				<form class='form-horizontal' style='width:99%' id='formdata_RF'>
+				<form class='form-horizontal' style='width:99%' id="formdata_RF">
 					{{ csrf_field() }}
 					<input type='hidden' name='dbacthdr_source' value='PB'>
 					<input type='hidden' name='dbacthdr_tillno' >

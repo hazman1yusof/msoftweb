@@ -36,6 +36,8 @@ class arenquiryController extends defaultController
                 return $this->get_alloc($request);
             case 'get_table_dtl':
                 return $this->get_table_dtl($request);
+            case 'get_debtorcode_outamount':
+                return $this->get_debtorcode_outamount($request);
             default:
                 return 'error happen..';
         }
@@ -254,8 +256,8 @@ class arenquiryController extends defaultController
                                 ->where('paybank.source','=','AR')
                                 ->where('paybank.paytype','=','BANK');
                 })
-                ->where('dbacthdr.idno','=',$request->idno)
-                ->where('dbacthdr.trantype','RF');;
+                ->where('dbacthdr.idno','=',$request->idno);
+               // ->where('dbacthdr.trantype','RF');
         
         $responce = new stdClass();
         $responce->rows = $table->first();
@@ -415,6 +417,31 @@ class arenquiryController extends defaultController
         
         return json_encode($responce);
         
+    }
+
+    public function get_debtorcode_outamount(Request $request){
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('compcode',session('compcode'))
+                        ->where('payercode',$request->payercode)
+                        ->where('source','PB')
+                        ->where('recstatus','POSTED')
+                        ->where('outamount','>',0)
+                        ->whereIn('trantype',['DN','IN']);
+
+
+
+        $responce = new stdClass();
+
+
+        if($dbacthdr->exists()){
+            $responce->result = 'true';
+            $responce->outamount = $dbacthdr->sum('dbacthdr.outamount');
+        }else{
+            $responce->result = 'false';
+        }
+
+
+        return json_encode($responce);
     }
     
 }

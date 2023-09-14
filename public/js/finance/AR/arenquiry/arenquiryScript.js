@@ -218,7 +218,7 @@ $(document).ready(function () {
 		text: "Save",click: function() {
 			mycurrency.formatOff();
 			mycurrency.check0value(errorField);
-			if( $('#formdata').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
+			if( $('#formdata_RF').isValid({requiredFields: ''}, conf, true) && $(tabform).isValid({requiredFields: ''}, conf, true) ) {
 				saveFormdata_refund("#jqGrid_RF","#dialogForm_RF","#formdata_RF",oper,saveParam_rf,urlParam_rf);
 			}else{
 				mycurrency.formatOn();
@@ -530,7 +530,7 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				dialog_payercode.off();
+				dialog_payercodeRF.off();
 				myallocation.renewAllo(0);
 			}
 			if(oper!='add'){
@@ -644,7 +644,7 @@ $(document).ready(function () {
 	function get_debtorcode_outamountRF(payercode){
 		var param={
 			url: './refund/table',
-			action:'get_debtorcode_outamount',
+			action:'get_debtorcode_outamountRF',
 			payercode:payercode
 		}
 
@@ -766,7 +766,7 @@ $(document).ready(function () {
 				refreshGrid("#jqGrid3_IN",urlParam2_IN);
 			}else if(selrowData("#jqGrid").db_trantype=='RF'){//RF
 				urlParamAllo.payercode = selrowData("#jqGrid").db_payercode;
-				refreshGrid("#gridAllo",urlParamAllo);
+				//refreshGrid("#gridAllo",urlParamAllo);
 				
 			}else if(selrowData("#jqGrid").db_trantype=='RC'){	//RC
 				// urlParam2_RC.source = selrowData("#jqGrid").db_source;
@@ -774,6 +774,10 @@ $(document).ready(function () {
 				// urlParam2_RC.billno = selrowData("#jqGrid").db_auditno;
 				// urlParam2_RC.deptcode = selrowData("#jqGrid").db_deptcode;
 			}
+			else if(selrowData("#jqGrid").db_trantype=='RF'){	//RF
+				
+			}
+
 			if(rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGridAlloc', urlParamAlloc,'kosongkan');
@@ -862,7 +866,7 @@ $(document).ready(function () {
 			}else if(selrowData("#jqGrid").db_trantype=='RF'){ //RF
 				populateFormdata("#jqGrid", "#dialogForm_RF", "#formdata_RF", selRowId, 'view', '');
 				getdata('RF',selrowData("#jqGrid").db_idno);
-				//refreshGrid("#jqGrid",urlParam_rf);
+				//console.log(selrowData("#jqGrid").db_idno);
 
 				urlParamAllo.payercode = selrowData("#jqGrid").db_payercode;
 				refreshGrid("#gridAllo",urlParamAllo);
@@ -1732,10 +1736,10 @@ $(document).ready(function () {
 		returnVal:true,
 		sysparam:{source:'PB',trantype:'RF',useOn:'auditno'}  /////PB, RF, pValue +1
 	};
-	//////////////////////////////////////////////jqGrid_RF/////////////////////////////////////////////////
+	// //////////////////////////////////////////////jqGrid_RF/////////////////////////////////////////////////
 	$("#jqGrid_RF").jqGrid({
 		datatype: "local",
-		editurl: "refund/form",
+		//editurl: "refund/form",
 		 colModel: [
 			{label: 'Audit No', name: 'dbacthdr_auditno', width: 30 },
 			{label: 'lineno_', name: 'dbacthdr_lineno_', width: 30, hidden: true},
@@ -1791,13 +1795,13 @@ $(document).ready(function () {
 		rowNum: 30,
 		pager: "#jqGridPager_RF",
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			$("#jqGridPager_RF td[title='View Selected Row']").click();
-			$("#gridAllo input[name='tick']").hide();
+			// $("#jqGridPager_RF td[title='View Selected Row']").click();
+			// $("#gridAllo input[name='tick']").hide();
 		},
 		onSelectRow: function(rowid){
-			urlParamAllo.payercode = selrowData("#jqGrid_RF").dbacthdr_payercode;
-			refreshGrid("#gridAllo",urlParamAllo);
-			$("#gridAllo input[name='tick']").hide();
+			// urlParamAllo.payercode = selrowData("#jqGrid_RF").dbacthdr_payercode;
+			// refreshGrid("#gridAllo",urlParamAllo);
+			// $("#gridAllo input[name='tick']").hide();
 		},
 		gridComplete: function(){
 			// fdl.set_array().reset();
@@ -1821,7 +1825,6 @@ $(document).ready(function () {
 		}	
 	});
 
-	
 	////////////////////////////////////////////////end//////////////////////////////////////////////
 	
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////
@@ -2584,49 +2587,32 @@ function populateform_rc(idno){
 }
 
 //RF
-// var dialog_payercodeRF = new ordialog(
-// 	'payercode','debtor.debtormast','#formdata_RFdbacthdr_payercode','errorField',
-// 	{	colModel:[
-// 			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-// 			{label:'Debtor Name',name:'name',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-// 			{label:'debtortype',name:'debtortype',hidden:true},
-// 			{label:'actdebccode',name:'actdebccode',hidden:true},
-// 			{label:'actdebglacc',name:'actdebglacc',hidden:true},
-// 		],
-// 		urlParam: {
-// 				filterCol:['compcode','recstatus'],
-// 				filterVal:['session.compcode','ACTIVE']
-// 			},
-// 		ondblClickRow:function(){
-// 			let data=selrowData('#'+dialog_payercode.gridname);
-// 			$('#dbacthdr_payername').val(data.name);
-// 			$('#dbacthdr_debtortype').val(data.debtortype);
-// 			urlParamAllo.payercode = data.debtorcode;
-// 			myallocation.renewAllo(0);
-// 			refreshGrid("#gridAllo",urlParamAllo);
-// 		},
-// 		gridComplete: function(obj){
-// 			var gridname = '#'+obj.gridname;
-// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-// 				$(gridname+' tr#1').click();
-// 				$(gridname+' tr#1').dblclick();
-// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-// 				$('#'+obj.dialogname).dialog('close');
-// 			}
-// 		}
-// 	},{
-// 		title:"Select Payer code",
-// 		open: function(){
-// 			dialog_payercode.urlParam.filterCol=['recstatus', 'compcode'],
-// 			dialog_payercode.urlParam.filterVal=['ACTIVE', 'session.compcode']
-// 		},
-// 		close: function(){
-// 			let data=selrowData('#'+dialog_payercode.gridname);
-// 			get_debtorcode_outamountRF(data.debtorcode);
-// 		}
-// 	},'urlParam','radio','tab'
-// );
-// dialog_payercode.makedialog();
+var dialog_payercodeRF = new ordialog(
+	'payercodeRF','debtor.debtormast','#formdata_RF input[name = dbacthdr_payercode]','errorField',
+	{	colModel:[
+			{label:'Debtor Code',name:'debtorcode',width:200,classes:'pointer'},
+			{label:'Debtor Name',name:'name',width:400,classes:'pointer'},
+			{label:'debtortype',name:'debtortype',hidden:true},
+			{label:'actdebccode',name:'actdebccode',hidden:true},
+			{label:'actdebglacc',name:'actdebglacc',hidden:true},
+		],
+		urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+	},{
+		title:"Select Payer code",
+		open: function(){
+			dialog_payercodeRF.urlParam.filterCol=['recstatus', 'compcode'],
+			dialog_payercodeRF.urlParam.filterVal=['ACTIVE', 'session.compcode']
+		},
+		close: function(){
+			let data=selrowData('#'+dialog_payercodeRF.gridname);
+			get_debtorcode_outamountRF(data.debtorcode);
+		}
+	},'urlParam','radio','tab'
+);
+dialog_payercodeRF.makedialog();
 
 function populateform_rf(idno){
 	var param={
@@ -2642,7 +2628,7 @@ function populateform_rf(idno){
 	},'json').done(function(data) {
 		resetpill();
 		$(".nav-tabs a[form='"+data.rows.dbacthdr_paytype.toLowerCase()+"']").tab('show');
-		dialog_payercode.check('errorField');
+		dialog_payercodeRF.check('errorField');
 		disabledPill();
 	});
 }
@@ -2752,7 +2738,7 @@ function Allocation(){
 	}
 	this.retickallotogrid = function(){
 		var self=this;
-		console.log(this);
+	//	console.log(this);
 		$.each(this.arrayAllo, function( index, obj ) {
 			$("#"+obj.idno+"_amtpaid").on('change',[obj.idno,self.arrayAllo],onchangeField);
 			if(obj.obj.amtpaid != " "){
