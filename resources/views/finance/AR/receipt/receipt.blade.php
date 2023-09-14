@@ -270,14 +270,14 @@
 							<label class="control-label" for="dbacthdr_mrn">MRN</label>  
 				  			<div class="">
 					  			<div class='input-group'>
-									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
+									<input id="dbacthdr_mrn" name="dbacthdr_mrn" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
 									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 					  			</div>
 					  			<span class="help-block"></span>
 				  			</div>
 				  		</div>
 
-						<div class="col-md-4 minuspad-15">
+						<div class="col-md-4 minuspad-15" id="dbacthdr_episno_div">
 							<label class="control-label" for="dbacthdr_episode">Episode</label>  
 							<div class="">
 					  			<div class=''>

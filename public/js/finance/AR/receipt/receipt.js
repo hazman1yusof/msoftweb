@@ -193,7 +193,12 @@ $(document).ready(function () {
 			close: function(){
 				let data=selrowData('#'+dialog_payercode.gridname);
 				get_debtorcode_outamount(data.debtorcode);
-				$('#dbacthdr_remark').focus();
+
+				if($('#dbacthdr_episno_div').is(":visible")){
+					$('#dbacthdr_mrn').focus();
+				}else{
+					$('#dbacthdr_remark').focus();
+				}
 			}
 		  },'urlParam','radio','tab'
 		);
@@ -371,9 +376,9 @@ $(document).ready(function () {
 			$( "#divMrnEpisode" ).show();
 			urlParam_sys.table_name='debtor.hdrtypmst';
 			urlParam_sys.table_id='hdrtype';
-			urlParam_sys.field=['source','trantype','description','hdrtype','updpayername','depccode','depglacc','updepisode'];
-			urlParam_sys.filterCol=['compcode'];
-			urlParam_sys.filterVal=['session.compcode'];
+			urlParam_sys.field=['source','trantype','description','hdrtype','updpayername','depccode','depglacc','updepisode','manualalloc'];
+			urlParam_sys.filterCol=['compcode','recstatus'];
+			urlParam_sys.filterVal=['session.compcode','ACTIVE'];
 			refreshGrid('#sysparam',urlParam_sys);
 			$('#dbacthdr_trantype').val('');
 			$('#dbacthdr_PymtDescription').val('');
@@ -403,6 +408,7 @@ $(document).ready(function () {
 			{label: 'depccode', name: 'depccode', width: 150, hidden:true},
 			{label: 'depglacc', name: 'depglacc', width: 150, hidden:true},
 			{label: 'updepisode', name: 'updepisode', width: 150, hidden:true},
+			{label: 'manualalloc', name: 'manualalloc', width: 10, hidden:true},
 		],
 		autowidth:true,
 		multiSort: true,
@@ -433,6 +439,12 @@ $(document).ready(function () {
 						$('#dbacthdr_payername').prop('readonly',false);
 					}else{
 						$('#dbacthdr_payername').prop('readonly',true);
+					}
+
+					if(rowData['updepisode'] == 1){
+						$('#dbacthdr_episno_div').show();
+					}else{
+						$('#dbacthdr_episno_div').hide();
 					}
 				}else{
 					$('#dbacthdr_payername').prop('readonly',true);

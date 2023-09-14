@@ -1725,6 +1725,7 @@ class PatmastController extends defaultController
         DB::enableQueryLog();
 
         $epis_mrn = $request->epis_mrn;
+        $epis_mrn_pad = str_pad($request->epis_mrn, 7, "0", STR_PAD_LEFT);
         $epis_no = $request->epis_no;
         $epis_type = $request->epis_type;
         $epis_maturity = $request->epis_maturity;
@@ -1828,7 +1829,7 @@ class PatmastController extends defaultController
 
                 $debtormast_obj = DB::table('debtor.debtormast')
                     ->where('compcode','=',session('compcode'))
-                    ->where('debtorcode','=',$epis_mrn);
+                    ->where('debtorcode','=',$epis_mrn_pad);
 
 
                 if(!$debtormast_obj->exists()){
@@ -1836,7 +1837,7 @@ class PatmastController extends defaultController
                     DB::table('debtor.debtormast')
                         ->insert([
                             'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_mrn,
+                            'DebtorCode' => $epis_mrn_pad,
                             'Name' => $patmast_data->Name,
                             'Address1' => $patmast_data->Address1,
                             'Address2' => $patmast_data->Address2,
@@ -1850,7 +1851,7 @@ class PatmastController extends defaultController
                             'ActDebGlAcc' => $debtortype_data->actdebglacc,
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'RecStatus' => "A"
+                            'RecStatus' => "ACTIVE"
                         ]);
                 }else{
 
@@ -1879,6 +1880,10 @@ class PatmastController extends defaultController
 
             if(!$epispayer_obj->exists()){
                 //kalu xjumpa epispayer, buat baru
+                if($epis_fin == "PT"){
+                    $epis_payer == $epis_mrn_pad;
+                }
+
                 DB::table('hisdb.epispayer')
                     ->insert([
                         'CompCode' => session('compcode'),
@@ -1898,6 +1903,11 @@ class PatmastController extends defaultController
                         'computerid' => session('computerid')
                     ]);
             }else{
+
+                if($epis_fin == "PT"){
+                    $epis_payer == $epis_mrn_pad;
+                }
+
                 DB::table('hisdb.epispayer')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$epis_mrn)

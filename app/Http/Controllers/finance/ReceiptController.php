@@ -124,12 +124,26 @@ class ReceiptController extends defaultController
             ];
 
             if($request->dbacthdr_trantype == "RD"){
+
+                $hdrtypmst = DB::table('debtor.hdrtypmst')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','PB')
+                        ->where('trantype','RD')
+                        ->where('hdrtype',$request->dbacthdr_hdrtype);
+
+                if(!$hdrtypmst->exists()){
+                    throw new \Exception("Headertype not exists");
+                }
+                $hdrtypmst = $hdrtypmst->first(); 
+
                 $array_insert_RD = [
                     'hdrtype' => $request->dbacthdr_hdrtype,
-                    'mrn' => $request->dbacthdr_mrn,
-                    'episno' => $request->dbacthdr_episno
+                    'mrn' => $request->dbacthdr_mrn
                 ];
 
+                if($hdrtypmst->updepisode == '1'){
+                    $array_insert_RD['episno'] = $request->dbacthdr_episno;
+                }
 
                 $array_insert = array_merge($array_insert, $array_insert_RD);
             }else{
