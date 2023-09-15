@@ -31,12 +31,15 @@ $(document).ready(function () {
 		let trantype = $(this).data('trantype');
 		switch(trantype){
 			case 'RC':
+				refreshGrid('#jqGrid_rc', urlParam_rcpt);
 				$("#jqGrid_rc").jqGrid ('setGridWidth', Math.floor($("#tab-rc")[0].offsetWidth-$("#tab-rc")[0].offsetLeft));
 				break;
 			case 'RD':
+				refreshGrid("#jqGrid_rd", urlParam_rd);
 				$("#jqGrid_rd").jqGrid ('setGridWidth', Math.floor($("#tab-rd")[0].offsetWidth-$("#tab-rd")[0].offsetLeft));
 				break;
 			case 'RF':
+				refreshGrid("#jqGrid_rf",urlParam_rf);
 				$("#jqGrid_rf").jqGrid ('setGridWidth', Math.floor($("#tab-rf")[0].offsetWidth-$("#tab-rf")[0].offsetLeft));
 				break;
 		}

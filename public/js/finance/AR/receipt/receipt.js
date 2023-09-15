@@ -1235,10 +1235,10 @@ $(document).ready(function () {
 	// 		$('#allocate').hide();
 	// 	}
 	// }
-
+	
 	var myallocation = new Allocation();
 	var allocurrency = new currencymode(["#AlloBalance","#AlloTotal"]);
-
+	
 	$( "#allocateDialog" ).dialog({
 		autoOpen: false,
 		width: 9/10 * $(window).width(),
@@ -1267,13 +1267,10 @@ $(document).ready(function () {
 		close: function( event, ui ){
 			dialog_allodebtor.off();
 			parent_close_disabled(false);
-
 		},
 		buttons:
 			[{
 				text: "Save",click: function() {
-					console.log();
-
 					if( parseFloat($("#AlloBalance").val())<0){
 						alert("Balance cannot in negative values");
 					}else if(myallocation.allo_error.length>0){
@@ -1309,7 +1306,7 @@ $(document).ready(function () {
 				}
 			}],
 	});
-
+	
 	var urlParamAllo={
 		action:'get_table_default',
 		url: 'util/get_table_default',
