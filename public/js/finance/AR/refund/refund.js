@@ -542,6 +542,8 @@ $(document).ready(function () {
 			$( "#dialogForm" ).dialog( "open" );
 			$("#g_paymodecard_c, #g_paymodebank_c").show();
 			$("#g_paycard_c, #g_paybank_c").hide();
+			refreshGrid("#gridAllo",urlParamAllo);
+
 		},
 	});
 	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
@@ -854,16 +856,17 @@ function Allocation(){
 				self.alloTotal += parseFloat(obj.obj.amtpaid);
 			}
 		});
-		this.alloBalance = this.outamt - this.alloTotal;
+		// this.alloBalance = this.outamt - this.alloTotal;
 
 		$("input[name=dbacthdr_allocamt]").val(this.alloTotal);
-		$("#AlloBalance").val(this.alloBalance);
-		if(this.alloBalance<0){
-			$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
-			alert("Balance cannot in negative values");
-		}else{
-			$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
-		}
+		// $("#AlloBalance").val(this.alloBalance);
+		// if(this.alloBalance<0){
+		// 	$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
+		// 	alert("Balance cannot in negative values");
+		// }else{
+		// 	$("#AlloBalance").addClass( "valid" ).removeClass( "error" );
+		// }
+		// console.log(this.outamt);
 		allocurrency.formatOn();
 	}
 }

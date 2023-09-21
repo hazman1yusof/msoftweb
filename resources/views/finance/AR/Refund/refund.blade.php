@@ -217,10 +217,10 @@
                             <input id="dbacthdr_paymode" name="dbacthdr_paymode" type="hidden" value="CASH">
                             </br>
                             <div class="myformgroup">
-                                <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
+                                <!-- <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
                                 <div class='col-md-3'> 
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-                                </div>
+                                </div> -->
 
                                 <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
                                 <div class='col-md-3'> 
@@ -266,10 +266,10 @@
 							</div>
                             <div class='col-md-8'>
                                 <div class="form-group">
-                                    <div class='col-md-4'> 
+                                    <!-- <div class='col-md-4'> 
                                         <label class="control-label" for="dbacthdr_amount">Refund Amount</label> 
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-                                    </div>
+                                    </div> -->
 
                                     <div class='col-md-4'> 
                                         <label class="control-label" for="dbacthdr_allocamt">Allocation Amount</label> 
@@ -311,10 +311,10 @@
                                 </div>
                             </div>
                             <div class="myformgroup">
-                                <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
+                                <!-- <label class="control-label col-md-2" for="dbacthdr_amount">Refund Amount</label> 
                                 <div class='col-md-3'> 
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-                                </div>
+                                </div> -->
                                 <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
                                 <div class='col-md-3'> 
                                     <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>

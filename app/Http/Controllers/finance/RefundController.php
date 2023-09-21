@@ -231,7 +231,7 @@ class RefundController extends defaultController
                 throw new \Exception("User dont have till");
             }
 
-            $outamount_ = floatval($request->dbacthdr_amount) - floatval($request->dbacthdr_allocamt);
+            // $outamount_ = floatval($request->dbacthdr_amount) - floatval($request->dbacthdr_allocamt);
 
             $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
 
@@ -253,8 +253,8 @@ class RefundController extends defaultController
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
-                'amount' => $request->dbacthdr_amount,  
-                'outamount' => $outamount_,  
+                'amount' => $request->dbacthdr_allocamt,  
+                //'outamount' => $balance,  
                 'remark' => $request->dbacthdr_remark,  
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
