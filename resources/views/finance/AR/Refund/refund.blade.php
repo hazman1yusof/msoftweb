@@ -222,9 +222,9 @@
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div> -->
 
-                                <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                <label class="control-label col-md-2" for="dbacthdr_amount">Allocation Amount</label> 
                                 <div class='col-md-3'> 
-                                    <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" rdonly>
                                 </div>
                             </div>
                             </form>
@@ -244,7 +244,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="g_paycard_c" class='col-md-4 minuspad-15'>
+                            <!-- <div id="g_paycard_c" class='col-md-4 minuspad-15'>
 								<table class="table table-bordered">
 									<thead>
 										<tr>
@@ -263,7 +263,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</div> -->
                             <div class='col-md-8'>
                                 <div class="form-group">
                                     <!-- <div class='col-md-4'> 
@@ -272,8 +272,8 @@
                                     </div> -->
 
                                     <div class='col-md-4'> 
-                                        <label class="control-label" for="dbacthdr_allocamt">Allocation Amount</label> 
-                                        <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                        <label class="control-label" for="dbacthdr_amount">Allocation Amount</label> 
+                                        <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" rdonly>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -293,7 +293,7 @@
                                     <div class='col-md-6'>
                                         <label class="control-label" for="dbacthdr_expdate">Expiry Date</label> 
                                         <div class=''> 
-                                            <input id="dbacthdr_expdate" name="dbacthdr_expdate" type="date" class="form-control input-sm" value="<?php echo date("Y-m-d"); ?>" max="<?php echo date("Y-m-d"); ?>">
+                                        <input id="dbacthdr_expdate" name="dbacthdr_expdate" type="month" class="form-control input-sm">
                                         </div>
                                     </div>
                                 </div>
@@ -315,9 +315,9 @@
                                 <div class='col-md-3'> 
                                     <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                 </div> -->
-                                <label class="control-label col-md-2" for="dbacthdr_allocamt">Allocation Amount</label> 
+                                <label class="control-label col-md-2" for="dbacthdr_amount">Allocation Amount</label> 
                                 <div class='col-md-3'> 
-                                    <input id="dbacthdr_allocamt" name="dbacthdr_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                    <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" rdonly>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -342,7 +342,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="g_paybank_c" class='col-md-4 minuspad-15'>
+                            <!-- <div id="g_paybank_c" class='col-md-4 minuspad-15'>
 								<table class="table table-bordered">
 									<thead>
 										<tr>
@@ -361,7 +361,7 @@
 										</tr>
 									</tbody>
 								</table>
-							</div>
+							</div> -->
                             <div class='col-md-8'>
                                 <div class="form-group">
                                     <div class='col-md-4'> 

@@ -29,6 +29,25 @@ $(document).ready(function () {
 	var tabform="#f_tab-cash";
 	checkifuserlogin();
 
+	function getcr(paytype){
+		var param={
+			action:'get_value_default',
+			field:['glaccno','ccode'],
+			url: 'util/get_value_default',
+			table_name:'debtor.paymode',
+			table_id:'paymode',
+			filterCol:['paytype','source','compcode'],
+			filterVal:[paytype,'AR','session.compcode'],
+		}
+	
+		$.get( param.url+"?"+$.param(param), function( data ) {
+			
+		},'json').done(function(data) {
+				$("#formdata input[name='dbacthdr_drcostcode']").val(data.rows[0].ccode);
+				$("#formdata input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
+		});
+	}
+
 	function setDateToNow(){
 		$('input[name=dbacthdr_entrydate]').val(moment().format('YYYY-MM-DD'));
 	}
@@ -45,6 +64,11 @@ $(document).ready(function () {
 		$('.nav li').removeClass('disabled');
 		$('.nav li').find('a').attr("data-toggle","tab");
 		$('.nav li').show();
+	}
+
+	function resetpill(){
+		$('#dialogForm ul.nav-tabs li').removeClass('active');
+		$('#dialogForm ul.nav-tabs li a').attr('aria-expanded',false);
 	}
 
 	function amountchgOn(){
@@ -144,6 +168,17 @@ $(document).ready(function () {
 			filterCol:['source','paytype','compcode'],
 			filterVal:['AR','BANK','session.compcode'],
 		}
+
+		var urlParam_bank={
+			action: 'get_table_default',
+			url: 'util/get_table_default',
+			field: '',
+			table_name: 'debtor.paymode',
+			table_id: 'paymode',
+			filterCol: ['source','paytype','compcode','paymode'],
+			filterVal: ['AR','BANK','session.compcode',''],
+		}
+
 		$("#g_paymodebank").jqGrid({
 			datatype: "local",
 			 colModel: [
@@ -193,6 +228,17 @@ $(document).ready(function () {
 			filterCol:['source','paytype','compcode'],
 			filterVal:['AR','CARD','session.compcode'],
 		}
+
+		var urlParam_card={
+			action: 'get_table_default',
+			url: 'util/get_table_default',
+			field: '',
+			table_name: 'debtor.paymode',
+			table_id: 'paymode',
+			filterCol: ['source','paytype','compcode','paymode'],
+			filterVal: ['AR','CARD','session.compcode',''],
+		}
+
 		$("#g_paymodecard").jqGrid({
 			datatype: "local",
 			 colModel: [
@@ -304,30 +350,39 @@ $(document).ready(function () {
 	$("input[name=dbacthdr_entrydate]").keydown(false);
 	
 	////////////////////////////////////start dialog////////////////////////////////////
+	var oper = 'add';
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		tabform=$(this).attr('form');
 		rdonly(tabform);
 		$('#dbacthdr_paytype').val(tabform);
 		switch(tabform) {
-			case state = '#f_tab-cash':
+			case '#f_tab-cash':
 				getcr('CASH');
 				break;
-			case state = '#f_tab-card':
-				$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
-				refreshGrid("#g_paymodecard",urlParam3);
+			case '#f_tab-card':
+				if(oper=="view"){
+					urlParam_card.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					refreshGrid("#g_paymodecard",urlParam_card);
+				}else{
+					refreshGrid("#g_paymodecard",urlParam3);
+				}
 				break;
-			case state = '#f_tab-cheque':
+			case '#f_tab-cheque':
 				getcr('cheque');
 				break;
-			case state = '#f_tab-debit':
-				$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
-				refreshGrid("#g_paymodebank",urlParam2);
+			case '#f_tab-debit':
+				if(oper=="view"){
+					urlParam_bank.filterVal[3]=selrowData('#jqGrid').dbacthdr_paymode;
+					refreshGrid("#g_paymodebank",urlParam_bank);
+				}else{
+					refreshGrid("#g_paymodebank",urlParam2);
+				}
 				break;
 		}
+		$("#g_paymodecard").jqGrid ('setGridWidth', $("#g_paymodecard_c")[0].clientWidth);
+		$("#g_paymodebank").jqGrid ('setGridWidth', $("#g_paymodebank_c")[0].clientWidth);
 	});
-
-	var oper = 'add';
 
 	$("#dialogForm")
 	  .dialog({ 
@@ -363,16 +418,16 @@ $(document).ready(function () {
 					disableForm(selrowData('#jqGrid').dbacthdr_paytype);
 					$(this).dialog("option", "buttons",butt2);
 
-					switch(selrowData('#jqGrid').dbacthdr_paytype) {
-						case state = '#f_tab-card':
-							refreshGrid("#g_paymodecard",urlParam3);
-							break;
-						case state = '#f_tab-debit':
-							refreshGrid("#g_paymodebank",urlParam2);
-							break;
-					}
+					// switch(selrowData('#jqGrid').dbacthdr_paytype) {
+					// 	case state = '#f_tab-card':
+					// 		refreshGrid("#g_paymodecard",urlParam3);
+					// 		break;
+					// 	case state = '#f_tab-debit':
+					// 		refreshGrid("#g_paymodebank",urlParam2);
+					// 		break;
+					// }
 				
-					break;
+					// break;
 			}
 			if(oper!='view'){
 				dialog_payercode.on();
@@ -455,11 +510,25 @@ $(document).ready(function () {
 			{label: 'epistype', name: 'dbacthdr_epistype', hidden: true},
 			{label: 'cbflag', name: 'dbacthdr_cbflag', hidden: true},
 			{label: 'reference', name: 'dbacthdr_reference', hidden: true},
-			{label: 'Payment Mode', name: 'dbacthdr_paymode',width: 70, hidden: true}, //tunjuk
+			{ label: 'Payment Mode', name: 'dbacthdr_paymode', width: 70, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },	//tunjuk
 			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""}, hidden:true }, 
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{label: 'expdate', name: 'dbacthdr_expdate', hidden: true},
+			{ label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, align:'right', hidden:true,
+			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
+			editoptions: {
+				dataInit: function (element) {
+					$(element).datepicker({
+						id: 'expdate_datePicker',
+						dateFormat: 'MM/YYYY',
+						min: now,
+						max: until,
+						changeMonth: true,
+						changeYear: true,
+					});
+				}
+			}
+			},			
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
 			{label: 'units', name: 'dbacthdr_unit', hidden: true},
 			{label: 'invno', name: 'dbacthdr_invno', hidden: true},
@@ -486,9 +555,9 @@ $(document).ready(function () {
 			$("#gridAllo input[name='tick']").hide();
 		},
 		onSelectRow: function(rowid){
-			urlParamAllo.payercode = selrowData("#jqGrid").dbacthdr_payercode;
-			refreshGrid("#gridAllo",urlParamAllo);
-			$("#gridAllo input[name='tick']").hide();
+			// urlParamAllo.payercode = selrowData("#jqGrid").dbacthdr_payercode;
+			// refreshGrid("#gridAllo",urlParamAllo);
+			// $("#gridAllo input[name='tick']").hide();
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
@@ -515,21 +584,29 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-info-sign",
 		title:"View Selected Row",  
 		onClickButton: function(){
+
+			var expdate = selrowData("#jqGrid").dbacthdr_expdate;
+				var datearray = expdate.split("/");
+				
+				var newexpdate = datearray[1] + '-' + datearray[0];
+				$("#dbacthdr_expdate").val(newexpdate);
+
 			oper='view';
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			var selform=selrowData('#jqGrid').dbacthdr_paytype;
+			resetpill();
 			if(selform!=''){
 				$(".nav-tabs a[form='"+selform.toLowerCase()+"']").tab('show');
 				disabledPill();
-				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view');
+				populateFormdata("#jqGrid","",selform.toLowerCase(),selRowId,'view', ['dbacthdr_expdate']);
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
 			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
 			$("#dialogForm").dialog( "open" );
-			$("#g_paycard_c, #g_paybank_c").show();
-			$("#g_paymodecard_c, #g_paymodebank_c").hide();
+			// $("#g_paycard_c, #g_paybank_c").show();
+			// $("#g_paymodecard_c, #g_paymodebank_c").hide();
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		caption:"",cursor: "pointer",position: "first",  
@@ -537,12 +614,13 @@ $(document).ready(function () {
 		title:"Add Selected Row", 
 		onClickButton: function(){
 			oper='add';
-			enabledPill();
+			resetpill();
 			$(".nav-tabs a[form='#f_tab-cash']").tab('show');
+			enabledPill();
 			$( "#dialogForm" ).dialog( "open" );
-			$("#g_paymodecard_c, #g_paymodebank_c").show();
-			$("#g_paycard_c, #g_paybank_c").hide();
-			refreshGrid("#gridAllo",urlParamAllo);
+			// $("#g_paymodecard_c, #g_paymodebank_c").show();
+			// $("#g_paycard_c, #g_paybank_c").hide();
+			// refreshGrid("#gridAllo",urlParamAllo);
 
 		},
 	});
@@ -579,8 +657,10 @@ $(document).ready(function () {
 		switch(options.colModel.name){
 			case 'dbacthdr_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_debtorcode';break;
 			case 'dbacthdr_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_payercode';break;
-			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;		
-		}
+			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;
+			case 'dbacthdr_paymode':field=['paymode','description'];table="debtor.paymode";case_='dbacthdr_paymode';break;
+	
+		}	
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		fdl.get_array('receipt',options,param,case_,cellvalue);
 		
@@ -789,7 +869,7 @@ $(document).ready(function () {
 });
 
 var myallocation = new Allocation();
-var allocurrency = new currencymode(["input[name=dbacthdr_allocamt]"]);
+var allocurrency = new currencymode(["input[name=dbacthdr_amount]"]);
 
 function Allocation(){
 	this.arrayAllo=[];
@@ -858,7 +938,7 @@ function Allocation(){
 		});
 		// this.alloBalance = this.outamt - this.alloTotal;
 
-		$("input[name=dbacthdr_allocamt]").val(this.alloTotal);
+		$("input[name=dbacthdr_amount]").val(this.alloTotal);
 		// $("#AlloBalance").val(this.alloBalance);
 		// if(this.alloBalance<0){
 		// 	$("#AlloBalance").addClass( "error" ).removeClass( "valid" );
@@ -934,21 +1014,3 @@ function calc_jq_height_onchange(jqgrid){
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }	
 
-function getcr(paytype){
-	var param={
-		action:'get_value_default',
-		field:['glaccno','ccode'],
-		url: 'util/get_value_default',
-		table_name:'debtor.paymode',
-		table_id:'paymode',
-		filterCol:['paytype','source','compcode'],
-		filterVal:[paytype,'AR','session.compcode'],
-	}
-
-	$.get( param.url+"?"+$.param(param), function( data ) {
-		
-	},'json').done(function(data) {
-			$("#formdata input[name='dbacthdr_drcostcode']").val(data.rows[0].ccode);
-			$("#formdata input[name='dbacthdr_dracc']").val(data.rows[0].glaccno);
-	});
-}
