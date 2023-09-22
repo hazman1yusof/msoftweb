@@ -244,6 +244,7 @@ class RefundController extends defaultController
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => strtoupper($request->dbacthdr_reference),
                 'authno' => $request->dbacthdr_authno,
+                'bankcharges' => $request->dbacthdr_bankcharges,
                 'expdate' => \Carbon\Carbon::parse($request->dbacthdr_expdate)->endOfMonth()->toDateString(),
                 'entryuser' => session('username'),
                 'recstatus' => 'ACTIVE',

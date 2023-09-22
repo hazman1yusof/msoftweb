@@ -66,11 +66,6 @@ $(document).ready(function () {
 		$('.nav li').show();
 	}
 
-	function resetpill(){
-		$('#dialogForm ul.nav-tabs li').removeClass('active');
-		$('#dialogForm ul.nav-tabs li a').attr('aria-expanded',false);
-	}
-
 	function amountchgOn(){
 		$("input[name='dbacthdr_amount']").on('blur',amountFunction);
 	}
@@ -396,7 +391,7 @@ $(document).ready(function () {
 			parent_close_disabled(true);
 			amountchgOn();
 			switch(oper) {
-				case state = 'add':
+				case  'add':
 					mycurrency.formatOnBlur();
 					$('#dbacthdr_paytype').val(tabform);
 					$( this ).dialog( "option", "title", "Add" );
@@ -405,16 +400,12 @@ $(document).ready(function () {
 					rdonly('#formdata');
 					rdonly(tabform);
 					break;
-				case state = 'edit':
-					$( this ).dialog( "option", "title", "Edit" );
-					enableForm('#formdata');
-					frozeOnEdit("#dialogForm");
-					rdonly('#formdata');
-					break;
-				case state = 'view':
+				case 'view':
 					mycurrency.formatOn();
 					$( this ).dialog( "option", "title", "View" );
 					disableForm('#formdata');
+					disableForm('.tab-content');
+					rdonly('#formdata');
 					disableForm(selrowData('#jqGrid').dbacthdr_paytype);
 					$(this).dialog("option", "buttons",butt2);
 
@@ -514,20 +505,20 @@ $(document).ready(function () {
 			{label: 'Amount', name: 'dbacthdr_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
 			{label: 'O/S Amount', name: 'dbacthdr_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""}, hidden:true }, 
 			{label: 'bankchg', name: 'dbacthdr_bankcharges', hidden: true},
-			{ label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, align:'right', hidden:true,
-			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
-			editoptions: {
-				dataInit: function (element) {
-					$(element).datepicker({
-						id: 'expdate_datePicker',
-						dateFormat: 'MM/YYYY',
-						min: now,
-						max: until,
-						changeMonth: true,
-						changeYear: true,
-					});
+			{label: 'Expiry Date', name: 'dbacthdr_expdate', width: 50, align:'right', hidden:true,
+				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'m/Y'},
+				editoptions: {
+					dataInit: function (element) {
+						$(element).datepicker({
+							id: 'expdate_datePicker',
+							dateFormat: 'MM/YYYY',
+							min: now,
+							max: until,
+							changeMonth: true,
+							changeYear: true,
+						});
+					}
 				}
-			}
 			},			
 			{label: 'rate', name: 'dbacthdr_rate', hidden: true},
 			{label: 'units', name: 'dbacthdr_unit', hidden: true},
@@ -552,7 +543,6 @@ $(document).ready(function () {
 		pager: "#jqGridPager",
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='View Selected Row']").click();
-			$("#gridAllo input[name='tick']").hide();
 		},
 		onSelectRow: function(rowid){
 			// urlParamAllo.payercode = selrowData("#jqGrid").dbacthdr_payercode;
@@ -561,7 +551,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
-			if(oper == 'add'){
+			if(oper == 'add' || oper == null || $("#jqGrid").jqGrid('getGridParam', 'selrow') == null){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
@@ -584,13 +574,7 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-info-sign",
 		title:"View Selected Row",  
 		onClickButton: function(){
-
-			var expdate = selrowData("#jqGrid").dbacthdr_expdate;
-				var datearray = expdate.split("/");
-				
-				var newexpdate = datearray[1] + '-' + datearray[0];
-				$("#dbacthdr_expdate").val(newexpdate);
-
+			
 			oper='view';
 			$('#dbacthdr_recptno').show();
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
@@ -603,7 +587,14 @@ $(document).ready(function () {
 			}else{
 				$(".nav-tabs a[form='#f_tab-cash']").tab('show');
 			}
-			populateFormdata("#jqGrid","","#formdata",selRowId,'view');
+			
+			var expdate = selrowData("#jqGrid").dbacthdr_expdate;
+			var datearray = expdate.split("/");
+			
+			var newexpdate = datearray[1] + '-' + datearray[0];
+			$("#dbacthdr_expdate").val(newexpdate);
+
+			populateFormdata("#jqGrid","","#formdata",selRowId,'view', ['dbacthdr_expdate']);
 			$("#dialogForm").dialog( "open" );
 			// $("#g_paycard_c, #g_paybank_c").show();
 			// $("#g_paymodecard_c, #g_paymodebank_c").hide();
@@ -620,7 +611,6 @@ $(document).ready(function () {
 			$( "#dialogForm" ).dialog( "open" );
 			// $("#g_paymodecard_c, #g_paymodebank_c").show();
 			// $("#g_paycard_c, #g_paybank_c").hide();
-			// refreshGrid("#gridAllo",urlParamAllo);
 
 		},
 	});
@@ -1013,4 +1003,9 @@ function calc_jq_height_onchange(jqgrid){
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 }	
+
+function resetpill(){
+	$('#dialogForm ul.nav-tabs li').removeClass('active');
+	$('#dialogForm ul.nav-tabs li a').attr('aria-expanded',false);
+}
 
