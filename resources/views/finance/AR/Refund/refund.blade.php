@@ -380,9 +380,9 @@
                                         <label class="control-label" for="dbacthdr_amount">Payment</label> 
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                     </div> -->
-                                </div>
+                                <!-- </div> -->
 
-                                <div class="myformgroup">
+                                <!-- <div class="myformgroup"> -->
                                     <div class='col-md-6'> 
                                         <label class="control-label" for="dbacthdr_amount">Allocation Amount</label> 
                                         <input id="dbacthdr_amount" name="dbacthdr_amount" type="text" class="form-control input-sm" value="0.00" rdonly>
