@@ -1158,13 +1158,6 @@ function remarkCustomEdit_dfee(val,opt){
 
 	return $(myreturn);
 }
-function ret_parsefloat(int){
-	if(!isNaN(parseFloat(int))){
-		return parseFloat(int);
-	}else{
-		return 0;
-	}
-}
 function galGridCustomValue_dfee (elem, operation, value){
 	if(operation == 'get') {
 		return $(elem).find("input").val();

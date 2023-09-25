@@ -65,7 +65,7 @@ $(document).ready(function(){
 			{ label: 'Discount<br>Amount', name: 'discamount', hidden: true },
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 60, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:totamountFormatter,
+				formatter:totamountFormatter_phar_doc,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Dosage', name: 'remark', hidden: true },
@@ -1155,7 +1155,7 @@ function taxcodeCustomEdit_phar(val,opt){
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
-function totamountFormatter(val,opt,rowObject ){
+function totamountFormatter_phar_doc(val,opt,rowObject ){
 	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }
@@ -1189,13 +1189,6 @@ function remarkCustomEdit_phar(val,opt){
 	myreturn += `<label class='oe_phar_label'>Indicator</label><div class="oe_phar_div input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="drugindicator" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`
 
 	return $(myreturn);
-}
-function ret_parsefloat(int){
-	if(!isNaN(parseFloat(int))){
-		return parseFloat(int);
-	}else{
-		return 0;
-	}
 }
 function galGridCustomValue_phar (elem, operation, value){
 	if(operation == 'get') {

@@ -179,13 +179,31 @@ class RefundController extends defaultController
 
     public function refund_allo_table(Request $request){
 
-        $table = DB::table('debtor.dbacthdr')
+        if($request->oper == 'add'){
+            $table = DB::table('debtor.dbacthdr')
                         ->where('dbacthdr.payercode',$request->payercode)
                         ->where('dbacthdr.compcode',session('compcode'))
                         ->where('dbacthdr.outamount','>',0)
                         ->where('dbacthdr.source','PB')
                         ->whereIn('dbacthdr.trantype',['RD','RC']);
-       // dd($request->payercode);
+
+        }else{
+            $table = DB::table('debtor.dballoc as all')
+                        ->select('act.idno','act.auditno','act.entrydate','act.mrn','act.episno','act.source','act.trantype','act.lineno_','act.amount','act.outamount')
+                        ->where('all.docsource', '=', 'PB')
+                        ->where('all.doctrantype', '=', 'RF')
+                        ->where('all.compcode',session('compcode'))
+                        ->where('all.docauditno', '=', $request->auditno)
+                        ->join('debtor.dbacthdr as act', function($join) use ($request){
+                            $join = $join->on('act.source', 'all.refsource')
+                                         ->on('act.trantype', 'all.reftrantype')
+                                         ->on('act.auditno', '=', 'all.refauditno')
+                                         ->where('act.compcode','=',session('compcode'));
+                        });
+        }
+
+
+
         $paginate = $table->paginate($request->rows);
 
         $responce = new stdClass();
@@ -278,11 +296,12 @@ class RefundController extends defaultController
             foreach ($request->allo as $key => $value) {
                 $receipt = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
-                            ->where('source','PB')
-                            ->whereIn('trantype',['RD','RC'])
-                            ->where('payercode',$request->dbacthdr_payercode)
-                            ->where('auditno',$value['obj']['auditno'])
-                            ->where('outamount','>',0);
+                            // ->where('source','PB')
+                            // ->whereIn('trantype',['RD','RC'])
+                            // ->where('payercode',$request->dbacthdr_payercode)
+                            // ->where('auditno',$value['obj']['auditno'])
+                            // ->where('outamount','>',0);
+                            ->where('idno',$value['obj']['idno']);
 
                 if($receipt->exists()){
 
@@ -416,10 +435,10 @@ class RefundController extends defaultController
 
             if($mode == true){
                 $paymode_db = $paymode_db->where('paymode',$paymode);
-            }
 
-            if(!$paymode_db->exists()){
-                throw new \Exception("No Paymode");
+                if(!$paymode_db->exists()){
+                    throw new \Exception("No Paymode");
+                }
             }
 
             $paymode_first  = $paymode_db->first();

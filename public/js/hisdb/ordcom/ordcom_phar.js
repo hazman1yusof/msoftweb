@@ -90,7 +90,7 @@ $(document).ready(function(){
 			{ label: 'Discount<br>Amount', name: 'discamount', hidden: true },
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:totamountFormatter,
+				formatter:totamountFormatter_phar,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{label: 'Dosage', name: 'remark', hidden: true },
@@ -129,28 +129,32 @@ $(document).ready(function(){
 		gridComplete: function(){
 			fdl_ordcom.set_array().reset();
 			myfail_msg_phar.clear_fail();
+			$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
 		},
 		afterShowForm: function (rowid) {
 		},
 		beforeSelectRow:function(rowid, e){
 			if($('#jqGrid_phar_iladd').hasClass('ui-disabled')){
 				return false;
+			}else{
+				write_detail_phar('clearall');
+				write_detail_dosage('clearall');
+				var selrowdata = $('#jqGrid_phar').jqGrid ('getRowData', rowid);
+
+				write_detail_phar([
+					{span:'#jqgrid_detail_phar_chgcode',value:selrowdata.chgcode},
+					{span:'#jqgrid_detail_phar_chgcode_desc',value:selrowdata.chgcode},
+					{span:'#jqgrid_detail_phar_dept',value:selrowdata.deptcode},
+					{span:'#jqgrid_detail_phar_cost_price',value:selrowdata.cost_price},
+					{span:'#jqgrid_detail_phar_unitprice',value:selrowdata.unitprce},
+					{span:'#jqgrid_detail_phar_discamt',value:selrowdata.discamount},
+					{span:'#jqgrid_detail_phar_taxamt',value:selrowdata.taxamount},
+				]);
+
+				write_detail_dosage(selrowdata);
 			}
 		},
 		onSelectRow:function(rowid){
-			var selrowdata = $('#jqGrid_phar').jqGrid ('getRowData', rowid);
-
-			write_detail_phar([
-				{span:'#jqgrid_detail_phar_chgcode',value:selrowdata.chgcode},
-				{span:'#jqgrid_detail_phar_chgcode_desc',value:selrowdata.chgcode},
-				{span:'#jqgrid_detail_phar_dept',value:selrowdata.deptcode},
-				{span:'#jqgrid_detail_phar_cost_price',value:selrowdata.cost_price},
-				{span:'#jqgrid_detail_phar_unitprice',value:selrowdata.unitprce},
-				{span:'#jqgrid_detail_phar_discamt',value:selrowdata.discamount},
-				{span:'#jqgrid_detail_phar_taxamt',value:selrowdata.taxamount},
-			]);
-
-			write_detail_dosage(selrowdata);
 		},
 		ondblClickRow: function(rowId) {
 			$('#jqGrid_phar_iledit').click();
@@ -572,6 +576,58 @@ function calculate_line_totgst_and_totamt_phar(event) {
 	});
 }
 
+var dialog_deptcode_phar = new ordialog(
+	'deptcode_phar',['sysdb.department'],"#jqGrid_phar input[name='deptcode']",errorField,
+	{	colModel:
+		[
+			{label:'Department Code', name:'deptcode', width:200, classes:'pointer', canSearch:true, or_search:true},
+			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+		],
+		urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+		ondblClickRow:function(event){
+			if(event.type == 'keydown'){
+
+				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}else{
+
+				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}
+			let data=selrowData('#'+dialog_deptcode_phar.gridname);
+			dialog_chgcode_phar.urlParam.deptcode = data.deptcode;
+
+			write_detail_phar('#jqgrid_detail_phar_dept',data.description);
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+			}
+		}
+		
+	},{
+		title:"Select Department Code",
+		open:function(obj_){
+
+			dialog_deptcode_phar.urlParam.filterCol=['compcode','recstatus'];
+			dialog_deptcode_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
+		},
+		close: function(){
+			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
+			// 	.closest('td')						//utk dialog dalam jqgrid jer
+			// 	.next()
+			// 	.find("input[type=text]").focus();
+		}
+	},'urlParam', 'radio', 'tab' 	
+);
+dialog_deptcode_phar.makedialog(false);
+
 var dialog_chgcode_phar = new ordialog(
 	'chgcode_phar',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid_phar input[name='chgcode']",errorField,
 	{	colModel:
@@ -945,56 +1001,6 @@ var dialog_tax_phar = new ordialog(
 );
 dialog_tax_phar.makedialog(false);
 
-var dialog_deptcode_phar = new ordialog(
-	'deptcode_phar',['sysdb.department'],"#jqGrid_phar input[name='deptcode']",errorField,
-	{	colModel:
-		[
-			{label:'Department Code', name:'deptcode', width:200, classes:'pointer', canSearch:true, or_search:true},
-			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(event){
-			if(event.type == 'keydown'){
-
-				var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}else{
-
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}
-			let data=selrowData('#'+dialog_deptcode_phar.gridname);
-			dialog_chgcode_phar.urlParam.deptcode = data.deptcode;
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				$(obj.textfield).closest('td').next().find("input[type=text]").focus();
-			}
-		}
-		
-	},{
-		title:"Select Tax Code For Item",
-		open:function(obj_){
-
-			dialog_deptcode_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_deptcode_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
-		},
-		close: function(){
-			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
-			// 	.closest('td')						//utk dialog dalam jqgrid jer
-			// 	.next()
-			// 	.find("input[type=text]").focus();
-		}
-	},'urlParam', 'radio', 'tab' 	
-);
-dialog_deptcode_phar.makedialog(false);
-
 var dialog_dosage_phar = new ordialog(
 	'dosage_phar',['hisdb.dose'],"#dosage_phar",'errorField',
 	{	colModel:
@@ -1177,7 +1183,7 @@ function itemcodeCustomEdit_phar(val, opt) {
 
 	return $(myreturn);
 }
-function totamountFormatter(val,opt,rowObject ){
+function totamountFormatter_phar(val,opt,rowObject ){
 	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }
@@ -1196,7 +1202,7 @@ function taxcodeCustomEdit_phar(val,opt){
 function deptcodeCustomEdit_phar(val,opt){  	
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 	if(val.trim() == ''){
-		val = $('#userdeptcode').val();
+		val = $('#userdeptdesc').val();
 		write_detail_phar('#jqgrid_detail_phar_dept',val);
 	}
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
@@ -1256,7 +1262,7 @@ function cust_rules_phar(value, name) {
 function write_detail_phar(span,value){
 	if(span == 'clearall'){
 		let jqgrid_detail_phar_docname = $('#jqgrid_detail_phar_docname').text();
-		$('#jqgrid_detail_phar span').text('');
+		$('#jqgrid_detail_phar span.label_d').text('');
 		$('#jqgrid_detail_phar_docname').text(jqgrid_detail_phar_docname);
 	}else if(Array.isArray(span)){
 		span.forEach(function(e,i){
@@ -1288,6 +1294,21 @@ function write_detail_phar(span,value){
 }
 
 function write_detail_dosage(selrowdata,edit=false){
+	if(selrowdata == 'clearall'){
+		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
+
+		$('#dosage_phar').val('');
+		$('#dosage_phar_code').val('');
+		$('#frequency_phar').val('');
+		$('#frequency_phar_code').val('');
+		$('#instruction_phar').val('');
+		$('#instruction_phar_code').val('');
+		$('#drugindicator_phar').val('');
+		$('#drugindicator_phar_code').val('');
+
+		return 0;
+	}
+
 	if(!edit){
 		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
 	}else{

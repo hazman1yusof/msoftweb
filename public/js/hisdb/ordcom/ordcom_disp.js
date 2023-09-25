@@ -90,7 +90,7 @@ $(document).ready(function(){
 			{ label: 'Discount<br>Amount', name: 'discamount', hidden: true },
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:totamountFormatter,
+				formatter:totamountFormatter_disp,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{label: 'Dosage', name: 'remark', hidden: true },
@@ -1177,7 +1177,7 @@ function itemcodeCustomEdit_disp(val, opt) {
 
 	return $(myreturn);
 }
-function totamountFormatter(val,opt,rowObject ){
+function totamountFormatter_disp(val,opt,rowObject ){
 	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }

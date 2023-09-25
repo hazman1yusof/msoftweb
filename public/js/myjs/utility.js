@@ -2050,7 +2050,13 @@ function dob_age(date){
 function if_none(str, none_return = 'NONE'){
 	return (str)?str:none_return;
 }
-
+function ret_parsefloat(int){
+	if(!isNaN(parseFloat(int))){
+		return parseFloat(int);
+	}else{
+		return 0;
+	}
+}
 
 function SmoothScrollTo(id_or_Name, timelength,minustop=50,callback){
   var timelength = timelength || 500;

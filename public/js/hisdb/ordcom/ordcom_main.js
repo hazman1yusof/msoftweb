@@ -26,6 +26,7 @@ $(document).ready(function(){
 		if($('#isdoctor').val() != '1'){
 			let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
 			write_detail_phar('#jqgrid_detail_phar_docname',getCurrentRow.q_doctorname);
+			write_detail_phar('#jqgrid_detail_phar_dept',$('#userdeptdesc').val());
 		}
 	});
 
