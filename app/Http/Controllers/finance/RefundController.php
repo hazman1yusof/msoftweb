@@ -291,7 +291,6 @@ class RefundController extends defaultController
             $refund_first = DB::table('debtor.dbacthdr')
                                 ->where('idno',$latestidno)
                                 ->first();
-
             $amt_paid = 0;
             foreach ($request->allo as $key => $value) {
                 $receipt = DB::table('debtor.dbacthdr')
@@ -306,7 +305,7 @@ class RefundController extends defaultController
                 if($receipt->exists()){
 
                     $receipt_first = $receipt->first();
-                    
+
                     $receipt->update([
                         'outamount' => $value['obj']['amtbal']
                     ]);
@@ -334,9 +333,9 @@ class RefundController extends defaultController
                             'refauditno' => $receipt_first->auditno,
                             'refamount' => $receipt_first->amount,
                             'reflineno' => $receipt_first->lineno_,
-                            'recptno' => $refund_first->recptno,
-                            'mrn' => $refund_first->mrn,
-                            'episno' => $refund_first->episno,
+                            'recptno' => $receipt_first->recptno,
+                            'mrn' => str_pad($$receipt_first->mrn, 7, "0", STR_PAD_LEFT),
+                            'episno' => $receipt_first->episno,
                             'allocsts' => 'ACTIVE',
                             'amount' => floatval($value['obj']['amtpaid']),
                             'tillcode' => $refund_first->tillcode,
