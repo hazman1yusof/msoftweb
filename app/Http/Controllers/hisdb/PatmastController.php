@@ -1297,7 +1297,7 @@ class PatmastController extends defaultController
                     DB::table('debtor.debtormast')
                         ->insert([
                             'CompCode' => session('compcode'),
-                            'DebtorCode' => $epis_mrn,
+                            'DebtorCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
                             'Name' => $patmast_data->Name,
                             'Address1' => $patmast_data->Address1,
                             'Address2' => $patmast_data->Address2,
@@ -1311,13 +1311,56 @@ class PatmastController extends defaultController
                             'ActDebGlAcc' => $debtortype_data->actdebglacc,
                             'upduser' => session('username'),
                             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                            'RecStatus' => "A"
+                            'RecStatus' => "ACTIVE"
                         ]);
                 }else{
 
                     // $debtormast_data = $debtormast_obj->first();
 
                 }
+
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
+
+                if(!$epispayer_obj->exists()){
+
+                    if(!empty($epis_refno)){
+                        $use_refno = $epis_refno;
+                    }else{
+                        $use_refno = null;
+                    }
+
+                    //kalu xjumpa epispayer, buat baru
+                    DB::table('hisdb.epispayer')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'EpisTyCode' => $epis_type,
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
+                            'Pay_Type' => $epis_fin,
+                            'refno' => $use_refno,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
+
+
+                    DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->update(['payer'=>str_pad($epis_mrn, 7, "0", STR_PAD_LEFT)]);
+
+                }
+
             }
 
             //CREATE EPISPAYER
@@ -1332,40 +1375,6 @@ class PatmastController extends defaultController
                 // adduser
                 // adddate
                 // computerid
-
-            $epispayer_obj = DB::table('hisdb.epispayer')
-                ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$epis_mrn)
-                ->where('Episno','=',$epis_no);
-
-            if(!$epispayer_obj->exists()){
-
-                if(!empty($epis_refno)){
-                    $use_refno = $epis_refno;
-                }else{
-                    $use_refno = null;
-                }
-
-                //kalu xjumpa epispayer, buat baru
-                DB::table('hisdb.epispayer')
-                    ->insert([
-                        'CompCode' => session('compcode'),
-                        'MRN' => $epis_mrn,
-                        'Episno' => $epis_no,
-                        'EpisTyCode' => $epis_type,
-                        'LineNo' => '1',
-                        'BillType' => $epis_billtype,
-                        'PayerCode' => $epis_payer,
-                        'Pay_Type' => $epis_fin,
-                        'refno' => $use_refno,
-                        'allgroup' => 1,
-                        'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'AddUser' => session('username'),
-                        'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'LastUser' => session('username'),
-                        'computerid' => session('computerid')
-                    ]);
-            }
 
             if($request->epis_pay == 'PANEL'){
 
@@ -1856,6 +1865,48 @@ class PatmastController extends defaultController
                 }else{
 
                     // $debtormast_data = $debtormast_obj->first();
+
+                }
+                
+                $epispayer_obj = DB::table('hisdb.epispayer')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$epis_mrn)
+                    ->where('Episno','=',$epis_no);
+
+                if(!$epispayer_obj->exists()){
+
+                    if(!empty($epis_refno)){
+                        $use_refno = $epis_refno;
+                    }else{
+                        $use_refno = null;
+                    }
+
+                    //kalu xjumpa epispayer, buat baru
+                    DB::table('hisdb.epispayer')
+                        ->insert([
+                            'CompCode' => session('compcode'),
+                            'MRN' => $epis_mrn,
+                            'Episno' => $epis_no,
+                            'EpisTyCode' => $epis_type,
+                            'LineNo' => '1',
+                            'BillType' => $epis_billtype,
+                            'PayerCode' => str_pad($epis_mrn, 7, "0", STR_PAD_LEFT),
+                            'Pay_Type' => $epis_fin,
+                            'refno' => $use_refno,
+                            'allgroup' => 1,
+                            'AddDate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'AddUser' => session('username'),
+                            'Lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                            'LastUser' => session('username'),
+                            'computerid' => session('computerid')
+                        ]);
+
+
+                    DB::table('hisdb.episode')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('Episno','=',$epis_no)
+                        ->update(['payer'=>str_pad($epis_mrn, 7, "0", STR_PAD_LEFT)]);
 
                 }
             }

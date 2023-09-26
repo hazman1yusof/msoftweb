@@ -207,6 +207,7 @@
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
 					@endif
                     <th data-column-id="MRN" data-type="numeric" data-formatter="col_mrn" data-width="5%">MRN</th>
+                    <th data-column-id="Episno" data-type="numeric" data-width="5%">Episode</th>
                     <th data-style="dropDownItem" data-column-id="Name" data-formatter="col_name" data-width="15%">Name</th>
                     @if (request()->get('curpat') == 'true')
                     <th data-column-id="payername" data-width="15%">Payer</th>

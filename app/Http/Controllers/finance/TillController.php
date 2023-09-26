@@ -35,6 +35,11 @@ class TillController extends defaultController
         $sum_card = null;
         $sum_bank = null;
         $sum_all = null;
+        $sum_cash_ref = null;
+        $sum_chq_ref = null;
+        $sum_card_ref = null;
+        $sum_bank_ref = null;
+        $sum_all_ref = null;
 
         $till_ = DB::table('debtor.till')
                         ->where('compcode',session('compcode'))
@@ -69,6 +74,7 @@ class TillController extends defaultController
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
                                     ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RD','RC'])
                                     ->join('debtor.paymode as pm', function($join) use ($request){
                                         $join = $join->on('pm.paymode', '=', 'db.paymode')
                                                         ->where('pm.source','AR')
@@ -81,6 +87,7 @@ class TillController extends defaultController
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
                                     ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RD','RC'])
                                     ->join('debtor.paymode as pm', function($join) use ($request){
                                         $join = $join->on('pm.paymode', '=', 'db.paymode')
                                                         ->where('pm.source','AR')
@@ -93,6 +100,7 @@ class TillController extends defaultController
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
                                     ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RD','RC'])
                                     ->join('debtor.paymode as pm', function($join) use ($request){
                                         $join = $join->on('pm.paymode', '=', 'db.paymode')
                                                         ->where('pm.source','AR')
@@ -105,6 +113,59 @@ class TillController extends defaultController
                                     ->where('db.compcode',session('compcode'))
                                     ->where('db.tillcode',$tilldetl->tillcode)
                                     ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RD','RC'])
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','BANK')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+
+                    $sum_cash_ref = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RF'])
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CASH')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+
+                    $sum_chq_ref = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RF'])
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CHEQUE')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+
+                    $sum_card_ref = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RF'])
+                                    ->join('debtor.paymode as pm', function($join) use ($request){
+                                        $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                                        ->where('pm.source','AR')
+                                                        ->where('pm.paytype','CARD')
+                                                        ->where('pm.compcode',session('compcode'));
+                                    })
+                                    ->sum('amount');
+
+                    $sum_bank_ref = DB::table('debtor.dbacthdr as db')
+                                    ->where('db.compcode',session('compcode'))
+                                    ->where('db.tillcode',$tilldetl->tillcode)
+                                    ->where('db.tillno',$tilldetl->tillno)
+                                    ->whereIn('db.trantype',['RF'])
                                     ->join('debtor.paymode as pm', function($join) use ($request){
                                         $join = $join->on('pm.paymode', '=', 'db.paymode')
                                                         ->where('pm.source','AR')
@@ -116,7 +177,7 @@ class TillController extends defaultController
                 }
             }
         } 
-        return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank'));
+        return view('finance.AR.till.till_close',compact('till','tilldetl','sum_cash','sum_chq','sum_card','sum_bank','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref'));
 
     }
 
@@ -140,14 +201,20 @@ class TillController extends defaultController
             
             case 'save_till':
                 switch($request->oper){
-                    case 'use_till':
-                        return $this->use_till($request);break;
+                    case 'close_till':
+                        return $this->close_till($request);break;
                     default:
                         return 'error happen..';
                 }
+
+            case 'use_till':
+                return $this->use_till($request);break;
             
             case 'get_table_till':
                 return $this->get_table_till($request);
+
+            default:
+                    return 'error happen..';
         }
     }
 
@@ -161,7 +228,7 @@ class TillController extends defaultController
         }
     }
     
-    public function use_till(Request $request){
+    public function close_till(Request $request){
         
         DB::beginTransaction();
         
@@ -206,6 +273,43 @@ class TillController extends defaultController
             
         }
         
+    }
+
+    public function use_till(Request $request){
+        DB::beginTransaction();
+        try {
+
+            $tillno = $this->defaultSysparam('AR','TN');
+
+            DB::table('debtor.till')
+                ->where('tillcode','=',$request->tillcode)
+                ->update([
+                    'compcode' => session('compcode'), 
+                    'tillstatus' => 'O', 
+                    'dept' => auth()->user()->dept,
+                    'upduser' => session('username'),
+                    'lastuser' => session('username'),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::table('debtor.tilldetl')
+                ->insert([
+                    'compcode' => session('compcode'), 
+                    'tillcode' => $request->tillcode,
+                    'tillno' => $tillno,
+                    'openamt' => $request->openamt,
+                    'cashamt' => $request->openamt,
+                    'cashier' => session('username'),
+                    'opendate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'opentime' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
     }
     
     public function get_table_till(Request $request){

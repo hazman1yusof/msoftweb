@@ -698,7 +698,9 @@ $(document).ready(function () {
 			$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 		}).success(function(data){
 			if(grid!=null){
-				$(grid).data('need_allocate','1');
+				if($("#dbacthdr_trantype").val() == 'RC'){
+					$(grid).data('need_allocate','1');
+				}
 				refreshGrid(grid,urlParam,oper);
 				$('.ui-dialog-buttonset button[role=button]').prop('disabled',false);
 				$(dialog).dialog('close');

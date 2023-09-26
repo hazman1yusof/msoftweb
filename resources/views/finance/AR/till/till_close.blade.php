@@ -73,7 +73,7 @@
 
 								<label class="col-md-2 control-label" for="CashRefund">Cash</label>  
 									<div class="col-md-3">
-										<input id="CashRefund" name="CashRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+										<input id="CashRefund" name="CashRefund" type="text" class="form-control input-sm" value="@if(!empty($sum_cash_ref)){{$sum_cash_ref}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 							</div>
 						</div>
@@ -87,7 +87,7 @@
 
 								<label class="col-md-2 control-label" for="ChequeRefund">Cheque</label>  
 									<div class="col-md-3">
-										<input id="ChequeRefund" name="ChequeRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+										<input id="ChequeRefund" name="ChequeRefund" type="text" class="form-control input-sm" value="@if(!empty($sum_chq_ref)){{$sum_chq_ref}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 							</div>
 						</div>
@@ -101,7 +101,7 @@
 
 								<label class="col-md-2 control-label" for="CardRefund">Card</label>  
 									<div class="col-md-3">
-										<input id="CardRefund" name="CardRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+										<input id="CardRefund" name="CardRefund" type="text" class="form-control input-sm" value="@if(!empty($sum_card_ref)){{$sum_card_ref}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 							</div>
 						</div>
@@ -115,7 +115,7 @@
 
 								<label class="col-md-2 control-label" for="DebitRefund">Auto Debit</label>  
 									<div class="col-md-3">
-										<input id="DebitRefund" name="DebitRefund" type="text" class="form-control input-sm" value="0.00" readonly>
+										<input id="DebitRefund" name="DebitRefund" type="text" class="form-control input-sm" value="@if(!empty($sum_bank_ref)){{$sum_bank_ref}}@else{{number_format(0.00,2)}}@endif" readonly>
 								</div>
 								<br><br>
 							</div>
@@ -288,7 +288,7 @@
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="actclosebal">Actual Closing<br>Balance</label>  
 									<div class="col-md-3">
-										<input id="actclosebal" name="actclosebal" type="text" class="form-control input-sm" value="0.00">
+										<input id="actclosebal" name="actclosebal" type="text" class="form-control input-sm" value="0.00" readonly>
 								</div>
 
 								<label class="col-md-2 control-label" for="discrepancy">Discrepancy</label>  

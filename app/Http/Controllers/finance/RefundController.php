@@ -189,7 +189,7 @@ class RefundController extends defaultController
 
         }else{
             $table = DB::table('debtor.dballoc as all')
-                        ->select('act.idno','act.auditno','act.entrydate','act.mrn','act.episno','act.source','act.trantype','act.lineno_','act.amount','act.outamount')
+                        ->select('act.idno','act.recptno','act.auditno','act.entrydate','act.mrn','act.episno','act.source','act.trantype','act.lineno_','act.amount','act.outamount','all.amount as amtpaid')
                         ->where('all.docsource', '=', 'PB')
                         ->where('all.doctrantype', '=', 'RF')
                         ->where('all.compcode',session('compcode'))
@@ -249,9 +249,19 @@ class RefundController extends defaultController
                 throw new \Exception("User dont have till");
             }
 
-            // $outamount_ = floatval($request->dbacthdr_amount) - floatval($request->dbacthdr_allocamt);
-
             $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
+
+            $pat_mast = DB::table('hisdb.pat_mast')
+                            ->where('compcode',session('compcode'))
+                            ->where('MRN',preg_replace('/^0+/', '', $request->dbacthdr_payercode));
+
+            if($pat_mast->exists()){
+                $mrn = $pat_mast->first()->MRN;
+                $episno = $pat_mast->first()->Episno;
+            }else{
+                $mrn=null;
+                $episno=null;
+            }
 
             $array_insert = [
                 'compcode' => session('compcode'),
@@ -279,10 +289,12 @@ class RefundController extends defaultController
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
                 'amount' => floatval($request->dbacthdr_amount), 
-                'remark' => $request->dbacthdr_remark,  
+                'remark' => $request->dbacthdr_remark,
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
                 'recptno' => $refundno,     
+                'mrn' => $mrn,     
+                'episno' => $episno,     
             ];
 
             $latestidno = DB::table('debtor.dbacthdr')
@@ -293,6 +305,10 @@ class RefundController extends defaultController
                                 ->first();
             $amt_paid = 0;
             foreach ($request->allo as $key => $value) {
+                if(empty(floatval($value['obj']['amtpaid']))){
+                    continue;
+                }
+
                 $receipt = DB::table('debtor.dbacthdr')
                             ->where('compcode',session('compcode'))
                             // ->where('source','PB')
@@ -334,7 +350,7 @@ class RefundController extends defaultController
                             'refamount' => $receipt_first->amount,
                             'reflineno' => $receipt_first->lineno_,
                             'recptno' => $receipt_first->recptno,
-                            'mrn' => str_pad($$receipt_first->mrn, 7, "0", STR_PAD_LEFT),
+                            'mrn' => $receipt_first->mrn,
                             'episno' => $receipt_first->episno,
                             'allocsts' => 'ACTIVE',
                             'amount' => floatval($value['obj']['amtpaid']),
@@ -350,6 +366,9 @@ class RefundController extends defaultController
                             'adduser' => session('username'),
                             'recstatus' => 'ACTIVE'
                         ]);
+
+        
+
             }
 
             // if($amt_paid > 0){

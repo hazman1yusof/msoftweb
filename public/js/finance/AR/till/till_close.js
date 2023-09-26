@@ -35,6 +35,11 @@ $(document).ready(function () {
 			}
 		},
 	};
+
+	var mycurrency =new currencymode(['#CashCollected','#CashRefund', '#ChequeCollected', '#ChequeRefund', '#CardCollected','#CardRefund', '#DebitCollected', '#DebitRefund', '#openamt', '#cashBal', '#actclosebal','#discrepancy', '#totalrm100', '#totalrm50', '#totalrm20','#totalrm10', '#totalrm5', '#totalrm1', '#totalcents', '#grandTotal']);
+	mycurrency.formatOnBlur();
+	mycurrency.formatOn();
+
 	/////////////////////////////////save close till//////////////////////////////////////////////////////////
 	
 	// var saveParam = {
@@ -66,7 +71,7 @@ $(document).ready(function () {
 		// let oper = $("#save").data('oper', 'use_till');
 		var saveParam={
 			action:'save_till',
-			oper:$("#save").data('oper')
+			oper:'close_till'
 		}
 		
 		// if(oper == 'use_till'){
@@ -181,8 +186,8 @@ function calc_grandtotal(){
 }
 
 function calc_discrepancy(){
-	let close_bal = parseFloat($('#cashBal').val());
-	let act_bal = parseFloat($('#actclosebal').val());
+	let close_bal = parseFloat(currencyRealval('#cashBal'));
+	let act_bal = parseFloat(currencyRealval('#actclosebal'));
 	let disc = act_bal - close_bal;
 
 	$('#discrepancy').val(parseFloat(disc).toFixed(2));

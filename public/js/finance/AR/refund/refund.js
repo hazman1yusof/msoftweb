@@ -482,7 +482,7 @@ $(document).ready(function () {
 			{label: 'source', name: 'dbacthdr_source', hidden: true, checked:true},
 			{label: 'Trantype', name: 'dbacthdr_trantype', width: 45, formatter: showdetail, unformat:un_showdetail},
 			{label: 'Type', name: 'dbacthdr_PymtDescription', classes: 'wrap', width: 50, hidden: true},
-			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30}, //tunjuk
+			{label: 'MRN', name: 'dbacthdr_mrn',align:'right', width: 30, formatter: padzero, unformat: unpadzero}, //tunjuk
 			{label: 'Epis', name: 'dbacthdr_episno',align:'right', width: 30}, //tunjuk
 			{label: 'billdebtor', name: 'dbacthdr_billdebtor', hidden: true},
 			{label: 'conversion', name: 'dbacthdr_conversion', hidden: true},
@@ -764,7 +764,7 @@ $(document).ready(function () {
 			{ label: 'Trantype', name: 'trantype', width: 40},
 			{ label: 'Receipt No', name: 'recptno', width: 40},
 			{ label: 'Document Date', name: 'entrydate', width: 50},
-			{ label: 'MRN', name: 'mrn', width: 50},
+			{ label: 'MRN', name: 'mrn', width: 50, formatter: padzero, unformat: unpadzero },
 			{ label: 'EpisNo', name: 'episno', width: 50},
 			{ label: 'Src', name: 'source', width: 20, hidden: true}, 
 			{ label: 'Type', name: 'trantype', width: 20 , hidden: true},
@@ -832,6 +832,20 @@ $(document).ready(function () {
 		}
 	}
 
+	////////////////////////////////////////////padzero////////////////////////////////////////////
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 7, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+	
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+	
 	AlloSearch("#gridAllo",urlParamAllo);
 	function AlloSearch(grid,urlParam){
 		$("#alloText").on( "keyup", function() {
