@@ -414,8 +414,8 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		width: 300,
-		height: 150,
-		rowNum: 30,
+		height: 80,
+		rowNum: 10,
 		gridComplete: function(rowid){
 			$("#sysparam").setSelection($("#sysparam").getDataIDs()[0]);
 		},
@@ -742,6 +742,7 @@ $(document).ready(function () {
 		tabform=$(this).attr('form');
 		rdonly(tabform);
 		handleAmount();
+		mycurrency.formatOnBlur();
 		$('#dbacthdr_paytype').val(tabform);
 		switch(tabform) {
 			case '#f_tab-cash':

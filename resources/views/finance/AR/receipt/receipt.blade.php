@@ -297,7 +297,7 @@
 					<input id="dbacthdr_remark" name="dbacthdr_remark" type="text" class="form-control input-sm text-uppercase">
 				</div>
 			</div>
-			<div class='clearfix'></div>
+			<!-- <div class='clearfix'></div> -->
 			<hr>
 		</div>
 	</form><!--end formdata-->
