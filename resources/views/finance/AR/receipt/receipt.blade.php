@@ -220,7 +220,7 @@
 			            <table id="sysparam" class="table table-striped"></table>
             			<div id="sysparampg"></div>
 					</div>
-					<hr>
+					<!-- <hr> -->
 					<div class="form-group">
 						<div class='col-md-2 minuspad-15'>
 						<label>Trantype: </label><input id="dbacthdr_trantype" name="dbacthdr_trantype" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value" rdonly>
