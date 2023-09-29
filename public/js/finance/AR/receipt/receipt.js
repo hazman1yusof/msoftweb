@@ -1105,6 +1105,7 @@ $(document).ready(function () {
 			}else{
 				// alert('Payer doesnt have outstanding amount');
 			}
+			mycurrency.formatOn();
 		});
 	}
 
