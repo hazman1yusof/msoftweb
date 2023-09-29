@@ -265,6 +265,9 @@
     table td span.help-block {
     	color: #6aa76a;
     }
+    .ui-dialog-buttonpane{
+    	margin-bottom: 50px;
+    }
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>

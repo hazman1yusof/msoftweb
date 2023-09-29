@@ -90,20 +90,22 @@ $(document).ready(function () {
 		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", false );
 		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", false );
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
-		$("input[name='dbacthdr_outamount']").off('blur',amountFunction);
+		// $("input[name='dbacthdr_outamount']").off('blur',amountFunction);
 		$(tabform+" input[name='dbacthdr_amount']").on('blur',amountFunction);
-		$(tabform+" input[name='dbacthdr_outamount']").on('blur',amountFunction);
+		// $(tabform+" input[name='dbacthdr_outamount']").on('blur',amountFunction);
 	}
 
 	function amountchgOff(fromtab){
+		mycurrency.formatOnBlur();
 		$("input[name='dbacthdr_amount']").off('blur',amountFunction);
-		$("input[name='dbacthdr_outamount']").off('blur',amountFunction);
+		// $("input[name='dbacthdr_outamount']").off('blur',amountFunction);
 		$("input[name='dbacthdr_outamount']").prop( "disabled", true );
 		$("input[name='dbacthdr_RCCASHbalance']").prop( "disabled", true );
 		$("input[name='dbacthdr_RCFinalbalance']").prop( "disabled", true );
 	}
 
 	function getCashBal(){
+		mycurrency.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
 		var RCCASHbalance=(pay-out>0) ? pay-out : 0;
@@ -113,6 +115,7 @@ $(document).ready(function () {
 	}
 
 	function getOutBal(iscash,bc){
+		mycurrency.formatOff();
 		var pay=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_amount']").val()));
 		var out=parseFloat(numeral().unformat($(tabform+" input[name='dbacthdr_outamount']").val()));
 		var RCFinalbalance = 0;
@@ -128,6 +131,7 @@ $(document).ready(function () {
 	}
 
 	function showingForCash(pay,os,cashbal,finalbal,tabform){//amount,outamount,RCCASHbalance,RCFinalbalance
+		mycurrency.formatOff();
 		var pay = parseFloat(pay);
 		var os = parseFloat(os);
 		var cashbal = parseFloat(cashbal);
@@ -462,7 +466,7 @@ $(document).ready(function () {
 		}
 	});
 
-	addParamField('#sysparam',true,urlParam_sys,['hdrtype','updpayername','depccode','depglacc','updepisode']);
+	addParamField('#sysparam',true,urlParam_sys,['hdrtype','updpayername','depccode','depglacc','updepisode','manualalloc']);
 	/////////////////////////////////////////End Transaction typr////////////////////////////
 
 	///////////////////////////////////////////Bank Paytype/////////////////////////////////
@@ -742,7 +746,7 @@ $(document).ready(function () {
 		tabform=$(this).attr('form');
 		rdonly(tabform);
 		handleAmount();
-		mycurrency.formatOnBlur();
+		// mycurrency.formatOnBlur();
 		$('#dbacthdr_paytype').val(tabform);
 		switch(tabform) {
 			case '#f_tab-cash':
@@ -800,7 +804,7 @@ $(document).ready(function () {
 				
 				switch(oper) {
 					case 'add':
-						mycurrency.formatOnBlur();
+						// mycurrency.formatOnBlur();
 						$('#dbacthdr_paytype').val(tabform);
 						$( this ).dialog( "option", "title", "Add" );
 						enableForm('#formdata');

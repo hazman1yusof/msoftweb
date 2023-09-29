@@ -135,7 +135,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm100" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm100" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -151,7 +151,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm50" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm50" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -167,7 +167,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm20" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm20" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -183,7 +183,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm10" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm10" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -199,7 +199,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm5" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm5" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -215,7 +215,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalrm1" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalrm1" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -231,7 +231,7 @@
 
 												<label class="col-md-1 control-label" for="abortus">=</label>
 												<div class="col-md-3">
-													<input name="totalcents" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="totalcents" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>
@@ -240,7 +240,7 @@
 											<div class="form-group">
 												<label class="col-md-7 control-label" for="grandTotal">TOTAL</label>
 												<div class="col-md-4">
-													<input name="grandTotal" type="number" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
+													<input name="grandTotal" type="text" class="form-control input-sm" value="0.00" style='text-align:right' readonly>
 												</div>
 											</div>
 										</div>								

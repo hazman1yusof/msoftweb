@@ -1,10 +1,15 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
+
 $(document).ready(function () {
+
+	var mycurrency =new currencymode(['#CashCollected','#CashRefund', '#ChequeCollected', '#ChequeRefund', '#CardCollected','#CardRefund', '#DebitCollected', '#DebitRefund', '#openamt', '#cashBal', '#actclosebal','#discrepancy', 'input[name=totalrm100]', 'input[name=totalrm50]', 'input[name=totalrm20]','input[name=totalrm10]', 'input[name=totalrm5]', 'input[name=totalrm1]', 'input[name=totalcents]', 'input[name=grandTotal]']);
+
 	calc_cash_bal();
 
 	$('input[name=bilrm100],input[name=bilrm50],input[name=bilrm20],input[name=bilrm10],input[name=bilrm5],input[name=bilrm1],input[name=bilcents]').on( "change", function() {
+		mycurrency.formatOff();
 		let bill = $(this).data('bill');
 		let times = $(this).val();
 		let total = parseFloat(times) * parseFloat(bill);
@@ -13,6 +18,7 @@ $(document).ready(function () {
 		total_field.val(parseFloat(total).toFixed(2));
 
 		calc_grandtotal();
+		mycurrency.formatOn();
 
 	});
 
@@ -35,10 +41,8 @@ $(document).ready(function () {
 			}
 		},
 	};
-
-	var mycurrency =new currencymode(['#CashCollected','#CashRefund', '#ChequeCollected', '#ChequeRefund', '#CardCollected','#CardRefund', '#DebitCollected', '#DebitRefund', '#openamt', '#cashBal', '#actclosebal','#discrepancy', '#totalrm100', '#totalrm50', '#totalrm20','#totalrm10', '#totalrm5', '#totalrm1', '#totalcents', '#grandTotal']);
-	mycurrency.formatOnBlur();
-	mycurrency.formatOn();
+	// mycurrency.formatOnBlur();
+	// mycurrency.formatOn();
 
 	/////////////////////////////////save close till//////////////////////////////////////////////////////////
 	
@@ -155,50 +159,52 @@ $(document).ready(function () {
 		}
 	});
 
-});
-
-function get_total_field(bill){
-	switch(bill){
-		case 'bilrm100' : return 'totalrm100'; break;
-		case 'bilrm50' : return 'totalrm50'; break;
-		case 'bilrm20' : return 'totalrm20'; break;
-		case 'bilrm10' : return 'totalrm10'; break;
-		case 'bilrm5' : return 'totalrm5'; break;
-		case 'bilrm1' : return 'totalrm1'; break;
-		case 'bilcents' : return 'totalcents'; break;
+	function get_total_field(bill){
+		switch(bill){
+			case 'bilrm100' : return 'totalrm100'; break;
+			case 'bilrm50' : return 'totalrm50'; break;
+			case 'bilrm20' : return 'totalrm20'; break;
+			case 'bilrm10' : return 'totalrm10'; break;
+			case 'bilrm5' : return 'totalrm5'; break;
+			case 'bilrm1' : return 'totalrm1'; break;
+			case 'bilcents' : return 'totalcents'; break;
+		}
 	}
-}
 
-function calc_grandtotal(){
-	var totalrm100 = parseFloat($('input[name=totalrm100]').val());
-	var totalrm50 = parseFloat($('input[name=totalrm50]').val());
-	var totalrm20 = parseFloat($('input[name=totalrm20]').val());
-	var totalrm10 = parseFloat($('input[name=totalrm10]').val());
-	var totalrm5 = parseFloat($('input[name=totalrm5]').val());
-	var totalrm1 = parseFloat($('input[name=totalrm1]').val());
-	var totalcents = parseFloat($('input[name=totalcents]').val());
+	function calc_grandtotal(){
+		var totalrm100 = parseFloat($('input[name=totalrm100]').val());
+		var totalrm50 = parseFloat($('input[name=totalrm50]').val());
+		var totalrm20 = parseFloat($('input[name=totalrm20]').val());
+		var totalrm10 = parseFloat($('input[name=totalrm10]').val());
+		var totalrm5 = parseFloat($('input[name=totalrm5]').val());
+		var totalrm1 = parseFloat($('input[name=totalrm1]').val());
+		var totalcents = parseFloat($('input[name=totalcents]').val());
 
-	var grandtotal = totalrm100+totalrm50+totalrm20+totalrm10+totalrm5+totalrm1+totalcents;
-	$('input[name=grandTotal]').val(parseFloat(grandtotal).toFixed(2));
-	$('#actclosebal').val(parseFloat(grandtotal).toFixed(2));
+		var grandtotal = totalrm100+totalrm50+totalrm20+totalrm10+totalrm5+totalrm1+totalcents;
+		$('input[name=grandTotal]').val(parseFloat(grandtotal).toFixed(2));
+		$('#actclosebal').val(parseFloat(grandtotal).toFixed(2));
 
-	calc_discrepancy();
-}
+		calc_discrepancy();
+	}
 
-function calc_discrepancy(){
-	let close_bal = parseFloat(currencyRealval('#cashBal'));
-	let act_bal = parseFloat(currencyRealval('#actclosebal'));
-	let disc = act_bal - close_bal;
+	function calc_discrepancy(){
+		let close_bal = parseFloat(currencyRealval('#cashBal'));
+		let act_bal = parseFloat(currencyRealval('#actclosebal'));
+		let disc = act_bal - close_bal;
 
-	$('#discrepancy').val(parseFloat(disc).toFixed(2));
+		$('#discrepancy').val(parseFloat(disc).toFixed(2));
+	}
 
-}
+	function calc_cash_bal() {
+		mycurrency.formatOff();
+		let open_amt = parseFloat($('#openamt').val());
+		let cash_amt = parseFloat($('#CashCollected').val());
+		let refund_amt = parseFloat($('#CashRefund').val());
 
-function calc_cash_bal() {
-	let open_amt = parseFloat($('#openamt').val());
-	let cash_amt = parseFloat($('#CashCollected').val());
-	let refund_amt = parseFloat($('#CashRefund').val());
+		var close_cashbal = open_amt + cash_amt - refund_amt;
+		$('input[name=cashBal]').val(parseFloat(close_cashbal).toFixed(2));
+		mycurrency.formatOn();
+	}
 
-	var close_cashbal = open_amt + cash_amt - refund_amt;
-	$('input[name=cashBal]').val(parseFloat(close_cashbal).toFixed(2));
-}
+
+});

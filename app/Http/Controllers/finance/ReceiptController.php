@@ -89,6 +89,13 @@ class ReceiptController extends defaultController
 
             $paymode_ = $this->paymode_chg($request->dbacthdr_paytype,$request->dbacthdr_paymode);
 
+            $dbacthdr_amount = $request->dbacthdr_amount;
+            if(strtolower($paymode_) == 'cash' && $request->dbacthdr_trantype == "RC"){
+                if(empty($request->dbacthdr_RCFinalbalance) && floatval($request->dbacthdr_amount) > floatval($request->dbacthdr_outamount)){
+                    $dbacthdr_amount = $request->dbacthdr_outamount;
+                }
+            }
+
             $array_insert = [
                 'compcode' => session('compcode'),
                 'unit' => session('unit'),
@@ -114,8 +121,8 @@ class ReceiptController extends defaultController
                 'payername' => $request->dbacthdr_payername,
                 'paytype' => $request->dbacthdr_paytype,
                 'paymode' => $paymode_,
-                'amount' => $request->dbacthdr_amount,  
-                'outamount' => $request->dbacthdr_amount,  
+                'amount' => $dbacthdr_amount,  
+                'outamount' => $dbacthdr_amount,  
                 'remark' => strtoupper($request->dbacthdr_remark),  
                 'tillcode' => $tillcode,  
                 'tillno' => $tillno,  
