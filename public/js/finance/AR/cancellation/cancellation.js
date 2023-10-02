@@ -803,6 +803,9 @@ $(document).ready(function () {
 			}
 			enabledPill();
 			
+			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
+			$( "input:radio[name='optradio'][value='receipt']" ).change();
+			
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
 			getdata('RC',selrowData("#jqGrid_rc").db_idno);
 			refreshGrid("#sysparam",urlParam_sys);
@@ -913,8 +916,15 @@ $(document).ready(function () {
 		title:"View Selected Row",
 		onClickButton: function(){
 			oper='view';
-			selRowId = $("#jqGrid_rd").jqGrid ('getGridParam', 'selrow');
+			let selRowId = $("#jqGrid_rd").jqGrid ('getGridParam', 'selrow');
+			let rowData = $('#jqGrid_rd').jqGrid('getRowData', selRowId);
+			if(parseFloat(rowData.db_amount) != parseFloat(rowData.db_outamount)){
+				return false;
+			}
 			enabledPill();
+			
+			$( "input:radio[name='optradio'][value='deposit']" ).prop( "checked", true );
+			$( "input:radio[name='optradio'][value='deposit']" ).change();
 			
 			populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", selRowId, 'view', '');
 			getdata('RC',selrowData("#jqGrid_rd").db_idno);
