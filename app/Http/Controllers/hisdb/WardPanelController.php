@@ -72,25 +72,8 @@ class WardPanelController extends defaultController
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
-                        'medicalhistory' => $request->medicalhistory,
-                        'surgicalhistory' => $request->surgicalhistory,
-                        'familymedicalhist' => $request->familymedicalhist,
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
-                        'allergydrugs' => $request->allergydrugs,
-                        'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
-                        'allergyfood' => $request->allergyfood,
-                        'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
-                        'allergyothers' => $request->allergyothers,
-                        'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -135,7 +118,34 @@ class WardPanelController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+            
+            DB::table('nursing.nurshistory')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_ward,
+                        'medicalhistory' => $request->medicalhistory,
+                        'surgicalhistory' => $request->surgicalhistory,
+                        'familymedicalhist' => $request->familymedicalhist,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'unknown_remarks' => $request->unknown_remarks,
+                        'allergynone' => $request->allergynone,
+                        'none_remarks' => $request->none_remarks,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -260,25 +270,8 @@ class WardPanelController extends defaultController
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
-                        'medicalhistory' => $request->medicalhistory,
-                        'surgicalhistory' => $request->surgicalhistory,
-                        'familymedicalhist' => $request->familymedicalhist,
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
-                        'allergydrugs' => $request->allergydrugs,
-                        'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
-                        'allergyfood' => $request->allergyfood,
-                        'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
-                        'allergyothers' => $request->allergyothers,
-                        'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -329,25 +322,8 @@ class WardPanelController extends defaultController
                         'admwardtime' => $request->admwardtime,
                         'triagecolor' => $request->triagecolor,
                         'admreason' => $request->admreason,
-                        'medicalhistory' => $request->medicalhistory,
-                        'surgicalhistory' => $request->surgicalhistory,
-                        'familymedicalhist' => $request->familymedicalhist,
                         'currentmedication' => $request->currentmedication,
                         'diagnosis' => $request->diagnosis,
-                        'allergydrugs' => $request->allergydrugs,
-                        'drugs_remarks' => $request->drugs_remarks,
-                        'allergyplaster' => $request->allergyplaster,
-                        'plaster_remarks' => $request->plaster_remarks,
-                        'allergyfood' => $request->allergyfood,
-                        'food_remarks' => $request->food_remarks,
-                        'allergyenvironment' => $request->allergyenvironment,
-                        'environment_remarks' => $request->environment_remarks,
-                        'allergyothers' => $request->allergyothers,
-                        'others_remarks' => $request->others_remarks,
-                        'allergyunknown' => $request->allergyunknown,
-                        'unknown_remarks' => $request->unknown_remarks,
-                        'allergynone' => $request->allergynone,
-                        'none_remarks' => $request->none_remarks,
                         'vs_temperature' => $request->vs_temperature,
                         'vs_pulse' => $request->vs_pulse,
                         'vs_respiration' => $request->vs_respiration,
@@ -386,6 +362,62 @@ class WardPanelController extends defaultController
                         'psra_poorskintype' => $request->psra_poorskintype,
                         'psra_notatrisk' => $request->psra_notatrisk,
                         'psra_atrisk' => $request->psra_atrisk,
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }
+
+            $nurshistory = DB::table('nursing.nurshistory')
+                ->where('mrn','=',$request->mrn_ward)
+                ->where('compcode','=',session('compcode'));
+
+            if(!$nurshistory->exists()){
+                DB::table('nursing.nurshistory')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'mrn' => $request->mrn_ward,
+                        'medicalhistory' => $request->medicalhistory,
+                        'surgicalhistory' => $request->surgicalhistory,
+                        'familymedicalhist' => $request->familymedicalhist,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'unknown_remarks' => $request->unknown_remarks,
+                        'allergynone' => $request->allergynone,
+                        'none_remarks' => $request->none_remarks,
+                        'adduser'  => session('username'),
+                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                        'lastuser'  => session('username'),
+                        'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    ]);
+            }else{
+                $nurshistory
+                    ->update([
+                        'medicalhistory' => $request->medicalhistory,
+                        'surgicalhistory' => $request->surgicalhistory,
+                        'familymedicalhist' => $request->familymedicalhist,
+                        'allergydrugs' => $request->allergydrugs,
+                        'drugs_remarks' => $request->drugs_remarks,
+                        'allergyplaster' => $request->allergyplaster,
+                        'plaster_remarks' => $request->plaster_remarks,
+                        'allergyfood' => $request->allergyfood,
+                        'food_remarks' => $request->food_remarks,
+                        'allergyenvironment' => $request->allergyenvironment,
+                        'environment_remarks' => $request->environment_remarks,
+                        'allergyothers' => $request->allergyothers,
+                        'others_remarks' => $request->others_remarks,
+                        'allergyunknown' => $request->allergyunknown,
+                        'unknown_remarks' => $request->unknown_remarks,
+                        'allergynone' => $request->allergynone,
+                        'none_remarks' => $request->none_remarks,
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
@@ -583,6 +615,10 @@ class WardPanelController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
+                    
+        $ward_history_obj = DB::table('nursing.nurshistory')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$request->mrn);
 
         $responce = new stdClass();
 
@@ -604,6 +640,11 @@ class WardPanelController extends defaultController
         if($ward_regdate_obj->exists()){
             $ward_regdate_obj = $ward_regdate_obj->first();
             $responce->ward_regdate = $ward_regdate_obj;
+        }
+
+        if($ward_history_obj->exists()){
+            $ward_history_obj = $ward_history_obj->first();
+            $responce->ward_history = $ward_history_obj;
         }
 
         return json_encode($responce);

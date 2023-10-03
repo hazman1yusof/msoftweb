@@ -1188,7 +1188,6 @@ function saveForm_patmast(callback){
     });
 }
 
-
 var dialog_tri_col = new ordialog(
 	'tri_col','sysdb.sysparam',"#formTriageInfo input[name='triagecolor']",errorField,
 	{	colModel:

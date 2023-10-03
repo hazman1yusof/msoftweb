@@ -3,32 +3,32 @@ $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
-/////////////////////parameter for jqGridExam url/////////////////////////////////////////////////
+////////////////////////////parameter for jqGridExam url////////////////////////////
 var urlParam_Exam = {
 	action: 'get_table_default',
 	url: 'util/get_table_default',
 	field: '',
 	table_name: 'nursing.nurassesexam',
 	table_id: 'idno',
-	filterCol:['mrn','episno','location'],
-	filterVal:['','','WARD'],
+	filterCol: ['mrn','episno','location'],
+	filterVal: ['','','WARD'],
 }
 
 $(document).ready(function () {
-
+	
 	textare_init_nursAssessment();
-
+	
 	// $('textarea#nurs_admreason,textarea#nurs_medicalhistory,textarea#nurs_surgicalhistory,textarea#nurs_familymedicalhist,textarea#nurs_currentmedication,textarea#nurs_diagnosis,textarea#nurs_drugs_remarks,textarea#nurs_plaster_remarks,textarea#nurs_food_remarks,textarea#nurs_environment_remarks,textarea#nurs_others_remarks,textarea#nurs_unknown_remarks,textarea#nurs_none_remarks,textarea#nurs_br_breathingdesc,textarea#nurs_br_coughdesc,textarea#nurs_br_smokedesc,textarea#nurs_ed_eatdrinkdesc,textarea#nurs_eb_bowelmovedesc,textarea#nurs_bl_urinedesc,textarea#nurs_bl_urinefreq,textarea#nurs_pa_notes').each(function () {
-	//   this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
+	// 	this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
 	// }).on('input', function () {
-	//   this.style.height = 'auto';
-	//   this.style.height = (this.scrollHeight) + 'px';
+	// 	this.style.height = 'auto';
+	// 	this.style.height = (this.scrollHeight) + 'px';
 	// });
-
+	
 	var fdl = new faster_detail_load();
-
+	
 	disableForm('#formWard');
-
+	
 	$("#new_ward").click(function(){
 		button_state_ward('wait');
 		enableForm('#formWard');
@@ -36,7 +36,7 @@ $(document).ready(function () {
 		// dialog_mrn_edit.on();
 		
 	});
-
+	
 	$("#edit_ward").click(function(){
 		button_state_ward('wait');
 		enableForm('#formWard');
@@ -44,7 +44,7 @@ $(document).ready(function () {
 		// dialog_mrn_edit.on();
 		
 	});
-
+	
 	$("#save_ward").click(function(){
 		disableForm('#formWard');
 		if( $('#formWard').isValid({requiredFields: ''}, conf, true) ) {
@@ -57,69 +57,69 @@ $(document).ready(function () {
 			enableForm('#formWard');
 			rdonly('#formWard');
 		}
-
+		
 	});
-
+	
 	$("#cancel_ward").click(function(){
 		disableForm('#formWard');
 		button_state_ward($(this).data('oper'));
 		examination_ward.empty().off();
 		// dialog_mrn_edit.off();
-
-	});
-
-	$("#jqGridTriageInfo_panel").on("show.bs.collapse", function(){
 		
 	});
-
-    $("#jqGridWard_panel").on("hide.bs.collapse", function(){
-    	$("#jqGridWard_panel > div").scrollTop(0);
-    });
-
+	
+	$("#jqGridWard_panel").on("hide.bs.collapse", function(){
+		$("#jqGridWard_panel > div").scrollTop(0);
+	});
+	
 	$('#jqGridWard_panel').on('shown.bs.collapse', function () {
 		SmoothScrollTo("#jqGridWard_panel", 500);
 		populate_nursAssessment_currpt_getdata();
 	});
-
+	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
 	});
-
+	
 	// to autocheck the checkbox bila fill in textarea
 	$("#nurs_drugs_remarks").on("keyup blur", function () {
-        $("#nurs_allergydrugs").prop("checked", this.value !== "");
+		$("#nurs_allergydrugs").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_plaster_remarks").on("keyup blur", function () {
-        $("#nurs_allergyplaster").prop("checked", this.value !== "");
+		$("#nurs_allergyplaster").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_food_remarks").on("keyup blur", function () {
-        $("#nurs_allergyfood").prop("checked", this.value !== "");
+		$("#nurs_allergyfood").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_environment_remarks").on("keyup blur", function () {
-        $("#nurs_allergyenvironment").prop("checked", this.value !== "");
+		$("#nurs_allergyenvironment").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_others_remarks").on("keyup blur", function () {
-        $("#nurs_allergyothers").prop("checked", this.value !== "");
+		$("#nurs_allergyothers").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_unknown_remarks").on("keyup blur", function () {
-        $("#nurs_allergyunknown").prop("checked", this.value !== "");
+		$("#nurs_allergyunknown").prop("checked", this.value !== "");
 	});
-
+	
 	$("#nurs_none_remarks").on("keyup blur", function () {
-        $("#nurs_allergynone").prop("checked", this.value !== "");
+		$("#nurs_allergynone").prop("checked", this.value !== "");
 	});
 	// to autocheck the checkbox bila fill in textarea ends
-
-	/////////////////////parameter for saving url/////////////////////////////////////////////////
+	
+	$("#jqGridWard_panel").on("show.bs.collapse", function(){
+		$("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-248));
+	});
+	
+	/////////////////////////////////////parameter for saving url/////////////////////////////////////
 	var addmore_jqgrid={more:false,state:false,edit:false}
-
-	/////////////////////////////////// jqGridExam ///////////////////////////////////////////////////
+	
+	////////////////////////////////////////////jqGridExam////////////////////////////////////////////
 	$("#jqGridExam").jqGrid({
 		datatype: "local",
 		editurl: "./wardpanel/form",
@@ -127,17 +127,17 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'mrn', name: 'mrn', hidden: true },
 			{ label: 'episno', name: 'episno', hidden: true },
-			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
-			{ label: 'Exam', name: 'exam', width: 80,classes: 'wrap', editable:true,
-				editrules:{custom:true, custom_func:cust_rules},formatter: showdetail,
-					edittype:'custom',	editoptions:
-						{  custom_element:examCustomEdit,
-						   custom_value:galGridCustomValue 	
-						},
+			{ label: 'id', name: 'idno', width: 10, hidden: true, key: true },
+			{ label: 'Exam', name: 'exam', width: 80, classes: 'wrap', editable: true,
+				editrules: { custom: true, custom_func: cust_rules }, formatter: showdetail, edittype:'custom',
+				editoptions:
+				{	custom_element:examCustomEdit,
+					custom_value:galGridCustomValue
+				},
 			},
-			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: {style: "width: -webkit-fill-available;" ,rows: 5}},
-			{ label: 'adddate', name: 'adddate', width: 90, hidden:true},
-			{ label: 'adduser', name: 'adduser', width: 90, hidden:true},
+			{ label: 'Note', name: 'examnote', classes: 'wrap', width: 120, editable: true, edittype: "textarea", editoptions: { style: "width: -webkit-fill-available;", rows: 5 } },
+			{ label: 'adddate', name: 'adddate', width: 90, hidden: true },
+			{ label: 'adduser', name: 'adduser', width: 90, hidden: true },
 		],
 		autowidth: true,
 		multiSort: true,
@@ -154,7 +154,7 @@ $(document).ready(function () {
 			else{
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
-
+			
 			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
 			
 			calc_jq_height_onchange("jqGridExam");
@@ -163,12 +163,12 @@ $(document).ready(function () {
 			$("#jqGridExam_iledit").click();
 		},
 	});
-
-	//////////////////////////////////////////myEditOptions_add_examWard////////////////////////////////////////////////
+	
+	////////////////////////////////////////////myEditOptions_add_examWard////////////////////////////////////////////
 	var myEditOptions_add_examWard = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#csrf_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
@@ -221,7 +221,7 @@ $(document).ready(function () {
 	var myEditOptions_edit_examWard = {
 		keys: true,
 		extraparam:{
-			"_token": $("#_token").val()
+			"_token": $("#csrf_token").val()
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
@@ -300,7 +300,7 @@ $(document).ready(function () {
 					callback: function (result) {
 						if (result == true) {
 							param = {
-								_token: $("#_token").val(),
+								_token: $("#csrf_token").val(),
 								action: 'wardpanel_save',
 								idno: selrowData('#jqGridExam').idno,
 							}
@@ -478,7 +478,7 @@ function button_state_ward(state){
 			$('#save_ward,#cancel_ward,#new_ward').attr('disabled',true);
 			break;
 		case 'wait':
-			dialog_tri_col.on();
+			dialog_col_ward.on();
 			examination_ward.on().enable();
 			$("#toggle_ward").attr('data-toggle','collapse');
 			$("#save_ward,#cancel_ward").attr('disabled',false);
@@ -530,7 +530,8 @@ function populate_nursAssessment(obj,rowdata){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			autoinsert_rowdata("#formWard",data.ward_regdate);
-
+			autoinsert_rowdata("#formWard",data.ward_history);
+			
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
 				urlParam_Exam.filterVal[0] = obj.mrn;
@@ -572,9 +573,14 @@ function populate_nursAssessment_currpt(obj){
 	$("#mrn_ward").val(obj.MRN);
 	$("#episno_ward").val(obj.Episno);
 	
+	// table examination
+	// urlParam_Exam.filterVal[0] = obj.MRN;
+	// urlParam_Exam.filterVal[1] = obj.Episno;
+	// urlParam_Exam.filterVal[2] = 'WARD';
+	
 }
 
-function  populate_nursAssessment_currpt_getdata(){
+function populate_nursAssessment_currpt_getdata(){
 	emptyFormdata(errorField,"#formWard",["#mrn_ward","#episno_ward"]);
 	var saveParam={
         action:'get_table_ward',
@@ -584,8 +590,8 @@ function  populate_nursAssessment_currpt_getdata(){
     	mrn:$("#mrn_ward").val(),
     	episno:$("#episno_ward").val()
 
-    };
-
+	};
+	
     $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
@@ -595,11 +601,12 @@ function  populate_nursAssessment_currpt_getdata(){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			autoinsert_rowdata("#formWard",data.ward_regdate);
+			autoinsert_rowdata("#formWard",data.ward_history);
 
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
-				urlParam_Exam.filterVal[0] = obj.MRN;
-				urlParam_Exam.filterVal[1] = obj.Episno;
+				urlParam_Exam.filterVal[0] = $("#mrn_ward").val();
+				urlParam_Exam.filterVal[1] = $("#episno_ward").val();
 				refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 				// examination_ward.empty();
 				// examination_ward.examarray = data.ward_exm;
@@ -692,7 +699,7 @@ function saveForm_ward(callback){
     });
 }
 
-var dialog_tri_col = new ordialog(
+var dialog_col_ward = new ordialog(
 	'ward_tri_col','sysdb.sysparam',"#formWard input[name='triagecolor']",errorField,
 	{	colModel:
 		[
@@ -703,27 +710,24 @@ var dialog_tri_col = new ordialog(
 			url:'./sysparam_triage_color',
 			filterCol:['recstatus','compcode'],
 			filterVal:['ACTIVE', 'session.compcode']
-			},
+		},
 		ondblClickRow:function(event){
-
-			$(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-			$(dialog_tri_col.textfield)
+			$(dialog_col_ward.textfield).val(selrowData("#"+dialog_col_ward.gridname)['description']);
+			$(dialog_col_ward.textfield)
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
-							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
-			$(dialog_tri_col.textfield).next()
+							.addClass( selrowData("#"+dialog_col_ward.gridname)['description'] );
+							
+			$(dialog_col_ward.textfield).next()
 							.removeClass( "red" )
 							.removeClass( "yellow" )
 							.removeClass( "green" )
-							.addClass( selrowData("#"+dialog_tri_col.gridname)['description'] );
-
+							.addClass( selrowData("#"+dialog_col_ward.gridname)['description'] );
 		},
 		onSelectRow:function(rowid, selected){
-			$('#'+dialog_tri_col.gridname+' tr#'+rowid).dblclick();
-			// $(dialog_tri_col.textfield).val(selrowData("#"+dialog_tri_col.gridname)['description']);
-
+			$('#'+dialog_col_ward.gridname+' tr#'+rowid).dblclick();
+			// $(dialog_col_ward.textfield).val(selrowData("#"+dialog_col_ward.gridname)['description']);
 		},
 		gridComplete: function(obj){
 			var gridname = '#'+obj.gridname;
@@ -744,40 +748,39 @@ var dialog_tri_col = new ordialog(
 
 			var gridname = '#'+obj.gridname;
 			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
-	        for (i = 0; i < l; i++) {
-	            rowid = ids[i];
-	            colorcode = $(gridname).jqGrid("getCell", rowid, "description");
-
-	            $(gridname+' tr#' + rowid).addClass(colorcode);
-
-	        }
+			for (i = 0; i < l; i++) {
+				rowid = ids[i];
+				colorcode = $(gridname).jqGrid("getCell", rowid, "description");
+				
+				$(gridname+' tr#' + rowid).addClass(colorcode);
+			}
 		}
 	},{
 		title:"Select Bed Status",
 		open: function(){
-			dialog_tri_col.urlParam.filterCol = ['recstatus','compcode'];
-			dialog_tri_col.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
+			dialog_col_ward.urlParam.filterCol = ['recstatus','compcode'];
+			dialog_col_ward.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 		},
 		width:5/10 * $(window).width()
 	},'urlParam','radio','tab','table'
 );
-dialog_tri_col.makedialog();
+dialog_col_ward.makedialog();
 
 function tri_color_set(empty){
 	if(empty == 'empty'){
-		$(dialog_tri_col.textfield).removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
-
-		$(dialog_tri_col.textfield).next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+		$(dialog_col_ward.textfield).removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
+		
+		$(dialog_col_ward.textfield).next().removeClass( "red" ).removeClass( "yellow" ).removeClass( "green" );
 	}
-
-	var color = $(dialog_tri_col.textfield).val();
-	$(dialog_tri_col.textfield)
+	
+	var color = $(dialog_col_ward.textfield).val();
+	$(dialog_col_ward.textfield)
 					.removeClass( "red" )
 					.removeClass( "yellow" )
 					.removeClass( "green" )
 					.addClass( color );
-
-	$(dialog_tri_col.textfield).next()
+	
+	$(dialog_col_ward.textfield).next()
 					.removeClass( "red" )
 					.removeClass( "yellow" )
 					.removeClass( "green" )
