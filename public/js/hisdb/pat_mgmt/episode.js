@@ -108,6 +108,7 @@ function get_epis_other_data(episno){
     let obj_param = {
            action:'get_epis_other_data',
            mrn:$('#mrn_episode').val(),
+           epistycode:$('#epistycode').val(),
            episno:episno,
        };
 
@@ -127,6 +128,14 @@ function get_epis_other_data(episno){
             $('#hid_epis_payer').val(episdata.payer);
             $('#txt_epis_bill_type').val(episdata.bmst_desc);
             $('#hid_epis_bill_type').val(episdata.billtype);
+        }
+
+        if(data.bed != null){
+            var bed =  data.bed;
+            $('#txt_epis_bed').val(bed.bednum);
+            $('#txt_epis_ward').val(bed.ward);
+            $('#txt_epis_room').val(bed.room);
+            $('#txt_epis_bedtype').val(bed.bedtype);
         }
     });
 }

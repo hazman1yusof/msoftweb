@@ -69,6 +69,7 @@ $(document).ready(function () {
 	});
 	
 	$("#jqGridWard_panel").on("hide.bs.collapse", function(){
+		button_state_ward('empty');
 		$("#jqGridWard_panel > div").scrollTop(0);
 	});
 	
@@ -557,7 +558,10 @@ function populate_nursAssessment(obj,rowdata){
 
 // screen current patient //
 function populate_nursAssessment_currpt(obj){
+	$("#jqGridWard_panel").collapse('hide');
 	emptyFormdata(errorField,"#formWard");
+	tri_color_set('empty');
+
 	//panel header
 	$('#name_show_ward').text(obj.Name);
 	$('#mrn_show_ward').text(("0000000" + obj.MRN).slice(-7));
@@ -582,6 +586,8 @@ function populate_nursAssessment_currpt(obj){
 
 function populate_nursAssessment_currpt_getdata(){
 	emptyFormdata(errorField,"#formWard",["#mrn_ward","#episno_ward"]);
+	tri_color_set('empty');
+
 	var saveParam={
         action:'get_table_ward',
     }
@@ -597,7 +603,7 @@ function populate_nursAssessment_currpt_getdata(){
     },'json').fail(function(data) {
         alert('there is an error');
     }).success(function(data){
-    	if(!$.isEmptyObject(data)){
+    	if(!$.isEmptyObject(data.ward)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			autoinsert_rowdata("#formWard",data.ward_regdate);
@@ -615,12 +621,15 @@ function populate_nursAssessment_currpt_getdata(){
 			
 			button_state_ward('edit');
 			textare_init_nursAssessment();
+			tri_color_set();
         }else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
 			textare_init_nursAssessment();
         }
+
+        if(!emptyobj_(data.ward_history))autoinsert_rowdata("#formWard",data.ward_history);
 
     });
 }

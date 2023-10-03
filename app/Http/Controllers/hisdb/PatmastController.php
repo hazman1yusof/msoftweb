@@ -847,6 +847,26 @@ class PatmastController extends defaultController
                     ->where('Episno','=',$request->episno)
                     ->first();
 
+                if($request->epistycode=='IP'){
+                    $patmast = DB::table('hisdb.pat_mast')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->first();
+
+                    $bed = DB::table('hisdb.bed')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('occup','=','RESERVE')
+                            ->where('newic','=',$patmast->Newic)
+                            ->orderBy('upddate', 'DESC');
+
+                    if($bed->exists()){
+                        $responce->bed = $bed->first();
+                    }else{
+                        $responce->bed = null;
+                    }
+
+                }
+
                 $responce->episode = $episode;
                 $responce->epispayer = $epispayer;
                 return json_encode($responce);

@@ -250,6 +250,12 @@ class BedManagementController extends defaultController
                 throw new \Exception("RECORD DUPLICATE");
             }
 
+            if(!empty($request->newic_reserve)){
+                $newic_reserve = str_replace('-','', $request->newic_reserve);
+            }else{
+                $newic_reserve = null;
+            }
+
             DB::table('hisdb.bed')
                 ->insert([  
                     'compcode' => session('compcode'),
@@ -266,8 +272,8 @@ class BedManagementController extends defaultController
                     // 'tel_ext' => $this->truefalse($request->tel_ext), 
                     // 'statistic' => $this->truefalse($request->b_statistic),
                     'recstatus' => strtoupper($request->recstatus),
-                    'lastcomputerid' => strtoupper($request->lastcomputerid),
-                    'lastipaddress' => strtoupper($request->lastipaddress),
+                    'newic' => $newic_reserve,
+                    'computerid' => session('computerid'),
                     'adduser' => strtoupper(session('username')),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
@@ -352,9 +358,13 @@ class BedManagementController extends defaultController
         DB::beginTransaction();
         try {
 
-            DB::table('hisdb.bed')
-                ->where('idno','=',$request->idno)
-                ->update([  
+            if(!empty($request->newic_reserve)){
+                $newic_reserve = str_replace('-','', $request->newic_reserve);
+            }else{
+                $newic_reserve = null;
+            }
+
+            $arr_upd = [  
                     'bedtype' => strtoupper($request->bedtype),  
                     'room' => strtoupper($request->room),  
                     'ward' => strtoupper($request->ward),
@@ -365,10 +375,15 @@ class BedManagementController extends defaultController
                     'tel_ext' => $request->tel_ext, 
                     'statistic' => $request->statistic,    
                     'recstatus' => strtoupper($request->recstatus),
-                    'computerid' => strtoupper($request->lastcomputerid),
+                    'computerid' => session('computerid'),
+                    'newic' => $newic_reserve,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]); 
+                ];
+
+            DB::table('hisdb.bed')
+                ->where('idno','=',$request->idno)
+                ->update($arr_upd); 
 
             DB::commit();
         } catch (\Exception $e) {

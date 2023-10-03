@@ -202,12 +202,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 			{ label: ' ', name: 'episno', align: 'right', width: 5},
 			{ label: 'Notes', name: 'name', width: 25, canSearch: true, classes: 'wrap'},
 			{ label: 'Doctor Code', name: 'admdoctor', width: 20, canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: true,formatter:formatterstatus_tick,unformat:unformatstatus_tick, editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-				{ 	custom_element:recstatusCustomEdit,
-					custom_value:galGridCustomValue 	
-				},
-			},
+			{ label: ' ', name: 'recstatus', width: 8, classes: 'left_td', editable: false},
 			{ label: 'id', name: 'idno', width:10, hidden: true, key:true},
 			{ label: 'sex', name: 'sex', hidden: true },
 			{ label: 'dob', name: 'dob', hidden: true },
@@ -412,7 +407,8 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 			let editurl = "./bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
-					name: $('#reservebedHide').val()
+					name: $('#reservebedHide').val(),
+					newic_reserve: $('#newic_reserve').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -461,7 +457,8 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 			let editurl = "./bedmanagement/form?"+
 				$.param({
 					action: 'bedmanagement_save',
-					name: $('#reservebedHide').val()
+					name: $('#reservebedHide').val(),
+					newic_reserve: $('#newic_reserve').val()
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},

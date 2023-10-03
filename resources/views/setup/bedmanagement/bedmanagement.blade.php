@@ -313,15 +313,14 @@
 	</div>
 
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
-		<div class='panel panel-info'>
-			<div class="panel-body" style="">
-				<form class='form-horizontal' style=''>
-					<small>Notes</small> 
-					<input type="hidden" name="" id="reservebedHide">
-					<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="5" ></textarea>
-				</form>
-			</div>
-		</div>
+		<form class='form-horizontal' style=''>
+			<small>Notes</small> 
+			<input type="hidden" name="" id="reservebedHide">
+			<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="5" ></textarea>
+			<br>
+			<small>I/C No.</small> 
+			<input type="text" class="form-control input-sm uppercase" name="newic_reserve" id="newic_reserve">
+		</form>
 	</div>
 
 	<!-- mdl_accomodation -->

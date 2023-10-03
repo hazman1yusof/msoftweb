@@ -265,7 +265,7 @@ $(document).ready(function() {
                 }
 
                 if($('#user_billing').val() == '1'){
-                populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+                    populate_ordcom_currpt(rows[bootgrid_last_rowid]);
                 }
             }
 
@@ -426,6 +426,21 @@ $(document).ready(function() {
         $('#mdl_biometric').modal('show');
     });
 
+    $("#jqGridDoctorNote_panel").on("show.bs.collapse", function(){
+        $("#jqGridAddNotes").jqGrid ('setGridWidth', Math.floor($("#jqGridDoctorNote_c")[0].offsetWidth-$("#jqGridDoctorNote_c")[0].offsetLeft-228));
+    });
+    $("#jqGridWard_panel").on("show.bs.collapse", function(){
+        $("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
+    });
+    $("#jqGridPaediatric_panel").on("show.bs.collapse", function(){
+        $("#jqGridMedicalSurgical").jqGrid ('setGridWidth', Math.floor($("#jqGridPaediatric_c")[0].offsetWidth-$("#jqGridPaediatric_c")[0].offsetLeft-140));
+    });
+    $("#jqGridAntenatal_panel").on("show.bs.collapse", function(){
+        $("#jqGridPrevObstetrics").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+        $("#jqGridCurrPregnancy").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+        $("#jqGridObstetricsUltrasound").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
+    });
+
     // $('#btn_mykad_proceed').click(function(){
     //     emptyFormdata([],"form#frm_mykad_info");
     //     $("form#frm_mykad_info img#mykad_photo").attr('src',$("form#frm_mykad_info img#mykad_photo").attr("defaultsrc"));
@@ -434,7 +449,7 @@ $(document).ready(function() {
 
     ////////////////habis mykad///////
 
-    if($('#curpat').val() == "true"){
+    if($('#curpat').val() == "true" && $("#epistycode").val() == "OP"){
         preepisode = new preepisode_init();
         preepisode.makejqgrid();
     }
@@ -522,20 +537,6 @@ $(document).ready(function() {
             $("#tabpreepis").on("shown.bs.collapse", function(){
                 $("#jqGrid_preepis").jqGrid ('setGridWidth', Math.floor($("#jqGrid_preepis_c")[0].offsetWidth-$("#jqGrid_preepis_c")[0].offsetLeft-0));
                 refreshGrid("#jqGrid_preepis", self.urlParam_preepis);
-            });
-            $("#jqGridDoctorNote_panel").on("show.bs.collapse", function(){
-                $("#jqGridAddNotes").jqGrid ('setGridWidth', Math.floor($("#jqGridDoctorNote_c")[0].offsetWidth-$("#jqGridDoctorNote_c")[0].offsetLeft-228));
-            });
-            $("#jqGridWard_panel").on("show.bs.collapse", function(){
-                $("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-228));
-            });
-            $("#jqGridPaediatric_panel").on("show.bs.collapse", function(){
-                $("#jqGridMedicalSurgical").jqGrid ('setGridWidth', Math.floor($("#jqGridPaediatric_c")[0].offsetWidth-$("#jqGridPaediatric_c")[0].offsetLeft-140));
-            });
-            $("#jqGridAntenatal_panel").on("show.bs.collapse", function(){
-                $("#jqGridPrevObstetrics").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
-                $("#jqGridCurrPregnancy").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
-                $("#jqGridObstetricsUltrasound").jqGrid ('setGridWidth', Math.floor($("#jqGridAntenatal_c")[0].offsetWidth-$("#jqGridAntenatal_c")[0].offsetLeft-155));
             });
 
 
