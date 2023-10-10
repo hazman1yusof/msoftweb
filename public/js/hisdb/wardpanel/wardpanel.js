@@ -68,16 +68,6 @@ $(document).ready(function () {
 		
 	});
 	
-	$("#jqGridWard_panel").on("hide.bs.collapse", function(){
-		button_state_ward('empty');
-		$("#jqGridWard_panel > div").scrollTop(0);
-	});
-	
-	$('#jqGridWard_panel').on('shown.bs.collapse', function () {
-		SmoothScrollTo("#jqGridWard_panel", 500);
-		populate_nursAssessment_currpt_getdata();
-	});
-	
 	// to format number input to two decimal places (0.00)
 	$(".floatNumberField").change(function() {
 		$(this).val(parseFloat($(this).val()).toFixed(2));
@@ -115,6 +105,16 @@ $(document).ready(function () {
 	
 	$("#jqGridWard_panel").on("show.bs.collapse", function(){
 		$("#jqGridExam").jqGrid ('setGridWidth', Math.floor($("#jqGridWard_c")[0].offsetWidth-$("#jqGridWard_c")[0].offsetLeft-248));
+	});
+	
+	$("#jqGridWard_panel").on("hide.bs.collapse", function(){
+		button_state_ward('empty');
+		$("#jqGridWard_panel > div").scrollTop(0);
+	});
+	
+	$('#jqGridWard_panel').on('shown.bs.collapse', function () {
+		SmoothScrollTo("#jqGridWard_panel", 500);
+		populate_nursAssessment_currpt_getdata();
 	});
 	
 	/////////////////////////////////////parameter for saving url/////////////////////////////////////
@@ -156,7 +156,7 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 			
-			addmore_jqgrid.edit = addmore_jqgrid.more = false; //reset
+			addmore_jqgrid.edit = addmore_jqgrid.more = false; // reset
 			
 			calc_jq_height_onchange("jqGridExam");
 		},
@@ -165,7 +165,7 @@ $(document).ready(function () {
 		},
 	});
 	
-	////////////////////////////////////////////myEditOptions_add_examWard////////////////////////////////////////////
+	////////////////////////////////////myEditOptions_add_examWard////////////////////////////////////
 	var myEditOptions_add_examWard = {
 		keys: true,
 		extraparam:{
@@ -173,20 +173,19 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-
+			
 			dialog_exam.on();
-
-			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
+			
+			$("input[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExam_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
 			});
-
 		},
 		aftersavefunc: function (rowid, response, options) {
-			addmore_jqgrid.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
+			addmore_jqgrid.more=true;	// only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -198,14 +197,14 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
-
+			
 			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
-			console.log(data);
-
+			// console.log(data);
+			
 			let editurl = "./wardpanel/form?"+
 				$.param({
-					episno:$('#episno_ward').val(),
-					mrn:$('#mrn_ward').val(),
+					episno: $('#episno_ward').val(),
+					mrn: $('#mrn_ward').val(),
 					action: 'wardpanel_save',
 				});
 			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
@@ -217,8 +216,8 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
-	//////////////////////////////////////////myEditOptions_edit_examWard////////////////////////////////////////////////
+	
+	////////////////////////////////////myEditOptions_edit_examWard////////////////////////////////////
 	var myEditOptions_edit_examWard = {
 		keys: true,
 		extraparam:{
@@ -226,21 +225,20 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-
+			
 			dialog_exam.on();
 			
 			// $("input[name='grpcode']").attr('disabled','disabled');
-			$("input[name='examnote']").keydown(function(e) {//when click tab at last column in header, auto save
+			$("input[name='examnote']").keydown(function(e) {	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGridExam_ilsave').click();
-				/*addmore_jqgrid.state = true;
-				$('#jqGrid_ilsave').click();*/
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
 			});
-
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGridExam',urlParam_Exam,'add_exam');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
@@ -252,14 +250,14 @@ $(document).ready(function () {
 		beforeSaveRow: function (options, rowid) {
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
-
+			
 			let data = $('#jqGridExam').jqGrid ('getRowData', rowid);
 			// console.log(data);
-
+			
 			let editurl = "./wardpanel/form?"+
 				$.param({
-					episno:$('#episno_ward').val(),
-					mrn:$('#mrn_ward').val(),
+					episno: $('#episno_ward').val(),
+					mrn: $('#mrn_ward').val(),
 					action: 'wardpanel_edit',
 				});
 			$("#jqGridExam").jqGrid('setGridParam', { editurl: editurl });
@@ -271,13 +269,13 @@ $(document).ready(function () {
 			alert(data);
 		}
 	};
-
-	//////////////////////////////////////////jqGridPagerExam////////////////////////////////////////////////
+	
+	//////////////////////////////////////////jqGridPagerExam//////////////////////////////////////////
 	$("#jqGridExam").inlineNav('#jqGridPagerExam', {
 		add: true,
 		edit: true,
 		cancel: true,
-		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
 		addParams: {
 			addRowParams: myEditOptions_add_examWard
@@ -327,10 +325,9 @@ $(document).ready(function () {
 			refreshGrid("#jqGridExam", urlParam_Exam);
 		},
 	});
-
-	//////////////////////////////////////end grid/////////////////////////////////////////////////////////
-
-	///////////////////////////////////////cust_rules//////////////////////////////////////////////
+	/////////////////////////////////////////////end grid/////////////////////////////////////////////
+	
+	////////////////////////////////////////////cust_rules////////////////////////////////////////////
 	function cust_rules(value,name){
 		var temp;
 		switch(name){
@@ -339,25 +336,25 @@ $(document).ready(function () {
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
-
+	
 	function showdetail(cellvalue, options, rowObject){
 		var field,table,case_;
 		switch(options.colModel.name){
 			case 'exam':field=['examcode','description'];table="nursing.examination";case_='exam';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
-
+		
 		fdl.get_array('wardpanel',options,param,case_,cellvalue);
 		
 		return cellvalue;
 	}
-
+	
 	function examCustomEdit(val, opt) {
-		console.log(val)
+		// console.log(val)
 		val = (val == "undefined") ? "" : val;
 		return $('<div class="input-group"><input jqgrid="jqGridExam" optid="'+opt.id+'" id="'+opt.id+'" name="exam" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
-
+	
 	function galGridCustomValue (elem, operation, value){
 		if(operation == 'get') {
 			return $(elem).find("input").val();
@@ -366,16 +363,17 @@ $(document).ready(function () {
 			$('input',elem).val(value);
 		}
 	}
-
+	
 	var dialog_exam = new ordialog(
 		'exam','nursing.examination',"#jqGridExam input[name='exam']",errorField,
-		{	colModel:[
-				{label:'Exam Code',name:'examcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
+		{
+			colModel: [
+				{ label: 'Exam Code', name: 'examcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, or_search: true },
 			],
 			urlParam: {
-				filterCol:['compcode'],
-				filterVal:['session.compcode']
+				filterCol: ['compcode'],
+				filterVal: ['session.compcode']
 			},
 			ondblClickRow:function(){
 				// $('#optax').focus();
@@ -385,7 +383,7 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#optax').focus();
+					// $('#optax').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -399,47 +397,48 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_exam.makedialog();
-
+	
 	$("#dialognewexamForm")
-	  .dialog({
-		width: 4/10 * $(window).width(),
-		modal: true,
-		autoOpen: false,
-		open: function( event, ui ) {
-			
-		},
-		close: function(event,ui){
-			refreshGrid('#'+dialog_exam.gridname,dialog_exam.urlParam);
-		},
-		buttons: [{
-			text: "Save",click: function() {
-				var saveParam={
-			        action:'more_exam_save',
-			    }
-			    var postobj={
-			    	_token : $('#csrf_token').val(),
-			    	examcode : $('#examcode').val(),
-			    	description : $('#description').val()
-			    };
-
-				$.post( './wardpanel/form?'+$.param(saveParam), postobj , function( data ) {
-		
-				}).fail(function(data) {
-				}).success(function(data){
-					$("#dialognewexamForm").dialog('close');
-				});
-			}
-		},
-		{
-			text: "Cancel",click: function() {
-				$(this).dialog('close');
-			}
-		}]
-	});
+		.dialog({
+			width: 4/10 * $(window).width(),
+			modal: true,
+			autoOpen: false,
+			open: function( event, ui ) {
+				
+			},
+			close: function(event,ui){
+				refreshGrid('#'+dialog_exam.gridname,dialog_exam.urlParam);
+			},
+			buttons: [{
+				text: "Save",click: function() {
+					var saveParam={
+						action: 'more_exam_save',
+					}
+					var postobj={
+						_token: $('#csrf_token').val(),
+						examcode: $('#examcode').val(),
+						description: $('#description').val()
+					};
+				
+					$.post( './wardpanel/form?'+$.param(saveParam), postobj , function( data ) {
+						
+					}).fail(function(data) {
+					}).success(function(data){
+						$("#dialognewexamForm").dialog('close');
+					});
+				}
+			},
+			{
+				text: "Cancel",click: function() {
+					$(this).dialog('close');
+				}
+			}]
+		});
 	$('#otherdialog_exam').append('<button type="button" id="exambut_add_new" class="btn btn-sm">Add New Exam</button>');
 	$("#exambut_add_new").click(function(){
 		$("#dialognewexamForm").dialog('open');
 	});
+
 });
 
 var errorField = [];
@@ -486,7 +485,7 @@ function button_state_ward(state){
 			$('#edit_ward,#new_ward').attr('disabled',true);
 			break;
 	}
-
+	
 	// if(!moment(gldatepicker_date).isSame(moment(), 'day')){
 	// 	$('#new_ward,#save_ward,#cancel_ward,#edit_ward').attr('disabled',true);
 	// }
@@ -495,8 +494,8 @@ function button_state_ward(state){
 // screen bed management //
 function populate_nursAssessment(obj,rowdata){
 	emptyFormdata(errorField,"#formWard");
-
-	//panel header
+	
+	// panel header
 	$('#name_show_ward').text(obj.name);
 	$('#mrn_show_ward').text(("0000000" + obj.mrn).slice(-7));
 	$('#sex_show_ward').text(obj.sex);
@@ -507,27 +506,27 @@ function populate_nursAssessment(obj,rowdata){
 	$('#occupation_show_ward').text(if_none(obj.occupation));
 	$('#citizenship_show_ward').text(obj.citizen);
 	$('#area_show_ward').text(obj.area);
-
-	//formWard
+	
+	// formWard
 	$('#mrn_ward').val(obj.mrn);
 	$("#episno_ward").val(obj.episno);
-
+	
 	var saveParam={
-        action:'get_table_ward',
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	mrn:obj.mrn,
-    	episno:obj.episno
-
-    };
-
-    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).success(function(data){
-    	if(!$.isEmptyObject(data)){
+		action: 'get_table_ward',
+	}
+	
+	var postobj={
+		_token: $('#csrf_token').val(),
+		mrn: obj.mrn,
+		episno: obj.episno
+	};
+	
+	$.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+		
+	},'json').fail(function(data) {
+		alert('there is an error');
+	}).success(function(data){
+		if(!$.isEmptyObject(data)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			autoinsert_rowdata("#formWard",data.ward_regdate);
@@ -545,15 +544,13 @@ function populate_nursAssessment(obj,rowdata){
 			
 			button_state_ward('edit');
 			textare_init_nursAssessment();
-        }else{
+		}else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
 			textare_init_nursAssessment();
-        }
-
-    });
-
+		}
+	});
 }
 
 // screen current patient //
@@ -561,8 +558,8 @@ function populate_nursAssessment_currpt(obj){
 	$("#jqGridWard_panel").collapse('hide');
 	emptyFormdata(errorField,"#formWard");
 	tri_color_set('empty');
-
-	//panel header
+	
+	// panel header
 	$('#name_show_ward').text(obj.Name);
 	$('#mrn_show_ward').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_ward').text(if_none(obj.Sex).toUpperCase());
@@ -573,42 +570,41 @@ function populate_nursAssessment_currpt(obj){
 	$('#occupation_show_ward').text(if_none(obj.occupDesc).toUpperCase());
 	$('#citizenship_show_ward').text(if_none(obj.cityDesc).toUpperCase());
 	$('#area_show_ward').text(if_none(obj.areaDesc).toUpperCase());
-
+	
 	$("#mrn_ward").val(obj.MRN);
 	$("#episno_ward").val(obj.Episno);
 	
 	// table examination
-	// urlParam_Exam.filterVal[0] = obj.MRN;
-	// urlParam_Exam.filterVal[1] = obj.Episno;
+	urlParam_Exam.filterVal[0] = obj.MRN;
+	urlParam_Exam.filterVal[1] = obj.Episno;
 	// urlParam_Exam.filterVal[2] = 'WARD';
-	
 }
 
 function populate_nursAssessment_currpt_getdata(){
 	emptyFormdata(errorField,"#formWard",["#mrn_ward","#episno_ward"]);
 	tri_color_set('empty');
-
+	
 	var saveParam={
-        action:'get_table_ward',
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	mrn:$("#mrn_ward").val(),
-    	episno:$("#episno_ward").val()
-
+		action: 'get_table_ward',
+	}
+	
+	var postobj={
+		_token: $('#csrf_token').val(),
+		mrn: $("#mrn_ward").val(),
+		episno: $("#episno_ward").val()
 	};
 	
-    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    },'json').fail(function(data) {
-        alert('there is an error');
-    }).success(function(data){
-    	if(!$.isEmptyObject(data.ward)){
+	$.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+		
+	},'json').fail(function(data) {
+		alert('there is an error');
+	}).success(function(data){
+		if(!$.isEmptyObject(data.ward)){
 			autoinsert_rowdata("#formWard",data.ward);
 			autoinsert_rowdata("#formWard",data.ward_gen);
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			autoinsert_rowdata("#formWard",data.ward_history);
-
+			
 			// autoinsert_rowdata("#formWard",data.ward_exm);
 			if(!$.isEmptyObject(data.ward_exm)){
 				urlParam_Exam.filterVal[0] = $("#mrn_ward").val();
@@ -622,16 +618,15 @@ function populate_nursAssessment_currpt_getdata(){
 			button_state_ward('edit');
 			textare_init_nursAssessment();
 			tri_color_set();
-        }else{
+		}else{
 			button_state_ward('add');
 			autoinsert_rowdata("#formWard",data.ward_regdate);
 			// examination_ward.empty();
 			textare_init_nursAssessment();
-        }
-
-        if(!emptyobj_(data.ward_history))autoinsert_rowdata("#formWard",data.ward_history);
-
-    });
+		}
+		
+		if(!emptyobj_(data.ward_history))autoinsert_rowdata("#formWard",data.ward_history);
+	});
 }
 
 function autoinsert_rowdata(form,rowData){
@@ -651,74 +646,74 @@ function autoinsert_rowdata(form,rowData){
 
 function saveForm_ward(callback){
 	var saveParam={
-        action:'save_table_ward',
-        oper:$("#cancel_ward").data('oper')
-    }
-    var postobj={
-    	_token : $('#csrf_token').val(),
-    	// sex_edit : $('#sex_edit').val(),
-    	// idtype_edit : $('#idtype_edit').val()
-
-    };
-
-    values = $("#formWard").serializeArray();
-
-    values = values.concat(
-        $('#formWard input[type=checkbox]:not(:checked)').map(
-        function() {
-            return {"name": this.name, "value": 0}
-        }).get()
-    );
-
-    values = values.concat(
-        $('#formWard input[type=checkbox]:checked').map(
-        function() {
-            return {"name": this.name, "value": 1}
-        }).get()
+		action: 'save_table_ward',
+		oper: $("#cancel_ward").data('oper')
+	}
+	
+	var postobj={
+		_token: $('#csrf_token').val(),
+		// sex_edit: $('#sex_edit').val(),
+		// idtype_edit: $('#idtype_edit').val()
+	};
+	
+	values = $("#formWard").serializeArray();
+	
+	values = values.concat(
+		$('#formWard input[type=checkbox]:not(:checked)').map(
+			function() {
+				return {"name": this.name, "value": 0}
+			}).get()
 	);
 	
 	values = values.concat(
-        $('#formWard input[type=radio]:checked').map(
-        function() {
-            return {"name": this.name, "value": this.value}
-        }).get()
-    );
-
-    values = values.concat(
-        $('#formWard select').map(
-        function() {
-            return {"name": this.name, "value": this.value}
-        }).get()
+		$('#formWard input[type=checkbox]:checked').map(
+			function() {
+				return {"name": this.name, "value": 1}
+			}).get()
 	);
-
-    // values = values.concat(
-    //     $('#formWard input[type=radio]:checked').map(
-    //     function() {
-    //         return {"name": this.name, "value": this.value}
-    //     }).get()
-    // );
-
-    $.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
-        
-    },'json').fail(function(data) {
-        // alert('there is an error');
-        callback();
-    }).success(function(data){
-        callback();
-    });
+	
+	values = values.concat(
+		$('#formWard input[type=radio]:checked').map(
+			function() {
+				return {"name": this.name, "value": this.value}
+			}).get()
+	);
+	
+	values = values.concat(
+		$('#formWard select').map(
+			function() {
+				return {"name": this.name, "value": this.value}
+			}).get()
+	);
+	
+	// values = values.concat(
+	// 	$('#formWard input[type=radio]:checked').map(
+	// 		function() {
+	// 			return {"name": this.name, "value": this.value}
+	// 		}).get()
+	// );
+	
+	$.post( "./wardpanel/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+		
+	},'json').fail(function(data) {
+		// alert('there is an error');
+		callback();
+	}).success(function(data){
+		callback();
+	});
 }
 
 var dialog_col_ward = new ordialog(
 	'ward_tri_col','sysdb.sysparam',"#formWard input[name='triagecolor']",errorField,
-	{	colModel:
-		[
-			{label:'Color',name:'colorcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer', hidden: true,canSearch:false,or_search:true},
+	{
+		colModel: [
+			{ label: 'Color', name: 'colorcode', width: 200, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+			{ label: 'Description', name: 'description', width: 400, classes: 'pointer', hidden: true, canSearch: false, or_search: true },
 		],
 		urlParam: {
-			url:'./sysparam_triage_color',
-			filterCol:['recstatus','compcode'],
-			filterVal:['ACTIVE', 'session.compcode']
+			url: './sysparam_triage_color',
+			filterCol: ['recstatus','compcode'],
+			filterVal: ['ACTIVE', 'session.compcode']
 		},
 		ondblClickRow:function(event){
 			$(dialog_col_ward.textfield).val(selrowData("#"+dialog_col_ward.gridname)['description']);
@@ -727,7 +722,7 @@ var dialog_col_ward = new ordialog(
 							.removeClass( "yellow" )
 							.removeClass( "green" )
 							.addClass( selrowData("#"+dialog_col_ward.gridname)['description'] );
-							
+			
 			$(dialog_col_ward.textfield).next()
 							.removeClass( "red" )
 							.removeClass( "yellow" )
@@ -751,10 +746,10 @@ var dialog_col_ward = new ordialog(
 			$("input[type='radio'][name='colorcode_select']").click(function(){
 				let self = this;
 				delay(function(){
-						$(self).parent().click();
+					$(self).parent().click();
 				}, 100 );
 			});
-
+			
 			var gridname = '#'+obj.gridname;
 			var ids = $(gridname).jqGrid("getDataIDs"), l = ids.length, i, rowid, status;
 			for (i = 0; i < l; i++) {
@@ -803,28 +798,28 @@ function examination(){
 		$("#ward_exam_plus").on('click',{data:this},addexam);
 		return this;
 	}
-
+	
 	this.empty=function(){
 		this.examarray.length=0;
 		$("#ward_exam_div").html('');
 		return this;
 	}
-
+	
 	this.off=function(){
 		$("#ward_exam_plus").off('click',addexam);
 		return this;
 	}
-
+	
 	this.disable=function(){
 		disableForm('#ward_exam_div');
 		return this;
 	}
-
+	
 	this.enable=function(){
 		enableForm('#ward_exam_div');
 		return this;
 	}
-
+	
 	this.loadexam = function(){
 		this.examarray.forEach(function(item, index){
 			$("#ward_exam_div").append(`
@@ -854,7 +849,7 @@ function examination(){
 						</select>
 					</div>
 				</div>
-
+				
 				<div class="form-group">
 					<div class="col-md-2">Note</div>
 					<div class="col-md-10">
@@ -862,12 +857,12 @@ function examination(){
 					</div>
 				</div>
 			`);
-
+			
 			$("#exam_"+index).val(item.exam);
 		});
 		return this;
 	}
-
+	
 	function addexam(event){
 		var obj = event.data.data;
 		var currentid = 0;
@@ -878,7 +873,7 @@ function examination(){
 			currentid = obj.examarray.length;
 			obj.examarray.push(obj.examarray.length);
 		}
-
+		
 		$("#ward_exam_div").append(`
 			<hr>
 			<div class="form-group">
@@ -906,7 +901,7 @@ function examination(){
 					</select>
 				</div>
 			</div>
-
+			
 			<div class="form-group">
 				<div class="col-md-2">Note</div>
 				<div class="col-md-10">
@@ -914,7 +909,6 @@ function examination(){
 				</div>
 			</div>
 		`);
-
 	}
 }
 

@@ -9,28 +9,27 @@ use DB;
 use Carbon\Carbon;
 
 class NursingController extends defaultController
-{   
-
+{
+    
     var $table;
     var $duplicateCode;
-
+    
     public function __construct()
     {
         $this->middleware('auth');
         // $this->duplicateCode = "chgtype";
     }
-
+    
     public function show(Request $request)
-    {   
+    {
         return view('hisdb.nursing.nursing');
     }
-
+    
     public function form(Request $request)
-    {   
+    {
         DB::enableQueryLog();
         switch($request->action){
-            case 'save_table_ti': //dari bed management
-
+            case 'save_table_ti':   // dari bed management
                 switch($request->oper){
                     case 'add':
                         return $this->add($request);
@@ -39,9 +38,8 @@ class NursingController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
-            case 'save_table_triage': //dari patient list OP
-
+            
+            case 'save_table_triage':   // dari patient list OP
                 switch($request->oper){
                     case 'add':
                         return $this->add_triage($request);
@@ -50,31 +48,31 @@ class NursingController extends defaultController
                     default:
                         return 'error happen..';
                 }
-
+            
             case 'nursing_save':
                 return $this->add_exam($request);
-
+            
             case 'nursing_edit':
                 return $this->edit_exam($request);
-
+            
             case 'more_examTriage_save':
                 return $this->add_more_exam($request);
-
+            
             case 'get_table_triage':
                 return $this->get_table_triage($request);
-
+            
             case 'addNotesTriage_save':
                 return $this->addNotes_triage($request);
-
+            
             default:
                 return 'error happen..';
         }
     }
-
+    
     public function add(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
             
             DB::table('nursing.nursassessment')
@@ -131,7 +129,7 @@ class NursingController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+            
             DB::table('nursing.nurshistory')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -158,7 +156,7 @@ class NursingController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+            
             DB::table('nursing.nursassessgen')
                     ->insert([
                         'compcode' => session('compcode'),
@@ -217,7 +215,7 @@ class NursingController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-
+            
             // DB::table('hisdb.episode')
             //         ->insert([
             //             'compcode' => session('compcode'),
@@ -229,7 +227,7 @@ class NursingController extends defaultController
             //             'lastuser'  => session('username'),
             //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //         ]);
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
@@ -239,28 +237,31 @@ class NursingController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+        
     }
-
+    
     public function edit(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $nursassessment_triage = DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=','TRIAGE');
-
+            
             if(!$nursassessment_triage->exists()){
                 DB::table('nursing.nursassessment')
                     ->insert([
@@ -365,11 +366,11 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             $nurshistory_triage = DB::table('nursing.nurshistory')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('compcode','=',session('compcode'));
-
+            
             if(!$nurshistory_triage->exists()){
                 DB::table('nursing.nurshistory')
                     ->insert([
@@ -421,13 +422,13 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             $nursassessgen_triage = DB::table('nursing.nursassessgen')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=','TRIAGE');
-
+            
             if(!$nursassessgen_triage->exists()){
                 DB::table('nursing.nursassessgen')
                     ->insert([
@@ -540,7 +541,7 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
@@ -550,11 +551,11 @@ class NursingController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+            
             $examidno = [];
             $examsel = [];
             $examnote = [];
-
+            
             foreach($request->all() as $key => $value) {
                 if(strpos($key, "examnote") === 0){
                     array_push($examnote, $value);
@@ -564,7 +565,7 @@ class NursingController extends defaultController
                     array_push($examidno, $value);
                 }
             }
-
+            
             foreach ($examidno as $key => $value) {
                 if($value=='0'){
                     DB::table('nursing.nurassesexam')
@@ -585,33 +586,36 @@ class NursingController extends defaultController
                         ]);
                 }
             }
-
+            
             $queries = DB::getQueryLog();
             // dump($queries);
-
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+        
     }
-
+    
     public function add_triage(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $location = 'TRIAGE';
-
+            
             $nursassessment_triageinfo = DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=', $location);
-
+            
             if(!$nursassessment_triageinfo->exists()){
                 DB::table('nursing.nursassessment')
                     ->insert([
@@ -716,11 +720,11 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             $nurshistory_triage = DB::table('nursing.nurshistory')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('compcode','=',session('compcode'));
-
+            
             if(!$nurshistory_triage->exists()){
                 DB::table('nursing.nurshistory')
                     ->insert([
@@ -771,14 +775,14 @@ class NursingController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-            }      
-
+            }
+            
             $nursassessgen_triageinfo = DB::table('nursing.nursassessgen')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=',$location);
-
+            
             if(!$nursassessgen_triageinfo->exists()){
                 DB::table('nursing.nursassessgen')
                     ->insert([
@@ -891,7 +895,6 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
             
             // DB::table('nursing.nursassessment')
             //         ->insert([
@@ -947,7 +950,7 @@ class NursingController extends defaultController
             //             'lastuser'  => session('username'),
             //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //         ]);
-
+            
             // DB::table('nursing.nurshistory')
             //         ->insert([
             //             'compcode' => session('compcode'),
@@ -974,7 +977,7 @@ class NursingController extends defaultController
             //             'lastuser'  => session('username'),
             //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //         ]);
-
+            
             // DB::table('nursing.nursassessgen')
             //         ->insert([
             //             'compcode' => session('compcode'),
@@ -1033,7 +1036,7 @@ class NursingController extends defaultController
             //             'lastuser'  => session('username'),
             //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //         ]);
-
+            
             // DB::table('hisdb.episode')
             //         ->insert([
             //             'compcode' => session('compcode'),
@@ -1045,7 +1048,7 @@ class NursingController extends defaultController
             //             'lastuser'  => session('username'),
             //             'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
             //         ]);
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
@@ -1055,30 +1058,33 @@ class NursingController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+        
     }
-
+    
     public function edit_triage(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             $location = $this->get_location($request->mrn_ti,$request->episno_ti);
-
+            
             $nursassessment_triageinfo = DB::table('nursing.nursassessment')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=', $location);
-
+            
             if(!$nursassessment_triageinfo->exists()){
                 DB::table('nursing.nursassessment')
                     ->insert([
@@ -1183,11 +1189,11 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             $nurshistory_triage = DB::table('nursing.nurshistory')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('compcode','=',session('compcode'));
-
+            
             if(!$nurshistory_triage->exists()){
                 DB::table('nursing.nurshistory')
                     ->insert([
@@ -1238,14 +1244,14 @@ class NursingController extends defaultController
                         'lastuser'  => session('username'),
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
-            }      
-
+            }
+            
             $nursassessgen_triageinfo = DB::table('nursing.nursassessgen')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
                 ->where('compcode','=',session('compcode'))
                 ->where('location','=',$location);
-
+            
             if(!$nursassessgen_triageinfo->exists()){
                 DB::table('nursing.nursassessgen')
                     ->insert([
@@ -1358,7 +1364,7 @@ class NursingController extends defaultController
                         'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     ]);
             }
-
+            
             DB::table('hisdb.episode')
                 ->where('mrn','=',$request->mrn_ti)
                 ->where('episno','=',$request->episno_ti)
@@ -1368,11 +1374,11 @@ class NursingController extends defaultController
                     'lastuser'  => session('username'),
                     'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                 ]);
-
+           
             $examidno = [];
             $examsel = [];
             $examnote = [];
-
+            
             foreach($request->all() as $key => $value) {
                 if(strpos($key, "examnote") === 0){
                     array_push($examnote, $value);
@@ -1382,7 +1388,7 @@ class NursingController extends defaultController
                     array_push($examidno, $value);
                 }
             }
-
+            
             foreach ($examidno as $key => $value) {
                 if($value=='0'){
                     DB::table('nursing.nurassesexam')
@@ -1403,89 +1409,92 @@ class NursingController extends defaultController
                         ]);
                 }
             }
-
+            
             $queries = DB::getQueryLog();
             // dump($queries);
-
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response('Error DB rollback!'.$e, 500);
+            
         }
+        
     }
-
+    
     public function get_table_triage(Request $request){
-
+        
         // $location = $this->get_location($request->mrn,$request->episno);
         $location = 'TRIAGE';
-
+        
         $triage_obj = DB::table('nursing.nursassessment')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-
+        
         $triage_gen_obj = DB::table('nursing.nursassessgen')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-
+        
         $triage_exm_obj = DB::table('nursing.nurassesexam')
                     ->where('compcode','=',session('compcode'))
                     ->where('location','=',$location)
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-
+        
         $triage_regdate_obj = DB::table('hisdb.episode')
                     ->select('reg_date')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno);
-                    
+        
         $triage_nurshistory_obj = DB::table('nursing.nurshistory')
                     ->where('compcode','=',session('compcode'))
                     ->where('mrn','=',$request->mrn);
-
+        
         $responce = new stdClass();
-
+        
         if($triage_obj->exists()){
             $triage_obj = $triage_obj->first();
             $responce->triage = $triage_obj;
         }
-
+        
         if($triage_gen_obj->exists()){
             $triage_gen_obj = $triage_gen_obj->first();
             $responce->triage_gen = $triage_gen_obj;
         }
-
+        
         if($triage_exm_obj->exists()){
             $triage_exm_obj = $triage_exm_obj->get()->toArray();
             $responce->triage_exm = $triage_exm_obj;
         }
-
+        
         if($triage_regdate_obj->exists()){
             $triage_regdate_obj = $triage_regdate_obj->first();
             $responce->triage_regdate = $triage_regdate_obj;
         }
-
+        
         if($triage_nurshistory_obj->exists()){
             $triage_nurshistory_obj = $triage_nurshistory_obj->first();
             $responce->triage_nurshistory = $triage_nurshistory_obj;
         }
-
+        
         return json_encode($responce);
-
+        
     }
-
+    
     public function add_exam(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('nursing.nurassesexam')
                 ->insert([  
                     'compcode' => session('compcode'),
@@ -1497,44 +1506,50 @@ class NursingController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'adduser'  => session('username')
                 ]);
-
-             DB::commit();
-
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function edit_exam(Request $request){
         
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('nursing.nurassesexam')
                 ->where('idno','=',$request->idno)
                 ->update([  
                     'exam' => $request->exam,
                     'examnote' => $request->examnote
-                ]); 
-
+                ]);
+            
             DB::commit();
-
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function add_more_exam(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('nursing.examination')
                 ->insert([  
                     'compcode' => session('compcode'),
@@ -1543,43 +1558,47 @@ class NursingController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     'adduser'  => session('username')
                 ]);
-
-             DB::commit();
-
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
     public function get_location($mrn,$episno){
-
+        
         $epistype = DB::table('hisdb.episode')
             ->where('compcode','=',session('compcode'))
             ->where('mrn','=',$mrn)
             ->where('episno','=',$episno);
-
+        
         if($epistype->exists()){
             $epistype = $epistype->first();
             $epistype = $epistype->epistycode;
         }
-
+        
         if($epistype == 'IP' || $epistype == 'DP' ){
             $location = 'WARD';
         }else{
             $location = 'TRIAGE';
         }
-
+        
         return $location;
+        
     }
-
+    
     public function addNotes_triage(Request $request){
-
+        
         DB::beginTransaction();
-
+        
         try {
-
+            
             DB::table('nursing.triage_addnotes')
                 ->insert([  
                     'compcode' => session('compcode'),
@@ -1591,14 +1610,17 @@ class NursingController extends defaultController
                     'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
                     
                 ]);
-
-             DB::commit();
-
+            
+            DB::commit();
+            
         } catch (\Exception $e) {
+            
             DB::rollback();
-
+            
             return response($e->getMessage(), 500);
+            
         }
+        
     }
-
+    
 }
