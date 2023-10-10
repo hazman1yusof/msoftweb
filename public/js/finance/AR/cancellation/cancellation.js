@@ -46,8 +46,8 @@ $(document).ready(function () {
 	});
 	
 	/////////////////////////////////currency/////////////////////////////////
-	var mycurrency =new currencymode(['#db_outamount', '#db_amount']);
-	var mycurrency2 =new currencymode(['#db_outamount', '#db_amount']);
+	var mycurrency = new currencymode(['#db_outamount', '#db_amount']);
+	var mycurrency2 = new currencymode(['#db_outamount', '#db_amount']);
 	var myallocation = new Allocation();	//Refund
 	var fdl = new faster_detail_load();
 	
@@ -364,11 +364,15 @@ $(document).ready(function () {
 			},
 			buttons: [
 				{
-					text: "Cancel Receipt", click: function() {
-						var idno = selrowData("#jqGrid_rc").db_idno;
+					text: "Cancel", click: function() {
+						if($("#trantype").val() == 'RC'){
+							var idno = selrowData("#jqGrid_rc").db_idno;
+						}else if($("#trantype").val() == 'RD'){
+							var idno = selrowData("#jqGrid_rd").db_idno;
+						}
 						
 						bootbox.confirm({
-							message: "Are you sure you want to cancel this receipt?",
+							message: "Are you sure you want to cancel?",
 							buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
 							callback: function (result) {
 								if(result == true){
@@ -378,7 +382,7 @@ $(document).ready(function () {
 									}
 									
 									var postobj={
-										_token : $('#csrf_token').val(),
+										_token: $('#csrf_token').val(),
 									};
 									
 									$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
@@ -387,7 +391,12 @@ $(document).ready(function () {
 										alert('there is an error');
 									}).success(function(data){
 										$("#dialogForm_RC").dialog('close');
-										refreshGrid('#jqGrid_rc', urlParam_rcpt);
+										
+										if($("#trantype").val() == 'RC'){
+											refreshGrid('#jqGrid_rc', urlParam_rcpt);
+										}else if($("#trantype").val() == 'RD'){
+											refreshGrid('#jqGrid_rd', urlParam_rd);
+										}
 									});
 								}else{
 									// refreshGrid('#jqGrid_rc', urlParam_rcpt);
@@ -409,7 +418,11 @@ $(document).ready(function () {
 		modal: true,
 		open: function(){
 			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
-			grid='#jqGrid_rc'; grid = '#jqGrid_rd';
+			if($("#trantype").val() == 'RC'){
+				grid='#jqGrid_rc';
+			}else if($("#trantype").val() == 'RD'){
+				grid='#jqGrid_rd';
+			}
 			urlParamAlloc.idno=selrowData(grid).db_idno;
 			urlParamAlloc.auditno=selrowData(grid).db_auditno;
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
@@ -451,7 +464,6 @@ $(document).ready(function () {
 			}
 		],
 	});
-	
 	//////////////////////////////////RC ENDS//////////////////////////////////
 	
 	/////////////////////////////////RF STARTS/////////////////////////////////
@@ -708,16 +720,16 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'Debtor Code', name: 'db_debtorcode', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
 			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
 			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
 			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
 			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
 			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
+			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter: 'currency' },
+			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter: 'currency' },
 			{ label: 'Status', name: 'db_recstatus', width: 10, hidden: true },
 			{ label: 'source', name: 'db_source', width: 10, hidden: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
@@ -726,13 +738,13 @@ $(document).ready(function () {
 			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
 			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
 			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
+			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat: un_showdetail },
 			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
 			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
 			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
 			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
-			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
+			{ label: 'db_posteddate', name: 'db_posteddate', hidden: true },
+			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
 			{ label: ' ', width: 20, classes: 'wrap', formatter: buttonformatter },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
@@ -764,6 +776,7 @@ $(document).ready(function () {
 		gridComplete: function () {
 			$("#jqGrid_rc").setSelection($("#jqGrid_rc").getDataIDs()[0]); // highlight 1st record
 			init_btn();
+			$("#trantype").val(selrowData("#jqGrid_rc").db_trantype);
 			
 			if($('#jqGrid_rc').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
@@ -825,44 +838,7 @@ $(document).ready(function () {
 	//////////////////////////////////////////////jqGrid_rd//////////////////////////////////////////////
 	$("#jqGrid_rd").jqGrid({
 		datatype: "local",
-		// colModel: $("#jqGrid_rc").jqGrid('getGridParam','colModel'),
-		colModel: [
-			{ label: 'compcode', name: 'db_compcode', hidden: true },
-			{ label: 'Debtor Code', name: 'db_debtorcode', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Payer Code', name: 'db_payercode', width: 20, hidden: true },
-			{ label: 'Audit No', name: 'db_auditno', width: 10, align: 'right', classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
-			{ label: 'Sector', name: 'db_unit', width: 10, hidden: true, classes: 'wrap' },
-			{ label: 'PO No', name: 'db_ponum', width: 8, formatter: padzero5, unformat: unpadzero, hidden: true },
-			{ label: 'Document No', name: 'db_recptno', width: 15, align: 'right' },
-			{ label: 'Date', name: 'db_entrydate', width: 12, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Paymode', name: 'db_paymode', width: 20, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Amount', name: 'db_amount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Outamount', name: 'db_outamount', width: 10, classes: 'wrap', align: 'right', formatter:'currency' },
-			{ label: 'Status', name: 'db_recstatus', width: 10, hidden: true },
-			{ label: 'source', name: 'db_source', width: 10, hidden: true },
-			{ label: 'Trantype', name: 'db_trantype', width: 8, hidden: true },
-			{ label: 'lineno_', name: 'db_lineno_', width: 10, hidden: true },
-			{ label: 'db_orderno', name: 'db_orderno', width: 10, hidden: true },
-			{ label: 'debtortype', name: 'db_debtortype', width: 20, hidden: true },
-			{ label: 'billdebtor', name: 'db_billdebtor', width: 20, hidden: true },
-			{ label: 'approvedby', name: 'db_approvedby', width: 20, hidden: true },
-			{ label: 'MRN', name: 'db_mrn', width: 10, align: 'right', canSearch: true, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
-			{ label: 'unit', name: 'db_unit', width: 10, hidden: true },
-			{ label: 'termmode', name: 'db_termmode', width: 10, hidden: true },
-			{ label: 'hdrtype', name: 'db_hdrtype', width: 10, hidden: true },
-			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
-			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
-			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			{ label: ' ', width: 20, classes: 'wrap', formatter: buttonformatteRD },
-			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
-			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
-			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
-			{ label: 'upduser', name: 'db_upduser', width: 10, hidden: true },
-			{ label: 'upddate', name: 'db_upddate', width: 10, hidden: true },
-			{ label: 'db_payername', name: 'db_payername', width: 10, hidden: true },
-			{ label: 'db_PymtDescription', name: 'db_PymtDescription', width: 10, hidden: true },
-			{ label: 'Remark', name: 'db_remark', width: 20, classes: 'wrap', hidden: true },
-		],
+		colModel: $("#jqGrid_rc").jqGrid('getGridParam','colModel'),
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -883,7 +859,8 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$("#jqGrid_rd").setSelection($("#jqGrid_rd").getDataIDs()[0]); // highlight 1st record
-			init_btnRD();
+			init_btn();
+			$("#trantype").val(selrowData("#jqGrid_rd").db_trantype);
 			
 			if($('#jqGrid_rd').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
@@ -1060,7 +1037,7 @@ $(document).ready(function () {
 		action: 'get_alloc',
 		url: './arenquiry/table',
 		idno: '',
-		auditno: '', 
+		auditno: '',
 		// trantype: ''
 	};
 	
@@ -1073,7 +1050,8 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'idno', width: 20, hidden:true },
 			{ label: 'System Auto No.', name: 'sysAutoNo', width: 35, classes: 'wrap' },
 			{ label: 'Source', name: 'source', width: 10, classes: 'wrap', hidden: true },
-			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'trantype', name: 'trantype', width: 10, classes: 'wrap', hidden: true },
+			{ label: 'doctrantype', name: 'doctrantype', width: 10, classes: 'wrap', hidden: true },
 			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero, hidden: true },
 			{ label: 'Debtor', name: 'debtorcode', width: 40, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
 			{ label: 'Payer', name: 'payercode', width: 40, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail },
@@ -1093,13 +1071,12 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGridAlloc");
-			if (($('#dbacthdr_trantype').val()=="RC")) {
+			if($('#trantype').val() == "RC"){
 				urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
-				refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
-			} else {
+			}else if($('#trantype').val() == "RD"){
 				urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
-				refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
 			}
+			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
 		},
 		gridComplete: function(){
 			$("#jqGridAlloc").setSelection($("#jqGridAlloc").getDataIDs()[0]); // highlight 1st record
@@ -1354,13 +1331,13 @@ $(document).ready(function () {
 	function buttonformatter(cellvalue, options, rowObject){
 		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
 		if(parseFloat(rowObject.db_amount) != parseFloat(rowObject.db_outamount)){
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`' disabled>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-trantype='`+rowObject.db_trantype+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`' disabled>`
 		}else{
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-trantype='`+rowObject.db_trantype+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
 		}
 			retbut += 	    `Detail`
 			retbut += 	  `</button>&nbsp;`
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`' data-trantype='`+rowObject.db_trantype+`'>`
 			retbut += 	    `Allocation`
 			retbut += 	  `</button></div>`;
 		return retbut;
@@ -1376,61 +1353,35 @@ $(document).ready(function () {
 		$('button.btn_detail').on('click',function(e){
 			oper='view';
 			var idno = $(this).data('idno');
+			var trantype = $(this).data('trantype');
 			enabledPill();
 			
-			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
-			$( "input:radio[name='optradio'][value='receipt']" ).change();
-
-			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
+			if(trantype == 'RC'){
+				$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
+				$( "input:radio[name='optradio'][value='receipt']" ).change();
+				
+				populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
+			}else if(trantype == 'RD'){
+				$( "input:radio[name='optradio'][value='deposit']" ).prop( "checked", true );
+				$( "input:radio[name='optradio'][value='deposit']" ).change();
+				
+				populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
+			}
+			
 			getdata('RC',idno);
 			refreshGrid("#sysparam",urlParam_sys);
 		});
 		
 		$('button.btn_alloc').on('click',function(e){
 			var idno = $(this).data('idno');
-			$("#jqGrid_rc").jqGrid('setSelection', idno);
-			$("#dialog_allocation").dialog("open");
-		});
-	}
-
-	function buttonformatteRD(cellvalue, options, rowObject){
-		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
-		if(parseFloat(rowObject.db_amount) != parseFloat(rowObject.db_outamount)){
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`' disabled>`
-		}else{
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
-		}
-			retbut += 	    `Detail`
-			retbut += 	  `</button>&nbsp;`
-			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
-			retbut += 	    `Allocation`
-			retbut += 	  `</button></div>`;
-		return retbut;
-	}
-	
-	function init_btnRD(){
-		// if($($('button.btn_detail')).data('amount') !== $($('button.btn_detail')).data('outamount')){
-		// 	$('button.btn_detail').prop('disabled', true);
-		// }else{
-		// 	$('button.btn_detail').prop('disabled', false);
-		// }
-		
-		$('button.btn_detail').on('click',function(e){
-			oper='view';
-			var idno = $(this).data('idno');
-			enabledPill();
+			var trantype = $(this).data('trantype');
 			
-			$( "input:radio[name='optradio'][value='deposit']" ).prop( "checked", true );
-			$( "input:radio[name='optradio'][value='deposit']" ).change();
-
-			populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
-			getdata('RC',idno);
-			refreshGrid("#sysparam",urlParam_sys);
-		});
-		
-		$('button.btn_alloc').on('click',function(e){
-			var idno = $(this).data('idno');
-			$("#jqGrid_rd").jqGrid('setSelection', idno);
+			if(trantype == 'RC'){
+				$("#jqGrid_rc").jqGrid('setSelection', idno);
+			}else if(trantype == 'RD'){
+				$("#jqGrid_rd").jqGrid('setSelection', idno);
+			}
+			
 			$("#dialog_allocation").dialog("open");
 		});
 	}
@@ -1452,64 +1403,45 @@ $(document).ready(function () {
 				message: "Are you sure you want to cancel this allocation?",
 				buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
 				callback: function (result) {
-					if (($('#dbacthdr_trantype').val()=="RC")) {
-
-						if(result == true){
-							var urlparam={
-								oper: 'cancel_alloc',
-								idno: idno,
-							}
+					if(result == true){
+						var urlparam={
+							oper: 'cancel_alloc',
+							idno: idno,
+						}
+						
+						var postobj={
+							_token : $('#csrf_token').val(),
+						};
+						
+						$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
 							
-							var postobj={
-								_token : $('#csrf_token').val(),
-							};
-							
-							$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
-								
-							},'json').fail(function(data) {
-								alert('there is an error');
-							}).success(function(data){
+						},'json').fail(function(data) {
+							alert('there is an error');
+						}).success(function(data){
+							if($('#trantype').val() == "RC"){
 								urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
-								refreshGrid("#jqGridAlloc",urlParamAlloc);
 								refreshGrid('#jqGrid_rc', urlParam_rcpt);
-							});
-						}else{
-							urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
-							refreshGrid("#jqGridAlloc",urlParamAlloc);
-							refreshGrid('#jqGrid_rc', urlParam_rcpt);
-						}
-
-					} else {
-						if(result == true){
-							var urlparam={
-								oper: 'cancel_alloc',
-								idno: idno,
-							}
-							
-							var postobj={
-								_token : $('#csrf_token').val(),
-							};
-							
-							$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
-								
-							},'json').fail(function(data) {
-								alert('there is an error');
-							}).success(function(data){
+							}else if($('#trantype').val() == "RD"){
 								urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
-								refreshGrid("#jqGridAlloc",urlParamAlloc);
 								refreshGrid('#jqGrid_rd', urlParam_rd);
-							});
-						}else{
-							urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
+							}
 							refreshGrid("#jqGridAlloc",urlParamAlloc);
-							refreshGrid('#jqGrid_rd', urlParam_rd);
+						});
+					}else{
+						if($('#trantype').val() == "RC"){
+							urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
+							// refreshGrid('#jqGrid_rc', urlParam_rcpt);
 						}
+						else if($('#trantype').val() == "RD"){
+							urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
+							// refreshGrid('#jqGrid_rd', urlParam_rd);
+						}
+						refreshGrid("#jqGridAlloc",urlParamAlloc);
 					}
 				}
 			});
 		});
 	}
-	
 	//////////////////////////////////////////////////end//////////////////////////////////////////////////
 	
 	/////////////////////////////handle searching, its radio button and toggle/////////////////////////////
@@ -2110,4 +2042,3 @@ function resetpill(){
 	$('#dialogForm_RC ul.nav-tabs li a').attr('aria-expanded',false);
 }
 /////////////////////////////////////////////////////end RC/////////////////////////////////////////////////////
-

@@ -295,6 +295,7 @@ class arenquiryController extends defaultController
                             'dc.refsource as source',
                             'dc.reftrantype as trantype',
                             'dc.refauditno as auditno',
+                            'dc.doctrantype',
                             'dc.debtorcode',
                             'dc.payercode',
                             'dc.amount',
