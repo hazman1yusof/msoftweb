@@ -364,7 +364,7 @@ class RefundController extends defaultController
                             'balance' => $value['obj']['amtbal'],
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'adduser' => session('username'),
-                            'recstatus' => 'ACTIVE'
+                            'recstatus' => 'POSTED'
                         ]);
 
         

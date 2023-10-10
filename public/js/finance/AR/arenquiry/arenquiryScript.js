@@ -555,7 +555,7 @@ $(document).ready(function () {
 		buttons :butt1,
 		});
 
-	///allocationRF///
+	///allocation inside RF///
 	var urlParamAllo={
 		action: 'refund_allo_table',
 		url: 'refund/table',
@@ -880,6 +880,7 @@ $(document).ready(function () {
 	
 	/////////////////////////////////////////////////Allocation/////////////////////////////////////////////////
 	///////////////////////////////////////parameter for jqGridAlloc url///////////////////////////////////////
+	//allocation for jgridAlloc////
 	var urlParamAlloc={
 		action:'get_alloc',
 		url:'./arenquiry/table',
@@ -1036,7 +1037,7 @@ $(document).ready(function () {
 		$("#jqGrid3_CN").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_CN_c")[0].offsetWidth-$("#jqGrid3_CN_c")[0].offsetLeft-18));
 	});
 
-	////////////////////////////////////////////////parameter for jqGrid2_Alloc url////////////////////////////////////////////////
+	////////////////////////////////////////////////parameter for jqGrid2_Alloc CN url////////////////////////////////////////////////
 	var urlParam2_Alloc={
 		action: 'get_alloc_table',
 		url:'CreditNoteAR/table',
@@ -1045,7 +1046,7 @@ $(document).ready(function () {
 		auditno:'',
 	};
 
-	////////////////////////////////////////////////jqGrid2_Alloc////////////////////////////////////////////////
+	////////////////////////////////////////////////jqGrid2_Alloc CN////////////////////////////////////////////////
 	$("#jqGrid2_Alloc").jqGrid({
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
