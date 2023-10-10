@@ -42,7 +42,7 @@
 		overflow: auto;
 	}
 	
-	<!-- start RC -->
+	<!-- start RC/RD -->
 	#gridAllo_c input[type='text'][rowid]{
 		height: 30%;
 		padding: 4px 12px 4px 12px;
@@ -62,7 +62,7 @@
 		background-color: #f8f8f8;
 		border-color: #e7e7e7;
 	}
-	<!-- end RC -->
+	<!-- end RC/RD -->
 @endsection
 
 @section('body')
@@ -120,7 +120,13 @@
 				</div>
 			</fieldset> 
 		</form>
-		 
+		
+		<div class="StextClass">
+			<div class=Stext2 id='allocate' style="padding:0px 0px 0px 15px;pull-right: 100px;">
+				<a href="#" class="btn-sm allobtn" role="button">Allocate</a>
+			</div>
+		</div>
+
 		<div class="panel panel-default">
 		    <div class="panel-heading">Enquiry (AR) Header</div>
 			<div class="panel-body">
@@ -1281,6 +1287,84 @@
 		</div>
 	</div>
 	<!-- ***************End View Form for Refund ********************* -->
+
+	<div id="allocateDialog" title="Create Allocation">
+	<form id='formallo'>
+		<input id="AlloAuditno" type="hidden" class="form-control input-sm" readonly>
+		<div class='col-md-9'>
+			<div class="col-md-6">
+				<label class="control-label">Document Type</label>
+				<input id="AlloDtype" type="text" class="form-control input-sm" readonly>
+				<span class="help-block" id="AlloDtype2"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label class="control-label">Document No.</label>
+				<input id="AlloDno" type="text" class="form-control input-sm" readonly>
+			</div>
+
+			<div class="col-md-12">
+				<!-- <label class="control-label">Debtor</label> -->
+				<!-- <input id="AlloDebtor" type="text" class="form-control input-sm" readonly> -->
+				<label class="control-label" for="AlloDebtor">Debtor</label>  
+	  			<div class='input-group'>
+					<input id="AlloDebtor" name="AlloDebtor" type="text" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"/>
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+	  			</div>
+				<span class="help-block" id="AlloDebtor2"></span>
+			</div>
+
+			<div class="col-md-12">
+				<label class="control-label">Payer</label>
+				<input id="AlloPayer" type="text" class="form-control input-sm" readonly>
+				<span class="help-block" id="AlloPayer2"></span>
+			</div>
+
+			<div class="col-md-6">
+				<label class="control-label">Document Amount</label>
+				<input id="AlloAmt" type="text" class="form-control input-sm" readonly>
+			</div>
+
+			<div class="col-md-6">
+				<label class="control-label">Document O/S</label>
+				<input id="AlloOutamt" type="text" class="form-control input-sm" readonly>
+			</div>
+		</div>
+
+		<div class='col-md-3'>
+			
+				<div class="col-md-12"><hr>
+					<label class="control-label">Balance After Allocate</label>
+					<input id="AlloBalance" type="text" class="form-control input-sm" readonly>
+				</div>
+
+				<div class="col-md-12">
+					<label class="control-label">Total Allocate</label>
+					<input id="AlloTotal" type="text" class="form-control input-sm" readonly><hr>
+				</div>
+		</div>
+	</form>
+
+	<div class='col-md-12' id='gridAlloc_c' style="padding:0">
+		<hr>
+        <table id="gridAlloc" class="table table-striped"></table>
+        <div id="pagerAlloc"></div>
+    </div>
+
+	<div class="col-md-10 col-md-offset-1" id="alloSearch">
+		<label class="control-label" id='alloLabel'>Search</label>
+		<input id="alloText" type="text" class="form-control input-sm">
+		<select class="form-control" id="alloCol">
+			<option value="invno" >Invoice No</option>
+			<option value="auditno" >Audit No</option>
+			<option value="mrn" >MRN</option>
+			<option value="recptno" >Document No</option>
+			<option value="newic" >New IC</option>
+			<option value="staffid" >Staff ID</option>
+			<option value="batchno" >Batch No</option>
+		</select>
+	</div>
+</div>
 
 @endsection
 
