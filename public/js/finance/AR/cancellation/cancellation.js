@@ -409,7 +409,7 @@ $(document).ready(function () {
 		modal: true,
 		open: function(){
 			$("#jqGridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
-			grid='#jqGrid_rc';
+			grid='#jqGrid_rc'; grid = '#jqGrid_rd';
 			urlParamAlloc.idno=selrowData(grid).db_idno;
 			urlParamAlloc.auditno=selrowData(grid).db_auditno;
 			refreshGrid("#jqGridAlloc",urlParamAlloc);
@@ -451,6 +451,7 @@ $(document).ready(function () {
 			}
 		],
 	});
+	
 	//////////////////////////////////RC ENDS//////////////////////////////////
 	
 	/////////////////////////////////RF STARTS/////////////////////////////////
@@ -852,7 +853,7 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_paytype', width: 10, hidden: true },
 			{ label: 'db_posteddate', name: 'db_posteddate',hidden: true },
 			{ label: 'Department', name: 'db_deptcode', width: 15, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			// { label: ' ', width: 20, classes: 'wrap', formatter: buttonformatter },
+			{ label: ' ', width: 20, classes: 'wrap', formatter: buttonformatteRD },
 			{ label: 'idno', name: 'db_idno', width: 10, hidden: true, key:true },
 			{ label: 'adduser', name: 'db_adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'db_adddate', width: 10, hidden: true },
@@ -882,7 +883,7 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$("#jqGrid_rd").setSelection($("#jqGrid_rd").getDataIDs()[0]); // highlight 1st record
-			// init_btn();
+			init_btnRD();
 			
 			if($('#jqGrid_rd').data('inputfocus') == 'customer_search'){
 				$("#customer_search").focus();
@@ -1059,7 +1060,8 @@ $(document).ready(function () {
 		action: 'get_alloc',
 		url: './arenquiry/table',
 		idno: '',
-		auditno: ''
+		auditno: '', 
+		// trantype: ''
 	};
 	
 	$("#jqGridAlloc").jqGrid({
@@ -1091,9 +1093,13 @@ $(document).ready(function () {
 		pager: "#jqGridPagerAlloc",
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGridAlloc");
-			urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
-			
-			refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
+			if (($('#dbacthdr_trantype').val()=="RC")) {
+				urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
+				refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
+			} else {
+				urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
+				refreshGrid("#jqGridAlloc",urlParamAlloc,'add');
+			}
 		},
 		gridComplete: function(){
 			$("#jqGridAlloc").setSelection($("#jqGridAlloc").getDataIDs()[0]); // highlight 1st record
@@ -1372,6 +1378,9 @@ $(document).ready(function () {
 			var idno = $(this).data('idno');
 			enabledPill();
 			
+			$( "input:radio[name='optradio'][value='receipt']" ).prop( "checked", true );
+			$( "input:radio[name='optradio'][value='receipt']" ).change();
+
 			populateFormdata("#jqGrid_rc", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
 			getdata('RC',idno);
 			refreshGrid("#sysparam",urlParam_sys);
@@ -1380,6 +1389,48 @@ $(document).ready(function () {
 		$('button.btn_alloc').on('click',function(e){
 			var idno = $(this).data('idno');
 			$("#jqGrid_rc").jqGrid('setSelection', idno);
+			$("#dialog_allocation").dialog("open");
+		});
+	}
+
+	function buttonformatteRD(cellvalue, options, rowObject){
+		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
+		if(parseFloat(rowObject.db_amount) != parseFloat(rowObject.db_outamount)){
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`' disabled>`
+		}else{
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-amount='`+rowObject.db_amount+`' data-outamount='`+rowObject.db_outamount+`'>`
+		}
+			retbut += 	    `Detail`
+			retbut += 	  `</button>&nbsp;`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_alloc" data-idno='`+rowObject.db_idno+`'>`
+			retbut += 	    `Allocation`
+			retbut += 	  `</button></div>`;
+		return retbut;
+	}
+	
+	function init_btnRD(){
+		// if($($('button.btn_detail')).data('amount') !== $($('button.btn_detail')).data('outamount')){
+		// 	$('button.btn_detail').prop('disabled', true);
+		// }else{
+		// 	$('button.btn_detail').prop('disabled', false);
+		// }
+		
+		$('button.btn_detail').on('click',function(e){
+			oper='view';
+			var idno = $(this).data('idno');
+			enabledPill();
+			
+			$( "input:radio[name='optradio'][value='deposit']" ).prop( "checked", true );
+			$( "input:radio[name='optradio'][value='deposit']" ).change();
+
+			populateFormdata("#jqGrid_rd", "#dialogForm_RC", "#formdata_RC", idno, 'view', '');
+			getdata('RC',idno);
+			refreshGrid("#sysparam",urlParam_sys);
+		});
+		
+		$('button.btn_alloc').on('click',function(e){
+			var idno = $(this).data('idno');
+			$("#jqGrid_rd").jqGrid('setSelection', idno);
 			$("#dialog_allocation").dialog("open");
 		});
 	}
@@ -1401,34 +1452,64 @@ $(document).ready(function () {
 				message: "Are you sure you want to cancel this allocation?",
 				buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
 				callback: function (result) {
-					if(result == true){
-						var urlparam={
-							oper: 'cancel_alloc',
-							idno: idno,
-						}
-						
-						var postobj={
-							_token : $('#csrf_token').val(),
-						};
-						
-						$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+					if (($('#dbacthdr_trantype').val()=="RC")) {
+
+						if(result == true){
+							var urlparam={
+								oper: 'cancel_alloc',
+								idno: idno,
+							}
 							
-						},'json').fail(function(data) {
-							alert('there is an error');
-						}).success(function(data){
+							var postobj={
+								_token : $('#csrf_token').val(),
+							};
+							
+							$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+								
+							},'json').fail(function(data) {
+								alert('there is an error');
+							}).success(function(data){
+								urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
+								refreshGrid("#jqGridAlloc",urlParamAlloc);
+								refreshGrid('#jqGrid_rc', urlParam_rcpt);
+							});
+						}else{
 							urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
 							refreshGrid("#jqGridAlloc",urlParamAlloc);
 							refreshGrid('#jqGrid_rc', urlParam_rcpt);
-						});
-					}else{
-						urlParamAlloc.idno=selrowData("#jqGrid_rc").db_idno;
-						refreshGrid("#jqGridAlloc",urlParamAlloc);
-						refreshGrid('#jqGrid_rc', urlParam_rcpt);
+						}
+
+					} else {
+						if(result == true){
+							var urlparam={
+								oper: 'cancel_alloc',
+								idno: idno,
+							}
+							
+							var postobj={
+								_token : $('#csrf_token').val(),
+							};
+							
+							$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+								
+							},'json').fail(function(data) {
+								alert('there is an error');
+							}).success(function(data){
+								urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
+								refreshGrid("#jqGridAlloc",urlParamAlloc);
+								refreshGrid('#jqGrid_rd', urlParam_rd);
+							});
+						}else{
+							urlParamAlloc.idno=selrowData("#jqGrid_rd").db_idno;
+							refreshGrid("#jqGridAlloc",urlParamAlloc);
+							refreshGrid('#jqGrid_rd', urlParam_rd);
+						}
 					}
 				}
 			});
 		});
 	}
+	
 	//////////////////////////////////////////////////end//////////////////////////////////////////////////
 	
 	/////////////////////////////handle searching, its radio button and toggle/////////////////////////////
