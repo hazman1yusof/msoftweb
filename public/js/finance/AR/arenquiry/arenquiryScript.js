@@ -2540,7 +2540,7 @@ $(document).ready(function () {
 		modal: true,
 		open: function(){
 			dialog_allodebtor.on();
-			$("#gridAlloc").jqGrid ('setGridWidth', Math.floor($("#gridAlloc_c")[0].offsetWidth-$("#gridAlloc_c")[0].offsetLeft));
+			$("#gridManAlloc").jqGrid ('setGridWidth', Math.floor($("#gridManAlloc_c")[0].offsetWidth-$("#gridManAlloc_c")[0].offsetLeft));
 			grid='#jqGrid';
 			$('#AlloDtype').val(selrowData(grid).db_trantype);
 			$('#AlloDtype2').html(selrowData(grid).db_PymtDescription);
@@ -2554,8 +2554,8 @@ $(document).ready(function () {
 			$('#AlloBalance').val(selrowData(grid).db_outamount);
 			$('#AlloTotal').val(0);
 			$('#AlloAuditno').val(selrowData(grid).db_auditno);
-			urlParamAlloc.filterVal[0]=selrowData(grid).db_payercode;
-			refreshGrid("#gridAlloc",urlParamAlloc);
+			urlParamManAlloc.filterVal[0]=selrowData(grid).db_payercode;
+			refreshGrid("#gridManAlloc",urlParamManAlloc);
 			parent_close_disabled(true);
 			myallocation.renewAllo(selrowData(grid).db_outamount);
 		},
@@ -2602,7 +2602,7 @@ $(document).ready(function () {
 			}],
 	});
 	
-	var urlParamAlloc={
+	var urlParamManAlloc={
 		action:'get_table_default',
 		url: 'util/get_table_default',
 		field:'',
@@ -2615,7 +2615,7 @@ $(document).ready(function () {
         WhereInVal:[['DN','IN']]
 	}
 
-	$("#gridAlloc").jqGrid({
+	$("#gridManAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 40, hidden: true}, 
@@ -2639,16 +2639,16 @@ $(document).ready(function () {
 		height: 400,
 		scroll:true,
 		rowNum: 9,
-		pager: "#pagerAlloc",
+		pager: "#pagerManAlloc",
 		onSelectRow: function(rowid){
 		},
 		onPaging: function(button){
 		},
 		gridComplete: function(rowid){
 			startEdit();
-			$("#gridAlloc_c input[type='checkbox']").on('click',function(){
+			$("#gridManAlloc_c input[type='checkbox']").on('click',function(){
 				var idno = $(this).attr("rowid");
-				var rowdata = $("#gridAlloc").jqGrid ('getRowData', idno);
+				var rowdata = $("#gridManAlloc").jqGrid ('getRowData', idno);
 				if($(this).prop("checked") == true){
 					$("#"+idno+"_amtpaid").val(rowdata.outamount).addClass( "valid" ).removeClass( "error" );
 					setbal(idno,0);
@@ -2675,11 +2675,11 @@ $(document).ready(function () {
 	        	myallocation.retickallotogrid();
 			}, 100 );
 
-			calc_jq_height_onchange("gridAlloc");
+			calc_jq_height_onchange("gridManAlloc");
 		},
 	});
 
-	AlloSearch("#gridAlloc",urlParamAlloc);
+	AlloSearch("#gridManAlloc",urlParamManAlloc);
 	function AlloSearch(grid,urlParam){
 		$("#alloText").on( "keyup", function() {
 			delay(function(){
@@ -2693,16 +2693,16 @@ $(document).ready(function () {
 	}
 
 	function startEdit() {
-        var ids = $("#gridAlloc").jqGrid('getDataIDs');
+        var ids = $("#gridManAlloc").jqGrid('getDataIDs');
 
         for (var i = 0; i < ids.length; i++) {
-        	var entrydate = $("#gridAlloc").jqGrid ('getRowData', ids[i]).entrydate;
-        	$("#gridAlloc").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
-            $("#gridAlloc").jqGrid('editRow',ids[i]);
+        	var entrydate = $("#gridManAlloc").jqGrid ('getRowData', ids[i]).entrydate;
+        	$("#gridManAlloc").jqGrid('setCell', ids[i], 'NULL', moment(entrydate).format("DD-MMM"));
+            $("#gridManAlloc").jqGrid('editRow',ids[i]);
         }
     };
 
-	addParamField('#gridAlloc',false,urlParamAlloc,['tick','amtpaid','amtbal']);
+	addParamField('#gridManAlloc',false,urlParamManAlloc,['tick','amtpaid','amtbal']);
 
 	function Allocation(){
 		this.arrayAllo=[];
@@ -2738,7 +2738,7 @@ $(document).ready(function () {
 			var allo_error = obj.handleObj.data[2];
 
 			var alloIndex = getIndex(arrayAllo,idno);
-			var outamt = $("#gridAlloc").jqGrid('getRowData', idno).outamount;
+			var outamt = $("#gridManAlloc").jqGrid('getRowData', idno).outamount;
 			var newamtpaid = parseFloat(obj.target.value);
 			newamtpaid = isNaN(Number(newamtpaid)) ? 0 : parseFloat(obj.target.value);
 			if(parseFloat(newamtpaid)>parseFloat(outamt)){
@@ -2829,7 +2829,7 @@ $(document).ready(function () {
 		}
 
 		function getlAlloFromGrid(idno){
-			var temp=$("#gridAlloc").jqGrid ('getRowData', idno);
+			var temp=$("#gridManAlloc").jqGrid ('getRowData', idno);
 			return {idno:temp.idno,auditno:temp.auditno,amtbal:temp.amtbal,amtpaid:temp.amount};
 		}
 
@@ -2847,13 +2847,13 @@ $(document).ready(function () {
 	}
 	
 	function setbal(idno,balance){
-		$("#gridAlloc").jqGrid('setCell', idno, 'amtbal', balance);
+		$("#gridManAlloc").jqGrid('setCell', idno, 'amtbal', balance);
 	}
 	
-	$("#gridAlloc").jqGrid('navGrid','#pagerAlloc',{	
+	$("#gridManAlloc").jqGrid('navGrid','#pagerManAlloc',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#gridAlloc",urlParamAlloc);
+			refreshGrid("#gridManAlloc",urlParamManAlloc);
 		},
 	})
 

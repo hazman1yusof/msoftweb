@@ -1345,10 +1345,10 @@
 		</div>
 	</form>
 
-	<div class='col-md-12' id='gridAlloc_c' style="padding:0">
+	<div class='col-md-12' id='gridManAlloc_c' style="padding:0">
 		<hr>
-        <table id="gridAlloc" class="table table-striped"></table>
-        <div id="pagerAlloc"></div>
+        <table id="gridManAlloc" class="table table-striped"></table>
+        <div id="pagerManAlloc"></div>
     </div>
 
 	<div class="col-md-10 col-md-offset-1" id="alloSearch">
