@@ -1842,34 +1842,35 @@ $(document).ready(function () {
 	function showdetail(cellvalue, options, rowObject){
 		var field, table, case_;
 		switch(options.colModel.name){
-			case 'db_mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='db_mrn';break;
-			
-			//CN
-            case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='Department CN';break;
-			case 'category':field=['catcode','description'];table="material.category";case_='Category CN';break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GST Code CN';break;
-
-			//DN
-            case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='Department DN';break;
-			case 'category':field=['catcode','description'];table="material.category";case_='Category DN';break;
-			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GST Code DN';break;
-
-			//IN
-			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
-			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
-			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
-
-			//RC
-
-			//jqgrid depan
-			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			// jqgrid depan
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
-
-			//jqGridAlloc
+			case 'db_mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='db_mrn';break;
+			case 'db_deptcode':field=['deptcode','description'];table="sysdb.department";case_='db_deptcode';break;
+			
+			// jqGridAlloc
 			case 'debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='debtorcode';break;
 			case 'payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='payercode';break;
 			case 'paymode':field=['paymode','description'];table="debtor.paymode";case_='paymode';break;
 			case 'mrn':field=['MRN','name'];table="hisdb.pat_mast";case_='mrn';break;
+			
+			// CN
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='Department CN';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='Category CN';break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GST Code CN';break;
+			
+			// DN
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='Department DN';break;
+			case 'category':field=['catcode','description'];table="material.category";case_='Category DN';break;
+			case 'GSTCode':field=['taxcode','description'];table="hisdb.taxmast";case_='GST Code DN';break;
+			
+			// IN
+			case 'chggroup':field=['chgcode','description'];table="hisdb.chgmast";case_='chggroup';break;
+			case 'uom':field=['uomcode','description'];table="material.uom";case_='uom';break;
+			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			
+			// RC RF
+			case 'dbacthdr_payercode':field=['debtorcode','name'];table="debtor.debtormast";case_='dbacthdr_payercode';break;
+			case 'dbacthdr_trantype':field=['trantype','description'];table="sysdb.sysparam";case_='dbacthdr_trantype';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		
