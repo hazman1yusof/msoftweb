@@ -130,6 +130,7 @@
                         <li><a data-toggle="tab" id="cancel_navtab_rf" href="#tab-rf" data-trantype='RF'>Refund</a></li>
                     </ul>
                     <div class="tab-content" style="padding: 10px 5px;">
+                        <input id="trantype" name="trantype" type="hidden">
                         <div id="tab-rc" class="active in tab-pane fade">
                             <div id="fail_msg_rc" class="fail_msg"></div>
                             <div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
@@ -574,7 +575,6 @@
             <div id="jqGridPagerAlloc"></div>
         </div>
     </div>
-    
     <!--***************************** End View Form for Receipt *****************************-->
     
     <!--***************************** View Form for Refund *****************************-->
