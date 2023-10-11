@@ -183,6 +183,7 @@ class PatmastController extends defaultController
                 $table_patm = $table_patm->leftJoin('hisdb.bedalloc', function($join) use ($request){
                                 $join = $join->on('bedalloc.mrn', '=', 'pat_mast.MRN')
                                             ->on('bedalloc.episno', '=', 'pat_mast.Episno')
+                                            ->where('bedalloc.astatus', '=', 'OCCUPIED')
                                             ->where('bedalloc.compcode','=',session('compcode'));
                             });
             }
@@ -1226,6 +1227,10 @@ class PatmastController extends defaultController
         DB::beginTransaction();
 
         try {
+
+            if(!$this->check_regdept($epis_type,$epis_dept)){
+                throw new \Exception('dept_wrong');
+            }
 
             DB::table("hisdb.episode")
                 ->insert([
@@ -2408,15 +2413,27 @@ class PatmastController extends defaultController
                     ->where('episno','=',$request->episno);
 
             if($bedalloc_oldidno->exists()){
+                $last_bedalloc_idno = $bedalloc_oldidno->max('idno');
+
+                DB::table('hisdb.bedalloc')
+                    ->where('idno','=',$last_bedalloc_idno)
+                    ->update([
+                        'occup' => "OCCUPIED",
+                        'mrn' => $request->mrn,
+                        'episno' => $request->episno,
+                        'admdoctor' => $episode->admdoctor,
+                        'name' => $request->name
+                    ]);
+
                 $bedalloc_old = DB::table('hisdb.bedalloc')
-                    ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                    ->where('idno','=',$last_bedalloc_idno)
                     ->first();
 
                 $bed_old = DB::table('hisdb.bed')
                                 ->where('compcode','=',session('compcode'))
                                 ->where('bednum','=',$bedalloc_old->bednum)
                                 ->update([
-                                    'occup' => "VACANT"
+                                    'astatus' => "VACANT",
                                 ]);
 
             }
@@ -2445,19 +2462,29 @@ class PatmastController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
+                $episode = DB::table("hisdb.episode")
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->first();
+
                 $bed_obj->update([
-                    'occup' => "OCCUPIED"
+                    'occup' => "OCCUPIED",
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'admdoctor' => $episode->admdoctor,
+                    'name' => $request->name
                 ]);
 
                 DB::table("hisdb.episode")
+                    ->where('compcode',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno)
                     ->update([
-                        'bed' => $request->bed_bednum
+                        'bed' => $request->bed_bednum,
                     ]);
 
             }
-
 
             DB::commit();
 
@@ -3135,6 +3162,21 @@ class PatmastController extends defaultController
                         ->where('debtorcode',$request['newpanel_corpcomp'])
                         ->where('staffid',$request['newpanel_staffid'])
                         ->exists();
+    }
+
+    public function check_regdept($epis_type,$epis_dept){
+        $data = DB::table('sysdb.department')
+            ->where('compcode','=',session('compcode'))
+            ->where('deptcode','=',$epis_dept)
+            ->where('recstatus','=','ACTIVE');
+
+        if($epis_type == 'IP'){
+            $data = $data->where('admdept','=','1');
+        }else{
+            $data = $data->where('regdept','=','1');
+        }
+
+        return $data->exists();
     }
 
     public function preepisode_table(Request $request){

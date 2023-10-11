@@ -26,6 +26,8 @@ $(document).ready(function() {
         ajaxSettings: {
             cache: false
         },
+        selection: false,
+        multiSelect: false,
         searchSettings: {
             delay: 350,
             characters: 1
@@ -219,12 +221,12 @@ $(document).ready(function() {
 
         if($("#load_from_addupd").data('info') == "true"){
             if($("#load_from_addupd").data('oper') == "add"){
-                $("table#grid-command-buttons tr[data-row-id=0]").click();
+                $("table#grid-command-buttons tr:nth-child(1)").click();
             }else{
                 $("table#grid-command-buttons tr[data-row-id='"+bootgrid_last_rowid+"']").eq(0).click();
             }
         }else{
-            $("table#grid-command-buttons tr[data-row-id=0]").click();
+            $("table#grid-command-buttons tr:nth-child(1)").click();
         }
         $("#load_from_addupd").data('info','false');
 
@@ -235,45 +237,46 @@ $(document).ready(function() {
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
         if($('#curpat').val() == 'true'){
 
             if($('#epistycode').val() == 'OP'){
                 if($('#user_doctor').val() == '1'){
-                    populate_triage_currpt(rows[bootgrid_last_rowid]);
-                    populate_antenatal(rows[bootgrid_last_rowid]);
-                    populate_paediatric(rows[bootgrid_last_rowid]);
-                    populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
-                    populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
+                    populate_triage_currpt(lastrowdata);
+                    populate_antenatal(lastrowdata);
+                    populate_paediatric(lastrowdata);
+                    populate_doctorNote_currpt(lastrowdata);
+                    populate_dieteticCareNotes_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
-                    populate_triage_currpt(rows[bootgrid_last_rowid]);
+                    populate_triage_currpt(lastrowdata);
                 }
 
                 if($('#user_billing').val() == '1'){
-                    populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+                    populate_ordcom_currpt(lastrowdata);
                 }
 
             }else if($('#epistycode').val() == 'IP'){
                 if($('#user_doctor').val() == '1'){
-                    populate_triage_currpt(rows[bootgrid_last_rowid]);
-                    populate_antenatal(rows[bootgrid_last_rowid]);
-                    populate_doctorNote_currpt(rows[bootgrid_last_rowid]);
-                    populate_dieteticCareNotes_currpt(rows[bootgrid_last_rowid]);
-                    populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
+                    populate_triage_currpt(lastrowdata);
+                    populate_antenatal(lastrowdata);
+                    populate_doctorNote_currpt(lastrowdata);
+                    populate_dieteticCareNotes_currpt(lastrowdata);
+                    populate_nursAssessment_currpt(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
-                    populate_triage_currpt(rows[bootgrid_last_rowid]);
-                    populate_nursAssessment_currpt(rows[bootgrid_last_rowid]);
+                    populate_triage_currpt(lastrowdata);
+                    populate_nursAssessment_currpt(lastrowdata);
                 }
 
                 if($('#user_billing').val() == '1'){
-                    populate_ordcom_currpt(rows[bootgrid_last_rowid]);
+                    populate_ordcom_currpt(lastrowdata);
                 }
             }
 
-            if(rows[bootgrid_last_rowid].PatStatus == 1 ){
-                populate_discharge_currpt(rows[bootgrid_last_rowid]);
+            if(lastrowdata.PatStatus == 1 ){
+                populate_discharge_currpt(lastrowdata);
             }
 
-            if(rows[bootgrid_last_rowid].pregnant == 1){
+            if(lastrowdata.pregnant == 1){
                 $('#antenatal_row,#jqGridAntenatal_c').show();
                 $('#nursing_row,#jqGridTriageInfo_c').hide();
             }else{
@@ -866,4 +869,14 @@ function stop_scroll_on(){
     $('div.paneldiv').on('mouseleave',function(){
         $('body').removeClass('stop-scrolling')
     });
+}
+
+function getrow_bootgrid(bootgrid_last_rowid,rows){
+    var retval=[];
+    rows.forEach(function(e,i,a){
+        if(e.idno == bootgrid_last_rowid){
+            retval = e;
+        }
+    });
+    return retval;
 }

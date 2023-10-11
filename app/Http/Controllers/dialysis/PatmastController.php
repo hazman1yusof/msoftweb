@@ -2050,7 +2050,11 @@ class PatmastController extends defaultController
                                 ->where('compcode','=',session('compcode'))
                                 ->where('bednum','=',$bedalloc_old->bednum)
                                 ->update([
-                                    'occup' => "VACANT"
+                                    'occup' => "VACANT",
+                                    'mrn' => null,
+                                    'episno' => null,
+                                    'name' => null,
+                                    'admdoctor' => null,
                                 ]);
 
             }
@@ -2079,19 +2083,29 @@ class PatmastController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
 
+                $episode = DB::table("hisdb.episode")
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn','=',$request->mrn)
+                                ->where('episno','=',$request->episno)
+                                ->first();
+
                 $bed_obj->update([
-                    'occup' => "OCCUPIED"
+                    'occup' => "OCCUPIED",
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'admdoctor' => $episode->admdoctor
+                    'name' => $request->name
                 ]);
 
                 DB::table("hisdb.episode")
+                    ->where('compcode',session('compcode'))
                     ->where('mrn','=',$request->mrn)
                     ->where('episno','=',$request->episno)
                     ->update([
-                        'bed' => $request->bed_bednum
+                        'bed' => $request->bed_bednum,
                     ]);
 
             }
-
 
             DB::commit();
 

@@ -201,6 +201,7 @@
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
                 <tr>
+                	<th data-column-id="idno" data-type="numeric" data-visible="false" data-identifier="true"></th>
                 	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
                     @if (request()->get('curpat') == 'true')
                     <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->

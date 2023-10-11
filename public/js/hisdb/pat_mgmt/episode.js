@@ -1,4 +1,12 @@
+$(document).ready(function() {
+    $('#btn_epis_bed').click(function(){
+        if(!$('#txt_epis_bed').is(':disabled')){
+            $('#mdl_accomodation').data('openfor','episode');
+            $('#mdl_accomodation').modal('show')
+        }
+    });
 
+});
 
 $('#editEpisode').on('shown.bs.modal', function (e) {
     parent_close_disabled(true);
@@ -172,11 +180,19 @@ function populate_episode(rowid){
     $('#txt_epis_date').val(moment().format('DD/MM/YYYY'));
     $('#txt_epis_time').val(moment().format('hh:mm:ss'));
     $('#btn_epis_payer').data('mrn',$(this).data("mrn"));
+
+    $('#cmb_epis_pregnancy').prop("disabled", false);
     if(rowdata.Sex == "M"){
         $('#cmb_epis_pregnancy').val('Non-Pregnant');
         $('#cmb_epis_pregnancy').prop("disabled", true);
-    }else{
-        $('#cmb_epis_pregnancy').prop("disabled", false);
+    }else if(rowdata.Sex == null){
+        if(rowdata.Newic != null && rowdata.Newic.length>11){
+            var lastchar = rowdata.Newic.at(-1);
+            if(parseInt(lastchar)%2 != 0){
+                $('#cmb_epis_pregnancy').val('Non-Pregnant');
+                $('#cmb_epis_pregnancy').prop("disabled", true);
+            }
+        }
     }
 
     var episno_ = parseInt(rowdata.Episno);
@@ -184,7 +200,7 @@ function populate_episode(rowid){
         episno_ = 0;
     }
     
-
+    $('#txt_epis_bed').prop('disabled',false);
     if(rowdata.PatStatus == 1){
         $('#episode_title_text').text('EDIT CURRENT');
         $("#episode_oper").val('edit');
@@ -525,7 +541,10 @@ function add_episode()
     $.post( "pat_mast/save_episode", obj , function( data ) {
         
     }).fail(function(data) {
-
+        if(data.responseJSON.message=='dept_wrong'){
+            $('#txt_epis_dept').focus();
+            myerrorIt_only('#txt_epis_dept',true);
+        }
     }).success(function(data){
         $('#editEpisode').modal('hide');
         $("#load_from_addupd").data('info','true');
@@ -589,6 +608,7 @@ function populate_episode_by_mrn_episno(mrn,episno,form){
                 $("#txt_epis_ward").val(bed.ward);
                 $("#txt_epis_room").val(bed.room);
                 $("#txt_epis_bedtype").val(episdata.bed);
+                $('#txt_epis_bed').prop('disabled',true);
             }
             $('#cmb_epis_pay_mode').removeClass('form-disabled').addClass('form-mandatory');
             $('#cmb_epis_pay_mode').val(episdata.pyrmode.toUpperCase());
@@ -809,8 +829,9 @@ function accomodation_selecter(){
 
     $('#accomodation_table tbody').on('dblclick', 'tr', function () {    
         let item = accomodation_table.row( this ).data();
+        let openfor = $('#mdl_accomodation').data('openfor');
 
-        if(item != undefined && item['occup'] == 'VACANT'){
+        if(item != undefined && item['occup'] == 'VACANT' && openfor == 'episode'){
             $('#txt_epis_bed').val(item["bednum"]);
             $('#txt_epis_ward').val(item["ward"]);
             $('#txt_epis_room').val(item["room"]);
@@ -818,6 +839,15 @@ function accomodation_selecter(){
                 
             $('#mdl_accomodation').modal('hide');
             $('#txt_epis_fin').focus();
+        }else if(item != undefined && item['occup'] == 'VACANT' && openfor == 'bed'){
+            $('#bed_bednum').val(item["bednum"]);
+            $('#bed_ward').val(item["ward"]);
+            $('#bed_room').val(item["room"]);
+            $('#bed_bedtype').val(item["bedtype"]);
+            $('#bed_status').val('OCCUPIED');
+            $('#bed_isolate').val('0');
+
+            $('#mdl_accomodation').modal('hide');
         }
 
         

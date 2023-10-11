@@ -1,7 +1,7 @@
 <!-- Large modal -->
 <div id="mdl_patient_info" data-keyboard="false" class="modal fade ba" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" style="display: none; z-index: 100; padding-left: 0px !important;">
     <div class="modal-dialog half modal-lg">
-        <form id="frm_patient_info" class="form-horizontal">
+        <form id="frm_patient_info" class="form-horizontal" autocomplete="off">
 			<input type="hidden" name="idno" id="txt_pat_idno">
             <input name="pat_mrn" id="pat_mrn" type="hidden">
             <input name="PatClass" id="PatClass" type="hidden" value="{{request()->get('PatClass')}}">

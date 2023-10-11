@@ -61,9 +61,9 @@ $(document).ready(function () {
 
 			let reccount = $('#jqGrid_bed').jqGrid('getGridParam', 'reccount');
 			if(reccount>0){
-				button_state_bed('add_edit');
-			}else{
 				button_state_bed('add');
+			}else{
+				button_state_bed('empty');
 			}
 
 		},
@@ -94,39 +94,44 @@ $(document).ready(function () {
 		refreshGrid("#jqGrid_bed", urlParam_bed);
 	});
 
-	var search_bed = new ordialog(
-		'search_bed', 'hisdb.bed', '#bed_bednum', 'errorField',
-		{
-			colModel: [
-				{ label: 'Bed no.', name: 'bednum', width: 2, classes: 'pointer',checked: true, canSearch: true, or_search: true },
-				{ label: 'Ward', name: 'ward', width: 4, classes: 'pointer', canSearch: true, or_search: true },
-				{ label: 'Room', name: 'room', width: 2, classes: 'pointer'},
-				{ label: 'Bed Type', name: 'bedtype', width: 4, classes: 'pointer'},
-			],
-			urlParam: {
-				filterCol:['compcode','recstatus', 'occup'],
-				filterVal:['session.compcode','A', 'VACANT']
-			},
-			ondblClickRow: function () {
-				let data = selrowData('#' + search_bed.gridname);
-				$(search_bed.textfield).parent().next().html('');
+	$('#bed_bednum_a').click(function(){
+        $('#mdl_accomodation').data('openfor','bed');
+        $('#mdl_accomodation').modal('show')
+	});
 
-				$('#bed_room').val(data.room);
-				$('#bed_ward').val(data.ward);
-				$("#bed_bedtype").val(data.bedtype);
-			}
-		},{
-			title: "Select Bed Type search",
-			open: function () {
-				search_bed.urlParam.filterCol=['compcode', 'recstatus', 'occup'];
-				search_bed.urlParam.filterVal=['session.compcode', 'A', 'VACANT'];
+	// var search_bed = new ordialog(
+	// 	'search_bed', 'hisdb.bed', '#bed_bednum', 'errorField',
+	// 	{
+	// 		colModel: [
+	// 			{ label: 'Bed no.', name: 'bednum', width: 2, classes: 'pointer',checked: true, canSearch: true, or_search: true },
+	// 			{ label: 'Ward', name: 'ward', width: 4, classes: 'pointer', canSearch: true, or_search: true },
+	// 			{ label: 'Room', name: 'room', width: 2, classes: 'pointer'},
+	// 			{ label: 'Bed Type', name: 'bedtype', width: 4, classes: 'pointer'},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode','recstatus', 'occup'],
+	// 			filterVal:['session.compcode','A', 'VACANT']
+	// 		},
+	// 		ondblClickRow: function () {
+	// 			let data = selrowData('#' + search_bed.gridname);
+	// 			$(search_bed.textfield).parent().next().html('');
 
-				$('div[aria-describedby="otherdialog_search_bed"]').css("z-index", "1100");
-				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
-			}
-		},'urlParam','radio','tab'
-	);
-	search_bed.makedialog(false);
+	// 			$('#bed_room').val(data.room);
+	// 			$('#bed_ward').val(data.ward);
+	// 			$("#bed_bedtype").val(data.bedtype);
+	// 		}
+	// 	},{
+	// 		title: "Select Bed Type search",
+	// 		open: function () {
+	// 			search_bed.urlParam.filterCol=['compcode', 'recstatus', 'occup'];
+	// 			search_bed.urlParam.filterVal=['session.compcode', 'A', 'VACANT'];
+
+	// 			$('div[aria-describedby="otherdialog_search_bed"]').css("z-index", "1100");
+	// 			$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// search_bed.makedialog(false);
 
 	var bed_lodger = new ordialog(
 		'bed_lodger', 'debtor.debtormast', '#bed_lodger', 'errorField',
@@ -144,10 +149,10 @@ $(document).ready(function () {
 		},{
 			title: "Select Lodger",
 			open: function () {
-				search_bed.urlParam.filterCol=['compcode', 'recstatus'];
-				search_bed.urlParam.filterVal=['session.compcode', 'A'];
+				bed_lodger.urlParam.filterCol=['compcode', 'recstatus'];
+				bed_lodger.urlParam.filterVal=['session.compcode', 'A'];
 
-				$('div[aria-describedby="otherdialog_search_bed"]').css("z-index", "1100");
+				$('div[aria-describedby="otherdialog_bed_lodger"]').css("z-index", "1100");
 				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
 			}
 		},'urlParam','radio','tab'
@@ -159,7 +164,7 @@ $(document).ready(function () {
 		$("#bed_date").val(moment().format("DD/MM/YYYY"));
 		$("#bed_time").val(moment().format("HH:mm:ss"));
 		enableForm('#form_bed',['bed_date','bed_time','bed_bedtype','bed_bednum','bed_room','bed_ward','bed_lodger']);
-		search_bed.on();
+		// search_bed.on();
 		bed_lodger.on();
 		
 	});
@@ -178,8 +183,8 @@ $(document).ready(function () {
 
 	function saveForm_bed(callback){
 	    var postobj={
-	    	name : $('#txt_epis_name').text(),
 	    	_token : $('#csrf_token').val(),
+	    	name : $('#txt_epis_name').text(),
 	    	mrn : $("#mrn_episode").val(),
 	    	episno : $("#txt_epis_no").val(),
 	    	epistycode : $("#epistycode").val(),
@@ -206,7 +211,7 @@ $(document).ready(function () {
 	$("#cancel_bed").click(function(){
 		button_state_bed('add');
 		disableForm('#form_bed');
-		search_bed.off();
+		// search_bed.off();
 		bed_lodger.off();
 		emptyFormdata_div('#form_bed');
 		refreshGrid("#jqGrid_bed", urlParam_bed);

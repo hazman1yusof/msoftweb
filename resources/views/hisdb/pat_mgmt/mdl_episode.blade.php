@@ -69,7 +69,7 @@
                             </div>
 
                             <div id="tabEpisode" class="panel-collapse collapse in">
-                            <form id="form_episode" name="form_episode" >
+                            <form id="form_episode" name="form_episode" autocomplete="off">
                             <div class="panel-body form-horizontal">
                                 <!-- Tab content begin -->
                                 <div class="form-group">
@@ -120,7 +120,7 @@
                                             <input type="text" class="form-control" name="txt_epis_bed" id="txt_epis_bed">
                                             <input type="hidden" id="hid_epis_bed" name="admbed"/>
                                             <span class="input-group-btn">
-                                                <button type="button" class="btn btn-info" id="btn_epis_bed" data-toggle="modal" data-target="#mdl_accomodation"><span class="fa fa-ellipsis-h"></span> </button>
+                                                <button type="button" class="btn btn-info" id="btn_epis_bed"><span class="fa fa-ellipsis-h"></span> </button>
                                             </span>
                                         </div>
                                     </div>
@@ -210,7 +210,7 @@
                                     </div>
 
                                     <div class="col-sm-2">
-                                        <small for="txt_epis_type">Case</small>
+                                        <small for="txt_epis_type">Case Type</small>
                                         <select id="cmb_epis_case_maturity" name="cmb_epis_case_maturity" class="form-control input-sm form-mandatory" required>
                                             <option value="">- Select -</option>
                                             <option value="1">New Case</option>
@@ -369,7 +369,7 @@
                                         <div class="col-md-12">
                                         <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." id="btn_grp_edit_bed">
                                             <button type="button" class="btn btn-default" id="add_bed">
-                                                <span class="fa fa-plus-square-o fa-lg"></span> Assign
+                                                <span class="fa fa-plus-square-o fa-lg"></span> Transfer
                                             </button>
                                             <button type="button" class="btn btn-default" data-oper='add' id="save_bed">
                                                 <span class="fa fa-save fa-lg"></span> Save
@@ -397,7 +397,7 @@
                                             <small for="doc_doctorcode">Bed No.</small>
                                             <div class='input-group'>
                                                 <input id="bed_bednum" name="bed_bednum" type="text" class="form-control uppercase">
-                                                <a class='input-group-addon btn btn-info'><span class='fa fa-ellipsis-h'></span></a>
+                                                <a class='input-group-addon btn btn-info' id="bed_bednum_a"><span class='fa fa-ellipsis-h'></span></a>
                                             </div>
                                             <span class="help-block"></span>
                                         </div>
@@ -422,7 +422,6 @@
                                         <div class="col-md-6">
                                             <small for="bed_status">Status</small>
                                             <select id="bed_status" name="bed_status" class="form-control">
-                                              <option value="VACANT">Vacant</option>
                                               <option value="OCCUPIED" selected>Occupied</option>
                                               <option value="ISOLATED">Isolated</option>
                                               <option value="MAINTENANCE">Maintenance</option>
