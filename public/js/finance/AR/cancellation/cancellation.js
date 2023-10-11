@@ -1452,6 +1452,7 @@ $(document).ready(function () {
 	
 	//////////////////////////////////////////formatter checkdetail//////////////////////////////////////////
 	function showdetail(cellvalue, options, rowObject){
+		console.log(cellvalue);
 		var field, table, case_;
 		switch(options.colModel.name){
 			case 'db_debtorcode':field=['debtorcode','name'];table="debtor.debtormast";case_='db_debtorcode';break;
