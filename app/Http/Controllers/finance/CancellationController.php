@@ -366,52 +366,54 @@ class CancellationController extends defaultController
     }
     
     public function get_jqGrid_rf(Request $request){
+
         
         $table = DB::table('debtor.dbacthdr AS db')
-                ->select(
-                    'db.compcode AS db_compcode',
-                    'db.debtorcode AS db_debtorcode',
-                    'db.payercode AS db_payercode',
-                    'db.payername AS db_payername',
-                    'dm.name AS dm_name', 
-                    'db.entrydate AS db_entrydate',
-                    'db.auditno AS db_auditno', //search
-                    'db.invno AS db_invno', //search
-                    'db.recptno AS db_recptno',
-                    'db.ponum AS db_ponum',
-                    'db.amount AS db_amount',
-                    'db.remark AS db_remark',
-                    'db.lineno_ AS db_lineno_',
-                    'db.orderno AS db_orderno',
-                    'db.outamount AS db_outamount',
-                    'db.debtortype AS db_debtortype',
-                    'db.billdebtor AS db_billdebtor',
-                    'db.approvedby AS db_approvedby',
-                    'db.mrn AS db_mrn', //search
-                    'db.unit AS db_unit',
-                    'db.source AS db_source',
-                    'db.trantype AS db_trantype',
-                    'db.termdays AS db_termdays',
-                    'db.termmode AS db_termmode',
-                    'db.hdrtype AS db_hdrtype',
-                    'db.podate AS db_podate',
-                    'db.posteddate AS db_posteddate',
-                    'db.deptcode AS db_deptcode',
-                    'db.recstatus AS db_recstatus',
-                    'db.idno AS db_idno',
-                    'db.adduser AS db_adduser',
-                    'db.adddate AS db_adddate',
-                    'db.upduser AS db_upduser',
-                    'db.upddate AS db_upddate',
-                    'db.currency AS db_currency',
-                    'db.PymtDescription AS db_PymtDescription',
-                    'db.paytype AS db_paytype',
-                    'db.tillcode AS db_tillcode',
-                    'db.tillno AS db_tillno',
-                    'db.recptno AS db_recptno',
-                    'db.paymode AS db_paymode',
-                    'db.unallocated AS db_unallocated',
-                )
+                ->select('db.idno AS db_idno','db.compcode AS db_compcode','db.source AS db_source','db.trantype AS db_trantype','db.auditno AS db_auditno','db.lineno_ AS db_lineno_','db.amount AS db_amount','db.outamount AS db_outamount','db.recstatus AS db_recstatus','db.entrydate AS db_entrydate','db.entrytime AS db_entrytime','db.entryuser AS db_entryuser','db.reference AS db_reference','db.recptno AS db_recptno','db.paymode AS db_paymode','db.tillcode AS db_tillcode','db.tillno AS db_tillno','db.debtortype AS db_debtortype','db.debtorcode AS db_debtorcode','db.payercode AS db_payercode','db.billdebtor AS db_billdebtor','db.remark AS db_remark','db.mrn AS db_mrn','db.episno AS db_episno','db.authno AS db_authno','db.expdate AS db_expdate','db.adddate AS db_adddate','db.adduser AS db_adduser','db.upddate AS db_upddate','db.upduser AS db_upduser','db.deldate AS db_deldate','db.deluser AS db_deluser','db.epistype AS db_epistype','db.cbflag AS db_cbflag','db.conversion AS db_conversion','db.payername AS db_payername','db.hdrtype AS db_hdrtype','db.currency AS db_currency','db.rate AS db_rate','db.unit AS db_unit','db.invno AS db_invno','db.paytype AS db_paytype','db.bankcharges AS db_bankcharges','db.RCCASHbalance AS db_RCCASHbalance','db.RCOSbalance AS db_RCOSbalance','db.RCFinalbalance AS db_RCFinalbalance','db.PymtDescription AS db_PymtDescription','db.orderno AS db_orderno','db.ponum AS db_ponum','db.podate AS db_podate','db.termdays AS db_termdays','db.termmode AS db_termmode','db.deptcode AS db_deptcode','db.posteddate AS db_posteddate','db.approvedby AS db_approvedby','db.approveddate AS db_approveddate','db.unallocated AS db_unallocated')
+                // ->select(
+                    // 'db.compcode AS db_compcode',
+                    // 'db.debtorcode AS db_debtorcode',
+                    // 'db.payercode AS db_payercode',
+                    // 'db.payername AS db_payername',
+                    // 'dm.name AS dm_name', 
+                    // 'db.entrydate AS db_entrydate',
+                    // 'db.auditno AS db_auditno', //search
+                    // 'db.invno AS db_invno', //search
+                    // 'db.recptno AS db_recptno',
+                    // 'db.ponum AS db_ponum',
+                    // 'db.amount AS db_amount',
+                    // 'db.remark AS db_remark',
+                    // 'db.lineno_ AS db_lineno_',
+                    // 'db.orderno AS db_orderno',
+                    // 'db.outamount AS db_outamount',
+                    // 'db.debtortype AS db_debtortype',
+                    // 'db.billdebtor AS db_billdebtor',
+                    // 'db.approvedby AS db_approvedby',
+                    // 'db.mrn AS db_mrn', //search
+                    // 'db.unit AS db_unit',
+                    // 'db.source AS db_source',
+                    // 'db.trantype AS db_trantype',
+                    // 'db.termdays AS db_termdays',
+                    // 'db.termmode AS db_termmode',
+                    // 'db.hdrtype AS db_hdrtype',
+                    // 'db.podate AS db_podate',
+                    // 'db.posteddate AS db_posteddate',
+                    // 'db.deptcode AS db_deptcode',
+                    // 'db.recstatus AS db_recstatus',
+                    // 'db.idno AS db_idno',
+                    // 'db.adduser AS db_adduser',
+                    // 'db.adddate AS db_adddate',
+                    // 'db.upduser AS db_upduser',
+                    // 'db.upddate AS db_upddate',
+                    // 'db.currency AS db_currency',
+                    // 'db.PymtDescription AS db_PymtDescription',
+                    // 'db.paytype AS db_paytype',
+                    // 'db.tillcode AS db_tillcode',
+                    // 'db.tillno AS db_tillno',
+                    // 'db.recptno AS db_recptno',
+                    // 'db.paymode AS db_paymode',
+                    // 'db.unallocated AS db_unallocated',
+                // )
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')

@@ -1022,7 +1022,7 @@ $(document).ready(function () {
 			{ label: 'RCFinalbalance', name: 'db_RCFinalbalance', hidden: true },
 			{ label: 'Status', name: 'db_recstatus', width: 50 },	// tunjuk
 			{ label: ' ', width: 50, classes: 'wrap', formatter: buttonformatter_rf },
-			{ label: 'idno', name: 'db_idno', hidden: true },
+			{ label: 'idno', name: 'db_idno', hidden: true ,key:true},
 			{ label: 'paycard_description', name: 'paycard_description', hidden: true },
 			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
 		],
@@ -1448,6 +1448,7 @@ $(document).ready(function () {
 	}
 	
 	function init_btn_rf(){
+		$('button.btn_detail').off('click');
 		$('button.btn_detail').on('click',function(e){
 			oper='view';
 			var idno = $(this).data('idno');

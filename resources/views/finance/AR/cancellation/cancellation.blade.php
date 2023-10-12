@@ -637,9 +637,9 @@
                     <div class="panel-body">
                         <ul class="nav nav-tabs">
                             <li><a data-toggle="tab" href="#tab-cash-rf" form='#f_tab-cash'>Cash</a></li>
-                            <li><a data-toggle="tab" href="#tab-card" form='#f_tab-card'>Card</a></li>
-                            <li><a data-toggle="tab" href="#tab-cheque" form='#f_tab-cheque'>Cheque</a></li>
-                            <li><a data-toggle="tab" href="#tab-debit" form='#f_tab-debit'>Auto Debit</a></li>
+                            <li><a data-toggle="tab" href="#tab-card-rf" form='#f_tab-card'>Card</a></li>
+                            <li><a data-toggle="tab" href="#tab-cheque-rf" form='#f_tab-cheque'>Cheque</a></li>
+                            <li><a data-toggle="tab" href="#tab-debit-rf" form='#f_tab-debit'>Auto Debit</a></li>
                         </ul>
                         
                         <div class="tab-content">
@@ -665,17 +665,11 @@
                                 <form id='f_tab-card' autocomplete="off">
                                     <input id="dbacthdr_entrydate" name="dbacthdr_entrydate" type="hidden">
                                     </br>
-                                    <div id="g_paymodecard_c" class='col-md-4 minuspad-15'>
+                                    <!-- <div id="g_paymodecard_c" class='col-md-4 col-md-offset-8 minuspad-15'>
                                         <table id="g_paymodecard" class="table table-striped"></table>
                                         <div id="pg_paymodecard"></div>
                                         <hr>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
-                                            <div class='col-md-9'> 
-                                                <input id="dbacthdr_paymode" name="db_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </div> -->
                                     <div id="g_paycard_c" class='col-md-4 minuspad-15'>
                                         <table class="table table-bordered">
                                             <thead>
@@ -690,22 +684,23 @@
                                                         <input id="dbacthdr_paymode" name="db_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
                                                     </td>
                                                     <td>
-                                                        <input id="paycard_description" name="paycard_description" type="text" rdonly class="form-control input-sm text-uppercase">
+                                                        <input id="paycard_description" name="db_paymode" type="text" rdonly class="form-control input-sm text-uppercase">
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        </table>
+                                        </table><hr>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3" for="dbacthdr_paymode">Paymode: </label> 
+                                            <div class='col-md-9'> 
+                                                <input id="dbacthdr_paymode" name="db_paymode" type="text" rdonly  data-validation="required" data-validation-error-msg="Please Enter Value" class="form-control input-sm text-uppercase">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class='col-md-8'>
                                         <div class="form-group">
                                             <div class='col-md-4'> 
                                                 <label class="control-label" for="dbacthdr_amount">Refund Amount</label> 
-                                                <input id="dbacthdr_amount" name="db_amount" type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
-                                            </div>
-                                            
-                                            <div class='col-md-4'> 
-                                                <label class="control-label" for="dbacthdr_allocamt">Allocation Amount</label> 
-                                                <input id="dbacthdr_allocamt" name="db_allocamt" type="text" class="form-control input-sm" value="0.00" rdonly>
+                                                <input id="dbacthdr_amount" name="  " type="text" class="form-control input-sm" value="0.00" data-validation="required" data-validation-error-msg="Please Enter Value">
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
