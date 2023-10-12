@@ -479,7 +479,7 @@ $(document).ready(function () {
 				parent_close_disabled(true);
 				dialog_payercode.off();
 				// amountchgOnRF();
-			
+				
 				// $('.nav-tabs a').on('shown.bs.tab', function(e){
 				// 	tabform=$(this).attr('form');
 				// 	rdonly(tabform);
@@ -522,13 +522,13 @@ $(document).ready(function () {
 						$( this ).dialog( "option", "title", "View" );
 						disableForm('#formdata_RF');
 						disableForm(selrowData('#jqGrid_rf').db_paytype);
-						$(this).dialog("option", "buttons",butt2);
-
+						// $(this).dialog("option", "buttons",butt2);
+						
 						resetpill('#dialogForm_RF');
 						$("#dialogForm_RF .nav-tabs a[form='"+selrowData('#jqGrid_rf').db_paytype.toLowerCase()+"']").tab('show');
 						dialog_payercode.check('errorField');
 						disabledPill();
-					
+						
 						switch(selrowData('#jqGrid_rf').db_paytype.toLowerCase()){
 							case '#f_tab-card':
 								refreshGrid("#g_paymodecard",urlParam3_rc);
@@ -559,25 +559,66 @@ $(document).ready(function () {
 				// $("#formdata_RF a").off();
 				// $("#refresh_jqGrid").click();
 				if(oper=='view'){
-					$(this).dialog("option", "buttons",butt1);
+					// $(this).dialog("option", "buttons",butt1);
 				}
 			},
-			buttons :butt2,
+			buttons: [
+				{
+					text: "Cancel", click: function() {
+						var idno = selrowData("#jqGrid_rf").db_idno;
+						// var idno_alloc = selrowData("#gridAllo").idno_alloc;
+						
+						bootbox.confirm({
+							message: "Are you sure you want to cancel?",
+							buttons: { confirm: { label: 'Yes', className: 'btn-success' }, cancel: { label: 'No', className: 'btn-danger' } },
+							callback: function (result) {
+								if(result == true){
+									var urlparam={
+										oper: 'cancel_refund',
+										idno: idno,
+										// idno_alloc: idno_alloc,
+									}
+									
+									var postobj={
+										_token: $('#csrf_token').val(),
+									};
+									
+									$.post( "./cancellation/form?"+$.param(urlparam), $.param(postobj), function( data ) {
+										
+									},'json').fail(function(data) {
+										alert('there is an error');
+									}).success(function(data){
+										$("#dialogForm_RF").dialog('close');
+										refreshGrid("#jqGrid_rf",urlParam_rf);
+									});
+								}else{
+									// refreshGrid("#jqGrid_rf",urlParam_rf);
+								}
+							}
+						});
+					}
+				},{
+					text: "Close",click: function() {
+						$(this).dialog('close');
+					}
+				}
+			],
 		});
 	
 	///allocation///
 	var urlParamAllo={
-		action:'refund_allo_table',
+		action: 'refund_allo_table',
 		oper: 'view',
 		auditno: 0,
 		url: 'refund/table',
-		payercode:''
+		payercode: ''
 	}
 	
 	$("#gridAllo").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true }, 
+			{ label: 'idno', name: 'idno', width: 40, hidden: true, key:true },
+			{ label: 'idno_alloc', name: 'idno_alloc', width: 40, hidden: true },
 			{ label: 'Document No', name: 'auditno', width: 40 },
 			{ label: 'Document Date', name: 'entrydate', width: 50 },
 			{ label: 'MRN', name: 'mrn', width: 50 },
@@ -943,11 +984,11 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Audit No', name: 'db_auditno', width: 30 },
 			{ label: 'lineno_', name: 'db_lineno_', width: 30, hidden: true },
-			{ label: 'source', name: 'db_source', hidden: true, checked:true },
+			{ label: 'source', name: 'db_source', hidden: true, checked: true },
 			{ label: 'Trantype', name: 'db_trantype', width: 45 },
 			{ label: 'Type', name: 'db_PymtDescription', classes: 'wrap', width: 50, hidden: true },
-			{ label: 'MRN', name: 'db_mrn',align:'right', width: 30 }, //tunjuk
-			{ label: 'Epis', name: 'db_episno',align:'right', width: 30 }, //tunjuk
+			{ label: 'MRN', name: 'db_mrn', align: 'right', width: 30 },	// tunjuk
+			{ label: 'Epis', name: 'db_episno', align: 'right', width: 30 },	// tunjuk
 			{ label: 'billdebtor', name: 'db_billdebtor', hidden: true },
 			{ label: 'conversion', name: 'db_conversion', hidden: true },
 			{ label: 'hdrtype', name: 'db_hdrtype', hidden: true },
@@ -955,22 +996,22 @@ $(document).ready(function () {
 			{ label: 'tillcode', name: 'db_tillcode', hidden: true },
 			{ label: 'tillno', name: 'db_tillno', hidden: true },
 			{ label: 'debtortype', name: 'db_debtortype', hidden: true },
-			{ label: 'Date', name: 'db_adddate',width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
-			{ label: 'Receipt No.', name: 'db_recptno', classes: 'wrap',width: 60, hidden: true },
+			{ label: 'Date', name: 'db_adddate', width: 50, formatter: dateFormatter, unformat: dateUNFormatter, hidden: true },
+			{ label: 'Receipt No.', name: 'db_recptno', classes: 'wrap', width: 60, hidden: true },
 			{ label: 'entrydate', name: 'db_entrydate', hidden: true },
 			{ label: 'entrydate', name: 'db_entrytime', hidden: true },
 			{ label: 'entrydate', name: 'db_entryuser', hidden: true },
-			{ label: 'Payer', name: 'db_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail },
-			{ label: 'Payer Name', name: 'db_payername', width: 150, classes: 'wrap text-uppercase', canSearch:true, hidden: true },
+			{ label: 'Payer', name: 'db_payercode', width: 150, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat: un_showdetail },
+			{ label: 'Payer Name', name: 'db_payername', width: 150, classes: 'wrap text-uppercase', canSearch: true, hidden: true },
 			{ label: 'Patient Name', name: 'name', width: 150, classes: 'wrap', hidden: true },
 			{ label: 'remark', name: 'db_remark', hidden: true },
 			{ label: 'authno', name: 'db_authno', hidden: true },
 			{ label: 'epistype', name: 'db_epistype', hidden: true },
 			{ label: 'cbflag', name: 'db_cbflag', hidden: true },
 			{ label: 'reference', name: 'db_reference', hidden: true },
-			{ label: 'Payment Mode', name: 'db_paymode',width: 70, hidden: true }, //tunjuk
-			{ label: 'Amount', name: 'db_amount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
-			{ label: 'O/S Amount', name: 'db_outamount', width: 60,align:'right',formatter:'currency',formatoptions:{prefix: ""} }, //tunjuk
+			{ label: 'Payment Mode', name: 'db_paymode', width: 70, hidden: true },	// tunjuk
+			{ label: 'Amount', name: 'db_amount', width: 50, align: 'right', formatter: 'currency', formatoptions: { prefix: "" } },	// tunjuk
+			{ label: 'O/S Amount', name: 'db_outamount', width: 60, align: 'right', formatter: 'currency', formatoptions: { prefix: "" }, hidden: true },
 			{ label: 'bankchg', name: 'db_bankcharges', hidden: true },
 			{ label: 'expdate', name: 'db_expdate', hidden: true },
 			{ label: 'rate', name: 'db_rate', hidden: true },
@@ -979,7 +1020,8 @@ $(document).ready(function () {
 			{ label: 'paytype', name: 'db_paytype', hidden: true },
 			{ label: 'RCcashbalance', name: 'db_RCCASHbalance', hidden: true },
 			{ label: 'RCFinalbalance', name: 'db_RCFinalbalance', hidden: true },
-			{ label: 'Status', name: 'db_recstatus',width: 50 }, //tunjuk
+			{ label: 'Status', name: 'db_recstatus', width: 50 },	// tunjuk
+			{ label: ' ', width: 50, classes: 'wrap', formatter: buttonformatter_rf },
 			{ label: 'idno', name: 'db_idno', hidden: true },
 			{ label: 'paycard_description', name: 'paycard_description', hidden: true },
 			{ label: 'paybank_description', name: 'paybank_description', hidden: true },
@@ -1006,6 +1048,7 @@ $(document).ready(function () {
 		gridComplete: function(){
 			fdl.set_array().reset();
 			$("#jqGrid_rf").setSelection($("#jqGrid_rf").getDataIDs()[0]);
+			init_btn_rf();
 			
 			$('#'+$("#jqGrid_rf").jqGrid ('getGridParam', 'selrow')).focus();
 			// enabledPill();
@@ -1033,7 +1076,7 @@ $(document).ready(function () {
 			var selrowData = $("#jqGrid_rf").jqGrid ('getRowData', selRowId);
 			
 			populateFormdata("#jqGrid_rf", "#dialogForm_RF", "#formdata_RF", selRowId, 'view', '');
-
+			
 			urlParamAllo.auditno = selrowData.db_auditno;
 			refreshGrid("#gridAllo",urlParamAllo);
 			// getdata('RF',selrowData("#jqGrid_rf").db_idno);
@@ -1392,6 +1435,30 @@ $(document).ready(function () {
 			}
 			
 			$("#dialog_allocation").dialog("open");
+		});
+	}
+	
+	//////////////////////////////////////////////jqGrid_rf//////////////////////////////////////////////
+	function buttonformatter_rf(cellvalue, options, rowObject){
+		var retbut = `<div class="mini ui icon buttons"`+rowObject.db_idno+`>`
+			retbut += 	  `<button type='button' class="btn btn-primary btn-sm btn_detail" data-idno='`+rowObject.db_idno+`' data-auditno='`+rowObject.db_auditno+`'>`
+			retbut += 	    `Detail`
+			retbut += 	  `</button></div>`;
+		return retbut;
+	}
+	
+	function init_btn_rf(){
+		$('button.btn_detail').on('click',function(e){
+			oper='view';
+			var idno = $(this).data('idno');
+			var auditno = $(this).data('auditno');
+			enabledPill();
+			
+			populateFormdata("#jqGrid_rf", "#dialogForm_RF", "#formdata_RF", idno, 'view', '');
+			// getdata('RF',idno);
+			// refreshGrid("#jqGrid_rf",urlParam_rf);
+			urlParamAllo.auditno = auditno;
+			refreshGrid("#gridAllo",urlParamAllo);
 		});
 	}
 	

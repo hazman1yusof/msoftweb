@@ -189,7 +189,7 @@ class RefundController extends defaultController
 
         }else{
             $table = DB::table('debtor.dballoc as all')
-                        ->select('act.idno','act.recptno','act.auditno','act.entrydate','act.mrn','act.episno','act.source','act.trantype','act.lineno_','act.amount','act.outamount','all.amount as amtpaid')
+                        ->select('act.idno','act.recptno','act.auditno','act.entrydate','act.mrn','act.episno','act.source','act.trantype','act.lineno_','act.amount','act.outamount','all.amount as amtpaid','all.idno as idno_alloc')
                         ->where('all.docsource', '=', 'PB')
                         ->where('all.doctrantype', '=', 'RF')
                         ->where('all.compcode',session('compcode'))
@@ -259,8 +259,8 @@ class RefundController extends defaultController
                 $mrn = $pat_mast->first()->MRN;
                 $episno = $pat_mast->first()->Episno;
             }else{
-                $mrn=null;
-                $episno=null;
+                $mrn='0';
+                $episno='0';
             }
 
             $array_insert = [
