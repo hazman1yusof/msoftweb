@@ -44,6 +44,8 @@ class CancellationController extends defaultController
                 return $this->cancel_alloc($request);
             case 'cancel_receipt':
                 return $this->cancel_receipt($request);
+            case 'cancel_refund':
+                return $this->cancel_refund($request);
             default:
                 return 'error happen..';
         }
@@ -413,7 +415,8 @@ class CancellationController extends defaultController
                 ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
                 ->where('db.compcode','=',session('compcode'))
                 ->where('db.source','=','PB')
-                ->where('db.trantype','=','RF');
+                ->where('db.trantype','=','RF')
+                ->where('db.recstatus','=','ACTIVE');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
@@ -604,6 +607,96 @@ class CancellationController extends defaultController
                 ->where('idno','=',$request->idno)
                 ->update([
                     'recstatus' => 'CANCELLED'
+                ]);
+            
+            DB::commit();
+            
+            $responce = new stdClass();
+            $responce->result = 'success';
+            
+            return json_encode($responce);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function cancel_refund(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            // 1. Cancel dekat dbacthdr dulu
+            DB::table('debtor.dbacthdr')
+                // ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+            
+            // 2. Cancel dballoc
+            $dbacthdr = DB::table('debtor.dbacthdr')
+                        ->where('idno','=',$request->idno)
+                        ->first();
+            
+            $dballoc = DB::table('debtor.dballoc')
+                        ->where('docsource','=',$dbacthdr->source)
+                        ->where('doctrantype','=',$dbacthdr->trantype)
+                        ->where('docauditno','=',$dbacthdr->auditno)
+                        ->first();
+            
+            $alloc_amt = floatval($dballoc->amount);
+            
+            $hdr_doc = DB::table('debtor.dbacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$dballoc->docsource)
+                        ->where('trantype','=',$dballoc->doctrantype)
+                        ->where('auditno','=',$dballoc->docauditno)
+                        ->first();
+            
+            $doc_outamt = floatval($hdr_doc->outamount);
+            $doc_newoutamt = floatval($doc_outamt + $alloc_amt);
+            
+            $hdr_ref = DB::table('debtor.dbacthdr')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=',$dballoc->refsource)
+                        ->where('trantype','=',$dballoc->reftrantype)
+                        ->where('auditno','=',$dballoc->refauditno)
+                        ->first();
+            
+            $ref_outamt = floatval($hdr_ref->outamount);
+            $ref_newoutamt = floatval($ref_outamt + $alloc_amt);
+            // dd($ref_newoutamt);
+            
+            DB::table('debtor.dballoc')
+                ->where('idno','=',$dballoc->idno)
+                ->update([
+                    'recstatus' => 'CANCELLED'
+                ]);
+                
+            // tak perlu update doctrantype sebab outamount RF always 0
+            // DB::table('debtor.dbacthdr')
+            //     ->where('compcode','=',session('compcode'))
+            //     ->where('source','=',$dballoc->docsource)
+            //     ->where('trantype','=',$dballoc->doctrantype)
+            //     ->where('auditno','=',$dballoc->docauditno)
+            //     ->update([
+            //         'outamount' => $doc_newoutamt
+            //     ]);
+            
+            DB::table('debtor.dbacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=',$dballoc->refsource)
+                ->where('trantype','=',$dballoc->reftrantype)
+                ->where('auditno','=',$dballoc->refauditno)
+                ->update([
+                    'outamount' => $ref_newoutamt
                 ]);
             
             DB::commit();
