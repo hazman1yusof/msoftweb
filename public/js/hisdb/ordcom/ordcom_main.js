@@ -22,10 +22,11 @@ $(document).ready(function(){
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 
-		let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
 		if($('#isdoctor').val() != '1'){
-			let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
-			write_detail_phar('#jqgrid_detail_phar_docname',getCurrentRow.q_doctorname);
+        	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+			let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        	var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+			write_detail_phar('#jqgrid_detail_phar_docname',lastrowdata.q_doctorname);
 			write_detail_phar('#jqgrid_detail_phar_dept',$('#userdeptdesc').val());
 		}
 	});

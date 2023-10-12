@@ -728,11 +728,11 @@ var dialog_uomcode_phar = new ordialog(
 	'uom_phar',['material.uom AS u'],"#jqGrid_phar input[name='uom']",errorField,
 	{	colModel:
 		[
-			{label:'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label: 'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+			{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label: 'Charge Code',name:'chgcode',hidden:true},
 			{label: 'Inventory',name:'invflag',hidden:true},
-			{label: 'Quantity On Hand',hidden:true},
+			{label: 'Quantity On Hand',name:'qtyonhand',hidden:true},
 			{label: 'Price',name:'price',hidden:true},
 			{label: 'Tax',name:'taxcode',hidden:true},
 			{label: 'rate',name:'rate',hidden:true},
@@ -779,6 +779,9 @@ var dialog_uomcode_phar = new ordialog(
 			$("#jqGrid_phar #"+id_optid+"_uom_rate").val(data['rate']);
 			$("#jqGrid_phar #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 			$("#jqGrid_phar #"+id_optid+"_uom").val(data['uomcode']);
+			if(data['qtyonhand']!= null && parseInt(data['qtyonhand'] > 0)){
+				$("#jqGrid_phar #"+id_optid+"_uom_recv").val(data['uomcode']);
+			}
 			$("#jqGrid_phar #"+id_optid+"_unitprce").val(data['price']);
 			write_detail_phar('#jqgrid_detail_phar_unitprice',data['price']);
 			$("#jqGrid_phar #"+id_optid+"_billtypeperct").val(data['billty_percent']);
