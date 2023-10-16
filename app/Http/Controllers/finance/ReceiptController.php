@@ -204,6 +204,11 @@ class ReceiptController extends defaultController
                             ->where('dbacthdr.compcode',session('compcode'))
                             ->whereIn('dbacthdr.trantype',['RC','RD']);
 
+            if(!empty($request->mrn) && !empty($request->episno)){
+                $table = $table->where('dbacthdr.mrn',$request->mrn)
+                                ->where('dbacthdr.episno',$request->episno);
+            }
+
             if(!empty($request->filterCol)){
                 foreach ($request->filterCol as $key => $value) {
                     $pieces = explode(".", $request->filterVal[$key], 2);

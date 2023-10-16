@@ -102,7 +102,7 @@
 	// }
 
 	$( "#tilldet" ).dialog({
-		autoOpen: true,
+		autoOpen: false,
 		width: 5/10 * $(window).width(),
 		modal: true,
 		open: function() { 

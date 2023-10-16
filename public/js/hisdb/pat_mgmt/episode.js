@@ -168,8 +168,7 @@ function get_billtype_default(mrn){
     });
 }
 
-function populate_episode(rowid){
-    let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+function populate_episode(rowid,rowdata){
     disableEpisode(true);
 
     $('#mrn_episode').val(rowdata.MRN);

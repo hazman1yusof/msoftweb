@@ -149,6 +149,7 @@
         <input name="userdeptdesc" id="userdeptdesc" type="hidden" value="{{$userdeptdesc ?? ''}}">
 		<input type="hidden" name="billtype_def_code" id="billtype_def_code" value="{{$billtype_def_code ?? ''}}">
 		<input type="hidden" name="billtype_def_desc" id="billtype_def_desc" value="{{$billtype_def_desc ?? ''}}">
+        <input name="cashier" id="cashier" type="hidden" value="{{$cashier ?? '0'}}">
         <input name="lastMrn" id="lastMrn" type="hidden" >
         <input name="lastidno" id="lastidno" type="hidden" >
         <input name="isdoctor" id="isdoctor" type="hidden" value="{{Auth::user()->doctor}}">
@@ -445,6 +446,7 @@
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_deposit.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/pat_emr.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/textfield_modal.js"></script>

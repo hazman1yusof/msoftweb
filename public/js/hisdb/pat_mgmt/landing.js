@@ -20,13 +20,12 @@ $(document).ready(function() {
 
     var counter = 0;
     var grid = $("#grid-command-buttons").bootgrid({
-        selection: true,
+        selection: false,
         rowSelect: true,
         ajax: true,
         ajaxSettings: {
             cache: false
         },
-        selection: false,
         multiSelect: false,
         searchSettings: {
             delay: 350,
@@ -102,7 +101,7 @@ $(document).ready(function() {
                 return retval;
             },
             "commands": function (column,row) {
-                let rowid = counter++;//just for specify each row
+                let rowid = row.idno;//just for specify each row
                 if(row.q_epistycode == '' || row.q_epistycode == undefined){
                     return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
                            "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
@@ -143,15 +142,23 @@ $(document).ready(function() {
             let rowid = $(this).data("rowId");
             $('#lastrowid').val(rowid);
 
-            let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+            var rowdata = getrow_bootgrid(rowid,rows);
+
             populate_patient(rowdata);
             $('#mdl_patient_info').modal({backdrop: "static"});
             $("#btn_register_patient").data("oper","edit");
-            $("#btn_register_patient").data("idno",$("#grid-command-buttons").bootgrid("getCurrentRows")[rowid].idno);
+            $("#btn_register_patient").data("idno",rowid);
             
             desc_show.write_desc();
         }).end().find(".command-episode").on("click", function(e) {
-            populate_episode($(this).data("rowId"));
+            let rowid = $(this).data("rowId");
+            $('#lastrowid').val(rowid);
+
+            let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+            var rowdata = getrow_bootgrid(rowid,rows);
+
+            populate_episode(rowid,rowdata);
             $('#editEpisode').modal({backdrop: "static"});
 
         }).end().find(".command-add").on("click", function(e) {

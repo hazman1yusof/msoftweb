@@ -33,7 +33,11 @@ class PatmastController extends defaultController
         $user = DB::table('sysdb.users')->where('username','=',session('username'))->where('compcode',session('compcode'))->first();
         $dept = DB::table('sysdb.department')->where('deptcode','=',$user->dept)->where('compcode',session('compcode'))->first();
         $btype = DB::table('sysdb.sysparam')->where('source','=','OP')->where('trantype','=','BILLTYPE')->where('compcode',session('compcode'))->first();
-
+        $cashier = DB::table('debtor.tilldetl')
+                        ->where('compcode',session('compcode'))
+                        ->where('cashier',session('username'))
+                        ->whereNull('closedate')
+                        ->exists();
 
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
 
@@ -41,7 +45,8 @@ class PatmastController extends defaultController
                 'userdeptcode' => $dept->deptcode,
                 'userdeptdesc' => $dept->description,
                 'billtype_def_code' => $btype_->billtype,
-                'billtype_def_desc' => $btype_->description
+                'billtype_def_desc' => $btype_->description,
+                'cashier' => $cashier
             ];
 
         if(Auth::user()->billing == 1){
@@ -1815,7 +1820,7 @@ class PatmastController extends defaultController
                     "pay_type" => $epis_fin,
                     "pyrmode" => $epis_paymode,
                     "billtype" => $epis_billtype,
-                    "bed" => $epis_bednum,
+                    // "bed" => $epis_bednum,
                     $epis_typeepis => 1,
                     "payer" => $epis_payer,
                     "AdminFees" => $epis_fee,
@@ -2010,7 +2015,7 @@ class PatmastController extends defaultController
 
                 if(!$this->duplicate_corpstaff_panel($request)){
                     DB::table('hisdb.pat_mast')
-                        ->where('MRN',$request->mrn)
+                        ->where('MRN',$epis_mrn)
                         ->where('compcode',session('compcode'))
                         ->update([
                             'CorpComp' => $request['newpanel_corpcomp'],
@@ -2020,7 +2025,7 @@ class PatmastController extends defaultController
 
                     if($this->corpstaff_exists_panel($request)){
                         DB::table('hisdb.corpstaff')
-                            ->where('MRN',$request->mrn)
+                            ->where('MRN',$epis_mrn)
                             ->where('compcode',session('compcode'))
                             ->where('relatecode',$request['newpanel_relatecode'])
                             ->where('debtorcode',$request['newpanel_corpcomp'])
@@ -2043,7 +2048,7 @@ class PatmastController extends defaultController
                                 'recstatus' => 'ACTIVE',
                                 'adduser' => session('username'),
                                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                                'mrn' => $request->mrn,
+                                'mrn' => $epis_mrn,
                             ]);
                     }
                 }
@@ -2126,69 +2131,76 @@ class PatmastController extends defaultController
                     //episno = episode.episno
                     //name = patmast.name
 
-            // upddate episode xleh tukar bed
-            // if($epis_type == "IP" || $epis_type == "DP"){
+            if($epis_type == "IP" || $epis_type == "DP"){
 
-            //     $bedalloc_oldidno=DB::table('hisdb.bedalloc')
-            //         ->where('compcode','=',session('compcode'))
-            //         ->where('mrn','=',$epis_mrn)
-            //         ->where('episno','=',$epis_no);
+                $bednull = DB::table("hisdb.episode")
+                                ->where('compcode','=',session('compcode'))
+                                ->where('mrn','=',$epis_mrn)
+                                ->where('episno','=',$epis_no)
+                                ->whereNull('bed');
 
-            //     if($bedalloc_oldidno->exists()){
-            //         $bedalloc_old = DB::table('hisdb.bedalloc')
-            //             ->where('idno','=',$bedalloc_oldidno->max('idno'))
-            //             ->first();
+                if($bednull->exists()){
+                   $bedalloc_oldidno=DB::table('hisdb.bedalloc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('mrn','=',$epis_mrn)
+                        ->where('episno','=',$epis_no);
 
-            //         $bed_old = DB::table('hisdb.bed')
-            //             ->where('compcode','=',session('compcode'))
-            //             ->where('bednum','=',$bedalloc_old->bednum)
-            //             ->update([
-            //                 'occup' => "VACANT"
-            //             ]);
+                    if($bedalloc_oldidno->exists()){
+                        $bedalloc_old = DB::table('hisdb.bedalloc')
+                            ->where('idno','=',$bedalloc_oldidno->max('idno'))
+                            ->first();
 
-            //     }
+                        $bed_old = DB::table('hisdb.bed')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('bednum','=',$bedalloc_old->bednum)
+                            ->update([
+                                'occup' => "VACANT"
+                            ]);
 
-            //     $bed_obj = DB::table('hisdb.bed')
-            //         ->where('compcode','=',session('compcode'))
-            //         ->where('bednum','=',$epis_bednum);
+                    }
 
-            //     if($bed_obj->exists()){
-            //         $bed_first = $bed_obj->first();
-            //         DB::table('hisdb.bedalloc')
-            //             ->insert([  
-            //                 'mrn' => $epis_mrn,
-            //                 'episno' => $epis_no,
-            //                 'name' => $patmast_data->Name,
-            //                 'astatus' => "OCCUPIED",
-            //                 'ward' =>  $bed_first->ward,
-            //                 'room' =>  $bed_first->room,
-            //                 'bednum' =>  $bed_first->bednum,
-            //                 'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
-            //                 'astime' => Carbon::now("Asia/Kuala_Lumpur"),
-            //                 'compcode' => session('compcode'),
-            //                 'computerid' => session('computerid'),
-            //                 'adduser' => strtoupper(session('username')),
-            //                 'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-            //             ]);
+                    $bed_obj = DB::table('hisdb.bed')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('bednum','=',$epis_bednum);
 
-            //         $bed_obj->update([
-            //             'occup' => "OCCUPIED",
-            //             'mrn' => $epis_mrn,
-            //             'episno' => $epis_no,
-            //             'name' => $patmast_data->Name,
-            //             'admdoctor' => $epis_doctor
-            //         ]);
+                    if($bed_obj->exists()){
+                        $bed_first = $bed_obj->first();
+                        DB::table('hisdb.bedalloc')
+                            ->insert([  
+                                'mrn' => $epis_mrn,
+                                'episno' => $epis_no,
+                                'name' => $patmast_data->Name,
+                                'astatus' => "OCCUPIED",
+                                'ward' =>  $bed_first->ward,
+                                'room' =>  $bed_first->room,
+                                'bednum' =>  $bed_first->bednum,
+                                'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                                'compcode' => session('compcode'),
+                                'computerid' => session('computerid'),
+                                'adduser' => strtoupper(session('username')),
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                            ]);
 
-            //         DB::table("hisdb.episode")
-            //             ->where('mrn','=',$request->mrn)
-            //             ->where('episno','=',$request->episno)
-            //             ->update([
-            //                 'bed' => $request->bed_bednum
-            //             ]);
+                        $bed_obj->update([
+                            'occup' => "OCCUPIED",
+                            'mrn' => $epis_mrn,
+                            'episno' => $epis_no,
+                            'name' => $patmast_data->Name,
+                            'admdoctor' => $epis_doctor
+                        ]);
 
-            //     }
+                        DB::table("hisdb.episode")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$epis_mrn)
+                            ->where('episno','=',$epis_no)
+                            ->update([
+                                'bed' => $epis_bednum
+                            ]);
 
-            // }
+                    } 
+                }
+            }
 
 
             //QUEUE FOR ALL
@@ -2427,7 +2439,7 @@ class PatmastController extends defaultController
                     ->where('idno','=',$last_bedalloc_idno)
                     ->update([
                         'astatus' => "VACANT",
-                    ])
+                    ]);
 
                 $bedalloc_old = DB::table('hisdb.bedalloc')
                     ->where('idno','=',$last_bedalloc_idno)

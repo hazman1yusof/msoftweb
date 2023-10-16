@@ -174,6 +174,10 @@ $(document).ready(function () {
 		if( $('#form_bed').isValid({requiredFields: ''}, conf_bed, true) ) {
 			saveForm_bed(function(){
 				refreshGrid("#jqGrid_bed", urlParam_bed);
+				populate_episode_by_mrn_episno($("#mrn_episode").val(),$("#txt_epis_no").val());
+		        $("#load_from_addupd").data('info','true');
+		        $("#load_from_addupd").data('oper','edit');
+				$("#grid-command-buttons").bootgrid('reload');
 			});
 		}else{
 			enableForm('#form_bed',['bed_date','bed_time','bed_bedtype','bed_bednum','bed_room','bed_ward','bed_lodger']);
