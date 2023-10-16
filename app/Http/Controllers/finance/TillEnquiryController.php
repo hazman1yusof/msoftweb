@@ -276,6 +276,12 @@ class TillEnquiryController extends defaultController
             abort(404);
         }
         
+        $tilldetl = DB::table('debtor.tilldetl')
+                    ->where('compcode',session('compcode'))
+                    ->where('tillcode',$request->tillcode)
+                    ->where('tillno',$request->tillno)
+                    ->first();
+        
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                 ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
                 ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
@@ -309,6 +315,7 @@ class TillEnquiryController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
                                         ->where('pm.source','AR')
@@ -321,6 +328,7 @@ class TillEnquiryController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
                                         ->where('pm.source','AR')
@@ -333,6 +341,7 @@ class TillEnquiryController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
                                         ->where('pm.source','AR')
@@ -345,6 +354,7 @@ class TillEnquiryController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RD','RC'])
                         ->join('debtor.paymode as pm', function($join) use ($request){
                             $join = $join->on('pm.paymode', '=', 'db.paymode')
                                         ->where('pm.source','AR')
@@ -357,6 +367,66 @@ class TillEnquiryController extends defaultController
                         ->where('db.compcode',session('compcode'))
                         ->where('db.tillcode',$request->tillcode)
                         ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RD','RC'])
+                        ->sum('amount');
+            
+            $sum_cash_ref = DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.tillcode',$request->tillcode)
+                            ->where('db.tillno',$request->tillno)
+                            ->whereIn('db.trantype',['RF'])
+                            ->join('debtor.paymode as pm', function($join) use ($request){
+                                $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                            ->where('pm.source','AR')
+                                            ->where('pm.paytype','CASH')
+                                            ->where('pm.compcode',session('compcode'));
+                            })
+                            ->sum('amount');
+            
+            $sum_chq_ref = DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.tillcode',$request->tillcode)
+                            ->where('db.tillno',$request->tillno)
+                            ->whereIn('db.trantype',['RF'])
+                            ->join('debtor.paymode as pm', function($join) use ($request){
+                                $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                            ->where('pm.source','AR')
+                                            ->where('pm.paytype','CHEQUE')
+                                            ->where('pm.compcode',session('compcode'));
+                            })
+                            ->sum('amount');
+            
+            $sum_card_ref = DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.tillcode',$request->tillcode)
+                            ->where('db.tillno',$request->tillno)
+                            ->whereIn('db.trantype',['RF'])
+                            ->join('debtor.paymode as pm', function($join) use ($request){
+                                $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                            ->where('pm.source','AR')
+                                            ->where('pm.paytype','CARD')
+                                            ->where('pm.compcode',session('compcode'));
+                            })
+                            ->sum('amount');
+            
+            $sum_bank_ref = DB::table('debtor.dbacthdr as db')
+                            ->where('db.compcode',session('compcode'))
+                            ->where('db.tillcode',$request->tillcode)
+                            ->where('db.tillno',$request->tillno)
+                            ->whereIn('db.trantype',['RF'])
+                            ->join('debtor.paymode as pm', function($join) use ($request){
+                                $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                            ->where('pm.source','AR')
+                                            ->where('pm.paytype','BANK')
+                                            ->where('pm.compcode',session('compcode'));
+                            })
+                            ->sum('amount');
+            
+            $sum_all_ref = DB::table('debtor.dbacthdr as db')
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$request->tillcode)
+                        ->where('db.tillno',$request->tillno)
+                        ->whereIn('db.trantype',['RF'])
                         ->sum('amount');
         }
         
@@ -390,7 +460,7 @@ class TillEnquiryController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('finance.AR.tillenquiry.tillenquiry_pdfmake',compact('dbacthdr','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','title','company','totamt_eng'));
+        return view('finance.AR.tillenquiry.tillenquiry_pdfmake',compact('tilldetl','dbacthdr','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','title','company','totamt_eng'));
         
         // if(empty($request->type)){
         //     $pdf = PDF::loadView('finance.AP.paymentVoucher.paymentVoucher_pdf',compact('apacthdr','apalloc','totamt_eng','company', 'title'));

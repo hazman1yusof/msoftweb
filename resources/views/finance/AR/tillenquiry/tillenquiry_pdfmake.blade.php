@@ -15,6 +15,12 @@
     
     <script>
         
+        var tilldetl = {
+            @foreach($tilldetl as $key => $val)
+                '{{$key}}' : '{{$val}}',
+            @endforeach
+        };
+        
         var dbacthdr=[
             @foreach($dbacthdr as $key => $dbacthdr1)
             [
@@ -32,6 +38,11 @@
         var sum_card = '{{$sum_card}}';
         var sum_bank = '{{$sum_bank}}';
         var sum_all = '{{$sum_all}}';
+        var sum_cash_ref = '{{$sum_cash_ref}}';
+        var sum_chq_ref = '{{$sum_chq_ref}}';
+        var sum_card_ref = '{{$sum_card_ref}}';
+        var sum_bank_ref = '{{$sum_bank_ref}}';
+        var sum_all_ref = '{{$sum_all_ref}}';
         
         var title = {
             @foreach($company as $key => $val)
@@ -59,10 +70,36 @@
                     {
                         image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
+                    // {
+                    //     text: '{{$title}}\n',
+                    //     style: 'header',
+                    //     alignment: 'center'
+                    // },
                     {
-                        text: '{{$title}}\n',
-                        style: 'header',
-                        alignment: 'center'
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*', '*'], //panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'CASHIER : {{strtoupper($tilldetl->cashier)}}' },
+                                    @if(!empty($tilldetl->closedate))
+                                        { text: 'CLOSE DATE : {{\Carbon\Carbon::parse($tilldetl->closedate)->format('d/m/Y')}}' },
+                                    @else
+                                        { text: 'OPEN DATE : {{\Carbon\Carbon::parse($tilldetl->opendate)->format('d/m/Y')}}' },
+                                    @endif
+                                ],
+                                [
+                                    { text: 'TILL CODE : {{$tilldetl->tillcode}}' },
+                                    @if(!empty($tilldetl->closetime))
+                                        { text: 'CLOSE TIME : {{\Carbon\Carbon::parse($tilldetl->closetime)->format('h:i A')}}' },
+                                    @else
+                                        { text: 'OPEN TIME : {{\Carbon\Carbon::parse($tilldetl->opentime)->format('h:i A')}}' },
+                                    @endif
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
                     },
                     // {
                     //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
@@ -139,22 +176,22 @@
                                 [
                                     { text: 'Cash' },
                                     { text: '{{$sum_cash}}' },
-                                    { text: ' ' },
+                                    { text: '{{$sum_cash_ref}}' },
                                 ],
                                 [
                                     { text: 'Cheque' },
                                     { text: '{{$sum_chq}}' },
-                                    { text: ' ' },
+                                    { text: '{{$sum_chq_ref}}' },
                                 ],
                                 [
                                     { text: 'Card' },
                                     { text: '{{$sum_card}}' },
-                                    { text: ' ' },
+                                    { text: '{{$sum_card_ref}}' },
                                 ],
                                 [
                                     { text: 'Auto Debit' },
                                     { text: '{{$sum_bank}}' },
-                                    { text: ' ' },
+                                    { text: '{{$sum_bank_ref}}' },
                                 ],
                             ]
                         },
@@ -170,7 +207,7 @@
                                 [
                                     { text: 'Total', style: 'tableHeader' },
                                     { text: '{{$sum_all}}' },
-                                    { text: ' ' },
+                                    { text: '{{$sum_all_ref}}' },
                                 ],
                             ]
                         },
