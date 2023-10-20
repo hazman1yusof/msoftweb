@@ -171,3 +171,6 @@ div.chart_sel{
 div.chart_sel label{
 	padding: 0px 5px;
 }
+table#accomodation_table tr.disabled{
+	background: #ff000014;
+}

@@ -183,7 +183,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 						custom_value:galGridCustomValue 	
 					},
 			},
-			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
+			{ label: 'Room', name: 'room', width: 10, canSearch: true, editable: false},
 			{ label: 'Ward', name: 'ward', width: 25 , classes: 'wrap', editable:true,
 				editrules:{required: true,custom:true, custom_func:cust_rules}, formatter: showdetail,
 					edittype:'custom',	editoptions:
@@ -192,11 +192,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 						},
 			},
 			{ label: 'Tel Ext', name: 'tel_ext', width: 8, canSearch: false, checked: true, editable: true, editoptions: {style: "text-transform: uppercase" }},
-			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true,custom:true, custom_func:cust_rules},
-				edittype:'custom',	editoptions:
-					{ 	custom_element:statCustomEdit,
-						custom_value:galGridCustomValue 	
-					},
+			{ label: 'Statistic', name: 'statistic', width: 10, classes: 'wrap', canSearch: false, editable: true,editrules:{required: true},edittype: 'select', formatter: 'select',editoptions:{value:{ '1': '1', '0': '0' }}
 			},
 			{ label: 'MRN', name: 'mrn', width: 8, canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: ' ', name: 'episno', align: 'right', width: 5},
@@ -224,7 +220,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
-
+			empty_form_trf();
 			if (rowid != null) {
 				var rowData = $('#jqGrid').jqGrid('getRowData', rowid);
 				refreshGrid('#jqGrid_trf', urlParam2,'kosongkan');
@@ -242,9 +238,17 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 					$("#jqGridPagerDelete,#jqGrid_iledit,#jqGrid_ilcancel,#jqGrid_ilsave").show();
 				}
 			}
+			$("#jqGrid").data('lastselrow',rowid);
 		},
 		loadComplete: function(){
-			$('#jqGrid').jqGrid ('setSelection', $('#jqGrid').jqGrid ('getDataIDs')[0]);
+			if ($("#jqGrid").data('lastselrow') != undefined) {
+				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
+				delay(function(){
+					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
+				}, 300 );
+			}else{
+				$('#jqGrid').jqGrid ('setSelection',$('#jqGrid').jqGrid ('getDataIDs')[0]);
+			}
 			calc_jq_height_onchange("jqGrid");
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
@@ -458,12 +462,16 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 				$.param({
 					action: 'bedmanagement_save',
 					name: $('#reservebedHide').val(),
-					newic_reserve: $('#newic_reserve').val()
+					newic_reserve: $('#newic_reserve').val(),
+					new_mrn: $("#dialogOccupBedForm input[name='new_mrn']").val(),
+					new_episno: $("#dialogOccupBedForm input[name='new_episno']").val(),
+					new_name: $("#dialogOccupBedForm input[name='new_name']").val(),
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			refreshGrid('#jqGrid',urlParam,'edit');
 		},
 		errorTextFormat: function (data) {
 			alert(data);
@@ -736,29 +744,101 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 	);
 	dialog_ward.makedialog();
 
+	var dialog_mrn = new ordialog(
+		'mrn','hisdb.pat_mast',"#dialogOccupBedForm input[name='new_mrn']",'errorField',
+		{	colModel:[
+				{label:'MRN',name:'mrn',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true,formatter:MRNFormatter},
+				{label:'Name',name:'name',width:400,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Epsino',name:'episno',hidden:true},
+			],
+			urlParam: {
+				url:'./bedmanagement/table',
+				action:'mrn_nobed',
+				filterCol:['Active','compcode','PatStatus'],
+				filterVal:['1', 'session.compcode','1']
+					},
+			ondblClickRow:function(){
+				let data = selrowData('#' + dialog_mrn.gridname);
+
+				$("#dialogOccupBedForm input[name='new_mrn']").val(data.mrn);
+				$("#dialogOccupBedForm input[name='new_name']").val(data.name);
+				$("#dialogOccupBedForm input[name='new_episno']").val(data.episno);
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+					$('#tel_ext').focus().select();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select MRN",
+			open: function(){
+				dialog_mrn.urlParam.url = './bedmanagement/table';
+				dialog_mrn.urlParam.action = 'mrn_nobed';
+				dialog_mrn.urlParam.filterCol = ['Active','compcode','PatStatus'];
+				dialog_mrn.urlParam.filterVal = ['1', 'session.compcode','1'];
+			},
+			close: function(){
+
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_mrn.makedialog(true);
+
 	$("#dialogReserveBedForm").dialog({
 		autoOpen: false,
 		width: 4/10 * $(window).width(),
 		modal: true,
 		open: function(event, ui){
+			emptyFormdata_div("#dialogReserveBedForm");
 		},
 		close: function( event, ui ){
 		},
 		buttons :[{
-			text: "Save",click: function() {
+			text: "Select Patient",click: function() {
 				var newval = $("#dialogReserveBedForm textarea[name='reservebedNote']").val();
 				var rowid = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 				$("#jqGrid").jqGrid('setRowData',rowid,{name:newval});
 				$('#reservebedHide').val(newval);
-				$(this).dialog('close');
+				$("#dialogReserveBedForm").dialog('close');
 			}
 		},{
 			text: "Cancel",click: function() {
-				$(this).dialog('close');
+				$("#dialogReserveBedForm").dialog('close');
 			}
 		}]
 	});
 
+	$("#dialogOccupBedForm").dialog({
+		autoOpen: false,
+		width: 4/10 * $(window).width(),
+		modal: true,
+		open: function(event, ui){
+			emptyFormdata_div("#dialogOccupBedForm");
+			dialog_mrn.on();
+		},
+		close: function( event, ui ){
+			dialog_mrn.off();
+		},
+		buttons :[{
+			text: "Select Patient",click: function() {
+				var new_mrn = $("#dialogOccupBedForm input[name='new_mrn']").val();
+				var new_episno = $("#dialogOccupBedForm input[name='new_episno']").val();
+				var new_name = $("#dialogOccupBedForm input[name='new_name']").val();
+				var rowid = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+				$("#jqGrid").jqGrid('setRowData',rowid,{mrn:new_mrn,episno:new_episno,name:new_name});
+				$("#dialogOccupBedForm").dialog('close');
+			}
+		},{
+			text: "Cancel",click: function() {
+				$("#dialogOccupBedForm").dialog('close');
+			}
+		}]
+	});
 
 	var dialog_occup = new ordialog(
 		'occup','sysdb.department',"#jqGrid input[name='occup']",errorField,
@@ -773,11 +853,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 				filterVal:['ACTIVE', 'session.compcode']
 				},
 			ondblClickRow:function(event){
-
 				$(dialog_occup.textfield).val(selrowData("#"+dialog_occup.gridname)['description']);
-				if (selrowData("#"+dialog_occup.gridname)['description'] == 'RESERVE'){
-					$("#dialogReserveBedForm").dialog('open');					
-				}
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -797,7 +873,13 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 			},
 			width:4/10 * $(window).width(),
 			close: function(){
-				$("#jqGrid input[name='room']").focus().select();
+				// $("#jqGrid input[name='room']").focus().select();
+				var description = $(dialog_occup.textfield).val();
+				if (description == 'RESERVE'){
+					$("#dialogReserveBedForm").dialog('open');					
+				}else if(description == 'OCCUPIED'){
+					$("#dialogOccupBedForm").dialog('open');
+				}
 			}
 		},'urlParam','radio','tab'
 	);
@@ -962,6 +1044,22 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 		}
 	});
 
+	$("#jqGrid_trf").inlineNav('#jqGridPager3', {
+		add: false,
+		edit: false,
+		cancel: false,
+		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+	}).jqGrid('navButtonAdd', "#jqGridPager3", {
+		id: "jqGridPager3_Refresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			refreshGrid('#jqGrid_trf', urlParam2);
+		},
+	});
+
 	//////////////////////////////////////end grid 2/////////////////////////////////////////////////////////
 
 	//////////handle searching, its radio button and toggle ///////////////////////////////////////////////
@@ -1083,6 +1181,7 @@ $(document).ready(function () {	/////////////////////////validation/////////////
 				$("#cancel_trf").click();
 				refreshGrid('#jqGrid_trf', urlParam2);
 				emptyFormdata_div("#transferto_div",['#trf_aedate','#trf_aetime']);
+				refreshGrid('#jqGrid', urlParam);
 			});
 		}else{
 			enableForm('#form_trf');
@@ -1268,6 +1367,9 @@ $(document).ready(function () {	/////////////////////////validation/////////////
             },
             "createdRow": function( row, data, dataIndex ) {
 		    	$(row).addClass( data['desc_bt'] );
+	            if(data.occup != 'VACANT'){
+	                $(row).addClass('disabled');
+	            }
 		    },
             "initComplete": function(settings, json) {
                 let opt_bt = opt_ward = "";

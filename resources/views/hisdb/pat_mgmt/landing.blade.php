@@ -194,7 +194,8 @@
 		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
 			<div  class="panel-heading clearfix">
 				<h5><strong>
-					@if (request()->get('curpat') == 'true'){{'CURRENT PATIENT'}}
+					@if (request()->get('curpat') == 'true' && request()->get('epistycode') == 'IP'){{'CURRENT IN-PATIENT'}}
+					@elseif (request()->get('curpat') == 'true' && request()->get('epistycode') == 'OP'){{'CURRENT OUT-PATIENT'}}
 					@else {{'PATIENT LIST'}}
 					@endif
 				</strong></h5>

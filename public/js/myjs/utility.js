@@ -701,6 +701,12 @@ function modal(){
 	}
 }
 
+function MRNFormatter(cellvalue, options, rowObject){
+	if(cellvalue == null) return '';
+	if(cellvalue.toString().trim() == '') return '';
+	return pad('000000000',cellvalue,true);
+}
+
 function dateFormatter(cellvalue, options, rowObject){
 	if(cellvalue == null) return '';
 	if(cellvalue.trim() == '') return '';

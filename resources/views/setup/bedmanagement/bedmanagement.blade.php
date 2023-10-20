@@ -314,12 +314,34 @@
 
 	<div id="dialogReserveBedForm" title="Note for reserved bed" >
 		<form class='form-horizontal' style=''>
-			<small>Notes</small> 
+			<br>
+			<label>Notes</label> 
 			<input type="hidden" name="" id="reservebedHide">
 			<textarea class="form-control input-sm text-uppercase" name="reservebedNote" rows="5" ></textarea>
 			<br>
-			<small>I/C No.</small> 
+			<label>I/C No.</label> 
 			<input type="text" class="form-control input-sm uppercase" name="newic_reserve" id="newic_reserve">
+		</form>
+	</div>
+
+	<div id="dialogOccupBedForm" title="Assign bed to new patient" >
+		<form class='form-horizontal' style=''>
+			<br>
+			<div class="col-md-7">
+				<label>Patient MRN</label> 
+				<div class='input-group'>
+					<input id="new_mrn" name="new_mrn" type="text" class="form-control input-sm uppercase">
+					<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<label>Episno</label> 
+				<input type="text" class="form-control input-sm uppercase" name="new_episno" id="new_episno" readonly>
+			</div>
+			<div class="col-md-12" style="padding-top:10px">
+				<label>Patient Name</label> 
+				<input type="text" class="form-control input-sm uppercase" name="new_name" id="new_name" readonly>
+			</div>
 		</form>
 	</div>
 
@@ -362,6 +384,10 @@
 
 @section('scripts')
 	<link rel="stylesheet" href="css/bedmanagement.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/rowgroup/1.1.2/css/rowGroup.dataTables.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 	<script src="js/setup/bedmanagement/bedmanagement.js"></script>
 @endsection

@@ -57,6 +57,8 @@ class BedManagementController extends defaultController
                 return $this->get_table($request);
             case 'get_chart':
                 return $this->get_chart($request);
+            case 'mrn_nobed':
+                return $this->mrn_nobed($request);
             
             default:
                 return 'error happen..';
@@ -358,32 +360,87 @@ class BedManagementController extends defaultController
         DB::beginTransaction();
         try {
 
+            $new_mrn = null;
+            $new_episno = null;
+            $newic_reserve = null;
+            $name = strtoupper($request->name);
+
             if(!empty($request->newic_reserve)){
                 $newic_reserve = str_replace('-','', $request->newic_reserve);
-            }else{
-                $newic_reserve = null;
             }
 
+            if(!empty($request->new_mrn)){
+                $new_mrn = ltrim($request->new_mrn, "0");
+                if(!empty($request->new_episno)){
+                    $new_episno = $request->new_episno;
+                }
+                if(!empty($request->new_name)){
+                    $name = strtoupper($request->new_name);
+                }
+
+                $bed = DB::table('hisdb.bed')
+                            ->where('idno','=',$request->idno)
+                            ->first();
+
+                if($bed->occup == 'OCCUPIED'){
+                    throw new \Exception("BED ALREADY OCCUPIED!");
+                }
+
+                DB::table('hisdb.bedalloc')
+                    ->insert([  
+                        'mrn' => $new_mrn,
+                        'episno' => $new_episno,
+                        'name' => $name,
+                        'astatus' => "OCCUPIED",
+                        'ward' =>  $bed->ward,
+                        'room' =>  $bed->room,
+                        'bednum' =>  $bed->bednum,
+                        'asdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'astime' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'compcode' => session('compcode'),
+                        'adduser' => strtoupper(session('username')),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'computerid' => session('computerid')
+                    ]);
+
+                DB::table("hisdb.episode")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$new_mrn)
+                    ->where('episno','=',$new_episno)
+                    ->update([
+                        "bed" => $bed->bednum,
+                    ]);
+
+            }
+
+            $episode = DB::table("hisdb.episode")
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$new_mrn)
+                            ->where('episno','=',$new_episno)
+                            ->first();
+
             $arr_upd = [  
-                    'bedtype' => strtoupper($request->bedtype),  
-                    'room' => strtoupper($request->room),  
-                    'ward' => strtoupper($request->ward),
+                    // 'bedtype' => strtoupper($request->bedtype),
+                    // 'ward' => strtoupper($request->ward),
                     'occup' => strtoupper($request->occup),
-                    'name' => strtoupper($request->name),
-                    'tel_ext' => strtoupper($request->tel_ext),
-                    'admdoctor' => strtoupper($request->admdoctor),
-                    'tel_ext' => $request->tel_ext, 
+                    'name' => $name,
+                    // 'tel_ext' => strtoupper($request->tel_ext),
+                    // 'admdoctor' => strtoupper($request->admdoctor),
+                    // 'tel_ext' => $request->tel_ext, 
                     'statistic' => $request->statistic,    
-                    'recstatus' => strtoupper($request->recstatus),
+                    // 'recstatus' => strtoupper($request->recstatus),
                     'computerid' => session('computerid'),
+                    'admdoctor' => $episode->admdoctor,
                     'newic' => $newic_reserve,
+                    'mrn' => $new_mrn,
+                    'episno' => $new_episno,
                     'upduser' => strtoupper(session('username')),
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ];
 
             DB::table('hisdb.bed')
                 ->where('idno','=',$request->idno)
-                ->update($arr_upd); 
+                ->update($arr_upd);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -742,6 +799,31 @@ class BedManagementController extends defaultController
         $responce->data_occ = $data_occ;
         $responce->data_vac = $data_vac;
         $responce->data_main = $data_main;
+
+        return json_encode($responce);
+    }
+
+    public function mrn_nobed(Request $request){
+        $table = DB::table('hisdb.episode as e')
+                ->select('e.mrn','e.episno','p.name')
+                ->leftJoin('hisdb.pat_mast AS p', function($join) use ($request){
+                    $join = $join->on("p.mrn", '=', 'e.mrn')
+                                 ->where('p.compcode','=',session('compcode'));
+                })
+                ->where('e.compcode','=',session('compcode'))
+                ->where('e.episactive','=','1')
+                ->where('e.epistycode','=','IP')
+                ->whereNull('e.bed');
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }
