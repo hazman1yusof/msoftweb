@@ -962,7 +962,7 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
-			myfail_msg.clear_fail;
+			myfail_msg.clear_fail();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			// calculate_quantity_outstanding('#jqGrid2');
 
@@ -1106,7 +1106,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
-			myfail_msg.clear_fail;
+			myfail_msg.clear_fail();
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -1150,6 +1150,7 @@ $(document).ready(function () {
         	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
 		},
 		aftersavefunc: function (rowid, response, options) {
+			myfail_msg.clear_fail();
 			var resobj = JSON.parse(response.responseText);
 			$('#purordhd_purordno').val(resobj.purordno);
 			$('#purordhd_recno').val(resobj.recno);
@@ -1164,16 +1165,15 @@ $(document).ready(function () {
 			errorField.length=0;
 		},
 		errorfunc: function(rowid,response){
-			// errorField.length=0;
+			errorField.length=0;
         	// alert(response.responseText);
         	myfail_msg.add_fail({
 				id:'response',
 				textfld:"",
 				msg:response.responseText,
 			});
-			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true;
         	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	// $("#jqGridPager2Delete").show();
+	    	$("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
@@ -3163,6 +3163,7 @@ function fail_msg_func(fail_msg_div=null){
 	this.pop_fail=function(){
 		var self=this;
 		$(self.fail_msg_div).html('');
+		console.log($(self.fail_msg_div))
 		this.fail_msg_array.forEach(function(e,i){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
 		});

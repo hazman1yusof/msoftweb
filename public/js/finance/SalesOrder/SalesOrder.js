@@ -917,7 +917,7 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
-			myfail_msg.clear_fail;
+			myfail_msg.clear_fail();
 			// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
 			// if(oper == 'edit'){
@@ -1027,7 +1027,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
-			myfail_msg.clear_fail;
+			myfail_msg.clear_fail();
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
         	get_billtype(mycurrency2);
@@ -1099,7 +1099,7 @@ $(document).ready(function () {
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			myfail_msg.clear_fail;
+			myfail_msg.clear_fail();
 			errorField.length=0;
 			// delay(function(){
 			// 	fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
