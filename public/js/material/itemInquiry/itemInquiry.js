@@ -369,6 +369,7 @@ $(document).ready(function () {
 
 	var DataTable = $('#TableDetailMovement').DataTable({
     	order: [[ 1, 'desc' ]],
+    	ordering: false,
 		responsive: true,
 		scrollY: 500,
 		paging: false,
