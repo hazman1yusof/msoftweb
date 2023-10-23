@@ -372,7 +372,7 @@ class invtran_util extends defaultController{
 
         if($product_obj->exists()){ // kalu jumpa
             if($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue'){
-                dd('is')
+                dd('is');
                 //2. tukar txnqty dgn netprice berdasarkan convfactor
                 $txnqty = floatval($value->txnqty) * (floatval($convfactor_uomcodetrdept) / floatval($convfactor_uomcoderecv));
                 $netprice = floatval($value->netprice) * (floatval($convfactor_uomcoderecv) / floatval($convfactor_uomcodetrdept));
