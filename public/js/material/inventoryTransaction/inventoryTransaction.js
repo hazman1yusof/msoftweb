@@ -1689,7 +1689,6 @@ $(document).ready(function () {
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$('#trantype').focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
@@ -1699,6 +1698,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_txndept.urlParam.filterCol=['storedept', 'recstatus','compcode'];//,'sector'
 				dialog_txndept.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
+			},
+			close: function(obj_){
+				$('#trantype').focus();
 			}
 		},'urlParam','radio','tab'
 	);

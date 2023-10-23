@@ -45,6 +45,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function (event, ui) {
+				$('#db_deptcode').focus();
 				errorField.length=0;
 				actdateObj.getdata().set();
 				parent_close_disabled(true);
@@ -1639,7 +1640,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_actdate').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1649,6 +1649,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_deptcode.urlParam.filterCol=['recstatus', 'compcode','chgdept','storedept'];
 				dialog_deptcode.urlParam.filterVal=['ACTIVE', 'session.compcode','1','1'];
+			},
+			close: function(obj_){
+				$("#db_debtorcode").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1673,7 +1676,6 @@ $(document).ready(function () {
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
 					$(gridname+' tr#1').dblclick();
-					$('#db_hdrtype').focus();
 				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 					$('#'+obj.dialogname).dialog('close');
 				}
@@ -1683,6 +1685,9 @@ $(document).ready(function () {
 			open: function(){
 				dialog_CustomerSO.urlParam.filterCol=['recstatus', 'compcode'];
 				dialog_CustomerSO.urlParam.filterVal=['ACTIVE', 'session.compcode'];
+			},
+			close: function(obj_){
+				$("#db_hdrtype").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
@@ -1731,6 +1736,9 @@ $(document).ready(function () {
 				dialog_billtypeSO.urlParam.action_chk = "get_hdrtype_check";
 				dialog_billtypeSO.urlParam.filterCol = [];
 				dialog_billtypeSO.urlParam.filterVal = [];
+			},
+			close: function(obj_){
+				$("#db_podate").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
