@@ -2054,9 +2054,11 @@ $(document).ready(function () {
 				$("#delordhd_subamount").val(data['h_subamount']);
 				$("#delordhd_taxclaimable").val(data['h_taxclaimable']);
 				$("#formdata input[type='radio'][name='delordhd_taxclaimable'][value='"+data['h_taxclaimable']+"']").prop('checked', true);
-				$("#delordhd_recstatus").val(data['h_recstatus']);
+				// $("#delordhd_recstatus").val(data['h_recstatus']);
 				$("#delordhd_remarks").val(data['h_remarks']);
 				$('#referral').val(data['h_recno']);
+
+				mycurrency.formatOn();
 
 				dialog_suppcode.check(errorField);
 				dialog_credcode.check(errorField);
@@ -2114,6 +2116,8 @@ $(document).ready(function () {
 							}
 						});
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+						mycurrency_np.formatOn();
+						mycurrency2.formatOn();
 
 					} else {
 
