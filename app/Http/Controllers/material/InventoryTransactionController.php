@@ -402,7 +402,7 @@ class InventoryTransactionController extends defaultController
             dump($queries);
 
 
-            // DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 
