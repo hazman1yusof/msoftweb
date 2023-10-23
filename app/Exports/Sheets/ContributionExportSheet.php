@@ -51,7 +51,7 @@ class ContributionExportSheet implements FromQuery, WithTitle, WithEvents, WithH
                     })
                     ->where('drcontrib.compcode','=',session('compcode'))
                     ->where('drcontrib.drcode','=',$this->drcode)
-                    ->orderBy('drcontrib.drcode','DESC');;
+                    ->orderBy('drcontrib.drcode','DESC');
 
 
         return $drcode_obj;

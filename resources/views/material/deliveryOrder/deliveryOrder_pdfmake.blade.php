@@ -233,12 +233,12 @@
 
 							@foreach ($db_acc as $obj)
 							[
-								{text:'{{$obj[0]}}'},
-								{text:'{{$obj[1]}}'},
-								{text:'{{$obj[2]}}'},
-                                {text:'{{$obj[3]}}'},
-								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'},
-								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'},
+								{text:'{{$obj[0]}}'}, //cc
+								{text:'{{$obj[1]}}'}, //cc_desc
+								{text:'{{$obj[2]}}'}, //acc
+                                {text:'{{$obj[3]}}'}, //acc_desc
+								{text:'{{number_format($obj[4], 2)}}', alignment: 'right'}, //floatval
+								{text:'{{number_format($obj[5], 2)}}', alignment: 'right'}, //0
 							],
 							@endforeach
 
