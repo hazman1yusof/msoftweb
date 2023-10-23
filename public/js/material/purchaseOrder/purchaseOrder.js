@@ -1164,15 +1164,16 @@ $(document).ready(function () {
 			errorField.length=0;
 		},
 		errorfunc: function(rowid,response){
-			errorField.length=0;
-        	alert(response.responseText);
+			// errorField.length=0;
+        	// alert(response.responseText);
         	myfail_msg.add_fail({
 				id:'response',
 				textfld:"",
 				msg:response.responseText,
 			});
+			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true;
         	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+	    	// $("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
@@ -1180,9 +1181,9 @@ $(document).ready(function () {
 			mycurrency2.formatOff();
 			mycurrency_np.formatOff();
 
-			if(myfail_msg.fail_msg_array.length>0){
-				return false;
-			}
+			// if(myfail_msg.fail_msg_array.length>0){
+			// 	return false;
+			// }
 
 			if(parseInt($('#jqGrid2 input[name="qtyorder"]').val()) <= 0)return false;
 

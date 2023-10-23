@@ -36,6 +36,12 @@ div.noti > li{
 	white-space: pre-wrap !important;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 .frozen-div{overflow:hidden;}
 
 #more {display: none;}
