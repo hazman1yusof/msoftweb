@@ -826,6 +826,13 @@ Route::post('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
+//// Summary Receipt Listing -- Report
+Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
+Route::get('/SummaryRcptListing_Report/table','finance\SummaryRcptListing_ReportController@table');
+Route::post('/SummaryRcptListing_Report/form','finance\SummaryRcptListing_ReportController@form');
+Route::get('/SummaryRcptListing_Report/showExcel','finance\SummaryRcptListing_ReportController@showExcel');
+Route::get('/SummaryRcptListing_Report/showpdf','finance\SummaryRcptListing_ReportController@showpdf');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
