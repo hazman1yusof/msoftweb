@@ -370,6 +370,8 @@ class invtran_util extends defaultController{
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcoderecv);
 
+        dd($stockloc_first->stocktxntype);
+
         if($product_obj->exists() && ($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue')){ // kalu jumpa
 
             //2. tukar txnqty dgn netprice berdasarkan convfactor
