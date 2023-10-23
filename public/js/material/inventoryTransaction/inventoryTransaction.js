@@ -1800,6 +1800,9 @@ $(document).ready(function () {
 					dialog_sndrcv.urlParam.filterCol=['recstatus'];
 					dialog_sndrcv.urlParam.filterVal=['ACTIVE'];
 				}
+			},
+			close: function(obj_){
+				$("#remarks").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
