@@ -28,6 +28,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#delordhd_subamount','#delordhd_totamount', '#delordhd_TaxAmt', '#delordhd_amtdisc']);
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#delordhd_trandate"]);
@@ -539,7 +540,12 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 
 		},'json').fail(function (data) {
-			$('.noti').text(data.responseJSON.message);
+			// $('.noti').text(data.responseJSON.message);
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
 		}).done(function (data) {
 			hideatdialogForm(false);
 
@@ -934,8 +940,6 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGrid2');
-
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			calc_jq_height_onchange("jqGrid2");
 		},
@@ -1111,6 +1115,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
+			myfail_msg.clear_fail();
         	calc_jq_height_onchange("jqGrid2");
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
@@ -1151,6 +1156,7 @@ $(document).ready(function () {
         	// cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
         },
         aftersavefunc: function (rowid, response, options) {
+			myfail_msg.clear_fail();
 			var resobj = JSON.parse(response.responseText);
 			$('#delordhd_delordno').val(resobj.delordno);
 			$('#delordhd_recno').val(resobj.recno);
@@ -1165,7 +1171,13 @@ $(document).ready(function () {
 			errorField.length=0;
         }, 
         errorfunc: function(rowid,response){
-        	alert(response.responseText);
+			errorField.length=0;
+        	// alert(response.responseText);
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2Delete").show();
         },
@@ -1919,9 +1931,9 @@ $(document).ready(function () {
 				}
 			});
 
-			setjqgridHeight(data,'jqGrid3');
+			// setjqgridHeight(data,'jqGrid3');
 			$('#jqGrid3').jqGrid ('setSelection', "1");
-			//calc_jq_height_onchange("jqGrid3");
+			calc_jq_height_onchange("jqGrid3");
 		},
 		gridComplete: function(){
 			$("#jqGrid3").find(".remarks_button").on("click", function(e){
@@ -2808,4 +2820,50 @@ function calc_jq_height_onchange(jqgrid){
 		scrollHeight = 300;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
+}
+
+function fail_msg_func(fail_msg_div=null){
+	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
+	this.fail_msg_array=[];
+	this.add_fail=function(fail_msg){
+		let found=false;
+		this.fail_msg_array.forEach(function(e,i){
+			if(e.id == fail_msg.id){
+				e.msg=fail_msg.msg;
+				found=true;
+			}
+		});
+		if(!found){
+			this.fail_msg_array.push(fail_msg);
+		}
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.pop_fail();
+	}
+	this.del_fail=function(fail_msg){
+		var new_msg_array = this.fail_msg_array.filter(function(e,i){
+			if(e.id == fail_msg.id){
+				return false;
+			}
+			return true;
+		});
+
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.fail_msg_array = new_msg_array;
+		this.pop_fail();
+	}
+	this.clear_fail=function(){
+		this.fail_msg_array=[];
+		this.pop_fail();
+	}
+	this.pop_fail=function(){
+		var self=this;
+		$(self.fail_msg_div).html('');
+		this.fail_msg_array.forEach(function(e,i){
+			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
+	}
 }

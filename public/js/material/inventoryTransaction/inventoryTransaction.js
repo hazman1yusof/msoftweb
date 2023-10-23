@@ -28,6 +28,7 @@ $(document).ready(function () {
 	/////////////////////////////////// currency /////////////////////////////////////////
 	var mycurrency =new currencymode(['#amount', "#jqGrid2 input[name='netprice']"]);
 	var fdl = new faster_detail_load();
+	var myfail_msg = new fail_msg_func();
 
 	///////////////////////////////// trandate check date validate from period////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -564,7 +565,12 @@ $(document).ready(function () {
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 			
 		},'json').fail(function (data) {
-			alert(data.responseJSON.message);
+			// alert(data.responseJSON.message);
+			myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:data.responseText,
+			});
 			dialog_txndept.on();
 			dialog_trantype.on();
 			dialog_sndrcv.on();
@@ -986,7 +992,8 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
-			//calc_jq_height_onchange("jqGrid2");
+			myfail_msg.clear_fail();
+			calc_jq_height_onchange("jqGrid2");
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
@@ -1015,6 +1022,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
+			myfail_msg.clear_fail();
 			var resobj = JSON.parse(response.responseText);
 			$('#recno').val(resobj.recno);
 			$('#docno').val(resobj.docno);
@@ -1029,7 +1037,13 @@ $(document).ready(function () {
 			errorField.length=0;
 		},
 		errorfunc: function(rowid,response){
-        	alert(response.responseText);
+			errorField.length=0;
+        	// alert(response.responseText);
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
         	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2Delete").show();
         },
@@ -2279,6 +2293,52 @@ function calc_jq_height_onchange(jqgrid){
 	}else if(scrollHeight>300){
 		scrollHeight = 300;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
+}
+
+function fail_msg_func(fail_msg_div=null){
+	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';
+	this.fail_msg_array=[];
+	this.add_fail=function(fail_msg){
+		let found=false;
+		this.fail_msg_array.forEach(function(e,i){
+			if(e.id == fail_msg.id){
+				e.msg=fail_msg.msg;
+				found=true;
+			}
+		});
+		if(!found){
+			this.fail_msg_array.push(fail_msg);
+		}
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.pop_fail();
+	}
+	this.del_fail=function(fail_msg){
+		var new_msg_array = this.fail_msg_array.filter(function(e,i){
+			if(e.id == fail_msg.id){
+				return false;
+			}
+			return true;
+		});
+
+		if(fail_msg.textfld !=null){
+			myerrorIt_only(fail_msg.id,true);
+		}
+		this.fail_msg_array = new_msg_array;
+		this.pop_fail();
+	}
+	this.clear_fail=function(){
+		this.fail_msg_array=[];
+		this.pop_fail();
+	}
+	this.pop_fail=function(){
+		var self=this;
+		$(self.fail_msg_div).html('');
+		this.fail_msg_array.forEach(function(e,i){
+			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
+	}
 }
 

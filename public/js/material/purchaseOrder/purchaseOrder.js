@@ -962,7 +962,6 @@ $(document).ready(function () {
 				$("#dialog_remarks").dialog( "open" );
 			});
 			fdl.set_array().reset();
-			myfail_msg.clear_fail();
 			fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			// calculate_quantity_outstanding('#jqGrid2');
 
@@ -1172,8 +1171,8 @@ $(document).ready(function () {
 				textfld:"",
 				msg:response.responseText,
 			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
+        	// refreshGrid('#jqGrid2',urlParam2,'add');
+	    	// $("#jqGridPager2Delete").show();
         },
 		beforeSaveRow: function (options, rowid) {
         	if(errorField.length>0)return false;
@@ -1211,7 +1210,6 @@ $(document).ready(function () {
 			//calculate_conversion_factor();	
 		},
 		afterrestorefunc : function( response ) {
-			myfail_msg.clear_fail;
 			delay(function(){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}, 500 );
@@ -3163,7 +3161,6 @@ function fail_msg_func(fail_msg_div=null){
 	this.pop_fail=function(){
 		var self=this;
 		$(self.fail_msg_div).html('');
-		console.log($(self.fail_msg_div))
 		this.fail_msg_array.forEach(function(e,i){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
 		});

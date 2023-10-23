@@ -40,6 +40,12 @@ div.noti > li{
 	text-transform: uppercase;
 }
 
+div#fail_msg{
+  padding-left: 40px;
+  padding-bottom: 10px;
+  color: darkred;
+}
+
 .fa-disable{
 	opacity:.3;
 }
@@ -409,6 +415,7 @@ div.noti > li{
 			<div class='panel panel-info'>
 				<div class="panel-heading">Delivery Order Detail</div>
 					<div class="panel-body">
+						<div id="fail_msg"></div>
 						<form id='formdata2' class='form-vertical' style='width:99%'>
 							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
 							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
