@@ -1746,6 +1746,9 @@ $(document).ready(function () {
 				dialog_trantype.urlParam.whereNotInVal=[['DS1', 'DS']];
 				dialog_trantype.urlParam.filterCol=['recstatus'];
 				dialog_trantype.urlParam.filterVal=['ACTIVE'];
+			},
+			close: function(obj_){
+				$("#trandate").focus().select();
 			}
 		},'urlParam','radio','tab'
 	);
