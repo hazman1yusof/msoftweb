@@ -144,7 +144,7 @@ class DeliveryOrderController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e, 500);
+            return response($e->getMessage(), 500);
         }
 
     }
@@ -254,7 +254,7 @@ class DeliveryOrderController extends defaultController
             } catch (\Exception $e) {
                 DB::rollback();
 
-                return response('Error'.$e, 500);
+                return response($e->getMessage(), 500);
             }
         }
 
