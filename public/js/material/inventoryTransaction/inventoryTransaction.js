@@ -44,6 +44,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
+			$('#txndept').focus();
 			$('#jqGridPager2EditAll').data('click',false);
 			unsaved = false;
 			errorField.length=0;
