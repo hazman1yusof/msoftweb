@@ -271,7 +271,7 @@ class invtran_util extends defaultController{
         $stockloc_first = $stockloc_obj->first();
 
         //4.kalu ada stockloc, update 
-        if($stockloc_obj->exists()){
+        if($stockloc_obj->exists() && ($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue')){
 
             //5. set QtyOnHand, NetMvQty, NetMvVal yang baru dekat StockLoc
             $stockloc_arr = (array)$stockloc_first; // tukar obj jadi array
@@ -370,8 +370,7 @@ class invtran_util extends defaultController{
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcoderecv);
 
-        if($product_obj->exists()){ // kalu jumpa
-
+        if($product_obj->exists() && ($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue')){ // kalu jumpa
 
             //2. tukar txnqty dgn netprice berdasarkan convfactor
             $txnqty = floatval($value->txnqty) * (floatval($convfactor_uomcodetrdept) / floatval($convfactor_uomcoderecv));
