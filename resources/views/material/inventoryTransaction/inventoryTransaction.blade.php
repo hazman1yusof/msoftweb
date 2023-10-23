@@ -210,7 +210,7 @@ i.fa {
 								<label class="col-md-2 control-label" for="trantype">Transaction Type</label>
 									<div class="col-md-2">
 									  <div class='input-group'>
-										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<input id="trantype" name="trantype" type="text" maxlength="12" class="form-control input-sm text-uppercase">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									  </div>
 									  <span class="help-block"></span>
