@@ -246,8 +246,8 @@ class PurchaseOrderDetailController extends defaultController
             return json_encode($responce);
         } catch (\Exception $e) {
             DB::rollback();
-
-            return response('Error'.$e, 500);
+            
+            return response($e->getMessage(), 500);
         }
     }
 
@@ -320,8 +320,8 @@ class PurchaseOrderDetailController extends defaultController
 
         } catch (\Exception $e) {
             DB::rollback();
-
-            return response('Error'.$e, 500);
+            
+            return response($e->getMessage(), 500);
         }
 
     }
