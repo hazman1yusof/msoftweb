@@ -48,15 +48,15 @@ class AuthorizationDetailController extends defaultController
                 $authorid_ = $request->authorid;
             }
 
-            if($request->dtl_deptcode == 'ALL' || $request->dtl_deptcode == 'all'){
-                $duplicate = DB::table('material.authdtl')
-                            ->where('compcode','=',session('compcode'))
-                            ->where('authorid','=',$authorid_)
-                            ->where('trantype','=',$request->dtl_trantype)
-                            ->where('recstatus','=',$request->dtl_recstatus)
-                            ->where('cando','!=','DEACTIVE')
-                            ->exists();
-            }else{
+            // if($request->dtl_deptcode == 'ALL' || $request->dtl_deptcode == 'all'){
+            //     $duplicate = DB::table('material.authdtl')
+            //                 ->where('compcode','=',session('compcode'))
+            //                 ->where('authorid','=',$authorid_)
+            //                 ->where('trantype','=',$request->dtl_trantype)
+            //                 ->where('recstatus','=',$request->dtl_recstatus)
+            //                 ->where('cando','!=','DEACTIVE')
+            //                 ->exists();
+            // }else{
                 $duplicate = DB::table('material.authdtl')
                             ->where('compcode','=',session('compcode'))
                             ->where('authorid','=',$authorid_)
@@ -64,7 +64,7 @@ class AuthorizationDetailController extends defaultController
                             ->whereIn('deptcode', [$request->dtl_deptcode, "ALL", "all"])
                             ->where('recstatus','=',$request->dtl_recstatus)
                             ->exists();
-            }
+            // }
 
             if(!$duplicate){
                 $duplicate2 = DB::table('material.authdtl')
@@ -86,11 +86,11 @@ class AuthorizationDetailController extends defaultController
                 DB::table('material.authdtl')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'trantype' => $request->dtl_trantype,
-                        'deptcode' => $request->dtl_deptcode,
+                        'trantype' => strtoupper($request->dtl_trantype),
+                        'deptcode' => strtoupper($request->dtl_deptcode),
                         'authorid' => $authorid_,
-                        'recstatus' => $request->dtl_recstatus,
-                        'cando' => $request->dtl_cando,
+                        'recstatus' => strtoupper($request->dtl_recstatus),
+                        'cando' => strtoupper($request->dtl_cando),
                         'minlimit' => $request->dtl_minlimit,
                         'maxlimit' => $request->dtl_maxlimit,
                         'adduser' => session('username'), 

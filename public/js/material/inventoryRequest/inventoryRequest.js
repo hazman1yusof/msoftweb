@@ -173,6 +173,7 @@ $(document).ready(function () {
 	}
 
 	/////////////////////////////////// jqgrid //////////////////////////////////////////////////////////
+	searchChange(true);
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
@@ -536,8 +537,7 @@ $(document).ready(function () {
 		search('#jqGrid', $('#searchForm [name=Stext]').val(), $('#searchForm [name=Scol] option:selected').val(), urlParam);
 	}
 
-	function searchChange() {
-
+	function searchChange(init=false) {
 		var arrtemp = ['session.compcode', $('#Status option:selected').val(), $('#trandept option:selected').val()];
 
 		var filter = arrtemp.reduce(function (a, b, c) {
@@ -554,7 +554,9 @@ $(document).ready(function () {
 		urlParam.filterVal = filter.fv;
 		urlParam.WhereInCol = null;
 		urlParam.WhereInVal = null;
-		refreshGrid('#jqGrid', urlParam);
+		if(init){
+			refreshGrid('#jqGrid', urlParam);
+		}
 	}
 
 	resizeColumnHeader = function () {
