@@ -503,7 +503,7 @@ $(document).ready(function () {
 
 				});
 
-				DataTable.rows.add(data.rows).draw();
+				DataTable.rows.add(data.rows.slice().reverse()).draw();
 			}else{
 				moremov=false;
 			}
