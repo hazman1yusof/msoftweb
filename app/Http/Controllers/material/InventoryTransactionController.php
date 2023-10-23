@@ -279,7 +279,7 @@ class InventoryTransactionController extends defaultController
                     if(strtoupper($trantype_obj->isstype) == 'TRANSFER'){
                         $retval = invtran_util::posting_for_transfer($value,$ivtmphd);
                     
-                    }else if(strtoupper($trantype_obj->isstype) == 'ADJUSTMENT' || strtoupper($trantype_obj->isstype) == 'LOAN' || strtoupper($trantype_obj->isstype) == 'ISSUE'){
+                    }else if(strtoupper($trantype_obj->isstype) == 'ADJUSTMENT' || strtoupper($trantype_obj->isstype) == 'LOAN' || strtoupper($trantype_obj->isstype) == 'ISSUE'|| strtoupper($trantype_obj->isstype) == 'WRITE-OFF'){
                         switch (strtoupper($trantype_obj->crdbfl)) {
                             case 'IN':
                                 invtran_util::posting_for_adjustment_in($value,$ivtmphd,$trantype_obj->isstype);
