@@ -370,40 +370,40 @@ class invtran_util extends defaultController{
             ->where('product.itemcode','=',$value->itemcode)
             ->where('product.uomcode','=',$value->uomcoderecv);
 
-        dd($stockloc_first->stocktxntype);
+        if($product_obj->exists()){ // kalu jumpa
+            if($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue'){
+                dd('is')
+                //2. tukar txnqty dgn netprice berdasarkan convfactor
+                $txnqty = floatval($value->txnqty) * (floatval($convfactor_uomcodetrdept) / floatval($convfactor_uomcoderecv));
+                $netprice = floatval($value->netprice) * (floatval($convfactor_uomcoderecv) / floatval($convfactor_uomcodetrdept));
 
-        if($product_obj->exists() && ($stockloc_first->stocktxntype != 'IS' || $stockloc_first->stocktxntype != 'Issue')){ // kalu jumpa
+                $product_obj = $product_obj->first();
 
-            //2. tukar txnqty dgn netprice berdasarkan convfactor
-            $txnqty = floatval($value->txnqty) * (floatval($convfactor_uomcodetrdept) / floatval($convfactor_uomcoderecv));
-            $netprice = floatval($value->netprice) * (floatval($convfactor_uomcoderecv) / floatval($convfactor_uomcodetrdept));
+                $month = defaultController::toMonth($ivtmphd->trandate);
+                $OldQtyOnHand = floatval($product_obj->qtyonhand);
+                $currprice = floatval($netprice);
+                $Oldavgcost = floatval($product_obj->avgcost);
+                $OldAmount = $OldQtyOnHand * $Oldavgcost;
+                $NewAmount = $netprice * $txnqty;
 
-            $product_obj = $product_obj->first();
+                $newqtyonhand = $OldQtyOnHand + $txnqty;
+                if($newqtyonhand <= 0){
+                    $newAvgCost = 0; //ini kes item baru (qtyonhand 0) dan txnqty kosong
+                }else{
+                    $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+                }
 
-            $month = defaultController::toMonth($ivtmphd->trandate);
-            $OldQtyOnHand = floatval($product_obj->qtyonhand);
-            $currprice = floatval($netprice);
-            $Oldavgcost = floatval($product_obj->avgcost);
-            $OldAmount = $OldQtyOnHand * $Oldavgcost;
-            $NewAmount = $netprice * $txnqty;
-
-            $newqtyonhand = $OldQtyOnHand + $txnqty;
-            if($newqtyonhand <= 0){
-                $newAvgCost = 0; //ini kes item baru (qtyonhand 0) dan txnqty kosong
-            }else{
-                $newAvgCost = ($OldAmount + $NewAmount) / ($OldQtyOnHand + $txnqty);
+                // update qtyonhand, avgcost, currprice
+                $product_obj = DB::table('material.product')
+                    ->where('product.compcode','=',session('compcode'))
+                    ->where('product.itemcode','=',$value->itemcode)
+                    ->where('product.uomcode','=',$value->uomcoderecv)
+                    ->update([
+                        'qtyonhand' => $newqtyonhand,
+                        'avgcost' => $newAvgCost,
+                        'currprice' => $currprice
+                    ]);
             }
-
-            // update qtyonhand, avgcost, currprice
-            $product_obj = DB::table('material.product')
-                ->where('product.compcode','=',session('compcode'))
-                ->where('product.itemcode','=',$value->itemcode)
-                ->where('product.uomcode','=',$value->uomcoderecv)
-                ->update([
-                    'qtyonhand' => $newqtyonhand,
-                    'avgcost' => $newAvgCost,
-                    'currprice' => $currprice
-                ]);
 
         }
 
