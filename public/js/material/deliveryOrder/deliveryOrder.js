@@ -937,7 +937,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			//calc_jq_height_onchange("jqGrid2");
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1111,7 +1111,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-        	//calc_jq_height_onchange("jqGrid2");
+        	calc_jq_height_onchange("jqGrid2");
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			$("#jqGrid2 input[name='pricecode']").focus().select();
@@ -2116,8 +2116,7 @@ $(document).ready(function () {
 							}
 						});
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-						mycurrency_np.formatOn();
-						mycurrency2.formatOn();
+        				calc_jq_height_onchange("jqGrid2");
 
 					} else {
 
