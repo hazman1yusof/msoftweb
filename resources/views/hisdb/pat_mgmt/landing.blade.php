@@ -244,24 +244,24 @@
 		@if (request()->get('curpat') == 'true')
 
 			@if (request()->get('epistycode') == 'OP')
-
+				
 				@if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
 						@include('hisdb.antenatal.antenatal')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.paediatric.paediatric')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
@@ -270,37 +270,41 @@
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
 				@endif
-
+				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.ordcom.ordcom')
 					</div>
 				@endif
-
+				
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge.discharge',['type' => "OP",'type_desc' => "Out Patient"])
 				</div>
-
+				
 			@endif
-
+			
 			@if (request()->get('epistycode') == 'IP')
 				@if (Auth::user()->doctor == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="nursing_row">
 						@include('hisdb.nursing.nursing',['page_screen' => "patmast"])
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
-
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.progressnote.progressnote')
+					</div>
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
 						@include('hisdb.antenatal.antenatal')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.doctornote.doctornote')
 					</div>
-
+					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.dieteticCareNotes.dieteticCareNotes')
 					</div>
@@ -312,14 +316,18 @@
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
+					
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.progressnote.progressnote')
+					</div>
 				@endif
-
+				
 				@if (Auth::user()->billing == 1)
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 						@include('hisdb.ordcom.ordcom')
 					</div>
 				@endif
-
+				
 				<div class='row' style="position: relative;margin: 0 12px 12px 12px">
 					@include('hisdb.discharge.discharge',['type' => "IP",'type_desc' => "In Patient"])
 				</div>
@@ -409,6 +417,7 @@
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<script type="text/javascript" src="js/hisdb/progressnote/progressnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
@@ -418,6 +427,7 @@
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
+				<script type="text/javascript" src="js/hisdb/progressnote/progressnote.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

@@ -896,6 +896,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Progress Note page ///
+Route::get('/progressnote','hisdb\ProgressNoteController@show');
+Route::get('/progressnote/table','hisdb\ProgressNoteController@table');
+Route::post('/progressnote/form','hisdb\ProgressNoteController@form');
+
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');

@@ -246,7 +246,6 @@ $(document).ready(function() {
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
         if($('#curpat').val() == 'true'){
-
             if($('#epistycode').val() == 'OP'){
                 if($('#user_doctor').val() == '1'){
                     populate_triage_currpt(lastrowdata);
@@ -257,11 +256,10 @@ $(document).ready(function() {
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                 }
-
+                
                 if($('#user_billing').val() == '1'){
                     populate_ordcom_currpt(lastrowdata);
                 }
-
             }else if($('#epistycode').val() == 'IP'){
                 if($('#user_doctor').val() == '1'){
                     populate_triage_currpt(lastrowdata);
@@ -269,20 +267,22 @@ $(document).ready(function() {
                     populate_doctorNote_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
+                    populate_progressnote(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
+                    populate_progressnote(lastrowdata);
                 }
-
+                
                 if($('#user_billing').val() == '1'){
                     populate_ordcom_currpt(lastrowdata);
                 }
             }
-
+            
             if(lastrowdata.PatStatus == 1 ){
                 populate_discharge_currpt(lastrowdata);
             }
-
+            
             if(lastrowdata.pregnant == 1){
                 $('#antenatal_row,#jqGridAntenatal_c').show();
                 $('#nursing_row,#jqGridTriageInfo_c').hide();
