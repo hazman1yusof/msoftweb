@@ -67,17 +67,6 @@
                         </div>
                     </div>
                     
-                    <!-- <div class='col-md-4' style="padding-left: 0px;">
-                        <div class="panel panel-info" id="jqGridDateTime_c">
-                            <div class="panel-body">
-                                <div class='col-md-12' style="padding:0 0 15px 0">
-                                    <table id="jqGridDateTime" class="table table-striped"></table>
-                                    <div id="jqGridPagerDateTime"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    
                     <div class='col-md-8' style="padding-right: 0px;">
                         <div class="panel panel-info">
                             <div class="panel-body">

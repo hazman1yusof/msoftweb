@@ -47,9 +47,6 @@ class ProgressNoteController extends defaultController
                         return 'error happen..';
                 }
             
-            case 'save_table_datetime':
-                return $this->add_datetime($request);
-            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -264,34 +261,6 @@ class ProgressNoteController extends defaultController
         
     }
     
-    public function add_datetime(Request $request){
-        
-        DB::beginTransaction();
-        
-        try {
-            
-            DB::table('nursing.nurshandover')
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'mrn' => $request->mrn,
-                    'episno' => $request->episno,
-                    'datetaken' => $request->datetaken,
-                    'timetaken' => $request->timetaken,
-                    'lastuser'  => session('username'),
-                ]);
-            
-            DB::commit();
-            
-        } catch (\Exception $e) {
-            
-            DB::rollback();
-            
-            return response($e->getMessage(), 500);
-            
-        }
-        
-    }
-    
     public function get_table_progress(Request $request){
         
         $nurshandover_obj = DB::table('nursing.nurshandover')
@@ -299,11 +268,6 @@ class ProgressNoteController extends defaultController
                             ->where('idno','=',$request->idno);
                             // ->where('mrn','=',$request->mrn)
                             // ->where('episno','=',$request->episno);
-        
-        // $datetaken_obj = DB::table('nursing.nurshandover')
-        //                     ->select('datetaken')
-        //                     ->where('compcode','=',session('compcode'))
-        //                     ->where('idno','=',$request->idno);
         
         $responce = new stdClass();
         
@@ -314,12 +278,6 @@ class ProgressNoteController extends defaultController
             $responce->nurshandover = $nurshandover_obj;
             $responce->date = $date;
         }
-        
-        // if($datetaken_obj->exists()){
-        //     $datetaken_obj = $datetaken_obj->first();
-        //     $date = Carbon::createFromFormat('Y-m-d H:i:s', $datetaken_obj->datetaken)->format('Y-m-d');
-        //     $responce->date = $date;
-        // }
         
         return json_encode($responce);
         
