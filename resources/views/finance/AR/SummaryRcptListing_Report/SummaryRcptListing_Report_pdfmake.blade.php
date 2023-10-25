@@ -24,6 +24,16 @@
             @endforeach
         ];
 
+        var dbacthdr2=[
+            @foreach($dbacthdr2 as $key => $dbacthdr1)
+            [
+                @foreach($dbacthdr1 as $key2 => $val)
+                    {'{{$key2}}' : `{{$val}}`},
+                @endforeach
+            ],
+            @endforeach
+        ];
+
         var dbacthdr_rf=[
             @foreach($dbacthdr_rf as $key => $dbacthdr_rf1)
             [
@@ -95,30 +105,10 @@
                                     { text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
                                     { text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
                                 ],
-                                @foreach ($dbacthdr as $obj)
+                                @foreach ($dbacthdr2 as $obj)
                                 [
                                     { text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
-                                    // { 
-                                    //     @if ($obj->paytype == '#F_TAB-CASH')
-                                    //         text: '{{number_format($obj->amount,2)}}', alignment: 'right',
-                                    //     @else
-                                    //         text: '0.00', alignment: 'right',
-                                    //     @endif
-                                    // },
-                                    // {
-                                    //     @if ($obj->paytype == '#F_TAB-CARD')
-                                    //         text: '{{number_format($obj->amount,2)}}', alignment: 'right',
-                                    //     @else
-                                    //         text: '0.00', alignment: 'right',
-                                    //     @endif
-                                    // },
-                                    // {
-                                    //     @if ($obj->paytype == '#F_TAB-CHEQUE')
-                                    //         text: '{{number_format($obj->amount,2)}}', alignment: 'right',
-                                    //     @else
-                                    //         text: '0.00', alignment: 'right',
-                                    //     @endif
-                                    // },
+                                    
                                     {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
                                     {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
                                     {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},

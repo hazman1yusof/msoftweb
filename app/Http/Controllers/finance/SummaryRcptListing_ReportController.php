@@ -65,15 +65,11 @@ class SummaryRcptListing_ReportController extends defaultController
                     ->where('tillcode',$request->tillcode)
                     ->where('tillno',$request->tillno)
                     ->first();
-        
+
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                 ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 
                 'dh.recstatus', 
                 'dh.entrydate',
-                    DB::raw("sum(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
-                    DB::raw("sum(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
-                    DB::raw("sum(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
-
                 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
                 ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                     $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
@@ -85,9 +81,32 @@ class SummaryRcptListing_ReportController extends defaultController
                 })
                 ->where('dh.compcode','=',session('compcode'))
                 ->whereIn('dh.trantype',['RD','RC'])
+                ->whereBetween('entrydate', ['$datefr', '$dateto'])
                 ->orderBy('dh.entrydate','ASC')
                 ->get();
-                // dd($dbacthdr);
+
+        $dbacthdr2 = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
+                ->select(
+                'dh.entrydate',
+                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
+                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
+                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
+                )
+                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                ->where('dm.compcode', '=', session('compcode'));
+                })
+                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                ->where('dt.compcode', '=', session('compcode'));
+                })
+                ->where('dh.compcode','=',session('compcode'))
+                ->whereIn('dh.trantype',['RD','RC'])
+                ->groupBy('dh.entrydate')
+                ->whereBetween('entrydate', ['$datefr', '$dateto'])
+                ->orderBy('dh.entrydate','ASC')
+                ->get();
+
         $totalAmount = $dbacthdr->sum('amount');
 
         $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
@@ -129,6 +148,7 @@ class SummaryRcptListing_ReportController extends defaultController
                                         ->where('pm.paytype','CASH')
                                         ->where('pm.compcode',session('compcode'));
                         })
+                        ->whereBetween('entrydate', ['$datefr', '$dateto'])
                         ->sum('amount');
 
             
@@ -260,7 +280,7 @@ class SummaryRcptListing_ReportController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('finance.AR.SummaryRcptListing_Report.SummaryRcptListing_Report_pdfmake',compact('dbacthdr', 'dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'title','company','totamt_eng'));
+        return view('finance.AR.SummaryRcptListing_Report.SummaryRcptListing_Report_pdfmake',compact('dbacthdr','dbacthdr2','dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'title','company','totamt_eng'));
         
         
     }

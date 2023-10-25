@@ -39,8 +39,9 @@
 	<br><br>
 
 		<form method="get" id="genreportpdf" href="" target="_blank" action="./SummaryRcptListing_Report/showpdf?">
-			<input type="hidden">
-				<button type="submit" class="btn btn-primary btn-lg">Generate Report PDF</button>
+			<input type="hidden" name='datefr' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+			<input type="hidden" name='dateto' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+			<button type="submit" class="btn btn-primary btn-lg">Generate Report PDF</button>
 		</form>
 	</div>
 </div>

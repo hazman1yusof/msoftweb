@@ -6,5 +6,12 @@ $(document).ready(function () {
 	if($("#Status").val() == 'DAILY'){
         $("#genreportpdf").attr('href','./SummaryRcptListing_Report/showpdf?');
 	}
+
+	$("#genreport input[name='datefr']").change(function(){
+		$("#genreportpdf input[name='datefr']").val($(this).val());
+	});
+	$("#genreport input[name='dateto']").change(function(){
+		$("#genreportpdf input[name='dateto']").val($(this).val());
+	});
    
 });

@@ -1520,6 +1520,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 		if(value.trim() == '')return null;
 
+		chk_fast_dtl_load(this);
+
 		renull_search(this);
 		if (before_check !== undefined && before_check !== null) {
 			renull_search(this);
@@ -1681,6 +1683,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}
 	this._init = function(){
 		this.init_func(this);
+	}
+
+	function chk_fast_dtl_load(self_){
+		
 	}
 	
 }

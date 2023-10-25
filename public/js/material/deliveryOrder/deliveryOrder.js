@@ -1036,7 +1036,7 @@ $(document).ready(function () {
 
 	/////////////////////////all function for remarks//////////////////////////////////////////////////
 	function formatterRemarks(cellvalue, options, rowObject){
-		return "<button class='remarks_button btn btn-success btn-xs' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><i class='fa fa-file-text-o'> remark</i> </button>";
+		return "<button class='remarks_button btn btn-success btn-sm' type='button' data-rowid='"+options.rowId+"' data-lineno_='"+rowObject.lineno_+"' data-grid='#"+options.gid+"' data-remarks='"+rowObject.remarks+"'><span class='glyphicon glyphicon-comment' aria-hidden='true'></span> remark </button>";
 	}
 
 
@@ -2817,8 +2817,8 @@ function calc_jq_height_onchange(jqgrid){
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<50){
 		scrollHeight = 50;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
+	}else if(scrollHeight>1200){
+		scrollHeight = 1200;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
 }
