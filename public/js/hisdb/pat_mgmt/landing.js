@@ -291,11 +291,11 @@ $(document).ready(function() {
                 $('#antenatal_row,#jqGridAntenatal_c').hide();
             }
             
-            if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
-                $('#progressnote_row,#jqGridProgress_c').hide();
-            }else{
-                $('#progressnote_row,#jqGridProgress_c').show();
-            }
+            // if((lastrowdata.ward == null || lastrowdata.ward == "") && (lastrowdata.bednum == null || lastrowdata.bednum == "")){
+            //     $('#progressnote_row,#jqGridProgress_c').hide();
+            // }else{
+            //     $('#progressnote_row,#jqGridProgress_c').show();
+            // }
         }
     });
     var bootgrid_last_rowid = 0;
