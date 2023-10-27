@@ -1,19 +1,12 @@
 @extends('layouts.main')
 
-@section('title', 'Summary Receipt Listing')
+@section('title', 'Cash Receipt')
 
 @section('body')
 <div class="container">
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
 		<form method="get" id="genreport" action="/SummaryRcptListing_Report/showExcel">
-		<h2>SUMMARY RECEIPT LISTING</h2>
-            <!-- <div class="col-md-5" style="align:right;">
-				  	<label class="control-label" for="Status">Status</label>  
-					  	<select id="Status" name="Status" class="form-control input-sm" >
-					      <option value="DAILY" selected>DAILY</option>
-					      <option value="DETAIL">DETAIL</option>
-					    </select>
-	        </div> -->
+		<h2>CASH RECEIPT</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
             
 			<table class="table" style="width: 50%;margin: auto;">
@@ -38,10 +31,10 @@
 
 	<br><br>
 
-		<form method="get" id="genreportpdf" href="" target="_blank" action="./SummaryRcptListing_Report/showpdf?">
+		<form method="get" id= "genreportpdf" href="" target="_blank" action="./cashReceipt_Report/showpdf?">
 			<input type="hidden" name='datefr' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 			<input type="hidden" name='dateto' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-			<button type="submit" class="btn btn-primary btn-lg">Generate Report PDF</button>
+				<button type="submit" id="save" data-oper='genreportpdf' class="btn btn-primary btn-lg">Generate Report PDF</button>
 		</form>
 	</div>
 </div>
@@ -51,6 +44,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/AR/SummaryRcptListing_Report/SummaryRcptListing_Report.js"></script>
+	<script src="js/finance/AR/cashReceipt_Report/casgReceipt_Report.js"></script>
 
 @endsection

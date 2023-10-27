@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Summary Receipt Listing</title>
+        <title>Cheque Listing</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -14,20 +14,11 @@
     </object>
     
     <script>
+        
         var dbacthdr=[
             @foreach($dbacthdr as $key => $dbacthdr1)
             [
                 @foreach($dbacthdr1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-
-        var dbacthdr_rf=[
-            @foreach($dbacthdr_rf as $key => $dbacthdr_rf1)
-            [
-                @foreach($dbacthdr_rf1 as $key2 => $val)
                     {'{{$key2}}' : `{{$val}}`},
                 @endforeach
             ],
@@ -46,9 +37,6 @@
         var sum_card_ref = '{{$sum_card_ref}}';
         var sum_bank_ref = '{{$sum_bank_ref}}';
         var sum_all_ref = '{{$sum_all_ref}}';
-        var grandtotal_cash = '{{$grandtotal_cash}}';
-        var grandtotal_card = '{{$grandtotal_card}}';
-        var grandtotal_chq = '{{$grandtotal_chq}}';
         
         var title = {
             @foreach($company as $key => $val)
@@ -79,7 +67,7 @@
                     {
                         text: '{{$title}}\n',
                         style: 'header',
-                        alignment: 'center',
+                        alignment: 'center'
                     },
                     {
                         style: 'tableExample',
@@ -95,29 +83,40 @@
                         },
                         layout: 'noBorders',
                     },
+                    // {
+                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
+                    //     alignment: 'center',
+                    //     style: 'comp_header'
+                    // },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: [50,55,60,50,50,50,50,50],  //panjang standard dia 515
                             body: [
-                                [
-                                    {text: 'DATE', style: 'tableHeader'},
-                                    {text: 'CASH', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'CARD', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
-                                    {text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
+                                [   
+                                    { text: 'Receipt Date', style: 'tableHeader' },
+                                    { text: 'Payer Code', style: 'tableHeader' },
+                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Payer', style: 'tableHeader' },
+                                    { text: 'FC', style: 'tableHeader' },
+                                    { text: 'Mode', style: 'tableHeader' },
+                                    { text: 'Reference', style: 'tableHeader' },
+                                    { text: 'Receipt No', style: 'tableHeader' },
+                                    
                                 ],
                                 @foreach ($dbacthdr as $obj)
                                 [
-                                    {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
-                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},
-                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque),2)}}', alignment: 'right'},
+                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                    { text: '{{$obj->payercode}}' },
+                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                    { text: '{{$obj->payername}}' },
+                                    { text: '{{$obj->dt_description}}' },
+                                    { text: '{{$obj->paymode}}' },
+                                    { text: '{{$obj->reference}}' },
+                                    { text: '{{$obj->recptno}}' },
                                 ],
                                 @endforeach
-                              
                             ]
                         },
                         layout: 'lightHorizontalLines',
@@ -127,117 +126,76 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*', '*'], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'SUBTOTAL', style: 'tableHeader'},
-                                    {text:'{{number_format($sum_cash,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_card+$sum_bank,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_chq,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_all,2)}}', alignment: 'right'},
+                                    { text: 'Ringgit Malaysia', style: 'tableHeader' },
+                                    { text: 'Total Amount', style: 'tableHeader', alignment: 'right' },
                                 ],
-                                
-
+                                [
+                                    { text: '{{$totamt_eng}}' },
+                                    { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
+                                ],
                             ]
                         },
-                        layout: 'lightHorizontalLines',
+                        layout: 'noBorders',
                     },
-                    {
-                        text: '{{$title2}}\n',
-                        style: 'header',
-                        alignment: 'center'
-                    },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'DATE', style: 'tableHeader'},
-                                    { text: 'CASH', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'CARD', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
-                                ],
-                                @foreach ($dbacthdr_rf as $obj)
-                                [
-                                    {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
-                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},
-                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque),2)}}', alignment: 'right'},
-                                ],
-                                @endforeach
-                              
-                            ]
-                        },
-                        layout: 'lightHorizontalLines',
-                    },
-                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
-                            body: [
-                                [
-                                    {text: 'SUBTOTAL', style: 'tableHeader'},
-                                    {text:'{{number_format($sum_cash_ref,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_card_ref+$sum_bank_ref,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_chq_ref,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_all_ref,2)}}', alignment: 'right'},
-                                ],
-                                
-
-                            ]
-                        },
-                        layout: 'lightHorizontalLines',
-                    },
-                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
-                            body: [
-                                [
-                                    {text: 'GRAND TOTAL', style: 'tableHeader'},
-                                    {text:'{{number_format($grandtotal_cash,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($grandtotal_card,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($grandtotal_chq,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($grandtotal_all,2)}}', alignment: 'right'},
-                                ],
-                                
-
-                            ]
-                        },
-                        layout: 'lightHorizontalLines',
-                    },
-                       {
-                    style: 'tableExample',
-                    table: {
-                        headerRows: 1,
-                        widths: ['*', '*'],//panjang standard dia 515
-
-                        body: [
-                            [
-								{text: 'Checked By: \n\n\n\n'}, 
-                                {text: 'Verified By:\n\n\n\n'}, 
-							],
-                            [
-                                {text: '___________________'},
-								{text: '___________________'}, 
-							],
-                            [
-								{text: 'Name:'},
-								{text: 'Name:'},
-								
-							],
-                        ]
-                    },
-			        layout: 'noBorders',
-		        },
+                    // {
+                    //     text: '\nSUMMARY\n',
+                    //     style: 'header1',
+                    //     alignment: 'center'
+                    // },
+                    // {
+                    //     style: 'tableExample',
+                    //     table: {
+                    //         headerRows: 1,
+                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
+                    //         body: [
+                    //             [
+                    //                 { text: ' ', style: 'tableHeader' },
+                    //                 { text: 'Amount Collected', style: 'tableHeader' },
+                    //                 { text: 'Amount Refund', style: 'tableHeader' },
+                    //             ],
+                    //             [
+                    //                 { text: 'Cash' },
+                    //                 { text: '{{$sum_cash}}' },
+                    //                 { text: '{{$sum_cash_ref}}' },
+                    //             ],
+                    //             [
+                    //                 { text: 'Cheque' },
+                    //                 { text: '{{$sum_chq}}' },
+                    //                 { text: '{{$sum_chq_ref}}' },
+                    //             ],
+                    //             [
+                    //                 { text: 'Card' },
+                    //                 { text: '{{$sum_card}}' },
+                    //                 { text: '{{$sum_card_ref}}' },
+                    //             ],
+                    //             [
+                    //                 { text: 'Auto Debit' },
+                    //                 { text: '{{$sum_bank}}' },
+                    //                 { text: '{{$sum_bank_ref}}' },
+                    //             ],
+                    //         ]
+                    //     },
+                    //     layout: 'lightHorizontalLines',
+                    // },
+                    // { canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ] },
+                    // {
+                    //     style: 'tableExample',
+                    //     table: {
+                    //         headerRows: 1,
+                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
+                    //         body: [
+                    //             [
+                    //                 { text: 'Total', style: 'tableHeader' },
+                    //                 { text: '{{$sum_all}}' },
+                    //                 { text: '{{$sum_all_ref}}' },
+                    //             ],
+                    //         ]
+                    //     },
+                    //     layout: 'lightHorizontalLines',
+                    // },
                 ],
                 styles: {
                     header: {

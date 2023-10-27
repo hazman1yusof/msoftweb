@@ -826,12 +826,47 @@ Route::post('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/form','finance\TillEnquiryController@form');
 Route::get('/tillenquiry/showpdf','finance\TillEnquiryController@showpdf');
 
-//// Summary Receipt Listing -- Report
+//// Summary Receipt Listing Daily -- Report
 Route::get('/SummaryRcptListing_Report','finance\SummaryRcptListing_ReportController@show');
 Route::get('/SummaryRcptListing_Report/table','finance\SummaryRcptListing_ReportController@table');
 Route::post('/SummaryRcptListing_Report/form','finance\SummaryRcptListing_ReportController@form');
 Route::get('/SummaryRcptListing_Report/showExcel','finance\SummaryRcptListing_ReportController@showExcel');
 Route::get('/SummaryRcptListing_Report/showpdf','finance\SummaryRcptListing_ReportController@showpdf');
+
+//// Summary Receipt Listing Detail -- Report
+Route::get('/SummaryRcptListingDtl_Report','finance\SummaryRcptListingDtl_ReportController@show');
+Route::get('/SummaryRcptListingDtl_Report/table','finance\SummaryRcptListingDtl_ReportController@table');
+Route::post('/SummaryRcptListingDtl_Report/form','finance\SummaryRcptListingDtl_ReportController@form');
+Route::get('/SummaryRcptListingDtl_Report/showExcel','finance\SummaryRcptListingDtl_ReportController@showExcel');
+Route::get('/SummaryRcptListingDtl_Report/showpdf','finance\SummaryRcptListingDtl_ReportController@showpdf');
+
+//// Card Receipt Listing -- Report
+Route::get('/cardReceipt_Report','finance\cardReceipt_ReportController@show');
+Route::get('/cardReceipt_Report/table','finance\cardReceipt_ReportController@table');
+Route::post('/cardReceipt_Report/form','finance\cardReceipt_ReportController@form');
+Route::get('/cardReceipt_Report/showExcel','finance\cardReceipt_ReportController@showExcel');
+Route::get('/cardReceipt_Report/showpdf','finance\cardReceipt_ReportController@showpdf');
+
+//// Cash Receipt Listing -- Report
+Route::get('/cashReceipt_Report','finance\cashReceipt_ReportController@show');
+Route::get('/cashReceipt_Report/table','finance\cashReceipt_ReportController@table');
+Route::post('/cashReceipt_Report/form','finance\cashReceipt_ReportController@form');
+Route::get('/cashReceipt_Report/showExcel','finance\cashReceipt_ReportController@showExcel');
+Route::get('/cashReceipt_Report/showpdf','finance\cashReceipt_ReportController@showpdf');
+
+//// Cheque Receipt Listing -- Report
+Route::get('/chequeReceipt_Report','finance\chequeReceipt_ReportController@show');
+Route::get('/chequeReceipt_Report/table','finance\chequeReceipt_ReportController@table');
+Route::post('/chequeReceipt_Report/form','finance\chequeReceipt_ReportController@form');
+Route::get('/chequeReceipt_Report/showExcel','finance\chequeReceipt_ReportController@showExcel');
+Route::get('/chequeReceipt_Report/showpdf','finance\chequeReceipt_ReportController@showpdf');
+
+//// Auto Debit Listing -- Report
+Route::get('/bankReceipt_Report','finance\bankReceipt_ReportController@show');
+Route::get('/bankReceipt_Report/table','finance\bankReceipt_ReportController@table');
+Route::post('/bankReceipt_Report/form','finance\bankReceipt_ReportController@form');
+Route::get('/bankReceipt_Report/showExcel','finance\bankReceipt_ReportController@showExcel');
+Route::get('/bankReceipt_Report/showpdf','finance\bankReceipt_ReportController@showpdf');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 
