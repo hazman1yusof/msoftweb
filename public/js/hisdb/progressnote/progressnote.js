@@ -76,6 +76,7 @@ $(document).ready(function () {
     
     $("#jqGridProgress_panel").on("hide.bs.collapse", function(){
         button_state_progress('empty');
+        disableForm('#formProgress');
         $("#jqGridProgress_panel > div").scrollTop(0);
     });
     
@@ -226,16 +227,16 @@ function populate_progressnote(obj){
     $("#mrn_progress").val(obj.MRN);
     $("#episno_progress").val(obj.Episno);
     
-    var urlparam_datetime_tbl={
-        action: 'get_table_datetime',
-        mrn: $("#mrn_progress").val(),
-        episno: $("#episno_progress").val()
-    }
+    // var urlparam_datetime_tbl={
+    //     action: 'get_table_datetime',
+    //     mrn: $("#mrn_progress").val(),
+    //     episno: $("#episno_progress").val()
+    // }
     
-    datetime_tbl.ajax.url( "./progressnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
-        emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
-        $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
-    });
+    // datetime_tbl.ajax.url( "./progressnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
+    //     emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
+    //     $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
+    // });
 }
 
 function populate_progressnote_getdata(){

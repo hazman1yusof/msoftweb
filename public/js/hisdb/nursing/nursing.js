@@ -142,6 +142,7 @@ $(document).ready(function () {
 	
 	$("#jqGridTriageInfo_panel").on("hide.bs.collapse", function(){
 		button_state_ti('empty');
+		disableForm('#formTriageInfo');
 		$("#jqGridTriageInfo_panel > div").scrollTop(0);
 	});
 	

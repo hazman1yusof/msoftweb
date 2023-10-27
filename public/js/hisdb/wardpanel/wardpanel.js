@@ -109,6 +109,7 @@ $(document).ready(function () {
 	
 	$("#jqGridWard_panel").on("hide.bs.collapse", function(){
 		button_state_ward('empty');
+		disableForm('#formWard');
 		$("#jqGridWard_panel > div").scrollTop(0);
 	});
 	

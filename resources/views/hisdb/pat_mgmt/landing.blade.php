@@ -293,7 +293,7 @@
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
 					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="progressnote_row">
 						@include('hisdb.progressnote.progressnote')
 					</div>
 					
@@ -317,7 +317,7 @@
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
 					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="progressnote_row">
 						@include('hisdb.progressnote.progressnote')
 					</div>
 				@endif
