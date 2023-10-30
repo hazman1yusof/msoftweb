@@ -830,7 +830,7 @@ $(document).ready(function () {
 			setjqgridHeight(data,'jqGrid2');
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			//calc_jq_height_onchange("jqGrid2");
+			calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();

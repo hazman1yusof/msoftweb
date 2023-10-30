@@ -942,7 +942,7 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			calc_jq_height_onchange("jqGrid2");
+			calc_jq_height_onchange("jqGrid2",false,1200);
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1117,7 +1117,7 @@ $(document).ready(function () {
         },
         oneditfunc: function (rowid) {
 			myfail_msg.clear_fail();
-        	calc_jq_height_onchange("jqGrid2");
+        	calc_jq_height_onchange("jqGrid2",false,1200);
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			$("#jqGrid2 input[name='pricecode']").focus().select();
@@ -1688,7 +1688,7 @@ $(document).ready(function () {
 		$("#jqGrid2 input[name='qtydelivered']").on('blur',calculate_conversion_factor);
 		$("#jqGrid2 input[name='pouom']").on('blur',remove_noti);
 		// $("#jqGrid2 input[name='qtydelivered'],#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='expdate'],#jqGrid2 input[name='batchno']").on('focus',updwnkey_func);
-		calc_jq_height_onchange("jqGrid2");
+		calc_jq_height_onchange("jqGrid2",false,1200);
 	}
 
 	/////////////bind shift + f to btm detail///////////
@@ -2130,7 +2130,7 @@ $(document).ready(function () {
 							}
 						});
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-        				calc_jq_height_onchange("jqGrid2");
+        				calc_jq_height_onchange("jqGrid2",false,1200);
 
 					} else {
 
@@ -2202,7 +2202,6 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 			},
 			gridComplete: function(obj){
-    			calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2238,7 +2237,6 @@ $(document).ready(function () {
 			ondblClickRow:function(){
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2276,7 +2274,6 @@ $(document).ready(function () {
 				$('#depglacc').focus();
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2320,7 +2317,6 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_itemcode").focus().select();
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2409,7 +2405,6 @@ $(document).ready(function () {
 
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2530,7 +2525,6 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_pouom").focus().select();
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2630,7 +2624,6 @@ $(document).ready(function () {
 				//$("#jqGrid2 #"+id_optid+"_qtydelivered").focus().select();
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2681,7 +2674,6 @@ $(document).ready(function () {
 				//$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
-        		calc_jq_height_onchange("jqGrid2");
 				var gridname = '#'+obj.gridname;
 				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 					$(gridname+' tr#1').click();
@@ -2811,16 +2803,6 @@ function empty_form(){
 	$('#grnno_show').text('');
 	$('#suppcode_show').text('');
 
-}
-
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<50){
-		scrollHeight = 50;
-	}else if(scrollHeight>1200){
-		scrollHeight = 1200;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
 }
 
 function fail_msg_func(fail_msg_div=null){

@@ -15,48 +15,6 @@
     
     <script>
         
-        var dbacthdr=[
-            @foreach($dbacthdr as $key => $dbacthdr1)
-            [
-                @foreach($dbacthdr1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-
-        var paymode=[
-            @foreach($paymode as $key => $paymode1)
-            [
-                @foreach($paymode1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
-        ];
-        
-        var totalAmount = '{{$totalAmount}}';
-        
-        var sum_cash = '{{$sum_cash}}';
-        var sum_chq = '{{$sum_chq}}';
-        var sum_card = '{{$sum_card}}';
-        var sum_bank = '{{$sum_bank}}';
-        var sum_all = '{{$sum_all}}';
-        
-        var title = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
-        var company = {
-            @foreach($company as $key => $val)
-                '{{$key}}' : '{{$val}}',
-            @endforeach
-        };
-        
-        var totamt_eng = '{{$totamt_eng}}';
-        
         $(document).ready(function () {
             var docDefinition = {
                 footer: function(currentPage, pageCount) {
@@ -70,7 +28,7 @@
                         image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '{{$title}}\n',
+                        text: 'CARD RECEIPT LISTING\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -88,6 +46,11 @@
                         },
                         layout: 'noBorders',
                     },
+
+
+                    @foreach ($paymode as $pmode)
+                    
+                    { text: 'Card Code : {{$pmode->paymode}}',alignment: 'left' ,fontSize: 9,bold: true},
                     {
                         style: 'tableExample',
                         table: {
@@ -103,22 +66,36 @@
                                     { text: 'Authorisation No', style: 'tableHeader' },
                                     { text: 'Payer', style: 'tableHeader' },
                                 ],
-                                
+                                @php($tot = 0)
                                 @foreach ($dbacthdr as $obj)
-                                [
-                                    { text: '{{$obj->recptno}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
-                                    { text: '' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->authno}}' },
-                                    { text: '{{$obj->payername}}' },
-                                ],
+                                    @if($obj->paymode == $pmode->paymode)
+                                    [
+                                        { text: '{{$obj->recptno}}' },
+                                        { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
+                                        { text: '' },
+                                        { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
+                                        { text: '{{$obj->authno}}' },
+                                        { text: '{{$obj->payername}}' },
+                                    ],
+                                    @php($tot += $obj->amount)
+                                    @endif
                                 @endforeach
+                                [
+                                    { text: 'Total Amount', colSpan: 2,style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '{{number_format($tot,2)}}', alignment: 'right' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                ]
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
+                    @endforeach
+
                     { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
                         style: 'tableExample',
@@ -146,16 +123,6 @@
                         bold: true,
                         margin: [0, 0, 0, 10]
                     },
-                    header1: {
-                        fontSize: 14,
-                        bold: true,
-                        margin: [60, 0, 0, 10]
-                    },
-                    subheader: {
-                        fontSize: 16,
-                        bold: true,
-                        margin: [0, 10, 0, 5]
-                    },
                     tableExample: {
                         fontSize: 9,
                         margin: [0, 5, 0, 15]
@@ -165,14 +132,6 @@
                         fontSize: 10,
                         color: 'black'
                     },
-                    totalbold: {
-                        bold: true,
-                        fontSize: 10,
-                    },
-                    comp_header: {
-                        bold: true,
-                        fontSize: 8,
-                    }
                 },
                 images: {
                     letterhead: {

@@ -75,106 +75,21 @@ class cardReceipt_ReportController extends defaultController
                 ->where('dh.compcode','=',session('compcode'))
                 ->where('dh.paytype', '=', '#F_TAB-CARD')
                 ->whereIn('dh.trantype',['RD','RC'])
-                ->whereBetween('dh.entrydate', [$datefr, $dateto])           
+                ->whereBetween('dh.entrydate', [$datefr, $dateto])
                 ->orderBy('dh.entrydate','ASC')
                 ->get();
                 // dd($dbacthdr);
         
-        $paymode = DB::table('debtor.dbacthdr as db')
-                ->where('db.compcode',session('compcode'))
-                // ->where('db.tillcode',$request->tillcode)
-                // ->where('db.tillno',$request->tillno)
-                ->whereIn('db.trantype',['RD','RC'])
-                ->join('debtor.paymode as pm', function($join) use ($request){
-                    $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                ->where('pm.source','AR')
-                                ->where('pm.paytype','CARD')
-                                ->where('pm.compcode',session('compcode'));
-                })
-                ->get();
+        $paymode = DB::table('debtor.dbacthdr as dh')
+                ->select('dh.paymode') 
+                ->where('dh.compcode','=',session('compcode'))
+                ->where('dh.paytype', '=', '#F_TAB-CARD')
+                ->whereIn('dh.trantype',['RD','RC'])
+                ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                ->distinct('dh.paymode');
+        $paymode = $paymode->get(['dh.paymode']);
 
         $totalAmount = $dbacthdr->sum('amount');
-                
-        $db_dbacthdr = DB::table('debtor.dbacthdr as db')
-                    ->where('db.compcode',session('compcode'))
-                    ->where('db.tillcode',$request->tillcode)
-                    ->where('db.tillno',$request->tillno)
-                    // ->where('db.hdrtype','A')
-                    ->join('debtor.paymode as pm', function($join) use ($request){
-                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                    ->where('pm.source','AR')
-                                    ->where('pm.compcode',session('compcode'));
-                    });
-        
-        if($db_dbacthdr->exists()){
-    
-            $sum_cash = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CASH')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-
-            
-            $sum_chq = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CHEQUE')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_card = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CARD')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_bank = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','BANK')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_all = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->sum('amount');
-            
-        }
-        
-        $title = "CARD RECEIPT LISTING";
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
         
         $totamount_expld = explode(".", (float)$totalAmount);
         
@@ -186,8 +101,7 @@ class cardReceipt_ReportController extends defaultController
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
         
-        return view('finance.AR.cardReceipt_Report.cardReceipt_Report_pdfmake',compact('dbacthdr','paymode','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all', 'title','company','totamt_eng'));
-        
+        return view('finance.AR.cardReceipt_Report.cardReceipt_Report_pdfmake',compact('dbacthdr','paymode','totamt_eng','totalAmount'));
         
     }
 }

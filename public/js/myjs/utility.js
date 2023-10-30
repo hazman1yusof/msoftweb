@@ -1120,6 +1120,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 	}else{
 		this.check_take_all_field=dialog_.check_take_all_field;
 	}
+	this.skipfdl=false;
 	this.eventstat='off';
 	this.checkstat=checkstat;
 	this.ontabbing=false;
@@ -1520,8 +1521,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		var table=this.urlParam.table_name,field=this.urlParam.field,value=$(this.textfield).val(),param={},self=this,urlParamID=0,desc=this.ck_desc;
 		if(value.trim() == '')return null;
 
-		chk_fast_dtl_load(this);
-
 		renull_search(this);
 		if (before_check !== undefined && before_check !== null) {
 			renull_search(this);
@@ -1589,6 +1588,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 		}
 
+		if(chk_fast_dtl_load(this,id)){
+			return 0;
+		}
+
 		let myurl = (param.url.includes('?'))?param.url+"&"+$.param(param):param.url+"?"+$.param(param);
 
 		$.get(myurl, function( data ) {
@@ -1621,6 +1624,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 			if(typeof errorField != 'string' && self.required){
 				if(!fail){
+					store_fast_dtl_load(self,desc2);
 					if($.inArray(idtopush,errorField)!==-1){
 						errorField.splice($.inArray(idtopush,errorField), 1);
 					}
@@ -1669,12 +1673,13 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			if (after_check !== undefined && after_check !== null) {
 				after_check(data,self,id,fail);
 			}
+
+			if(index == -1){
+				param.filterCol.pop();
+				param.filterVal.pop();
+			}
 			
 		});
-		if(index == -1){
-			param.filterCol.pop();
-			param.filterVal.pop();
-		}
 	}
 
 	this.init_func = null;
@@ -1685,10 +1690,51 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		this.init_func(this);
 	}
 
-	function chk_fast_dtl_load(self_){
-		
+	function chk_fast_dtl_load(self_,id){
+		var skip = false;
+		var page=window.location.pathname.replace('/','');
+		var unique=self_.unique;
+		var filterCol=self_.urlParam.filterCol.toString().replace(/[,.]/g,'_');
+		var filterVal=self_.urlParam.filterVal.toString().replace(/[,.]/g,'_');
+
+		let storage_name = 'chkfast_'+page+'_'+unique+'_'+filterCol+'_'+filterVal;
+
+		let storage_obj = localStorage.getItem(storage_name);
+		if(storage_obj && !self_.skipfdl){
+			skip = true;
+			let obj_stored = {
+				'json':JSON.parse(storage_obj)
+			};
+			
+			$( id ).parent().parent().removeClass( "has-error" ).addClass( "has-success" );
+			$( id ).removeClass( "error" ).addClass( "valid" );
+			$( id ).parent().siblings( ".help-block" ).html(obj_stored.json.desc2);
+			$( id ).parent().siblings( ".help-block" ).show();
+		}
+		return skip;
 	}
-	
+
+	function store_fast_dtl_load(self_,desc2){
+		var page=window.location.pathname.replace('/','');
+		var unique=self_.unique;
+		var filterCol=self_.urlParam.filterCol.toString().replace(/[,.]/g,'_');
+	  var filterVal=self_.urlParam.filterVal.toString().replace(/[,.]/g,'_');
+
+		let storage_name = 'chkfast_'+page+'_'+unique+'_'+filterCol+'_'+filterVal;
+		let storage_obj = localStorage.getItem(storage_name);
+
+		if(!storage_obj && !self_.skipfdl){
+			let now = moment();
+
+			var json = JSON.stringify({
+				'desc2':desc2,
+				'timestamp': now
+			});
+
+			localStorage.setItem(storage_name,json);
+		}
+	}
+
 }
 
 function getfield(field,or_search){

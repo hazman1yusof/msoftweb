@@ -8,6 +8,7 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use App\Exports\SummaryRcptListingExport;
+use App\Exports\SummaryRcptListingExport2;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SummaryRcptListing_ReportController extends defaultController
@@ -47,7 +48,7 @@ class SummaryRcptListing_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new SummaryRcptListingExport($request->datefr,$request->dateto), 'SummaryRcptListingExport.xlsx');
+        return Excel::download(new SummaryRcptListingExport2($request->datefr,$request->dateto,$request->tillcode,$request->tillno), 'SummaryRcptListingExport.xlsx');
     }
 
     public function showpdf(Request $request){

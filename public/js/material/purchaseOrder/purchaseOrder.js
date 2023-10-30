@@ -951,10 +951,8 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGrid2');
-
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			//calc_jq_height_onchange("jqGrid2");
+			calc_jq_height_onchange("jqGrid2",false,1200);
 		},
 		gridComplete: function(){
 			$("#jqGrid2").find(".remarks_button").on("click", function(e){
@@ -1106,6 +1104,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
 		oneditfunc: function (rowid) {
+			calc_jq_height_onchange("jqGrid2",false,1200);
 			myfail_msg.clear_fail();
 			errorField.length=0;
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
@@ -1304,12 +1303,15 @@ $(document).ready(function () {
 			    );
 
 				dialog_taxcode.id_optid = ids[i];
-		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
-		        	if(data.rows.length > 0){
-						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
+		        	undefined,
+		        	function(data,self){
+			        	if(data.rows.length > 0){
+							$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+			        	}
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 		        	}
-					fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-		        });
+		        );
 
 		        cari_gstpercent(ids[i]);
 		    }
@@ -1902,8 +1904,7 @@ $(document).ready(function () {
 				}
 			});
 
-			setjqgridHeight(data,'jqGrid3');
-			//calc_jq_height_onchange("jqGrid3");
+			calc_jq_height_onchange("jqGrid3");
 		},
 
 		gridComplete: function(){
@@ -3110,16 +3111,6 @@ $(document).ready(function () {
 		$('#purordno_show').text('');
 		$('#suppcode_show').text('');
 
-	}
-
-	function calc_jq_height_onchange(jqgrid){
-		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-		if(scrollHeight<50){
-			scrollHeight = 50;
-		}else if(scrollHeight>300){
-			scrollHeight = 300;
-		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
 	}
 
 function fail_msg_func(fail_msg_div=null){
