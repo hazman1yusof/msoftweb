@@ -34,22 +34,6 @@
             ],
             @endforeach
         ];
-
-        $packages = [];
-        foreach ( $products as $product ) {
-
-            foreach ( $product->packageId as $package ) {
-            $packages[] = [
-                    'package_id' => $package['id'],
-            ];
-            }  
-
-            $data[] = [
-                'id' => $product->id,
-                'packages' => $packages,
-            ]
-        }
-
         
         var totalAmount = '{{$totalAmount}}';
         
@@ -104,14 +88,13 @@
                         },
                         layout: 'noBorders',
                     },
-                    { 
-                
+                    {
                         style: 'tableExample',
                         table: {
-                        headerRows: 1,
-                        widths: [50,50,40,50,50,70,80],  //panjang standard dia 515
-                        body: [
-                                [   
+                            headerRows: 1,
+                            widths: [50,50,40,50,50,70,80],  //panjang standard dia 515
+                            body: [
+                                [
                                     { text: 'Receipt No', style: 'tableHeader' },
                                     { text: 'Receipt Date', style: 'tableHeader' },
                                     { text: 'Amount', style: 'tableHeader', alignment: 'right' },
@@ -119,10 +102,8 @@
                                     { text: 'Expiry Date', style: 'tableHeader' },
                                     { text: 'Authorisation No', style: 'tableHeader' },
                                     { text: 'Payer', style: 'tableHeader' },
-                                    
-                                    
                                 ],
-                               
+                                
                                 @foreach ($dbacthdr as $obj)
                                 [
                                     { text: '{{$obj->recptno}}' },
@@ -132,13 +113,11 @@
                                     { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
                                     { text: '{{$obj->authno}}' },
                                     { text: '{{$obj->payername}}' },
-                                    
                                 ],
                                 @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',
-                          
                     },
                     { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                     {
