@@ -868,6 +868,13 @@ Route::post('/bankReceipt_Report/form','finance\bankReceipt_ReportController@for
 Route::get('/bankReceipt_Report/showExcel','finance\bankReceipt_ReportController@showExcel');
 Route::get('/bankReceipt_Report/showpdf','finance\bankReceipt_ReportController@showpdf');
 
+//// Refund Listing -- Report
+Route::get('/refundListing_Report','finance\refundListing_ReportController@show');
+Route::get('/refundListing_Report/table','finance\refundListing_ReportController@table');
+Route::post('/refundListing_Report/form','finance\refundListing_ReportController@form');
+Route::get('/refundListing_Report/showExcel','finance\refundListing_ReportController@showExcel');
+Route::get('/refundListing_Report/showpdf','finance\refundListing_ReportController@showpdf');
+
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
