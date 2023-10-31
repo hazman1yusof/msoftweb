@@ -1,4 +1,54 @@
-<table>
+<table>    
+    @foreach($dbacthdr as $db_obj)
+    <tr>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->cash}}</td>
+        <td>{{$db_obj->card}}</td>
+        <td>{{$db_obj->cheque}}</td>
+        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+    </tr>
+    @endforeach
+
+    @foreach($dbacthdr as $db_obj)
+    <tr>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->cash}}</td>
+        <td>{{$db_obj->card}}</td>
+        <td>{{$db_obj->cheque}}</td>
+        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+    </tr>
+    @endforeach
+
+    @foreach($dbacthdr as $db_obj)
+    <tr>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->cash}}</td>
+        <td>{{$db_obj->card}}</td>
+        <td>{{$db_obj->cheque}}</td>
+        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+    </tr>
+    @endforeach
+
+    @foreach($dbacthdr as $db_obj)
+    <tr>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->cash}}</td>
+        <td>{{$db_obj->card}}</td>
+        <td>{{$db_obj->cheque}}</td>
+        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+    </tr>
+    @endforeach
+
+    @foreach($dbacthdr as $db_obj)
+    <tr>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->cash}}</td>
+        <td>{{$db_obj->card}}</td>
+        <td>{{$db_obj->cheque}}</td>
+        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+    </tr>
+    @endforeach
+
     @foreach($dbacthdr as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
@@ -16,7 +66,7 @@
         <td>{{$sum_all}}</td>
     </tr>
 </table>
-<table>
+<!-- <table>
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
@@ -49,4 +99,4 @@
         <td>Verified By :    </td>
         <td></td>
     </tr>
-</table>
+</table> -->
