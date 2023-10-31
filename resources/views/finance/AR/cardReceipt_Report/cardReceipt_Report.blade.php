@@ -5,7 +5,7 @@
 @section('body')
 <div class="container">
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
-		<form method="get" id="genreport" action="/SummaryRcptListing_Report/showExcel">
+		<form method="get" id="genreport" action="/cardReceipt_Report/showExcel">
 		<h2>CARD RECEIPT LISTING</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
             
@@ -34,7 +34,7 @@
 		<form method="get" id= "genreportpdf" href="" target="_blank" action="./cardReceipt_Report/showpdf?">
 			<input type="hidden" name='datefr' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 			<input type="hidden" name='dateto' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
-				<button type="submit" id="save" data-oper='genreportpdf' class="btn btn-primary btn-lg">Generate Report PDF</button>
+			<button type="submit" id="save" data-oper='genreportpdf' class="btn btn-primary btn-lg">Generate Report PDF</button>
 		</form>
 	</div>
 </div>
