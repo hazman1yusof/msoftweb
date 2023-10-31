@@ -1,12 +1,12 @@
 @extends('layouts.main')
 
-@section('title', 'Auto Debit Listing')
+@section('title', 'Refund Listing Listing')
 
 @section('body')
 <div class="container">
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
-		<form method="get" id="genreport" action="/bankReceipt_Report/showExcel">
-		<h2>AUTO DEBIT LISTING</h2>
+		<form method="get" id="genreport" action="/refundListing_Report/showExcel">
+		<h2>REFUND LISTING</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
             
 			<table class="table" style="width: 50%;margin: auto;">
@@ -31,7 +31,7 @@
 
 	<br><br>
 
-		<form method="get" id= "genreportpdf" href="" target="_blank" action="./bankReceipt_Report/showpdf?">
+		<form method="get" id= "genreportpdf" href="" target="_blank" action="./refundListing_Report/showpdf?">
 			<input type="hidden" name='datefr' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 			<input type="hidden" name='dateto' value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				<button type="submit" id="save" data-oper='genreportpdf' class="btn btn-primary btn-lg">Generate Report PDF</button>
@@ -44,6 +44,6 @@
 
 @section('scripts')
 
-	<script src="js/finance/AR/bankReceipt_Report/bankReceipt_Report.js"></script>
+	<script src="js/finance/AR/refundListing_Report/refundListing_Report.js"></script>
 
 @endsection

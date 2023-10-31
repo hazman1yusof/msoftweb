@@ -7,7 +7,7 @@ use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\SummaryRcptListingExport;
+use App\Exports\ChequeReceiptExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class chequeReceipt_ReportController extends defaultController
@@ -46,9 +46,9 @@ class chequeReceipt_ReportController extends defaultController
         }
     }
 
-    // public function showExcel(Request $request){
-    //     return Excel::download(new SummaryRcptListingExport($request->datefr,$request->dateto), 'SummaryRcptListingExport.xlsx');
-    // }
+    public function showExcel(Request $request){
+        return Excel::download(new ChequeReceiptExport($request->datefr,$request->dateto,$request->tillcode,$request->tillno), 'ChequeReceiptExport.xlsx');
+    }
 
     public function showpdf(Request $request){
         

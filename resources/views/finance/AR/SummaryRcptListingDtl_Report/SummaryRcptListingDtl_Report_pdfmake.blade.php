@@ -14,6 +14,7 @@
     </object>
     
     <script>
+
         var dbacthdr=[
             @foreach($dbacthdr as $key => $dbacthdr1)
             [
@@ -49,6 +50,7 @@
         var grandtotal_cash = '{{$grandtotal_cash}}';
         var grandtotal_card = '{{$grandtotal_card}}';
         var grandtotal_chq = '{{$grandtotal_chq}}';
+        var grandtotal_bank = '{{$grandtotal_bank}}';
         
         var title = {
             @foreach($company as $key => $val)
@@ -99,22 +101,52 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'DATE', style: 'tableHeader'},
+                                    {text: 'TILL CODE', style: 'tableHeader'},
+                                    {text: 'CASHIER', style: 'tableHeader'},
                                     {text: 'CASH', style: 'tableHeader', alignment: 'right'},
                                     {text: 'CARD', style: 'tableHeader', alignment: 'right'},
                                     {text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'AUTO DEBIT', style: 'tableHeader', alignment: 'right'},
                                     {text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
                                 ],
                                 @foreach ($dbacthdr as $obj)
                                 [
                                     {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
-                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},
-                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque),2)}}', alignment: 'right'},
+                                    {text: '{{$obj->tillcode}}'},
+                                    {text: '{{$obj->cashier}}'},
+
+                                    @if(!empty($obj->paytype == '#F_TAB-CASH'))
+                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
+                                    @else
+                                        {text: '0.00', alignment: 'right'},
+                                    @endif
+
+                                    @if(!empty($obj->paytype = '#F_TAB-CARD'))
+                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
+                                    @else
+                                        {text: '0.00', alignment: 'right'},
+                                    @endif
+
+                                    @if(!empty($obj->paytype = '#F_TAB-CHEQUE'))
+                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
+                                    @else
+                                        {text: '0.00', alignment: 'right'},
+                                    @endif
+
+                                    @if(!empty($obj->paytype = '#F_TAB-DEBIT'))
+                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
+                                    @else
+                                        {text: '0.00', alignment: 'right'},
+                                    @endif
+                                    
+                                    // {text: '', alignment: 'right'},
+                                    // {text: '', alignment: 'right'},
+                                    // {text: '', alignment: 'right'},
+                                    {text: '', alignment: 'right'},
                                 ],
                                 @endforeach
                               
@@ -127,17 +159,18 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'SUBTOTAL', style: 'tableHeader'},
+                                    {text: ''},
+                                    {text: ''},
                                     {text:'{{number_format($sum_cash,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_card+$sum_bank,2)}}', alignment: 'right'},
+                                    {text:'{{number_format($sum_card,2)}}', alignment: 'right'},
                                     {text:'{{number_format($sum_chq,2)}}', alignment: 'right'},
+                                    {text:'{{number_format($sum_bank,2)}}', alignment: 'right'},
                                     {text:'{{number_format($sum_all,2)}}', alignment: 'right'},
                                 ],
-                                
-
                             ]
                         },
                         layout: 'lightHorizontalLines',
@@ -151,22 +184,28 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
-                                    { text: 'DATE', style: 'tableHeader'},
-                                    { text: 'CASH', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'CARD', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
-                                    { text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'DATE', style: 'tableHeader'},
+                                    {text: 'TILL CODE', style: 'tableHeader'},
+                                    {text: 'CASHIER', style: 'tableHeader'},
+                                    {text: 'CASH', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'CARD', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'CHEQUE', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'AUTO DEBIT', style: 'tableHeader', alignment: 'right'},
+                                    {text: 'TOTAL', style: 'tableHeader', alignment: 'right'},
                                 ],
                                 @foreach ($dbacthdr_rf as $obj)
                                 [
                                     {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
+                                    {text: '', alignment: 'right',},
+                                    {text: ''},
                                     {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
                                     {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
                                     {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},
-                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque),2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->autodebit,2)}}', alignment: 'right',},
+                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque)+($obj->autodebit),2)}}', alignment: 'right'},
                                 ],
                                 @endforeach
                               
@@ -179,17 +218,18 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'SUBTOTAL', style: 'tableHeader'},
+                                    {text: ''},
+                                    {text: ''},
                                     {text:'{{number_format($sum_cash_ref,2)}}', alignment: 'right'},
-                                    {text:'{{number_format($sum_card_ref+$sum_bank_ref,2)}}', alignment: 'right'},
+                                    {text:'{{number_format($sum_card_ref,2)}}', alignment: 'right'},
                                     {text:'{{number_format($sum_chq_ref,2)}}', alignment: 'right'},
+                                    {text:'{{number_format($sum_bank_ref,2)}}', alignment: 'right'},
                                     {text:'{{number_format($sum_all_ref,2)}}', alignment: 'right'},
                                 ],
-                                
-
                             ]
                         },
                         layout: 'lightHorizontalLines',
@@ -199,13 +239,16 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*'],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
                                     {text: 'GRAND TOTAL', style: 'tableHeader'},
+                                    {text: ''},
+                                    {text: ''},
                                     {text:'{{number_format($grandtotal_cash,2)}}', alignment: 'right'},
                                     {text:'{{number_format($grandtotal_card,2)}}', alignment: 'right'},
                                     {text:'{{number_format($grandtotal_chq,2)}}', alignment: 'right'},
+                                    {text:'{{number_format($grandtotal_bank,2)}}', alignment: 'right'},
                                     {text:'{{number_format($grandtotal_all,2)}}', alignment: 'right'},
                                 ],
                                 

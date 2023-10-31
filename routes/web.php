@@ -875,6 +875,12 @@ Route::post('/refundListing_Report/form','finance\refundListing_ReportController
 Route::get('/refundListing_Report/showExcel','finance\refundListing_ReportController@showExcel');
 Route::get('/refundListing_Report/showpdf','finance\refundListing_ReportController@showpdf');
 
+//// Receipt Allocated -- Report
+Route::get('/receiptAlloc_Report','finance\receiptAlloc_ReportController@show');
+Route::get('/receiptAlloc_Report/table','finance\receiptAlloc_ReportController@table');
+Route::post('/receiptAlloc_Report/form','finance\receiptAlloc_ReportController@form');
+Route::get('/receiptAlloc_Report/showExcel','finance\receiptAlloc_ReportController@showExcel');
+Route::get('/receiptAlloc_Report/showpdf','finance\receiptAlloc_ReportController@showpdf');
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
