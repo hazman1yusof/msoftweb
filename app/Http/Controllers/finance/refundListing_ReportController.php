@@ -7,7 +7,7 @@ use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\SummaryRcptListingExport;
+use App\Exports\RefundListingExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class refundListing_ReportController extends defaultController
@@ -46,9 +46,9 @@ class refundListing_ReportController extends defaultController
         }
     }
 
-    // public function showExcel(Request $request){
-    //     return Excel::download(new SummaryRcptListingExport($request->datefr,$request->dateto), 'SummaryRcptListingExport.xlsx');
-    // }
+    public function showExcel(Request $request){
+        return Excel::download(new RefundListingExport($request->datefr,$request->dateto,$request->tillcode,$request->tillno), 'RefundListingExport.xlsx');
+    }
 
     public function showpdf(Request $request){
         
