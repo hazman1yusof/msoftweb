@@ -4,7 +4,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 
-	var mycurrency =new currencymode(['#CashCollected','#CashRefund', '#ChequeCollected', '#ChequeRefund', '#CardCollected','#CardRefund', '#DebitCollected', '#DebitRefund', '#openamt', '#cashBal', '#actclosebal','#discrepancy', 'input[name=totalrm100]', 'input[name=totalrm50]', 'input[name=totalrm20]','input[name=totalrm10]', 'input[name=totalrm5]', 'input[name=totalrm1]', 'input[name=totalcents]', 'input[name=grandTotal]']);
+	var mycurrency =new currencymode(['#CashCollected','#CashRefund', '#ChequeCollected', '#ChequeRefund', '#CardCollected','#CardRefund', '#DebitCollected', '#DebitRefund', '#openamt', '#cashBal','#discrepancy', 'input[name=totalrm100]', 'input[name=totalrm50]', 'input[name=totalrm20]','input[name=totalrm10]', 'input[name=totalrm5]', 'input[name=totalrm1]', 'input[name=totalcents]', 'input[name=grandTotal]']);
 
 	calc_cash_bal();
 

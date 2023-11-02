@@ -76,8 +76,8 @@
                             widths: ['*', '*'], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now()->format('h:i A')}}'},
+                                    {text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
+                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
                                 ],
                             ]
                         },

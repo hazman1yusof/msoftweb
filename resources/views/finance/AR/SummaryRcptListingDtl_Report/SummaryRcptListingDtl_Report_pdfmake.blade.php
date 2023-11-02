@@ -90,8 +90,8 @@
                             widths: ['*', '*'], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now()->format('h:i A')}}'},
+                                    {text: 'DATE : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('d/m/Y')}}' },
+                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
                                 ],
                             ]
                         },
@@ -118,35 +118,11 @@
                                     {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
                                     {text: '{{$obj->tillcode}}'},
                                     {text: '{{$obj->cashier}}'},
-
-                                    @if(!empty($obj->paytype == '#F_TAB-CASH'))
-                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                    @else
-                                        {text: '0.00', alignment: 'right'},
-                                    @endif
-
-                                    @if(!empty($obj->paytype = '#F_TAB-CARD'))
-                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                    @else
-                                        {text: '0.00', alignment: 'right'},
-                                    @endif
-
-                                    @if(!empty($obj->paytype = '#F_TAB-CHEQUE'))
-                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                    @else
-                                        {text: '0.00', alignment: 'right'},
-                                    @endif
-
-                                    @if(!empty($obj->paytype = '#F_TAB-DEBIT'))
-                                        {text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
-                                    @else
-                                        {text: '0.00', alignment: 'right'},
-                                    @endif
-                                    
-                                    // {text: '', alignment: 'right'},
-                                    // {text: '', alignment: 'right'},
-                                    // {text: '', alignment: 'right'},
-                                    {text: '', alignment: 'right'},
+                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->autodebit,2)}}', alignment: 'right'},
+                                    {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque)+($obj->autodebit),2)}}', alignment: 'right'},
                                 ],
                                 @endforeach
                               
@@ -199,12 +175,12 @@
                                 @foreach ($dbacthdr_rf as $obj)
                                 [
                                     {text: '{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}'},
-                                    {text: '', alignment: 'right',},
-                                    {text: ''},
-                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right',},
-                                    {text: '{{number_format($obj->autodebit,2)}}', alignment: 'right',},
+                                    {text: '{{$obj->tillcode}}'},
+                                    {text: '{{$obj->cashier}}'},
+                                    {text: '{{number_format($obj->cash,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->card,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->cheque,2)}}', alignment: 'right'},
+                                    {text: '{{number_format($obj->autodebit,2)}}', alignment: 'right'},
                                     {text: '{{number_format(($obj->cash)+($obj->card)+($obj->cheque)+($obj->autodebit),2)}}', alignment: 'right'},
                                 ],
                                 @endforeach

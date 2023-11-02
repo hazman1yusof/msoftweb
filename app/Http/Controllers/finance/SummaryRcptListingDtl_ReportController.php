@@ -7,7 +7,7 @@ use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\SummaryRcptListingExport;
+use App\Exports\SummaryRcptListingDtlExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SummaryRcptListingDtl_ReportController extends defaultController
@@ -47,7 +47,7 @@ class SummaryRcptListingDtl_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new SummaryRcptListingExport($request->datefr,$request->dateto), 'SummaryRcptListingExport.xlsx');
+        return Excel::download(new SummaryRcptListingDtlExport($request->datefr,$request->dateto,$request->tillcode,$request->tillno), 'SummaryRcptListingDtlExport.xlsx');
     }
 
     public function showpdf(Request $request){
@@ -61,34 +61,9 @@ class SummaryRcptListingDtl_ReportController extends defaultController
                     ->where('tillno',$request->tillno)
                     ->first();
 
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt', 'debtor.tilldetl as dl')
-                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description', 'dl.cashier as cashier')
-                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                ->where('dm.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
-                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                ->where('dt.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.tilldetl as dl', function($join) use ($request){
-                    $join = $join->on('dl.tillno', '=', 'dh.tillno')
-                                ->where('dl.compcode', '=', session('compcode'));
-                })
-                ->where('dh.compcode','=',session('compcode'))
-                ->whereIn('dh.trantype',['RD','RC'])
-                // ->where('dh.tillcode',$request->tillcode)
-                // ->where('dh.tillno',$request->tillno)
-                ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                ->orderBy('dh.tillcode','ASC')
-                ->get();
-                // dd($dbacthdr);
-       
-        $totalAmount = $dbacthdr->sum('amount');
-
-        $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt','debtor.tilldetl as dl')
                 ->select(
-                    'dh.entrydate',
+                    'dh.tillcode',  'dh.entrydate', 'dl.cashier as cashier', 'dh.tillno',
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' then dh.amount else 0 end) as card"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
@@ -102,11 +77,42 @@ class SummaryRcptListingDtl_ReportController extends defaultController
                     $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
                                 ->where('dt.compcode', '=', session('compcode'));
                 })
+                ->leftJoin('debtor.tilldetl as dl', function($join) use ($request){
+                                $join = $join->on('dl.tillno', '=', 'dh.tillno')
+                                            ->where('dl.compcode', '=', session('compcode'));
+                            })
                 ->where('dh.compcode','=',session('compcode'))
-                ->where('dh.trantype', '=','RF')
-                ->groupBy('dh.entrydate')
+                ->whereIn('dh.trantype',['RD','RC'])
+                ->groupBy('dh.tillcode', 'dh.entrydate','dl.cashier', 'dh.tillno')
                 ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                ->orderBy('dh.entrydate','ASC')
+                ->get();
+
+        $totalAmount = $dbacthdr->sum('amount');
+
+        $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt','debtor.tilldetl as dl')
+                ->select(
+                    'dh.tillcode',  'dh.entrydate', 'dl.cashier as cashier', 'dh.tillno',
+                        DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
+                        DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' then dh.amount else 0 end) as card"),
+                        DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
+                        DB::raw("SUM(case when dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as autodebit"),
+                    )
+                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
+                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                ->where('dm.compcode', '=', session('compcode'));
+                })
+                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
+                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                ->where('dt.compcode', '=', session('compcode'));
+                })
+                ->leftJoin('debtor.tilldetl as dl', function($join) use ($request){
+                                $join = $join->on('dl.tillno', '=', 'dh.tillno')
+                                            ->where('dl.compcode', '=', session('compcode'));
+                            })
+                ->where('dh.compcode','=',session('compcode'))
+                ->whereIn('dh.trantype',['RF'])
+                ->groupBy('dh.tillcode', 'dh.entrydate','dl.cashier', 'dh.tillno')
+                ->whereBetween('dh.entrydate', [$datefr, $dateto])
                 ->get();
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
@@ -250,11 +256,8 @@ class SummaryRcptListingDtl_ReportController extends defaultController
                             ->whereBetween('db.entrydate', [$datefr, $dateto])
                             ->sum('amount');
             
-            $total_card_rcrd = $sum_card + $sum_bank;
-            $total_card_rf = $sum_card_ref + $sum_bank_ref;
-            
             $grandtotal_cash = $sum_cash - $sum_cash_ref;
-            $grandtotal_card = $total_card_rcrd - $total_card_rf;
+            $grandtotal_card = $sum_card - $sum_card_ref;
             $grandtotal_chq = $sum_chq - $sum_chq_ref;
             $grandtotal_bank = $sum_bank - $sum_bank_ref;
             $grandtotal_all = $sum_all - $sum_all_ref;
