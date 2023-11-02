@@ -31,7 +31,6 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
     
     public function __construct($datefr,$dateto,$tillcode,$tillno)
     {
-        
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->tillcode = $tillcode;
@@ -42,10 +41,9 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
-
+    
     public function columnWidths(): array
     {
-        
         return [
             'A' => 16,
             'B' => 16,
@@ -53,81 +51,79 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
             'D' => 16,
             'E' => 16,
         ];
-        
     }
     
     public function view(): View
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-
+        
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
                     ->where('tillcode',$this->tillcode)
                     ->where('tillno',$this->tillno)
                     ->first();
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                ->select(
-                'dh.entrydate',
-                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
-                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
-                    DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
-                )
-                ->leftJoin('debtor.debtormast as dm', function($join){
-                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                ->where('dm.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.debtortype as dt', function($join){
-                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                ->where('dt.compcode', '=', session('compcode'));
-                })
-                ->where('dh.compcode','=',session('compcode'))
-                ->whereIn('dh.trantype',['RD','RC'])
-                ->groupBy('dh.entrydate')
-                ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                ->orderBy('dh.entrydate','ASC')
-                ->get();
-        // dd($dbacthdr);
-
-        $this->dbacthdr_len=$dbacthdr->count();
-
-        $totalAmount = $dbacthdr->sum('amount');
-
-        $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                ->select(
-                    'dh.entrydate',
+                    ->select(
+                        'dh.entrydate',
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
                         DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
                     )
-                ->leftJoin('debtor.debtormast as dm', function($join){
-                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                ->where('dm.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.debtortype as dt', function($join){
-                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                ->where('dt.compcode', '=', session('compcode'));
-                })
-                ->where('dh.compcode','=',session('compcode'))
-                ->where('dh.trantype', '=','RF')
-                ->groupBy('dh.entrydate')
-                ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                ->orderBy('dh.entrydate','ASC')
-                ->get();
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->leftJoin('debtor.debtortype as dt', function($join){
+                        $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                    ->where('dt.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode','=',session('compcode'))
+                    ->whereIn('dh.trantype',['RD','RC'])
+                    ->groupBy('dh.entrydate')
+                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->orderBy('dh.entrydate','ASC')
+                    ->get();
+        // dd($dbacthdr);
+        
+        $this->dbacthdr_len=$dbacthdr->count();
+        
+        $totalAmount = $dbacthdr->sum('amount');
+        
+        $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
+                        ->select(
+                            'dh.entrydate',
+                            DB::raw("SUM(case when dh.paytype = '#F_TAB-CASH' then dh.amount else 0 end) as cash"),
+                            DB::raw("SUM(case when dh.paytype = '#F_TAB-CARD' OR dh.paytype = '#F_TAB-DEBIT' then dh.amount else 0 end) as card"),
+                            DB::raw("SUM(case when dh.paytype = '#F_TAB-CHEQUE' then dh.amount else 0 end) as cheque"),
+                        )
+                        ->leftJoin('debtor.debtormast as dm', function($join){
+                            $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                        ->where('dm.compcode', '=', session('compcode'));
+                        })
+                        ->leftJoin('debtor.debtortype as dt', function($join){
+                            $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
+                                        ->where('dt.compcode', '=', session('compcode'));
+                        })
+                        ->where('dh.compcode','=',session('compcode'))
+                        ->where('dh.trantype', '=','RF')
+                        ->groupBy('dh.entrydate')
+                        ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                        ->orderBy('dh.entrydate','ASC')
+                        ->get();
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
-                    ->where('db.compcode',session('compcode'))
-                    ->where('db.tillcode',$this->tillcode)
-                    ->where('db.tillno',$this->tillno)
-                    ->join('debtor.paymode as pm', function($join){
-                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                    ->where('pm.source','AR')
-                                    ->where('pm.compcode',session('compcode'));
-                    });
+                        ->where('db.compcode',session('compcode'))
+                        ->where('db.tillcode',$this->tillcode)
+                        ->where('db.tillno',$this->tillno)
+                        ->join('debtor.paymode as pm', function($join){
+                            $join = $join->on('pm.paymode', '=', 'db.paymode')
+                                        ->where('pm.source','AR')
+                                        ->where('pm.compcode',session('compcode'));
+                        });
         
         if($db_dbacthdr->exists()){
-    
             $sum_cash = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
@@ -141,7 +137,6 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                         })
                         ->whereBetween('db.entrydate', [$datefr, $dateto])
                         ->sum('amount');
-
             
             $sum_chq = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
@@ -264,11 +259,10 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
             $grandtotal_card = $total_card_rcrd - $total_card_rf;
             $grandtotal_chq = $sum_chq - $sum_chq_ref;
             $grandtotal_all = $sum_all - $sum_all_ref;
-
         }
         
         $title = "SUMMARY RECEIPT LISTING";
-
+        
         $title2 = "REFUND LISTING";
         
         $company = DB::table('sysdb.company')
@@ -284,11 +278,10 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
-
-        return view('finance.AR.SummaryRcptListing_Report.SummaryRcptListing_Report_excel',compact('dbacthdr','dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_all','title', 'title2','company','totamt_eng'));
         
+        return view('finance.AR.SummaryRcptListing_Report.SummaryRcptListing_Report_excel',compact('dbacthdr','dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_all','title', 'title2','company','totamt_eng'));
     }
-
+    
     public function registerEvents(): array
     {
         return [
@@ -321,23 +314,23 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                         'horizontal' => Alignment::HORIZONTAL_CENTER
                     ]
                 ];
-
+                
                 $totpage = ceil($totrow/45);
-
+                
                 $curpage=1;
                 $loop_page=0;
                 while ($totrow > 0){
                     $totrow=$totrow-45;
                     $event->sheet->insertNewRowBefore(1+$loop_page, 5);
-
+                    
                     ///// assign cell values
                     $event->sheet->setCellValue('C'.(1+$loop_page),$this->comp->name);
-                    $event->sheet->setCellValue('A'.(2+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('A'.(3+$loop_page),'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
+                    $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
+                    $event->sheet->setCellValue('E'.(1+$loop_page),'PRINTED : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
                     $event->sheet->setCellValue('C'.(2+$loop_page),'SUMMARY RECEIPT LISTING');
                     $event->sheet->setCellValue('C'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('E'.(3+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
-
+                    $event->sheet->setCellValue('E'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
+                    
                     $event->sheet->setCellValue('A'.(5+$loop_page),'DATE');
                     $event->sheet->setCellValue('B'.(5+$loop_page),'CASH');
                     $event->sheet->setCellValue('C'.(5+$loop_page),'CARD');
@@ -349,15 +342,15 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
                     $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
                     $event->sheet->getStyle('A'.(5+$loop_page).':E'.(5+$loop_page))->applyFromArray($style_columnheader);
-
+                    
                     $curpage++;
                     $loop_page+=50;
                 }
-
+                
                 //next table
-
+                
                 // $aftercol = 7+3+$this->dbacthdr_len;
-
+                
                 // $event->sheet->insertNewRowBefore($aftercol, 7);
                 // ///// assign cell values
                 // // $event->sheet->setCellValue('A'.$aftercol,'PRINTED DATE :');
@@ -384,12 +377,10 @@ class SummaryRcptListingExport implements FromView, WithEvents, WithColumnWidths
                 // $event->sheet->getStyle('C'.$aftercol.':C'.($aftercol+1))->applyFromArray($style_header);
                 // $event->sheet->getStyle('F'.($aftercol+6).':F'.($aftercol+4))->applyFromArray($style_address);
                 // $event->sheet->getStyle('A'.$aftercol.':H'.($aftercol+6))->applyFromArray($style_columnheader);
-
             },
         ];
-        
     }
-
+    
     public function convertNumberToWordENG($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));

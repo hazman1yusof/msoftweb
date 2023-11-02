@@ -9,8 +9,8 @@
             <td style="font-weight:bold">RECEIPT DATE</td>
             <td style="font-weight:bold">AMOUNT</td>
             <td style="font-weight:bold">CARD NO</td>
-            <td style="font-weight:bold">EXPIRY DATE</td>
-            <td style="font-weight:bold">AUTHORISATION NO</td>
+            <td style="font-weight:bold">EXP DATE</td>
+            <td style="font-weight:bold">AUTH NO</td>
             <td style="font-weight:bold">PAYER</td>
         </tr>
         @php($tot = 0)

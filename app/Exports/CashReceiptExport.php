@@ -45,14 +45,14 @@ class CashReceiptExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 25,
-            'B' => 25,
-            'C' => 40,
-            'D' => 25,
-            'E' => 25,
-            'F' => 25,
-            'G' => 25,
-            'H' => 25,
+            'A' => 15,
+            'B' => 13,
+            'C' => 10,
+            'D' => 10,
+            'E' => 10,
+            'F' => 10,
+            'G' => 10,
+            'H' => 10,
         ];
     }
     
@@ -262,6 +262,7 @@ class CashReceiptExport implements FromView, WithEvents, WithColumnWidths
         return [
             AfterSheet::class => function(AfterSheet $event) {
                 // set up a style array for cell formatting
+                $totrow = $event->sheet->getHighestRow();
                 $style_header = [
                     'font' => [
                         'bold' => true,
@@ -271,22 +272,7 @@ class CashReceiptExport implements FromView, WithEvents, WithColumnWidths
                     ]
                 ];
                 
-                $style_address = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_RIGHT
-                    ]
-                ];
-                
-                $style_right = [
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_RIGHT
-                    ]
-                ];
-                
-                $style_datetime = [
+                $style_subheader = [
                     'font' => [
                         'bold' => true,
                     ],
@@ -304,37 +290,40 @@ class CashReceiptExport implements FromView, WithEvents, WithColumnWidths
                     ]
                 ];
                 
-                // at row 1, insert 2 rows
-                $event->sheet->insertNewRowBefore(1, 7);
+                $totpage = ceil($totrow/45);
                 
-                ///// assign cell values
-                $event->sheet->setCellValue('A1','PRINTED DATE :');
-                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
-                $event->sheet->setCellValue('A2','PRINTED TIME :');
-                $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
-                $event->sheet->setCellValue('A3','PRINTED BY :');
-                $event->sheet->setCellValue('B3', session('username'));
-                $event->sheet->setCellValue('D1','CASH LISTING');
-                $event->sheet->setCellValue('D2', sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                $event->sheet->setCellValue('G1',$this->comp->name);
-                $event->sheet->setCellValue('G2',$this->comp->address1);
-                $event->sheet->setCellValue('G3',$this->comp->address2);
-                $event->sheet->setCellValue('G4',$this->comp->address3);
-                $event->sheet->setCellValue('G5',$this->comp->address4);
-                $event->sheet->setCellValue('A7','RECEIPT DATE');
-                $event->sheet->setCellValue('B7','PAYER CODE');
-                $event->sheet->setCellValue('C7','AMOUNT');
-                $event->sheet->setCellValue('D7','PAYER');
-                $event->sheet->setCellValue('E7','FC');
-                $event->sheet->setCellValue('F7','MODE');
-                $event->sheet->setCellValue('G7','REFERENCE');
-                
-                ///// assign cell styles
-                $event->sheet->getStyle('A1:A3')->applyFromArray($style_datetime);
-                $event->sheet->getStyle('D1:D2')->applyFromArray($style_header);
-                $event->sheet->getStyle('G1:G5')->applyFromArray($style_address);
-                $event->sheet->getStyle('A7:G7')->applyFromArray($style_columnheader);
-                
+                $curpage=1;
+                $loop_page=0;
+                while ($totrow > 0){
+                    $totrow=$totrow-45;
+                    $event->sheet->insertNewRowBefore(1+$loop_page, 5);
+                    
+                    ///// assign cell values
+                    $event->sheet->setCellValue('C'.(1+$loop_page),$this->comp->name);
+                    $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
+                    $event->sheet->setCellValue('E'.(1+$loop_page),'PRINTED : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
+                    $event->sheet->setCellValue('C'.(2+$loop_page),'CASH LISTING');
+                    $event->sheet->setCellValue('C'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
+                    $event->sheet->setCellValue('E'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
+                    
+                    $event->sheet->setCellValue('A'.(5+$loop_page),'RECEIPT DATE');
+                    $event->sheet->setCellValue('B'.(5+$loop_page),'PAYER CODE');
+                    $event->sheet->setCellValue('C'.(5+$loop_page),'AMOUNT');
+                    $event->sheet->setCellValue('D'.(5+$loop_page),'PAYER');
+                    $event->sheet->setCellValue('E'.(5+$loop_page),'FC');
+                    $event->sheet->setCellValue('F'.(5+$loop_page),'MODE');
+                    $event->sheet->setCellValue('G'.(5+$loop_page),'REFERENCE');
+                    
+                    ///// assign cell styles
+                    $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
+                    $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
+                    $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
+                    $event->sheet->getStyle('A'.(5+$loop_page).':G'.(5+$loop_page))->applyFromArray($style_columnheader);
+                    
+                    $curpage++;
+                    $loop_page+=50;
+                }
+
                 // next table
                 
                 // $aftercol = 7+3+$this->dbacthdr_len;

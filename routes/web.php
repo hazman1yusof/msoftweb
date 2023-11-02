@@ -875,12 +875,12 @@ Route::post('/refundListing_Report/form','finance\refundListing_ReportController
 Route::get('/refundListing_Report/showExcel','finance\refundListing_ReportController@showExcel');
 Route::get('/refundListing_Report/showpdf','finance\refundListing_ReportController@showpdf');
 
-//// Receipt Allocated -- Report
-Route::get('/receiptAlloc_Report','finance\receiptAlloc_ReportController@show');
-Route::get('/receiptAlloc_Report/table','finance\receiptAlloc_ReportController@table');
-Route::post('/receiptAlloc_Report/form','finance\receiptAlloc_ReportController@form');
-Route::get('/receiptAlloc_Report/showExcel','finance\receiptAlloc_ReportController@showExcel');
-Route::get('/receiptAlloc_Report/showpdf','finance\receiptAlloc_ReportController@showpdf');
+//// Payment Allocation -- Report
+Route::get('/paymentAlloc_Report','finance\paymentAlloc_ReportController@show');
+Route::get('/paymentAlloc_Report/table','finance\paymentAlloc_ReportController@table');
+Route::post('/paymentAlloc_Report/form','finance\paymentAlloc_ReportController@form');
+Route::get('/paymentAlloc_Report/showExcel','finance\paymentAlloc_ReportController@showExcel');
+Route::get('/paymentAlloc_Report/showpdf','finance\paymentAlloc_ReportController@showpdf');
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////

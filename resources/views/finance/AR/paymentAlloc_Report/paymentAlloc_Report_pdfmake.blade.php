@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Cash Listing</title>
+        <title>Payment Allocation Listing</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -15,28 +15,15 @@
     
     <script>
         
-        var dbacthdr=[
-            @foreach($dbacthdr as $key => $dbacthdr1)
+        var dballoc=[
+            @foreach($dballoc as $key => $dballoc1)
             [
-                @foreach($dbacthdr1 as $key2 => $val)
+                @foreach($dballoc1 as $key2 => $val)
                     {'{{$key2}}' : `{{$val}}`},
                 @endforeach
             ],
             @endforeach
         ];
-        
-        var totalAmount = '{{$totalAmount}}';
-        
-        var sum_cash = '{{$sum_cash}}';
-        var sum_chq = '{{$sum_chq}}';
-        var sum_card = '{{$sum_card}}';
-        var sum_bank = '{{$sum_bank}}';
-        var sum_all = '{{$sum_all}}';
-        var sum_cash_ref = '{{$sum_cash_ref}}';
-        var sum_chq_ref = '{{$sum_chq_ref}}';
-        var sum_card_ref = '{{$sum_card_ref}}';
-        var sum_bank_ref = '{{$sum_bank_ref}}';
-        var sum_all_ref = '{{$sum_all_ref}}';
         
         var title = {
             @foreach($company as $key => $val)
@@ -49,8 +36,6 @@
                 '{{$key}}' : '{{$val}}',
             @endforeach
         };
-        
-        var totamt_eng = '{{$totamt_eng}}';
         
         $(document).ready(function () {
             var docDefinition = {
@@ -92,108 +77,41 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [50,40,50,80,60,50,80],  //panjang standard dia 515
+                            widths: [22,44,44,40,40,32,20,44,41,28,40],  //panjang standard dia 515
                             body: [
                                 [   
+                                    { text: 'Trx Type', style: 'tableHeader' },
                                     { text: 'Receipt Date', style: 'tableHeader' },
-                                    { text: 'Payer Code', style: 'tableHeader' },
-                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Payer', style: 'tableHeader' },
-                                    { text: 'FC', style: 'tableHeader' },
-                                    { text: 'Mode', style: 'tableHeader' },
-                                    { text: 'Reference', style: 'tableHeader' },
-                                    
+                                    { text: 'Allocation Date', style: 'tableHeader' },
+                                    { text: 'Receipt No', style: 'tableHeader' },
+                                    { text: 'Payment Details', style: 'tableHeader' },
+                                    { text: 'Receipt Amt', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Bill No', style: 'tableHeader' },
+                                    { text: 'Bill Date', style: 'tableHeader' },
+                                    { text: 'Allocated Amt', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Debtor Code', style: 'tableHeader' },
+                                    { text: 'Name', style: 'tableHeader' },
                                 ],
-                                @foreach ($dbacthdr as $obj)
+                                @foreach ($dballoc as $obj)
                                 [
-                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->payercode}}' },
-                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->payername}}' },
-                                    { text: '{{$obj->dt_description}}' },
-                                    { text: '{{$obj->paymode}}' },
-                                    { text: 'RECEIPT NO: {{$obj->recptno}}' },
+                                    { text: '{{$obj->doctrantype}}' },
+                                    { text: '{{\Carbon\Carbon::parse($obj->doc_entrydate)->format('d/m/Y')}}' },
+                                    { text: '{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
+                                    { text: '{{$obj->da_recptno}}' },
+                                    { text: '{{$obj->reference}}' },
+                                    { text: '{{number_format($obj->dh_amount,2)}}', alignment: 'right' },
+                                    { text: '{{$obj->refauditno}}' },
+                                    { text: '{{\Carbon\Carbon::parse($obj->ref_entrydate)->format('d/m/Y')}}' },
+                                    { text: '{{number_format($obj->allocamount,2)}}', alignment: 'right' },
+                                    { text: '{{$obj->debtorcode}}' },
+                                    { text: '{{$obj->debtorname}}' },
                                 ],
                                 @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
-                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*', '*'], //panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'Ringgit Malaysia', style: 'tableHeader' },
-                                    { text: 'Total Amount', style: 'tableHeader', alignment: 'right' },
-                                ],
-                                [
-                                    { text: '{{$totamt_eng}}' },
-                                    { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
-                                ],
-                            ]
-                        },
-                        layout: 'noBorders',
-                    },
-                    // {
-                    //     text: '\nSUMMARY\n',
-                    //     style: 'header1',
-                    //     alignment: 'center'
-                    // },
-                    // {
-                    //     style: 'tableExample',
-                    //     table: {
-                    //         headerRows: 1,
-                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
-                    //         body: [
-                    //             [
-                    //                 { text: ' ', style: 'tableHeader' },
-                    //                 { text: 'Amount Collected', style: 'tableHeader' },
-                    //                 { text: 'Amount Refund', style: 'tableHeader' },
-                    //             ],
-                    //             [
-                    //                 { text: 'Cash' },
-                    //                 { text: '{{$sum_cash}}' },
-                    //                 { text: '{{$sum_cash_ref}}' },
-                    //             ],
-                    //             [
-                    //                 { text: 'Cheque' },
-                    //                 { text: '{{$sum_chq}}' },
-                    //                 { text: '{{$sum_chq_ref}}' },
-                    //             ],
-                    //             [
-                    //                 { text: 'Card' },
-                    //                 { text: '{{$sum_card}}' },
-                    //                 { text: '{{$sum_card_ref}}' },
-                    //             ],
-                    //             [
-                    //                 { text: 'Auto Debit' },
-                    //                 { text: '{{$sum_bank}}' },
-                    //                 { text: '{{$sum_bank_ref}}' },
-                    //             ],
-                    //         ]
-                    //     },
-                    //     layout: 'lightHorizontalLines',
-                    // },
-                    // { canvas: [ { type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 0.5 } ] },
-                    // {
-                    //     style: 'tableExample',
-                    //     table: {
-                    //         headerRows: 1,
-                    //         widths: ['*', '*', '*'],  //panjang standard dia 515
-                    //         body: [
-                    //             [
-                    //                 { text: 'Total', style: 'tableHeader' },
-                    //                 { text: '{{$sum_all}}' },
-                    //                 { text: '{{$sum_all_ref}}' },
-                    //             ],
-                    //         ]
-                    //     },
-                    //     layout: 'lightHorizontalLines',
-                    // },
+                    // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                 ],
                 styles: {
                     header: {
@@ -212,7 +130,7 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 9,
+                        fontSize: 8,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {
