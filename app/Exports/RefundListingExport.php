@@ -47,14 +47,14 @@ class RefundListingExport implements FromView, WithEvents, WithColumnWidths
     {
         
         return [
-            'A' => 12,
+            'A' => 13,
             'B' => 12,
             'C' => 10,
-            'D' => 14,
-            'E' => 10,
+            'D' => 25,
+            'E' => 13,
             'F' => 12,
-            'G' => 12,
-            'H' => 12,
+            'G' => 13,
+            'H' => 15,
         ];
         
     }
@@ -190,18 +190,22 @@ class RefundListingExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->insertNewRowBefore(1+$loop_page, 5);
                 
                     ///// assign cell values
-                    $event->sheet->setCellValue('C'.(1+$loop_page),$this->comp->name);
+                    $event->sheet->setCellValue('D'.(1+$loop_page),$this->comp->name);
                     $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('E'.(1+$loop_page),'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
-                    $event->sheet->setCellValue('C'.(2+$loop_page),'REFUND LISTING');
-                    $event->sheet->setCellValue('C'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('E'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
+                    $event->sheet->setCellValue('H'.(1+$loop_page),'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
+                    $event->sheet->setCellValue('D'.(2+$loop_page),'REFUND LISTING');
+                    $event->sheet->setCellValue('D'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
+                    $event->sheet->setCellValue('H'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
 
                     ///// assign cell styles
                     $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
+                    $event->sheet->getStyle('H'.(1+$loop_page).':H'.(3+$loop_page))->applyFromArray($style_subheader);
+                    $event->sheet->getStyle('D'.(1+$loop_page).':D'.(3+$loop_page))->applyFromArray($style_header);
                     $event->sheet->getStyle('A'.(5+$loop_page).':H'.(5+$loop_page))->applyFromArray($style_columnheader);
+
+                    // $event->sheet->getStyle('D')->getAlignment()->setWrapText(true);
+                    $event->sheet->getStyle('G')->getAlignment()->setWrapText(true);
+                    $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 
                     $curpage++;
                     $loop_page+=50;

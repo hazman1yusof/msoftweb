@@ -2,18 +2,18 @@
     @foreach($dbacthdr as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
-        <td>{{$db_obj->cash}}</td>
-        <td>{{$db_obj->card}}</td>
-        <td>{{$db_obj->cheque}}</td>
-        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format(($db_obj->cash)+($db_obj->card)+($db_obj->cheque), 2, '.', ',')}}</td>
     </tr>
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
-        <td>{{$sum_cash}}</td>
-        <td>{{$sum_card+$sum_bank}}</td>
-        <td>{{$sum_chq}}</td>
-        <td>{{$sum_all}}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card+$sum_bank, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_all, 2, '.', ',') }}</td>
     </tr>
 </table>
 <table>
@@ -36,25 +36,25 @@
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
-        <td>{{$db_obj->cash}}</td>
-        <td>{{$db_obj->card}}</td>
-        <td>{{$db_obj->cheque}}</td>
-        <td>{{($db_obj->cash)+($db_obj->card)+($db_obj->cheque)}}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="text-align: right">{{ number_format(($db_obj->cash)+($db_obj->card)+($db_obj->cheque), 2, '.', ',')}}</td>
     </tr>
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
-        <td>{{$sum_cash_ref}}</td>
-        <td>{{$sum_card_ref+$sum_bank_ref}}</td>
-        <td>{{$sum_chq_ref}}</td>
-        <td>{{$sum_chq_ref}}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash_ref, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card_ref+$sum_bank_ref, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq_ref, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_all_ref, 2, '.', ',') }}</td>
     </tr>
     <tr>
         <td style="font-weight:bold">GRAND TOTAL</td>
-        <td>{{$grandtotal_cash}}</td>
-        <td>{{$grandtotal_card}}</td>
-        <td>{{$grandtotal_chq}}</td>
-        <td>{{$grandtotal_all}}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_cash, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_card, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_chq, 2, '.', ',') }}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_all, 2, '.', ',') }}</td>
     </tr>
 </table>
 <table>

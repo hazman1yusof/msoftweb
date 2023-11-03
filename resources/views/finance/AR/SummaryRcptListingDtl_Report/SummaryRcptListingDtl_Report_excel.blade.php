@@ -47,7 +47,7 @@
 
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
-    <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
