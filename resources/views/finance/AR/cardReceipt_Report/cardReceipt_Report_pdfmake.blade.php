@@ -73,7 +73,7 @@
                                         { text: '{{$obj->recptno}}' },
                                         { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
                                         { text: '{{number_format($obj->amount,2)}}', alignment: 'right' },
-                                        { text: '' },
+                                        { text: '{{$obj->reference}}' },
                                         { text: '{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}' },
                                         { text: '{{$obj->authno}}' },
                                         { text: '{{$obj->payername}}' },

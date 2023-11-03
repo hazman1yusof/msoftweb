@@ -20,7 +20,7 @@
                     <td>{{$obj->recptno}}</td>
                     <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
                     <td data-format="0.00">{{number_format($obj->amount,2)}}</td>
-                    <td></td>
+                    <td>{{$obj->reference}}</td>
                     <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
                     <td>{{$obj->authno}}</td>
                     <td>{{$obj->payername}}</td>

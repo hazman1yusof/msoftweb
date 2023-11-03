@@ -77,7 +77,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [22,44,44,40,40,32,20,44,41,28,40],  //panjang standard dia 515
+                            widths: [22,32,44,35,40,32,20,44,41,28,40],  //panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Trx Type', style: 'tableHeader' },

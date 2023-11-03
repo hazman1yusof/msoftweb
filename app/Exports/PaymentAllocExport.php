@@ -43,15 +43,15 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 15,
-            'C' => 20,
-            'D' => 15,
-            'E' => 20,
-            'F' => 15,
-            'G' => 10,
-            'H' => 15,
-            'I' => 15,
+            'A' => 5,
+            'B' => 12,
+            'C' => 12,
+            'D' => 10,
+            'E' => 13,
+            'F' => 10,
+            'G' => 7,
+            'H' => 12,
+            'I' => 11,
             'J' => 15,
             'K' => 20,
         ];
@@ -139,12 +139,12 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->insertNewRowBefore(1+$loop_page, 5);
                     
                     ///// assign cell values
-                    $event->sheet->setCellValue('C'.(1+$loop_page),$this->comp->name);
+                    $event->sheet->setCellValue('F'.(1+$loop_page),$this->comp->name);
                     $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('E'.(1+$loop_page),'PRINTED : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
-                    $event->sheet->setCellValue('C'.(2+$loop_page),'PAYMENT ALLOCATION LISTING');
-                    $event->sheet->setCellValue('C'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('E'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
+                    $event->sheet->setCellValue('J'.(1+$loop_page),'PRINTED : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
+                    $event->sheet->setCellValue('F'.(2+$loop_page),'PAYMENT ALLOCATION LISTING');
+                    $event->sheet->setCellValue('F'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
+                    $event->sheet->setCellValue('J'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
                     
                     $event->sheet->setCellValue('A'.(5+$loop_page),'TRX TYPE');
                     $event->sheet->setCellValue('B'.(5+$loop_page),'RECEIPT DATE');
@@ -160,9 +160,16 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                     
                     ///// assign cell styles
                     $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
+                    $event->sheet->getStyle('J'.(1+$loop_page).':J'.(3+$loop_page))->applyFromArray($style_subheader);
+                    $event->sheet->getStyle('F'.(1+$loop_page).':F'.(3+$loop_page))->applyFromArray($style_header);
                     $event->sheet->getStyle('A'.(5+$loop_page).':K'.(5+$loop_page))->applyFromArray($style_columnheader);
+                    
+                    $event->sheet->getStyle('A5:C5')->getAlignment()->setWrapText(true);
+                    $event->sheet->getStyle('D:E')->getAlignment()->setWrapText(true);
+                    $event->sheet->getStyle('F5:G5')->getAlignment()->setWrapText(true);
+                    $event->sheet->getStyle('H:I')->getAlignment()->setWrapText(true);
+                    $event->sheet->getStyle('K')->getAlignment()->setWrapText(true);
+                    $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
                     
                     $curpage++;
                     $loop_page+=50;
