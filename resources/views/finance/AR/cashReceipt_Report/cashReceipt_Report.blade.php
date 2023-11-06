@@ -9,7 +9,7 @@
 				<h2>CASH RECEIPT</h2>
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				
-				<table class="table" style="width: 50%;margin: auto;">
+				<table class="table" style="width: 30%;margin: auto;">
 					<tbody>
 						<tr class="success">
 							<th width="50%">Date From</th>
@@ -18,7 +18,7 @@
 						<tr class="success">
 							<th width="50%">Date To</th>
 							<td><input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"></td>
-						</tr> 
+						</tr>
 					</tbody>
 				</table>
 				<br>
