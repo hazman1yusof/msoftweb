@@ -39,7 +39,6 @@
         </tr>
         <tr></tr>
         <tr></tr>
-        <tr></tr>
     @endforeach
 </table>
 <table>
