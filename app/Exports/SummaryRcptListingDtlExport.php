@@ -47,11 +47,11 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
     {
         
         return [
-            'A' => 16,
-            'B' => 16,
-            'C' => 16,
-            'D' => 16,
-            'E' => 16,
+            'A' => 15,
+            'B' => 15,
+            'C' => 15,
+            'D' => 15,
+            'E' => 15,
         ];
         
     }
@@ -361,16 +361,20 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                 
                 //next table
 
-                    $aftercol = 7+3+$this->dbacthdr_len;
+                    // $aftercol = 7+3+$this->dbacthdr_len;
 
-                    $event->sheet->insertNewRowBefore(1+$loop_page, 3);
+                    // $event->sheet->insertNewRowBefore(1+$loop_page, 3);
 
-                    ///// assign cell styles
-                    $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
-                    $event->sheet->getStyle('A'.(5+$loop_page).':F'.(5+$loop_page))->applyFromArray($style_columnheader);
+                    // ///// assign cell styles
+                    // $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
+                    // $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
+                    // $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
+                    // $event->sheet->getStyle('A'.(5+$loop_page).':F'.(5+$loop_page))->applyFromArray($style_columnheader);
+
+
                 }
+
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
 
             },
         ];

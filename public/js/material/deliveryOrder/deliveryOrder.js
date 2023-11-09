@@ -38,6 +38,7 @@ $(document).ready(function () {
 	var oper=null;
 	var unsaved = false;
 
+	// init_focus_header_footer();
 	$("#dialogForm")
 	  .dialog({ 
 		width: 9.5/10 * $(window).width(),
@@ -1318,7 +1319,7 @@ $(document).ready(function () {
 		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,
 		        	function(self){
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			        },function(self,data){
+			        },function(data,self){
 			        	if(data.rows.length > 0){
 							$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
 			        	}
@@ -2850,3 +2851,13 @@ function fail_msg_func(fail_msg_div=null){
 		});
 	}
 }
+
+// function init_focus_header_footer(){
+// 	$('#panel_header div.panel-body').on('mouseenter',function(){
+//         SmoothScrollTo('#panel_header', 300,-10);
+//     });
+
+//     $('#panel_detail div.panel-body').on('mouseenter',function(){
+//         SmoothScrollTo('#panel_detail', 300,-10);
+//     });
+// }

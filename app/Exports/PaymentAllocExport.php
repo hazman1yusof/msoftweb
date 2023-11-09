@@ -169,11 +169,7 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->getStyle('F5:G5')->getAlignment()->setWrapText(true);
                     $event->sheet->getStyle('H:I')->getAlignment()->setWrapText(true);
                     $event->sheet->getStyle('K')->getAlignment()->setWrapText(true);
-                    $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
-                    
-                    
-                    $event->sheet->getPageSetup()->setFitToWidth(1);
-                    $event->sheet->getPageSetup()->setFitToHeight(0);
+                   
                     
                     $curpage++;
                     $loop_page+=50;
@@ -209,6 +205,12 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                 // $event->sheet->getStyle('C'.$aftercol.':C'.($aftercol+1))->applyFromArray($style_header);
                 // $event->sheet->getStyle('F'.($aftercol+6).':F'.($aftercol+4))->applyFromArray($style_address);
                 // $event->sheet->getStyle('A'.$aftercol.':H'.($aftercol+6))->applyFromArray($style_columnheader);
+
+                
+                $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE); 
+                $event->sheet->getPageSetup()->setFitToWidth(1);
+                $event->sheet->getPageSetup()->setFitToHeight(0);
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
             },
         ];
     }

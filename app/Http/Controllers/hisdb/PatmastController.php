@@ -70,17 +70,27 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','PHYSIOTERAPHY')->first();
+            $ordcomtt_rehab = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','REHABILITATION')->first();
             $ordcomtt_dfee = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','DOCTORFEES')->first();
+            $ordcomtt_oth = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','OTH')->first();
 
             $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
             $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
             $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
             $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
             $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
+            $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
             $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
+            $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
         }
 
         return view('hisdb.pat_mgmt.landing',$data_send);
@@ -3253,6 +3263,12 @@ class PatmastController extends defaultController
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
+    }
+
+    public function change_to_jsarray($str){
+        $array=explode(",",$str);
+
+        return "'".implode("','",$array)."'";
     }
 
 

@@ -58,6 +58,10 @@ $(document).ready(function(){
 				$("#jqGrid_phys").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 				refreshGrid('#jqGrid_phys',urlParam_phys,'add');
 				break;
+			case 'REHAB':
+				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				refreshGrid('#jqGrid_rehab',urlParam_phys,'add');
+				break;
 			case 'OTH':
 				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');

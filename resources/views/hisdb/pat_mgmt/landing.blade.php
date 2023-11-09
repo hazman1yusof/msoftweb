@@ -439,6 +439,7 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
 				@else
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
@@ -447,6 +448,7 @@
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 				@endif
 			@endif
