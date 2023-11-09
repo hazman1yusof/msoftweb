@@ -2,28 +2,34 @@
 
 @section('title', 'Summary Receipt Listing Detail')
 
+@section('css')
+	<style>
+		table.reporttable th{
+			border:none;
+			text-align: right;
+			padding-right: 20px;
+		}
+		table.reporttable td{
+			padding:5px;
+		}
+	</style>
+@endsection
+
 @section('body')
 	<div class="container">
 		<div class="jumbotron" style="margin-top: 30px;text-align: center;">
 			<form method="get" id="genreport" action="/SummaryRcptListingDtl_Report/showExcel">
 				<h2>SUMMARY RECEIPT LISTING DETAIL</h2>
-				<!-- <div class="col-md-5" style="align:right;">
-					<label class="control-label" for="Status">Status</label>
-					<select id="Status" name="Status" class="form-control input-sm">
-						<option value="DAILY" selected>DAILY</option>
-						<option value="DETAIL">DETAIL</option>
-					</select>
-				</div> -->
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				
-				<table class="table" style="width: 30%;margin: auto;">
+				<table class="reporttable" style="width: 30%;margin: auto;">
 					<tbody>
-						<tr class="success">
-							<th width="50%">Date From</th>
+						<tr>
+							<th width="50%">Date From :</th>
 							<td><input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"></td>
 						</tr>
-						<tr class="success">
-							<th width="50%">Date To</th>
+						<tr>
+							<th width="50%">Date To :</th>
 							<td><input id="dateto" name="dateto" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"></td>
 						</tr>
 					</tbody>

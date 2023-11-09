@@ -20,13 +20,6 @@
 		<div class="jumbotron" style="margin-top: 30px;text-align: center;">
 			<form method="get" id="genreport" action="/SummaryRcptListing_Report/showExcel">
 				<h2>SUMMARY RECEIPT LISTING</h2>
-				<!-- <div class="col-md-5" style="align:right;">
-					<label class="control-label" for="Status">Status</label>
-					<select id="Status" name="Status" class="form-control input-sm">
-						<option value="DAILY" selected>DAILY</option>
-						<option value="DETAIL">DETAIL</option>
-					</select>
-				</div> -->
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				
 				<table class="reporttable" style="width: 30%;margin: auto;">
