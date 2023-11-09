@@ -171,6 +171,10 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->getStyle('K')->getAlignment()->setWrapText(true);
                     $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
                     
+                    
+                    $event->sheet->getPageSetup()->setFitToWidth(1);
+                    $event->sheet->getPageSetup()->setFitToHeight(0);
+                    
                     $curpage++;
                     $loop_page+=50;
                 }

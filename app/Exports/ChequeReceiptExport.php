@@ -357,6 +357,15 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
                     $event->sheet->getStyle('D')->getAlignment()->setWrapText(true);
                     $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
 
+                    // $sheet = $event->sheet->getDelegate();
+
+                    // $cols = array_keys($sheet->getColumnDimensions());
+                    // foreach ($cols as $col) {
+                    //     $sheet->getColumnDimension($col)->setAutoSize(true);
+                    // }
+
+                    $event->sheet->getPageSetup()->setFitToWidth(1);
+                    $event->sheet->getPageSetup()->setFitToHeight(0);
                     $curpage++;
                     $loop_page+=50;
                 }
