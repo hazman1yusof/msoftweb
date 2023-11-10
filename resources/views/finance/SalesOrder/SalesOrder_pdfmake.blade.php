@@ -70,7 +70,7 @@
 						widths: [50, 10, '*', 50, 10, '*'], //panjang standard dia 515
 						body: [
 							[
-								{text: 'GST ID NO'},
+								{text: 'GST ID NO', alignment: 'right'},
 								{text: ':'},
 								{text: ''},
 								{},
@@ -79,27 +79,27 @@
 								
 							],
 							[
-								{text: 'DEBTOR'},
+								{text: 'DEBTOR', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->debt_debtcode}}'},
-								{text: 'BILL NO'},
+								{text: 'BILL NO', alignment: 'right'},
 								{text: ':'},
 								{text: '{{str_pad($dbacthdr->invno, 7, "0", STR_PAD_LEFT)}}'},
 							],
 							[
-								{text: 'NAME'},
+								{text: 'NAME', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->debt_name}}'},
-								{text: 'BILL DATE'},
+								{text: 'BILL DATE', alignment: 'right'},
 								{text: ':'},
 								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
 								
 							],
 							[
-								{text: 'ADDRESS'},
+								{text: 'ADDRESS', alignment: 'right'},
 								{text: ':'},
 								{text: '{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}'},
-								{text: 'FIN CLASS'},
+								{text: 'FIN CLASS', alignment: 'right'},
 								{text: ':'},
 								@if(!empty($dbacthdr->dt_debtortycode) && !empty($dbacthdr->dt_description))
 									{text: '{{$dbacthdr->dt_debtortycode}} ({{$dbacthdr->dt_description}})'},
@@ -109,14 +109,14 @@
 							],
 							[{},{},{},{},{},{},],
 							[
-								{text: 'CREDIT TERM'},
+								{text: 'CREDIT TERM', alignment: 'right'},
 								{text: ':'},
 								@if(!empty($dbacthdr->crterm))
 									{text: '{{$dbacthdr->crterm}} DAYS'},
 								@else
 									{text: ''},
 								@endif
-								{text: 'BILL TYPE'},
+								{text: 'BILL TYPE', alignment: 'right'},
 								{text: ':'},
 								@if(!empty($dbacthdr->billtype) && !empty($dbacthdr->bt_desc))
 									{text: '{{$dbacthdr->billtype}} ({{$dbacthdr->bt_desc}})'},

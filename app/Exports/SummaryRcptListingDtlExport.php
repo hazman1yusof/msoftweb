@@ -296,7 +296,7 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:F')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },

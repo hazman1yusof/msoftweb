@@ -1,6 +1,8 @@
 <table>
     <tr>
         <td style="font-weight:bold;text-align: left">DATE</td>
+        <td style="font-weight:bold;text-align: left">TILL CODE</td>
+        <td style="font-weight:bold;text-align: left">CASHIER</td>
         <td style="font-weight:bold;text-align: right">CASH</td>
         <td style="font-weight:bold;text-align: right">CARD</td>
         <td style="font-weight:bold;text-align: right">CHEQUE</td>
@@ -10,6 +12,8 @@
     @foreach($dbacthdr as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->tillcode}}</td>
+        <td>{{$db_obj->cashier}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
@@ -19,6 +23,8 @@
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
+        <td></td>
+        <td></td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq, 2, '.', ',') }}</td>
@@ -29,6 +35,7 @@
 
 <table>       
     <tr>
+        <td></td>
         <td></td>
         <td></td>
         <td style="font-weight:bold; text-align: center">REFUND LISTING</td>
@@ -43,9 +50,13 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        <td></td>
     </tr> 
     <tr>
         <td style="font-weight:bold;text-align: left">DATE</td>
+        <td style="font-weight:bold;text-align: left">TILL CODE</td>
+        <td style="font-weight:bold;text-align: left">CASHIER</td>
         <td style="font-weight:bold;text-align: right">CASH</td>
         <td style="font-weight:bold;text-align: right">CARD</td>
         <td style="font-weight:bold;text-align: right">CHEQUE</td>
@@ -56,6 +67,8 @@
     @foreach($dbacthdr_rf as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
+        <td>{{$db_obj->tillcode}}</td>
+        <td>{{$db_obj->cashier}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque, 2, '.', ',') }}</td>
@@ -65,6 +78,8 @@
     @endforeach
     <tr>
         <td style="font-weight:bold">SUBTOTAL</td>
+        <td></td>
+        <td></td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_cash_ref, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_card_ref, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($sum_chq_ref, 2, '.', ',') }}</td>
@@ -78,9 +93,13 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
+        <td></td>
     </tr> 
     <tr>
         <td style="font-weight:bold">GRAND TOTAL</td>
+        <td></td>
+        <td></td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_cash, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_card, 2, '.', ',') }}</td>
         <td data-format="0.00" style="font-weight:bold; text-align: right">{{ number_format($grandtotal_chq, 2, '.', ',') }}</td>
