@@ -87,7 +87,7 @@
 								{text: '{{str_pad($dbacthdr->invno, 7, "0", STR_PAD_LEFT)}}'},
 							],
 							[
-								{text: 'NAME :'},
+								{text: 'NAME'},
 								{text: ':'},
 								{text: '{{$dbacthdr->debt_name}}'},
 								{text: 'BILL DATE'},
@@ -124,8 +124,6 @@
 					style: 'tableExample',
 					table: {
 						widths: ['*','*','*','*','*','*','*','*','*','*'],
-						// headerRows: 5,
-						// keepWithHeaderRows: 5,
 						body: [
 
 							[
