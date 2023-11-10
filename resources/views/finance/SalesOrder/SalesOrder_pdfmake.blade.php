@@ -56,61 +56,77 @@
 			pageSize: 'A4',
 		  	content: [
 				{
+					image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+				},
+				{
+					text: ' {{$title}}\n',
+					style: 'header',
+					alignment: 'center'
+				},
+				{
+					style: 'tableExample',
+					table: {
+						headerRows: 1,
+						widths: [50, 10, '*', 50, 10, '*'], //panjang standard dia 515
+						body: [
+							[
+								{text: 'GST ID NO'},
+								{text: ':'},
+								{text: ''},
+								{},
+								{},
+								{},
+								
+							],
+							[
+								{text: 'DEBTOR'},
+								{text: ':'},
+								{text: '{{$dbacthdr->debt_debtcode}}'},
+								{text: 'BILL NO'},
+								{text: ':'},
+								{text: '{{str_pad($dbacthdr->invno, 7, "0", STR_PAD_LEFT)}}'},
+							],
+							[
+								{text: 'NAME :'},
+								{text: ':'},
+								{text: '{{$dbacthdr->debt_name}}'},
+								{text: 'BILL DATE'},
+								{text: ':'},
+								{text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$dbacthdr->entrydate)->format('d-m-Y')}}'},
+								
+							],
+							[
+								{text: 'ADDRESS'},
+								{text: ':'},
+								{text: '{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}'},
+								{text: 'FIN CLASS'},
+								{text: ':'},
+								{text: '{{$dbacthdr->dt_debtortycode}} ({{$dbacthdr->dt_description}})'},
+
+								
+							],
+							[{},{},{},{},{},{},],
+							[
+								{text: 'CREDIT TERM'},
+								{text: ':'},
+								{text: '{{$dbacthdr->crterm}} DAYS'},
+								{text: 'BILL TYPE'},
+								{text: ':'},
+								{text: '{{$dbacthdr->billtype}} ({{$dbacthdr->bt_desc}})'},
+								
+								
+							],
+						]
+					},
+					layout: 'noBorders',
+				},
+				{
 					style: 'tableExample',
 					table: {
 						widths: ['*','*','*','*','*','*','*','*','*','*'],
 						// headerRows: 5,
 						// keepWithHeaderRows: 5,
 						body: [
-							[
-								{image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{},
-
-								{text: '\n\n{{$title}}', style: 'tableHeader', colSpan: 5, alignment: 'center'},{},{},{},{}
-							],
-
-							[
-								{
-									text: 'Address To:\n\n{{$dbacthdr->debt_name}}\n{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}', 
-									colSpan: 5, 
-									rowSpan: 4,
-									alignment: 'left'},{},{},{},{},
-								{
-								 	text: 'Document Number',
-								 	colSpan: 2, alignment: 'left'},{},
-								{
-									text: '{{str_pad($dbacthdr->auditno, 7, '0', STR_PAD_LEFT)}}',
-								 	colSpan: 3, alignment: 'left'},{},{}
-							],
-							
-							[
-								{},{},{},{},{},
-								{
-								 	text: 'PO Date',
-								 	colSpan: 2, alignment: 'left'},{},
-								{
-									text: dbacthdr.podate,
-								 	colSpan: 3, alignment: 'left'},{},{}
-							],
-
-							[
-								{},{},{},{},{},
-								{
-								 	text: 'Invoice No',
-								 	colSpan: 2, alignment: 'left'},{},
-								{
-									text: '{{str_pad($dbacthdr->invno, 7, '0', STR_PAD_LEFT)}}',
-								 	colSpan: 3, alignment: 'left'},{},{}
-							],
-
-							[
-                                {},{},{},{},{},
-                                {
-                                    text: 'Invoice Date',
-                                    colSpan: 2, alignment: 'left'},{},
-                                {
-                                    text: dbacthdr.entrydate,
-                                    colSpan: 3, alignment: 'left'},{},{}
-                            ],
 
 							[
                                 {text:'Description',colSpan: 5, style:'totalbold'},{},{},{},{},
@@ -153,7 +169,8 @@
 									, colSpan: 10},{},{},{},{},{},{},{},{},{},
 							],
 						]
-					}
+					},
+					layout: 'lightHorizontalLines',
 				},
                
                 {
@@ -183,7 +200,7 @@
 				},
 				tableHeader: {
 					bold: true,
-					fontSize: 13,
+					fontSize: 10,
 					color: 'black'
 				},
 				totalbold: {
