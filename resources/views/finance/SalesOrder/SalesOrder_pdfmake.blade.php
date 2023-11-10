@@ -111,7 +111,11 @@
 							[
 								{text: 'CREDIT TERM'},
 								{text: ':'},
-								{text: '{{$dbacthdr->crterm}} DAYS'},
+								@if(!empty($dbacthdr->crterm))
+									{text: '{{$dbacthdr->crterm}} DAYS'},
+								@else
+									{text: ''},
+								@endif
 								{text: 'BILL TYPE'},
 								{text: ':'},
 								@if(!empty($dbacthdr->billtype) && !empty($dbacthdr->bt_desc))
