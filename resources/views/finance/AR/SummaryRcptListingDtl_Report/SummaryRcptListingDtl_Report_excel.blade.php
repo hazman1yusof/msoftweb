@@ -1,4 +1,4 @@
-<table>  
+<table>
     <tr>
         <td style="font-weight:bold;text-align: left">DATE</td>
         <td style="font-weight:bold;text-align: right">CASH</td>

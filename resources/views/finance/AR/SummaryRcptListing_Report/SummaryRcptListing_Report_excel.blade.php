@@ -1,4 +1,11 @@
-<table>    
+<table>
+    <tr>
+        <td style="font-weight:bold;text-align: left">DATE</td>
+        <td style="font-weight:bold;text-align: right">CASH</td>
+        <td style="font-weight:bold;text-align: right">CARD</td>
+        <td style="font-weight:bold;text-align: right">CHEQUE</td>
+        <td style="font-weight:bold;text-align: right">TOTAL</td>
+    </tr>
     @foreach($dbacthdr as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
