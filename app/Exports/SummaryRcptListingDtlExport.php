@@ -31,7 +31,6 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
     
     public function __construct($datefr,$dateto,$tillcode,$tillno)
     {
-        
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->tillcode = $tillcode;
@@ -42,10 +41,9 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
-
+    
     public function columnWidths(): array
     {
-        
         return [
             'A' => 15,
             'B' => 15,
@@ -53,20 +51,19 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
             'D' => 15,
             'E' => 15,
         ];
-        
     }
     
     public function view(): View
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-
+        
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
                     ->where('tillcode',$this->tillcode)
                     ->where('tillno',$this->tillno)
                     ->first();
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt','debtor.tilldetl as dl')
                 ->select(
                     'dh.tillcode',  'dh.entrydate', 'dl.cashier as cashier', 'dh.tillno',
@@ -92,9 +89,9 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                 ->groupBy('dh.tillcode', 'dh.entrydate','dl.cashier', 'dh.tillno')
                 ->whereBetween('dh.entrydate', [$datefr, $dateto])
                 ->get();
-
+        
         $totalAmount = $dbacthdr->sum('amount');
-
+        
         $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt','debtor.tilldetl as dl')
                 ->select(
                     'dh.tillcode',  'dh.entrydate', 'dl.cashier as cashier', 'dh.tillno',
@@ -132,7 +129,6 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                     });
         
         if($db_dbacthdr->exists()){
-    
             $sum_cash = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
@@ -146,7 +142,6 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                         })
                         ->whereBetween('db.entrydate', [$datefr, $dateto])
                         ->sum('amount');
-
             
             $sum_chq = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
@@ -267,11 +262,10 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
             $grandtotal_chq = $sum_chq - $sum_chq_ref;
             $grandtotal_bank = $sum_bank - $sum_bank_ref;
             $grandtotal_all = $sum_all - $sum_all_ref;
-
         }
         
         $title = "SUMMARY RECEIPT LISTING DETAIL";
-
+        
         $title2 = "REFUND LISTING";
         
         $company = DB::table('sysdb.company')
@@ -287,29 +281,28 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
-
-        return view('finance.AR.SummaryRcptListingDtl_Report.SummaryRcptListingDtl_Report_excel',compact('dbacthdr','dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_bank','grandtotal_all','title', 'title2','company','totamt_eng'));
         
+        return view('finance.AR.SummaryRcptListingDtl_Report.SummaryRcptListingDtl_Report_excel',compact('dbacthdr','dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_bank','grandtotal_all','title', 'title2','company','totamt_eng'));
     }
-
+    
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
-
+                
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSUMMARY RECEIPT LISTING DETAIL"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username').'&R'.'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i')."\nPAGE : &P/&N");
-
+                
                 $event->sheet->getPageMargins()->setTop(1);
-
+                
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-
+                $event->sheet->getStyle('A:F')->getAlignment()->setWrapText(true);
+                $event->sheet->getPageSetup()->setFitToWidth(1);
+                $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
-        
     }
-
+    
     public function convertNumberToWordENG($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));

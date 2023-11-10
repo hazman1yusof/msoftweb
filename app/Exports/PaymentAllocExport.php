@@ -84,9 +84,6 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
                     ->whereBetween('da.allocdate', [$datefr, $dateto])
                     // ->whereBetween('dh.entrydate', [$datefr, $dateto])
                     ->get();
-        // dd($dballoc);
-        
-        $this->dballoc_len=$dballoc->count();
         
         $title = "PAYMENT ALLOCATION LISTING";
         
@@ -101,116 +98,16 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                // set up a style array for cell formatting
-                $totrow = $event->sheet->getHighestRow();
-                $style_header = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $style_subheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_LEFT
-                    ]
-                ];
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nPAYMENT ALLOCATION LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username').'&R'.'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i')."\nPAGE : &P/&N");
                 
-                $style_columnheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
+                $event->sheet->getPageMargins()->setTop(1);
                 
-                $totpage = ceil($totrow/45);
-                
-                $curpage=1;
-                $loop_page=0;
-                while ($totrow > 0){
-                    $totrow=$totrow-45;
-                    $event->sheet->insertNewRowBefore(1+$loop_page, 5);
-                    
-                    ///// assign cell values
-                    $event->sheet->setCellValue('F'.(1+$loop_page),$this->comp->name);
-                    $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('J'.(1+$loop_page),'PRINTED : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
-                    $event->sheet->setCellValue('F'.(2+$loop_page),'PAYMENT ALLOCATION LISTING');
-                    $event->sheet->setCellValue('F'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('J'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
-                    
-                    $event->sheet->setCellValue('A'.(5+$loop_page),'TRX TYPE');
-                    $event->sheet->setCellValue('B'.(5+$loop_page),'RECEIPT DATE');
-                    $event->sheet->setCellValue('C'.(5+$loop_page),'ALLOCATION DATE');
-                    $event->sheet->setCellValue('D'.(5+$loop_page),'RECEIPT NO');
-                    $event->sheet->setCellValue('E'.(5+$loop_page),'PAYMENT DETAILS');
-                    $event->sheet->setCellValue('F'.(5+$loop_page),'RECEIPT AMT');
-                    $event->sheet->setCellValue('G'.(5+$loop_page),'BILL NO');
-                    $event->sheet->setCellValue('H'.(5+$loop_page),'BILL DATE');
-                    $event->sheet->setCellValue('I'.(5+$loop_page),'ALLOCATED AMT');
-                    $event->sheet->setCellValue('J'.(5+$loop_page),'DEBTOR CODE');
-                    $event->sheet->setCellValue('K'.(5+$loop_page),'NAME');
-                    
-                    ///// assign cell styles
-                    $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('J'.(1+$loop_page).':J'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('F'.(1+$loop_page).':F'.(3+$loop_page))->applyFromArray($style_header);
-                    $event->sheet->getStyle('A'.(5+$loop_page).':K'.(5+$loop_page))->applyFromArray($style_columnheader);
-                    
-                    $event->sheet->getStyle('A5:C5')->getAlignment()->setWrapText(true);
-                    $event->sheet->getStyle('D:E')->getAlignment()->setWrapText(true);
-                    $event->sheet->getStyle('F5:G5')->getAlignment()->setWrapText(true);
-                    $event->sheet->getStyle('H:I')->getAlignment()->setWrapText(true);
-                    $event->sheet->getStyle('K')->getAlignment()->setWrapText(true);
-                   
-                    
-                    $curpage++;
-                    $loop_page+=50;
-                }
-
-                // next table
-                
-                // $aftercol = 7+3+$this->dballoc_len;
-                
-                // $event->sheet->insertNewRowBefore($aftercol, 7);
-                ///// assign cell values
-                // $event->sheet->setCellValue('A'.$aftercol,'PRINTED DATE :');
-                // $event->sheet->setCellValue('B'.$aftercol, Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
-                // $event->sheet->setCellValue('A'.($aftercol+1),'PRINTED TIME :');
-                // $event->sheet->setCellValue('B'.($aftercol+1), Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
-                // $event->sheet->setCellValue('A'.($aftercol+2),'PRINTED BY :');
-                // $event->sheet->setCellValue('B'.($aftercol+2), session('username'));
-                // $event->sheet->setCellValue('C'.($aftercol),'REFUND LISTING');
-                // $event->sheet->setCellValue('C'.($aftercol+1), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                // $event->sheet->setCellValue('F'.$aftercol,$this->comp->name);
-                // $event->sheet->setCellValue('F'.($aftercol+1),$this->comp->address1);
-                // $event->sheet->setCellValue('F'.($aftercol+2),$this->comp->address2);
-                // $event->sheet->setCellValue('F'.($aftercol+3),$this->comp->address3);
-                // $event->sheet->setCellValue('F'.($aftercol+4),$this->comp->address4);
-                // $event->sheet->setCellValue('A'.($aftercol+6),'DATE');
-                // $event->sheet->setCellValue('B'.($aftercol+6),'CASH');
-                // $event->sheet->setCellValue('C'.($aftercol+6),'CARD');
-                // $event->sheet->setCellValue('D'.($aftercol+6),'CHEQUE');
-                // $event->sheet->setCellValue('E'.($aftercol+6),'TOTAL');
-                
-                ///// assign cell styles
-                // $event->sheet->getStyle('A'.$aftercol.':A'.$aftercol)->applyFromArray($style_datetime);
-                // $event->sheet->getStyle('C'.$aftercol.':C'.($aftercol+1))->applyFromArray($style_header);
-                // $event->sheet->getStyle('F'.($aftercol+6).':F'.($aftercol+4))->applyFromArray($style_address);
-                // $event->sheet->getStyle('A'.$aftercol.':H'.($aftercol+6))->applyFromArray($style_columnheader);
-
-                
-                $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE); 
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                $event->sheet->getStyle('A:K')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
-                $event->sheet->getPageSetup()->setPaperSize(9);//A4
             },
         ];
     }

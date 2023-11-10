@@ -1,4 +1,17 @@
 <table>
+    <tr>
+        <td style="font-weight:bold;text-align: left">TRX TYPE</td>
+        <td style="font-weight:bold;text-align: right">RECEIPT DATE</td>
+        <td style="font-weight:bold;text-align: right">ALLOCATION DATE</td>
+        <td style="font-weight:bold;text-align: right">RECEIPT NO</td>
+        <td style="font-weight:bold;text-align: right">PAYMENT DETAILS</td>
+        <td style="font-weight:bold;text-align: right">RECEIPT AMT</td>
+        <td style="font-weight:bold;text-align: right">BILL NO</td>
+        <td style="font-weight:bold;text-align: right">BILL DATE</td>
+        <td style="font-weight:bold;text-align: right">ALLOCATED AMT</td>
+        <td style="font-weight:bold;text-align: right">DEBTOR CODE</td>
+        <td style="font-weight:bold;text-align: right">NAME</td>
+    </tr>
     @foreach ($dballoc as $obj)
         <tr>
             <td>{{$obj->doctrantype}}</td>
