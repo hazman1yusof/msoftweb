@@ -59,7 +59,7 @@
 					image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
 				},
 				{
-					text: ' {{$title}}\n',
+					text: '\n{{$title}}\n',
 					style: 'header',
 					alignment: 'center'
 				},
