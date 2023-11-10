@@ -101,9 +101,11 @@
 								{text: '{{$dbacthdr->cust_address1}}\n{{$dbacthdr->cust_address2}}\n{{$dbacthdr->cust_address3}}\n{{$dbacthdr->cust_address4}}'},
 								{text: 'FIN CLASS'},
 								{text: ':'},
-								{text: '{{$dbacthdr->dt_debtortycode}} ({{$dbacthdr->dt_description}})'},
-
-								
+								@if(!empty($dbacthdr->dt_debtortycode) && !empty($dbacthdr->dt_description))
+									{text: '{{$dbacthdr->dt_debtortycode}} ({{$dbacthdr->dt_description}})'},
+								@else
+									{text: ''},
+								@endif
 							],
 							[{},{},{},{},{},{},],
 							[
@@ -112,9 +114,11 @@
 								{text: '{{$dbacthdr->crterm}} DAYS'},
 								{text: 'BILL TYPE'},
 								{text: ':'},
-								{text: '{{$dbacthdr->billtype}} ({{$dbacthdr->bt_desc}})'},
-								
-								
+								@if(!empty($dbacthdr->billtype) && !empty($dbacthdr->bt_desc))
+									{text: '{{$dbacthdr->billtype}} ({{$dbacthdr->bt_desc}})'},
+								@else
+									{text: ''},
+								@endif	
 							],
 						]
 					},
