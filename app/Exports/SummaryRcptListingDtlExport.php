@@ -93,8 +93,6 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
                 ->whereBetween('dh.entrydate', [$datefr, $dateto])
                 ->get();
 
-        $this->dbacthdr_len=$dbacthdr->count();
-
         $totalAmount = $dbacthdr->sum('amount');
 
         $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt','debtor.tilldetl as dl')
@@ -298,83 +296,14 @@ class SummaryRcptListingDtlExport implements FromView, WithEvents, WithColumnWid
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                // set up a style array for cell formatting
-                $totrow = $event->sheet->getHighestRow();
-                $style_header = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
-                
-                $style_subheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_LEFT
-                    ]
-                ];
-                
-                $style_columnheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
-
-                $totpage = ceil($totrow/45);
-
-                $curpage=1;
-                $loop_page=0;
-                while ($totrow > 0){
-                    $totrow=$totrow-45;
-                    $event->sheet->insertNewRowBefore(1+$loop_page, 5);
-
-                    ///// assign cell values
-                    $event->sheet->setCellValue('C'.(1+$loop_page),$this->comp->name);
-                    $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('E'.(1+$loop_page),'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
-                    $event->sheet->setCellValue('C'.(2+$loop_page),'SUMMARY RECEIPT LISTING DETAIL');
-                    $event->sheet->setCellValue('C'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('E'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
-
-                    $event->sheet->setCellValue('A'.(5+$loop_page),'DATE');
-                    $event->sheet->setCellValue('B'.(5+$loop_page),'CASH');
-                    $event->sheet->setCellValue('C'.(5+$loop_page),'CARD');
-                    $event->sheet->setCellValue('D'.(5+$loop_page),'CHEQUE');
-                    $event->sheet->setCellValue('E'.(5+$loop_page),'AUTO DEBIT');
-                    $event->sheet->setCellValue('F'.(5+$loop_page),'TOTAL');
-                    
-                    ///// assign cell styles
-                    $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
-                    $event->sheet->getStyle('A'.(5+$loop_page).':F'.(5+$loop_page))->applyFromArray($style_columnheader);
-
-                    $curpage++;
-                    $loop_page+=50;
-                
-                //next table
-
-                    // $aftercol = 7+3+$this->dbacthdr_len;
-
-                    // $event->sheet->insertNewRowBefore(1+$loop_page, 3);
-
-                    // ///// assign cell styles
-                    // $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    // $event->sheet->getStyle('E'.(1+$loop_page).':E'.(3+$loop_page))->applyFromArray($style_subheader);
-                    // $event->sheet->getStyle('C'.(1+$loop_page).':C'.(3+$loop_page))->applyFromArray($style_header);
-                    // $event->sheet->getStyle('A'.(5+$loop_page).':F'.(5+$loop_page))->applyFromArray($style_columnheader);
-
-
-                }
 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
+
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSUMMARY RECEIPT LISTING DETAIL"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username').'&R'.'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i')."\nPAGE : &P/&N");
+
+                $event->sheet->getPageMargins()->setTop(1);
+
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
 
             },
         ];
