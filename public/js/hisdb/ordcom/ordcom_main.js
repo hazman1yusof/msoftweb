@@ -60,7 +60,11 @@ $(document).ready(function(){
 				break;
 			case 'REHAB':
 				$("#jqGrid_rehab").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
-				refreshGrid('#jqGrid_rehab',urlParam_phys,'add');
+				refreshGrid('#jqGrid_rehab',urlParam_rehab,'add');
+				break;
+			case 'DIET':
+				$("#jqGrid_diet").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				refreshGrid('#jqGrid_diet',urlParam_diet,'add');
 				break;
 			case 'OTH':
 				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));

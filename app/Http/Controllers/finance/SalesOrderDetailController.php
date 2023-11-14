@@ -117,7 +117,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -129,7 +129,9 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                             $join = $join->on('cp.uom', '=', 'cm.uom');
-                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
@@ -303,7 +305,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -317,7 +319,9 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                             $join = $join->on('cp.uom', '=', 'cm.uom');
-                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
                             $join = $join->whereNotNull('cp.effdate');
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
@@ -359,7 +363,7 @@ class SalesOrderDetailController extends defaultController
 
         if($table_count>0){
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->Where('cm.chgcode','like',$serch_chgcode)
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
@@ -372,7 +376,9 @@ class SalesOrderDetailController extends defaultController
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                                 $join = $join->on('cp.uom', '=', 'cm.uom');
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                if($request->from != 'chgcode_dfee'){
+                                    $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                }
                                 $join = $join->where('cp.effdate', '<=', $entrydate);
                             });
 
@@ -474,7 +480,7 @@ class SalesOrderDetailController extends defaultController
         }else{
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
@@ -486,7 +492,9 @@ class SalesOrderDetailController extends defaultController
                                 $join = $join->where('cp.compcode', '=', session('compcode'));
                                 $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                                 $join = $join->on('cp.uom', '=', 'cm.uom');
-                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                if($request->from != 'chgcode_dfee'){
+                                    $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                                }
                                 $join = $join->where('cp.effdate', '<=', $entrydate);
                             });
 
@@ -656,7 +664,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode)
@@ -670,7 +678,9 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                             $join = $join->on('cp.uom', '=', 'cm.uom');
-                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
@@ -796,7 +806,9 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                             $join = $join->on('cp.uom', '=', 'cm.uom');
-                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 
@@ -1016,7 +1028,9 @@ class SalesOrderDetailController extends defaultController
                             $join = $join->where('cp.compcode', '=', session('compcode'));
                             $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
                             $join = $join->on('cp.uom', '=', 'cm.uom');
-                            $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
                             $join = $join->where('cp.effdate', '<=', $entrydate);
                         });
 

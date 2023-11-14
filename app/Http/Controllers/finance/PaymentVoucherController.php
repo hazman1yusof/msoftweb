@@ -1153,7 +1153,7 @@ use PDF;
         }
 
         $apacthdr = DB::table('finance.apacthdr as h', 'material.supplier as m', 'finance.bank as b')
-            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
             ->leftJoin('material.supplier as m', 'h.suppcode', '=', 'm.suppcode')
             ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
             ->where('auditno','=',$auditno)
@@ -1194,7 +1194,8 @@ use PDF;
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        // return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake2',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
 
         // if(empty($request->type)){
 

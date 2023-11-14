@@ -74,6 +74,10 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','REHABILITATION')->first();
+            $ordcomtt_diet = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','DIETATIC')->first();
             $ordcomtt_dfee = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
@@ -89,6 +93,7 @@ class PatmastController extends defaultController
             $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
             $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
             $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
+            $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
             $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
             $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
         }

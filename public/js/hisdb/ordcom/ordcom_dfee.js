@@ -45,6 +45,9 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_dfee
 				},
 			},{
+				label: 'Doctor', name: 'brandname', width: 100, classes: 'wrap', editable: true,
+				editrules: { required: false },editoptions:{readonly: "readonly"}
+			},{
 				label: 'UOM Code', name: 'uom', hidden:true
 			},{
 				label: 'Tax', name: 'taxcode', width: 80, classes: 'wrap', editable: true,
@@ -57,7 +60,7 @@ $(document).ready(function(){
 				},
 			},
 			{
-				label: 'Unit Price', name: 'unitprce', width: 100, classes: 'wrap txnum', align: 'right',
+				label: 'Unit Price', name: 'unitprce', width: 90, classes: 'wrap txnum', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
@@ -68,25 +71,25 @@ $(document).ready(function(){
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
-			{ label: 'Total Amount <br>Before Tax', name: 'amount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Total Amount <br>Before Tax', name: 'amount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			{ label: 'Discount<br>Amount', name: 'discamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Discount<br>Amount', name: 'discamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Tax<br>Amount', name: 'taxamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Tax<br>Amount', name: 'taxamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Total<br>Amount', name: 'totamount', width: 100, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Total<br>Amount', name: 'totamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},{
-				label: 'Note', name: 'remarks', width: 220, classes: 'wrap', editable: true,edittype: 'textarea',editoptions: {rows:"4"}
+				label: 'Note', name: 'remarks', hidden: true
 			},
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
@@ -347,6 +350,7 @@ var dialog_chgcode_dfee = new ordialog(
 			{label: 'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label: 'Inventory',name:'invflag',width:100,hidden:true},
+			{label: 'brandname',name:'brandname',width:100,hidden:true},
 			{label: 'UOM',name:'uom',width:100,classes:'pointer',},
 			{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',hidden:true},
 			{label: 'Price',name:'price',width:100,classes:'pointer'},
@@ -357,6 +361,7 @@ var dialog_chgcode_dfee = new ordialog(
 			{label: 'avgcost',name:'avgcost',hidden:true},
 			{label: 'billty_amount',name:'billty_amount',hidden:true},
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
+			{label: 'overwrite',name:'overwrite',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
 			
 		],
@@ -392,8 +397,8 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('avgcost',data['avgcost']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('convfactor',data['convfactor']);
 			$('#'+dialog_chgcode_dfee.gridname).data('fail_msg','');
-
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").val(data['chgcode']);
+			$("#jqGrid_dfee #"+id_optid+"_brandname").val(data['brandname']);
 			$("#jqGrid_dfee #"+id_optid+"_taxcode").val(data['taxcode']);
 			$("#jqGrid_dfee #"+id_optid+"_uom_rate").val(data['rate']);
 			$("#jqGrid_dfee #"+id_optid+"_convfactor_uom").val(data['convfactor']);
@@ -406,6 +411,12 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_cost_price").val(data['avgcost']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_dfee #"+id_optid+"_billtypeamt").val(data['billty_amount']);
+
+			if(data['overwrite'] == '1'){
+				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',false);
+			}else{
+				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',true);
+			}
 
 			// dialog_uomcode_dfee.check(errorField);
 			// dialog_uom_recv_dfee.check(errorField);
