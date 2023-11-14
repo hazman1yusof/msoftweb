@@ -100,7 +100,7 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nPAYMENT ALLOCATION LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username').'&R'.'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i')."\nPAGE : &P/&N");
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nPAYMENT ALLOCATION LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 

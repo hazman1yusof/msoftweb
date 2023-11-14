@@ -19,7 +19,7 @@
                 <tr>
                     <td>{{$obj->recptno}}</td>
                     <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
-                    <td data-format="0.00">{{number_format($obj->amount,2)}}</td>
+                    <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
                     <td>{{$obj->reference}}</td>
                     <td>{{\Carbon\Carbon::parse($obj->expdate)->format('d/m/Y')}}</td>
                     <td>{{$obj->authno}}</td>
@@ -31,7 +31,7 @@
         <tr>
             <td style="font-weight:bold">Total Amount</td>
             <td></td>
-            <td data-format="0.00">{{number_format($tot,2)}}</td>
+            <td data-format="0.00" style="text-align: right">{{number_format($tot, 2, '.', ',')}}</td>
             <td></td>
             <td></td>
             <td></td>
@@ -45,6 +45,6 @@
     <tr>
         <td style="font-weight:bold">Grand Total:</td>
         <td></td>
-        <td data-format="0.00" style="font-weight:bold; text-align: right;">{{number_format($totalAmount,2)}}</td>
+        <td data-format="0.00" style="font-weight:bold; text-align: right;">{{number_format($totalAmount, 2, '.', ',')}}</td>
     </tr>
 </table>

@@ -5,16 +5,10 @@ var editedRow=0;
 
 $(document).ready(function () {
     
-    textare_init_progressnote();
-    
-    // $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes').each(function () {
-    //     this.setAttribute('style', 'height:' + (38) + 'px;min-height:'+ (38) +'px;overflow-y:hidden;');
-    // }).on('input', function () {
-    //     this.style.height = 'auto';
-    //     this.style.height = (this.scrollHeight) + 'px';
-    // });
-    
     var fdl = new faster_detail_load();
+    
+    /////////////////////////////////////progressnote starts/////////////////////////////////////
+    textare_init_progressnote();
     
     disableForm('#formProgress');
     
@@ -22,7 +16,7 @@ $(document).ready(function () {
         button_state_progress('wait');
         enableForm('#formProgress');
         rdonly('#formProgress');
-        emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
+        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote']);
         document.getElementById("idno_progress").value = "";
         // dialog_mrn_edit.on();
     });
@@ -55,38 +49,60 @@ $(document).ready(function () {
         button_state_progress($(this).data('oper'));
         // dialog_mrn_edit.off();
     });
+    //////////////////////////////////////progressnote ends//////////////////////////////////////
     
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function() {
         $(this).val(parseFloat($(this).val()).toFixed(2));
     });
     
-    $("#jqGridProgress_panel").on("show.bs.collapse", function(){
+    $("#jqGridNursNote_panel").on("show.bs.collapse", function(){
         var urlparam_datetime_tbl={
             action: 'get_table_datetime',
-            mrn: $("#mrn_progress").val(),
-            episno: $("#episno_progress").val()
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val()
         }
         
-        datetime_tbl.ajax.url( "./progressnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
-            emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
+        datetime_tbl.ajax.url( "./nursingnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
+            emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote']);
             $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
         });
     });
     
-    $("#jqGridProgress_panel").on("hide.bs.collapse", function(){
+    $("#jqGridNursNote_panel").on("hide.bs.collapse", function(){
         button_state_progress('empty');
         disableForm('#formProgress');
-        $("#jqGridProgress_panel > div").scrollTop(0);
+        $("#jqGridNursNote_panel > div").scrollTop(0);
     });
     
-    $('#jqGridProgress_panel').on('shown.bs.collapse', function () {
-        SmoothScrollTo("#jqGridProgress_panel", 500);
+    $('#jqGridNursNote_panel').on('shown.bs.collapse', function () {
+        SmoothScrollTo("#jqGridNursNote_panel", 500);
         populate_progressnote_getdata();
     });
     
-    $('#jqGridProgress_panel').on('hidden.bs.collapse', function () {
+    $('#jqGridNursNote_panel').on('hidden.bs.collapse', function () {
         // button_state_progress('empty');
+    });
+    
+    $('.nav-tabs a').on('shown.bs.tab', function(e){
+        let type = $(this).data('type');
+        switch(type){
+            case 'progress':
+            
+                break;
+            case 'intake':
+            
+                break;
+            case 'drug':
+            
+                break;
+            case 'treatment':
+            
+                break;
+            case 'careplan':
+            
+                break;
+        }
     });
     
     $('#datetime_tbl tbody').on('click', 'tr', function () {
@@ -104,7 +120,7 @@ $(document).ready(function () {
             $(this).addClass('selected');
         }
         
-        emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
+        emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote']);
         $('#datetime_tbl tbody tr').removeClass('active');
         $(this).addClass('active');
         
@@ -122,7 +138,7 @@ $(document).ready(function () {
             // episno: data.episno
         };
         
-        $.post( "./progressnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
             
         },'json').fail(function(data) {
             alert('there is an error');
@@ -183,24 +199,24 @@ button_state_progress('empty');
 function button_state_progress(state){
     switch(state){
         case 'empty':
-            $("#toggle_progress").removeAttr('data-toggle');
+            $("#toggle_nursNote").removeAttr('data-toggle');
             $('#cancel_progress').data('oper','add');
             $('#new_progress,#save_progress,#cancel_progress,#edit_progress').attr('disabled',true);
             break;
         case 'add':
-            $("#toggle_progress").attr('data-toggle','collapse');
+            $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_progress').data('oper','add');
             $("#new_progress").attr('disabled',false);
             $('#save_progress,#cancel_progress,#edit_progress').attr('disabled',true);
             break;
         case 'edit':
-            $("#toggle_progress").attr('data-toggle','collapse');
+            $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_progress').data('oper','edit');
             $("#new_progress,#edit_progress").attr('disabled',false);
             $('#save_progress,#cancel_progress').attr('disabled',true);
             break;
         case 'wait':
-            $("#toggle_progress").attr('data-toggle','collapse');
+            $("#toggle_nursNote").attr('data-toggle','collapse');
             $("#save_progress,#cancel_progress").attr('disabled',false);
             $('#edit_progress,#new_progress').attr('disabled',true);
             break;
@@ -208,39 +224,39 @@ function button_state_progress(state){
 }
 
 // screen current patient //
-function populate_progressnote(obj){
-    $("#jqGridProgress_panel").collapse('hide');
+function populate_nursingnote(obj){
+    $("#jqGridNursNote_panel").collapse('hide');
     emptyFormdata(errorField,"#formProgress");
     
     // panel header
-    $('#name_show_progress').text(obj.Name);
-    $('#mrn_show_progress').text(("0000000" + obj.MRN).slice(-7));
-    $('#sex_show_progress').text(if_none(obj.Sex).toUpperCase());
-    $('#dob_show_progress').text(dob_chg(obj.DOB));
-    $('#age_show_progress').text(dob_age(obj.DOB)+' (YRS)');
-    $('#race_show_progress').text(if_none(obj.raceDesc).toUpperCase());
-    $('#religion_show_progress').text(if_none(obj.religionDesc).toUpperCase());
-    $('#occupation_show_progress').text(if_none(obj.occupDesc).toUpperCase());
-    $('#citizenship_show_progress').text(if_none(obj.cityDesc).toUpperCase());
-    $('#area_show_progress').text(if_none(obj.areaDesc).toUpperCase());
+    $('#name_show_nursNote').text(obj.Name);
+    $('#mrn_show_nursNote').text(("0000000" + obj.MRN).slice(-7));
+    $('#sex_show_nursNote').text(if_none(obj.Sex).toUpperCase());
+    $('#dob_show_nursNote').text(dob_chg(obj.DOB));
+    $('#age_show_nursNote').text(dob_age(obj.DOB)+' (YRS)');
+    $('#race_show_nursNote').text(if_none(obj.raceDesc).toUpperCase());
+    $('#religion_show_nursNote').text(if_none(obj.religionDesc).toUpperCase());
+    $('#occupation_show_nursNote').text(if_none(obj.occupDesc).toUpperCase());
+    $('#citizenship_show_nursNote').text(if_none(obj.cityDesc).toUpperCase());
+    $('#area_show_nursNote').text(if_none(obj.areaDesc).toUpperCase());
     
-    $("#mrn_progress").val(obj.MRN);
-    $("#episno_progress").val(obj.Episno);
+    $("#mrn_nursNote").val(obj.MRN);
+    $("#episno_nursNote").val(obj.Episno);
     
     // var urlparam_datetime_tbl={
     //     action: 'get_table_datetime',
-    //     mrn: $("#mrn_progress").val(),
-    //     episno: $("#episno_progress").val()
+    //     mrn: $("#mrn_nursNote").val(),
+    //     episno: $("#episno_nursNote").val()
     // }
     
-    // datetime_tbl.ajax.url( "./progressnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
-    //     emptyFormdata_div("#formProgress",['#mrn_progress','#episno_progress']);
+    // datetime_tbl.ajax.url( "./nursingnote/table?"+$.param(urlparam_datetime_tbl) ).load(function(data){
+    //     emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote']);
     //     $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
     // });
 }
 
 function populate_progressnote_getdata(){
-    emptyFormdata(errorField,"#formProgress",["#mrn_progress","#episno_progress"]);
+    emptyFormdata(errorField,"#formProgress",["#mrn_nursNote","#episno_nursNote"]);
     
     var saveParam={
         action: 'get_table_progress',
@@ -248,11 +264,11 @@ function populate_progressnote_getdata(){
     
     var postobj={
         _token: $('#csrf_token').val(),
-        mrn: $("#mrn_progress").val(),
-        episno: $("#episno_progress").val()
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
     };
     
-    $.post( "./progressnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -293,8 +309,8 @@ function saveForm_progress(callback){
     
     var postobj={
         _token: $('#csrf_token').val(),
-        // sex_edit: $('#sex_edit').val(),
-        // idtype_edit: $('#idtype_edit').val()
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
     };
     
     values = $("#formProgress").serializeArray();
@@ -334,7 +350,7 @@ function saveForm_progress(callback){
     //         }).get()
     // );
     
-    $.post( "./progressnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

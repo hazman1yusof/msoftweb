@@ -8,7 +8,7 @@ use stdClass;
 use DB;
 use Carbon\Carbon;
 
-class ProgressNoteController extends defaultController
+class NursingNoteController extends defaultController
 {
     
     var $table;
@@ -20,7 +20,7 @@ class ProgressNoteController extends defaultController
     }
     
     public function show(Request $request){
-        return view('hisdb.progressnote.progressnote');
+        return view('hisdb.nursingnote.nursingnote');
     }
     
     public function table(Request $request)
@@ -112,8 +112,8 @@ class ProgressNoteController extends defaultController
             DB::table('nursing.nurshandover')
                 ->insert([
                     'compcode' => session('compcode'),
-                    'mrn' => $request->mrn_progress,
-                    'episno' => $request->episno_progress,
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
                     'datetaken' => $request->datetaken,
                     'timetaken' => $request->timetaken,
                     'lastuser'  => session('username'),
@@ -171,8 +171,8 @@ class ProgressNoteController extends defaultController
             if(!empty($request->idno_progress)){
                 DB::table('nursing.nurshandover')
                     ->where('idno','=',$request->idno_progress)
-                    // ->where('mrn','=',$request->mrn_progress)
-                    // ->where('episno','=',$request->episno_progress)
+                    // ->where('mrn','=',$request->mrn_nursNote)
+                    // ->where('episno','=',$request->episno_nursNote)
                     ->update([
                         'temp_' => $request->temp_,
                         'hr' => $request->hr,
@@ -207,8 +207,8 @@ class ProgressNoteController extends defaultController
                 DB::table('nursing.nurshandover')
                     ->insert([
                         'compcode' => session('compcode'),
-                        'mrn' => $request->mrn_progress,
-                        'episno' => $request->episno_progress,
+                        'mrn' => $request->mrn_nursNote,
+                        'episno' => $request->episno_nursNote,
                         'datetaken' => $request->datetaken,
                         'timetaken' => $request->timetaken,
                         'lastuser'  => session('username'),

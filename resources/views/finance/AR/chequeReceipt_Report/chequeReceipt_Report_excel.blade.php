@@ -1,4 +1,14 @@
 <table>
+    <tr>
+        <td style="font-weight:bold;text-align: left">RECEIPT DATE</td>
+        <td style="font-weight:bold;text-align: right">PAYER CODE</td>
+        <td style="font-weight:bold;text-align: right">AMOUNT</td>
+        <td style="font-weight:bold;text-align: right">PAYER</td>
+        <td style="font-weight:bold;text-align: right">FC</td>
+        <td style="font-weight:bold;text-align: right">MODE</td>
+        <td style="font-weight:bold;text-align: right">REFERENCE</td>
+        <td style="font-weight:bold;text-align: right">RECEIPT NO</td>
+    </tr>
     @foreach($dbacthdr as $db_obj)
     <tr>
         <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>

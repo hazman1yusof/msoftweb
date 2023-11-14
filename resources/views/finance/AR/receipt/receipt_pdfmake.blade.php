@@ -61,10 +61,10 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '{{$title}}',
+                        text: '\n{{$title}}\n',
                         style: 'header',
                         alignment: 'center'
                     },

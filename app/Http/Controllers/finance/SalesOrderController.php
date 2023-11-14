@@ -1018,21 +1018,17 @@ class SalesOrderController extends defaultController
             abort(404);
         }
 
-        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m')
+        $dbacthdr = DB::table('debtor.dbacthdr as h', 'debtor.debtormast as m', 'debtor.debtortype as dt', 'hisdb.billtymst as bt')
             ->select('h.source','h.trantype','h.compcode', 'h.idno', 'h.auditno', 'h.lineno_', 'h.amount', 'h.outamount', 'h.recstatus', 'h.debtortype', 'h.debtorcode', 'h.mrn', 'h.invno', 'h.ponum', 'h.podate', 'h.deptcode', 'h.entrydate',
-            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4')
+            'm.debtorcode as debt_debtcode', 'm.name as debt_name', 'm.address1 as cust_address1', 'm.address2 as cust_address2', 'm.address3 as cust_address3', 'm.address4 as cust_address4', 'm.creditterm as crterm','m.billtype as billtype','dt.debtortycode as dt_debtortycode', 'dt.description as dt_description', 'bt.billtype as billtype', 'bt.description as bt_desc')
             ->leftJoin('debtor.debtormast as m', 'h.debtorcode', '=', 'm.debtorcode')
+            ->leftJoin('debtor.debtortype as dt', 'dt.debtortycode', '=', 'm.debtortype')
+            ->leftJoin('hisdb.billtymst as bt', 'bt.billtype', '=', 'm.billtype')
             ->where('h.idno','=',$idno)
             ->where('h.mrn','=','0')
             ->where('h.compcode','=',session('compcode'))
             ->first();
-
-        if ( $dbacthdr->recstatus == "OPEN") {
-            $title = "DRAFT INVOICE";
-        } elseif ( $dbacthdr->recstatus == "POSTED"){
-            $title = " INVOICE";
-        }
-
+// dd($dbacthdr);
         $billsum = DB::table('debtor.billsum AS b', 'material.productmaster AS p', 'material.uom as u', 'debtor.debtormast as d', 'hisdb.chgmast as m')
             ->select('b.compcode', 'b.idno','b.invno', 'b.mrn', 'b.billno', 'b.lineno_', 'b.chgclass', 'b.chggroup', 'b.description', 'b.uom', 'b.quantity', 'b.amount', 'b.outamt', 'b.taxamt', 'b.unitprice', 'b.taxcode', 'b.discamt', 'b.recstatus',
             'u.description as uom_desc', 
@@ -1058,6 +1054,12 @@ class SalesOrderController extends defaultController
         //     ->where('b.trantrype','=',$dbacthdr->trantrype)
         //     ->where('b.billno','=',$dbacthdr->auditno)
         //     ->get();
+        
+        if ( $dbacthdr->recstatus == "OPEN") {
+            $title = "DRAFT INVOICE";
+        } elseif ( $dbacthdr->recstatus == "POSTED"){
+            $title = " INVOICE";
+        }
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))

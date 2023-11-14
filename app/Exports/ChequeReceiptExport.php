@@ -31,7 +31,6 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
     
     public function __construct($datefr,$dateto,$tillcode,$tillno)
     {
-        
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->tillcode = $tillcode;
@@ -42,12 +41,11 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
-
+    
     public function columnWidths(): array
     {
-        
         return [
-            'A' => 12,
+            'A' => 15,
             'B' => 12,
             'C' => 10,
             'D' => 25,
@@ -56,20 +54,19 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
             'G' => 15,
             'H' => 15,
         ];
-        
     }
     
     public function view(): View
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-
+        
         $tilldetl = DB::table('debtor.tilldetl')
                     ->where('compcode',session('compcode'))
                     ->where('tillcode',$this->tillcode)
                     ->where('tillno',$this->tillno)
                     ->first();
-
+        
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
                     ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 
                     'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
@@ -87,10 +84,7 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
                     ->whereBetween('dh.entrydate', [$datefr, $dateto])
                     ->orderBy('dh.entrydate','ASC')
                     ->get();
-        // dd($dbacthdr);
-
-        $this->dbacthdr_len=$dbacthdr->count();
-
+        
         $totalAmount = $dbacthdr->sum('amount');
         
         $db_dbacthdr = DB::table('debtor.dbacthdr as db')
@@ -104,7 +98,6 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
                     });
         
         if($db_dbacthdr->exists()){
-    
             $sum_cash = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
                         // ->where('db.tillcode',$this->tillcode)
@@ -118,7 +111,6 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
                         })
                         ->whereBetween('db.entrydate', [$datefr, $dateto])
                         ->sum('amount');
-
             
             $sum_chq = DB::table('debtor.dbacthdr as db')
                         ->where('db.compcode',session('compcode'))
@@ -241,7 +233,6 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
             $grandtotal_card = $total_card_rcrd - $total_card_rf;
             $grandtotal_chq = $sum_chq - $sum_chq_ref;
             $grandtotal_all = $sum_all - $sum_all_ref;
-
         }
         
         $title = "CHEQUE LISTING";
@@ -259,122 +250,28 @@ class ChequeReceiptExport implements FromView, WithEvents, WithColumnWidths
             $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
-
-        return view('finance.AR.chequeReceipt_Report.chequeReceipt_Report_excel',compact('dbacthdr','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_all','title','company','totamt_eng'));
         
+        return view('finance.AR.chequeReceipt_Report.chequeReceipt_Report_excel',compact('dbacthdr','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'grandtotal_all','title','company','totamt_eng'));
     }
-
+    
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                // set up a style array for cell formatting
-                $totrow = $event->sheet->getHighestRow();
-
-                $style_header = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
-
-                $style_subheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_LEFT
-                    ]
-                ];
-
-                $style_address = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_RIGHT
-                    ]
-                ];
-
-                $style_right = [
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_RIGHT
-                    ]
-                ];
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $style_datetime = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_LEFT
-                    ]
-                ];
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nCHEQUE LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
-                $style_columnheader = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
+                $event->sheet->getPageMargins()->setTop(1);
                 
-                $totpage = ceil($totrow/45);
-
-                $curpage=1;
-                $loop_page=0;
-                while ($totrow > 0){
-                    $totrow=$totrow-45;
-                    $event->sheet->insertNewRowBefore(1+$loop_page, 5);
-                
-                    ///// assign cell values
-                    $event->sheet->setCellValue('D'.(1+$loop_page),$this->comp->name);
-                    $event->sheet->setCellValue('A'.(1+$loop_page),'PRINTED BY : '.session('username'));
-                    $event->sheet->setCellValue('G'.(1+$loop_page),'PRINTED :'.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y H:i'));
-                    $event->sheet->setCellValue('D'.(2+$loop_page),'CHEQUE LISTING');
-                    $event->sheet->setCellValue('D'.(3+$loop_page), sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                    $event->sheet->setCellValue('G'.(2+$loop_page),'PAGE : '.$curpage.' / '.$totpage);
-
-                    $event->sheet->setCellValue('A'.(5+$loop_page),'RECEIPT DATE');
-                    $event->sheet->setCellValue('B'.(5+$loop_page),'PAYER CODE');
-                    $event->sheet->setCellValue('C'.(5+$loop_page),'AMOUNT');
-                    $event->sheet->setCellValue('D'.(5+$loop_page),'PAYER');
-                    $event->sheet->setCellValue('E'.(5+$loop_page),'FC');
-                    $event->sheet->setCellValue('F'.(5+$loop_page),'MODE');
-                    $event->sheet->setCellValue('G'.(5+$loop_page),'REFERENCE');
-                    $event->sheet->setCellValue('H'.(5+$loop_page),'RECEIPT NO');
-
-                    
-                    ///// assign cell styles
-                    $event->sheet->getStyle('A'.(1+$loop_page).':A'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('G'.(1+$loop_page).':G'.(3+$loop_page))->applyFromArray($style_subheader);
-                    $event->sheet->getStyle('D'.(1+$loop_page).':D'.(3+$loop_page))->applyFromArray($style_header);
-                    $event->sheet->getStyle('A'.(5+$loop_page).':H'.(5+$loop_page))->applyFromArray($style_columnheader);
-
-                    $event->sheet->getStyle('D')->getAlignment()->setWrapText(true);
-                    $event->sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
-
-                    // $sheet = $event->sheet->getDelegate();
-
-                    // $cols = array_keys($sheet->getColumnDimensions());
-                    // foreach ($cols as $col) {
-                    //     $sheet->getColumnDimension($col)->setAutoSize(true);
-                    // }
-
-                    $event->sheet->getPageSetup()->setFitToWidth(1);
-                    $event->sheet->getPageSetup()->setFitToHeight(0);
-                    $curpage++;
-                    $loop_page+=50;
-                }
-              
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
+                $event->sheet->getPageSetup()->setFitToWidth(1);
+                $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
-        
     }
-
+    
     public function convertNumberToWordENG($num = false)
     {
         $num = str_replace(array(',', ' '), '' , trim($num));
