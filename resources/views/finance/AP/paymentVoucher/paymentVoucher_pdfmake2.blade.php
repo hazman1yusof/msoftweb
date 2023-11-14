@@ -67,12 +67,12 @@ var ini_body=[
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'logohdr',style:'header_img',width:150, alignment: 'left'};
-					var title = {text: 'PAYMENT VOUCHER',fontSize:14,alignment: 'center',bold: true};
+					var logohdr = {image: 'logohdr',style:'header_img',width:250, alignment: 'center'};
+					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
 					retval.push(logohdr);
 					retval.push(title);
 				}else{
-					var title = {text: 'PAYMENT VOUCHER',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
+					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true, margin: [0, 71, 0, 0]};
 					retval.push(title);
 				}
 
@@ -80,23 +80,23 @@ var ini_body=[
 				return retval
 
 			},
-			footer: function(currentPage, pageCount) {
-				if(currentPage == 1){
-					return [
-				      {image: 'logofooter',width:600, alignment: 'center'}
-				    ]
-				}
-			},
+			// footer: function(currentPage, pageCount) {
+			// 	if(currentPage == 1){
+			// 		return [
+			// 	      {image: 'logofooter',width:600, alignment: 'center'}
+			// 	    ]
+			// 	}
+			// },
 			pageSize: 'A4',
 			pageMargins: [30, 130, 40, 70],
 		  	content: make_pdf(),
 			styles: {
 				header_img: {
-					margin: [30, 20, 0, 0]
+					margin: [30, 5, 0, 0]
 				},
 				header_pono: {
 					fontSize: 9,
-					margin: [30, 20, 40, 20]
+					margin: [30, 10, 40, 20]
 				},
 				header_tbl: {
 					fontSize: 9,
