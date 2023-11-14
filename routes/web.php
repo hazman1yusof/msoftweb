@@ -944,6 +944,11 @@ Route::get('/wardpanel','hisdb\WardPanelController@show');
 Route::get('/wardpanel/table','hisdb\WardPanelController@table');
 Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 
+//// Nursing Note page ///
+Route::get('/nursingnote','hisdb\NursingNoteController@show');
+Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
+Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
+
 //// Progress Note page ///
 Route::get('/progressnote','hisdb\ProgressNoteController@show');
 Route::get('/progressnote/table','hisdb\ProgressNoteController@table');

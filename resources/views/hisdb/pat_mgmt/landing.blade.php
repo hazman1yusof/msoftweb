@@ -293,8 +293,8 @@
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
 					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="progressnote_row">
-						@include('hisdb.progressnote.progressnote')
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingnote.nursingnote')
 					</div>
 					
 					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="antenatal_row">
@@ -317,8 +317,8 @@
 						@include('hisdb.wardpanel.wardpanel')
 					</div>
 					
-					<div class='row' style="position: relative;margin: 0 12px 12px 12px" id="progressnote_row">
-						@include('hisdb.progressnote.progressnote')
+					<div class='row' style="position: relative;margin: 0 12px 12px 12px">
+						@include('hisdb.nursingnote.nursingnote')
 					</div>
 				@endif
 				
@@ -417,7 +417,7 @@
 			@if (Auth::user()->doctor == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
-				<script type="text/javascript" src="js/hisdb/progressnote/progressnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 				<script type="text/javascript" src="js/hisdb/antenatal/antenatal.js"></script>
 				<script type="text/javascript" src="js/hisdb/transaction/transaction_doctornote.js"></script>
 				<script type="text/javascript" src="js/hisdb/doctornote/doctornote.js"></script>
@@ -427,7 +427,7 @@
 			@elseif (Auth::user()->nurse == 1)
 				<script type="text/javascript" src="js/hisdb/nursing/nursing.js"></script>
 				<script type="text/javascript" src="js/hisdb/wardpanel/wardpanel.js"></script>
-				<script type="text/javascript" src="js/hisdb/progressnote/progressnote.js"></script>
+				<script type="text/javascript" src="js/hisdb/nursingnote/nursingnote.js"></script>
 			@endif
 
 			@if (Auth::user()->billing == 1)

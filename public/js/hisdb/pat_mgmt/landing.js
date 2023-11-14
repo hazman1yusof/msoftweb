@@ -267,11 +267,11 @@ $(document).ready(function() {
                     populate_doctorNote_currpt(lastrowdata);
                     populate_dieteticCareNotes_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
-                    populate_progressnote(lastrowdata);
+                    populate_nursingnote(lastrowdata);
                 }else if($('#user_nurse').val() == '1'){
                     populate_triage_currpt(lastrowdata);
                     populate_nursAssessment_currpt(lastrowdata);
-                    populate_progressnote(lastrowdata);
+                    populate_nursingnote(lastrowdata);
                 }
                 
                 if($('#user_billing').val() == '1'){
