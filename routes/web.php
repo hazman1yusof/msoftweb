@@ -949,11 +949,6 @@ Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
 Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
 
-//// Progress Note page ///
-Route::get('/progressnote','hisdb\ProgressNoteController@show');
-Route::get('/progressnote/table','hisdb\ProgressNoteController@table');
-Route::post('/progressnote/form','hisdb\ProgressNoteController@form');
-
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
