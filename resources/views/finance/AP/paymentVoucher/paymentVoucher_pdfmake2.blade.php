@@ -59,7 +59,7 @@ var ini_body=[
 	                        widths: ['*','*'],//panjang standard dia 515
 	                        body: [
 	                            [
-									{text: 'PAYMENT VOUCHER #: '+ini_header.pvno,bold: true, alignment: 'left', border: [false,true,false,true]},
+									{text: 'PAYMENT VOUCHER #: '+ini_header.pvno,bold: true, alignment: 'left', border: [false,true,false,true]}, //left, top, right, bottom
 									{text: 'Date : '+ini_header.pvdate, alignment: 'right',bold: true, border: [false,true,false,true]},
 								]
 	                        ]
@@ -67,7 +67,7 @@ var ini_body=[
 			        }
 
 				if(currentPage == 1){
-					var logohdr = {image: 'logohdr',style:'header_img',width:250, alignment: 'center'};
+					var logohdr = {image: 'logohdr',style:'header_img',width:350, height:75, alignment: 'center'};
 					var title = {text: '\n{{$title}}',fontSize:14,alignment: 'center',bold: true};
 					retval.push(logohdr);
 					retval.push(title);
@@ -88,7 +88,7 @@ var ini_body=[
 			// 	}
 			// },
 			pageSize: 'A4',
-			pageMargins: [30, 130, 40, 70],
+			pageMargins: [30, 150, 40, 70],
 		  	content: make_pdf(),
 			styles: {
 				header_img: {
@@ -96,7 +96,7 @@ var ini_body=[
 				},
 				header_pono: {
 					fontSize: 9,
-					margin: [30, 10, 40, 20]
+					margin: [30, 10, 40, 50]
 				},
 				header_tbl: {
 					fontSize: 9,
