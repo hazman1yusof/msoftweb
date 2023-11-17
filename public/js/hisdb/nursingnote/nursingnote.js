@@ -120,32 +120,32 @@ $(document).ready(function () {
     
     $('#jqGridNursNote_panel').on('shown.bs.collapse', function () {
         SmoothScrollTo("#jqGridNursNote_panel", 500);
+        
+        $('.nav-tabs a').on('shown.bs.tab', function(e){
+            let type = $(this).data('type');
+            switch(type){
+                case 'progress':
+                    populate_progressnote_getdata();
+                    break;
+                case 'intake':
+                    populate_intakeoutput_getdata();
+                    break;
+                case 'drug':
+                
+                    break;
+                case 'treatment':
+                
+                    break;
+                case 'careplan':
+                
+                    break;
+            }
+        });
     });
     
     $('#jqGridNursNote_panel').on('hidden.bs.collapse', function () {
         // button_state_progress('empty');
         // button_state_intake('empty');
-    });
-    
-    $('.nav-tabs a').on('shown.bs.tab', function(e){
-        let type = $(this).data('type');
-        switch(type){
-            case 'progress':
-                populate_progressnote_getdata();
-                break;
-            case 'intake':
-                populate_intakeoutput_getdata();
-                break;
-            case 'drug':
-            
-                break;
-            case 'treatment':
-            
-                break;
-            case 'careplan':
-            
-                break;
-        }
     });
     
     $('#datetime_tbl tbody').on('click', 'tr', function () {
