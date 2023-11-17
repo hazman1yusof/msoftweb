@@ -120,32 +120,34 @@ $(document).ready(function () {
     
     $('#jqGridNursNote_panel').on('shown.bs.collapse', function () {
         SmoothScrollTo("#jqGridNursNote_panel", 500);
-        
-        $('.nav-tabs a').on('shown.bs.tab', function(e){
-            let type = $(this).data('type');
-            switch(type){
-                case 'progress':
-                    populate_progressnote_getdata();
-                    break;
-                case 'intake':
-                    populate_intakeoutput_getdata();
-                    break;
-                case 'drug':
-                
-                    break;
-                case 'treatment':
-                
-                    break;
-                case 'careplan':
-                
-                    break;
-            }
-        });
+        populate_progressnote_getdata();
+        populate_intakeoutput_getdata();
     });
     
     $('#jqGridNursNote_panel').on('hidden.bs.collapse', function () {
         // button_state_progress('empty');
         // button_state_intake('empty');
+    });
+    
+    $('.nav-tabs a').on('shown.bs.tab', function(e){
+        let type = $(this).data('type');
+        switch(type){
+            case 'progress':
+                populate_progressnote_getdata();
+                break;
+            case 'intake':
+                populate_intakeoutput_getdata();
+                break;
+            case 'drug':
+            
+                break;
+            case 'treatment':
+            
+                break;
+            case 'careplan':
+            
+                break;
+        }
     });
     
     $('#datetime_tbl tbody').on('click', 'tr', function () {
@@ -283,8 +285,8 @@ function button_state_intake(state){
         case 'edit':
             $("#toggle_nursNote").attr('data-toggle','collapse');
             $('#cancel_intake').data('oper','edit');
-            $("#new_intake,#edit_intake").attr('disabled',false);
-            $('#save_intake,#cancel_intake').attr('disabled',true);
+            $("#edit_intake").attr('disabled',false);
+            $('#save_intake,#cancel_intake,#new_intake').attr('disabled',true);
             break;
         case 'wait':
             $("#toggle_nursNote").attr('data-toggle','collapse');
