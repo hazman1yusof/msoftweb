@@ -7,9 +7,9 @@ $(document).ready(function () {
     
     var fdl = new faster_detail_load();
     
-    /////////////////////////////////////progressnote starts/////////////////////////////////////
-    textare_init_progressnote();
+    textare_init_nursingnote();
     
+    /////////////////////////////////////progressnote starts/////////////////////////////////////
     disableForm('#formProgress');
     
     $("#new_progress").click(function(){
@@ -51,6 +51,45 @@ $(document).ready(function () {
     });
     //////////////////////////////////////progressnote ends//////////////////////////////////////
     
+    /////////////////////////////////////intakeoutput starts/////////////////////////////////////
+    disableForm('#formIntake');
+    
+    $("#new_intake").click(function(){
+        button_state_intake('wait');
+        enableForm('#formIntake');
+        rdonly('#formIntake');
+        emptyFormdata_div("#formIntake",['#mrn_nursNote','#episno_nursNote']);
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#edit_intake").click(function(){
+        button_state_intake('wait');
+        enableForm('#formIntake');
+        rdonly('#formIntake');
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#save_intake").click(function(){
+        disableForm('#formIntake');
+        if( $('#formIntake').isValid({requiredFields: ''}, conf, true) ) {
+            saveForm_intake(function(){
+                $("#cancel_intake").data('oper','edit');
+                $("#cancel_intake").click();
+                // $("#jqGridPagerRefresh").click();
+            });
+        }else{
+            enableForm('#formIntake');
+            rdonly('#formIntake');
+        }
+    });
+    
+    $("#cancel_intake").click(function(){
+        disableForm('#formIntake');
+        button_state_intake($(this).data('oper'));
+        // dialog_mrn_edit.off();
+    });
+    //////////////////////////////////////intakeoutput ends//////////////////////////////////////
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function() {
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -67,31 +106,35 @@ $(document).ready(function () {
             emptyFormdata_div("#formProgress",['#mrn_nursNote','#episno_nursNote']);
             $('#datetime_tbl tbody tr:eq(0)').click();  // to select first row
         });
+        
+        populate_intakeoutput_getdata();
     });
     
     $("#jqGridNursNote_panel").on("hide.bs.collapse", function(){
         button_state_progress('empty');
+        button_state_intake('empty');
         disableForm('#formProgress');
+        disableForm('#formIntake');
         $("#jqGridNursNote_panel > div").scrollTop(0);
     });
     
     $('#jqGridNursNote_panel').on('shown.bs.collapse', function () {
         SmoothScrollTo("#jqGridNursNote_panel", 500);
-        populate_progressnote_getdata();
     });
     
     $('#jqGridNursNote_panel').on('hidden.bs.collapse', function () {
         // button_state_progress('empty');
+        // button_state_intake('empty');
     });
     
     $('.nav-tabs a').on('shown.bs.tab', function(e){
         let type = $(this).data('type');
         switch(type){
             case 'progress':
-            
+                populate_progressnote_getdata();
                 break;
             case 'intake':
-            
+                populate_intakeoutput_getdata();
                 break;
             case 'drug':
             
@@ -148,10 +191,10 @@ $(document).ready(function () {
                 $("#datetaken").val(data.date);
                 
                 button_state_progress('edit');
-                textare_init_progressnote();
+                textare_init_nursingnote();
             }else{
                 button_state_progress('add');
-                textare_init_progressnote();
+                textare_init_nursingnote();
             }
         });
     });
@@ -223,10 +266,39 @@ function button_state_progress(state){
     }
 }
 
+button_state_intake('empty');
+function button_state_intake(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_nursNote").removeAttr('data-toggle');
+            $('#cancel_intake').data('oper','add');
+            $('#new_intake,#save_intake,#cancel_intake,#edit_intake').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_intake').data('oper','add');
+            $("#new_intake").attr('disabled',false);
+            $('#save_intake,#cancel_intake,#edit_intake').attr('disabled',true);
+            break;
+        case 'edit':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_intake').data('oper','edit');
+            $("#new_intake,#edit_intake").attr('disabled',false);
+            $('#save_intake,#cancel_intake').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $("#save_intake,#cancel_intake").attr('disabled',false);
+            $('#edit_intake,#new_intake').attr('disabled',true);
+            break;
+    }
+}
+
 // screen current patient //
 function populate_nursingnote(obj){
     $("#jqGridNursNote_panel").collapse('hide');
     emptyFormdata(errorField,"#formProgress");
+    emptyFormdata(errorField,"#formIntake");
     
     // panel header
     $('#name_show_nursNote').text(obj.Name);
@@ -278,10 +350,40 @@ function populate_progressnote_getdata(){
             $("#datetaken").val(data.date);
             
             button_state_progress('edit');
-            textare_init_progressnote();
+            textare_init_nursingnote();
         }else{
             button_state_progress('add');
-            textare_init_progressnote();
+            textare_init_nursingnote();
+        }
+    });
+}
+
+function populate_intakeoutput_getdata(){
+    emptyFormdata(errorField,"#formIntake",["#mrn_nursNote","#episno_nursNote"]);
+    
+    var saveParam={
+        action: 'get_table_intake',
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    };
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+        if(!$.isEmptyObject(data)){
+            autoinsert_rowdata("#formIntake",data.intakeoutput);
+            
+            button_state_intake('edit');
+            textare_init_nursingnote();
+        }else{
+            button_state_intake('add');
+            textare_init_nursingnote();
         }
     });
 }
@@ -360,8 +462,67 @@ function saveForm_progress(callback){
     });
 }
 
-function textare_init_progressnote(){
-    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes').each(function () {
+function saveForm_intake(callback){
+    var saveParam={
+        action: 'save_table_intake',
+        oper: $("#cancel_intake").data('oper')
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
+    };
+    
+    values = $("#formIntake").serializeArray();
+    
+    values = values.concat(
+        $('#formIntake input[type=checkbox]:not(:checked)').map(
+            function() {
+                return {"name": this.name, "value": 0}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formIntake input[type=checkbox]:checked').map(
+            function() {
+                return {"name": this.name, "value": 1}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formIntake input[type=radio]:checked').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formIntake select').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    // values = values.concat(
+    //     $('#formIntake input[type=radio]:checked').map(
+    //         function() {
+    //             return {"name": this.name, "value": this.value}
+    //         }).get()
+    // );
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+function textare_init_nursingnote(){
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
