@@ -75,12 +75,21 @@ $(document).ready(function(){
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
+			{ label: 'MMA Code', name: 'mmacode', width: 90, align: 'left', classes: 'wrap', editable: true,
+				editrules: { custom: true, custom_func: cust_rules_dfee },
+				formatter: showdetail_dfee,
+				edittype: 'custom', editoptions:
+				{
+					custom_element: mmacodeCustomEdit_dfee,
+					custom_value: galGridCustomValue_dfee
+				},
+			},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			{ label: 'Discount<br>Amount', name: 'discamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
+			// { label: 'Discount<br>Amount', name: 'discamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
+			// 	formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+			// 	editrules:{required: true},editoptions:{readonly: "readonly"},
+			// },
 			{ label: 'Tax<br>Amount', name: 'taxamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
@@ -196,6 +205,7 @@ var myEditOptions_dfee = {
 		dialog_deptcode_dfee.on();
 		dialog_chgcode_dfee.on();
 		dialog_tax_dfee.on();
+		dialog_mmacode_dfee.on();
 		mycurrency_dfee.array.length = 0;
 		mycurrency_np_dfee.array.length = 0;
 		Array.prototype.push.apply(mycurrency_dfee.array, ["#jqGrid_dfee input[name='unitprce']","#jqGrid_dfee input[name='billtypeperct']","#jqGrid_dfee input[name='billtypeamt']","#jqGrid_dfee input[name='totamount']","#jqGrid_dfee input[name='amount']","#jqGrid_dfee input[name='taxamount']","#jqGrid_dfee input[name='discamount']"]);
@@ -220,6 +230,7 @@ var myEditOptions_dfee = {
 
 		calc_jq_height_onchange("jqGrid_dfee",true);
 		$("#jqGrid_dfee input[name='chgcode']").focus();
+		dialog_deptcode_dfee.check(errorField);
 	},
 	aftersavefunc: function (rowid, response, options) {
     	//state true maksudnyer ada isi, tak kosong
@@ -315,7 +326,7 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 
 
 	let unitprce = parseFloat($("#"+id_optid+"_unitprce").val());
-	let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
+	// let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
 	let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
 	let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
 	if(isNaN(rate)){
@@ -323,14 +334,14 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 	}
 
 	var amount = (unitprce*quantity);
-	var discamount = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
+	// var discamount = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
 
 	let taxamount = amount * rate / 100;
 
 	var totamount = amount - discamount + taxamount;
 
 	$("#"+id_optid+"_taxamount").val(taxamount);
-	$("#"+id_optid+"_discamount").val(discamount);
+	// $("#"+id_optid+"_discamount").val(discamount);
 	$("#"+id_optid+"_totamount").val(totamount);
 	$("#"+id_optid+"_amount").val(amount);
 	
@@ -347,10 +358,10 @@ var dialog_chgcode_dfee = new ordialog(
 	'chgcode_dfee',['material.stockloc AS s','material.product AS p','hisdb.chgmast AS c'],"#jqGrid_dfee input[name='chgcode']",errorField,
 	{	colModel:
 		[
-			{label: 'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label: 'Charge Code',name:'chgcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+			{label: 'Description',name:'description',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			{label: 'Inventory',name:'invflag',width:100,hidden:true},
-			{label: 'brandname',name:'brandname',width:100,hidden:true},
+			{label: 'brandname',name:'brandname',width:200},
 			{label: 'UOM',name:'uom',width:100,classes:'pointer',},
 			{label: 'Quantity On Hand',name:'qtyonhand',width:100,classes:'pointer',hidden:true},
 			{label: 'Price',name:'price',width:100,classes:'pointer'},
@@ -363,6 +374,8 @@ var dialog_chgcode_dfee = new ordialog(
 			{label: 'billty_percent',name:'billty_percent',hidden:true},
 			{label: 'overwrite',name:'overwrite',hidden:true},
 			{label: 'convfactor',name:'convfactor',hidden:true},
+			{label: 'constype',name:'constype',hidden:true},
+			{label: 'revcode',name:'revcode',hidden:true},
 			
 		],
 		urlParam: {
@@ -395,6 +408,7 @@ var dialog_chgcode_dfee = new ordialog(
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('pt_idno',data['pt_idno']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('pt_idno',data['pt_idno']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('avgcost',data['avgcost']);
+			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('constype',data['constype']);
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").data('convfactor',data['convfactor']);
 			$('#'+dialog_chgcode_dfee.gridname).data('fail_msg','');
 			$("#jqGrid_dfee #"+id_optid+"_chgcode").val(data['chgcode']);
@@ -416,6 +430,12 @@ var dialog_chgcode_dfee = new ordialog(
 				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',false);
 			}else{
 				$("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly',true);
+			}
+
+			if(data['revcode'].trim() != ''){
+				$("#jqGrid_dfee #"+id_optid+"_deptcode").val(data['revcode']);
+
+				dialog_deptcode_dfee.check(errorField);
 			}
 
 			// dialog_uomcode_dfee.check(errorField);
@@ -451,8 +471,13 @@ var dialog_chgcode_dfee = new ordialog(
 			dialog_chgcode_dfee.urlParam.filterCol = ['cm.chggroup'];
 			dialog_chgcode_dfee.urlParam.filterVal = [$('#ordcomtt_dfee').val()];
 		},
-		close: function(obj){
-			$("#jqGrid_dfee input[name='quantity']").focus().select();
+		close: function(obj_){
+			let id_optid = obj_.id_optid;
+			if($("#jqGrid_dfee #"+id_optid+"_unitprce").prop('readonly') == false){
+				$("#jqGrid_dfee input[name='unitprce']").focus().select();
+			}else{
+				$("#jqGrid_dfee input[name='quantity']").focus().select();
+			}
 		}
 	},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 );
@@ -510,6 +535,74 @@ var dialog_tax_dfee = new ordialog(
 	},'urlParam', 'radio', 'tab' 	
 );
 dialog_tax_dfee.makedialog(false);
+
+var dialog_mmacode_dfee = new ordialog(
+	'mmacode_dfee',['hisdb.mmamaster'],"#jqGrid_dfee input[name='mmacode']",errorField,
+	{	colModel:
+		[
+			{label:'MMA Code', name:'mmacode', width:200, classes:'pointer', canSearch:true, or_search:true},
+			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+			{label:'Version', name:'version', width:100, classes:'pointer'},
+			{label:'MMA Consult', name:'mmaconsult', width:100, classes:'pointer', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+			{label:'MMA Surgeon', name:'mmasurgeon', width:100, classes:'pointer', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+			{label:'MMA Anaes', name:'mmaanaes', width:100, classes:'pointer', align: 'right',formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, }},
+				
+		],
+		urlParam: {
+					url:"./SalesOrderDetail/table",
+					action: 'get_mmacode',
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+		ondblClickRow:function(event){
+
+			if(event.type == 'keydown'){
+
+				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}else{
+
+				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+				var id_optid = optid.substring(0,optid.search("_"));
+			}
+			let data=selrowData('#'+dialog_mmacode_dfee.gridname);
+			$("#jqGrid_dfee input#"+id_optid+"_mmacode").val(data.mmacode);
+
+			var constype = $("#jqGrid_dfee #"+id_optid+"_chgcode").data('constype');
+			if(constype != undefined && constype.toUpperCase() == 'A'){
+				$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaanaes);
+			}else if(constype != undefined && constype.toUpperCase() == 'C'){
+				$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmaconsult);
+			}else{
+				$("#jqGrid_dfee input#"+id_optid+"_unitprce").val(data.mmasurgeon);
+			}
+		},
+		gridComplete: function(obj){
+			var gridname = '#'+obj.gridname;
+			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+				$(gridname+' tr#1').click();
+				$(gridname+' tr#1').dblclick();
+				$(obj.textfield).closest('td').next().find("input[type=text]").focus();
+			}
+		}
+		
+	},{
+		title:"Select MMA Code For Item",
+		open:function(obj_){
+			dialog_mmacode_dfee.urlParam.url = "./SalesOrderDetail/table";
+			dialog_mmacode_dfee.urlParam.action = 'get_mmacode';
+			dialog_mmacode_dfee.urlParam.filterCol=['compcode','recstatus'];
+			dialog_mmacode_dfee.urlParam.filterVal=['session.compcode','ACTIVE'];
+		},
+		close: function(){
+			// $(dialog_tax_dfee.textfield)			//lepas close dialog focus on next textfield 
+			// 	.closest('td')						//utk dialog dalam jqgrid jer
+			// 	.next()
+			// 	.find("input[type=text]").focus();
+		}
+	},'urlParam', 'radio', 'tab' 	
+);
+dialog_mmacode_dfee.makedialog(false);
 
 var dialog_deptcode_dfee = new ordialog(
 	'deptcode_dfee',['sysdb.department'],"#jqGrid_dfee input[name='deptcode']",errorField,
@@ -590,6 +683,10 @@ function taxcodeCustomEdit_dfee(val,opt){
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_dfee" optid="`+opt.id+`" id="`+opt.id+`" name="taxcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
+function mmacodeCustomEdit_dfee(val,opt){  	
+	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
+	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_dfee" optid="`+opt.id+`" id="`+opt.id+`" name="mmacode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
+}
 function deptcodeCustomEdit_dfee(val,opt){  	
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 	if(val.trim() == ''){
@@ -623,6 +720,7 @@ function showdetail_dfee(cellvalue, options, rowObject){
 		case 'uom_recv':field=['uomcode','description'];table="material.uom";case_='uom';break;
 		case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 		case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+		case 'mmacode':field=['mmacode','description'];table="hisdb.mmamaster";case_='mmacode';break;
 	}
 	var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	

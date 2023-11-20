@@ -57,6 +57,8 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_itemcode_uom_recv($request);
             case 'get_itemcode_uom_recv_check':
                 return $this->get_itemcode_uom_recv_check($request);
+            case 'get_mmacode':
+                return $this->get_mmacode($request);
             default:
                 return 'error happen..';
         }
@@ -117,7 +119,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE');
                         // ->where(function ($query) {
@@ -305,7 +307,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->Where('cm.chgcode','like',$serch_chgcode)
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
@@ -363,7 +365,7 @@ class SalesOrderDetailController extends defaultController
 
         if($table_count>0){
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->Where('cm.chgcode','like',$serch_chgcode)
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
@@ -480,7 +482,7 @@ class SalesOrderDetailController extends defaultController
         }else{
 
             $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
@@ -664,7 +666,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode)
@@ -788,7 +790,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.chgcode','=',$chgcode)
                             ->where('cm.recstatus','<>','DELETE');
@@ -1010,7 +1012,7 @@ class SalesOrderDetailController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.chgcode','=',$chgcode)
                             ->where('cm.recstatus','<>','DELETE');
@@ -1187,7 +1189,7 @@ class SalesOrderDetailController extends defaultController
         $entrydate = $request->entrydate;
 
         $table = DB::table('material.stockloc as st')
-                        ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
+                        ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('st.compcode','=',session('compcode'))
                             ->where('st.unit','=',session('unit'))
                             ->where('st.deptcode','=',$deptcode)
@@ -1216,6 +1218,32 @@ class SalesOrderDetailController extends defaultController
         $responce->rows = $table->get();
 
         return json_encode($responce);
+    }
+
+    public function get_mmacode(Request $request){
+        $table = DB::table('hisdb.mmamaster as mmam')
+                    ->select('mmam.mmacode','mmam.description','mmam.version','mmap.mmaconsult')
+                    ->where('mmam.compcode',session('compcode'))
+                    ->where('mmam.recstatus','ACTIVE')
+                    ->join('hisdb.mmaprice as mmap', function($join) use ($request){
+                            $join = $join->on('mmap.mmacode', '=', 'mmam.mmacode')
+                                        ->on('mmap.version', '=', 'mmam.version')
+                                        ->where('mmap.compcode', '=', session('compcode'));
+                    });
+
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+
     }
 
 

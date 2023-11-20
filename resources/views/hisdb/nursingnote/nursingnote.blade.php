@@ -372,7 +372,7 @@
                                                                     <textarea id="oraltype1" name="oraltype1" type="text" class="form-control input-sm"></textarea>
                                                                 </div>
                                                                 <div class="col-md-6" style="padding-right: 0px; padding-left: 5px;">
-                                                                    <input id="oralamt1" name="oralamt1" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
+                                                                    <input id="oralamt1" name="oralamt1" type="text" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69">
                                                                 </div>
                                                             </td>
                                                             <td>
