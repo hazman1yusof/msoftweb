@@ -74,9 +74,11 @@ $(document).ready(function () {
     $("#save_intake").click(function(){
         disableForm('#formIntake');
         if( $('#formIntake').isValid({requiredFields: ''}, conf, true) ) {
+            mycurrency_nursing.formatOff();
             saveForm_intake(function(){
                 $("#cancel_intake").data('oper','edit');
                 $("#cancel_intake").click();
+                mycurrency_nursing.formatOn();
                 // $("#jqGridPagerRefresh").click();
             });
         }else{
@@ -142,13 +144,13 @@ $(document).ready(function () {
                 populate_intakeoutput_getdata();
                 break;
             case 'drug':
-            
+                
                 break;
             case 'treatment':
-            
+                
                 break;
             case 'careplan':
-            
+                
                 break;
         }
     });
