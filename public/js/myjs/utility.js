@@ -1491,7 +1491,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		$("#"+obj.gridname).jqGrid('bindKeys', {"onEnter":function( rowid ) { 
 				$("#"+obj.gridname+' tr#'+rowid).dblclick();
 			}
-		})
+		});
+
+		if(obj.jqgrid_.hasOwnProperty('gridInitDone'))obj.jqgrid_.gridInitDone(obj);
+		jqgrid_label_align_right("#"+obj.gridname);
 		addParamField("#"+obj.gridname,false,obj.urlParam);
 	}
 

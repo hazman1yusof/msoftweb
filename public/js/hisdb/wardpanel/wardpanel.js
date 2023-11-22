@@ -405,7 +405,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function( event, ui ) {
-				
+				emptyFormdata_div("#dialognewexamForm");
 			},
 			close: function(event,ui){
 				refreshGrid('#'+dialog_exam.gridname,dialog_exam.urlParam);

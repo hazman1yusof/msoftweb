@@ -61,7 +61,7 @@ function tick_yaxis(max,min,nbsp,placeholder1=false){
 
 		//ini untuk pain score
 		arr.push([min,nbsp+'0']);
-		arr.push([min+10,'<b>Pain Score</b> 5']);
+		arr.push([min+10,'<b>SP02 (%)</b>']);
 
 		//ini untuk bp, pulse, temp
 		for(x=min+20;x<max;x+=5){
@@ -168,6 +168,10 @@ function formatTime(array){
 function legend_tepi1(plot){
 	let o = plot.pointOffset({ x: 0, y: 120});
 	let bp=`<div class="row" >
+				<div class="col-md-3">
+					<b>DXT</b></br>
+					<span class='dxt'>(GREEN)</span>
+				</div>
 				<div class="col-md-3">
 					<b>Blood Pressure</b></br>
 					<span class='sistole'>(BLUE)</span>

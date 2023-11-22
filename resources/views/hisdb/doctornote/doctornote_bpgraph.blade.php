@@ -24,6 +24,7 @@
 		.diastole{color: blue}
 		.pulse{color: red}
 		.temp{color: darkorange}
+		.dxt{color: green}
 		.legendtepi{position:absolute;left:-200px;color:#666;font-size:small;
 			-webkit-transform: rotate(270deg);
 			-moz-transform: rotate(270deg);
@@ -85,7 +86,9 @@
 			}
 
 			let param = {
-				action: 'get_bp_graph'
+				action: 'get_bp_graph',
+				mrn: "{{request()->get('mrn')}}",
+				episno: "{{request()->get('episno')}}",
 			}
 
 			$.get( "./doctornote/table"+"?"+$.param(param), function( data ) {
@@ -96,8 +99,8 @@
 				var obj = data.data;
 
 				var sis_dis = obj.reduce(function(accum,value,i){
-					let diff = (parseFloat(value.sistole) - parseFloat(value.diastole)) / 2;
-					let center = parseFloat(value.sistole) - parseFloat(diff);
+					let diff = (parseFloat(value.bphistolic) - parseFloat(value.bpdiastolic)) / 2;
+					let center = parseFloat(value.bphistolic) - parseFloat(diff);
 					let arr = accum.arr,index = accum.i;
 
 					if(all){
@@ -116,11 +119,11 @@
 
 				var pulse = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.pulse]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.hr]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
-							arr.push([index+1,value.pulse]); accum.i+=1;
+							arr.push([index+1,value.hr]); accum.i+=1;
 						}
 					}
 					return accum;
@@ -128,7 +131,7 @@
 
 				var temp = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.temp]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.temp_]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -138,9 +141,21 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
+				var dxt = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.dxt]); accum.i+=1;}
+					else{
+						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.dxt]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
 				var tick1 = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.tick1]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.roomair]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -152,7 +167,7 @@
 
 				var tick2 = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.tick2]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.oxygen]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -164,7 +179,7 @@
 
 				var tick3 = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.tick3]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.breathnormal]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -176,7 +191,7 @@
 
 				var time = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.time]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.datetaken+' '+value.timetaken]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -188,7 +203,7 @@
 
 				var painScore = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
-					if(all){ arr.push([index+1,value.painScore]); accum.i+=1;}
+					if(all){ arr.push([index+1,value.spo2]); accum.i+=1;}
 					else{
 						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
@@ -202,14 +217,14 @@
 				range = (dateChange||firstPlot)?time.length:range;
 				updRange(0,time.length,range);
 
-				doPlot(x = parseInt(range)+1,sis_dis = filterRange(sis_dis,range),pulse = filterRange(pulse,range),temp = filterRange(temp,range),tick1 = filterRange(tick1,range),tick2 = filterRange(tick2,range),tick3 = filterRange(tick3,range),time = filterRange(time,range), painScore = filterRange(painScore,range));
+				doPlot(x = parseInt(range)+1,sis_dis = filterRange(sis_dis,range),pulse = filterRange(pulse,range),temp = filterRange(temp,range),dxt = filterRange(dxt,range),tick1 = filterRange(tick1,range),tick2 = filterRange(tick2,range),tick3 = filterRange(tick3,range),time = filterRange(time,range), painScore = filterRange(painScore,range));
 				xAxisReplot("#placeholder div.x1Axis");
 
 			});
 		}
 
 		var plot;
-		function doPlot(x,sis_dis,pulse,temp,tick1,tick2,tick3,time,painScore){
+		function doPlot(x,sis_dis,pulse,temp,dxt,tick1,tick2,tick3,time,painScore){
 			var data_points = {
 				//do not show points
 				radius: 0,
@@ -221,6 +236,7 @@
 				{color: "blue", lines: {show: false}, points: data_points, data: sis_dis, label: "Blood Pressure", yaxis: 1},
 				{color: "red", lines: {show: true, lineWidth: 0.5}, points: {show:true}, data: pulse, label: "Pulse", yaxis: 1},
 				{color: "orange", lines: {show: true, lineWidth: 1}, points: {show:true}, data: temp, label: "Temperature", yaxis: 2},
+				{color: "green", lines: {show: true, lineWidth: 1}, points: {show:true}, data: dxt, label: "DXT", yaxis: 2},
 				{lines: {show: false}, data: painScore},
 				{lines: {show: false}, data: tick1},
 				{lines: {show: false}, data: tick2},
@@ -278,10 +294,9 @@
 					ticks: ticktengah(x,nbsp(10))
 				}],
 				yaxes: [{
-					min: -0.5,
+					min: 0.5,
 					max: 15.5,
 					ticks: [
-							[-0.5,"<b>Total</b></br></br></br>"],
 							[0.5,"flaccid</br></br></br>"],
 							[1.5,"Extension</br></br></br>"],
 							[2.5,"Abnormal</br>Flexion</br></br></br>"],
@@ -295,8 +310,8 @@
 							[10.5,"Oriented</br></br></br>"],
 							[11.5,"None</br></br></br>"],
 							[12.5,"To Pain</br></br></br>"],
-							[13.5,"To Speech</br></br></br>"],
-							[14.5,"Spontaneous</br></br></br>"],
+							[13.5,"Oxygen</br></br></br>"],
+							[14.5,"Room Air</br></br></br>"],
 							[15.5,""]]
 				},{
 							// align if we are to the right
@@ -307,8 +322,8 @@
 				}]
 
 			});
-			plot_total(plot2,total_tick(tick1,tick2,tick3));
-			legend_tepi2(plot2);
+			// plot_total(plot2,total_tick(tick1,tick2,tick3));
+			// legend_tepi2(plot2);
 		}
 
 		$("<div id='tooltip'></div>").css({
@@ -327,7 +342,7 @@
 			updateLegendTimeout = null;
 			var pos = latestPosition;
 			var axes = plot.getAxes();
-			if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max ||pos.y < axes.yaxis.min || pos.y > axes.yaxis.max) {
+			if (pos.x < axes.xaxis.min || pos.x > axes.xaxis.max || pos.y < axes.yaxis.min || pos.y > axes.yaxis.max) {
 				$("#tooltip").hide(); return;
 			}
 			var i, j, arr = [], dataset = plot.getData();
@@ -355,21 +370,17 @@
 				diastole = parseFloat(arr[0][1]) -  parseFloat(arr[0][2]),
 				pulse = arr[1][1];
 				temp = arr[2][1];
-				painScore = arr[3][1];
-				tick1 = arr[4][1];
-				tick2 = arr[5][1];
-				tick3 = arr[6][1];
-				date = arr[7][1];
+				dxt = arr[3][1];
+				painScore = arr[4][1];
+				date = arr[8][1];
 
 			$("#tooltip").html(`<b>Date: </b><span class='Date'>`+date+`<hr>`
 								+`</span><b>Sistole: </b><span class='sistole'>`+sistole
 								+`</span><br/><b>Diastole: </b><span class='diastole'>`+diastole
 								+`</span><br/><b>Pulse: </b><span class='pulse'>`+pulse
 								+`</span><br/><b>Temperature: </b><span class='temp'>`+temp
-								+`</span><br/><b>Pain Score: </b><span>`+painScore
-								+`</span><br/><b>Best Motor Response: </b><span>`+tick1
-								+`</span><br/><b>Best Verbal Response: </b><span>`+tick2
-								+`</span><br/><b>Eyes Open: </b><span>`+tick3
+								+`</span><br/><b>DXT: </b><span class='dxt'>`+dxt
+								+`</span><br/><b>SP02 (%): </b><span>`+painScore
 								+`</span>`)
 					.css({top: pos.pageY+20, left: pos.pageX+20})
 					.fadeIn(500);
@@ -389,10 +400,10 @@
 			$("#tooltip").hide();
 		});
 
-		fetchdata(document.getElementById('showall').checked,$("#customRange2").val(),firstPlot=true);
+		fetchdata(true,$("#customRange2").val(),firstPlot=true);
 
-		$('#filter').click(function(){
-			fetchdata(document.getElementById('showall').checked,$("#customRange2").val());
+		$('#customRange2').change(function(){
+			fetchdata(true,$("#customRange2").val());
 		});
 
 	});
@@ -405,27 +416,10 @@
 		<form class="alert alert-warning" style="-webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
 			<div class="row">
 				<div class="col-md-6">
-					Date From
-					<input type="date" class="form-control" placeholder="Date From" id="datefr">
-				</div>
-				<div class="col-md-6">
-					Date To
-					<input type="date" class="form-control" placeholder="Date To" id="dateto">
-				</div>
-				<div class="col-md-6">
 					<br>
-					<div class="custom-control custom-checkbox">
-					  <input type="checkbox" class="custom-control-input" id="showall">
-					  <label class="custom-control-label" for="showall">Show All Data</label>
-					</div>
 					<label for="customRange2">Data Range show <span id="rangeshow"></span> out of <span id="rangemax"></span> </label>
 					<input type="range" class="custom-range" min="0" max="5" step="1" id="customRange2">
 				</div>
-				<div class="col-md-6">
-					<br>
-					<br>
-					<br>
-					<button class="btn btn-primary float-right" type="button" id="filter">Filter</button></div>
 			</div>
 			<hr>
 			<div class="row">

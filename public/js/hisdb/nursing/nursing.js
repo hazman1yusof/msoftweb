@@ -577,7 +577,7 @@ $(document).ready(function () {
 			modal: true,
 			autoOpen: false,
 			open: function( event, ui ) {
-				
+				emptyFormdata_div("#dialognewexamFormTriage");
 			},
 			close: function(event,ui){
 				refreshGrid('#'+dialog_examTriage.gridname,dialog_examTriage.urlParam);
