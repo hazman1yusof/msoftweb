@@ -206,7 +206,6 @@
 						<div class='col-md-12'>
 							<div class="panel panel-info">
 								<div class="panel-heading text-center">CONDITION ON ADMISSION 
-                                    <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
                                 </div>
 								<div class="panel-body">
 									
@@ -509,8 +508,7 @@
 					@else
 						<div class='col-md-6'>
 							<div class="panel panel-info">
-								<div class="panel-heading text-center">CONDITION ON ADMISSION 
-                                    <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
+								<div class="panel-heading text-center">CONDITION ON ADMISSION
 								</div>
 								<div class="panel-body">
 									

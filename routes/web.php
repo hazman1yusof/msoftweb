@@ -953,6 +953,7 @@ Route::get('/nursingnote/showpdf','hisdb\NursingNoteController@showpdf');
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
 Route::get('/bpgraph','hisdb\DoctorNoteController@bpgraph');
+Route::get('/iograph','hisdb\DoctorNoteController@iograph');
 Route::get('/doctornote/table','hisdb\DoctorNoteController@table');
 Route::post('/doctornote/form','hisdb\DoctorNoteController@form');
 Route::get('/doctornote/showpdf','hisdb\DoctorNoteController@showpdf');

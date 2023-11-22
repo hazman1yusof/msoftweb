@@ -89,7 +89,7 @@ class NursingNoteController extends defaultController
             
             foreach ($nurshandover_obj as $key => $value) {
                 if(!empty($value->datetaken)){
-                    $date['datetaken'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->datetaken)->format('d-m-Y');
+                    $date['datetaken'] =  Carbon::createFromFormat('Y-m-d', $value->datetaken)->format('d-m-Y');
                 }else{
                     $date['datetaken'] =  '-';
                 }
@@ -98,7 +98,7 @@ class NursingNoteController extends defaultController
                 $date['episno'] = $value->episno;
                 // $date['timetaken'] = $value->timetaken;
                 if(!empty($value->timetaken)){
-                    $date['timetaken'] =  Carbon::createFromFormat('H:i', $value->timetaken)->format('h:i A');
+                    $date['timetaken'] =  Carbon::createFromFormat('H:i:s', $value->timetaken)->format('h:i A');
                 }else{
                     $date['timetaken'] =  '-';
                 }
@@ -826,7 +826,7 @@ class NursingNoteController extends defaultController
         
         if($nurshandover_obj->exists()){
             $nurshandover_obj = $nurshandover_obj->first();
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $nurshandover_obj->datetaken)->format('Y-m-d');
+            $date = Carbon::createFromFormat('Y-m-d', $nurshandover_obj->datetaken)->format('Y-m-d');
             
             $responce->nurshandover = $nurshandover_obj;
             $responce->date = $date;

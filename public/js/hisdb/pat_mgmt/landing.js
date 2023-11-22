@@ -735,9 +735,17 @@ $(document).ready(function() {
     });
 
     $("#doctornote_bpgraph").click(function(){
-        let justbc = $("#grid-command-buttons tr.justbc").data("rowId");
-        let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[justbc];
-        window.open('./bpgraph?mrn='+rowdata.MRN+'&episno='+rowdata.Episno, '_blank');
+        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        window.open('./bpgraph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
+    });
+
+    $("#doctornote_iograph").click(function(){
+        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        window.open('./iograph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
     });
 
 });
