@@ -617,9 +617,10 @@ class DirectPaymentController extends defaultController
             ->first();
             // dd($apacthdr);
 
-        $apactdtl = DB::table('finance.apactdtl as d', 'finance.apacthdr as h')
-            ->select('d.compcode','d.source','d.trantype','d.auditno','d.lineno_','d.deptcode','d.category','d.document', 'd.AmtB4GST', 'd.GSTCode', 'd.taxamt AS tot_gst', 'd.amount', 'd.dorecno', 'd.grnno', 'd.idno','d.adddate', 'h.auditno', 'h.remarks AS remarks')
+        $apactdtl = DB::table('finance.apactdtl as d', 'finance.apacthdr as h', 'material.category as c')
+            ->select('d.compcode','d.source','d.trantype','d.auditno','d.lineno_','d.deptcode','d.category','d.document', 'd.AmtB4GST', 'd.GSTCode', 'd.taxamt AS tot_gst', 'd.amount', 'd.dorecno', 'd.grnno', 'd.idno','d.adddate', 'h.auditno', 'h.remarks AS remarks', 'c.description as desc')
             ->leftJoin('finance.apacthdr as h', 'd.auditno', '=', 'h.auditno')
+            ->leftJoin('material.category as c', 'd.category', '=', 'c.catcode')
             ->where('d.auditno','=',$auditno)
             ->where('d.compcode','=',session('compcode'))
             ->where('d.recstatus','!=','DELETE')
