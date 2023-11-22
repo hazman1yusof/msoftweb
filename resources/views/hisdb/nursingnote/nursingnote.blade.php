@@ -322,6 +322,7 @@
                         <div class='col-md-12'>
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height:40px">
+                                    <a class='pull-left pointer text-primary' id='pdfgen1' href="" target="_blank"> Preview </a>
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_intake"
                                         style="position: absolute;

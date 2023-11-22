@@ -948,6 +948,7 @@ Route::post('/wardpanel/form','hisdb\WardPanelController@form');
 Route::get('/nursingnote','hisdb\NursingNoteController@show');
 Route::get('/nursingnote/table','hisdb\NursingNoteController@table');
 Route::post('/nursingnote/form','hisdb\NursingNoteController@form');
+Route::get('/nursingnote/showpdf','hisdb\NursingNoteController@showpdf');
 
 //// Doctor Note page ///
 Route::get('/doctornote','hisdb\DoctorNoteController@show');
