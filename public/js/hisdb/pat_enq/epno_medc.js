@@ -99,6 +99,7 @@ function epno_medc_btnstate(state){
 }
 
 function epno_medc_init(){
+    mc_last_serialno();
     emptyFormdata_div('#form_medc',['#form_medc input[name="name"]']);
     epno_medc_btnstate('default');
     $('#form_medc input[name="name"]').val($('#name_show_episodelist').text());
@@ -137,7 +138,7 @@ function mc_last_serialno(lastrowdata){
         field:['idno'],
         table_name:'hisdb.patmc',
         filterCol:['compcode','mrn'],
-        filterVal:['session.compcode',lastrowdata.MRN]
+        filterVal:['session.compcode',bootgrid_last_row.MRN]
     }
     $.get( param.url+"?"+$.param(param), function( data ) {
         

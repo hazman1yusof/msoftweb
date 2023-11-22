@@ -33,7 +33,6 @@
 			signature:``,
 			drcode:`{{$apacthdr->payto}}`,
 			crcode:`{{$apacthdr->bankcode}}`, 
-			suppname:`{{$apacthdr->suppname}}`,
 			bankname:`{{$apacthdr->bankname}}`, 
 			totamt:`{{$apacthdr->amount}}`,
 			totamt_str:`{{$totamt_eng}}`,
@@ -46,6 +45,7 @@
 				docno:`{{$obj->document}}`,
 				remarks:`{{$obj->remarks}}`,
 				amt:`{{$obj->amount}}`,
+				category:`{{$obj->category}}`,
 			},
 			@endforeach
 	];
@@ -226,21 +226,7 @@ function make_pdf(){
             style: 'body_drcr',
             table: {
                 widths: [15,45,90,80],//panjang standard dia 515
-                body: [
-                	[	
-						{text: 'CR',alignment: 'left'}, 
-						{text: ini_header.crcode,alignment: 'left'}, 
-						{text: ini_header.bankname,alignment: 'left'}, 
-						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
-					
-                	],
-                	[
-						{text: 'DR',alignment: 'left'}, 
-						{text: ini_header.drcode,alignment: 'left'}, 
-						{text: ini_header.suppname,alignment: 'left'}, 
-						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
-                	],
-                ]
+                body:dr_category()
             },
 	        layout: 'noBorders',
         },
@@ -329,6 +315,29 @@ function make_body(){
 	    	]);
     	}
     }
+
+    return retval;
+}
+
+function dr_category(){
+	let retval=[
+		[	
+			{text: 'CR',alignment: 'left'}, 
+			{text: ini_header.crcode,alignment: 'left'}, 
+			{text: ini_header.bankname,alignment: 'left'}, 
+			{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
+		]
+	];
+
+	ini_body.forEach(function(e,i){
+    	let arr = [
+			{text: 'DR',alignment: 'left'}, 
+			{text: ini_header.drcode,alignment: 'left'}, 
+			{text: e.category,alignment: 'left'}, 
+			{text: numeral(e.amt).format('0,0.00'),alignment: 'left'},
+    	];
+    	retval.push(arr);
+    });
 
     return retval;
 }
