@@ -708,6 +708,8 @@ Route::post('/directPayment/form','finance\DirectPaymentController@form');
 Route::get('/directPayment/form','finance\DirectPaymentController@form');
 Route::post('/directPaymentDetail/form','finance\DirectPaymentDetailController@form');
 Route::get('/directPaymentDetail/table','finance\DirectPaymentDetailController@table');
+Route::get('/directPayment/showpdf','finance\DirectPaymentController@showpdf');
+
 
 //// Credit Debit Transaction ///
 Route::get('/creditDebitTrans','finance\CreditDebitTransController@show');

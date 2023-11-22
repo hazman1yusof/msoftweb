@@ -107,7 +107,6 @@
 									{text: ''},
 								@endif
 							],
-							[{},{},{},{},{},{},],
 							[
 								{text: 'CREDIT TERM', alignment: 'right'},
 								{text: ':'},
