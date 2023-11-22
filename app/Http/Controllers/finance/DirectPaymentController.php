@@ -617,15 +617,10 @@ class DirectPaymentController extends defaultController
             ->first();
             // dd($apacthdr);
 
-        if ($apacthdr->recstatus == "OPEN") {
-            $title = "DRAFT";
-        } elseif ($apacthdr->recstatus == "POSTED"){
-            $title = "DIRECT PAYMENT";
-        }
-
         $apactdtl = DB::table('finance.apactdtl as d', 'finance.apacthdr as h')
             ->select('d.compcode','d.source','d.trantype','d.auditno','d.lineno_','d.deptcode','d.category','d.document', 'd.AmtB4GST', 'd.GSTCode', 'd.taxamt AS tot_gst', 'd.amount', 'd.dorecno', 'd.grnno', 'd.idno','d.adddate', 'h.auditno', 'h.remarks AS remarks')
             ->leftJoin('finance.apacthdr as h', 'd.auditno', '=', 'h.auditno')
+            ->where('d.auditno','=',$auditno)
             ->where('d.compcode','=',session('compcode'))
             ->where('d.recstatus', '<>.DELETE')
             ->where('d.source','=','CM')
@@ -638,6 +633,12 @@ class DirectPaymentController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->first();
 
+        if ($apacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($apacthdr->recstatus == "POSTED"){
+            $title = "DIRECT PAYMENT";
+        }
+            
         $totamount_expld = explode(".", (float)$apacthdr->amount);
         
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";

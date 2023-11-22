@@ -44,7 +44,7 @@
 			{
 				date:`{{$obj->adddate}}`,
 				docno:`{{$obj->document}}`,
-				desc:`{{$obj->remarks}}`,
+				remarks:`{{$obj->remarks}}`,
 				amt:`{{$obj->amount}}`,
 			},
 			@endforeach
@@ -309,7 +309,7 @@ function make_body(){
 	    	let arr = [
 				{text:e.date, style: 'body_row', border: [false, false, false, false]},
 				{text:e.docno, style: 'body_row', border: [false, false, false, false]},
-				{text:e.desc, style: 'body_row', border: [false, false, false, false]},
+				{text:e.remarks, style: 'body_row', border: [false, false, false, false]},
 				{text:numeral(e.amt).format('0,0.00'), style: 'body_row',alignment: 'right', border: [false, false, false, false]},
 	    	];
 	    	retval.push(arr);
