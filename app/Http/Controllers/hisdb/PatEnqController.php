@@ -35,6 +35,8 @@ class PatEnqController extends defaultController
                 return $this->show_mc($request);
             case 'mc_list':
                 return $this->mc_list($request);
+            case 'mc_last_serialno':
+                return $this->mc_last_serialno($request);
             case 'pat_enq_payer':
                 return $this->pat_enq_payer($request);
             case 'gletdept':
@@ -593,6 +595,19 @@ class PatEnqController extends defaultController
                     ->where('compcode',session('compcode'))
                     ->where('mrn',$request->mrn)
                     ->get();
+
+        $responce = new stdClass();
+        $responce->data = $patmc;
+
+        return json_encode($responce);
+    }
+
+    public function mc_last_serialno(Request $request){
+        $patmc = DB::table('hisdb.patmc')
+                    ->where('compcode',session('compcode'))
+                    ->where('mrn',$request->mrn)
+                    ->orderBy('idno','desc')
+                    ->first();
 
         $responce = new stdClass();
         $responce->data = $patmc;

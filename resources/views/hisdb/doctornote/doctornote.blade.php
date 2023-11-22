@@ -776,7 +776,7 @@
             border-radius: 4px;">
 
             <form id="form_medc" style="padding: 10px" autocomplete="off" class="col-md-6 col-md-offset-3" >
-                    <p style="padding-left: 50px;">Serial No: <input type="text" name="serialno" readonly class="form-control" style="width: 50px !important;"></p>
+                    <p style="padding-left: 50px;">Serial No: <input type="text" name="serialno" readonly class="form-control" style="width: 70px !important;"></p>
                     <p>I hereby certify that i have examined</p>
                     <p>Mr/Miss/Mrs : <input type="text" name="name" readonly class="form-control" style="width: 500px !important;"></p>
                     <p style="padding-left: 50px;">From : <input type="text" name="patfrom" style="width: 488px !important;" class="form-control"></p>

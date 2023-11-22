@@ -32,21 +32,21 @@ $(document).ready(function () {
         let href = $(e.target).eq(0).attr('href');
     });
 
-    $('#form_medc [name=datefrom]').on('change',function(){
+    $('#form_medc [name=datefrom]').on('blur',function(){
         let mccnt=$('#form_medc [name=mccnt]').val();
-        let datefrom=$('#form_medc [name=datefrom]');
+        let datefrom=$('#form_medc [name=datefrom]').val();
 
         let dateto = moment(datefrom).add(mccnt-1, "days");
         $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
     });
 
-    // $('#form_medc [name=mccnt]').on('change',function(){
-    //     let mccnt=$('#form_medc [name=mccnt]').val();
-    //     let datefrom=$('#form_medc [name=datefrom]');
+    $('#form_medc [name=mccnt]').on('change',function(){
+        let mccnt=$('#form_medc [name=mccnt]').val();
+        let datefrom=$('#form_medc [name=datefrom]').val();
 
-    //     let dateto = moment(datefrom).add(mccnt-1, "days");
-    //     $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
-    // });
+        let dateto = moment(datefrom).add(mccnt-1, "days");
+        $('#form_medc [name=dateto]').val(moment(dateto).format('YYYY-MM-DD'));
+    });
 
     var mclist_table = $('#mclist_table').DataTable({
         "ajax": "",
@@ -110,28 +110,31 @@ function epno_medc_btnstate(state){
 }
 
 function epno_medc_init(){
-    let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
-    let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+    let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+    let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+    var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
+    mc_last_serialno(lastrowdata);
     emptyFormdata_div('#form_medc',['#form_medc input[name="name"]']);
     epno_medc_btnstate('default');
-    $('#form_medc input[name="name"]').val(getCurrentRow.Name);
+    $('#form_medc input[name="name"]').val(lastrowdata.Name);
 }
 
 function save_medc(){
     if($('#form_medc').valid()){
         epno_medc_btnstate('all_disabled');
 
-        let rowid = $("#grid-command-buttons tr.justbc").data("rowId");
-        let getCurrentRow = $("#grid-command-buttons").bootgrid("getCurrentRows")[rowid];
+        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
         var _token = $('#csrf_token').val();
         let serializedForm = $("#form_medc").serializeArray();
         let obj = {
             'action': 'save_mc',
             'debtorcode':$('#hid_epis_payer').val(),
-            'mrn':getCurrentRow.MRN,
-            'episno': getCurrentRow.Episno,
+            'mrn':lastrowdata.MRN,
+            'episno': lastrowdata.Episno,
             '_token': _token,
         };
         
@@ -145,4 +148,25 @@ function save_medc(){
             window.open("./pat_enq/table?action=show_mc&idno="+data.idno);
         });
     }
+}
+
+function mc_last_serialno(lastrowdata){
+    var param={
+        action:'get_value_default',
+        url: '/util/get_value_default',
+        field:['idno'],
+        table_name:'hisdb.patmc',
+        filterCol:['compcode','mrn'],
+        filterVal:['session.compcode',lastrowdata.MRN]
+    }
+    $.get( param.url+"?"+$.param(param), function( data ) {
+        
+    },'json').done(function(data) {
+        if(!$.isEmptyObject(data)){
+            $('#form_medc input[name="serialno"]').val(pad('0000',data.rows[0].idno,true));
+            // self.backday = data.rows[0].backday;
+            // $(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
+            // $(self.textfield).attr('max',moment().format("YYYY-MM-DD"))
+        }
+    });
 }

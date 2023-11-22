@@ -605,7 +605,7 @@ class DirectPaymentController extends defaultController
 
     public function showpdf(Request $request){
         $auditno = $request->auditno;
-        if(!$auditno){
+        if(empty($auditno)){
             abort(404);
         }
 
@@ -622,12 +622,10 @@ class DirectPaymentController extends defaultController
             ->leftJoin('finance.apacthdr as h', 'd.auditno', '=', 'h.auditno')
             ->where('d.auditno','=',$auditno)
             ->where('d.compcode','=',session('compcode'))
-            ->where('d.recstatus', '<>.DELETE')
+            ->where('d.recstatus','!=','DELETE')
             ->where('d.source','=','CM')
             ->where('d.trantype', '=','DP')
             ->get();
-
-        //    dd($apactdtl);
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))

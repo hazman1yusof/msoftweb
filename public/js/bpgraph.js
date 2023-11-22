@@ -131,11 +131,14 @@ function markings1(){
 
 function markings2(){
 	var markings = [
-		{ color: "#f6f6f6", yaxis: { from: 15.5} },
-		{ color: "#f6f6f6", yaxis: { to: 0.5} },
-		{ color: "#000", lineWidth: 2, yaxis: { from: 11.5, to: 11.5 } },
-		{ color: "#000", lineWidth: 2, yaxis: { from: 6.5, to: 6.5 } },
-		{ color: "#000", lineWidth: 2, yaxis: { from: 0.5, to: 0.5 } },
+		// { color: "#f6f6f6", yaxis: { from: 15.5} },
+		// { color: "#f6f6f6", yaxis: { to: 0.5} },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 14.5, to: 14.5 } },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 12.5, to: 12.5 } },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 10.5, to: 10.5 } },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 8.5, to: 8.5 } },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 4.5, to: 4.5 } },
+		{ color: "#000", lineWidth: 2, yaxis: { from: 2.5, to: 2.5 } },
 	];
 
 	return markings;
@@ -143,7 +146,11 @@ function markings2(){
 
 function accum_more_tick(array,accum){
 	array = array.map(function(item,index){
-		return [item[0],parseInt(item[1])+accum];
+		if(item[1] == 0){
+			return [item[0],-10];
+		}else{
+			return [item[0],parseInt(item[1])+accum];
+		}
 	});
 	return array;
 }
@@ -192,16 +199,36 @@ function legend_tepi1(plot){
 function legend_tepi2(plot){
 	let o = plot.pointOffset({ x: 0, y: 11});
 	let bp=`<div class="row" >
-				<div class="col-md-3">
-					<b>Best Motor Response</b>
+				<div class="row">
+					<b>Airway</b>
+					<br><br><br>
 				</div>
-				<div class="col-md-3">
-					<b>Best Verbal Response</b>
+				<div class="row">
+					<b>Exposure<br>Drain</b>
+					<br><br>
 				</div>
-				<div class="col-md-3">
-					<b>Eyes Open</b>
+				<div class="row">
+					<b>Breathing</b>
+					<br><br><br>
+				</div>
+				<div class="row">
+					<b>IV Line</b>
+					<br><br><br>
+				</div>
+				<div class="row">
+					<br><br>
+					<b>Circulation</b>
+					<br><br><br><br><br>
+				</div>
+				<div class="row">
+					<b>GU</b>
+					<br><br>
+				</div>
+				<div class="row">
+					<b>Disability<br>Fall Risk</b>
+					<br><br><br>
 				</div>
 			</div>`;
 
-	$("#placeholder2").append("<div class='legendtepi' style='top:" + (o.top-25) + "px;left:-270px;'>"+bp+"</div>");
+	$("#placeholder2").append("<div class='legendtepi2' style='top:35px;left:-98px;'>"+bp+"</div>");
 }

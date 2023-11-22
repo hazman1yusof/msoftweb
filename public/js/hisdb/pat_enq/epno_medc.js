@@ -129,3 +129,24 @@ function save_medc(){
         });
     }
 }
+
+function mc_last_serialno(lastrowdata){
+    var param={
+        action:'get_value_default',
+        url: '/util/get_value_default',
+        field:['idno'],
+        table_name:'hisdb.patmc',
+        filterCol:['compcode','mrn'],
+        filterVal:['session.compcode',lastrowdata.MRN]
+    }
+    $.get( param.url+"?"+$.param(param), function( data ) {
+        
+    },'json').done(function(data) {
+        if(!$.isEmptyObject(data)){
+            $('#form_medc input[name="serialno"]').val(pad('0000',data.rows[0].idno,true));
+            // self.backday = data.rows[0].backday;
+            // $(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
+            // $(self.textfield).attr('max',moment().format("YYYY-MM-DD"))
+        }
+    });
+}

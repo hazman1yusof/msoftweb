@@ -32,6 +32,9 @@
 			writing-mode: lr-tb;
 			width: 40%;
 		}
+		.legendtepi2{position:absolute;left:-200px;color:#666;font-size:small;
+			writing-mode: lr-tb;
+		}
 		#tooltip hr { 
 		    display: block;
 		    margin-top: 0px;
@@ -153,11 +156,11 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var tick1 = obj.reduce(function(accum,value,i){
+				var roomair = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.roomair]); accum.i+=1;}
 					else{
-						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
+						let mom = moment(value.roomair, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
 							arr.push([index+1,value.tick1]); accum.i+=1;
 						}
@@ -165,11 +168,11 @@
 					return accum;
 				},{arr:[],i:0}).arr;
 
-				var tick2 = obj.reduce(function(accum,value,i){
+				var oxygen = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.oxygen]); accum.i+=1;}
 					else{
-						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
+						let mom = moment(value.oxygen, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
 							arr.push([index+1,value.tick2]); accum.i+=1;
 						}
@@ -177,16 +180,172 @@
 					return accum;					
 				},{arr:[],i:0}).arr;
 
-				var tick3 = obj.reduce(function(accum,value,i){
+				var breathnormal = obj.reduce(function(accum,value,i){
 					let arr = accum.arr,index = accum.i;
 					if(all){ arr.push([index+1,value.breathnormal]); accum.i+=1;}
 					else{
-						let mom = moment(value.time, "YYYY-MM-DD HH:mm:ss");
+						let mom = moment(value.breathnormal, "YYYY-MM-DD HH:mm:ss");
 						if(mom.isBetween(datefr_,dateto_,'day','[]')){
 							arr.push([index+1,value.tick3]); accum.i+=1;
 						}
 					}
-					return accum;					
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var breathdifficult = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.breathdifficult]); accum.i+=1;}
+					else{
+						let mom = moment(value.breathdifficult, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var circarrythmias = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.circarrythmias]); accum.i+=1;}
+					else{
+						let mom = moment(value.circarrythmias, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var circhbp = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.circhbp]); accum.i+=1;}
+					else{
+						let mom = moment(value.circhbp, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var circirregular = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.circirregular]); accum.i+=1;}
+					else{
+						let mom = moment(value.circirregular, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var circlbp = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.circlbp]); accum.i+=1;}
+					else{
+						let mom = moment(value.circlbp, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var drainnone = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.drainnone]); accum.i+=1;}
+					else{
+						let mom = moment(value.drainnone, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var draindrainage = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.draindrainage]); accum.i+=1;}
+					else{
+						let mom = moment(value.draindrainage, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var ivlnone = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.ivlnone]); accum.i+=1;}
+					else{
+						let mom = moment(value.ivlnone, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var ivlsite = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.ivlsite]); accum.i+=1;}
+					else{
+						let mom = moment(value.ivlsite, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var gucontinent = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.gucontinent]); accum.i+=1;}
+					else{
+						let mom = moment(value.gucontinent, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var gufoley = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.gufoley]); accum.i+=1;}
+					else{
+						let mom = moment(value.gufoley, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var frhigh = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.frhigh]); accum.i+=1;}
+					else{
+						let mom = moment(value.frhigh, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
+				},{arr:[],i:0}).arr;
+
+				var frlow = obj.reduce(function(accum,value,i){
+					let arr = accum.arr,index = accum.i;
+					if(all){ arr.push([index+1,value.frlow]); accum.i+=1;}
+					else{
+						let mom = moment(value.frlow, "YYYY-MM-DD HH:mm:ss");
+						if(mom.isBetween(datefr_,dateto_,'day','[]')){
+							arr.push([index+1,value.tick3]); accum.i+=1;
+						}
+					}
+					return accum;
 				},{arr:[],i:0}).arr;
 
 				var time = obj.reduce(function(accum,value,i){
@@ -217,14 +376,38 @@
 				range = (dateChange||firstPlot)?time.length:range;
 				updRange(0,time.length,range);
 
-				doPlot(x = parseInt(range)+1,sis_dis = filterRange(sis_dis,range),pulse = filterRange(pulse,range),temp = filterRange(temp,range),dxt = filterRange(dxt,range),tick1 = filterRange(tick1,range),tick2 = filterRange(tick2,range),tick3 = filterRange(tick3,range),time = filterRange(time,range), painScore = filterRange(painScore,range));
+				doPlot(
+						x = parseInt(range)+1,
+						sis_dis = filterRange(sis_dis,range),
+						pulse = filterRange(pulse,range),
+						temp = filterRange(temp,range),
+						dxt = filterRange(dxt,range),
+						roomair = filterRange(roomair,range),
+						oxygen  = filterRange(oxygen,range),
+						breathnormal  = filterRange(breathnormal,range),
+						breathdifficult  = filterRange(breathdifficult,range),
+						circarrythmias  = filterRange(circarrythmias,range),
+						circhbp  = filterRange(circhbp,range),
+						circirregular  = filterRange(circirregular,range),
+						circlbp  = filterRange(circlbp,range),
+						drainnone  = filterRange(drainnone,range),
+						draindrainage  = filterRange(draindrainage,range),
+						ivlnone  = filterRange(ivlnone,range),
+						ivlsite  = filterRange(ivlsite,range),
+						gucontinent  = filterRange(gucontinent,range),
+						gufoley  = filterRange(gufoley,range),
+						frhigh  = filterRange(frhigh,range),
+						frlow  = filterRange(frlow,range),
+						time = filterRange(time,range),
+						painScore = filterRange(painScore,range)
+					  );
 				xAxisReplot("#placeholder div.x1Axis");
 
 			});
 		}
 
 		var plot;
-		function doPlot(x,sis_dis,pulse,temp,dxt,tick1,tick2,tick3,time,painScore){
+		function doPlot(x,sis_dis,pulse,temp,dxt,roomair,oxygen,breathnormal,breathdifficult,circarrythmias,circhbp,circirregular,circlbp,drainnone,draindrainage,ivlnone,ivlsite,gucontinent,gufoley,frhigh,frlow,time,painScore){
 			var data_points = {
 				//do not show points
 				radius: 0,
@@ -238,9 +421,6 @@
 				{color: "orange", lines: {show: true, lineWidth: 1}, points: {show:true}, data: temp, label: "Temperature", yaxis: 2},
 				{color: "green", lines: {show: true, lineWidth: 1}, points: {show:true}, data: dxt, label: "DXT", yaxis: 2},
 				{lines: {show: false}, data: painScore},
-				{lines: {show: false}, data: tick1},
-				{lines: {show: false}, data: tick2},
-				{lines: {show: false}, data: tick3},
 				{lines: {show: false}, data: time}
 			];
 
@@ -276,9 +456,22 @@
 			legend_tepi1(plot);
 
 			var data2 = [
-				{color: "black", points: {symbol:"cross",show:true}, data: tick1, label: "Best Motor Response"},
-				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(tick2,6), label: "Best Verbal Response"},
-				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(tick3,11), label: "tick3"},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(roomair,15)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(oxygen,14)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(drainnone,13)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(draindrainage,12)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(breathnormal,11)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(breathdifficult,10)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(ivlnone,9)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(ivlsite,8)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(circarrythmias,7)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(circhbp,6)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(circirregular,5)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(circlbp,4)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(gucontinent,3)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(gufoley,2)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(frhigh,1)},
+				{color: "black", points: {symbol:"cross",show:true}, data: accum_more_tick(frlow,0)},
 				{lines: {show: false}, data: temp, yaxis: 2}
 			]
 
@@ -295,35 +488,37 @@
 				}],
 				yaxes: [{
 					min: 0.5,
-					max: 15.5,
+					max: 16.5,
 					ticks: [
-							[0.5,"flaccid</br></br></br>"],
-							[1.5,"Extension</br></br></br>"],
-							[2.5,"Abnormal</br>Flexion</br></br></br>"],
-							[3.5,"Flexor</br>withdrawal</br></br></br></br>"],
-							[4.5,"Localise pain</br></br></br></br>"],
-							[5.5,"Obey</br>commands</br></br></br></br>"],
-							[6.5,"None</br></br></br>"],
-							[7.5,"Incomprehe</br>nsible Sound</br></br></br>"],
-							[8.5,"Inappro<br>priate Words</br></br></br>"],
-							[9.5,"Confused</br></br></br>"],
-							[10.5,"Oriented</br></br></br>"],
-							[11.5,"None</br></br></br>"],
-							[12.5,"To Pain</br></br></br>"],
-							[13.5,"Oxygen</br></br></br>"],
-							[14.5,"Room Air</br></br></br>"],
-							[15.5,""]]
+							[0.5,"Low</br></br></br>"],
+							[1.5,"High</br></br></br>"],
+							[2.5,"Foley</br></br></br>"],
+							[3.5,"Continent</br></br></br>"],
+							[4.5,"Irregular HR</br></br></br>"],
+							[5.5,"High BP</br></br></br>"],
+							[6.5,"Low BP</br></br></br>"],
+							[7.5,"Arrhythmias</br></br></br>"],
+							[8.5,"Site</br></br></br>"],
+							[9.5,"None</br></br></br>"],
+							[10.5,"Difficult</br></br></br>"],
+							[11.5,"Normal</br></br></br>"],
+							[12.5,"Drainage</br></br></br>"],
+							[13.5,"None</br></br></br>"],
+							[14.5,"Oxygen</br></br></br>"],
+							[15.5,"Room Air</br></br></br>"],
+							[16.5,""]
+						   ]
 				},{
 							// align if we are to the right
 							min: 1,
 							max: 2,
-							ticks: tick_yaxis(2,1,nbsp(6)),
+							ticks: tick_yaxis(2,1,nbsp(8)),
 							position: 'right'
 				}]
 
 			});
 			// plot_total(plot2,total_tick(tick1,tick2,tick3));
-			// legend_tepi2(plot2);
+			legend_tepi2(plot2);
 		}
 
 		$("<div id='tooltip'></div>").css({
@@ -372,7 +567,7 @@
 				temp = arr[2][1];
 				dxt = arr[3][1];
 				painScore = arr[4][1];
-				date = arr[8][1];
+				date = arr[5][1];
 
 			$("#tooltip").html(`<b>Date: </b><span class='Date'>`+date+`<hr>`
 								+`</span><b>Sistole: </b><span class='sistole'>`+sistole
@@ -440,7 +635,7 @@
 
 		<div class="demo-container">
 			<div id="placeholder" class="demo-placeholder" style="height: 60%"></div>
-			<div id="placeholder2" class="demo-placeholder" style="height: 40%; margin-top: -34px"></div>
+			<div id="placeholder2" class="demo-placeholder" style="height: 40%; margin-top: -24px; margin-left: 10px;"></div>
 		</div>
 
 	</div>
