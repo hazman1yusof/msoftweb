@@ -414,8 +414,16 @@ form#.form_medc p{
     color: white;
     border-color: #009688;
     position: absolute;
-    top: 4px;
+    top: -2px;
     right: 4px;
+}
+#doctornote_iograph{
+	background-repeat: unset;
+	background-image: linear-gradient(to bottom, #8BC34A 0%, #a0c772 100%);
+    color: white;
+    border-color: #009688;
+    position: absolute;
+    right: 25px;
 }
 #doctornote_medc{
 	background-repeat: unset;

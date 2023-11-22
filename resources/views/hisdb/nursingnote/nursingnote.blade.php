@@ -89,6 +89,8 @@
                                                         
                                                         <label class="control-label" for="timetaken" style="padding-left: 15px;padding-right: 5px;">Time</label>
                                                         <input id="timetaken" name="timetaken" type="time" class="form-control input-sm">
+
+                                                        <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
                                                     </div>
                                                     
                                                     <div class='col-md-4'>
@@ -344,6 +346,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <form class='form-horizontal' style='width:99%' id='formIntake'>
+                                        <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Graph</button>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" id="navtab_first" href="#tab-first" aria-expanded="true" data-shift='first'>First Shift</a></li>
                                             <li><a data-toggle="tab" id="navtab_second" href="#tab-second" data-shift='second'>Second Shift</a></li>
