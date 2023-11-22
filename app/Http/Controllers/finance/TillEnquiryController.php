@@ -272,7 +272,7 @@ class TillEnquiryController extends defaultController
         
         $tillno = $request->tillno;
         $tillcode = $request->tillcode;
-        if(!$tillno){
+        if(empty($tillno) || empty($tillcode)){
             abort(404);
         }
         

@@ -1209,35 +1209,35 @@ class DoctorNoteController extends defaultController
         }
     
     }
-
+    
     public function iograph(Request $request){
-
+        
         if(empty($request->mrn) || empty($request->episno)){
             abort(404);
         }
-
+        
         $intakeoutput = DB::table('nursing.intakeoutput')
-                    ->where('compcode',session('compcode'))
-                    ->where('mrn',$request->mrn)
-                    ->where('episno',$request->episno)
-                    ->first();
-
+                        ->where('compcode',session('compcode'))
+                        ->where('mrn',$request->mrn)
+                        ->where('episno',$request->episno)
+                        ->first();
+        
         $pat_mast = DB::table('hisdb.pat_mast')
-            ->where('CompCode',session('compcode'))
-            ->where('MRN','=',$request->mrn)
-            ->first();
-
+                    ->where('CompCode',session('compcode'))
+                    ->where('MRN','=',$request->mrn)
+                    ->first();
+        
         // dd($intakeoutput);
-
-
+        
         return view('hisdb.doctornote.iograph_pdfmake',compact('intakeoutput','pat_mast'));
+        
     }
     
     public function showpdf(Request $request){
         
         $mrn = $request->mrn;
         $episno = $request->episno;
-        if(!$mrn){
+        if(empty($mrn) || empty($episno)){
             abort(404);
         }
         
@@ -1255,7 +1255,7 @@ class DoctorNoteController extends defaultController
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
-
+        
         $ini_array = [
             'docname' => $patreferral->refdoc,
             'name' => $patreferral->Name,
