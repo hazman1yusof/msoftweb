@@ -855,34 +855,4 @@ class NursingNoteController extends defaultController
         
     }
     
-    public function showpdf(Request $request){
-        
-        $mrn = $request->mrn;
-        $episno = $request->episno;
-        if(!$mrn){
-            abort(404);
-        }
-        
-        $intakeoutput = DB::table('nursing.intakeoutput as i', 'hisdb.pat_mast as p')
-                        ->select('i.mrn', 'i.episno', 'i.recorddate', 'i.recordtime', 'i.oraltype1', 'i.oraltype2', 'i.oraltype3', 'i.oraltype4', 'i.oraltype5', 'i.oraltype6', 'i.oraltype7', 'i.oraltype8', 'i.oraltype9', 'i.oraltype10', 'i.oraltype11', 'i.oraltype12', 'i.oraltype13', 'i.oraltype14', 'i.oraltype15', 'i.oraltype16', 'i.oraltype17', 'i.oraltype18', 'i.oraltype19', 'i.oraltype20', 'i.oraltype21', 'i.oraltype22', 'i.oraltype23', 'i.oraltype24', 'i.oralamt1', 'i.oralamt2', 'i.oralamt3', 'i.oralamt4', 'i.oralamt5', 'i.oralamt6', 'i.oralam7', 'i.oralamt8', 'i.oralamt9', 'i.oralamt10', 'i.oralamt11', 'i.oralamt12', 'i.oralamt13', 'i.oralamt14', 'i.oralamt15', 'i.oralamt16', 'i.oralamt17', 'i.oralamt18', 'i.oralamt19', 'i.oralamt20', 'i.oralamt21', 'i.oralamt22', 'i.oralamt23', 'i.oralamt24', 'i.intratype1', 'i.intratype2', 'i.intratype3', 'i.intratype4', 'i.intratype5', 'i.intratype6', 'i.intratype7', 'i.intratype8', 'i.intratype9', 'i.intratype10', 'i.intratype11', 'i.intratype12', 'i.intratype13', 'i.intratype14', 'i.intratype15', 'i.intratype16', 'i.intratype17', 'i.intratype18', 'i.intratype19', 'i.intratype20', 'i.intratype21', 'i.intratype22', 'i.intratype23', 'i.intratype24', 'i.intraamt1', 'i.intraamt2', 'i.intraamt3', 'i.intraamt4', 'i.intraamt5', 'i.intraamt6', 'i.intraamt7', 'i.intraamt8', 'i.intraamt9', 'i.intraamt10', 'i.intraamt11', 'i.intraamt12', 'i.intraamt13', 'i.intraamt14', 'i.intraamt15', 'i.intraamt16', 'i.intraamt17', 'i.intraamt18', 'i.intraamt19', 'i.intraamt20', 'i.intraamt21', 'i.intraamt22', 'i.intraamt23', 'i.intraamt24', 'i.othertype1', 'i.othertype2', 'i.othertype3', 'i.othertype4', 'i.othertype5', 'i.othertype6', 'i.othertype7', 'i.othertype8', 'i.othertype9', 'i.othertype10', 'i.othertype11', 'i.othertype12', 'i.othertype13', 'i.othertype14', 'i.othertype15', 'i.othertype16', 'i.othertype17', 'i.othertype18', 'i.othertype19', 'i.othertype20', 'i.othertype21', 'i.othertype22', 'i.othertype23', 'i.othertype24', 'i.otheramt1', 'i.otheramt2', 'i.otheramt3', 'i.otheramt4', 'i.otheramt5', 'i.otheramt6', 'i.otheramt7', 'i.otheramt8', 'i.otheramt9', 'i.otheramt10', 'i.otheramt11', 'i.otheramt12', 'i.otheramt13', 'i.otheramt14', 'i.otheramt15', 'i.otheramt16', 'i.otheramt17', 'i.otheramt18', 'i.otheramt19', 'i.otheramt20', 'i.otheramt21', 'i.otheramt22', 'i.otheramt23', 'i.otheramt24', 'i.urineamt1', 'i.urineamt2', 'i.urineamt3', 'i.urineamt4', 'i.urineamt5', 'i.urineamt6', 'i.urineamt7', 'i.urineamt8', 'i.urineamt9', 'i.urineamt10', 'i.urineamt11', 'i.urineamt12', 'i.urineamt13', 'i.urineamt14', 'i.urineamt15', 'i.urineamt16', 'i.urineamt17', 'i.urineamt18', 'i.urineamt19', 'i.urineamt20', 'i.urineamt21', 'i.urineamt22', 'i.urineamt23', 'i.urineamt24', 'i.vomitamt1', 'i.vomitamt2', 'i.vomitamt3', 'i.vomitamt4', 'i.vomitamt5', 'i.vomitamt6', 'i.vomitamt7', 'i.vomitamt8', 'i.vomitamt9', 'i.vomitamt10', 'i.vomitamt11', 'i.vomitamt12', 'i.vomitamt13', 'i.vomitamt14', 'i.vomitamt15', 'i.vomitamt16', 'i.vomitamt17', 'i.vomitamt18', 'i.vomitamt19', 'i.vomitamt20', 'i.vomitamt21', 'i.vomitamt22', 'i.vomitamt23', 'i.vomitamt24', 'i.aspamt1', 'i.aspamt2', 'i.aspamt3', 'i.aspamt4', 'i.aspamt5', 'i.aspamt6', 'i.aspamt7', 'i.aspamt8', 'i.aspamt9', 'i.aspamt10', 'i.aspamt11', 'i.aspamt12', 'i.aspamt13', 'i.aspamt14', 'i.aspamt15', 'i.aspamt16', 'i.aspamt17', 'i.aspamt18', 'i.aspamt19', 'i.aspamt20', 'i.aspamt21', 'i.aspamt22', 'i.aspamt23', 'i.aspamt24', 'i.otherout1', 'i.otherout2', 'i.otherout3', 'i.otherout4', 'i.otherout5', 'i.otherout6', 'i.otherout7', 'i.otherout8', 'i.otherout9', 'i.otherout10', 'i.otherout11', 'i.otherout12', 'i.otherout13', 'i.otherout14', 'i.otherout15', 'i.otherout16', 'i.otherout17', 'i.otherout18', 'i.otherout19', 'i.otherout20', 'i.otherout21', 'i.otherout22', 'i.otherout23', 'i.otherout24', 'p.Name'
-                        )
-                        ->leftjoin('hisdb.pat_mast as p', function($join) use ($request){
-                            $join = $join->on('p.MRN', '=', 'i.mrn')
-                                        ->where('p.compcode','=',session('compcode'));
-                        })
-                        ->where('i.compcode',session('compcode'))
-                        ->where('i.mrn','=',$mrn)
-                        ->where('i.episno','=',$episno)
-                        ->first();
-        
-        $title = "INTAKE OUTPUT CHART";
-        
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
-        
-        return view('hisdb.nursingnote.intakeoutput_pdfmake',compact('intakeoutput','title','company'));
-        
-    }
-    
 }

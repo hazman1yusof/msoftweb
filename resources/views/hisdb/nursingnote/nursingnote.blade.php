@@ -89,7 +89,7 @@
                                                         
                                                         <label class="control-label" for="timetaken" style="padding-left: 15px;padding-right: 5px;">Time</label>
                                                         <input id="timetaken" name="timetaken" type="time" class="form-control input-sm">
-
+                                                        
                                                         <button class="btn btn-default btn-sm" type="button" id="doctornote_bpgraph" style="float: right; margin-right: 20px;">Chart</button>
                                                     </div>
                                                     
@@ -324,7 +324,6 @@
                         <div class='col-md-12'>
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height:40px">
-                                    <a class='pull-left pointer text-primary' id='pdfgen1' href="" target="_blank"> Preview </a>
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
                                         id="btn_grp_edit_intake"
                                         style="position: absolute;
