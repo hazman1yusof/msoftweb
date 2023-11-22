@@ -602,4 +602,61 @@ class DirectPaymentController extends defaultController
             return response($e->getMessage().$e, 500);
         }
     }
+
+    public function showpdf(Request $request){
+        $auditno = $request->auditno;
+        if(!$auditno){
+            abort(404);
+        }
+
+        $apacthdr = DB::table('finance.apacthdr as h', 'material.supplier as m', 'finance.bank as b')
+            ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
+            ->leftJoin('material.supplier as m', 'h.payto', '=', 'm.suppcode')
+            ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
+            ->where('h.auditno','=',$auditno)
+            ->first();
+            // dd($apacthdr);
+
+        if ($apacthdr->recstatus == "OPEN") {
+            $title = "DRAFT";
+        } elseif ($apacthdr->recstatus == "POSTED"){
+            $title = "DIRECT PAYMENT";
+        }
+
+        $apactdtl = DB::table('finance.apactdtl as d', 'finance.apacthdr as h')
+            ->select('d.compcode','d.source','d.trantype','d.auditno','d.lineno_','d.deptcode','d.category','d.document', 'd.AmtB4GST', 'd.GSTCode', 'd.taxamt AS tot_gst', 'd.amount', 'd.dorecno', 'd.grnno', 'd.idno','d.adddate', 'h.auditno', 'h.remarks AS remarks')
+            ->leftJoin('finance.apacthdr as h', 'd.auditno', '=', 'h.auditno')
+            ->where('d.compcode','=',session('compcode'))
+            ->where('d.recstatus', '<>.DELETE')
+            ->where('d.source','=','CM')
+            ->where('d.trantype', '=','DP')
+            ->get();
+
+        //    dd($apactdtl);
+
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+
+        $totamount_expld = explode(".", (float)$apacthdr->amount);
+        
+        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
+        // $totamt_bm = $totamt_bm_rm." SAHAJA";
+
+        // if(count($totamount_expld) > 1){
+        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
+        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
+        // }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+
+        return view('finance.CM.directPayment.directPayment_pdfmake',compact('apacthdr','apactdtl','totamt_eng','company', 'title'));
+
+    }
 }

@@ -216,6 +216,8 @@ $(document).ready(function () {
 			
 			urlParam2.filterVal[1]=selrowData("#jqGrid").auditno;
 			refreshGrid("#jqGrid3",urlParam2);
+			$("#pdfgen1").attr('href','./directPayment/showpdf?auditno='+selrowData("#jqGrid").auditno);
+
 			populate_form(selrowData("#jqGrid"));
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){

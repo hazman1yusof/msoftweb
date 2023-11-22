@@ -47,8 +47,8 @@ $(document).ready(function () {
 					$('#CostCode').focus();
 					$('#CostCode').val(data['costcode']);
 					$('#GlAccNo').val(data['glaccno']);
-					dialog_CostCode.check(errorField,"CostCode");
-					dialog_GlAccNo.check(errorField,"GlAccNo");
+					dialog_CostCode.check(errorField,'CostCode');
+					dialog_GlAccNo.check(errorField,'GlAccNo');
 				},
 				gridComplete: function(obj){
 					var gridname = '#'+obj.gridname;
@@ -70,8 +70,41 @@ $(document).ready(function () {
 	);
 	dialog_SuppGroup.makedialog(true);
 
-
 	var dialog_CostCode = new ordialog(
+		'CostCode','finance.costcenter','#CostCode',errorField,
+		{	colModel:[
+				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+				ondblClickRow: function () {
+					$('#GlAccNo').focus();
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#depglacc').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+		},{
+			title:"Select Cost Code",
+			open: function(){
+				dialog_CostCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_CostCode.urlParam.filterVal=['session.compcode','ACTIVE']
+			}
+		},'urlParam','radio', 'tab'
+	);
+
+	dialog_CostCode.makedialog(true);
+
+	var dialog_advCostCode = new ordialog(
 		'Advccode','finance.costcenter','#Advccode',errorField,
 		{	colModel:[
 				{label:'Code',name:'costcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -97,15 +130,15 @@ $(document).ready(function () {
 		},{
 			title:"Select Cost Code",
 			open: function(){
-				dialog_CostCode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_CostCode.urlParam.filterVal=['session.compcode','ACTIVE']
+				dialog_advCostCode.urlParam.filterCol=['compcode','recstatus'],
+				dialog_advCostCode.urlParam.filterVal=['session.compcode','ACTIVE']
 			}
 		},'urlParam','radio', 'tab'
 	);
-	dialog_CostCode.makedialog(true);
-
+	dialog_advCostCode.makedialog(true);
+	
 	var dialog_GlAccNo = new ordialog(
-		'AdvGlaccno','finance.glmasref','#AdvGlaccno',errorField,
+		'GlAccNo','finance.glmasref','#GlAccNo',errorField,
 		{	colModel:[
 				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
@@ -135,6 +168,38 @@ $(document).ready(function () {
 		},'urlParam', 'radio','tab'
 	);
 	dialog_GlAccNo.makedialog(true);
+
+	var dialog_advGlAccNo = new ordialog(
+		'AdvGlaccno','finance.glmasref','#AdvGlaccno',errorField,
+		{	colModel:[
+				{label:'Code',name:'glaccno',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus'],
+					filterVal:['session.compcode','ACTIVE']
+				},
+				ondblClickRow: function () {
+					
+				},
+				gridComplete: function(obj){
+					var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+				}
+		},{
+			title:"Select Gl Account No",
+			open: function(){
+				dialog_advGlAccNo.urlParam.filterCol=['compcode','recstatus'],
+				dialog_advGlAccNo.urlParam.filterVal=['session.compcode','ACTIVE']
+			}
+		},'urlParam', 'radio','tab'
+	);
+	dialog_advGlAccNo.makedialog(true);
 
 	var mycurrency =new currencymode(['#TermDisp', '#TermNonDisp', '#TermOthers', '#si_purqty', '#si_unitprice', '#si_perdiscount', '#si_amtdisc', '#si_perslstax', '#si_amtslstax', '#sb_bonqty']);
 
@@ -197,12 +262,17 @@ $(document).ready(function () {
 			if(oper!='view'){
 				dialog_SuppGroup.on();
 				dialog_CostCode.on();
+				dialog_advCostCode.on();
 				dialog_GlAccNo.on();
+				dialog_advGlAccNo.on();
+
 			}
 			if(oper!='add'){
 				dialog_SuppGroup.check(errorField);
 				dialog_CostCode.check(errorField);
+				dialog_advCostCode.check(errorField);
 				dialog_GlAccNo.check(errorField);
+				dialog_advGlAccNo.check(errorField);
 			}
 		},
 		close: function( event, ui ) {
@@ -211,7 +281,9 @@ $(document).ready(function () {
 			$('.my-alert').detach();
 			dialog_SuppGroup.off();
 			dialog_CostCode.off();
+			dialog_advCostCode.off();
 			dialog_GlAccNo.off();
+			dialog_advGlAccNo.off();
 			if(oper=='view'){
 				$(this).dialog("option", "buttons",butt1);
 			}
@@ -319,7 +391,7 @@ $(document).ready(function () {
 				$("#pg_jqGridPager3 table").hide();
 				$("#pg_jqGridPager2 table").show();
 			}
-
+			
 		},
 		
 	});
@@ -355,9 +427,6 @@ $(document).ready(function () {
 		return $(rowObject).attr('title');
 	}
 
-
-
-	
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,

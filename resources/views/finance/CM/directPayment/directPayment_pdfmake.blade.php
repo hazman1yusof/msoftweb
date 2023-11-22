@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Payment Voucher</title>
+<title>Direct Payment</title>
 
 </head>
 
@@ -16,37 +16,39 @@
 
 <script>
 	
-var ini_header={pvno:`{{$apacthdr->pvno}}`,
-				pvdate:`{{$apacthdr->actdate}}`,
-				cred_code:`{{$apacthdr->suppcode}}`,
-				pname:`{{$apacthdr->suppname}}`,
-				padd1:`{{$apacthdr->addr1}}`,
-				padd2:`{{$apacthdr->addr2}}`,
-				padd3:`{{$apacthdr->addr3}}`,
-				ptelno:`{{$apacthdr->telno}}`,
-				desc:`{{$apacthdr->remarks}}`,
- 				remarks:``,
-				prepby:``,
-				checkby:``,
-				approveby:``,
-				signature:``,
-				drcode:`{{$apacthdr->suppcode}}`,
-				crcode:`{{$apacthdr->bankcode}}`, 
-				suppname:`{{$apacthdr->suppname}}`,
-				bankname:`{{$apacthdr->bankname}}`, 
-				totamt:`{{$apacthdr->amount}}`,
-				totamt_str:`{{$totamt_eng}}`,
-				};	
-var ini_body=[
-				@foreach ($apalloc as $obj)
-				{
-					date:`{{$obj->allocdate}}`,
-					docno:`{{$obj->reference}}`,
-					desc:`{{$obj->remarks}}`,
-					amt:`{{$obj->allocamount}}`,
-				},
-				@endforeach
-			];
+	var ini_header={
+			pvno:`{{$apacthdr->pvno}}`,
+			pvdate:`{{$apacthdr->actdate}}`,
+			payto:`{{$apacthdr->payto}}`,
+			pname:`{{$apacthdr->suppname}}`,
+			padd1:`{{$apacthdr->addr1}}`,
+			padd2:`{{$apacthdr->addr2}}`,
+			padd3:`{{$apacthdr->addr3}}`,
+			ptelno:`{{$apacthdr->telno}}`,
+			desc:`{{$apacthdr->remarks}}`,
+			remarks:``,
+			prepby:``,
+			checkby:``,
+			approveby:``,
+			signature:``,
+			drcode:`{{$apacthdr->payto}}`,
+			crcode:`{{$apacthdr->bankcode}}`, 
+			suppname:`{{$apacthdr->suppname}}`,
+			bankname:`{{$apacthdr->bankname}}`, 
+			totamt:`{{$apacthdr->amount}}`,
+			totamt_str:`{{$totamt_eng}}`,
+		};	
+
+	var ini_body=[
+			@foreach ($apactdtl as $obj)
+			{
+				date:`{{$obj->adddate}}`,
+				docno:`{{$obj->document}}`,
+				desc:`{{$obj->remarks}}`,
+				amt:`{{$obj->amount}}`,
+			},
+			@endforeach
+	];
 
     var subtotal=0;
     var disc=0;
@@ -162,7 +164,7 @@ function make_pdf(){
                 body: [
                     [
 						{text: 'CREDITOR CODE',bold: true}, 
-						{text: ': '+ini_header.cred_code},
+						{text: ': '+ini_header.payto},
 					],[
 						{text: 'PAYEE NAME'}, 
 						{text: ': '+ini_header.pname},
@@ -183,7 +185,7 @@ function make_pdf(){
 	        layout: 'noBorders',
         },
 		{text:'MR/MRS,',alignment: 'left', fontSize: 9, margin: [5, 8, 0, 0]},
-		{text:ini_header.desc,alignment: 'justify', fontSize: 9, margin: [5, 5, 0, 3]},
+		// {text:ini_header.desc,alignment: 'justify', fontSize: 9, margin: [5, 5, 0, 3]},
   		{
             style: 'body_tbl',
             table: {
@@ -193,7 +195,6 @@ function make_pdf(){
                 body: make_body()
             }
         },
-        {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
         {
             style: 'body_totamt_str',
             table: {
@@ -224,16 +225,19 @@ function make_pdf(){
         {
             style: 'body_drcr',
             table: {
-                widths: [45,90,80],//panjang standard dia 515
+                widths: [15,45,90,80],//panjang standard dia 515
                 body: [
-                	[
-						{text: ini_header.drcode,alignment: 'left'}, 
-						{text: ini_header.suppname,alignment: 'left'}, 
-						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
-                	],
-                	[
+                	[	
+						{text: 'CR',alignment: 'left'}, 
 						{text: ini_header.crcode,alignment: 'left'}, 
 						{text: ini_header.bankname,alignment: 'left'}, 
+						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
+					
+                	],
+                	[
+						{text: 'DR',alignment: 'left'}, 
+						{text: ini_header.drcode,alignment: 'left'}, 
+						{text: ini_header.suppname,alignment: 'left'}, 
 						{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'left'},
                 	],
                 ]
@@ -255,7 +259,7 @@ function make_pdf(){
 	                body: make_body()
 	            }
 	        },
-	        {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
+	        // {text:'REMARK: '+ini_header.remarks,alignment: 'left',fontSize:9,style: 'body_remark'},
 	        {
 	            style: 'body_totamt_str',
 	            table: {
