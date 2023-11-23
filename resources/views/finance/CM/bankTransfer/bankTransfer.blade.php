@@ -181,7 +181,7 @@
 								<div class="form-group">
 										<label class="col-md-2 control-label" for="remarks">Remarks</label>  
 											<div class="col-md-8">
-												<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="300" id="remarks"></textarea>
+												<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="300" id="remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
 											</div>
 								</div>	
 
