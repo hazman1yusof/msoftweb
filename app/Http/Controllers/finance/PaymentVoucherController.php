@@ -279,6 +279,7 @@ use PDF;
                 // $this->checkduplicate_docno('add', $request);
 
                 $table = DB::table("finance.apacthdr");
+                $pvno = $this->defaultSysparam('HIS','PV');
             
                 $array_insert = [
                     'source' => 'AP',
@@ -287,7 +288,7 @@ use PDF;
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $request->apacthdr_pvno,
+                    'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -407,6 +408,7 @@ use PDF;
 
                 // $this->checkduplicate_docno('add', $request);
 
+                $pvno = $this->defaultSysparam('HIS','PV');
                 $table = DB::table("finance.apacthdr");
             
                 $array_insert = [
@@ -416,7 +418,7 @@ use PDF;
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $request->apacthdr_pvno,
+                    'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -480,7 +482,7 @@ use PDF;
                 'compcode' => session('compcode'),
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'pvno' => $request->apacthdr_pvno,
+                // 'pvno' => $request->apacthdr_pvno,
                 'doctype' => $request->apacthdr_doctype,
                 'recdate' => $request->apacthdr_postdate,
                 'postdate' => $request->apacthdr_postdate,
@@ -606,7 +608,7 @@ use PDF;
             $array_update = [
                 'upduser' => session('username'),
                 'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'pvno' => $request->apacthdr_pvno,
+                // 'pvno' => $request->apacthdr_pvno,
                 // 'doctype' => $request->apacthdr_doctype,
                 'actdate' => $request->apacthdr_actdate,
                 'recdate' => $request->apacthdr_postdate,

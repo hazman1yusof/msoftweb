@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
 
     $('#btn_epno_gomc').click(function(){
-        emptyFormdata_div('#form_medc',['#form_medc input[name="name"]']);
+        emptyFormdata_div('#form_medc',['#form_medc input[name="name"]','#form_medc input[name="serialno"]']);
         epno_medc_btnstate('add_edit');
         $('#mclist_medc').hide();
         $('#form_medc').show();
@@ -24,7 +24,7 @@ $(document).ready(function () {
     });
 
     $('#btn_epno_canl').click(function(){
-        emptyFormdata_div('#form_medc',['#form_medc input[name="name"]']);
+        emptyFormdata_div('#form_medc',['#form_medc input[name="name"]','#form_medc input[name="serialno"]']);
         epno_medc_btnstate('default');
     });
 
@@ -115,7 +115,7 @@ function epno_medc_init(){
     var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
 
     mc_last_serialno(lastrowdata);
-    emptyFormdata_div('#form_medc',['#form_medc input[name="name"]']);
+    emptyFormdata_div('#form_medc',['#form_medc input[name="name"]','#form_medc input[name="serialno"]']);
     epno_medc_btnstate('default');
     $('#form_medc input[name="name"]').val(lastrowdata.Name);
 }
@@ -152,17 +152,17 @@ function save_medc(){
 
 function mc_last_serialno(lastrowdata){
     var param={
-        action:'get_value_default',
+        action:'get_serialno',
         url: './util/get_value_default',
         field:['idno'],
         table_name:'hisdb.patmc',
-        filterCol:['compcode','mrn'],
-        filterVal:['session.compcode',lastrowdata.MRN]
+        filterCol:['compcode'],
+        filterVal:['session.compcode']
     }
     $.get( param.url+"?"+$.param(param), function( data ) {
         
     },'json').done(function(data) {
-        if(!$.isEmptyObject(data.rows)){
+        if(!$.isEmptyObject(data.rows) && data.rows.length > 0){
             $('#form_medc input[name="serialno"]').val(pad('0000',parseInt(data.rows[0].idno)+1,true));
         }else{
             $('#form_medc input[name="serialno"]').val(pad('0000','1',true));

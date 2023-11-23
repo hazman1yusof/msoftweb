@@ -215,4 +215,76 @@ class HomeController extends Controller
     public function changeSessionUnit(Request $request){
         $request->session()->put('unit', $request->unit);
     }
+
+    public function util(Request $request)
+    {   
+        switch($request->action){
+            case 'loop_pv_pvno':
+                return $this->loop_pv_pvno($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function loop_pv_pvno(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $pvs = DB::table('finance.apacthdr')
+                    ->where('compcode','9A')
+                    ->where('source','CM')
+                    ->where('trantype','FT')
+                    ->whereNull('pvno')
+                    ->get();
+
+            foreach ($pvs as $pv) {
+                $pvno = $this->sysparamgetadd();
+
+                DB::table('finance.apacthdr')
+                    ->where('idno',$pv->idno)
+                    ->where('compcode','9A')
+                    ->where('source','CM')
+                    ->where('trantype','FT')
+                    ->update([
+                        'pvno' => $pvno
+                    ]);
+
+                dump('edit apacthdr idno: '.$pv->idno.' pvno: '.$pvno);
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+            return response($e->getMessage(), 500);
+        }
+    }
+
+    public function sysparamgetadd(){
+
+        //1. get pvalue 1
+        $pvalue1 = DB::table('sysdb.sysparam')->select('pvalue1')
+                    ->where('compcode','9A')
+                    ->where('source','HIS')
+                    ->where('trantype','PV')->first();
+        
+        //2. add 1 into the value
+        $pvalue1 = intval($pvalue1->pvalue1) + 1;
+
+        //3. update the value
+        DB::table('sysdb.sysparam')
+            ->where('compcode','9A')
+            ->where('source','HIS')
+            ->where('trantype','PV')
+            ->update(array('pvalue1' => $pvalue1));
+
+        //4. return pvalue1
+        return $pvalue1;
+    }
+
+
+
+
 }
