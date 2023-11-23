@@ -313,7 +313,7 @@ i.fa {
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
 			    			<div class="col-md-8"> 
-			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" ></textarea>
+			    				<textarea class="form-control input-sm text-uppercase" name="apacthdr_remarks" rows="2" cols="55" maxlength="400" id="apacthdr_remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
 			    			</div>
 			   		</div>
 
