@@ -182,7 +182,7 @@ class BankTransferController extends defaultController
         }
 
         $auditno = $this->recno('CM','FT');
-        $pvno = $this->recno('HIS','PV');
+        // $pvno = $this->recno('HIS','PV');
 
         DB::beginTransaction();
 
@@ -192,7 +192,7 @@ class BankTransferController extends defaultController
             'source' => 'CM',
             'auditno' => $auditno,
             'trantype' => 'FT',
-            'pvno' => $pvno,
+            // 'pvno' => $pvno,
             'compcode' => session('compcode'),
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -210,7 +210,7 @@ class BankTransferController extends defaultController
             $responce = new stdClass();
             $responce->auditno = $auditno;
             $responce->idno = $idno;
-            $responce->pvno = $pvno;
+            $responce->pvno = '';
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
@@ -236,6 +236,7 @@ class BankTransferController extends defaultController
 
             $apacthdr_get = $apacthdr->first();
             $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
+            $pvno = $this->recno('HIS','PV');
 
             //1st step add cbtran credit
             DB::table('finance.cbtran')
@@ -386,7 +387,10 @@ class BankTransferController extends defaultController
             }
 
             //5th step change status to posted
-            $apacthdr->update(['recstatus' => 'POSTED']);
+            $apacthdr->update([
+                'pvno' => $pvno,
+                'recstatus' => 'POSTED'
+            ]);
 
             DB::commit();
         } catch (\Exception $e) {

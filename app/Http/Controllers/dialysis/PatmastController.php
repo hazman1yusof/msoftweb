@@ -2093,7 +2093,7 @@ class PatmastController extends defaultController
                     'occup' => "OCCUPIED",
                     'mrn' => $request->mrn,
                     'episno' => $request->episno,
-                    'admdoctor' => $episode->admdoctor
+                    'admdoctor' => $episode->admdoctor,
                     'name' => $request->name
                 ]);
 

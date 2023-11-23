@@ -161,7 +161,7 @@ class DirectPaymentController extends defaultController
         try{
 
             $auditno = $this->defaultSysparam('CM','DP');
-            $pvno = $this->defaultSysparam('HIS','PV');
+            // $pvno = $this->defaultSysparam('HIS','PV');
             $amount = 0;
 
             $idno = DB::table('finance.apacthdr')
@@ -175,7 +175,7 @@ class DirectPaymentController extends defaultController
                         'cheqno' => $request->cheqno,
                         'remarks' => strtoupper($request->remarks),
                         'TaxClaimable' => $request->TaxClaimable,
-                        'pvno' => $pvno,
+                        // 'pvno' => $pvno,
                         'cheqdate' => $request->cheqdate,
                         'source' => 'CM',
                         'trantype' => 'DP',
@@ -189,7 +189,7 @@ class DirectPaymentController extends defaultController
 
             $responce = new stdClass();
             $responce->auditno = $auditno;
-            $responce->pvno = $pvno;
+            $responce->pvno = '';
             $responce->idno = $idno;
             $responce->amount = 0;
 
@@ -215,6 +215,7 @@ class DirectPaymentController extends defaultController
 
             $apacthdr_get = $apacthdr->first();
             $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
+            $pvno = $this->defaultSysparam('HIS','PV');
 
             //1st step add cbtran credit
             DB::table('finance.cbtran')
@@ -439,7 +440,10 @@ class DirectPaymentController extends defaultController
             }
 
             //5th step change status to posted
-            $apacthdr->update(['recstatus' => 'POSTED']);
+            $apacthdr->update([
+                'pvno' => $pvno,
+                'recstatus' => 'POSTED'
+            ]);
 
             DB::commit();
         } catch (\Exception $e) {

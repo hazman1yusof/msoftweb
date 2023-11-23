@@ -279,7 +279,6 @@ use PDF;
                 // $this->checkduplicate_docno('add', $request);
 
                 $table = DB::table("finance.apacthdr");
-                $pvno = $this->defaultSysparam('HIS','PV');
             
                 $array_insert = [
                     'source' => 'AP',
@@ -288,7 +287,7 @@ use PDF;
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $pvno,
+                    // 'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -408,7 +407,6 @@ use PDF;
 
                 // $this->checkduplicate_docno('add', $request);
 
-                $pvno = $this->defaultSysparam('HIS','PV');
                 $table = DB::table("finance.apacthdr");
             
                 $array_insert = [
@@ -418,7 +416,7 @@ use PDF;
                     'actdate' => $request->apacthdr_actdate,
                     'recdate' => $request->apacthdr_postdate,
                     'postdate' => $request->apacthdr_postdate,
-                    'pvno' => $pvno,
+                    // 'pvno' => $pvno,
                     'doctype' => $request->apacthdr_doctype,
                     'document' => strtoupper($request->apacthdr_document),
                     'paymode' => $request->apacthdr_paymode,
@@ -651,6 +649,8 @@ use PDF;
                     ->where('idno','=',$idno_obj['idno'])
                     ->first();
 
+                $pvno = $this->defaultSysparam('HIS','PV');
+
                 $yearperiod = defaultController::getyearperiod_($apacthdr->recdate);
                 if($yearperiod->status == 'C'){
                     throw new \Exception('Auditno: '.$apacthdr->auditno.' Period already close, Year: '.$yearperiod->year.' Month: '.$yearperiod->period, 500);
@@ -659,6 +659,7 @@ use PDF;
                 DB::table('finance.apacthdr')
                     ->where('idno','=',$idno_obj['idno'])
                     ->update([
+                        'pvno' => $pvno,
                         'recdate' => $apacthdr->postdate,
                         'recstatus' => 'POSTED',
                         'upduser' => session('username'),
