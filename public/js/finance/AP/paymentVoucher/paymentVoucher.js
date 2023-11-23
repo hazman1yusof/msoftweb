@@ -195,7 +195,7 @@ $(document).ready(function () {
 	};
 
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -227,24 +227,25 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 		
-			{ label: 'Audit No', name: 'apacthdr_auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 20, classes: 'wrap', formatter: padzero, unformat: unpadzero},
+			{ label: 'PV No', name: 'apacthdr_pvno', width: 20, classes: 'wrap', hidden:false, formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', checked: true, hidden: true},
 			{ label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Document No', name: 'apacthdr_document', width: 50, classes: 'wrap text-uppercase', canSearch: true},
-			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 50, classes: 'wrap text-uppercase'},
+			{ label: 'Cheque No', name: 'apacthdr_cheqno', width: 35, classes: 'wrap text-uppercase'},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'Outamount', name: 'apacthdr_outamount', width: 25 ,hidden:true, classes: 'wrap'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
 			{ label: 'Post Date', name: 'apacthdr_recdate', width: 35,hidden:true},
-			{ label: 'Post Date', name: 'apacthdr_postdate', width: 35, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true, canSearch: true},	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
@@ -253,7 +254,6 @@ $(document).ready(function () {
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
 			{ label: 'unit', name: 'apacthdr_unit', width: 40, hidden:true},
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:'true'},
-			{ label: 'pvno', name: 'apacthdr_pvno', width: 50, classes: 'wrap', hidden:true},
 			{ label: 'paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'bankcode', name: 'apacthdr_bankcode', width: 50, classes: 'wrap text-uppercase', hidden:true},
 
@@ -1831,7 +1831,8 @@ function populate_form(obj){
 
 	//panel header
 	$('#trantype_show').text(obj.apacthdr_trantype);
-	$('#document_show').text(obj.apacthdr_document);
+	$('#pvno_show').text(obj.apacthdr_pvno);
+	$('#auditno_show').text(obj.apacthdr_auditno);
 	$('#suppcode_show').text(obj.supplier_name);
 
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){
@@ -1844,7 +1845,8 @@ function populate_form(obj){
 function empty_form(){
 
 	$('#trantype_show').text('');
-	$('#document_show').text('');
+	$('#pvno_show').text('');
+	$('#auditno_show').text('');
 	$('#suppcode_show').text('');
 
 }

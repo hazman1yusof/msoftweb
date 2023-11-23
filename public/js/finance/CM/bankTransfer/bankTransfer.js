@@ -147,6 +147,20 @@ $(document).ready(function () {
 	  });
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
+	////////////////////////////////////padzero/////////////////////////////////////////////////
+	function padzero(cellvalue, options, rowObject){
+		let padzero = 7, str="";
+		while(padzero>0){
+			str=str.concat("0");
+			padzero--;
+		}
+		return pad(str, cellvalue, true);
+	}
+
+	function unpadzero(cellvalue, options, rowObject){
+		return cellvalue.substring(cellvalue.search(/[1-9]/));
+	}
+	
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		// action:'get_table_default',
@@ -182,8 +196,8 @@ $(document).ready(function () {
 		 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
 			{label: 'Bank Code From', name: 'bankcode', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{label: 'Bank Code To', name: 'payto', width: 35, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
-			{label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap', canSearch:true},
-			{label: 'Payment No', name: 'pvno', width: 40, hidden: true, classes: 'wrap'},
+			{label: 'Audit No', name: 'auditno', width: 27, classes: 'wrap', canSearch:true, formatter: padzero, unformat: unpadzero},
+			{label: 'Payment No', name: 'pvno', width: 27, hidden: false, classes: 'wrap', formatter: padzero, unformat: unpadzero},
 			{label: 'Transfer Date', name: 'actdate', width: 25, canSearch:true, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
 			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
 			{label: 'Amount', name: 'amount', width: 30, classes: 'wrap', formatter:'currency', align:'right'},
@@ -294,8 +308,8 @@ $(document).ready(function () {
 		 	{label: 'idno', name: 'idno', width: 10 , hidden: true,  classes: 'wrap'},
 		 	{label: 'source', name: 'source', width: 10, hidden: true, classes: 'wrap'},
 		 	{label: 'trantype', name: 'trantype', width: 10, hidden: true, classes: 'wrap'},
-			{label: 'Audit No', name: 'auditno', width: 5, classes: 'wrap' },
-			{label: 'Payment No', name: 'pvno', width: 20, classes: 'wrap'},
+			{label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap', formatter: padzero, unformat: unpadzero},
+			{label: 'Payment No', name: 'pvno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 			{label: 'Transfer Date', name: 'actdate', width: 20, classes: 'wrap'},
 			{label: 'Bank Code To', name: 'payto', width: 80, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{label: 'Cheque Date', name: 'cheqdate', width: 90, classes: 'wrap', hidden:true},
