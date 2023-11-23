@@ -163,7 +163,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'dpHeader_Save',
-		url:'directPayment/form',
+		url:'./directPayment/form',
 		field:'',
 		oper:oper,
 		table_name:'finance.apacthdr',
@@ -591,7 +591,7 @@ $(document).ready(function () {
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
 		action:'get_table_default',
-		url:'/util/get_table_default',
+		url:'./util/get_table_default',
 		field:['apactdtl.compcode','apactdtl.source','apactdtl.trantype','apactdtl.auditno','apactdtl.lineno_','apactdtl.deptcode','apactdtl.category','apactdtl.document', 'apactdtl.AmtB4GST', 'apactdtl.GSTCode', 'apactdtl.taxamt AS tot_gst', 'apactdtl.amount', 'apactdtl.dorecno', 'apactdtl.grnno', 'apactdtl.idno'],
 		table_name:['finance.apactdtl AS apactdtl'],
 		table_id:'lineno_',
@@ -603,7 +603,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "/directPaymentDetail/form",
+		editurl: "./directPaymentDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true, key:true},
@@ -987,7 +987,7 @@ $(document).ready(function () {
 			case 'payto':field=['suppcode','name'];table="material.supplier";case_='payto';break;
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
-		var param={action:'input_check',url:'/util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('directPayment',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
