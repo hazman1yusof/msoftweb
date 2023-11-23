@@ -18,7 +18,7 @@
 	
 	var ini_header={
 			pvno:`{{$apacthdr->pvno}}`,
-			pvdate:`{{$apacthdr->actdate}}`,
+			pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 			payto:`{{$apacthdr->payto}}`,
 			pname:`{{$apacthdr->suppname}}`,
 			padd1:`{{$apacthdr->addr1}}`,
@@ -41,11 +41,12 @@
 	var ini_body=[
 			@foreach ($apactdtl as $obj)
 			{
-				date:`{{$obj->adddate}}`,
+				date:`{{\Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}`,
 				docno:`{{$obj->document}}`,
 				remarks:`{{$obj->remarks}}`,
 				amt:`{{$obj->amount}}`,
 				category:`{{$obj->category}}`,
+				desc:`{{$obj->desc}}`,
 			},
 			@endforeach
 	];
@@ -332,8 +333,8 @@ function dr_category(){
 	ini_body.forEach(function(e,i){
     	let arr = [
 			{text: 'DR',alignment: 'left'}, 
-			{text: ini_header.drcode,alignment: 'left'}, 
 			{text: e.category,alignment: 'left'}, 
+			{text: e.desc,alignment: 'left'}, 
 			{text: numeral(e.amt).format('0,0.00'),alignment: 'left'},
     	];
     	retval.push(arr);
