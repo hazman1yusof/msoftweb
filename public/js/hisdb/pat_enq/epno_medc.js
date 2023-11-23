@@ -134,7 +134,7 @@ function save_medc(){
 function mc_last_serialno(lastrowdata){
     var param={
         action:'get_value_default',
-        url: '/util/get_value_default',
+        url: './util/get_value_default',
         field:['idno'],
         table_name:'hisdb.patmc',
         filterCol:['compcode','mrn'],

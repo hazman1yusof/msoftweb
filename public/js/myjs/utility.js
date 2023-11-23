@@ -560,7 +560,7 @@ function Sequences(trxtype,textfield){
 		let self =  this;
 		var param={
 			action:'get_value_default',
-			url: '/util/get_value_default',
+			url: './util/get_value_default',
 			field:['backday'],
 			table_name:'material.sequence',
 			filterCol:['compcode','dept','trantype'],
@@ -991,7 +991,7 @@ function setactdate(target,cantmorethantoday = false){
 	this.target=target;
 	this.param={
 		action:'get_value_default',
-		url:"util/get_value_default",
+		url:"./util/get_value_default",
 		field: ['*'],
 		table_name:'sysdb.period',
 		table_id:'idno'
