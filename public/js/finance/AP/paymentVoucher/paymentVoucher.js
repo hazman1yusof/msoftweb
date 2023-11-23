@@ -337,7 +337,7 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 
 			cbselect.checkbox_function_on(function(rowdata){
-				delete rowdata.apacthdr_recdate
+				// delete rowdata.apacthdr_recdate
 			});
 			cbselect.refresh_seltbl();
 			cbselect.show_hide_table();
@@ -1856,35 +1856,35 @@ function empty_form(){
 }
 
 function click_selection(id){
-	var date_id = 'date_injqgrid_'+$(id).data('idno');
-	var date_idno = $(id).data('idno');
-	var date_now = moment().format('YYYY-MM-DD');
+	// var date_id = 'date_injqgrid_'+$(id).data('idno');
+	// var date_idno = $(id).data('idno');
+	// var date_now = moment().format('YYYY-MM-DD');
 
-	var rowdata_copy = JSON.parse(JSON.stringify($('#jqGrid').jqGrid('getRowData', date_idno)));
+	// var rowdata_copy = JSON.parse(JSON.stringify($('#jqGrid').jqGrid('getRowData', date_idno)));
 
-	if(rowdata_copy.apacthdr_recdate != ""){
-		date_now = moment().format(rowdata_copy.apacthdr_recdate);
-	}
+	// if(rowdata_copy.apacthdr_recdate != ""){
+	// 	date_now = moment().format(rowdata_copy.apacthdr_recdate);
+	// }
 
-	if($(id).is(':checked')){
-		$(id).parent().prev().html( `<input class='form-control input-sm' 
-											type='date' 
-											id='`+date_id+`' 
-											value='`+date_now+`'
-											data-idno='`+date_idno+`'>` )
+	// if($(id).is(':checked')){
+	// 	$(id).parent().prev().html( `<input class='form-control input-sm' 
+	// 										type='date' 
+	// 										id='`+date_id+`' 
+	// 										value='`+date_now+`'
+	// 										data-idno='`+date_idno+`'>` )
 
-		$('#'+date_id).change(function () {
-			let this_idno = $(this).data('idno');
-			$("#jqGrid_selection").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
-		});
+	// 	$('#'+date_id).change(function () {
+	// 		let this_idno = $(this).data('idno');
+	// 		$("#jqGrid_selection").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
+	// 	});
 
-	}else{
-		// $("#jqGrid").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
-		// console.log(rowdata_copy);
-		$(id).parent().prev().html("");
-		// $("#jqGrid").jqGrid('restoreRow');
+	// }else{
+	// 	// $("#jqGrid").jqGrid('setCell', this_idno, 'apacthdr_recdate', $(this).val());
+	// 	// console.log(rowdata_copy);
+	// 	$(id).parent().prev().html("");
+	// 	// $("#jqGrid").jqGrid('restoreRow');
 		
-	}
+	// }
 }
 
 function calc_jq_height_onchange(jqgrid){
