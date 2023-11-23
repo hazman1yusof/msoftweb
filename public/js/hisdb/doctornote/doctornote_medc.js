@@ -153,19 +153,11 @@ function save_medc(){
 function mc_last_serialno(lastrowdata){
     var param={
         action:'get_serialno',
-        url: './util/get_value_default',
-        field:['idno'],
-        table_name:'hisdb.patmc',
-        filterCol:['compcode'],
-        filterVal:['session.compcode']
+        url: './pat_enq/table'
     }
     $.get( param.url+"?"+$.param(param), function( data ) {
         
     },'json').done(function(data) {
-        if(!$.isEmptyObject(data.rows) && data.rows.length > 0){
-            $('#form_medc input[name="serialno"]').val(pad('0000',parseInt(data.rows[0].idno)+1,true));
-        }else{
-            $('#form_medc input[name="serialno"]').val(pad('0000','1',true));
-        }
+        $('#form_medc input[name="serialno"]').val(pad('0000',parseInt(data.serialno)+1,true));
     });
 }

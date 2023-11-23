@@ -47,6 +47,8 @@ class PatEnqController extends defaultController
                 return $this->addnotes_epno($request);
             case 'init_vs_diag':
                 return $this->init_vs_diag($request);
+            case 'get_serialno':
+                return $this->get_serialno($request);
             default:
                 return 'error happen..';
         }
@@ -869,6 +871,20 @@ class PatEnqController extends defaultController
 
         return json_encode($responce);
 
+    }
+
+    public function get_serialno(Request $request){
+        $responce = new stdClass();
+        $responce->serialno = '1';
+
+        $patmc = DB::table('hisdb.patmc')
+                        ->where('compcode',session('compcode'));
+
+        if($patmc->exists()){
+            $responce->serialno = $patmc->max('idno');
+        }
+
+        return json_encode($responce);
     }
 
     public function getpayercode(Request $request){

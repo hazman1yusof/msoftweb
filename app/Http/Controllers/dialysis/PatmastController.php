@@ -267,6 +267,7 @@ class PatmastController extends defaultController
                     $episode = DB::table('hisdb.episode')
                                 ->select(['episode.mrn','doctor.doctorname','episode.epistycode'])
                                 ->leftJoin('hisdb.doctor','doctor.doctorcode','=','episode.admdoctor')
+                                ->where('episode.compcode','=',session('compcode'))
                                 ->where('episode.mrn','=',$value->MRN)
                                 ->where('episode.episno','=',$value->Episno);
 
