@@ -181,7 +181,7 @@ $(document).ready(function () {
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
 		action:'ftheader_save',
-		url:'bankTransfer/form',
+		url:'./bankTransfer/form',
 		field:'',
 		oper:oper,
 		table_name:'finance.apacthdr',
@@ -296,7 +296,7 @@ $(document).ready(function () {
 	///////////////////////////////detail luar///////////////////////////////////
 	var urlParam3={
 		action:'get_table_default',
-		url:'util/get_table_default',
+		url:'./util/get_table_default',
 		field:'',
 		table_name:'finance.apacthdr',
 		table_id:'idno',
@@ -480,7 +480,7 @@ $(document).ready(function () {
 			case 'payto':field=['bankcode','bankname'];table="finance.bank";break;
 			case 'bankcode':field=['bankcode','bankname'];table="finance.bank";case_='bankcode';break;
 		}
-		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
 		fdl.get_array('bankTransfer',options,param,case_,cellvalue);
 		
