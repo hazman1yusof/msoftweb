@@ -19,8 +19,8 @@
 	var ini_header={
 			pvno:`{{$apacthdr->pvno}}`,
 			pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
-			payto:`{{$apacthdr->payto}}`,
-			pname:`{{$apacthdr->suppname}}`,
+			payto:`{!!$apacthdr->payto!!}`,
+			pname:`{!!$apacthdr->suppname!!}`,
 			padd1:`{{$apacthdr->addr1}}`,
 			padd2:`{{$apacthdr->addr2}}`,
 			padd3:`{{$apacthdr->addr3}}`,
@@ -46,7 +46,7 @@
 				remarks:`{{$obj->remarks}}`,
 				amt:`{{$obj->amount}}`,
 				category:`{{$obj->category}}`,
-				desc:`{{$obj->desc}}`,
+				desc:`{!!$obj->desc!!}`,
 			},
 			@endforeach
 	];
