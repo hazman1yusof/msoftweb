@@ -560,7 +560,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		obj.oper = "posted";
 
-		$.post( '/bankTransfer/form', obj , function( data ) {
+		$.post( './bankTransfer/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
 		}).fail(function(data) {
 			// $('#p_error').text(data.responseText);
