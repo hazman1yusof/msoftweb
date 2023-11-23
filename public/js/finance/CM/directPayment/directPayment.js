@@ -123,7 +123,7 @@ $(document).ready(function () {
 
 	////////////////////padzero///////////////////
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -177,6 +177,7 @@ $(document).ready(function () {
 			{ label: 'Pay To', name: 'payto', width: 35, classes : 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Creditor Name', name: 'supplier_name', width: 50, classes: 'wrap text-uppercase', canSearch: false, checked: false, hidden:true},
 			{ label: 'Audit No', name: 'auditno', width: 15,  canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'PV No', name: 'pvno', width: 15, hidden:false, formatter: padzero, unformat: unpadzero},
 			{ label: 'Post Date', name: 'actdate', width: 25, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 30,  align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap text-uppercase'},
@@ -186,7 +187,6 @@ $(document).ready(function () {
 			{ label: 'Entered Date', name: 'adddate', width: 40,  hidden:true},
 			{ label: 'Remarks', name: 'remarks', width: 40, hidden:true},
 			{ label: 'GST', name: 'TaxClaimable', width: 40, hidden:true},
-			{ label: 'Pv No', name: 'pvno', width: 40, hidden:true},
 			{ label: 'Cheq Date', name: 'cheqdate', width: 40, hidden:true},
 			{ label: 'source', name: 'source', width: 40, hidden:true},
 		 	{ label: 'trantype', name: 'trantype', width: 40, hidden:true},
