@@ -236,7 +236,7 @@ class BankTransferController extends defaultController
 
             $apacthdr_get = $apacthdr->first();
             $yearperiod = $this->getyearperiod($apacthdr_get->actdate);
-            $pvno = $this->recno('HIS','PV');
+            $pvno = $this->defaultSysparam('HIS','PV');
 
             //1st step add cbtran credit
             DB::table('finance.cbtran')
