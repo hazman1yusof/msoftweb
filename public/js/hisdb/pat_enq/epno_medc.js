@@ -145,9 +145,6 @@ function mc_last_serialno(lastrowdata){
     },'json').done(function(data) {
         if(!$.isEmptyObject(data.rows)){
             $('#form_medc input[name="serialno"]').val(pad('0000',parseInt(data.rows[0].idno)+1,true));
-            // self.backday = data.rows[0].backday;
-            // $(self.textfield).attr('min',moment().subtract(self.backday, "days").format("YYYY-MM-DD"))
-            // $(self.textfield).attr('max',moment().format("YYYY-MM-DD"))
         }else{
             $('#form_medc input[name="serialno"]').val(pad('0000','1',true));
         }
