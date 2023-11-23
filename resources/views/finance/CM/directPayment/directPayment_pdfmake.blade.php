@@ -21,9 +21,9 @@
 			pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 			payto:`{!!$apacthdr->payto!!}`,
 			pname:`{!!$apacthdr->suppname!!}`,
-			padd1:`{{$apacthdr->addr1}}`,
-			padd2:`{{$apacthdr->addr2}}`,
-			padd3:`{{$apacthdr->addr3}}`,
+			padd1:`{!!$apacthdr->addr1!!}`,
+			padd2:`{!!$apacthdr->addr2!!}`,
+			padd3:`{!!$apacthdr->addr3!!}`,
 			ptelno:`{{$apacthdr->telno}}`,
 			desc:`{{$apacthdr->remarks}}`,
 			remarks:``,
@@ -42,10 +42,10 @@
 			@foreach ($apactdtl as $obj)
 			{
 				date:`{{\Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}`,
-				docno:`{{$obj->document}}`,
-				remarks:`{{$obj->remarks}}`,
+				docno:`{!!$obj->document!!}`,
+				remarks:`{!!$obj->remarks!!}`,
 				amt:`{{$obj->amount}}`,
-				category:`{{$obj->category}}`,
+				category:`{!!$obj->category!!}`,
 				desc:`{!!$obj->desc!!}`,
 			},
 			@endforeach
