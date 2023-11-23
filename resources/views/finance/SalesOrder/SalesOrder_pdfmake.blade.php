@@ -214,8 +214,14 @@
 				}
 			},
 			images: {
-				letterhead: 'http://msoftweb.test:8443/img/MSLetterHead.jpg',
-			}
+                    letterhead: {
+                        url: '{{asset('/img/MSLetterHead.jpg')}}',
+                        headers: {
+                            myheader: '123',
+                            myotherheader: 'abc',
+                        }
+                    }
+                }
 		};
 
 		// pdfMake.createPdf(docDefinition).getBase64(function(data) {
