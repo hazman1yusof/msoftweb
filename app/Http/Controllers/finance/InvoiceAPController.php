@@ -115,6 +115,7 @@ use Carbon\Carbon;
 
         foreach ($paginate->items() as $key => $value) {
             $apactdtl = DB::table('finance.apactdtl')
+                        ->where('compcode','=',session('compcode'))
                         ->where('source','=',$value->apacthdr_source)
                         ->where('trantype','=',$value->apacthdr_trantype)
                         ->where('auditno','=',$value->apacthdr_auditno);
@@ -127,6 +128,7 @@ use Carbon\Carbon;
 
             $apalloc = DB::table('finance.apalloc')
                         ->select('allocdate')
+                        ->where('compcode','=',session('compcode'))
                         ->where('refsource','=',$value->apacthdr_source)
                         ->where('reftrantype','=',$value->apacthdr_trantype)
                         ->where('refauditno','=',$value->apacthdr_auditno)

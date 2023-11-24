@@ -161,6 +161,7 @@ use Carbon\Carbon;
 
         foreach ($paginate->items() as $key => $value) {
             $apactdtl = DB::table('finance.apactdtl')
+                        ->where('compcode','=',session('compcode'))
                         ->where('source','=',$value->apacthdr_source)
                         ->where('trantype','=',$value->apacthdr_trantype)
                         ->where('auditno','=',$value->apacthdr_auditno);
@@ -169,6 +170,21 @@ use Carbon\Carbon;
                 $value->apactdtl_outamt = $apactdtl->sum('amount');
             }else{
                 $value->apactdtl_outamt = $value->apacthdr_outamount;
+            }
+
+            $apalloc = DB::table('finance.apalloc')
+                        ->select('allocdate')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('refsource','=',$value->apacthdr_source)
+                        ->where('reftrantype','=',$value->apacthdr_trantype)
+                        ->where('refauditno','=',$value->apacthdr_auditno)
+                        ->where('recstatus','!=','CANCELLED')
+                        ->orderBy('idno', 'desc');
+
+            if($apalloc->exists()){
+                $value->apalloc_allocdate = $apalloc->first()->allocdate;
+            }else{
+                $value->apalloc_allocdate = '';
             }
 
         }
