@@ -17,7 +17,7 @@
 <script>
 	
 var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
-				pvdate:`{{$apacthdr->actdate}}`,
+				pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 				cred_code:`{{$apacthdr->suppcode}}`,
 				pname:`{{strtoupper($apacthdr->suppname)}}`,
 				padd1:`{{strtoupper($apacthdr->addr1)}}`,
@@ -40,7 +40,7 @@ var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 var ini_body=[
 				@foreach ($apalloc as $obj)
 				{
-					date:`{{$obj->allocdate}}`,
+					date:`{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}`,
 					docno:`{{strtoupper($obj->reference)}}`,
 					desc:`{{strtoupper($obj->remarks)}}`,
 					amt:`{{$obj->allocamount}}`,
@@ -267,7 +267,7 @@ function make_pdf(){
 	                body: [
 	                    [
 							{text: 'RINGGIT MALAYSIA: '+ini_header.totamt_str,alignment: 'left', border: [false,true,false,true]},
-							{text: numeral(ini_header.amount).format('0,0.00'),alignment: 'right', border: [false,true,false,true]},
+							{text: numeral(ini_header.totamt).format('0,0.00'),alignment: 'right', border: [false,true,false,true]},
 						]
 	                ]
 	            },

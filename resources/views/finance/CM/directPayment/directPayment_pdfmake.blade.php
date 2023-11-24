@@ -25,7 +25,7 @@
 			padd2:`{!!$apacthdr->addr2!!}`,
 			padd3:`{!!$apacthdr->addr3!!}`,
 			ptelno:`{{$apacthdr->telno}}`,
-			desc:`{{$apacthdr->remarks}}`,
+			desc:`{{strtoupper($apacthdr->remarks)}}`,
 			remarks:``,
 			prepby:``,
 			checkby:``,
@@ -42,11 +42,11 @@
 			@foreach ($apactdtl as $obj)
 			{
 				date:`{{\Carbon\Carbon::parse($obj->adddate)->format('d/m/Y')}}`,
-				docno:`{!!$obj->document!!}`,
-				remarks:`{!!$obj->remarks!!}`,
+				docno:`{!!strtoupper($obj->document)!!}`,
+				remarks:`{!!strtoupper($obj->remarks)!!}`,
 				amt:`{{$obj->amount}}`,
 				category:`{!!$obj->category!!}`,
-				desc:`{!!$obj->desc!!}`,
+				desc:`{!!strtoupper($obj->desc)!!}`,
 			},
 			@endforeach
 	];
