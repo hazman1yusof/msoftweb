@@ -1249,7 +1249,7 @@ $(document).ready(function () {
 		{ label: 'Invoice Date', name: 'allocdate', width: 100, classes: 'wrap',
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 		},
-		{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap',},
+		{ label: 'Invoice No', name: 'reference', width: 100, classes: 'wrap text-uppercase',},
 		{ label: 'Remarks', name: 'remarks', width: 100, classes: 'wrap', hidden:true},
 		{ label: 'Amount', name: 'refamount', width: 100, classes: 'wrap',
 			formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},

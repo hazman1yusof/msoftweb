@@ -677,7 +677,7 @@ use PDF;
                     ->where('docauditno','=', $apacthdr->auditno)
                     ->update([
                         'allocdate' => $apacthdr->postdate,
-                       // 'recstatus' => 'POSTED',
+                        'recstatus' => 'POSTED',
                         'lastuser' => session('username'),
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);

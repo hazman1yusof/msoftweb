@@ -182,7 +182,7 @@ i.fa {
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-					<h5>Debit Note Allocation</h5>
+					<h5>PV Detail</h5>
 				</div>
 			</div>
 
