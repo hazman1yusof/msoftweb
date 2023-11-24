@@ -1155,11 +1155,21 @@ use PDF;
             abort(404);
         }
 
-        $apacthdr = DB::table('finance.apacthdr as h', 'material.supplier as m', 'finance.bank as b')
+        $apacthdr = DB::table('finance.apacthdr as h')
             ->select('h.compcode', 'h.auditno', 'h.trantype', 'h.source','h.doctype', 'h.pvno', 'h.suppcode', 'm.Name as suppname', 'm.Addr1 as addr1', 'm.Addr2 as addr2', 'm.Addr3 as addr3', 'm.TelNo as telno', 'h.actdate', 'h.document', 'h.deptcode', 'h.amount', 'h.outamount', 'h.recstatus', 'h.payto', 'h.category', 'h.remarks', 'h.paymode', 'h.bankcode', 'h.cheqno','b.bankname', 'b.bankaccount as bankaccno')
-            ->leftJoin('material.supplier as m', 'h.suppcode', '=', 'm.suppcode')
-            ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
-            ->where('auditno','=',$auditno)
+            // ->leftJoin('material.supplier as m', 'h.suppcode', '=', 'm.suppcode')
+            // ->leftJoin('finance.bank as b', 'h.bankcode', '=', 'b.bankcode')
+            ->leftJoin('material.supplier as m', function($join) use ($request){
+                $join = $join->on('m.suppcode', '=', 'h.suppcode');
+                $join = $join->where('m.compcode', '=', session('compcode'));
+            })
+            ->leftJoin('finance.bank as b', function($join) use ($request){
+                $join = $join->on('b.bankcode', '=', 'h.bankcode');
+                $join = $join->where('b.compcode', '=', session('compcode'));
+            })
+            ->where('h.compcode', '=', session('compcode'))
+            ->whereIn('h.trantype',['PD','PV'])
+            ->where('h.auditno','=',$auditno)
             ->first();
 
         if ($apacthdr->recstatus == "OPEN") {
@@ -1168,17 +1178,30 @@ use PDF;
             $title = " PAYMENT VOUCHER";
         }
 
+        // $apalloc = DB::table('finance.apalloc')
+        //     ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+        //     ->where('docauditno','=',$auditno)
+        //     ->where('recstatus', '!=', 'CANCELLED')
+        //     ->where('compcode', '=', session('compcode'))
+        //     ->get();
+
+
         $apalloc = DB::table('finance.apalloc')
-            ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
-            ->where('docauditno','=',$auditno)
-            ->where('recstatus', '!=', 'CANCELLED')
-            ->get();
+                    ->select('compcode','source','trantype', 'auditno', 'lineno_', 'docsource', 'doctrantype', 'docauditno', 'refsource', 'reftrantype', 'refauditno', 'refamount', 'allocdate', 'allocamount', 'recstatus', 'remarks', 'suppcode', 'reference' )
+                    ->where('compcode','=', session('compcode'))
+                    ->where('source','=', 'AP')
+                    ->where('trantype','=', 'AL')
+                    ->where('docsource','=', 'AP')
+                    ->where('doctrantype','=', 'PV')
+                    ->where('docauditno','=', $auditno)
+                    ->where('recstatus','!=','CANCELLED')
+                    ->get();
 
 
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
-
+                    
         $totamount_expld = explode(".", (float)$apacthdr->amount);
         
         // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
@@ -1197,8 +1220,7 @@ use PDF;
             $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         }
 
-        // return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
-        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake2',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
+        return view('finance.AP.paymentVoucher.paymentVoucher_pdfmake',compact('apacthdr','apalloc','totamt_eng','company', 'title'));
 
         // if(empty($request->type)){
 
