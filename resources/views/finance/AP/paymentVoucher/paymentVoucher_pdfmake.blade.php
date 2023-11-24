@@ -16,7 +16,7 @@
 
 <script>
 	
-var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_RIGHT)}}`,
+var ini_header={pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 				pvdate:`{{$apacthdr->actdate}}`,
 				cred_code:`{{$apacthdr->suppcode}}`,
 				pname:`{{strtoupper($apacthdr->suppname)}}`,
