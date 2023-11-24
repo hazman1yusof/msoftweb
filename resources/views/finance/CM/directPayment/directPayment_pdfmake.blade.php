@@ -17,7 +17,7 @@
 <script>
 	
 	var ini_header={
-			pvno:`{{$apacthdr->pvno}}`,
+			pvno:`{{str_pad($apacthdr->pvno, 7, '0', STR_PAD_LEFT)}}`,
 			pvdate:`{{\Carbon\Carbon::parse($apacthdr->actdate)->format('d/m/Y')}}`,
 			payto:`{!!$apacthdr->payto!!}`,
 			pname:`{!!$apacthdr->suppname!!}`,
