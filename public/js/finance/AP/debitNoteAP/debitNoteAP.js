@@ -50,6 +50,7 @@ $(document).ready(function () {
 				counter_save=0;
 				parent_close_disabled(true);
 				mycurrency.formatOnBlur();
+				mycurrency.formatOn();
 				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft));
 				switch (oper) {
 					case state = 'add':
@@ -83,6 +84,7 @@ $(document).ready(function () {
 				}
 				if(oper!='view'){
 					mycurrency.formatOnBlur();
+					mycurrency.formatOn();
 					dialog_supplier.on();
 					dialog_payto.on();
 				}
@@ -135,7 +137,7 @@ $(document).ready(function () {
 
 	////////////////////padzero///////////////////
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -188,7 +190,7 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'apacthdr_idno', width: 40, hidden:true, key:true},
-			{ label: 'Audit <br>No', name: 'apacthdr_auditno', width: 13, classes: 'wrap',formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit <br>No', name: 'apacthdr_auditno', width: 23, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'doctype', name: 'apacthdr_doctype', width: 10, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 60, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
@@ -197,14 +199,14 @@ $(document).ready(function () {
 			{ label: 'Document <br> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Rec Date', name: 'apacthdr_recdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter, hidden: true,},
 			{ label: 'Post Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document <br> No', name: 'apacthdr_document', width: 25, classes: 'wrap text-uppercase', canSearch: true},
+			{ label: 'Document <br> No', name: 'apacthdr_document', width: 28, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 25, classes: 'wrap text-uppercase', hidden:true},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
-			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 25 , classes: 'wrap', align: 'right', formatter:'currency'},
+			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 27 , classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 25, classes: 'wrap text-uppercase',},
+			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap text-uppercase'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 20,align: "center", formatter: formatterCheckbox },	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
-			{ label: 'remarks', name: 'apacthdr_remarks', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adddate', name: 'apacthdr_adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'apacthdr_upduser', width: 90, hidden:true, classes: 'wrap'},
