@@ -19,7 +19,7 @@
 var ini_header={pvno:`{{$apacthdr->pvno}}`,
 				pvdate:`{{$apacthdr->actdate}}`,
 				cred_code:`{{$apacthdr->suppcode}}`,
-				pname:`{{$apacthdr->suppname}}`,
+				pname:`{{!!$apacthdr->suppname!!}}`,
 				padd1:`{{$apacthdr->addr1}}`,
 				padd2:`{{$apacthdr->addr2}}`,
 				padd3:`{{$apacthdr->addr3}}`,
