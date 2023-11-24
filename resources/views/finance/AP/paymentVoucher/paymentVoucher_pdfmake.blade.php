@@ -41,7 +41,7 @@ var ini_body=[
 				@foreach ($apalloc as $obj)
 				{
 					date:`{{$obj->allocdate}}`,
-					docno:`{{$obj->reference}}`,
+					docno:`{{strtoupper($obj->reference)}}`,
 					desc:`{{strtoupper($obj->remarks)}}`,
 					amt:`{{$obj->allocamount}}`,
 				},
