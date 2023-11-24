@@ -1460,7 +1460,7 @@ $(document).ready(function () {
 			{ label: 'PO Line No', name: 'polineno', width: 75, classes: 'wrap', editable:false, hidden:true},
 			{ label: 'Remarks', name: 'remarks_button', width: 130, formatter: formatterRemarks,unformat: unformatRemarks,hidden:true},
 			{ label: 'Remarks', name: 'remarks', hidden:true},
-			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap'},
+			{ label: 'Remarks', name: 'remarks_show', width: 320, classes: 'whtspc_wrap', hidden:true},
 			{ label: 'unit', name: 'unit', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'idno', name: 'idno', width: 75, classes: 'wrap', hidden:true,},
 			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
