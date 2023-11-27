@@ -37,7 +37,7 @@ $(document).ready(function () {
                 $("#cancel_progress").data('oper','edit');
                 $("#cancel_progress").click();
                 // $("#jqGridPagerRefresh").click();
-                $('#datetime_tbl').DataTable().ajax.reload();
+                // $('#datetime_tbl').DataTable().ajax.reload();
             });
         }else{
             enableForm('#formProgress');
@@ -48,6 +48,7 @@ $(document).ready(function () {
     $("#cancel_progress").click(function(){
         disableForm('#formProgress');
         button_state_progress($(this).data('oper'));
+        $('#datetime_tbl').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
     });
     //////////////////////////////////////progressnote ends//////////////////////////////////////
@@ -114,7 +115,7 @@ $(document).ready(function () {
                 $("#cancel_treatment").data('oper','add');
                 $("#cancel_treatment").click();
                 // $("#jqGridPagerRefresh").click();
-                $('#tbl_treatment').DataTable().ajax.reload();
+                // $('#tbl_treatment').DataTable().ajax.reload();
             });
         }else{
             enableForm('#formTreatment');
@@ -125,6 +126,7 @@ $(document).ready(function () {
     $("#cancel_treatment").click(function(){
         disableForm('#formTreatment');
         button_state_treatment($(this).data('oper'));
+        $('#tbl_treatment').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
     });
     
@@ -143,7 +145,7 @@ $(document).ready(function () {
                 $("#cancel_investigation").data('oper','add');
                 $("#cancel_investigation").click();
                 // $("#jqGridPagerRefresh").click();
-                $('#tbl_investigation').DataTable().ajax.reload();
+                // $('#tbl_investigation').DataTable().ajax.reload();
             });
         }else{
             enableForm('#formInvestigation');
@@ -154,6 +156,7 @@ $(document).ready(function () {
     $("#cancel_investigation").click(function(){
         disableForm('#formInvestigation');
         button_state_investigation($(this).data('oper'));
+        $('#tbl_investigation').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
     });
     
@@ -172,7 +175,7 @@ $(document).ready(function () {
                 $("#cancel_injection").data('oper','add');
                 $("#cancel_injection").click();
                 // $("#jqGridPagerRefresh").click();
-                $('#tbl_injection').DataTable().ajax.reload();
+                // $('#tbl_injection').DataTable().ajax.reload();
             });
         }else{
             enableForm('#formInjection');
@@ -183,6 +186,7 @@ $(document).ready(function () {
     $("#cancel_injection").click(function(){
         disableForm('#formInjection');
         button_state_injection($(this).data('oper'));
+        $('#tbl_injection').DataTable().ajax.reload();
         // dialog_mrn_edit.off();
     });
     ///////////////////////////////////////treatment ends///////////////////////////////////////
@@ -269,7 +273,7 @@ $(document).ready(function () {
         let type = $(this).data('type');
         switch(type){
             case 'progress':
-                $('#datetime_tbl tbody tr:eq(0)').click();
+                $('#datetime_tbl').DataTable().ajax.reload();
                 populate_progressnote_getdata();
                 break;
             case 'intake':
@@ -279,9 +283,9 @@ $(document).ready(function () {
                 
                 break;
             case 'treatment':
-                $('#tbl_treatment tbody tr:eq(0)').click();
-                $('#tbl_investigation tbody tr:eq(0)').click();
-                $('#tbl_injection tbody tr:eq(0)').click();
+                $('#tbl_treatment').DataTable().ajax.reload();
+                $('#tbl_investigation').DataTable().ajax.reload();
+                $('#tbl_injection').DataTable().ajax.reload();
                 populate_treatment_getdata();
                 break;
             case 'careplan':
