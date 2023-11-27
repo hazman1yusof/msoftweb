@@ -34,7 +34,7 @@
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
                     <input id="episno_nursNote" name="episno_nursNote" type="hidden">
                     <div id="tab-progress" class="active in tab-pane fade">
-                        <div class='col-md-12'>
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height:40px">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -321,7 +321,7 @@
                         </div>
                     </div>
                     <div id="tab-intake" class="tab-pane fade">
-                        <div class='col-md-12'>
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
                                 <div class="panel-heading text-center" style="height:40px">
                                     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -346,7 +346,7 @@
                                 </div>
                                 <div class="panel-body">
                                     <form class='form-horizontal' style='width:99%' id='formIntake'>
-                                        <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Graph</button>
+                                        <button class="btn btn-default btn-sm" type="button" id="doctornote_iograph" style="float: right; margin-right: 20px;">Preview</button>
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" id="navtab_first" href="#tab-first" aria-expanded="true" data-shift='first'>First Shift</a></li>
                                             <li><a data-toggle="tab" id="navtab_second" href="#tab-second" data-shift='second'>Second Shift</a></li>
@@ -1545,7 +1545,195 @@
                     
                     </div>
                     <div id="tab-treatment" class="tab-pane fade">
-                    
+                        <div class='col-md-4' style="padding-left: 0px; padding-right: 3px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height:40px">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
+                                        <h6>TREATMENT AND PROCEDURE</h6>
+                                    </div>
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_treatment"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 10px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_treatment">
+                                            <span class="fa fa-plus-square-o"></span> New
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_treatment">
+                                            <span class="fa fa-save fa-lg"></span> Save
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_treatment">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding: 15px 5px;">
+                                    <form class='form-horizontal' style='width:99%' id='formTreatment'>
+                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="scope">idno</th>
+                                                                <th class="scope">mrn</th>
+                                                                <th class="scope">episno</th>
+                                                                <th class="scope">Date</th>
+                                                                <th class="scope">Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-7' style="padding-right: 0px;">
+                                            <div class="panel panel-info">
+                                                <!-- <div class="panel-heading text-center">NOTES</div> -->
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+														<label for="treatment_remarks">Notes</label>
+														<textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
+													</div>
+                                                    
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <label for="treatment_adduser">Entered by</label>
+                                                        <input name="treatment_adduser" type="text" class="form-control input-sm" rdonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-4' style="padding-left: 3px; padding-right: 3px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height:40px">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
+                                        <h6>INVESTIGATION</h6>
+                                    </div>
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_investigation"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 10px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_investigation">
+                                            <span class="fa fa-plus-square-o"></span> New
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_investigation">
+                                            <span class="fa fa-save fa-lg"></span> Save
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_investigation">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding: 15px 5px;">
+                                    <form class='form-horizontal' style='width:99%' id='formInvestigation'>
+                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <table id="tbl_investigation" class="ui celled table" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="scope">idno</th>
+                                                                <th class="scope">mrn</th>
+                                                                <th class="scope">episno</th>
+                                                                <th class="scope">Date</th>
+                                                                <th class="scope">Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-7' style="padding-right: 0px;">
+                                            <div class="panel panel-info">
+                                                <!-- <div class="panel-heading text-center">NOTES</div> -->
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+														<label for="investigation_remarks">Notes</label>
+														<textarea id="investigation_remarks" name="investigation_remarks" type="text" class="form-control input-sm"></textarea>
+													</div>
+                                                    
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <label for="investigation_adduser">Entered by</label>
+                                                        <input name="investigation_adduser" type="text" class="form-control input-sm" rdonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='col-md-4' style="padding-left: 3px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height:40px">
+                                    <div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 215px; top: 5px;">
+                                        <h6>INJECTION</h6>
+                                    </div>
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_injection"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 10px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_injection">
+                                            <span class="fa fa-plus-square-o"></span> New
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_injection">
+                                            <span class="fa fa-save fa-lg"></span> Save
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_injection">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding: 15px 5px;">
+                                    <form class='form-horizontal' style='width:99%' id='formInjection'>
+                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <table id="tbl_injection" class="ui celled table" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="scope">idno</th>
+                                                                <th class="scope">mrn</th>
+                                                                <th class="scope">episno</th>
+                                                                <th class="scope">Date</th>
+                                                                <th class="scope">Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-7' style="padding-right: 0px;">
+                                            <div class="panel panel-info">
+                                                <!-- <div class="panel-heading text-center">NOTES</div> -->
+                                                <div class="panel-body">
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+														<label for="injection_remarks">Notes</label>
+														<textarea id="injection_remarks" name="injection_remarks" type="text" class="form-control input-sm"></textarea>
+													</div>
+                                                    
+                                                    <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
+                                                        <label for="injection_adduser">Entered by</label>
+                                                        <input name="injection_adduser" type="text" class="form-control input-sm" rdonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div id="tab-careplan" class="tab-pane fade">
                     

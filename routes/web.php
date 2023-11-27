@@ -423,6 +423,24 @@ Route::get('/purchaseOrder/showpdf','material\PurchaseOrderController@showpdf');
 Route::post('/purchaseOrderDetail/form','material\PurchaseOrderDetailController@form');
 Route::get('/purchaseOrderDetail/table','material\PurchaseOrderDetailController@table');
 
+//// stock freeze ///
+Route::get('/stockFreeze','material\StockFreezeController@show');
+Route::get('/stockFreeze/table','material\StockFreezeController@table');
+Route::post('/stockFreeze/form','material\StockFreezeController@form');
+Route::get('/stockFreeze/form','material\StockFreezeController@form');
+Route::get('/stockFreeze/showpdf','material\StockFreezeController@showpdf');
+Route::post('/stockFreezeDetail/form','material\StockFreezeDetailController@form');
+Route::get('/stockFreezeDetail/table','material\StockFreezeDetailController@table');
+
+//// stock count ///
+Route::get('/stockCount','material\StockCountController@show');
+Route::get('/stockCount/table','material\StockCountController@table');
+Route::post('/stockCount/form','material\StockCountController@form');
+Route::get('/stockCount/form','material\StockCountController@form');
+Route::get('/stockCount/showpdf','material\StockCountController@showpdf');
+Route::post('/stockCountDetail/form','material\StockCountDetailController@form');
+Route::get('/stockCountDetail/table','material\StockCountDetailController@table');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
