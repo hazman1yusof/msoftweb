@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('dialysis.layouts.main')
 
 @section('title', 'Patient Order Enquiry')
 @section('style')
@@ -73,7 +73,7 @@
     </div>
 
 
-@include('itemselector_dialysis')
+@include('dialysis.itemselector_dialysis')
 
 <div class="ui mini modal scrolling" id="password_mdl">
   <i class="close icon" style="position: inherit;color: black;"></i>
@@ -98,8 +98,8 @@
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="{{ asset('assets/DataTables/datatables.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/DataTables/datatables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/assets/trirand/css/trirand/ui.jqgrid-bootstrap.css') }}" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/3.2.1/css/font-awesome.css">
@@ -111,14 +111,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;500&family=Open+Sans:wght@300;700&family=Syncopate&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/dialysis.css') }}?v=1">
+    <link rel="stylesheet" type="text/css" href="{{ asset('dialysis/css/dialysis.css') }}?v=1">
 @endsection
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/trirand/i18n/grid.locale-en.js') }}"></script>
-    <script type="text/ecmascript" src="{{ asset('assets/trirand/jquery.jqGrid.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/DataTables/datatables.min.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/i18n/grid.locale-en.js') }}"></script>
+    <script type="text/ecmascript" src="{{ asset('dialysis/assets/trirand/jquery.jqGrid.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('dialysis/assets/DataTables/datatables.min.js') }}"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
@@ -126,8 +126,8 @@
     <script type="text/ecmascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="{{ asset('js/enquiry_order_main.js') }}?v=3"></script>
-    <script type="text/javascript" src="{{ asset('js/enquiry_order.js') }}?v=7"></script>
+	<script type="text/javascript" src="{{ asset('dialysis/js/enquiry_order_main.js') }}?v=3"></script>
+    <script type="text/javascript" src="{{ asset('dialysis/js/enquiry_order.js') }}?v=7"></script>
 @endsection
 
 

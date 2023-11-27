@@ -18,7 +18,7 @@ $(document).ready(function () {
 
 	var urlParam = {
 		action: 'patmast_current_patient_orderenq',
-		url: './enquiry/table',
+		url: './dialysis_enquiry/table',
 		epismonth: moment($('#month_year_calendar').calendar('get date')).format('M'),
 		episyear: moment($('#month_year_calendar').calendar('get date')).format('YYYY')
 	}

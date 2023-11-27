@@ -41,7 +41,7 @@ $(document).ready(function () {
 	// var fdl = new faster_detail_load();
 	$("#jqGrid_trans").jqGrid({
 		datatype: "local",
-		editurl: "./dialysis_transaction_save",
+		editurl: "./dialysis_dialysis_transaction_save",
 		colModel: [
 			{ label: 'id', name: 'id', hidden: true,key:true },
 			{ label: 'chg_code', name: 'chg_code', hidden: true },
@@ -186,7 +186,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./dialysis_transaction_save?"+
+			let editurl = "./dialysis_dialysis_transaction_save?"+
 				$.param({
 					dialysis_episode_idno: '',
 					mrn: selrow.MRN,
@@ -234,7 +234,7 @@ $(document).ready(function () {
         	let selrow = selrowData('#jqGrid');
         	let selrow_trans = selrowData('#jqGrid_trans');
 
-			let editurl = "./dialysis_transaction_save?"+
+			let editurl = "./dialysis_dialysis_transaction_save?"+
 				$.param({
 					mrn: selrow.MRN,
 		    		episno: selrow.Episno,
@@ -388,7 +388,7 @@ $(document).ready(function () {
 
 var addmore_onadd = false;
 var urlParam_trans = {
-	url:'./enquiry/table',
+	url:'./dialysis_enquiry/table',
 	isudept:'CLINIC',
 	action: 'get_enquiry_order',
 	mrn:'',
@@ -463,7 +463,7 @@ function pop_item_select(type,id,rowid,ontab=false){
 	$('body,#mdl_item_selector').addClass('scrolling');
     
     selecter = $('#tbl_item_select').DataTable( {
-            "ajax": "./dialysis/table?action=" + act,
+            "ajax": "./dialysis_dialysis/table?action=" + act,
             "ordering": false,
             "lengthChange": false,
             "info": true,
@@ -599,7 +599,7 @@ function verifyuser_delete(){
 		password:$('#password_verify').val(),
     };
 
-    $.get( "./verifyuser_admin_dialysis?"+$.param(param), function( data ) {
+    $.get( "./dialysis_verifyuser_admin_dialysis?"+$.param(param), function( data ) {
 
     },'json').done(function(data) {
     	if(data.success == 'fail'){
@@ -625,7 +625,7 @@ function deleting(){
 		oper: 'del'
 	}
 
-	$.post( "./dialysis_transaction_save",param, function( data ){
+	$.post( "./dialysis_dialysis_transaction_save",param, function( data ){
 		curpage_tran = null;
 		addmore_onadd = false;
 		refreshGrid("#jqGrid_trans", urlParam_trans);

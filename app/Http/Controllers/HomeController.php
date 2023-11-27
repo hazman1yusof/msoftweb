@@ -135,7 +135,7 @@ class HomeController extends Controller
         // $menu.="<li><a style='padding-left:9px;' title='Case Note' class='clickable' programid='casenote' targetURL='dialysis_doctornote' >Case Note</a></li>";
 
         $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='dialysis' targetURL='dialysis_dialysis' >Dialysis</a></li>";
-
+        $menu.="<li><a style='padding-left:9px;' title='Enquiry' class='clickable' programid='enquiry_order' targetURL='dialysis_enquiry_order' >Order Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px;' title='Enquiry' class='clickable' programid='enquiry' targetURL='dialysis_enquiry' >Enquiry</a></li>";
 
         return $menu;
