@@ -29,6 +29,9 @@ class NursingNoteController extends defaultController
             case 'get_table_datetime':
                 return $this->get_table_datetime($request);
             
+            case 'get_datetime_treatment':
+                return $this->get_datetime_treatment($request);
+            
             default:
                 return 'error happen..';
         }
@@ -57,11 +60,38 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'save_table_treatment':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_treatment($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_table_investigation':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_investigation($request);
+                    default:
+                        return 'error happen..';
+                }
+            
+            case 'save_table_injection':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_injection($request);
+                    default:
+                        return 'error happen..';
+                }
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
             case 'get_table_intake':
                 return $this->get_table_intake($request);
+            
+            case 'get_table_treatment':
+                return $this->get_table_treatment($request);
             
             default:
                 return 'error happen..';
@@ -103,6 +133,49 @@ class NursingNoteController extends defaultController
                     $date['timetaken'] =  '-';
                 }
                 $date['lastuser'] = $value->lastuser;
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_datetime_treatment(Request $request){
+        
+        $responce = new stdClass();
+        
+        $pattreatment_obj = DB::table('nursing.pattreatment')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('type','=',$request->type);
+        
+        if($pattreatment_obj->exists()){
+            $pattreatment_obj = $pattreatment_obj->get();
+            
+            $data = [];
+            
+            foreach ($pattreatment_obj as $key => $value) {
+                if(!empty($value->entereddate)){
+                    $date['entereddate'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y');
+                }else{
+                    $date['entereddate'] =  '-';
+                }
+                $date['idno'] = $value->idno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                // $date['enteredtime'] = $value->enteredtime;
+                if(!empty($value->enteredtime)){
+                    $date['enteredtime'] =  Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
+                }else{
+                    $date['enteredtime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -814,6 +887,99 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_treatment(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'type' => 'TREATMENT',
+                    'remarks' => $request->treatment_remarks,
+                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add_investigation(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'type' => 'INVESTIGATION',
+                    'remarks' => $request->investigation_remarks,
+                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add_injection(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.pattreatment')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'type' => 'INJECTION',
+                    'remarks' => $request->injection_remarks,
+                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString()
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function get_table_progress(Request $request){
         
         $nurshandover_obj = DB::table('nursing.nurshandover')
@@ -849,6 +1015,53 @@ class NursingNoteController extends defaultController
         if($intakeoutput_obj->exists()){
             $intakeoutput_obj = $intakeoutput_obj->first();
             $responce->intakeoutput = $intakeoutput_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_treatment(Request $request){
+        
+        $treatment_obj = DB::table('nursing.pattreatment')
+                        ->select('mrn', 'episno', 'type', 'remarks as treatment_remarks', 'adduser as treatment_adduser')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->idno);
+                        // ->where('mrn','=',$request->mrn)
+                        // ->where('episno','=',$request->episno)
+                        // ->where('type','=','TREATMENT');
+        
+        $investigation_obj = DB::table('nursing.pattreatment')
+                        ->select('mrn', 'episno', 'type', 'remarks as investigation_remarks', 'adduser as investigation_adduser')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->idno);
+                        // ->where('mrn','=',$request->mrn)
+                        // ->where('episno','=',$request->episno)
+                        // ->where('type','=','INVESTIGATION');
+        
+        $injection_obj = DB::table('nursing.pattreatment')
+                        ->select('mrn', 'episno', 'type', 'remarks as injection_remarks', 'adduser as injection_adduser')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->idno);
+                        // ->where('mrn','=',$request->mrn)
+                        // ->where('episno','=',$request->episno)
+                        // ->where('type','=','INJECTION');
+        
+        $responce = new stdClass();
+        
+        if($treatment_obj->exists()){
+            $treatment_obj = $treatment_obj->first();
+            $responce->treatment = $treatment_obj;
+        }
+        
+        if($investigation_obj->exists()){
+            $investigation_obj = $investigation_obj->first();
+            $responce->investigation = $investigation_obj;
+        }
+        
+        if($injection_obj->exists()){
+            $injection_obj = $injection_obj->first();
+            $responce->injection = $injection_obj;
         }
         
         return json_encode($responce);

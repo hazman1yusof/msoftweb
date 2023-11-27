@@ -8,7 +8,7 @@ $(document).ready(function () {
     
     var fdl = new faster_detail_load();
     
-    textare_init_nursingnote();
+    textarea_init_nursingnote();
     
     /////////////////////////////////////progressnote starts/////////////////////////////////////
     disableForm('#formProgress');
@@ -94,6 +94,99 @@ $(document).ready(function () {
     });
     //////////////////////////////////////intakeoutput ends//////////////////////////////////////
     
+    //////////////////////////////////////treatment starts//////////////////////////////////////
+    disableForm('#formTreatment');
+    disableForm('#formInvestigation');
+    disableForm('#formInjection');
+    
+    $("#new_treatment").click(function(){
+        button_state_treatment('wait');
+        enableForm('#formTreatment');
+        rdonly('#formTreatment');
+        emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote']);
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#save_treatment").click(function(){
+        disableForm('#formTreatment');
+        if( $('#formTreatment').isValid({requiredFields: ''}, conf, true) ) {
+            saveForm_treatment(function(){
+                $("#cancel_treatment").data('oper','add');
+                $("#cancel_treatment").click();
+                // $("#jqGridPagerRefresh").click();
+                $('#tbl_treatment').DataTable().ajax.reload();
+            });
+        }else{
+            enableForm('#formTreatment');
+            rdonly('#formTreatment');
+        }
+    });
+    
+    $("#cancel_treatment").click(function(){
+        disableForm('#formTreatment');
+        button_state_treatment($(this).data('oper'));
+        // dialog_mrn_edit.off();
+    });
+    
+    $("#new_investigation").click(function(){
+        button_state_investigation('wait');
+        enableForm('#formInvestigation');
+        rdonly('#formInvestigation');
+        emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote']);
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#save_investigation").click(function(){
+        disableForm('#formInvestigation');
+        if( $('#formInvestigation').isValid({requiredFields: ''}, conf, true) ) {
+            saveForm_investigation(function(){
+                $("#cancel_investigation").data('oper','add');
+                $("#cancel_investigation").click();
+                // $("#jqGridPagerRefresh").click();
+                $('#tbl_investigation').DataTable().ajax.reload();
+            });
+        }else{
+            enableForm('#formInvestigation');
+            rdonly('#formInvestigation');
+        }
+    });
+    
+    $("#cancel_investigation").click(function(){
+        disableForm('#formInvestigation');
+        button_state_investigation($(this).data('oper'));
+        // dialog_mrn_edit.off();
+    });
+    
+    $("#new_injection").click(function(){
+        button_state_injection('wait');
+        enableForm('#formInjection');
+        rdonly('#formInjection');
+        emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote']);
+        // dialog_mrn_edit.on();
+    });
+    
+    $("#save_injection").click(function(){
+        disableForm('#formInjection');
+        if( $('#formInjection').isValid({requiredFields: ''}, conf, true) ) {
+            saveForm_injection(function(){
+                $("#cancel_injection").data('oper','add');
+                $("#cancel_injection").click();
+                // $("#jqGridPagerRefresh").click();
+                $('#tbl_injection').DataTable().ajax.reload();
+            });
+        }else{
+            enableForm('#formInjection');
+            rdonly('#formInjection');
+        }
+    });
+    
+    $("#cancel_injection").click(function(){
+        disableForm('#formInjection');
+        button_state_injection($(this).data('oper'));
+        // dialog_mrn_edit.off();
+    });
+    ///////////////////////////////////////treatment ends///////////////////////////////////////
+    
     // to format number input to two decimal places (0.00)
     $(".floatNumberField").change(function() {
         $(this).val(parseFloat($(this).val()).toFixed(2));
@@ -112,6 +205,44 @@ $(document).ready(function () {
         });
         
         populate_intakeoutput_getdata();
+        
+        //////////////////////////////////////////treatment starts//////////////////////////////////////////
+        var urlparam_tbl_treatment={
+            action: 'get_datetime_treatment',
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            type: "TREATMENT",
+        }
+        
+        tbl_treatment.ajax.url( "./nursingnote/table?"+$.param(urlparam_tbl_treatment) ).load(function(data){
+            emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote']);
+            $('#tbl_treatment tbody tr:eq(0)').click();  // to select first row
+        });
+        
+        var urlparam_tbl_investigation={
+            action: 'get_datetime_treatment',
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            type: "INVESTIGATION",
+        }
+        
+        tbl_investigation.ajax.url( "./nursingnote/table?"+$.param(urlparam_tbl_investigation) ).load(function(data){
+            emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote']);
+            $('#tbl_investigation tbody tr:eq(0)').click();  // to select first row
+        });
+        
+        var urlparam_tbl_injection={
+            action: 'get_datetime_treatment',
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            type: "INJECTION",
+        }
+        
+        tbl_injection.ajax.url( "./nursingnote/table?"+$.param(urlparam_tbl_injection) ).load(function(data){
+            emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote']);
+            $('#tbl_injection tbody tr:eq(0)').click();  // to select first row
+        });
+        ///////////////////////////////////////////treatment ends///////////////////////////////////////////
     });
     
     $("#jqGridNursNote_panel").on("hide.bs.collapse", function(){
@@ -126,6 +257,7 @@ $(document).ready(function () {
         SmoothScrollTo("#jqGridNursNote_panel", 500);
         populate_progressnote_getdata();
         populate_intakeoutput_getdata();
+        populate_treatment_getdata();
     });
     
     $('#jqGridNursNote_panel').on('hidden.bs.collapse', function () {
@@ -147,7 +279,10 @@ $(document).ready(function () {
                 
                 break;
             case 'treatment':
-                
+                $('#tbl_treatment tbody tr:eq(0)').click();
+                $('#tbl_investigation tbody tr:eq(0)').click();
+                $('#tbl_injection tbody tr:eq(0)').click();
+                populate_treatment_getdata();
                 break;
             case 'careplan':
                 
@@ -198,13 +333,162 @@ $(document).ready(function () {
                 $("#datetaken").val(data.date);
                 
                 button_state_progress('edit');
-                textare_init_nursingnote();
+                textarea_init_nursingnote();
             }else{
                 button_state_progress('add');
-                textare_init_nursingnote();
+                textarea_init_nursingnote();
             }
         });
     });
+    
+    /////////////////////////////////////////treatment starts/////////////////////////////////////////
+    $('#tbl_treatment tbody').on('click', 'tr', function () {
+        var data = tbl_treatment.row( this ).data();
+        
+        if(data == undefined){
+            return;
+        }
+        
+        // to highlight selected row
+        if($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }else {
+            tbl_treatment.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        emptyFormdata_div("#formTreatment",['#mrn_nursNote','#episno_nursNote']);
+        $('#tbl_treatment tbody tr').removeClass('active');
+        $(this).addClass('active');
+        
+        // populate_treatment_getdata();
+        
+        var saveParam={
+            action: 'get_table_treatment',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            idno: data.idno,
+            mrn: data.mrn,
+            episno: data.episno
+        };
+        
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            if(!$.isEmptyObject(data)){
+                autoinsert_rowdata("#formTreatment",data.treatment);
+                
+                button_state_treatment('add');
+                textarea_init_nursingnote();
+            }else{
+                button_state_treatment('add');
+                textarea_init_nursingnote();
+            }
+        });
+    });
+    
+    $('#tbl_investigation tbody').on('click', 'tr', function () {
+        var data = tbl_investigation.row( this ).data();
+        
+        if(data == undefined){
+            return;
+        }
+        
+        // to highlight selected row
+        if($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }else {
+            tbl_investigation.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        emptyFormdata_div("#formInvestigation",['#mrn_nursNote','#episno_nursNote']);
+        $('#tbl_investigation tbody tr').removeClass('active');
+        $(this).addClass('active');
+        
+        // populate_investigation_getdata();
+        
+        var saveParam={
+            action: 'get_table_treatment',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            idno: data.idno,
+            mrn: data.mrn,
+            episno: data.episno
+        };
+        
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            if(!$.isEmptyObject(data)){
+                autoinsert_rowdata("#formInvestigation",data.investigation);
+                
+                button_state_investigation('add');
+                textarea_init_nursingnote();
+            }else{
+                button_state_investigation('add');
+                textarea_init_nursingnote();
+            }
+        });
+    });
+    
+    $('#tbl_injection tbody').on('click', 'tr', function () {
+        var data = tbl_injection.row( this ).data();
+        
+        if(data == undefined){
+            return;
+        }
+        
+        // to highlight selected row
+        if($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }else {
+            tbl_injection.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        
+        emptyFormdata_div("#formInjection",['#mrn_nursNote','#episno_nursNote']);
+        $('#tbl_injection tbody tr').removeClass('active');
+        $(this).addClass('active');
+        
+        // populate_injection_getdata();
+        
+        var saveParam={
+            action: 'get_table_treatment',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            idno: data.idno,
+            mrn: data.mrn,
+            episno: data.episno
+        };
+        
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            if(!$.isEmptyObject(data)){
+                autoinsert_rowdata("#formInjection",data.injection);
+                
+                button_state_injection('add');
+                textarea_init_nursingnote();
+            }else{
+                button_state_injection('add');
+                textarea_init_nursingnote();
+            }
+        });
+    });
+    //////////////////////////////////////////treatment ends//////////////////////////////////////////
     
 });
 
@@ -228,6 +512,68 @@ var datetime_tbl = $('#datetime_tbl').DataTable({
         $(this).find('tbody tr')[0].click();
     }
 });
+
+//////////////////////treatment starts//////////////////////
+var tbl_treatment = $('#tbl_treatment').DataTable({
+    "ajax": "",
+    "sDom": "",
+    "paging": false,
+    "columns": [
+        { 'data': 'idno' },
+        { 'data': 'mrn' },
+        { 'data': 'episno' },
+        { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'enteredtime', 'width': '25%' },
+    ],
+    columnDefs: [
+        { targets: [0, 1, 2], visible: false },
+    ],
+    order: [[0, 'desc']],
+    "drawCallback": function( settings ) {
+        $(this).find('tbody tr')[0].click();
+    }
+});
+
+var tbl_investigation = $('#tbl_investigation').DataTable({
+    "ajax": "",
+    "sDom": "",
+    "paging": false,
+    "columns": [
+        { 'data': 'idno' },
+        { 'data': 'mrn' },
+        { 'data': 'episno' },
+        { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'enteredtime', 'width': '25%' },
+    ],
+    columnDefs: [
+        { targets: [0, 1, 2], visible: false },
+    ],
+    order: [[0, 'desc']],
+    "drawCallback": function( settings ) {
+        $(this).find('tbody tr')[0].click();
+    }
+});
+
+var tbl_injection = $('#tbl_injection').DataTable({
+    "ajax": "",
+    "sDom": "",
+    "paging": false,
+    "columns": [
+        { 'data': 'idno' },
+        { 'data': 'mrn' },
+        { 'data': 'episno' },
+        { 'data': 'entereddate', 'width': '25%' },
+        { 'data': 'enteredtime', 'width': '25%' },
+    ],
+    columnDefs: [
+        { targets: [0, 1, 2], visible: false },
+    ],
+    order: [[0, 'desc']],
+    "drawCallback": function( settings ) {
+        $(this).find('tbody tr')[0].click();
+    }
+});
+///////////////////////treatment ends///////////////////////
 
 var errorField = [];
 conf = {
@@ -301,6 +647,74 @@ function button_state_intake(state){
     }
 }
 
+//////////////////////////////////////treatment starts//////////////////////////////////////
+button_state_treatment('empty');
+function button_state_treatment(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_nursNote").removeAttr('data-toggle');
+            $('#cancel_treatment').data('oper','add');
+            $('#new_treatment,#save_treatment,#cancel_treatment').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_treatment').data('oper','add');
+            $("#new_treatment").attr('disabled',false);
+            $('#save_treatment,#cancel_treatment').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $("#save_treatment,#cancel_treatment").attr('disabled',false);
+            $('#new_treatment').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_investigation('empty');
+function button_state_investigation(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_nursNote").removeAttr('data-toggle');
+            $('#cancel_investigation').data('oper','add');
+            $('#new_investigation,#save_investigation,#cancel_investigation').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_investigation').data('oper','add');
+            $("#new_investigation").attr('disabled',false);
+            $('#save_investigation,#cancel_investigation').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $("#save_investigation,#cancel_investigation").attr('disabled',false);
+            $('#new_investigation').attr('disabled',true);
+            break;
+    }
+}
+
+button_state_injection('empty');
+function button_state_injection(state){
+    switch(state){
+        case 'empty':
+            $("#toggle_nursNote").removeAttr('data-toggle');
+            $('#cancel_injection').data('oper','add');
+            $('#new_injection,#save_injection,#cancel_injection').attr('disabled',true);
+            break;
+        case 'add':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $('#cancel_injection').data('oper','add');
+            $("#new_injection").attr('disabled',false);
+            $('#save_injection,#cancel_injection').attr('disabled',true);
+            break;
+        case 'wait':
+            $("#toggle_nursNote").attr('data-toggle','collapse');
+            $("#save_injection,#cancel_injection").attr('disabled',false);
+            $('#new_injection').attr('disabled',true);
+            break;
+    }
+}
+///////////////////////////////////////treatment ends///////////////////////////////////////
+
 // screen current patient //
 function populate_nursingnote(obj){
     $("#jqGridNursNote_panel").collapse('hide');
@@ -343,6 +757,7 @@ function populate_progressnote_getdata(){
     
     var postobj={
         _token: $('#csrf_token').val(),
+        // idno: $("#idno_progress").val(),
         mrn: $("#mrn_nursNote").val(),
         episno: $("#episno_nursNote").val()
     };
@@ -357,10 +772,10 @@ function populate_progressnote_getdata(){
             $("#datetaken").val(data.date);
             
             button_state_progress('edit');
-            textare_init_nursingnote();
+            textarea_init_nursingnote();
         }else{
             button_state_progress('add');
-            textare_init_nursingnote();
+            textarea_init_nursingnote();
         }
     });
 }
@@ -387,10 +802,62 @@ function populate_intakeoutput_getdata(){
             autoinsert_rowdata("#formIntake",data.intakeoutput);
             
             button_state_intake('edit');
-            textare_init_nursingnote();
+            textarea_init_nursingnote();
         }else{
             button_state_intake('add');
-            textare_init_nursingnote();
+            textarea_init_nursingnote();
+        }
+    });
+}
+
+function populate_treatment_getdata(){
+    emptyFormdata(errorField,"#formTreatment",["#mrn_nursNote","#episno_nursNote"]);
+    emptyFormdata(errorField,"#formInvestigation",["#mrn_nursNote","#episno_nursNote"]);
+    emptyFormdata(errorField,"#formInjection",["#mrn_nursNote","#episno_nursNote"]);
+    
+    var saveParam={
+        action: 'get_table_treatment',
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn: $("#mrn_nursNote").val(),
+        episno: $("#episno_nursNote").val()
+    };
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        
+    },'json').fail(function(data) {
+        alert('there is an error');
+    }).success(function(data){
+        if(!$.isEmptyObject(data.treatment)){
+            autoinsert_rowdata("#formTreatment",data.treatment);
+            
+            button_state_treatment('add');
+            textarea_init_nursingnote();
+        }else{
+            button_state_treatment('add');
+            textarea_init_nursingnote();
+        }
+        
+        if(!$.isEmptyObject(data.investigation)){
+            autoinsert_rowdata("#formInvestigation",data.investigation);
+            
+            button_state_investigation('add');
+            textarea_init_nursingnote();
+        }else{
+            button_state_investigation('add');
+            textarea_init_nursingnote();
+        }
+        
+        if(!$.isEmptyObject(data.injection)){
+            autoinsert_rowdata("#formInjection",data.injection);
+            
+            button_state_injection('add');
+            textarea_init_nursingnote();
+        }else{
+            button_state_injection('add');
+            textarea_init_nursingnote();
         }
     });
 }
@@ -529,8 +996,187 @@ function saveForm_intake(callback){
     });
 }
 
-function textare_init_nursingnote(){
-    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24').each(function () {
+////////////////////////////////////////////////////treatment starts////////////////////////////////////////////////////
+function saveForm_treatment(callback){
+    var saveParam={
+        action: 'save_table_treatment',
+        oper: $("#cancel_treatment").data('oper')
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
+    };
+    
+    values = $("#formTreatment").serializeArray();
+    
+    values = values.concat(
+        $('#formTreatment input[type=checkbox]:not(:checked)').map(
+            function() {
+                return {"name": this.name, "value": 0}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formTreatment input[type=checkbox]:checked').map(
+            function() {
+                return {"name": this.name, "value": 1}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formTreatment input[type=radio]:checked').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formTreatment select').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    // values = values.concat(
+    //     $('#formTreatment input[type=radio]:checked').map(
+    //         function() {
+    //             return {"name": this.name, "value": this.value}
+    //         }).get()
+    // );
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+function saveForm_investigation(callback){
+    var saveParam={
+        action: 'save_table_investigation',
+        oper: $("#cancel_investigation").data('oper')
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
+    };
+    
+    values = $("#formInvestigation").serializeArray();
+    
+    values = values.concat(
+        $('#formInvestigation input[type=checkbox]:not(:checked)').map(
+            function() {
+                return {"name": this.name, "value": 0}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInvestigation input[type=checkbox]:checked').map(
+            function() {
+                return {"name": this.name, "value": 1}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInvestigation input[type=radio]:checked').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInvestigation select').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    // values = values.concat(
+    //     $('#formInvestigation input[type=radio]:checked').map(
+    //         function() {
+    //             return {"name": this.name, "value": this.value}
+    //         }).get()
+    // );
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+
+function saveForm_injection(callback){
+    var saveParam={
+        action: 'save_table_injection',
+        oper: $("#cancel_injection").data('oper')
+    }
+    
+    var postobj={
+        _token: $('#csrf_token').val(),
+        mrn_nursNote: $('#mrn_nursNote').val(),
+        episno_nursNote: $('#episno_nursNote').val()
+    };
+    
+    values = $("#formInjection").serializeArray();
+    
+    values = values.concat(
+        $('#formInjection input[type=checkbox]:not(:checked)').map(
+            function() {
+                return {"name": this.name, "value": 0}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInjection input[type=checkbox]:checked').map(
+            function() {
+                return {"name": this.name, "value": 1}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInjection input[type=radio]:checked').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    values = values.concat(
+        $('#formInjection select').map(
+            function() {
+                return {"name": this.name, "value": this.value}
+            }).get()
+    );
+    
+    // values = values.concat(
+    //     $('#formInjection input[type=radio]:checked').map(
+    //         function() {
+    //             return {"name": this.name, "value": this.value}
+    //         }).get()
+    // );
+    
+    $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+        
+    },'json').fail(function(data) {
+        // alert('there is an error');
+        callback();
+    }).success(function(data){
+        callback();
+    });
+}
+/////////////////////////////////////////////////////treatment ends/////////////////////////////////////////////////////
+
+function textarea_init_nursingnote(){
+    $('textarea#airwayfreetext,textarea#frfreetext,textarea#drainfreetext,textarea#ivfreetext,textarea#assesothers,textarea#plannotes,textarea#oraltype1,textarea#oraltype2,textarea#oraltype3,textarea#oraltype4,textarea#oraltype5,textarea#oraltype6,textarea#oraltype7,textarea#oraltype8,textarea#oraltype9,textarea#oraltype10,textarea#oraltype11,textarea#oraltype12,textarea#oraltype13,textarea#oraltype14,textarea#oraltype15,textarea#oraltype16,textarea#oraltype17,textarea#oraltype18,textarea#oraltype19,textarea#oraltype20,textarea#oraltype21,textarea#oraltype22,textarea#oraltype23,textarea#oraltype24,textarea#intratype1,textarea#intratype2,textarea#intratype3,textarea#intratype4,textarea#intratype5,textarea#intratype6,textarea#intratype7,textarea#intratype8,textarea#intratype9,textarea#intratype10,textarea#intratype11,textarea#intratype12,textarea#intratype13,textarea#intratype14,textarea#intratype15,textarea#intratype16,textarea#intratype17,textarea#intratype18,textarea#intratype19,textarea#intratype20,textarea#intratype21,textarea#intratype22,textarea#intratype23,textarea#intratype24,textarea#othertype1,textarea#othertype2,textarea#othertype3,textarea#othertype4,textarea#othertype5,textarea#othertype6,textarea#othertype7,textarea#othertype8,textarea#othertype9,textarea#othertype10,textarea#othertype11,textarea#othertype12,textarea#othertype13,textarea#othertype14,textarea#othertype15,textarea#othertype16,textarea#othertype17,textarea#othertype18,textarea#othertype19,textarea#othertype20,textarea#othertype21,textarea#othertype22,textarea#othertype23,textarea#othertype24,textarea#treatment_remarks,textarea#investigation_remarks,textarea#injection_remarks').each(function () {
         if(this.value.trim() == ''){
             this.setAttribute('style', 'height:' + (40) + 'px;min-height:'+ (40) +'px;overflow-y:hidden;');
         }else{
