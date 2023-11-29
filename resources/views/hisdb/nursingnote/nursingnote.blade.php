@@ -1570,7 +1570,7 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formTreatment'>
-                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                        <div class="col-md-4" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
@@ -1579,8 +1579,7 @@
                                                                 <th class="scope">idno</th>
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
-                                                                <th class="scope">Date</th>
-                                                                <th class="scope">Time</th>
+                                                                <th class="scope">Date/Time</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1588,7 +1587,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-7' style="padding-right: 0px;">
+                                        <div class='col-md-8' style="padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body">
@@ -1633,7 +1632,7 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formInvestigation'>
-                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                        <div class="col-md-4" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <table id="tbl_investigation" class="ui celled table" style="width: 100%;">
@@ -1642,8 +1641,7 @@
                                                                 <th class="scope">idno</th>
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
-                                                                <th class="scope">Date</th>
-                                                                <th class="scope">Time</th>
+                                                                <th class="scope">Date/Time</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1651,7 +1649,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-7' style="padding-right: 0px;">
+                                        <div class='col-md-8' style="padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body">
@@ -1696,7 +1694,7 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formInjection'>
-                                        <div class="col-md-5" style="padding:0 0 0 0">
+                                        <div class="col-md-4" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
                                                 <div class="panel-body">
                                                     <table id="tbl_injection" class="ui celled table" style="width: 100%;">
@@ -1705,8 +1703,7 @@
                                                                 <th class="scope">idno</th>
                                                                 <th class="scope">mrn</th>
                                                                 <th class="scope">episno</th>
-                                                                <th class="scope">Date</th>
-                                                                <th class="scope">Time</th>
+                                                                <th class="scope">Date/Time</th>
                                                             </tr>
                                                         </thead>
                                                     </table>
@@ -1714,7 +1711,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-7' style="padding-right: 0px;">
+                                        <div class='col-md-8' style="padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
                                                 <div class="panel-body">
