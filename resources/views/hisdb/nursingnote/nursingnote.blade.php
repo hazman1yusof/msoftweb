@@ -1570,9 +1570,9 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formTreatment'>
-                                        <div class="col-md-4" style="padding:0 0 0 0">
+                                        <div class="col-md-3" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding:0 0 0 0">
                                                     <table id="tbl_treatment" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1587,10 +1587,10 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-8' style="padding-right: 0px;">
+                                        <div class='col-md-9' style="padding-left: 5px; padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="treatment_remarks">Notes</label>
 														<textarea id="treatment_remarks" name="treatment_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1632,9 +1632,9 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formInvestigation'>
-                                        <div class="col-md-4" style="padding:0 0 0 0">
+                                        <div class="col-md-3" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding:0 0 0 0">
                                                     <table id="tbl_investigation" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1649,10 +1649,10 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-8' style="padding-right: 0px;">
+                                        <div class='col-md-9' style="padding-left: 5px; padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="investigation_remarks">Notes</label>
 														<textarea id="investigation_remarks" name="investigation_remarks" type="text" class="form-control input-sm"></textarea>
@@ -1694,9 +1694,9 @@
                                 </div>
                                 <div class="panel-body" style="padding: 15px 5px;">
                                     <form class='form-horizontal' style='width:99%' id='formInjection'>
-                                        <div class="col-md-4" style="padding:0 0 0 0">
+                                        <div class="col-md-3" style="padding:0 0 0 0">
                                             <div class="panel panel-info">
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding:0 0 0 0">
                                                     <table id="tbl_injection" class="ui celled table" style="width: 100%;">
                                                         <thead>
                                                             <tr>
@@ -1711,10 +1711,10 @@
                                             </div>
                                         </div>
                                         
-                                        <div class='col-md-8' style="padding-right: 0px;">
+                                        <div class='col-md-9' style="padding-left: 5px; padding-right: 0px;">
                                             <div class="panel panel-info">
                                                 <!-- <div class="panel-heading text-center">NOTES</div> -->
-                                                <div class="panel-body">
+                                                <div class="panel-body" style="padding: 2px;">
                                                     <div class="form-group" style="padding-left: 15px; padding-right: 15px;">
 														<label for="injection_remarks">Notes</label>
 														<textarea id="injection_remarks" name="injection_remarks" type="text" class="form-control input-sm"></textarea>
