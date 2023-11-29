@@ -163,19 +163,19 @@ class NursingNoteController extends defaultController
             
             foreach ($pattreatment_obj as $key => $value) {
                 if(!empty($value->entereddate)){
-                    $date['entereddate'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y');
+                    $date['datetime'] =  Carbon::createFromFormat('Y-m-d', $value->entereddate)->format('d-m-Y').'<br>'.Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
                 }else{
-                    $date['entereddate'] =  '-';
+                    $date['datetime'] =  '-';
                 }
                 $date['idno'] = $value->idno;
                 $date['mrn'] = $value->mrn;
                 $date['episno'] = $value->episno;
                 // $date['enteredtime'] = $value->enteredtime;
-                if(!empty($value->enteredtime)){
-                    $date['enteredtime'] =  Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
-                }else{
-                    $date['enteredtime'] =  '-';
-                }
+                // if(!empty($value->enteredtime)){
+                //     $date['enteredtime'] =  Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
+                // }else{
+                //     $date['enteredtime'] =  '-';
+                // }
                 
                 array_push($data,$date);
             }

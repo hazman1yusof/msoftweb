@@ -526,8 +526,7 @@ var tbl_treatment = $('#tbl_treatment').DataTable({
         { 'data': 'idno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'entereddate', 'width': '25%' },
-        { 'data': 'enteredtime', 'width': '25%' },
+        { 'data': 'datetime', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -546,8 +545,7 @@ var tbl_investigation = $('#tbl_investigation').DataTable({
         { 'data': 'idno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'entereddate', 'width': '25%' },
-        { 'data': 'enteredtime', 'width': '25%' },
+        { 'data': 'datetime', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
@@ -566,8 +564,7 @@ var tbl_injection = $('#tbl_injection').DataTable({
         { 'data': 'idno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'entereddate', 'width': '25%' },
-        { 'data': 'enteredtime', 'width': '25%' },
+        { 'data': 'datetime', 'width': '50%' },
     ],
     columnDefs: [
         { targets: [0, 1, 2], visible: false },
