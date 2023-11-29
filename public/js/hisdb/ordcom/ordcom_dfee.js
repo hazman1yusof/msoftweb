@@ -254,13 +254,14 @@ var myEditOptions_dfee = {
 			return false;
 		}
 
-		let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[$('#lastrowid').val()];
+		let rowdata = getrow_bootgrid();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
 				action: 'order_entry',
 				mrn: rowdata.MRN,
 				episno: rowdata.Episno,
+				doctorcode: rowdata.Episno,
 			    uom: $("#jqGrid_dfee input[name='uom']").val()
 				// taxamount: $("#jqGrid_dfee input[name='taxamount']").val(),
 				// discamount: $("#jqGrid_dfee input[name='discamount']").val(),

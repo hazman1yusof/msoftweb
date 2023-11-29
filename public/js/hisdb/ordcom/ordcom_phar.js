@@ -249,7 +249,7 @@ var myEditOptions_phar = {
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
-		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
 	},
@@ -275,8 +275,7 @@ var myEditOptions_phar = {
 			return false;
 		}
 
-		let justbc = $("#grid-command-buttons tr.justbc").data("rowId");
-		let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[justbc];
+		let rowdata = getrow_bootgrid();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -290,6 +289,7 @@ var myEditOptions_phar = {
 				taxamount: $("#jqGrid_phar input[name='taxamount']").val(),
 				discamount: $("#jqGrid_phar input[name='discamount']").val(),
 				unitprce: $("#jqGrid_phar input[name='unitprce']").val(),
+				ftxtdosage_phar: $("#ftxtdosage_phar").val(),
 				// totamount: $("#jqGrid_phar input[name='totamount']").val(),
 			});
 		$("#jqGrid_phar").jqGrid('setGridParam', { editurl: editurl });
@@ -328,6 +328,7 @@ var myEditOptions_phar_edit = {
 
 		dialog_chgcode_phar.on();
 		dialog_chgcode_phar.id_optid = rowid;
+		dialog_chgcode_phar.skipfdl = true;
 		dialog_chgcode_phar.check(errorField,rowid+"_chgcode","jqGrid_phar",null,
         	function(self){
 				self.urlParam.deptcode = $("#jqGrid_phar input[name='deptcode']").val();
@@ -343,13 +344,17 @@ var myEditOptions_phar_edit = {
 	        		var retdata = data.rows[0];
 					$("#jqGrid_phar input[name='billtypeperct']").val(retdata['billty_percent']);
 					$("#jqGrid_phar input[name='billtypeamt']").val(retdata['billty_amount']);
-					$("#jqGrid_phar input[name='uom_rate']").val(retdata['rate']);
+					$("#jqGrid_phar #"+rowid+"_unitprce").val(retdata['price']);
+					write_detail_phar('#jqgrid_detail_phar_unitprice',retdata['price']);
+					$("#jqGrid_phar #"+rowid+"_billtypeperct").val(retdata['billty_percent']);
+					$("#jqGrid_phar #"+rowid+"_billtypeamt").val(retdata['billty_amount']);
 	        	}
 	        }
 	    );
 
 		dialog_uomcode_phar.on();
 		dialog_uomcode_phar.id_optid = rowid;
+		dialog_uomcode_phar.skipfdl = true;
 		dialog_uomcode_phar.check(errorField,rowid+"_uom","jqGrid_phar",null,
         	function(self){
 				self.urlParam.deptcode = $("#jqGrid_phar input[name='deptcode']").val();
@@ -370,6 +375,7 @@ var myEditOptions_phar_edit = {
 
 		dialog_uom_recv_phar.on();
 		dialog_uom_recv_phar.id_optid = rowid;
+		dialog_uom_recv_phar.skipfdl = true;
 		dialog_uom_recv_phar.check(errorField,rowid+"_uom_recv","jqGrid_phar",null,
         	function(self){
 				self.urlParam.deptcode = $("#jqGrid_phar input[name='deptcode']").val();
@@ -377,14 +383,13 @@ var myEditOptions_phar_edit = {
 				self.urlParam.entrydate = $("#jqGrid_phar input[name='trxdate']").val();
 				self.urlParam.billtype = $('#billtype_def_code').val();
 				self.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
-				self.urlParam.uom = $("#jqGrid_phar input[name='uom']").val();
+				self.urlParam.uom = $("#jqGrid_phar input[name='uom_recv']").val();
 				self.urlParam.filterCol = ['cm.chggroup'];
 				self.urlParam.filterVal = [$('#ordcomtt_phar').val()];
 	        },function(data,self,id,fail){
 	        	if(data.rows != undefined && data.rows.length>0){
 	        		var retdata = data.rows[0];
 					$("#jqGrid_phar input[name='convfactor_uom']").val(retdata['convfactor']);
-
 					$("#jqGrid_phar input[name='convfactor_uom_recv']").val(retdata['convfactor']);
 					$("#jqGrid_phar input[name='qtyonhand']").val(retdata['qtyonhand']);
 	        	}
@@ -393,7 +398,18 @@ var myEditOptions_phar_edit = {
 
 		dialog_tax_phar.on();
 		dialog_tax_phar.id_optid = rowid;
-		dialog_tax_phar.check(errorField,rowid+"_taxcode","jqGrid_phar",null,null,null );
+		dialog_tax_phar.skipfdl = true;
+		// dialog_tax_phar.check(errorField,rowid+"_taxcode","jqGrid_phar",null,null,null );
+		dialog_tax_phar.check(errorField,rowid+"_taxcode","jqGrid_phar",null,
+        	function(self){
+
+	        },function(data,self,id,fail){
+	        	if(data.rows != undefined && data.rows.length>0){
+	        		var retdata = data.rows[0];
+					$("#jqGrid_phar #"+rowid+"_tax_rate").val(retdata['rate']);
+	        	}
+	        }
+	    );
 
 		dialog_dosage_phar.on();
 		dialog_frequency_phar.on();
@@ -409,7 +425,7 @@ var myEditOptions_phar_edit = {
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
-		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
 		// $("#jqGrid_phar input[name='chgcode']").focus();
@@ -444,8 +460,7 @@ var myEditOptions_phar_edit = {
 			return false;
 		}
 
-		let justbc = $("#grid-command-buttons tr.justbc").data("rowId");
-		let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[justbc];
+		let rowdata = getrow_bootgrid();
 
 		let editurl = "./ordcom/form?"+
 			$.param({
@@ -459,6 +474,7 @@ var myEditOptions_phar_edit = {
 				taxamount: $("#jqGrid_phar input[name='taxamount']").val(),
 				discamount: $("#jqGrid_phar input[name='discamount']").val(),
 				unitprce: $("#jqGrid_phar input[name='unitprce']").val(),
+				ftxtdosage_phar: $("#ftxtdosage_phar").val()
 				// totamount: $("#jqGrid_phar input[name='totamount']").val(),
 			});
 		$("#jqGrid_phar").jqGrid('setGridParam', { editurl: editurl });
@@ -524,30 +540,30 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		});
 	}
 
-	let convfactor_uom = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom").val());
-	let convfactor_uom_recv = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom_recv").val());
+	// let convfactor_uom = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom").val());
+	// let convfactor_uom_recv = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom_recv").val());
 
-	var balconv = convfactor_uom*quantity%convfactor_uom_recv;
+	// var balconv = convfactor_uom*quantity%convfactor_uom_recv;
 
-	if (balconv != 0) {
-		myfail_msg_phar.add_fail({
-			id:'convfactor',
-			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
-			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-		});
-	} else {
-		myfail_msg_phar.del_fail({
-			id:'convfactor',
-			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
-			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-		});
-	}
+	// if (balconv != 0) {
+	// 	myfail_msg_phar.add_fail({
+	// 		id:'convfactor',
+	// 		textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+	// 	});
+	// } else {
+	// 	myfail_msg_phar.del_fail({
+	// 		id:'convfactor',
+	// 		textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+	// 	});
+	// }
 
 
 	let unitprce = parseFloat($("#"+id_optid+"_unitprce").val());
 	let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
 	let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
-	let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+	let rate =  parseFloat($("#"+id_optid+"_tax_rate").val());
 	if(isNaN(rate)){
 		rate = 0;
 	}
@@ -678,7 +694,7 @@ var dialog_chgcode_phar = new ordialog(
 			write_detail_phar('#jqgrid_detail_phar_chgcode',data['chgcode']);
 			write_detail_phar('#jqgrid_detail_phar_chgcode_desc',data['description']);
 			$("#jqGrid_phar #"+id_optid+"_taxcode").val(data['taxcode']);
-			$("#jqGrid_phar #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_phar #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_phar #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 			$("#jqGrid_phar #"+id_optid+"_uom").val(data['uom']);
 			$("#jqGrid_phar #"+id_optid+"_unitprce").val(data['price']);
@@ -749,7 +765,7 @@ var dialog_uomcode_phar = new ordialog(
 					url:"./SalesOrderDetail/table",
 					url_chk:"./SalesOrderDetail/table",
 					action: 'get_itemcode_uom',
-					action_chk: 'get_itemcode_uom_check',
+					action_chk: 'get_itemcode_uom_check_oe',
 					entrydate : moment().format('YYYY-MM-DD'),
 					deptcode : $("#userdeptcode").val(),
 					billtype : $('#billtype_def_code').val(),
@@ -776,7 +792,7 @@ var dialog_uomcode_phar = new ordialog(
 
 			$("#jqGrid_phar #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_phar #"+id_optid+"_taxcode").val(data['taxcode']);
-			$("#jqGrid_phar #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_phar #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_phar #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 			$("#jqGrid_phar #"+id_optid+"_uom").val(data['uomcode']);
 			if(data['qtyonhand']!= null && parseInt(data['qtyonhand'] > 0)){
@@ -808,7 +824,7 @@ var dialog_uomcode_phar = new ordialog(
 			dialog_uomcode_phar.urlParam.url = "./SalesOrderDetail/table";
 			dialog_uomcode_phar.urlParam.action = 'get_itemcode_uom';
 			dialog_uomcode_phar.urlParam.url_chk = "./SalesOrderDetail/table";
-			dialog_uomcode_phar.urlParam.action_chk = "get_itemcode_uom_check";
+			dialog_uomcode_phar.urlParam.action_chk = "get_itemcode_uom_check_oe";
 			dialog_uomcode_phar.urlParam.entrydate = $("#jqGrid_phar input[name='trxdate']").val();
 			dialog_uomcode_phar.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 			dialog_uomcode_phar.urlParam.deptcode = $("#jqGrid_phar input[name='deptcode']").val();
@@ -936,6 +952,7 @@ var dialog_uom_recv_phar = new ordialog(
 			dialog_uom_recv_phar.urlParam.chgcode = $("#jqGrid_phar input[name='chgcode']").val();
 			dialog_uom_recv_phar.urlParam.deptcode = $("#jqGrid_phar input[name='deptcode']").val();
 			dialog_uom_recv_phar.urlParam.price = 'PRICE2';
+			dialog_uom_recv_phar.urlParam.uom = $("#jqGrid_phar input[name='uom_recv']").val();
 			dialog_uom_recv_phar.urlParam.billtype = $('#billtype_def_code').val();
 			dialog_uom_recv_phar.urlParam.filterCol = ['cm.chggroup'];
 			dialog_uom_recv_phar.urlParam.filterVal = [$('#ordcomtt_phar').val()];
@@ -975,7 +992,7 @@ var dialog_tax_phar = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 			let data=selrowData('#'+dialog_tax_phar.gridname);
-			$("#jqGrid_phar #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_phar #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_phar input#"+id_optid+"_taxcode").val(data.taxcode);
 		},
 		gridComplete: function(obj){
@@ -1179,7 +1196,7 @@ function itemcodeCustomEdit_phar(val, opt) {
 	myreturn += `<input type='hidden' name='discamount' id='`+id_optid+`_discamount'>`;
 	myreturn += `<input type='hidden' name='taxamount' id='`+id_optid+`_taxamount'>`;
 	myreturn += `<input type='hidden' name='unitprce' id='`+id_optid+`_unitprce'>`;
-	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_uom_rate'>`;
+	myreturn += `<input type='hidden' name='tax_rate' id='`+id_optid+`_tax_rate'>`;
 	myreturn += `<input type='hidden' name='qtyonhand' id='`+id_optid+`_qtyonhand'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
@@ -1298,8 +1315,9 @@ function write_detail_phar(span,value){
 
 function write_detail_dosage(selrowdata,edit=false){
 	if(selrowdata == 'clearall'){
-		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
+		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar,#ftxtdosage_phar').prop('readonly', true);
 
+		$('#ftxtdosage_phar').val('');
 		$('#dosage_phar').val('');
 		$('#dosage_phar_code').val('');
 		$('#frequency_phar').val('');
@@ -1313,9 +1331,9 @@ function write_detail_dosage(selrowdata,edit=false){
 	}
 
 	if(!edit){
-		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
+		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar,#ftxtdosage_phar').prop('readonly', true);
 	}else{
-		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', false);
+		$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar,#ftxtdosage_phar').prop('readonly', false);
 	}
 	removeValidationClass(['#dosage_phar','#frequency_phar','#instruction_phar','#drugindicator_phar']);
 	$('#dosage_phar').val(selrowdata.ftxtdosage_desc);

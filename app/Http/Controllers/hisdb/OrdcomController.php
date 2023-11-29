@@ -348,6 +348,7 @@ class OrdcomController extends defaultController
                         'taxcode' => $request->taxcode,
                         'remarks' => $request->remarks,
                         'recstatus' => 'POSTED',
+                        'doctorcode' => $this->givenullifempty($request->doctorcode),
                         'drugindicator' => $this->givenullifempty($request->drugindicator),
                         'frequency' => $this->givenullifempty($request->frequency),
                         'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
@@ -641,24 +642,25 @@ class OrdcomController extends defaultController
             ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
 
         // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-        $convuom_recv = DB::table('material.uom')
-            ->where('compcode','=',session('compcode'))
-            ->where('uomcode','=',$chargetrx_obj->uom_recv)
-            ->first();
-        $convuom_recv = $convuom_recv->convfactor;
+        // $convuom_recv = DB::table('material.uom')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('uomcode','=',$chargetrx_obj->uom_recv)
+        //     ->first();
+        // $convuom_recv = $convuom_recv->convfactor;
 
-        $conv_uom = DB::table('material.uom')
-            ->where('compcode','=',session('compcode'))
-            ->where('uomcode','=',$chargetrx_obj->uom)
-            ->first();
-        $conv_uom = $conv_uom->convfactor;
+        // $conv_uom = DB::table('material.uom')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('uomcode','=',$chargetrx_obj->uom)
+        //     ->first();
+        // $conv_uom = $conv_uom->convfactor;
 
         if($stockloc->exists()){
 
             $prev_netprice = $product->first()->avgcost; 
             $prev_quan = $ivdspdt_lama->first()->txnqty;
             $curr_netprice = $product->first()->avgcost;
-            $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
+            // $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
+            $curr_quan = $chargetrx_obj->quantity;
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) + floatval($prev_quan) - floatval($curr_quan);
 
@@ -844,20 +846,21 @@ class OrdcomController extends defaultController
             ->where('year','=',$my_year);
 
         // dapatkan uom conversion factor untuk dapatkan txnqty dgn netprice
-        $convuom_recv = DB::table('material.uom')
-            ->where('compcode','=',session('compcode'))
-            ->where('uomcode','=',$chargetrx_obj->uom_recv)
-            ->first();
-        $convuom_recv = $convuom_recv->convfactor;
+        // $convuom_recv = DB::table('material.uom')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('uomcode','=',$chargetrx_obj->uom_recv)
+        //     ->first();
+        // $convuom_recv = $convuom_recv->convfactor;
 
-        $conv_uom = DB::table('material.uom')
-            ->where('compcode','=',session('compcode'))
-            ->where('uomcode','=',$chargetrx_obj->uom)
-            ->first();
-        $conv_uom = $conv_uom->convfactor;
+        // $conv_uom = DB::table('material.uom')
+        //     ->where('compcode','=',session('compcode'))
+        //     ->where('uomcode','=',$chargetrx_obj->uom)
+        //     ->first();
+        // $conv_uom = $conv_uom->convfactor;
 
         $curr_netprice = $product->first()->avgcost;
-        $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
+        // $curr_quan = $chargetrx_obj->quantity * ($conv_uom/$convuom_recv);
+        $curr_quan = $chargetrx_obj->quantity;
         if($stockloc->exists()){
             $qoh_quan = $stockloc->first()->qtyonhand;
             $new_qoh = floatval($qoh_quan) - floatval($curr_quan);

@@ -85,13 +85,23 @@
 								<b><span class="label_p">Unit Price</span>:<span class="label_d" id="jqgrid_detail_phar_unitprice"></span></b><br>
 								<b><span class="label_p">Discount Amount</span>:<span class="label_d" id="jqgrid_detail_phar_discamt"></span></b><br>
 								<b><span class="label_p">Tax Amount</span>:<span class="label_d" id="jqgrid_detail_phar_taxamt"></span></b><br>
+								<!-- <b><span class="label_p">Dosage Text</span>:
+										<input autocomplete="off" name="ftxtdosage_phar" id="ftxtdosage_phar" type="text" class="form-control input-sm" style="text-transform:uppercase"></b><br> -->
+								<div class="row">
+									<div class="col-md-2" style="padding:0px;min-width: 135px;">
+										<b><span class="label_p">Dosage Text</span>:</b><br>
+									</div>
+									<div class="col-md-10" style="padding:0px">
+										<input autocomplete="off" name="ftxtdosage_phar" id="ftxtdosage_phar" type="text" class="form-control input-sm" style="text-transform:uppercase">
+									</div>
+								</div>
 							</div>
 						</div>
 						<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:right;">
 							<div class="panel-heading">
 								<b>Dosage</b>
 							</div>
-							<div class="panel-body jqgrid_detail_dose">
+							<div class="panel-body jqgrid_detail_dose" style="min-height: 160px;">
 								<div>
 									<label class="oe_phar_label">Dose</label>
 									<div class="input-group oe_phar_div">

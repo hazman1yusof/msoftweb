@@ -735,16 +735,12 @@ $(document).ready(function() {
     });
 
     $("#doctornote_bpgraph").click(function(){
-        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        var lastrowdata = getrow_bootgrid();
         window.open('./bpgraph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
     });
 
     $("#doctornote_iograph").click(function(){
-        let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-        let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        var lastrowdata = getrow_bootgrid();
         window.open('./iograph?mrn='+lastrowdata.MRN+'&episno='+lastrowdata.Episno, '_blank');
     });
 
@@ -892,12 +888,15 @@ function stop_scroll_on(){
     });
 }
 
-function getrow_bootgrid(bootgrid_last_rowid,rows){
-    var retval=[];
-    rows.forEach(function(e,i,a){
-        if(e.idno == bootgrid_last_rowid){
-            retval = e;
-        }
-    });
-    return retval;
+function getrow_bootgrid(
+        bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id"),
+        rows = $("#grid-command-buttons").bootgrid("getCurrentRows")
+    ){
+        var retval=[];
+        rows.forEach(function(e,i,a){
+            if(e.idno == bootgrid_last_rowid){
+                retval = e;
+            }
+        });
+        return retval;
 }

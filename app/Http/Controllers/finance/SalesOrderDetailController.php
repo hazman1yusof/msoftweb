@@ -49,6 +49,8 @@ class SalesOrderDetailController extends defaultController
                 }
             case 'get_itemcode_price_check':
                 return $this->get_itemcode_price_check($request);
+            case 'get_itemcode_uom_check_oe':
+                return $this->get_itemcode_uom_check_oe($request);
             case 'get_itemcode_uom':
                 return $this->get_itemcode_uom($request);
             case 'get_itemcode_uom_check':
@@ -987,6 +989,50 @@ class SalesOrderDetailController extends defaultController
         return json_encode($responce);
     }
 
+    public function get_itemcode_uom_check_oe(Request $request){
+        $deptcode = $request->deptcode;
+        $chgcode = $request->chgcode;
+        $uom = $request->filterVal[1];
+        $entrydate = $request->entrydate;
+
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','uom.description','cm.uom as uomcode','uom.convfactor')
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.chgcode','=',$chgcode)
+                            ->where('cm.uom','=',$uom)
+                            ->where('cm.recstatus','=','ACTIVE');
+                            // ->where(function ($query) {
+                            //    $query->whereNotNull('st.idno')
+                            //          ->orWhere('cm.invflag', '=', 0);
+                            // });
+        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        // $table = DB::table('material.stockloc as st')
+        //                     ->select('st.idno','st.idno','uom.uomcode','uom.description','uom.convfactor')
+        //                     ->where('st.compcode', '=', session('compcode'))
+        //                     ->where('st.unit', '=', session('unit'))
+        //                     ->where('st.deptcode', '=', $deptcode)
+        //                     ->where('st.itemcode', '=', $chgcode)
+        //                     ->where('st.uomcode', '=', $uom)
+        //                     ->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+
+        // $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+        //                     $join = $join->on('uom.uomcode', '=', 'st.uomcode')
+        //                                 ->where('uom.compcode', '=', session('compcode'))
+        //                                 ->where('uom.recstatus','=','ACTIVE');
+        //             });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
 
 
     public function get_itemcode_uom_recv(Request $request){
@@ -1189,7 +1235,7 @@ class SalesOrderDetailController extends defaultController
         $entrydate = $request->entrydate;
 
         $table = DB::table('material.stockloc as st')
-                        ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('uom.description','st.uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor')
                             ->where('st.compcode','=',session('compcode'))
                             ->where('st.unit','=',session('unit'))
                             ->where('st.deptcode','=',$deptcode)
