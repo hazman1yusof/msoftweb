@@ -33,6 +33,8 @@
                 <div class="tab-content" style="padding: 10px 5px;">
                     <input id="mrn_nursNote" name="mrn_nursNote" type="hidden">
                     <input id="episno_nursNote" name="episno_nursNote" type="hidden">
+                    <input id="doctor_nursNote" name="doctor_nursNote" type="hidden">
+                    <input type="hidden" id="ordcomtt_phar" value="{{$ordcomtt_phar ?? ''}}">
                     <div id="tab-progress" class="active in tab-pane fade">
                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                             <div class="panel panel-info">
@@ -1542,7 +1544,53 @@
                         </div>
                     </div>
                     <div id="tab-drug" class="tab-pane fade">
-                    
+                        <form class='form-horizontal' style='width:99%' id='formDrug'>
+                            <div class='col-md-6' style="padding-left: 0px; padding-right: 2px;">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading text-center">PRESCRIPTION</div>
+                                    <div class="panel-body">
+                                        <table id="tbl_prescription" class="ui celled table" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="scope">auditno</th>
+                                                    <th class="scope">mrn</th>
+                                                    <th class="scope">episno</th>
+                                                    <th class="scope">chgcode</th>
+                                                    <th class="scope">Item</th>
+                                                    <th class="scope">Quantity</th>
+                                                    <th class="scope">ftxtdosage</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='col-md-6' style="padding-left: 0px; padding-right: 2px;">
+                                <div class="panel panel-info">
+                                    <div class="panel-body">
+                                        <input id="trx_auditno" name="trx_auditno" type="hidden">
+                                        <input id="trx_chgcode" name="trx_chgcode" type="hidden">
+                                        
+                                        <div class="form-group col-md-8">
+                                            <input id="doc_name" name="doc_name" type="text" class="form-control input-sm" rdonly>
+                                        </div>
+                                        <div class="form-group col-md-8">
+                                            <textarea id="ftxtdosage" name="ftxtdosage" type="text" class="form-control input-sm" rdonly></textarea>
+                                        </div>
+                                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                                            <div class="panel panel-info" id="jqGridPatMedic_c">
+                                                <div class="panel-body">
+                                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                                        <table id="jqGridPatMedic" class="table table-striped"></table>
+                                                        <div id="jqGridPagerPatMedic"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div id="tab-treatment" class="tab-pane fade">
                         <div class='col-md-4' style="padding-left: 0px; padding-right: 3px;">

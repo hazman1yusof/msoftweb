@@ -29,6 +29,9 @@ class NursingNoteController extends defaultController
             case 'get_table_datetime':
                 return $this->get_table_datetime($request);
             
+            case 'get_prescription':
+                return $this->get_prescription($request);
+            
             case 'get_datetime_treatment':
                 return $this->get_datetime_treatment($request);
             
@@ -59,6 +62,9 @@ class NursingNoteController extends defaultController
                     default:
                         return 'error happen..';
                 }
+            
+            case 'patMedic_save':
+                return $this->add_patMedic($request);
             
             case 'save_table_treatment':
                 switch($request->oper){
@@ -133,6 +139,50 @@ class NursingNoteController extends defaultController
                     $date['timetaken'] =  '-';
                 }
                 $date['lastuser'] = $value->lastuser;
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_prescription(Request $request){
+        
+        $responce = new stdClass();
+        
+        $chargetrx_obj = DB::table('hisdb.chargetrx as trx')
+                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.ftxtdosage', 'cm.description', 'cm.uom')
+                        ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode')
+                                        ->on('cm.uom','=','trx.uom')
+                                        ->where('cm.compcode','=',session('compcode'));
+                        })
+                        ->where('trx.mrn' ,'=', $request->mrn)
+                        ->where('trx.episno' ,'=', $request->episno)
+                        ->where('trx.compcode','=',session('compcode'))
+                        ->where('trx.chggroup',$request->chggroup)
+                        ->where('trx.recstatus','<>','DELETE')
+                        ->orderBy('trx.adddate', 'desc');
+        
+        if($chargetrx_obj->exists()){
+            $chargetrx_obj = $chargetrx_obj->get();
+            
+            $data = [];
+            
+            foreach ($chargetrx_obj as $key => $value) {
+                $date['auditno'] = $value->auditno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                $date['chgcode'] = $value->chgcode;
+                $date['description'] = $value->description;
+                $date['quantity'] = $value->quantity;
+                $date['ftxtdosage'] = $value->ftxtdosage;
                 
                 array_push($data,$date);
             }
@@ -882,6 +932,41 @@ class NursingNoteController extends defaultController
             DB::rollback();
             
             return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
+    public function add_patMedic(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('hisdb.patmedication')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn,
+                    'episno' => $request->episno,
+                    'auditno' => $request->auditno,
+                    'chgcode' => $request->chgcode,
+                    'entereddate' => $request->entereddate,
+                    'enteredtime' => $request->enteredtime,
+                    'failure' => $request->failure,
+                    'remarks' => $request->remarks,
+                    'qty' => $request->qty,
+                    'enteredby' => session('username'),
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
             
         }
         
