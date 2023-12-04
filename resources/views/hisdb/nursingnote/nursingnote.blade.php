@@ -20,11 +20,11 @@
 		</div>
 	</div>
     
-	<div id="jqGridNursNote_panel" class="panel-collapse collapse">
+	<div id="jqGridNursNote_panel" class="panel-collapse collapse" data-curtype='navtab_progress'>
 		<div class="panel-body paneldiv" style="overflow-y: auto;">
             <div class='col-md-12' style="padding:0 0 15px 0">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" id="navtab_progress" href="#tab-progress" aria-expanded="true" data-type='progress'>Progress Note</a></li>
+                <ul class="nav nav-tabs" id="jqGridNursNote_panel_tabs">
+                    <li><a data-toggle="tab" id="navtab_progress" href="#tab-progress" data-type='progress'>Progress Note</a></li>
                     <li><a data-toggle="tab" id="navtab_intake" href="#tab-intake" data-type='intake'>Intake Output</a></li>
                     <li><a data-toggle="tab" id="navtab_drug" href="#tab-drug" data-type='drug'>Drug Administration</a></li>
                     <li><a data-toggle="tab" id="navtab_treatment" href="#tab-treatment" data-type='treatment'>Treatment</a></li>

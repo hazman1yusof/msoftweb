@@ -25,11 +25,18 @@ class OrdcomController extends defaultController
             case 'chgcode_table':
                 $data = $this->chgcode_table($request);
                 break;
-
             case 'ordcom_table':
                 return $this->ordcom_table($request);
                 break;
-
+            case 'get_itemcode_uom_recv':
+                return $this->get_itemcode_uom_recv($request);
+                break;
+            case 'get_itemcode_uom_recv_check':
+                return $this->get_itemcode_uom_recv_check($request);
+                break;
+            case 'get_itemcode_price_check':
+                return $this->get_itemcode_price_check($request);
+                break;
             default:
                 $data = 'error happen..';
                 break;
@@ -247,7 +254,7 @@ class OrdcomController extends defaultController
         }
 
         $table_chgtrx = DB::table('hisdb.chargetrx as trx')
-                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','dos.dosedesc as ftxtdosage_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc')
                     ->where('trx.mrn' ,'=', $request->mrn)
                     ->where('trx.episno' ,'=', $request->episno)
                     ->where('trx.compcode','=',session('compcode'))
@@ -264,7 +271,7 @@ class OrdcomController extends defaultController
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
                             $join = $join->where('dos.compcode', '=', session('compcode'));
-                            $join = $join->on('dos.dosecode', '=', 'trx.ftxtdosage');
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode');
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
@@ -351,6 +358,7 @@ class OrdcomController extends defaultController
                         'doctorcode' => $this->givenullifempty($request->doctorcode),
                         'drugindicator' => $this->givenullifempty($request->drugindicator),
                         'frequency' => $this->givenullifempty($request->frequency),
+                        'doscode' => $this->givenullifempty($request->doscode),
                         'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
                         'addinstruction' => $this->givenullifempty($request->addinstruction)
                     ]);
@@ -366,18 +374,18 @@ class OrdcomController extends defaultController
                             ->where('itemcode','=',$request->chgcode);
             
             if($product->exists()){
-                $stockloc = DB::table('material.stockloc')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('uomcode','=',$request->uom_recv)
-                        ->where('itemcode','=',$request->chgcode)
-                        ->where('deptcode','=',$request->deptcode)
-                        ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
+                // $stockloc = DB::table('material.stockloc')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('uomcode','=',$request->uom_recv)
+                //         ->where('itemcode','=',$request->chgcode)
+                //         ->where('deptcode','=',$request->deptcode)
+                //         ->where('year','=',Carbon::now("Asia/Kuala_Lumpur")->year);
                 
-                if($stockloc->exists()){
-                    $stockloc = $stockloc->first();
-                }else{
-                    throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom_recv,500);
-                }
+                // if($stockloc->exists()){
+                //     $stockloc = $stockloc->first();
+                // }else{
+                //     throw new \Exception("Stockloc not exists for item: ".$request->chgcode." dept: ".$request->deptcode." uom: ".$request->uom_recv,500);
+                // }
                 
                 $ivdspdt = DB::table('material.ivdspdt')
                     ->where('compcode','=',session('compcode'))
@@ -385,10 +393,10 @@ class OrdcomController extends defaultController
                 
                 if($ivdspdt->exists()){
                     $this->updivdspdt($chargetrx_obj);
-                    $this->updgltran($ivdspdt->first()->idno);
+                    $this->updgltran($chargetrx_obj,$updinv);
                 }else{
                     $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    $this->crtgltran($ivdspdt_idno);
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }
             }
             
@@ -468,6 +476,7 @@ class OrdcomController extends defaultController
                             'remarks' => $request->remarks,
                             'drugindicator' => $this->givenullifempty($request->drugindicator),
                             'frequency' => $this->givenullifempty($request->frequency),
+                            'doscode' => $this->givenullifempty($request->doscode),
                             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
                             'addinstruction' => $this->givenullifempty($request->addinstruction),
                         ]);
@@ -549,10 +558,10 @@ class OrdcomController extends defaultController
                 }else{
                     if($ivdspdt->exists()){
                         $this->updivdspdt($chargetrx_obj);
-                        $this->updgltran($ivdspdt->first()->idno);
+                        $this->updgltran($chargetrx_obj,$updinv);
                     }else{
                         $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                        $this->crtgltran($ivdspdt_idno);
+                        $this->crtgltran($chargetrx_obj,$updinv);
                     }
                 }
             }
@@ -738,27 +747,39 @@ class OrdcomController extends defaultController
             ->update($ivdspdt_arr);
     }
 
-    public function updgltran($ivdspdt_idno){
-        $ivdspdt = DB::table('material.ivdspdt')
-                        ->where('idno','=',$ivdspdt_idno)
-                        ->first();
+    public function updgltran($chargetrx_obj,$invflag){
+        $my_uom = $chargetrx_obj->uom_recv;
+        $my_chgcode = $chargetrx_obj->chgcode;
+        $my_deptcode = $chargetrx_obj->reqdept;
+        $my_auditno = $chargetrx_obj->auditno;
+        $my_date = $chargetrx_obj->trxdate;
+
+        if($invflag == 1){
+            $ivdspdt = DB::table('material.ivdspdt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$chargetrx_obj->auditno);
+
+            $my_amount = $ivdspdt->amount;
+        }else{
+            $my_amount = $chargetrx_obj->amount;
+        }
 
         $gltran = DB::table('finance.gltran')
                     ->where('compcode','=',session('compcode'))
-                    ->where('auditno','=',$ivdspdt->recno);
+                    ->where('auditno','=',$my_auditno);
 
         if($gltran->exists()){
             $gltran_first = $gltran->first();
 
             $OldAmount = $gltran_first->amount;
-            $yearperiod = $this->getyearperiod($ivdspdt->trandate);
+            $yearperiod = $this->getyearperiod($my_date);
             $drcostcode = $gltran_first->drcostcode;
             $dracc = $gltran_first->dracc;
             $crcostcode = $gltran_first->crcostcode;
             $cracc = $gltran_first->cracc;
 
             $gltran->update([
-                'amount' => $ivdspdt->amount
+                'amount' => $my_amount
             ]);
 
             //2. check glmastdtl utk debit, kalu ada update kalu xde create
@@ -773,7 +794,7 @@ class OrdcomController extends defaultController
                     ->update([
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount + $ivdspdt->amount,
+                        'actamount'.$yearperiod->period => $gltranAmount - $OldAmount + $my_amount,
                         'recstatus' => 'ACTIVE'
                     ]);
             }else{
@@ -783,7 +804,7 @@ class OrdcomController extends defaultController
                         'costcode' => $drcostcode,
                         'glaccount' => $dracc,
                         'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => $ivdspdt->amount,
+                        'actamount'.$yearperiod->period => $my_amount,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'recstatus' => 'ACTIVE'
@@ -802,7 +823,7 @@ class OrdcomController extends defaultController
                     ->update([
                         'upduser' => session('username'),
                         'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount - $ivdspdt->amount,
+                        'actamount'.$yearperiod->period => $gltranAmount + $OldAmount - $my_amount,
                         'recstatus' => 'ACTIVE'
                     ]);
             }else{
@@ -812,7 +833,7 @@ class OrdcomController extends defaultController
                         'costcode' => $crcostcode,
                         'glaccount' => $cracc,
                         'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                        'actamount'.$yearperiod->period => -$my_amount,
                         'adduser' => session('username'),
                         'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                         'recstatus' => 'ACTIVE'
@@ -966,26 +987,37 @@ class OrdcomController extends defaultController
         return $insertGetId;
     }
 
-    public function crtgltran($ivdspdt_idno){
+    public function crtgltran($chargetrx_obj,$invflag){
 
-        $ivdspdt = DB::table('material.ivdspdt')
-                        ->where('compcode',session('compcode'))
-                        ->where('idno','=',$ivdspdt_idno)
-                        ->first();
+        $my_uom = $chargetrx_obj->uom_recv;
+        $my_chgcode = $chargetrx_obj->chgcode;
+        $my_deptcode = $chargetrx_obj->reqdept;
+        $my_auditno = $chargetrx_obj->auditno;
+        $my_date = $chargetrx_obj->trxdate;
 
-        $yearperiod = $this->getyearperiod($ivdspdt->trandate);
+        if($invflag == 1){
+            $ivdspdt = DB::table('material.ivdspdt')
+                ->where('compcode','=',session('compcode'))
+                ->where('recno','=',$chargetrx_obj->auditno);
+
+            $my_amount = $ivdspdt->amount;
+        }else{
+            $my_amount = $chargetrx_obj->amount;
+        }
+
+        $yearperiod = $this->getyearperiod($my_date);
 
         //tengok product category
         $product_obj = DB::table('material.product')
             ->where('compcode','=', session('compcode'))
             ->where('unit','=', session('unit'))
-            ->where('itemcode','=', $ivdspdt->itemcode)
+            ->where('itemcode','=', $my_chgcode)
             ->first();
 
         $row_dept = DB::table('sysdb.department')
             ->select('costcode')
             ->where('compcode','=',session('compcode'))
-            ->where('deptcode','=',$ivdspdt->reqdept)
+            ->where('deptcode','=',$my_deptcode)
             ->first();
         //utk debit accountcode
         $row_cat = DB::table('material.category')
@@ -1005,12 +1037,12 @@ class OrdcomController extends defaultController
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'auditno' => $ivdspdt->recno,//billsum auditno
+                'auditno' => $my_auditno,//billsum auditno
                 'lineno_' => 1,
                 'source' => 'IV', //kalau stock 'IV', lain dari stock 'DO'
                 'trantype' => 'DS',
-                'reference' => $ivdspdt->uomcode,
-                'description' => $ivdspdt->itemcode, 
+                'reference' => $my_uom,
+                'description' => $my_chgcode, 
                 'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'year' => $yearperiod->year,
                 'period' => $yearperiod->period,
@@ -1018,7 +1050,7 @@ class OrdcomController extends defaultController
                 'dracc' => $dracc,
                 'crcostcode' => $crcostcode,
                 'cracc' => $cracc,
-                'amount' => $ivdspdt->amount
+                'amount' => $my_amount
             ]);
 
         //2. check glmastdtl utk debit, kalu ada update kalu xde create
@@ -1033,7 +1065,7 @@ class OrdcomController extends defaultController
                 ->update([
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'actamount'.$yearperiod->period => $ivdspdt->amount + $gltranAmount,
+                    'actamount'.$yearperiod->period => $my_amount + $gltranAmount,
                     'recstatus' => 'ACTIVE'
                 ]);
         }else{
@@ -1043,7 +1075,7 @@ class OrdcomController extends defaultController
                     'costcode' => $drcostcode,
                     'glaccount' => $dracc,
                     'year' => $yearperiod->year,
-                    'actamount'.$yearperiod->period => $ivdspdt->amount,
+                    'actamount'.$yearperiod->period => $my_amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'recstatus' => 'ACTIVE'
@@ -1062,7 +1094,7 @@ class OrdcomController extends defaultController
                 ->update([
                     'upduser' => session('username'),
                     'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
-                    'actamount'.$yearperiod->period => $gltranAmount - $ivdspdt->amount,
+                    'actamount'.$yearperiod->period => $gltranAmount - $my_amount,
                     'recstatus' => 'ACTIVE'
                 ]);
         }else{
@@ -1072,7 +1104,7 @@ class OrdcomController extends defaultController
                     'costcode' => $crcostcode,
                     'glaccount' => $cracc,
                     'year' => $yearperiod->year,
-                    'actamount'.$yearperiod->period => -$ivdspdt->amount,
+                    'actamount'.$yearperiod->period => -$my_amount,
                     'adduser' => session('username'),
                     'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
                     'recstatus' => 'ACTIVE'
@@ -1331,12 +1363,335 @@ class OrdcomController extends defaultController
         }
     }
 
+    public function get_itemcode_uom_recv(Request $request){
+        $chgcode = $request->chgcode;
+        $deptcode = $request->deptcode;
+        $entrydate = $request->entrydate;
+
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.chgcode','=',$chgcode)
+                            ->where('cm.recstatus','<>','DELETE');
+
+        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                        $join = $join->where('pt.compcode', '=', session('compcode'));
+                        $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                        $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                        $join = $join->where('pt.unit', '=', session('unit'));
+                    });
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+            }
+        }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('uom.idno','desc');
+        }
+        
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function get_itemcode_uom_recv_check(Request $request){
+        $chgcode = $request->chgcode;
+        $deptcode = $request->deptcode;
+        $uom = $request->filterVal[1];
+        $chggroup = $request->filterVal[0];
+        $entrydate = $request->entrydate;
+
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                            ->where('cm.compcode','=',session('compcode'))
+                            ->where('cm.chgcode','=',$chgcode)
+                            ->where('cm.chggroup','=',$chggroup)
+                            ->where('cm.uom','=',$uom)
+                            ->where('cm.recstatus','<>','DELETE');
+
+        $table = $table->join('material.uom as uom', function($join) use ($chgcode){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                        $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                        $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                        $join = $join->where('pt.compcode', '=', session('compcode'));
+                        $join = $join->where('pt.unit', '=', session('unit'));
+                    });
+
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+
+            $count = array_count_values($searchCol_array);
+
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            // $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                            $table->Where('uom.'.$searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+
+        if(!empty($request->searchCol2)){
+            $searchCol_array = $request->searchCol2;
+            $table = $table->where(function($table) use ($searchCol_array, $request){
+                foreach ($searchCol_array as $key => $value) {
+                    if($key>1) break;
+                    // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                }
+            });
+
+            if(count($searchCol_array)>2){
+                $table = $table->where(function($table) use ($searchCol_array, $request){
+                    foreach ($searchCol_array as $key => $value) {
+                        if($key<=1) continue;
+                        // $table->orwhere($searchCol_array[$key],'like', $request->searchVal2[$key]);
+                        $table->orwhere('uom.'.$searchCol_array[$key],'like', $request->searchVal2[$key]);
+                    }
+                });
+            }
+        }
+
+        // if(!empty($request->filterCol)){
+        //     foreach ($request->filterCol as $key => $value) {
+        //         $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+        //     }
+        // }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('uom.idno','desc');
+        }
+        
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function get_itemcode_price_check(Request $request){
+        $deptcode = $request->deptcode;
+        $priceuse = $request->price;
+        $entrydate = $request->entrydate;
+        $chgcode = $request->filterVal[1];
+        $uom = $request->uom;
+
+        switch ($priceuse) {
+            case 'PRICE1':
+                $cp_fld = 'amt1';
+                break;
+            case 'PRICE2':
+                $cp_fld = 'amt2';
+                break;
+            case 'PRICE3':
+                $cp_fld = 'amt3';
+                break;
+            default:
+                $cp_fld = 'costprice';
+                break;
+        }
+
+        $table = DB::table('hisdb.chgmast as cm')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->where('cm.compcode','=',session('compcode'))
+                        ->where('cm.recstatus','<>','DELETE')
+                        ->where('cm.chgcode','=',$chgcode)
+                        ->where('cm.uom','=',$uom);
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+
+        $table = $table->leftjoin('material.product as pt', function($join) use ($deptcode,$entrydate){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'cm.uom');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table = $table->join('material.uom as uom', function($join){
+                            $join = $join->on('uom.uomcode', '=', 'cm.uom')
+                                        ->where('uom.compcode', '=', session('compcode'))
+                                        ->where('uom.recstatus','=','ACTIVE');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
     public function sysdb_log($oper,$array,$log_table){
         $array_lama = (array)$array;
         $array_lama['logstatus'] = $oper;
 
         DB::table($log_table)
                 ->insert($array_lama);
+    }
+
+    public function billtype_obj_get(Request $request){
+        $billtype_obj = new stdClass();
+
+        $billtymst = DB::table('hisdb.billtymst')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$request->billtype);
+
+        if($billtymst->exists()){
+            $billtype_obj->billtype = $billtymst->first();
+            $billtype_obj->svc = [];
+
+            $billtysvc = DB::table('hisdb.billtysvc')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('billtype','=',$request->billtype);
+
+            if($billtysvc->exists()){
+                foreach ($billtysvc->get() as $key => $value) {
+                    $billtysvc_obj = new stdClass();
+                    $billtysvc_obj->chggroup = $value->chggroup;
+                    $billtysvc_obj->svc = $value;
+
+                    $billtyitem = DB::table('hisdb.billtyitem')
+                                    ->where('compcode','=',session('compcode'))
+                                    ->where('billtype','=',$value->billtype)
+                                    ->where('chggroup','=',$value->chggroup);
+
+                    if($billtyitem->exists()){
+                        $billtysvc_obj->item = $billtyitem->get()->toArray(); 
+                    }
+                    array_push($billtype_obj->svc, $billtysvc_obj);
+                }
+            }
+
+            return $billtype_obj;
+
+        }else{
+            throw new \Exception("Wrong billtype");
+        }
     }
 
 }

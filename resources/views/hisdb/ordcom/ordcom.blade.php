@@ -73,7 +73,7 @@
 						<table id="jqGrid_phar" class="table table-striped"></table>
 						<div id="jqGrid_phar_pager"></div>
 
-						<div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:left;">
+						<!-- <div id="jqgrid_detail_phar" class="panel panel-default jqgrid_detail" style="float:left;">
 							<div class="panel-heading">
 								<b><span>Chgcode </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode"></span></b>
 								<b><span>Description </span>:<span class="label_d" id="jqgrid_detail_phar_chgcode_desc"></span></b>
@@ -85,8 +85,6 @@
 								<b><span class="label_p">Unit Price</span>:<span class="label_d" id="jqgrid_detail_phar_unitprice"></span></b><br>
 								<b><span class="label_p">Discount Amount</span>:<span class="label_d" id="jqgrid_detail_phar_discamt"></span></b><br>
 								<b><span class="label_p">Tax Amount</span>:<span class="label_d" id="jqgrid_detail_phar_taxamt"></span></b><br>
-								<!-- <b><span class="label_p">Dosage Text</span>:
-										<input autocomplete="off" name="ftxtdosage_phar" id="ftxtdosage_phar" type="text" class="form-control input-sm" style="text-transform:uppercase"></b><br> -->
 								<div class="row">
 									<div class="col-md-2" style="padding:0px;min-width: 135px;">
 										<b><span class="label_p">Dosage Text</span>:</b><br>
@@ -135,7 +133,7 @@
 									<input type="hidden" id="drugindicator_phar_code">
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			@endif

@@ -22,13 +22,13 @@ $(document).ready(function(){
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
 		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 
-		if($('#isdoctor').val() != '1'){
-        	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
-			let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
-        	var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
-			write_detail_phar('#jqgrid_detail_phar_docname',lastrowdata.q_doctorname);
-			write_detail_phar('#jqgrid_detail_phar_dept',$('#userdeptdesc').val());
-		}
+		// if($('#isdoctor').val() != '1'){
+        // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
+		// 	let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
+        // 	var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+		// 	write_detail_phar('#jqgrid_detail_phar_docname',lastrowdata.q_doctorname);
+		// 	write_detail_phar('#jqgrid_detail_phar_dept',$('#userdeptdesc').val());
+		// }
 	});
 
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
@@ -164,21 +164,22 @@ function fail_msg_func(fail_msg_div=null){
 			this.fail_msg_array.push(fail_msg);
 		}
 		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
+			myerrorIt_only(fail_msg.textfld,true);
 		}
 		this.pop_fail();
 	}
 	this.del_fail=function(fail_msg){
 		var new_msg_array = this.fail_msg_array.filter(function(e,i){
 			if(e.id == fail_msg.id){
+				if(e.textfld !=null){
+					console.log(e);
+					myerrorIt_only(e.textfld,false);
+				}
 				return false;
 			}
 			return true;
 		});
 
-		if(fail_msg.textfld !=null){
-			myerrorIt_only(fail_msg.id,true);
-		}
 		this.fail_msg_array = new_msg_array;
 		this.pop_fail();
 	}
@@ -191,6 +192,14 @@ function fail_msg_func(fail_msg_div=null){
 		$(self.fail_msg_div).html('');
 		this.fail_msg_array.forEach(function(e,i){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
+		});
+	}
+	this.refail_textfield=function(){
+		var self=this;
+		this.fail_msg_array.forEach(function(e,i){
+			if(e.textfld !=null){
+				myerrorIt_only(e.id,true);
+			}
 		});
 	}
 }
