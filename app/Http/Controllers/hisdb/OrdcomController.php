@@ -342,7 +342,7 @@ class OrdcomController extends defaultController
                         'invcode' => $chgmast->chggroup,
                         'inventory' => $updinv,
                         'updinv' =>  $updinv,
-                        'discamt' => $request->discamount,
+                        'discamt' => $request->discamt,
                         'qtyorder' => $request->quantity,
                         'qtyissue' => $request->quantity,
                         'unit' => session('unit'),
@@ -392,10 +392,14 @@ class OrdcomController extends defaultController
                     ->where('recno','=',$chargetrx_obj->auditno);
                 
                 if($ivdspdt->exists()){
-                    $this->updivdspdt($chargetrx_obj);
+                    if($updinv == 1){
+                        $this->updivdspdt($chargetrx_obj);
+                    }
                     $this->updgltran($chargetrx_obj,$updinv);
                 }else{
-                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    if($updinv == 1){
+                        $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    }
                     $this->crtgltran($chargetrx_obj,$updinv);
                 }
             }
@@ -464,7 +468,7 @@ class OrdcomController extends defaultController
                             'invcode' => $chgmast->chggroup,
                             'inventory' => $updinv,
                             'updinv' =>  $updinv,
-                            'discamt' => $request->discamount,
+                            'discamt' => $request->discamt,
                             'qtyorder' => $request->quantity,
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),
@@ -507,7 +511,7 @@ class OrdcomController extends defaultController
                             'invcode' => $chgmast->chggroup,
                             'inventory' => $updinv,
                             'updinv' =>  $updinv,
-                            'discamt' => $request->discamount,
+                            'discamt' => $request->discamt,
                             'qtyorder' => $request->quantity,
                             'qtyissue' => $request->quantity,
                             'unit' => session('unit'),
@@ -519,6 +523,7 @@ class OrdcomController extends defaultController
                             'remarks' => $request->remarks,
                             'drugindicator' => $this->givenullifempty($request->drugindicator),
                             'frequency' => $this->givenullifempty($request->frequency),
+                            'doscode' => $this->givenullifempty($request->doscode),
                             'ftxtdosage' => $this->givenullifempty($request->ftxtdosage),
                             'addinstruction' => $this->givenullifempty($request->addinstruction),
                         ]);
@@ -553,14 +558,20 @@ class OrdcomController extends defaultController
                     ->where('recno','=',$chargetrx_obj->auditno);
 
                 if($edit_lain_chggroup){
-                    $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
-                    $this->crtgltran($ivdspdt_idno);
+                    if($updinv == 1){
+                        $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                    }
+                    $this->crtgltran($chargetrx_obj,$updinv);
                 }else{
                     if($ivdspdt->exists()){
-                        $this->updivdspdt($chargetrx_obj);
+                        if($updinv == 1){
+                            $this->updivdspdt($chargetrx_obj);
+                        }
                         $this->updgltran($chargetrx_obj,$updinv);
                     }else{
-                        $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                        if($updinv == 1){
+                            $ivdspdt_idno = $this->crtivdspdt($chargetrx_obj);
+                        }
                         $this->crtgltran($chargetrx_obj,$updinv);
                     }
                 }
@@ -757,7 +768,8 @@ class OrdcomController extends defaultController
         if($invflag == 1){
             $ivdspdt = DB::table('material.ivdspdt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$chargetrx_obj->auditno);
+                ->where('recno','=',$chargetrx_obj->auditno)
+                ->first();
 
             $my_amount = $ivdspdt->amount;
         }else{
@@ -998,7 +1010,8 @@ class OrdcomController extends defaultController
         if($invflag == 1){
             $ivdspdt = DB::table('material.ivdspdt')
                 ->where('compcode','=',session('compcode'))
-                ->where('recno','=',$chargetrx_obj->auditno);
+                ->where('recno','=',$chargetrx_obj->auditno)
+                ->first();
 
             $my_amount = $ivdspdt->amount;
         }else{
@@ -1594,6 +1607,7 @@ class OrdcomController extends defaultController
         $entrydate = $request->entrydate;
         $chgcode = $request->filterVal[1];
         $uom = $request->uom;
+        $billtype_obj = $this->billtype_obj_get($request);
 
         switch ($priceuse) {
             case 'PRICE1':
@@ -1611,11 +1625,21 @@ class OrdcomController extends defaultController
         }
 
         $table = DB::table('hisdb.chgmast as cm')
-                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
+                        ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
                         ->where('cm.chgcode','=',$chgcode)
                         ->where('cm.uom','=',$uom);
+
+        $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.chgcode', '=', 'cm.chgcode');
+                            $join = $join->on('cp.uom', '=', 'cm.uom');
+                            if($request->from != 'chgcode_dfee'){
+                                $join = $join->where('cp.'.$cp_fld,'<>',0.0000);
+                            }
+                            $join = $join->where('cp.effdate', '<=', $entrydate);
+                        });
 
         $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
                             $join = $join->on('st.itemcode', '=', 'cm.chgcode');
@@ -1633,14 +1657,45 @@ class OrdcomController extends defaultController
                             $join = $join->where('pt.unit', '=', session('unit'));
                         });
 
+        $table = $table->leftjoin('hisdb.taxmast as tm', function($join){
+                            $join = $join->where('cp.compcode', '=', session('compcode'));
+                            $join = $join->on('cp.optax', '=', 'tm.taxcode');
+                        });
+
         $table = $table->join('material.uom as uom', function($join){
                             $join = $join->on('uom.uomcode', '=', 'cm.uom')
                                         ->where('uom.compcode', '=', session('compcode'))
                                         ->where('uom.recstatus','=','ACTIVE');
                     });
 
+        $rows = $table->get();
+
+        foreach ($rows as $key => $value) {
+            $billtype_amt_percent = $this->get_billtype_amt_percent($billtype_obj,$value);
+            $value->billty_amount = $billtype_amt_percent->amount; 
+            $value->billty_percent = $billtype_amt_percent->percent_;
+
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
+                ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $value->chgcode)
+                ->where('cp.uom', '=', $value->uom)
+                ->whereDate('cp.effdate', '<=', $entrydate)
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+
+                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                    unset($rows[$key]);
+                    continue;
+                }
+            }
+        }
+
         $responce = new stdClass();
-        $responce->rows = $table->get();
+        $responce->rows = $rows;
         $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
@@ -1692,6 +1747,35 @@ class OrdcomController extends defaultController
         }else{
             throw new \Exception("Wrong billtype");
         }
+    }
+
+    public function get_billtype_amt_percent($billtype_obj,$loop_item){
+        $billtype_amt_percent = new stdClass();
+        $billtype_amt_percent->amount = (empty($billtype_obj->billtype->amount))?0:$billtype_obj->billtype->amount;
+        $billtype_amt_percent->percent_ = (empty($billtype_obj->billtype->percent_))?0:$billtype_obj->billtype->percent_;
+
+        if(count($billtype_obj->svc) > 0){
+
+            foreach ($billtype_obj->svc as $key_svc => $svc_obj) {
+                if($svc_obj->chggroup == $loop_item->chggroup){
+                    $billtype_amt_percent->amount = (empty($svc_obj->svc->amount))?0:$svc_obj->svc->amount;
+                    $billtype_amt_percent->percent_ = (empty($svc_obj->svc->percent_))?0:$svc_obj->svc->percent_;
+
+                    if(count($svc_obj->item) > 0){
+                        foreach ($svc_obj->item as $key_item => $item_obj){
+                            if($item_obj->chgcode == $loop_item->chgcode){
+                                $billtype_amt_percent->amount = (empty($item_obj->amount))?0:$item_obj->amount;
+                                $billtype_amt_percent->percent_ = (empty($item_obj->percent_))?0:$item_obj->percent_;
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+        return $billtype_amt_percent;
     }
 
 }

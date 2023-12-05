@@ -75,11 +75,6 @@ class SalesOrderController extends defaultController
                         'db.upduser AS db_upduser',
                         'db.upddate AS db_upddate'
                     )
-                    ->leftJoin('debtor.debtormast as dm', 'dm.debtorcode', '=', 'db.debtorcode')
-                    ->where('db.compcode','=',session('compcode'))
-                    ->where('db.source','=','PB')
-                    ->where('db.trantype','=','IN')
-                    ->where('db.mrn','=','0');
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);

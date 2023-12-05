@@ -23,6 +23,19 @@ class StockFreezeController extends defaultController
         return view('material.stockFreeze.stockFreeze');
     }
 
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'get_dtl_itemcode':
+                return $this->get_dtl_itemcode($request);
+            case 'get_table_range':
+                return $this->get_table_range($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
     public function form(Request $request)
     {   
         DB::enableQueryLog();
@@ -75,9 +88,9 @@ class StockFreezeController extends defaultController
                 'srcdept' => $request->srcdept,
                 'itemfrom' => $request->itemfrom,
                 'itemto' => $request->itemto,
-                'frzdate' => Carbon::now()->format('Y-m-d'),
-                'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s'),
-                'phycntdate' => $request->phycntdate,
+                'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'frztime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'respersonid' => $request->respersonid,
                 'remarks' => strtoupper($request->remarks),
                 'rackno' => $request->rackno,
@@ -97,40 +110,55 @@ class StockFreezeController extends defaultController
             }
 
             $idno = $table->insertGetId($array_insert);
+            $phycnthd =  DB::table('material.phycnthd')
+                            ->where('idno',$idno)
+                            ->first();
 
-            // foreach ($request->data_detail as $key => $value){
+            $stockloc = DB::table('material.stockloc as s')
+                            ->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand','se.expdate','se.batchno')
 
-            //     $lineno_ = DB::table('material.phycntdt') 
-            //         ->where('compcode','=',session('compcode'))
-            //         ->where('recno','=',$recno)
-            //         ->where('srcdept','=',$request->phycnthd_srcdept)->max('lineno_');
+                            ->leftjoin('material.product as p', function($join) use ($request){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode');
+                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                $join = $join->where('p.compcode', '=', session('compcode'));
+                                $join = $join->where('p.unit', '=', session('unit'));
+                            })
 
-            //     if($lineno_ == null){
-            //         $lineno_ = 1;
-            //     }else{
-            //         $lineno_ = $lineno_+1;
-            //     }
+                            ->leftjoin('material.stockexp as se', function($join) use ($request){
+                                $join = $join->on('se.itemcode', '=', 's.itemcode');
+                                $join = $join->on('se.deptcode', '=', 's.deptcode');
+                                $join = $join->on('se.uomcode', '=', 's.uomcode');
+                                $join = $join->where('se.compcode', '=', session('compcode'));
+                                $join = $join->where('se.unit', '=', session('unit'));
+                                $join = $join->on('se.year', '=', 's.year');
+                            })
 
-            //     DB::table('finance.apalloc')
-            //         ->insert([
-            //             'compcode' => session('compcode'),
-            //             'lineno_' => $lineno_,
-            //             'recno' => $recno,
-            //             'srcdept' => $request->phycnthd_srcdept,
-            //             'phycntdate' => $value['phycntdate'],
-            //             'phycnttime' => $value['phycnttime'],
-            //             'itemcode' => $value['itemcode'],
-            //             'uomcode' => $value['uomcode'],
-            //             'unitcost' => $value['unitcost'],
-            //             'phyqty' => $value['phyqty'],
-            //             'thyqty' => $value['thyqty'],
-            //             'expdate' => $value['expdate'],
-            //             'batchno' => $value['batchno'],
-            //             'adduser' => session('username'),
-            //             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-            //         ]);
+                            ->where('s.compcode',session('compcode'))
+                            ->where('s.deptcode',$request->srcdept)
+                            ->whereBetween('s.itemcode',[$request->itemfrom,$request->itemto])
+                            ->get();
 
-            // }
+            foreach ($stockloc as $key => $value){
+                DB::table('material.phycntdt')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'srcdept' => $phycnthd->srcdept,
+                        'phycntdate' => $phycnthd->phycntdate,
+                        'phycnttime' => $phycnthd->frztime,
+                        'lineno_' => $key ,
+                        'itemcode' => $value->itemcode,
+                        'uomcode' => $value->uomcode,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                        'unitcost' => $value->avgcost,
+                        'thyqty' => $value->qtyonhand,
+                        'recno' => $phycnthd->recno,
+                        'expdate' => $value->expdate,
+                        'frzdate' => $phycnthd->frzdate,
+                        'frztime' => $phycnthd->frztime,
+                        'batchno' => $value->batchno,
+                    ]);
+            }
 
             $responce = new stdClass();
             $responce->docno = $request_no;
@@ -149,7 +177,7 @@ class StockFreezeController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
             
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
 
     }
@@ -463,17 +491,6 @@ class StockFreezeController extends defaultController
 
     }
 
-    public function table(Request $request)
-    {   
-        DB::enableQueryLog();
-        switch($request->action){
-            case 'get_dtl_itemcode':
-                return $this->get_dtl_itemcode($request);
-            default:
-                return 'error happen..';
-        }
-    }
-
     public function get_dtl_itemcode(Request $request){
                     
         $phycntdt = DB::table('material.stockloc as s')
@@ -596,6 +613,103 @@ class StockFreezeController extends defaultController
     //         return json_encode($responce);
         
     // }
+
+    public function get_table_range(Request $request){
+        
+        $table = DB::table('debtor.phycntdt AS pd')
+                        ->select('compcode','srcdept','phycntdate','phycnttime','lineno_','itemcode','uomcode','adduser','adddate','upduser','upddate','unitcost','phyqty','thyqty','recno','expdate','updtime','stktime','frzdate','frztime','dspqty','batchno');
+
+        $table = $table->leftjoin('material.stockloc as st', function($join) use ($deptcode,$entrydate){
+                            $join = $join->on('st.itemcode', '=', 'cm.chgcode');
+                            $join = $join->on('st.uomcode', '=', 'cm.uom');
+                            $join = $join->where('st.compcode', '=', session('compcode'));
+                            $join = $join->where('st.unit', '=', session('unit'));
+                            $join = $join->where('st.deptcode', '=', $deptcode);
+                            $join = $join->where('st.year', '=', Carbon::parse($entrydate)->format('Y'));
+                        });
+        
+        if(!empty($request->filterCol)){
+            $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
+        }
+        
+        if(!empty($request->filterdate)){
+            $table = $table->where('db.entrydate','>',$request->filterdate[0]);
+            $table = $table->where('db.entrydate','<',$request->filterdate[1]);
+        }
+        
+        if(!empty($request->searchCol)){
+            if($request->searchCol[0] == 'db_invno'){
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where('db.invno','like',$request->searchVal[0]);
+                    });
+            }else{
+                $table = $table->Where(function ($table) use ($request) {
+                        $table->Where($request->searchCol[0],'like',$request->searchVal[0]);
+                    });
+            }
+            
+        }
+        
+        if(!empty($request->sidx)){
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                foreach ($pieces as $key => $value) {
+                    $value_ = substr_replace($value,"db.",0,strpos($value,"_")+1);
+                    $pieces_inside = explode(" ", $value_);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }else{
+            $table = $table->orderBy('db.idno','DESC');
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        
+        // foreach ($paginate->items() as $key => $value) {
+        //     $apactdtl = DB::table('finance.apactdtl')
+        //                 ->where('source','=',$value->apacthdr_source)
+        //                 ->where('trantype','=',$value->apacthdr_trantype)
+        //                 ->where('auditno','=',$value->apacthdr_auditno);
+        
+        //     // if($apactdtl->exists()){
+        //     //     $value->apactdtl_outamt = $apactdtl->sum('amount');
+        //     // }else{
+        //     //     $value->apactdtl_outamt = $value->apacthdr_outamount;
+        //     // }
+        
+        //     // $apalloc = DB::table('finance.apalloc')
+        //     //             ->select('allocdate')
+        //     //             ->where('refsource','=',$value->apacthdr_source)
+        //     //             ->where('reftrantype','=',$value->apacthdr_trantype)
+        //     //             ->where('refauditno','=',$value->apacthdr_auditno)
+        //     //             ->where('recstatus','!=','CANCELLED')
+        //     //             ->orderBy('idno', 'desc');
+        
+        //     // if($apalloc->exists()){
+        //     //     $value->apalloc_allocdate = $apalloc->first()->allocdate;
+        //     // }else{
+        //     //     $value->apalloc_allocdate = '';
+        //     // }
+        // }
+        
+        //////////paginate/////////
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        
+        return json_encode($responce);
+        
+    }
 
 
     public function showpdf(Request $request){

@@ -797,12 +797,13 @@ var dialog_uomcode_disp = new ordialog(
 	'uom_disp',['material.uom AS u'],"#jqGrid_disp input[name='uom']",errorField,
 	{	colModel:
 		[
-			{label: 'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-			{label: 'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			{label: 'Charge Code',name:'chgcode',hidden:true},
-			{label: 'Inventory',name:'invflag',hidden:true},
-			{label: 'Quantity On Hand',hidden:true},
-			{label: 'Price',name:'price',hidden:true},
+			{label: 'UOM Code',name:'uomcode',width:100,classes:'pointer',canSearch:true,or_search:true},
+			{label: 'UOM Description',name:'description',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label: 'Charge Code',name:'chgcode',width:100},
+			{label: 'Charge Description',name:'chgdesc',width:300},
+			{label: 'Inventory',name:'invflag',width:100,formatter:formatterstatus_tick2, unformat:unformatstatus_tick2},
+			{label: 'Quantity On Hand',name:'qtyonhand',width:100},
+			{label: 'Price',name:'price',width:100},
 			{label: 'Tax',name:'taxcode',hidden:true},
 			{label: 'rate',name:'rate',hidden:true},
 			{label: 'st_idno',name:'st_idno',hidden:true},
@@ -872,6 +873,9 @@ var dialog_uomcode_disp = new ordialog(
 	},{
 		title:"Select UOM Code For Item",
 		open:function(obj_){
+			let chgcode = $("#jqGrid_disp input[name=chgcode]").val();
+			$('div[role=dialog][aria-describedby=otherdialog_uom_disp] span.ui-dialog-title').text('Select UOM Code For Item ('+chgcode+')');
+
 			let id_optid = obj_.id_optid;
 
 			dialog_uomcode_disp.urlParam.url = "./SalesOrderDetail/table";
@@ -893,6 +897,10 @@ var dialog_uomcode_disp = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			dialog_uomcode_disp.urlParam.searchCol2=[];
+			dialog_uomcode_disp.urlParam.searchVal2=[];
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
