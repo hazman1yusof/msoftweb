@@ -398,7 +398,12 @@ $(document).ready(function () {
         populate_drugadmin_getdata();
         $("#trx_auditno").val(data.auditno);
         $("#trx_chgcode").val(data.chgcode);
-        $("#ftxtdosage").val(data.ftxtdosage);
+        $("#trx_quantity").val(data.quantity);
+        // $("#ftxtdosage").val(data.ftxtdosage);
+        $("#dosage_nursNote").val(data.doscode_desc);
+        $("#frequency_nursNote").val(data.frequency_desc);
+        $("#instruction_nursNote").val(data.addinstruction_desc);
+        $("#drugindicator_nursNote").val(data.drugindicator_desc);
         $("#doc_name").val($("#doctor_nursNote").val());
         textarea_init_nursingnote();
         
@@ -408,6 +413,31 @@ $(document).ready(function () {
         urlParam_PatMedic.filterVal[2] = data.auditno;
         urlParam_PatMedic.filterVal[3] = data.chgcode;
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
+        
+        var saveParam={
+            action: 'get_table_drug',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            auditno: $("#trx_auditno").val(),
+            chgcode: $("#trx_chgcode").val()
+        };
+        
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            if(!$.isEmptyObject(data)){
+                // autoinsert_rowdata("#formDrug",data.patmedication);
+                $("#tot_qty").val(data.total_qty);
+            }else{
+                
+            }
+        });
     });
     
     //////////////////////////jqGridPatMedic//////////////////////////
@@ -454,7 +484,7 @@ $(document).ready(function () {
                     rows: 5
                 }
             },
-            { label: 'Quantity', name: 'qty', width: 30, editable: true },
+            { label: 'Quantity', name: 'qty', width: 35, editable: true },
             { label: 'Entered<br>By', name: 'enteredby', width: 35, editable: false },
             { label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
             { label: 'compcode', name: 'compcode', hidden: true },
@@ -499,6 +529,8 @@ $(document).ready(function () {
         oneditfunc: function (rowid) {
             $("#jqGridPagerRefresh_patMedic").hide();
             
+            $("#jqGridPatMedic input[name='qty']").on('blur',calculate_total_qty);
+            
             $("input[name='enteredby']").keydown(function(e) {	// when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridPatMedic_ilsave').click();
@@ -521,16 +553,23 @@ $(document).ready(function () {
             $('#p_error').text('');
             
             let data = $('#jqGridPatMedic').jqGrid ('getRowData', rowid);
+            var trx_qty = $("#trx_quantity").val();
+            var grid_qty = $("#tot_qty").val();
             
-            let editurl = "./nursingnote/form?"+
-                $.param({
-                    mrn: $('#mrn_nursNote').val(),
-                    episno: $('#episno_nursNote').val(),
-                    auditno: $('#trx_auditno').val(),
-                    chgcode: $('#trx_chgcode').val(),
-                    action: 'patMedic_save',
-                });
-            $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
+            if(grid_qty > trx_qty){
+                alert('Please check the quantity.');
+                // unsaved = false;
+            }else if(grid_qty <= trx_qty){
+                let editurl = "./nursingnote/form?"+
+                    $.param({
+                        mrn: $('#mrn_nursNote').val(),
+                        episno: $('#episno_nursNote').val(),
+                        auditno: $('#trx_auditno').val(),
+                        chgcode: $('#trx_chgcode').val(),
+                        action: 'patMedic_save',
+                    });
+                $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
+            }
         },
         afterrestorefunc : function( response ) {
             $("#jqGridPagerRefresh_patMedic").show();
@@ -559,6 +598,25 @@ $(document).ready(function () {
             refreshGrid("#jqGridPatMedic", urlParam_PatMedic);
         },
     });
+    
+    function calculate_total_qty(){
+        var rowids = $('#jqGridPatMedic').jqGrid('getDataIDs');
+        var total_qty = 0;
+        
+        rowids.forEach(function(e,i){
+            let quantity = $('#jqGridPatMedic input#'+e+'_qty').val();
+            if(quantity != undefined){
+                total_qty = parseFloat(total_qty)+parseFloat(quantity);
+            }else{
+                let rowdata = $('#jqGridPatMedic').jqGrid ('getRowData',e);
+                total_qty = parseFloat(total_qty)+parseFloat(rowdata.qty);
+            }
+        });
+        
+        if(!isNaN(total_qty)){
+            $('#tot_qty').val(numeral(total_qty).format('0,0.00'));
+        }
+    }
     //////////////////////////////////////////drug admin ends//////////////////////////////////////////
     
     /////////////////////////////////////////treatment starts/////////////////////////////////////////
@@ -744,13 +802,21 @@ var tbl_prescription = $('#tbl_prescription').DataTable({
         { 'data': 'auditno' },
         { 'data': 'mrn' },
         { 'data': 'episno' },
-        { 'data': 'chgcode' },
-        { 'data': 'description', 'width': '50%' },
-        { 'data': 'quantity', 'width': '25%' },
+        { 'data': 'chgcode', 'width': '25%' },
+        { 'data': 'description', 'width': '65%' },
+        { 'data': 'quantity', 'width': '10%' },
+        { 'data': 'doscode' },
+        { 'data': 'doscode_desc' },
+        { 'data': 'frequency' },
+        { 'data': 'frequency_desc' },
         { 'data': 'ftxtdosage' },
+        { 'data': 'addinstruction' },
+        { 'data': 'addinstruction_desc' },
+        { 'data': 'drugindicator' },
+        { 'data': 'drugindicator_desc' },
     ],
     columnDefs: [
-        { targets: [0, 1, 2, 3, 6], visible: false },
+        { targets: [0, 1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14], visible: false },
     ],
     order: [[0, 'desc']],
     "drawCallback": function( settings ) {
@@ -1483,6 +1549,194 @@ function galGridCustomValue_nurs (elem, operation, value){
         $('input',elem).val(value);
     }
 }
+
+var dialog_dosage_nursNote = new ordialog(
+    'dosage_nursNote',['hisdb.dose'],"#formDrug input[name='dosage']",'errorField',
+    {
+        colModel: [
+            { label: 'Dosage Code', name: 'dosecode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+            { label: 'Description', name: 'dosedesc', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+        ],
+        urlParam: {
+            filterCol: ['compcode','recstatus'],
+            filterVal: ['session.compcode','ACTIVE']
+        },
+        ondblClickRow:function(event){
+            // if(event.type == 'keydown'){
+            //     var optid = $(event.currentTarget).get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }else{
+            //     var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }
+            
+            let data=selrowData('#'+dialog_dosage_nursNote.gridname);
+            $(dialog_dosage_nursNote.textfield).val(data.dosedesc);
+            $('#dosage_nursNote_code').val(data.dosecode);
+        },
+        gridComplete: function(obj){
+            var gridname = '#'+obj.gridname;
+            if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+                $(gridname+' tr#1').click();
+                $(gridname+' tr#1').dblclick();
+            }
+        }
+    },{
+        title:"Select Dosage Code",
+        open:function(obj_){
+            dialog_dosage_nursNote.urlParam.filterCol= ['compcode','recstatus'];
+            dialog_dosage_nursNote.urlParam.filterVal= ['session.compcode','ACTIVE'];
+        },
+        close: function(){
+            // $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield
+            //     .closest('td')						//utk dialog dalam jqgrid jer
+            //     .next()
+            //     .find("input[type=text]").focus();
+        }
+    },'urlParam', 'radio', 'tab'
+);
+dialog_dosage_nursNote.makedialog(false);
+
+var dialog_frequency_nursNote = new ordialog(
+    'frequency_nursNote',['hisdb.freq'],"#formDrug input[name='frequency']",'errorField',
+    {
+        colModel: [
+            { label: 'Frequency Code', name: 'freqcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+            { label: 'Description', name: 'freqdesc', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+        ],
+        urlParam: {
+            filterCol: ['compcode','recstatus'],
+            filterVal: ['session.compcode','ACTIVE']
+        },
+        ondblClickRow:function(event){
+            // if(event.type == 'keydown'){
+            //     var optid = $(event.currentTarget).get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }else{
+            //     var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }
+            
+            let data=selrowData('#'+dialog_frequency_nursNote.gridname);
+            $(dialog_frequency_nursNote.textfield).val(data.freqdesc);
+            $('#frequency_nursNote_code').val(data.freqcode);
+        },
+        gridComplete: function(obj){
+            var gridname = '#'+obj.gridname;
+            if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+                $(gridname+' tr#1').click();
+                $(gridname+' tr#1').dblclick();
+            }
+        }
+    },{
+        title:"Select Frequency Code",
+        open:function(obj_){
+            dialog_frequency_nursNote.urlParam.filterCol= ['compcode','recstatus'];
+            dialog_frequency_nursNote.urlParam.filterVal= ['session.compcode','ACTIVE'];
+        },
+        close: function(){
+            // $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield
+            //     .closest('td')						//utk dialog dalam jqgrid jer
+            //     .next()
+            //     .find("input[type=text]").focus();
+        }
+    },'urlParam', 'radio', 'tab'
+);
+dialog_frequency_nursNote.makedialog(false);
+
+var dialog_instruction_nursNote = new ordialog(
+    'instruction_nursNote',['hisdb.instruction'],"#formDrug input[name='instruction']",'errorField',
+    {
+        colModel: [
+            { label: 'Instruction Code', name: 'inscode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+            { label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+        ],
+        urlParam: {
+            filterCol: ['compcode','recstatus'],
+            filterVal: ['session.compcode','ACTIVE']
+        },
+        ondblClickRow:function(event){
+            // if(event.type == 'keydown'){
+            //     var optid = $(event.currentTarget).get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }else{
+            //     var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }
+            
+            let data=selrowData('#'+dialog_instruction_nursNote.gridname);
+            $(dialog_instruction_nursNote.textfield).val(data.description);
+            $('#instruction_nursNote_code').val(data.inscode);
+        },
+        gridComplete: function(obj){
+            var gridname = '#'+obj.gridname;
+            if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+                $(gridname+' tr#1').click();
+                $(gridname+' tr#1').dblclick();
+            }
+        }
+    },{
+        title:"Select Instruction Code",
+        open:function(obj_){
+            dialog_instruction_nursNote.urlParam.filterCol= ['compcode','recstatus'];
+            dialog_instruction_nursNote.urlParam.filterVal= ['session.compcode','ACTIVE'];
+        },
+        close: function(){
+            // $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield
+            //     .closest('td')						//utk dialog dalam jqgrid jer
+            //     .next()
+            //     .find("input[type=text]").focus();
+        }
+    },'urlParam', 'radio', 'tab'
+);
+dialog_instruction_nursNote.makedialog(false);
+
+var dialog_drugindicator_nursNote = new ordialog(
+    'drugindicator_nursNote',['hisdb.drugindicator'],"#formDrug input[name='drugindicator']",'errorField',
+    {
+        colModel: [
+            { label: 'Indicator Code', name: 'drugindcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+            { label: 'Description', name: 'description', width: 400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+        ],
+        urlParam: {
+            filterCol: ['compcode','recstatus'],
+            filterVal: ['session.compcode','ACTIVE']
+        },
+        ondblClickRow:function(event){
+            // if(event.type == 'keydown'){
+            //     var optid = $(event.currentTarget).get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }else{
+            //     var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+            //     var id_optid = optid.substring(0,optid.search("_"));
+            // }
+            
+            let data=selrowData('#'+dialog_drugindicator_nursNote.gridname);
+            $(dialog_drugindicator_nursNote.textfield).val(data.description);
+            $('#drugindicator_nursNote_code').val(data.drugindcode);
+        },
+        gridComplete: function(obj){
+            var gridname = '#'+obj.gridname;
+            if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+                $(gridname+' tr#1').click();
+                $(gridname+' tr#1').dblclick();
+            }
+        }
+    },{
+        title:"Select Indicator Code",
+        open:function(obj_){
+            dialog_drugindicator_nursNote.urlParam.filterCol= ['compcode','recstatus'];
+            dialog_drugindicator_nursNote.urlParam.filterVal= ['session.compcode','ACTIVE'];
+        },
+        close: function(){
+            // $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield
+            //     .closest('td')						//utk dialog dalam jqgrid jer
+            //     .next()
+            //     .find("input[type=text]").focus();
+        }
+    },'urlParam', 'radio', 'tab'
+);
+dialog_drugindicator_nursNote.makedialog(false);
 
 // function calc_jq_height_onchange(jqgrid){
 //     let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');

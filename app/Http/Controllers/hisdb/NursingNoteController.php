@@ -96,6 +96,9 @@ class NursingNoteController extends defaultController
             case 'get_table_intake':
                 return $this->get_table_intake($request);
             
+            case 'get_table_drug':
+                return $this->get_table_drug($request);
+            
             case 'get_table_treatment':
                 return $this->get_table_treatment($request);
             
@@ -157,11 +160,27 @@ class NursingNoteController extends defaultController
         $responce = new stdClass();
         
         $chargetrx_obj = DB::table('hisdb.chargetrx as trx')
-                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.ftxtdosage', 'cm.description', 'cm.uom')
+                        ->select('trx.auditno', 'trx.mrn', 'trx.episno', 'trx.chgcode', 'trx.quantity', 'trx.uom', 'trx.doscode', 'trx.frequency', 'trx.ftxtdosage', 'trx.addinstruction', 'trx.drugindicator', 'cm.description', 'cm.uom', 'dos.dosedesc as doscode_desc', 'fre.freqdesc as frequency_desc', 'ins.description as addinstruction_desc', 'dru.description as drugindicator_desc')
                         ->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
                             $join = $join->on('cm.chgcode', '=', 'trx.chgcode')
                                         ->on('cm.uom','=','trx.uom')
                                         ->where('cm.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode')
+                                        ->where('dos.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency')
+                                        ->where('fre.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction')
+                                        ->where('ins.compcode','=',session('compcode'));
+                        })
+                        ->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator')
+                                        ->where('dru.compcode','=',session('compcode'));
                         })
                         ->where('trx.mrn' ,'=', $request->mrn)
                         ->where('trx.episno' ,'=', $request->episno)
@@ -182,7 +201,15 @@ class NursingNoteController extends defaultController
                 $date['chgcode'] = $value->chgcode;
                 $date['description'] = $value->description;
                 $date['quantity'] = $value->quantity;
+                $date['doscode'] = $value->doscode;
+                $date['doscode_desc'] = $value->doscode_desc;
+                $date['frequency'] = $value->frequency;
+                $date['frequency_desc'] = $value->frequency_desc;
                 $date['ftxtdosage'] = $value->ftxtdosage;
+                $date['addinstruction'] = $value->addinstruction;
+                $date['addinstruction_desc'] = $value->addinstruction_desc;
+                $date['drugindicator'] = $value->drugindicator;
+                $date['drugindicator_desc'] = $value->drugindicator_desc;
                 
                 array_push($data,$date);
             }
@@ -1100,6 +1127,30 @@ class NursingNoteController extends defaultController
         if($intakeoutput_obj->exists()){
             $intakeoutput_obj = $intakeoutput_obj->first();
             $responce->intakeoutput = $intakeoutput_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_drug(Request $request){
+        
+        $patmedication_obj = DB::table('hisdb.patmedication')
+                            ->where('compcode','=',session('compcode'))
+                            // ->where('idno','=',$request->idno);
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno)
+                            ->where('auditno','=',$request->auditno)
+                            ->where('chgcode','=',$request->chgcode);
+        
+        $responce = new stdClass();
+        
+        if($patmedication_obj->exists()){
+            $total_qty = $patmedication_obj->sum('qty');
+            $responce->total_qty = $total_qty;
+            
+            $patmedication_obj = $patmedication_obj->first();
+            $responce->patmedication = $patmedication_obj;
         }
         
         return json_encode($responce);

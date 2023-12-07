@@ -1545,7 +1545,7 @@
                     </div>
                     <div id="tab-drug" class="tab-pane fade">
                         <form class='form-horizontal' style='width:99%' id='formDrug'>
-                            <div class='col-md-6' style="padding-left: 0px; padding-right: 2px;">
+                            <div class='col-md-4' style="padding-left: 0px; padding-right: 2px;">
                                 <div class="panel panel-info">
                                     <div class="panel-heading text-center">PRESCRIPTION</div>
                                     <div class="panel-body">
@@ -1555,28 +1555,75 @@
                                                     <th class="scope">auditno</th>
                                                     <th class="scope">mrn</th>
                                                     <th class="scope">episno</th>
-                                                    <th class="scope">chgcode</th>
+                                                    <th class="scope">Charge Code</th>
                                                     <th class="scope">Item</th>
                                                     <th class="scope">Quantity</th>
+                                                    <th class="scope">doscode</th>
+                                                    <th class="scope">doscode_desc</th>
+                                                    <th class="scope">frequency</th>
+                                                    <th class="scope">frequency_desc</th>
                                                     <th class="scope">ftxtdosage</th>
+                                                    <th class="scope">addinstruction</th>
+                                                    <th class="scope">addinstruction_desc</th>
+                                                    <th class="scope">drugindicator</th>
+                                                    <th class="scope">drugindicator_desc</th>
                                                 </tr>
                                             </thead>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <div class='col-md-6' style="padding-left: 0px; padding-right: 2px;">
+                            <div class='col-md-8' style="padding-left: 0px; padding-right: 2px;">
                                 <div class="panel panel-info">
                                     <div class="panel-body">
                                         <input id="trx_auditno" name="trx_auditno" type="hidden">
                                         <input id="trx_chgcode" name="trx_chgcode" type="hidden">
+                                        <input id="trx_quantity" name="trx_quantity" type="hidden">
                                         
                                         <div class="form-group col-md-8">
                                             <input id="doc_name" name="doc_name" type="text" class="form-control input-sm" rdonly>
                                         </div>
-                                        <div class="form-group col-md-8">
+                                        
+                                        <!-- <div class="form-group col-md-8">
                                             <textarea id="ftxtdosage" name="ftxtdosage" type="text" class="form-control input-sm" rdonly></textarea>
+                                        </div> -->
+                                        
+                                        <div class="form-group col-md-9">
+                                            <label class="oe_phar_label">Dose</label>
+                                            <div class="input-group oe_phar_div">
+                                                <input autocomplete="off" name="dosage" id="dosage_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+                                            </div>
+                                            <input type="hidden" id="dosage_nursNote_code">
                                         </div>
+                                        
+                                        <div class="form-group col-md-9">
+                                            <label class="oe_phar_label">Frequency</label>
+                                            <div class="input-group oe_phar_div">
+                                                <input autocomplete="off" name="frequency" id="frequency_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+                                            </div>
+                                            <input type="hidden" id="frequency_nursNote_code">
+                                        </div>
+                                        
+                                        <div class="form-group col-md-9">
+                                            <label class="oe_phar_label">Instruction</label>
+                                            <div class="input-group oe_phar_div">
+                                                <input autocomplete="off" name="instruction" id="instruction_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+                                            </div>
+                                            <input type="hidden" id="instruction_nursNote_code">
+                                        </div>
+                                        
+                                        <div class="form-group col-md-9">
+                                            <label class="oe_phar_label">Indicator</label>
+                                            <div class="input-group oe_phar_div">
+                                                <input autocomplete="off" name="drugindicator" id="drugindicator_nursNote" type="text" class="form-control input-sm" style="text-transform:uppercase" rdonly>
+                                                <a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+                                            </div>
+                                            <input type="hidden" id="drugindicator_nursNote_code">
+                                        </div>
+                                        
                                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                                             <div class="panel panel-info" id="jqGridPatMedic_c">
                                                 <div class="panel-body">
@@ -1585,6 +1632,13 @@
                                                         <div id="jqGridPagerPatMedic"></div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="float: right; padding-right: 60px;">
+                                            <label class="col-md-5 control-label">Total Quantity</label>
+                                            <div class="col-md-5">
+                                                <input id="tot_qty" name="tot_qty" type="text" class="form-control input-sm" rdonly>
                                             </div>
                                         </div>
                                     </div>
