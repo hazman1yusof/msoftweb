@@ -406,6 +406,7 @@ $(document).ready(function () {
         $("#drugindicator_nursNote").val(data.drugindicator_desc);
         $("#doc_name").val($("#doctor_nursNote").val());
         textarea_init_nursingnote();
+        get_total_qty();
         
         // jqGridPatMedic
         urlParam_PatMedic.filterVal[0] = data.mrn;
@@ -414,30 +415,30 @@ $(document).ready(function () {
         urlParam_PatMedic.filterVal[3] = data.chgcode;
         refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
         
-        var saveParam={
-            action: 'get_table_drug',
-        }
+        // var saveParam={
+        //     action: 'get_table_drug',
+        // }
         
-        var postobj={
-            _token: $('#csrf_token').val(),
-            mrn: $("#mrn_nursNote").val(),
-            episno: $("#episno_nursNote").val(),
-            auditno: $("#trx_auditno").val(),
-            chgcode: $("#trx_chgcode").val()
-        };
+        // var postobj={
+        //     _token: $('#csrf_token').val(),
+        //     mrn: $("#mrn_nursNote").val(),
+        //     episno: $("#episno_nursNote").val(),
+        //     auditno: $("#trx_auditno").val(),
+        //     chgcode: $("#trx_chgcode").val()
+        // };
         
-        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+        // $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
             
-        },'json').fail(function(data) {
-            alert('there is an error');
-        }).success(function(data){
-            if(!$.isEmptyObject(data)){
-                // autoinsert_rowdata("#formDrug",data.patmedication);
-                $("#tot_qty").val(data.total_qty);
-            }else{
+        // },'json').fail(function(data) {
+        //     alert('there is an error');
+        // }).success(function(data){
+        //     if(!$.isEmptyObject(data)){
+        //         // autoinsert_rowdata("#formDrug",data.patmedication);
+        //         $("#tot_qty").val(data.total_qty);
+        //     }else{
                 
-            }
-        });
+        //     }
+        // });
     });
     
     //////////////////////////jqGridPatMedic//////////////////////////
@@ -552,24 +553,25 @@ $(document).ready(function () {
         beforeSaveRow: function (options, rowid) {
             $('#p_error').text('');
             
-            let data = $('#jqGridPatMedic').jqGrid ('getRowData', rowid);
             var trx_qty = $("#trx_quantity").val();
             var grid_qty = $("#tot_qty").val();
             
             if(grid_qty > trx_qty){
                 alert('Please check the quantity.');
-                // unsaved = false;
-            }else if(grid_qty <= trx_qty){
-                let editurl = "./nursingnote/form?"+
-                    $.param({
-                        mrn: $('#mrn_nursNote').val(),
-                        episno: $('#episno_nursNote').val(),
-                        auditno: $('#trx_auditno').val(),
-                        chgcode: $('#trx_chgcode').val(),
-                        action: 'patMedic_save',
-                    });
-                $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
+                return false;
             }
+            
+            let data = $('#jqGridPatMedic').jqGrid ('getRowData', rowid);
+            
+            let editurl = "./nursingnote/form?"+
+                $.param({
+                    mrn: $('#mrn_nursNote').val(),
+                    episno: $('#episno_nursNote').val(),
+                    auditno: $('#trx_auditno').val(),
+                    chgcode: $('#trx_chgcode').val(),
+                    action: 'patMedic_save',
+                });
+            $("#jqGridPatMedic").jqGrid('setGridParam', { editurl: editurl });
         },
         afterrestorefunc : function( response ) {
             $("#jqGridPagerRefresh_patMedic").show();
@@ -599,6 +601,10 @@ $(document).ready(function () {
         },
     });
     
+    $("#jqGridPatMedic_ilcancel").click(function(){
+        get_total_qty();    // refresh balik total quantity
+    });
+    
     function calculate_total_qty(){
         var rowids = $('#jqGridPatMedic').jqGrid('getDataIDs');
         var total_qty = 0;
@@ -616,6 +622,33 @@ $(document).ready(function () {
         if(!isNaN(total_qty)){
             $('#tot_qty').val(numeral(total_qty).format('0,0.00'));
         }
+    }
+    
+    function get_total_qty(){
+        var saveParam={
+            action: 'get_table_drug',
+        }
+        
+        var postobj={
+            _token: $('#csrf_token').val(),
+            mrn: $("#mrn_nursNote").val(),
+            episno: $("#episno_nursNote").val(),
+            auditno: $("#trx_auditno").val(),
+            chgcode: $("#trx_chgcode").val()
+        };
+        
+        $.post( "./nursingnote/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+            
+        },'json').fail(function(data) {
+            alert('there is an error');
+        }).success(function(data){
+            if(!$.isEmptyObject(data)){
+                // autoinsert_rowdata("#formDrug",data.patmedication);
+                $("#tot_qty").val(data.total_qty);
+            }else{
+                
+            }
+        });
     }
     //////////////////////////////////////////drug admin ends//////////////////////////////////////////
     
