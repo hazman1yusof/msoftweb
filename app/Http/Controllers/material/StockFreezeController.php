@@ -29,6 +29,8 @@ class StockFreezeController extends defaultController
         switch($request->action){
             case 'get_table_range':
                 return $this->get_table_range($request);
+            case 'get_rackno':
+                return $this->get_rackno($request);
             default:
                 return 'error happen..';
         }
@@ -490,7 +492,7 @@ class StockFreezeController extends defaultController
         }
 
     }
-
+    
     public function get_table_range(Request $request){
         
         $table = DB::table('debtor.phycntdt AS pd')
@@ -587,8 +589,51 @@ class StockFreezeController extends defaultController
         return json_encode($responce);
         
     }
-
-
+    
+    public function get_rackno(Request $request){
+        
+        $table = DB::table('material.stockloc')
+                    ->select('rackno')
+                    ->where('deptcode', '=', $request->filterVal[0])
+                    ->where('recstatus','=','ACTIVE')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('year', '=', $request->filterVal[3])
+                    ->distinct('rackno');
+        
+        if(!empty($request->searchCol)){
+            $searchCol_array = $request->searchCol;
+            
+            $count = array_count_values($searchCol_array);
+            // dump($count);
+            
+            foreach ($count as $key => $value) {
+                $occur_ar = $this->index_of_occurance($key,$searchCol_array);
+                
+                $table = $table->where(function ($table) use ($request,$searchCol_array,$occur_ar) {
+                    foreach ($searchCol_array as $key => $value) {
+                        $found = array_search($key,$occur_ar);
+                        if($found !== false){
+                            $table->Where($searchCol_array[$key],'like',$request->searchVal[$key]);
+                        }
+                    }
+                });
+            }
+        }
+        
+        $paginate = $table->paginate($request->rows);
+        
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        
+        return json_encode($responce);
+        
+    }
+    
     public function showpdf(Request $request){
         $recno = $request->recno;
         if(!$recno){

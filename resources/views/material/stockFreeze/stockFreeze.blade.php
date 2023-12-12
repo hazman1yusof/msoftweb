@@ -180,11 +180,19 @@ i.fa {
                                         </div>
                                         <span class="help-block"></span>
 								  	</div>
-
-                                <label class="col-md-2 control-label" for="rackno">Rack No</label>  
+								
+								<label class="col-md-2 control-label" for="rackno">Rack No</label>
+									<div class="col-md-2">
+                                        <div class='input-group'>
+                                            <input id="rackno" name="rackno" type="text" maxlength="12" class="form-control input-sm text-uppercase" rdonly>
+                                            <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                                        </div>
+								  	</div>
+								
+                                <!-- <label class="col-md-2 control-label" for="rackno">Rack No</label>  
                                     <div class="col-md-2">
                                         <input id="rackno" name="rackno" type="text" maxlength="11" class="form-control input-sm" >
-                                    </div>	
+                                    </div>	 -->
 
                                 <label class="col-md-2 control-label" for="docno">Document No</label>  
 						  			<div class="col-md-2">

@@ -72,11 +72,13 @@ $(document).ready(function () {
 				dialog_itemcodeto.urlParam.filterVal=['ACTIVE','session.compcode', $('#srcdept').val(), moment().year(),'session.unit'];
 
 				dialog_srcdept.check(errorField);
+				dialog_rackno.check(errorField);
 				dialog_itemcodefrom.check(errorField);
 				dialog_itemcodeto.check(errorField);
 
 			}if(oper!='view'){
 				dialog_srcdept.on();
+				dialog_rackno.on();
 				dialog_itemcodefrom.on();
 				dialog_itemcodeto.on();
 
@@ -101,6 +103,7 @@ $(document).ready(function () {
 			emptyFormdata(errorField,'#formdata');
 			emptyFormdata(errorField,'#formdata2');
 			dialog_srcdept.off();
+			dialog_rackno.off();
 			dialog_itemcodefrom.off();
 			dialog_itemcodeto.off();
 
@@ -311,6 +314,7 @@ $(document).ready(function () {
 				msg:data.responseText,
 			});
 			dialog_srcdept.on();
+			dialog_rackno.on();
 			dialog_itemcodefrom.on();
 			dialog_itemcodeto.on();
 
@@ -648,6 +652,7 @@ $(document).ready(function () {
 		unsaved = false;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_srcdept.off();
+			dialog_rackno.off();
 			dialog_itemcodefrom.off();
 			dialog_itemcodeto.off();
 
@@ -664,6 +669,7 @@ $(document).ready(function () {
 		unsaved = false;
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_srcdept.off();
+			dialog_rackno.off();
 			dialog_itemcodefrom.off();
 			dialog_itemcodeto.off();
 
@@ -757,7 +763,44 @@ $(document).ready(function () {
 		},'urlParam','radio','tab'
 	);
 	dialog_srcdept.makedialog(true);
-
+	
+	var dialog_rackno = new ordialog(
+		'rackno','material.stockloc','#rackno',errorField,
+		{
+			colModel:[
+				{label:'Rack No',name:'rackno',width:200,classes:'pointer',canSearch:true,or_search:true},
+				// {label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+				// {label:'Unit',name:'sector', hidden:true},
+			],
+			urlParam: {
+				filterCol:['deptcode', 'recstatus','compcode','year'],
+				filterVal:[$("#srcdept").val(), 'ACTIVE','session.compcode',moment().year()],
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Rack No",
+			open: function(){
+				dialog_rackno.urlParam.url = "./stockFreeze/table";
+				dialog_rackno.urlParam.action = "get_rackno";
+				dialog_rackno.urlParam.filterCol=['deptcode', 'recstatus','compcode','year'];
+				dialog_rackno.urlParam.filterVal=[$("#srcdept").val(), 'ACTIVE','session.compcode',moment().year()];
+			},
+			close: function(obj_){
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_rackno.makedialog(true);
+	
 	var dialog_itemcodefrom = new ordialog(
 		'itemfrom',['material.stockloc AS s','material.product AS p', 'material.stockexp AS e'],"#itemfrom",errorField,
 
