@@ -150,14 +150,14 @@ class StockFreezeController extends defaultController
                         'batchno' => $value->batchno,
                     ]);
 
-                //update frozen = yes at stockloc
-                // DB::table('material.stockloc')
-                //     ->where('compcode','=',session('compcode'))
-                //     ->where('itemcode','=',$value->itemcode)
-                //     ->where('deptcode','=',$phycnthd->srcdept)
-                //     ->update([
-                //         'frozen' => '1',
-                //     ]);
+               // update frozen = yes at stockloc
+                DB::table('material.stockloc')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('itemcode','=',$value->itemcode)
+                    ->where('deptcode','=',$phycnthd->srcdept)
+                    ->update([
+                        'frozen' => '1',
+                    ]);
 
             }
 

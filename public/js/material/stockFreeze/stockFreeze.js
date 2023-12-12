@@ -768,7 +768,7 @@ $(document).ready(function () {
 		'rackno','material.stockloc','#rackno',errorField,
 		{
 			colModel:[
-				{label:'Rack No',name:'rackno',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Rack No',name:'rackno',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true},
 				// {label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
 				// {label:'Unit',name:'sector', hidden:true},
 			],
@@ -777,6 +777,8 @@ $(document).ready(function () {
 				filterVal:[$("#srcdept").val(), 'ACTIVE','session.compcode',moment().year()],
 			},
 			ondblClickRow: function () {
+				let data=selrowData('#'+dialog_rackno.gridname);
+				$("#itemto").val('ZZZ');
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
