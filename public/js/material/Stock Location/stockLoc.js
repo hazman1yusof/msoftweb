@@ -146,6 +146,7 @@ $(document).ready(function () {
 			{ label: 'Bin Code', name: 'bincode', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Rack No', name: 'rackno', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Tran Type', name: 'stocktxntype', width: 50, classes: 'wrap', formatter: TrxType,unformat: un_TrxType },
+			{ label: 'frozen', name: 'frozen', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Disp Type', name: 'disptype', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Qty On Hand', name: 'qtyonhand', width: 50, classes: 'wrap', align: 'right' },
 			{ label: 'Min Stock Qty', name: 'minqty', width: 40, classes: 'wrap', align:'right' },

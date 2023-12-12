@@ -27,8 +27,6 @@ class StockFreezeController extends defaultController
     {   
         DB::enableQueryLog();
         switch($request->action){
-            case 'get_dtl_itemcode':
-                return $this->get_dtl_itemcode($request);
             case 'get_table_range':
                 return $this->get_table_range($request);
             default:
@@ -71,15 +69,6 @@ class StockFreezeController extends defaultController
 
         try {
 
-            // if(!empty($request->referral)){
-            //     $recno = $this->recno('IV','IT');
-            //     $compcode = session('compcode');
-            // }else{
-            //     $request_no = 0;
-            //     $recno = 0;
-            //     $compcode = 'DD';
-            // }
-
             $table = DB::table("material.phycnthd");
 
             $array_insert = [
@@ -88,10 +77,10 @@ class StockFreezeController extends defaultController
                 'srcdept' => $request->srcdept,
                 'itemfrom' => $request->itemfrom,
                 'itemto' => $request->itemto,
-                'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'frztime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
+                'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
                 'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'respersonid' => $request->respersonid,
+                'respersonid' => session('username'), //freeze user
                 'remarks' => strtoupper($request->remarks),
                 'rackno' => $request->rackno,
                 'phycnttime' => $request->phycnttime,
@@ -145,7 +134,7 @@ class StockFreezeController extends defaultController
                         'srcdept' => $phycnthd->srcdept,
                         'phycntdate' => $phycnthd->phycntdate,
                         'phycnttime' => $phycnthd->frztime,
-                        'lineno_' => $key ,
+                        'lineno_' => $key,
                         'itemcode' => $value->itemcode,
                         'uomcode' => $value->uomcode,
                         'adduser' => session('username'),
@@ -158,16 +147,27 @@ class StockFreezeController extends defaultController
                         'frztime' => $phycnthd->frztime,
                         'batchno' => $value->batchno,
                     ]);
+
+                //update frozen = yes at stockloc
+                // DB::table('material.stockloc')
+                //     ->where('compcode','=',session('compcode'))
+                //     ->where('itemcode','=',$value->itemcode)
+                //     ->where('deptcode','=',$phycnthd->srcdept)
+                //     ->update([
+                //         'frozen' => '1',
+                //     ]);
+
             }
 
             $responce = new stdClass();
             $responce->docno = $request_no;
             $responce->recno = $recno;
             $responce->idno = $idno;
-            $responce->frzdate = Carbon::now()->format('Y-m-d');
-            $responce->frztime = Carbon::now("Asia/Kuala_Lumpur")->format('H:i:s');
+            $responce->frzdate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d');
+            $responce->frztime = Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s');
+            $responce->respersonid = session('username');
             $responce->adduser = session('username');
-            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
+            $responce->adddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d h:i:s');
             echo json_encode($responce);
 
             // $queries = DB::getQueryLog();
@@ -490,129 +490,6 @@ class StockFreezeController extends defaultController
         }
 
     }
-
-    public function get_dtl_itemcode(Request $request){
-                    
-        $phycntdt = DB::table('material.stockloc as s')
-                    ->select(
-                        's.deptcode AS srcdept',
-                        's.itemcode AS itemcode',
-                        's.uomcode AS uomcode',
-                        'p.description AS desc',
-                        'p.currprice AS unitcost',
-                        'e.balqty AS thyqty',
-                        'e.expdate AS expdate',
-                        'e.batchno AS batchno'
-                    )
-                    ->join('material.product as p', function($join) use ($request){
-                                $join = $join->on('p.itemcode', '=', 's.itemcode')
-                                    ->on('p.compcode', '=', 's.compcode');
-                    })
-                    ->join('material.stockexp as e', function($join) use ($request){
-                        $join = $join->on('e.itemcode', '=', 's.itemcode')
-                            ->on('e.compcode', '=', 's.compcode');
-                    })
-                    ->where('s.compcode',session('compcode'))
-                    ->where('s.deptcode', $request->srcdept)
-                    ->whereBetween('s.itemcode', [$request->itemcodefrom, $request->itemcodeto])
-                    ->get();
-
-        // $return_array=[];
-        // $got_array=[];
-        // if($phycntdt->exists()){
-        //     foreach ($phycntdt->get() as $obj_phycntdt) {
-        //         if(!in_array($obj_phycntdt->itemcode,$got_array)){
-                  
-        //                 $obj_phycntdt->itemfrom &&  $obj_phycntdt->itemto = $phycntdt->itemcode;
-        //                 $obj_phycntdt->srcdept = $phycntdt->srcdept;
-        //                 $obj_phycntdt->idno = $phycntdt->idno;
-        //                 $obj_phycntdt->uomcode = $phycntdt->uomcode;
-        //                 $obj_phycntdt->currprice = $phycntdt->unitcost;
-        //                 $obj_phycntdt->balqty = $phycntdt->thyqty;
-        //                 $obj_phycntdt->batchno = $phycntdt->batchno;
-        //                 $obj_phycntdt->expdate = $phycntdt->expdate;
-
-        //                 if(!in_array($obj_phycntdt, $return_array)){
-        //                     array_push($return_array,$obj_phycntdt);
-        //                 }
-                 
-        //         }
-        //     }
-        // }else{
-        //     $return_array = $phycntdt->get();
-        // }
-
-        $responce = new stdClass();
-        // $responce->rows = $return_array;
-
-        return json_encode($responce);
-
-    }
-
-    // public function get_dtl_itemcode(Request $request){
-        
-    //     $phycntdt = DB::table('material.stockloc as s')
-    //         ->select(
-    //             's.deptcode AS srcdept',
-    //             's.itemcode AS itemcode',
-    //             's.uomcode AS uomcode',
-    //             'p.description AS desc',
-    //             'p.currprice AS unitcost',
-    //             'e.balqty AS thyqty',
-    //             'e.expdate AS expdate',
-    //             'e.batchno AS batchno'
-    //         )
-    //         ->join('material.product as p', function($join) use ($request){
-    //                     $join = $join->on('p.itemcode', '=', 's.itemcode')
-    //                         ->on('p.compcode', '=', 's.compcode');
-    //         })
-    //         ->join('material.stockexp as e', function($join) use ($request){
-    //             $join = $join->on('e.itemcode', '=', 's.itemcode')
-    //                 ->on('e.compcode', '=', 's.compcode');
-    //         })
-    //         ->where('s.compcode',session('compcode'))
-    //         ->where('s.deptcode', $request->srcdept)
-    //         ->whereBetween('s.itemcode', [$request->itemcodefrom, $request->itemcodeto]);
-
-    //         $return_array=[];
-    //         $got_array=[];
-    //         if($phycntdt->exists()){
-    //             foreach ($phycnthd->get() as $obj_phycnthd) {
-    //                 foreach ($phycntdt->get() as $obj_phycntdt) {
-    //                     if(!in_array($obj_phycnthd->idno,$got_array)){
-    //                         if(
-    //                             $phycntdt->srcdept == $obj_phycnthd->srcdept
-    //                             && $phycntdt->itemcode == $obj_phycnthd->itemfrom
-    //                             && $phycntdt->itemcode == $obj_phycnthd->itemto
-    //                         ){
-    //                             $obj_phycnthd->itemfrom &&  $obj_phycnthd->itemto = $phycntdt->itemcode;
-    //                             $obj_phycnthd->recno = $phycntdt->recno;
-    //                             $obj_phycnthd->lineno_ = $phycntdt->lineno_;
-    //                             $obj_phycnthd->idno = $phycntdt->idno;
-    
-    //                             if(!in_array($obj_phycnthd, $return_array)){
-    //                                 array_push($return_array,$obj_phycnthd);
-    //                             }
-    //                             array_push($got_array,$obj_phycnthd->idno);
-    //                         }else{
-    //                             // $obj_phycnthd->refamount = $obj_phycnthd->outamount;
-    //                             // if(!in_array($obj_phycnthd, $return_array)){
-    //                             //     array_push($return_array,$obj_phycnthd);
-    //                             // }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }else{
-    //             $return_array = $phycnthd->get();
-    //         }
-    
-    //         $responce = new stdClass();
-    //         $responce->rows = $return_array;
-    
-    //         return json_encode($responce);
-        
-    // }
 
     public function get_table_range(Request $request){
         

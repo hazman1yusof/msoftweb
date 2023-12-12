@@ -74,6 +74,7 @@ class StocklocController extends defaultController
                     'uomcode' => $request->uomcode,
                     'year' => $request->year,
                     'stocktxntype' => $request->stocktxntype,
+                    'frozen' => $request->frozen,
                     'disptype' => $request->disptype,
                     'minqty' => $request->minqty,
                     'maxqty' => $request->maxqty,

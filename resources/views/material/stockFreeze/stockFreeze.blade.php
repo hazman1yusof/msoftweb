@@ -133,8 +133,8 @@ i.fa {
 
 		 <div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-				<b>DOCUMENT NO: </b><span id="trantype_show"></span> - <span id="docno_show"></span><br>
-				<b>DEPARTMENT: </b><span id="txndept_show"></span>
+				<b>DOCUMENT NO: </b><span id="docno_show"></span><br>
+				<b>DEPARTMENT: </b><span id="srcdept_show"></span>
 
 				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -236,31 +236,31 @@ i.fa {
 										<!-- value="{{Carbon\Carbon::now()->format('d-m-Y')}}"  -->
                                     </div>
 
-                                    <div class="col-md-3 minuspad-13">
+									<div class="col-md-3 minuspad-13">
                                         <label class="control-label" for="frztime">Freeze Time</label>
-                                        <input id="frztime" name="frztime" type="text" maxlength="30" class="form-control input-sm" rdonly>
+                                        <input id="frztime" name="frztime" type="time" maxlength="30" class="form-control input-sm" rdonly>
 										<!-- value='{{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format("h:i A")}}' -->
                                     </div>
 
-                                    <div class="col-md-3 minuspad-13">
+									<div class="col-md-3 minuspad-13">
                                         <label class="control-label" for="respersonid">Freeze User</label>  
                                         <input id="respersonid" name="respersonid" type="text" maxlength="30" class="form-control input-sm" rdonly>
 										<!-- value="{{Session::get('username')}}"  -->
                                     </div>
 
-                                    <div class="col-md-3 minuspad-13">
+									<div class="col-md-3 minuspad-13">
                                         <label class="control-label" for="upduser">Posted By</label>
                                         <input id="upduser" name="upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
                                     </div>
 
-                                    <div class="col-md-3 minuspad-13">
-                                        <label class="control-label" for="phycntdate">Phy. Count date</label>
+									<div class="col-md-3 minuspad-13">
+                                        <label class="control-label" for="phycntdate">Phy. Count Date</label>
                                         <input id="phycntdate" name="phycntdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
                                     </div>
-								
+
                                     <div class="col-md-3 minuspad-13">
                                         <label class="control-label" for="phycnttime">Phy. Count Time</label>
-                                        <input id="phycnttime" name="phycnttime" type="text" maxlength="30" class="form-control input-sm" rdonly>
+                                        <input id="phycnttime" name="phycnttime" type="time" maxlength="30" class="form-control input-sm" rdonly>
                                     </div>
 
                                     <div class="col-md-3 minuspad-13">
@@ -283,9 +283,6 @@ i.fa {
 				<div class="panel-heading">Stock Freeze Detail</div>
 					<div class="panel-body">
 						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactoruomcodetrdept" name="convfactoruomcodetrdept" type="hidden" value='1'>
-							<input id="convfactoruomcoderecv" name="convfactoruomcoderecv" type="hidden" value='1'> -->
 
 							<div id="jqGrid2_c" class='col-md-12'>
 								<table id="jqGrid2" class="table table-striped"></table>

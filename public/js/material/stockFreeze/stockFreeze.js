@@ -30,10 +30,6 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 	var myfail_msg = new fail_msg_func();
 
-	///////////////////////////////// trandate check date validate from period////////////
-	var itemcodeObj = new setactdate(["#frzdate"]);
-	itemcodeObj.getdata().set();
-
 	////////////////////////////////////start dialog/////////////////////////////////////
 	var oper;
 	var unsaved = false;
@@ -55,14 +51,12 @@ $(document).ready(function () {
 				case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#pg_jqGridPager2 table").show();
-					hideatdialogForm(true);
 					enableForm('#formdata');
 					rdonly('#formdata');
 					break;
 				case state = 'edit':
-					$("#pg_jqGridPager2 table").show();
-					hideatdialogForm(true);
-					enableForm('#formdata');
+					$("#pg_jqGridPager2 table").hide();
+					disableForm('#formdata');
 					rdonly('#formdata');
 					break;
 				case state = 'view':
@@ -150,9 +144,9 @@ $(document).ready(function () {
 			{ label: 'Document No', name: 'docno', width: 20, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Item From', name: 'itemfrom', width: 30, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Item To', name: 'itemto', width: 30, classes: 'wrap text-uppercase', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Freezed Date', name: 'frzdate', width: 20, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Freezed Time', name: 'frztime', width: 20, classes: 'wrap', formatter: timeFormatter, unformat: timeUNFormatter},
-			{ label: 'Phy. Count Date', name: 'phycntdate', width: 20, align: 'right', classes: 'wrap', formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Freezed Date', name: 'frzdate', width: 20, classes: 'wrap', canSearch: true, },
+			{ label: 'Freezed Time', name: 'frztime', width: 20, classes: 'wrap', },
+			{ label: 'Phy. Count Date', name: 'phycntdate', width: 20, align: 'right', classes: 'wrap'},
             { label: 'Created By', name: 'adduser', width: 20},
             { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap'},	
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox },
@@ -160,10 +154,11 @@ $(document).ready(function () {
             { label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upddate', name: 'upddate', width: 90, hidden:true, classes: 'wrap'},
-			// { label: 'source', name: 'source', width: 40, hidden:'true'},
 			{ label: 'idno', name: 'idno', width: 90, hidden:true},
             { label: 'rackno', name: 'rackno', width: 90, hidden:true},
             { label: 'phycnttime', name: 'phycnttime', width: 90, hidden:true},
+			{ label: 'respersonid', name: 'respersonid', width: 90, hidden:true},
+
 		],
 		autowidth:true,
 		multiSort: true,
@@ -181,8 +176,7 @@ $(document).ready(function () {
 			
 			populate_form(selrowData("#jqGrid"));
 
-			$('#txndeptdepan').text(selrowData("#jqGrid").txndept);//tukar kat depan tu
-			$('#trantypedepan').text(selrowData("#jqGrid").trantype);
+			$('#txndeptdepan').text(selrowData("#jqGrid").srcdept);//tukar kat depan tu
 			$('#docnodepan').text(selrowData("#jqGrid").docno);
 
 
@@ -277,21 +271,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
 	refreshGrid('#jqGrid',urlParam);
-	addParamField('#jqGrid',false,saveParam,['upddate','upduser','adduser','adddate','idno','docno','recno','compcode','recstatus','Checkbox']);
-
-	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
-	function hideatdialogForm(hide,saveallrow){
-		if(saveallrow == 'saveallrow'){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
-			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
-		}else if(hide){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
-			$("#saveDetailLabel").show();
-		}else{
-			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
-		}
-	}
+	addParamField('#jqGrid',false,saveParam,['upddate','upduser','adduser','adddate','idno','docno','recno','compcode','recstatus','Checkbox', 'frzdate', 'frztime', 'respersonid']);
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
@@ -335,9 +315,8 @@ $(document).ready(function () {
 			dialog_itemcodeto.on();
 
 		}).done(function (data) {
-			hideatdialogForm(false);
 			
-			addmore_jqgrid2.state = true;
+			addmore_jqgrid2.state = false;
 			
 			if(selfoper=='add'){
 
@@ -347,7 +326,9 @@ $(document).ready(function () {
 				$('#idno').val(data.idno);//just save idno for edit later
 				$('#adduser').val(data.adduser);
 				$('#adddate').val(data.adddate);
-				
+				$('#frzdate').val(data.frzdate);
+				$('#frztime').val(data.frztime);
+				$('#respersonid').val(data.respersonid);
 				urlParam2.filterVal[0] = data.recno; 
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
@@ -399,32 +380,6 @@ $(document).ready(function () {
 			$('#recnodepan').text("");//tukar kat depan tu
 			$('#prdeptdepan').text("");
 			refreshGrid("#jqGrid3",null,"kosongkan");
-		});
-	}
-
-	///////////////////////////populate data for dropdown tran dept/////////////////////////////
-	trandept();
-	function trandept(){
-		var param={
-			action:'get_value_default',
-			url: 'util/get_value_default',
-			field:['deptcode'],
-			table_name:'sysdb.department',
-			filterCol:['storedept'],
-			filterVal:['1']
-		}
-		$.get( param.url+"?"+$.param(param), function( data ) {
-			
-		},'json').done(function(data) {
-			if(!$.isEmptyObject(data)){
-				$.each(data.rows, function(index, value ) {
-					if(value.deptcode.toUpperCase()== $("#deptcode").val().toUpperCase()){
-						$( "#searchForm [id=trandept]" ).append("<option selected value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}else{
-						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
-					}
-				});
-			}
 		});
 	}
 
@@ -584,46 +539,9 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(){
-			// if(addmore_jqgrid2.edit == true){
-			// var linenotoedit_new = parseInt(linenotoedit)+1;
-			// 	if($.inArray(String(linenotoedit_new),$('#jqGrid2').jqGrid ('getDataIDs')) != -1){
-			// 		$('#jqGrid2').jqGrid ('setSelection', String(linenotoedit_new));
-			// 		$('#jqGrid2_iledit').click();
-			// 	}
-			// }
-			// else if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
-			// else if(addmore_jqgrid2.state == true && $('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-			// 	$('#jqGrid2_iladd').click();
-			// }else{
-			// 	$('#jqGrid2').jqGrid ('setSelection', "1");
-			// }
-
-			// addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
-			// calc_jq_height_onchange("jqGrid2");
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
-			// $( "#jqGrid2_ilcancel" ).off();
-			// $( "#jqGrid2_ilcancel" ).on( "click", function(event) {
-			// 	event.preventDefault();
-			// 	event.stopPropagation();
-			// 	bootbox.confirm({
-			// 	    message: "Are you sure want to cancel?",
-			// 	    buttons: {
-			// 	        confirm: { label: 'Yes',className: 'btn-success'},
-			// 	        cancel: {label: 'No',className: 'btn-danger'}
-			// 		},
-			// 		callback: function (result) {
-			// 			if (result == true) {
-			// 				$(".noti").empty();
-			// 				$("#jqGrid2").jqGrid("clearGridData", true);
-			// 				refreshGrid("#jqGrid2",urlParam2);
-			// 			}
-			// 			linenotoedit = null;
-			// 	    }
-			// 	});
-			// });
-
 			unsaved = false;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			var result = ids.filter(function(text){
@@ -642,278 +560,13 @@ $(document).ready(function () {
 
 	addParamField('#jqGrid2',false,urlParam2,['vrqty']);
 
-	//////////////////////////////////////////myEditOptions/////////////////////////////////////////////
-	var myEditOptions = {
-		keys: true,
-		extraparam:{
-		    "_token": $("#_token").val()
-        },
-		oneditfunc: function (rowid) {
-			myfail_msg.clear_fail();
-			calc_jq_height_onchange("jqGrid2");
-			errorField.length=0;
-        	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
-
-			mycurrency2.array.length = 0;
-			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitcost']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='thyqty']", "#jqGrid2 input[name='phyqty']"]);
-			
-			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
-	
-			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
-
-			$("input[name='batchno']").keydown(function(e) {//when click tab at qtyrequest, auto save
-				var code = e.keyCode || e.which;
-				if (code == '9')$('#jqGrid2_ilsave').click();
-				// addmore_jqgrid2.state = true;
-				// $('#jqGrid2_ilsave').click();
-			});
-
-		},
-		aftersavefunc: function (rowid, response, options) {
-			myfail_msg.clear_fail();
-			var resobj = JSON.parse(response.responseText);
-			$('#recno').val(resobj.recno);
-			$('#docno').val(resobj.docno);
-			$('#amount').val(resobj.totalAmount);
-			// $('#totamount').val(response.responseText);
-			// $('#subamount').val(response.responseText);
-			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
-	    	//state true maksudnyer ada isi, tak kosong
-			urlParam2.filterVal[0] = resobj.recno;
-			refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
-			errorField.length=0;
-		},
-		errorfunc: function(rowid,response){
-			errorField.length=0;
-        	// alert(response.responseText);
-        	myfail_msg.add_fail({
-				id:'response',
-				textfld:"",
-				msg:response.responseText,
-			});
-        	refreshGrid('#jqGrid2',urlParam2,'add');
-	    	$("#jqGridPager2Delete").show();
-        },
-		beforeSaveRow: function (options, rowid) {
-        	if(errorField.length>0)return false;
-			mycurrency2.formatOff();
-			mycurrency_np.formatOff();
-
-			// if(parseInt($('#jqGrid2 input[name="qtyrequest"]').val()) <= 0)return false;
-
-			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
-
-			let editurl = "./inventoryTransactionDetail/form?"+
-				$.param({					
-					action: 'invTranDetail_save',
-					idno: $('#idno').val(),
-					docno:$('#docno').val(),
-					recno:$('#recno').val(),
-					sndrcv:$('#sndrcv').val(),
-					txndept:$('#txndept').val(),
-					trandate:$('#trandate').val(),
-					trantype:$('#trantype').val(),
-					lineno_:data.lineno_,
-					amount:data.amount,
-				});
-			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
-		},
-		 afterrestorefunc : function( response ) {
-			errorField.length=0;
-			delay(function(){
-				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-			}, 500 );
-			hideatdialogForm(false);
-	    },
-	    errorTextFormat: function (data) {
-	    	alert(data);
-	    }
-	};
-
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
-		add:true,
-		edit:true,
-		cancel: true,
+		add:false,
+		edit:false,
+		cancel: false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
-		addParams: { 
-			addRowParams: myEditOptions
-		},
-		editParams: myEditOptions
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2Delete",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-trash",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			selRowId = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
-			if(!selRowId){
-				bootbox.alert('Please select row');
-			}else{
-				bootbox.confirm({
-				    message: "Are you sure you want to delete this row?",
-				    buttons: {confirm: {label: 'Yes', className: 'btn-success',},cancel: {label: 'No', className: 'btn-danger' }
-				    },
-				    callback: function (result) {
-				    	if(result == true){
-				    		param={
-				    			action: 'stockFreezeDetail_save',
-								recno: $('#recno').val(),
-								lineno_: selrowData('#jqGrid2').lineno_,
-				    		}
-				    		$.post( "./stockFreezeDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()}, function( data ){
-							}).fail(function(data) {
-								//////////////////errorText(dialog,data.responseText);
-							}).done(function(data){
-								// $('#amount').val(data);
-								refreshGrid("#jqGrid2",urlParam2);
-							});
-
-						}else{
-        					$("#jqGridPager2EditAll").show();
-				    	}
-				    	
-				    }
-				});
-			}
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2EditAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-th-list",
-		title:"Edit All Row",
-		onClickButton: function(){
-			errorField.length=0;
-			mycurrency2.array.length = 0;
-			mycurrency_np.array.length = 0;
-			// var ids = $("#jqGrid2").jqGrid('getDataIDs');
-		    // for (var i = 0; i < ids.length; i++) {
-
-		    //     $("#jqGrid2").jqGrid('editRow',ids[i]);
-
-		    //     Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amount"]);
-
-		    //     dialog_itemcode.id_optid = ids[i];
-		    //     dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
-		    //     	function(self){
-		    //     		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			//         }
-			//     );
-
-			// 	dialog_expdate.id_optid = ids[i];
-		    //     dialog_expdate.check('errorField',ids[i]+"_expdate","jqGrid2",null,
-		    //     	function(self){
-		    //     		if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			//         }
-			//     );
-
-		    //     dialog_uomcoderecv.id_optid = ids[i];
-		    //     dialog_uomcoderecv.check(errorField,ids[i]+"_uomcoderecv","jqGrid2",null,
-		    //     	function(self){
-			//         	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			//         }
-			//     );
-
-			// 	dialog_uomcodetrdept.id_optid = ids[i];
-		    //     dialog_uomcodetrdept.check(errorField,ids[i]+"_uomcode","jqGrid2",null,
-		    //     	function(self){
-			//         	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-			//         }
-			//     );
-
-		    //    // cari_gstpercent(ids[i]);
-		    // }
-		    onall_editfunc();
-			hideatdialogForm(true,'saveallrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2SaveAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-download-alt",
-		title:"Save All Row",
-		onClickButton: function(){
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-
-			var jqgrid2_data = [];
-			mycurrency2.formatOff();
-			mycurrency_np.formatOff();
-
-			if(errorField.length>0){
-				return false;
-			}
-
-		    for (var i = 0; i < ids.length; i++) {
-			//	if(parseInt($('#'+ids[i]+"_qtyrequest").val()) <= 0)return false;
-				var data = $('#jqGrid2').jqGrid('getRowData',ids[i]);
-				let retval = check_cust_rules("#jqGrid2",data);
-				if(retval[0]!= true){
-					alert(retval[1]);
-					return false;
-				}
-
-				// cust_rules()
-
-		    	var obj = 
-		    	{
-		    		'lineno_' : data.lineno_,
-		    		'itemcode' : $("#jqGrid2 input#"+ids[i]+"_itemcode").val(),
-		    		'uomcode' : $("#jqGrid2 input#"+ids[i]+"_uomcode").val(),
-		    		'uomcoderecv' : $("#jqGrid2 input#"+ids[i]+"_uomcoderecv").val(),
-		    		'netprice' : $('#'+ids[i]+"_netprice").val(),
-		    		'qtyonhand' : $('#'+ids[i]+"_qtyonhand").val(),
-		    		'qtyonhandrecv' : $('#'+ids[i]+"_qtyonhandrecv").val(),
-		    		'txnqty' : $('#'+ids[i]+"_txnqty").val(),
-                    'unit' : $("#"+ids[i]+"_unit").val(),
-		    		'amount' : $('#'+ids[i]+"_amount").val(),
-		    		'batchno' : $('#'+ids[i]+"_batchno").val(),
-		    		'expdate' : $('#'+ids[i]+"_expdate").val(),
-
-		    	}
-
-		    	jqgrid2_data.push(obj);
-		    }
-
-			var param={
-    			action: 'invTranDetail_save',
-				_token: $("#_token").val(),
-				recno: $('#recno').val(),
-				docno:$('#docno').val(),
-				sndrcv:$('#sndrcv').val(),
-				txndept:$('#txndept').val(),
-				trandate:$('#trandate').val(),
-				
-    		}
-
-    		$.post( "./stockFreezeDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
-			}).fail(function(data) {
-				alert(dialog,data.responseText);
-			}).done(function(data){
-				// $('#totamount').val(data);
-				// $('#subamount').val(data);
-				mycurrency.formatOn();
-				hideatdialogForm(false);
-				refreshGrid("#jqGrid2",urlParam2);
-			});
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "jqGridPager2CancelAll",
-		caption:"",cursor: "pointer",position: "last", 
-		buttonicon:"glyphicon glyphicon-remove-circle",
-		title:"Cancel",
-		onClickButton: function(){
-			hideatdialogForm(false);
-			refreshGrid("#jqGrid2",urlParam2);
-		},				
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "saveHeaderLabel",
-		caption:"Header",cursor: "pointer",position: "last", 
-		buttonicon:"",
-		title:"Header"
 	}).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "saveDetailLabel",
 		caption:"Save",cursor: "pointer",position: "last", 
@@ -999,7 +652,6 @@ $(document).ready(function () {
 			dialog_itemcodeto.off();
 
 			saveHeader("#formdata",oper,saveParam);
-			//generate_stock_freeze();
 			unsaved = false;
 		}else{
 			mycurrency.formatOn();
@@ -1023,111 +675,8 @@ $(document).ready(function () {
 		if(callback!=null)callback();
 	}
 
-	//////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////
-	$("#saveHeaderLabel").click(function(){
-		emptyFormdata(errorField,'#formdata2');
-		hideatdialogForm(true);
-		dialog_srcdept.on();
-		dialog_itemcodefrom.on();
-		dialog_itemcodeto.on();
-
-		enableForm('#formdata');
-		rdonly('#formdata');
-		$(".noti").empty();
-		refreshGrid("#jqGrid2",urlParam2);
-		errorField.length=0;
-	});
-
-
-	////////////////////////////// jqGrid2_iladd + jqGrid2_iledit /////////////////////////////
-	// $("#jqGrid2_iladd, #jqGrid2_iledit").click(function(){
-	// 	$("#jqGridPager2Delete,#saveHeaderLabel").hide();
-	// 	dialog_itemcode.on();//start binding event on jqgrid2
-	// 	expdate_stat($('#isstype').val(),$('#crdbfl').val());
-	// 	$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
-	// 	$("#jqGrid2 input[name='qtyonhandrecv']").on('blur',calculate_conversion_factor);
-	// 	$("#jqGrid2 input[name='qtyonhand']").on('blur',checkQOH);
-	// 	$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
-	// 		var code = e.keyCode || e.which;
-	// 		if (code == '9')$('#jqGrid2_ilsave').click();
-	// 	});
-	// });
-
-	/////////////calculate conv fac/////////////////////////////////
-	 function calculate_conversion_factor(event) {
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
-
-		var id="#jqGrid2 #"+id_optid+"_qtyonhand";
-		var fail_msg = "Please Choose Suitable UOMCode & POUOMCode";
-		var name = "calculate_conversion_factor";
-
-		let convfactor_bool = false;
-		let convfactor_uomcodetrdept = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcodetrdept").val());
-		let convfactor_uomcoderecv = parseFloat($("#jqGrid2 #"+id_optid+"_convfactoruomcoderecv").val());
-		let qtyonhand = parseFloat($("#jqGrid2 #"+id_optid+"_qtyonhand").val());
-
-		var balconv = convfactor_uomcodetrdept*qtyonhand%convfactor_uomcoderecv;
-		if (balconv  == 0) {
-			if($.inArray(id,errorField)!==-1){
-				errorField.splice($.inArray(id,errorField), 1);
-			}
-			$('.noti').find("li[data-errorid='"+name+"']").detach();
-		} else {
-			$('.noti').prepend("<li data-errorid='"+name+"'>"+fail_msg+"</li>");
-			if($.inArray(id,errorField)===-1){
-				errorField.push( id );
-			}
-		}
-	}
-
-	////////////////////////////////////////calculate amount////////////////////////////
-	function calculate_amount_and_other(event){
-
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
-
-		var fail=false,fail_msg="";
-		let qtyonhand=parseInt($("#jqGrid2 #"+id_optid+"_qtyonhand").val());
-		let txnqty=parseInt($("#jqGrid2 #"+id_optid+"_txnqty").val());
-		let netprice=parseFloat($("#jqGrid2 #"+id_optid+"_netprice").val());
-
-		let crdbfl=$('#crdbfl').val();
-		let isstype=$('#isstype').val();
-		if(event.target.name=='txnqty'){
-			switch(crdbfl){
-				case "Out":
-					if(event.target.value >= qtyonhand && isstype=='Others'){
-						fail_msg = "Transaction Quantity Cannot be greater than Quantity On Hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}else if(qtyonhand<event.target.value){
-						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}else if(qtyonhand<event.target.value && isstype=='Transfer'){
-						fail_msg = "Transaction quantity exceed quantity on hand";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}
-					break;
-				case "In":
-					if(event.target.name == 0 && isstype=='Others'){
-						fail_msg = "Transaction Quantity Cannot Be Zero";
-						event.target.value=$("#jqGrid2 #"+id_optid+"_txnqty").val();fail=true;
-					}
-					break;
-				default:
-					break;
-			}
-		}else{
-			if(crdbfl=='Out'&&event.target.value==0){
-				fail_msg = "Net Price Cannot Be Zero";
-				event.target.value='0.00';fail=true;
-			}
-		}
-		errorIt(event.target.name,errorField,fail,fail_msg);
-		let amount=txnqty*netprice;
-		$("#jqGrid2 #"+id_optid+"_amount").val(amount.toFixed(4));
-	}
-
+	////////////////////////////////////////remove_noti////////////////////////////
+	
 	function remove_noti(event){
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
@@ -1142,26 +691,6 @@ $(document).ready(function () {
 		$(".noti").empty();
 
 	}
-
-	/////////////////////////////edit all//////////////////////////////////////////////////
-
-	// function onall_editfunc(){
-	
-	// 	errorField.length=0;
-	// 	//start binding event on jqgrid2
-	// 	dialog_itemcode.on();
-	// 	dialog_expdate.on();
-	// 	dialog_uomcoderecv.on();
-	// 	dialog_uomcodetrdept.on();
-		
-	// 	mycurrency2.formatOnBlur();//make field to currency on leave cursor
-	// 	mycurrency_np.formatOnBlur();//make field to currency on leave cursor
-
-
-	// 	$("#jqGrid2 input[name='txnqty'],#jqGrid2 input[name='netprice']").on('blur',errorField,calculate_amount_and_other);
-	
-	// 	// $("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='uomcoderecv'],#jqGrid2 input[name='itemcode']").on('focus',remove_noti);
-	// }
 
 	////////////////////////////////////////calculate_line_totgst_and_totamt////////////////////////////
 	var mycurrency2 =new currencymode([]);
@@ -1256,67 +785,7 @@ $(document).ready(function () {
 				join_filterVal:[['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']],
 			},
 			ondblClickRow: function () {
-				// $("#jqGrid2").jqGrid("clearGridData", true);
-
-				// // let itemcodefrom = $('#itemfrom').val();
-				// // let itemcodeto = $('#itemto').val();
-
-				// let data=selrowData('#'+dialog_itemcodefrom.gridname);
-				// 	$("#jqGrid2 input[name='itemcode']").val(data['itemcode']);
-				// 	$("#jqGrid2 input[name='uomcode']").val(data['uomcode']); 
-				// 	$("#jqGrid2 input[name='unitcost']").val(data['currprice']);
-				// 	$("#jqGrid2 input[name='thyqty']").val(data['balqty']);
-				// 	$("#jqGrid2 input[name='batchno']").val(data['batchno']);
-				// 	$("#jqGrid2 input[name='expdate']").val(data['expdate']);
-
-				// var urlParam_ = {
-				// 	action: 'get_value_default',
-				// 	url: 'util/get_value_default',
-				// 	field:['s.deptcode', 's.itemcode', 's.uomcode', 'p.description', 'p.currprice', 'e.balqty','e.expdate', 'e.batchno'],
-				// 	table_name:['material.stockloc AS s', 'material.product AS p', 'material.stockexp AS e'],
-				// 	join_type:['LEFT JOIN', 'LEFT JOIN'],
-				// 	join_onCol:['s.itemcode', 's.itemcode'],
-				// 	join_onVal:['p.itemcode', 'e.itemcode'],
-				// 	filterCol:['s.compcode', 's.deptcode', 's.year', 's.itemcode'],
-				// 	filterVal:['session.compcode',$('#srcdept').val(), moment($('#s_itemcode').val()).year(), moment($('#s_itemcode').val()).isBetween($('#itemfrom').val(), $('#itemto').val(), null, [])],
-				// 	table_id: 'idno',
-				// 	// srcdept:$('#srcdept').val(),
-				// 	// itemcodefrom:$('#itemfrom').val(),
-				// 	// itemcodeto:$('#itemto').val(),
-				// };
-
-				// $.get("util/get_value_default?" + $.param(urlParam_), function (data) {
-				// }, 'json').done(function (data) {
-				// 	if (!$.isEmptyObject(data.rows)) {
-				// 		// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
-
-				// 		data.rows.forEach(function(elem) {
-				// 			$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-				// 				{	
-				// 					idno:elem['idno'],
-				// 					itemcode:elem['itemcode'],
-				// 					uomcode:elem['uomcode'],
-				// 					unitcost:elem['currprice'],
-				// 					thyqty:elem['balqty'],
-				// 					phyqty:0,
-				// 					vrqty:parseFloat(elem['thyqty']) - parseFloat(elem['phyqty']),
-				// 					batchno:elem['batchno'],
-				// 					expdate:elem['expdate'],
-								
-				// 				}
-				// 			);
-				// 		});
-
-				// 		// var ids = $("#jqGrid2").jqGrid('getDataIDs');
-				// 		// for (var i = 0; i < ids.length; i++) {
-				// 		// 	var rowdata = $("#jqGrid2").jqGrid('getRowData',ids[i]);
-							
-				// 		// 	$("#jqGrid2").jqGrid('editRow',ids[i]);
-				// 		// }
-
-				// 	} else {
-				// 	}
-				// });
+	
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1377,64 +846,7 @@ $(document).ready(function () {
 				let itemfrom = $('#itemfrom').val();
 				let itemto = $('#itemto').val();
 
-				// let data=selrowData('#'+dialog_itemcodeto.gridname);
-				// 	$("#jqGrid2 input[name='itemcode']").val(data['itemcode']);
-				// 	$("#jqGrid2 input[name='uomcode']").val(data['uomcode']); 
-				// 	$("#jqGrid2 input[name='unitcost']").val(data['currprice']);
-				// 	$("#jqGrid2 input[name='thyqty']").val(data['balqty']);
-				// 	$("#jqGrid2 input[name='batchno']").val(data['batchno']);
-				// 	$("#jqGrid2 input[name='expdate']").val(data['expdate']);
-
-				// var urlParam_ = {
-				// 	action: 'get_value_default',
-				// 	url: 'util/get_value_default',
-				// 	field:['s.deptcode', 's.itemcode', 's.uomcode', 'p.description', 'p.currprice', 'e.balqty','e.expdate', 'e.batchno'],
-				// 	table_name:['material.stockloc AS s', 'material.product AS p', 'material.stockexp AS e'],
-				// 	join_type:['LEFT JOIN', 'LEFT JOIN'],
-				// 	join_onCol:['s.itemcode', 's.itemcode'],
-				// 	join_onVal:['p.itemcode', 'e.itemcode'],
-				// 	filterCol:['s.compcode', 's.deptcode', 's.year'],
-				// 	filterVal:['session.compcode',$('#srcdept').val(), moment($('#s_itemcode').val()).year()],
-				// 	WhereInCol: ['s.itemcode'],
-				// 	WhereInVal: [moment($('#s_itemcode').val()).isBetween($('#itemfrom').val(), $('#itemto').val(), null, [])],
-				// 	table_id: 'idno',
-				// 	srcdept:$('#srcdept').val(),
-				// 	itemcodefrom:$('#itemfrom').val(),
-				// 	itemcodeto:$('#itemto').val(),
-				// };
-
-				// $.get("util/get_value_default?" + $.param(urlParam_), function (data) {
-				// }, 'json').done(function (data) {
-				// 	if (!$.isEmptyObject(data.rows)) {
-				// 		// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
-
-				// 		data.rows.forEach(function(elem) {
-				// 			$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-				// 				{	
-				// 					idno:elem['idno'],
-				// 					itemcode:elem['itemcode'],
-				// 					uomcode:elem['uomcode'],
-				// 					unitcost:elem['currprice'],
-				// 					thyqty:elem['balqty'],
-				// 					phyqty:0,
-				// 					vrqty:parseFloat(elem['thyqty']) - parseFloat(elem['phyqty']),
-				// 					batchno:elem['batchno'],
-				// 					expdate:elem['expdate'],
-								
-				// 				}
-				// 			);
-				// 		});
-
-				// 		// var ids = $("#jqGrid2").jqGrid('getDataIDs');
-				// 		// for (var i = 0; i < ids.length; i++) {
-				// 		// 	var rowdata = $("#jqGrid2").jqGrid('getRowData',ids[i]);
-							
-				// 		// 	$("#jqGrid2").jqGrid('editRow',ids[i]);
-				// 		// }
-
-				// 	} else {
-				// 	}
-				// });
+			
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -1535,17 +947,13 @@ $(document).ready(function () {
 
 function populate_form(obj){
 	//panel header
-	$('#txndept_show').text(obj.txndept);
-	$('#trantype_show').text(obj.trantype);
+	$('#srcdept_show').text(obj.srcdept);
 	$('#docno_show').text(padzero(obj.docno));
-	
 }
 
 function empty_form(){
-	$('#txndept_show').text('');
-	$('#trantype_show').text('');
+	$('#srcdept_show').text('');
 	$('#docno_show').text('');
-
 }
 
 function calc_jq_height_onchange(jqgrid){
@@ -1602,62 +1010,6 @@ function fail_msg_func(fail_msg_div=null){
 			$(self.fail_msg_div).append("<li>"+e.msg+"</li>");
 		});
 	}
-}
-
-function generate_stock_freeze(){
-	// $("#jqGrid2").jqGrid("clearGridData", true);
-
-	let $itemfrom = $('#itemfrom').val();
-	let $itemto = $('#itemto').val();
-
-	var urlParam_ = {
-		action: 'get_dtl_itemcode',
-		url: 'stockFreeze/table',
-		field:['s.deptcode', 's.itemcode', 's.uomcode', 'p.description', 'p.currprice', 'e.balqty','e.expdate', 'e.batchno'],
-		table_name:['material.stockloc AS s', 'material.product AS p', 'material.stockexp AS e'],		
-		join_type:['LEFT JOIN', 'LEFT JOIN',],
-		join_onCol:['s.itemcode', 's.itemcode'],
-		join_onVal:['p.itemcode', 'e.itemcode'],
-		filterCol:['s.compcode', 's.deptcode', 's.year', 's.itemcode'],
-		filterVal:['session.compcode',$('#srcdept').val(), moment($('#s_itemcode').val()).year(), moment($('#s_itemcode').val()).isBetween($('#itemfrom').val(), $('#itemto').val(), null, [])],
-		table_id: 'idno',
-		// srcdept:$('#srcdept').val(),
-		// itemcodefrom:$('#itemfrom').val(),
-		// itemcodeto:$('#itemto').val(),
-	};
-
-	$.get("./stockFreeze/table?" + $.param(urlParam_), function (data) {
-	}, 'json').done(function (data) {
-		if (!$.isEmptyObject(data.rows)) {
-			// myerrorIt_only2($("#apacthdr_suppcode").val(),false);
-
-			data.rows.forEach(function(elem) {
-				$("#jqGrid2").jqGrid('addRowData', elem['idno'] ,
-					{	
-						idno:elem['idno'],
-						itemcode:elem['itemcode'],
-						uomcode:elem['uomcode'],
-						unitcost:elem['currprice'],
-						thyqty:elem['balqty'],
-						phyqty:0,
-						vrqty:parseFloat(elem['thyqty']) - parseFloat(elem['phyqty']),
-						batchno:elem['batchno'],
-						expdate:elem['expdate'],
-					
-					}
-				);
-			});
-
-			var ids = $("#jqGrid2").jqGrid('getDataIDs');
-			for (var i = 0; i < ids.length; i++) {
-				var rowdata = $("#jqGrid2").jqGrid('getRowData',ids[i]);
-				
-			// 	$("#jqGrid2").jqGrid('editRow',ids[i]);
-			}
-
-		} else {
-		}
-	});
 }
 
 function vrqty_formatter(cellvalue, options, rowObject){

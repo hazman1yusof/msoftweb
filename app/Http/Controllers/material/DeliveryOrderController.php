@@ -287,6 +287,25 @@ class DeliveryOrderController extends defaultController
                     ->where('delorddt.recstatus','!=','DELETE')
                     ->get();
 
+                //check stockloc frozen == yes/no
+                $stockloc_chk = false;
+                foreach ($delorddt_obj as $value) {
+
+                    $stockloc_chk = DB::table('material.stockloc')
+                        ->where('compcode','=',$value->compcode)
+                        ->where('deptcode','=',$value->deldept)
+                        ->where('itemcode','=',$value->itemcode)
+                        ->where('uomcode','=',$value->uomcode)
+                        ->where('unit','=',$value->unit)
+                        // ->where('year','=', defaultController::toYear($value->trandate))
+                        ->where('frozen','=','1')
+                        ->exists();
+
+                    if($stockloc_chk){
+                        throw new \Exception("Itemcode is frozen due to stock take. Can't be posted");
+                    }
+                }
+ 
                 //check kalu dia stock
                 $Stock_flag = false;
                 foreach ($delorddt_obj as $value) {
