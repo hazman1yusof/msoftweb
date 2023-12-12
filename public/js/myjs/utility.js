@@ -1275,7 +1275,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		if(obj.dialog_.hasOwnProperty('justb4refresh'))obj.dialog_.justb4refresh(obj);
 		refreshGrid("#"+event.data.data.gridname,event.data.data.urlParam);
 		$("#Dtext_"+unique).val(text);
-
+		if(obj.dialog_.hasOwnProperty('justaftrefresh'))obj.dialog_.justaftrefresh(obj);
 
 		// refreshGrid("#"+obj.gridname,obj.urlParam);
 	}

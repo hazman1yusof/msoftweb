@@ -40,13 +40,25 @@ class PatmastController extends defaultController
                         ->exists();
 
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
+        $dietdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','DIETATIC')->first();
+        $dispdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','DISP')->first();
+        $labdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','LAB')->first();
+        $raddept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','RAD')->first();
+        $phydept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','PHYSIOTERAPHY')->first();
+        $phardept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','PHAR')->first();
 
         $data_send = [
                 'userdeptcode' => $dept->deptcode,
                 'userdeptdesc' => $dept->description,
                 'billtype_def_code' => $btype_->billtype,
                 'billtype_def_desc' => $btype_->description,
-                'cashier' => $cashier
+                'cashier' => $cashier,
+                'dietdept_dflt' => $dietdept_dflt->pvalue2,
+                'dispdept_dflt' => $dispdept_dflt->pvalue2,
+                'labdept_dflt' => $labdept_dflt->pvalue2,
+                'raddept_dflt' => $raddept_dflt->pvalue2,
+                'phydept_dflt' => $phydept_dflt->pvalue2,
+                'phardept_dflt' => $phardept_dflt->pvalue2
             ];
 
         if(Auth::user()->billing == 1){

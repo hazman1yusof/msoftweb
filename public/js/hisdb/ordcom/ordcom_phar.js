@@ -137,6 +137,7 @@ $(document).ready(function(){
 			$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
 		},
 		afterShowForm: function (rowid) {
+			console.log(rowid);
 		},
 		beforeSelectRow:function(rowid, e){
 		},
@@ -305,16 +306,18 @@ var myEditOptions_phar = {
 	oneditfunc: function (rowid) {
 		$("#jqGrid_phar").data('lastselrow',rowid);
 		myfail_msg_phar.clear_fail();
-		write_detail_dosage(selrowdata,true,rowid);
 
 		collapseallsubgrid(rowid);
+
 		var selrowdata = $('#jqGrid_phar').jqGrid ('getRowData', rowid);
+		write_detail_dosage(selrowdata,true,rowid);
+
 		errorField.length=0;
 		$("#jqGrid_phar input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").hide();
 
 		write_detail_phar('#jqgrid_detail_phar_dept','PHARMACY',rowid);
-		$("#jqGrid_phar input[name='deptcode']").val('PHAR');
+		$("#jqGrid_phar input[name='deptcode']").val($('#phardept_dflt').val());
 		dialog_deptcode_phar.on();
 		dialog_deptcode_phar.id_optid = rowid;
 		dialog_deptcode_phar.check(errorField,rowid+"_deptcode","jqGrid_phar",null,
@@ -348,6 +351,13 @@ var myEditOptions_phar = {
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_phar input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
@@ -631,10 +641,15 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		});
 	}
 
+	let convfactor_uom = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom").val());
+	let convfactor_uom_recv = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom_recv").val());
+	var balconv = convfactor_uom*quantity%convfactor_uom_recv;
+
 	let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
+	let real_quantity = convfactor_uom*quantity;
 	let st_idno = $("#jqGrid_phar #"+id_optid+"_chgcode").data('st_idno');
 
-	if(qtyonhand<quantity && st_idno!=''){
+	if(qtyonhand<real_quantity && st_idno!=''){
 		myfail_msg_phar.add_fail({
 			id:'qtyonhand',
 			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
@@ -648,25 +663,19 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		});
 	}
 
-	// let convfactor_uom = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom").val());
-	// let convfactor_uom_recv = parseFloat($("#jqGrid_phar #"+id_optid+"_convfactor_uom_recv").val());
-
-	// var balconv = convfactor_uom*quantity%convfactor_uom_recv;
-
-	// if (balconv != 0) {
-	// 	myfail_msg_phar.add_fail({
-	// 		id:'convfactor',
-	// 		textfld:"#jqGrid_phar #"+id_optid+"_quantity",
-	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-	// 	});
-	// } else {
-	// 	myfail_msg_phar.del_fail({
-	// 		id:'convfactor',
-	// 		textfld:"#jqGrid_phar #"+id_optid+"_quantity",
-	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-	// 	});
-	// }
-
+	if (balconv != 0) {
+		myfail_msg_phar.add_fail({
+			id:'convfactor',
+			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+		});
+	} else {
+		myfail_msg_phar.del_fail({
+			id:'convfactor',
+			textfld:"#jqGrid_phar #"+id_optid+"_quantity",
+			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+		});
+	}
 
 	let unitprce = parseFloat($("#"+id_optid+"_unitprce").val());
 	let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
@@ -785,7 +794,7 @@ var dialog_chgcode_phar = new ordialog(
 				entrydate : moment().format('YYYY-MM-DD'),
 				billtype : $('#billtype_def_code').val(),
 				uom : $("#jqGrid_phar input[name='uom']").val(),
-				deptcode : 'PHAR',
+				deptcode : $('#phardept_dflt').val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_phar').val()],
 			},
@@ -933,7 +942,7 @@ var dialog_uomcode_phar = new ordialog(
 					action: 'get_itemcode_uom',
 					action_chk: 'get_itemcode_uom_check_oe',
 					entrydate : moment().format('YYYY-MM-DD'),
-					deptcode : 'PHAR',
+					deptcode : $('#phardept_dflt').val(),
 					chgcode : null,
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
@@ -987,7 +996,8 @@ var dialog_uomcode_phar = new ordialog(
 		title:"Select UOM Code For Item",
 		open:function(obj_){
 			let chgcode = $("#jqGrid_phar input[name=chgcode]").val();
-			$('div[role=dialog][aria-describedby=otherdialog_uom_phar] span.ui-dialog-title').text('Select UOM Code For Item ('+chgcode+')');
+			let chgdesc = $("#jqGrid_phar input[name=chgcode]").parent().next().text();
+			$('div[role=dialog][aria-describedby=otherdialog_uom_phar] span.ui-dialog-title').text('Select UOM Code For Item ('+chgcode+') '+chgdesc+' ');
 
 			let id_optid = obj_.id_optid;
 
@@ -1005,7 +1015,7 @@ var dialog_uomcode_phar = new ordialog(
 			dialog_uomcode_phar.urlParam.filterVal = [$('#ordcomtt_phar').val()];
 		},
 		close: function(){
-			$("#jqGrid_phar input[name='uom_recv']").focus().select();
+			$("#jqGrid_phar input[name='quantity']").focus().select();
 			// $(dialog_uomcode_phar.textfield)			//lepas close dialog focus on next textfield 
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
@@ -1014,6 +1024,9 @@ var dialog_uomcode_phar = new ordialog(
 		justb4refresh: function(obj_){
 			dialog_uomcode_phar.urlParam.searchCol2=[];
 			dialog_uomcode_phar.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1025,13 +1038,11 @@ var dialog_uom_recv_phar = new ordialog(
 		[
 			{label:'UOM code',name:'uomcode',width:200,classes:'pointer',canSearch:true,or_search:true},
 			{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			{label: 'Charge Code',name:'chgcode',width:100},
+			{label: 'Charge Description',name:'chgdesc',width:300},
+			{label: 'Inventory',name:'invflag',width:100,formatter:formatterstatus_tick2, unformat:unformatstatus_tick2},
+			{label: 'Quantity On Hand',name:'qtyonhand',width:100},
 			{label:'Inventory',name:'invflag',hidden:true},
-			{label:'Charge Code',name:'chgcode',hidden:true},
-			{label:'UOM',name:'uom',hidden:true},
-			{label:'Quantity On Hand',hidden:true},
-			{label:'Price',name:'price',hidden:true},
-			{label:'Tax',name:'taxcode',hidden:true},
-			{label:'rate',name:'rate',hidden:true},
 			{label:'st_idno',name:'st_idno',hidden:true},
 			{label:'pt_idno',name:'pt_idno',hidden:true},
 			{label:'avgcost',name:'avgcost',hidden:true},
@@ -1046,7 +1057,7 @@ var dialog_uom_recv_phar = new ordialog(
 					action: 'get_itemcode_uom_recv',
 					action_chk: 'get_itemcode_uom_recv_check',
 					entrydate : moment().format('YYYY-MM-DD'),
-					deptcode : 'PHAR',
+					deptcode : $('#phardept_dflt').val(),
 					chgcode : null,
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
@@ -1069,6 +1080,7 @@ var dialog_uom_recv_phar = new ordialog(
 			let data=selrowData('#'+dialog_uom_recv_phar.gridname);
 
 			myfail_msg_phar.del_fail({id:'nostock_'+id_optid});
+			$("#jqGrid_phar #"+id_optid+"_convfactor_uom_recv").val(data['convfactor']);
 			if(data.invflag == '1' && (data.st_idno == '' || data.st_idno == null)){
 				myfail_msg_phar.add_fail({
 					id:'nostock_'+id_optid,
@@ -1095,6 +1107,11 @@ var dialog_uom_recv_phar = new ordialog(
 	},{
 		title:"Select UOM Code For Dept Item",
 		open:function(obj_){
+
+			let chgcode = $("#jqGrid_phar input[name=chgcode]").val();
+			let chgdesc = $("#jqGrid_phar input[name=chgcode]").parent().next().text();
+			$('div[role=dialog][aria-describedby=otherdialog_uom_phar] span.ui-dialog-title').text('Select UOM Code For Item ('+chgcode+') '+chgdesc+' ');
+
 			dialog_uom_recv_phar.urlParam.url = "./ordcom/table";
 			dialog_uom_recv_phar.urlParam.action = 'get_itemcode_uom_recv';
 			dialog_uom_recv_phar.urlParam.url_chk = "./ordcom/table";
@@ -1116,6 +1133,13 @@ var dialog_uom_recv_phar = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		after_check: function(data,self,id,fail){
+		},
+		justb4refresh: function(obj_){
+			dialog_uom_recv_phar.urlParam.searchCol2=[];
+			dialog_uom_recv_phar.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1161,11 +1185,11 @@ var dialog_tax_phar = new ordialog(
 		title:"Select Tax Code For Item",
 		check_take_all_field : true,
 		open:function(obj_){
-
 			dialog_tax_phar.urlParam.filterCol=['compcode','recstatus'];
 			dialog_tax_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
 		},
 		close: function(){
+			$("#jqGrid_phar input[name='quantity']").focus().select();
 			// $(dialog_tax_phar.textfield)			//lepas close dialog focus on next textfield 
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
@@ -1393,6 +1417,7 @@ function itemcodeCustomEdit_phar(val, opt) {
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
 
+		console.log('itemcodeCustomEdit_phar');
 	return $(myreturn);
 }
 function totamountFormatter_phar(val,opt,rowObject ){
@@ -1413,10 +1438,6 @@ function taxcodeCustomEdit_phar(val,opt){
 }
 function deptcodeCustomEdit_phar(val,opt){  	
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-	if(val.trim() == ''){
-		val = $('#userdeptdesc').val();
-		write_detail_phar('#jqgrid_detail_phar_dept',val);
-	}
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="`+opt.id+`" id="`+opt.id+`" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
 function remarkCustomEdit_phar(val,opt){

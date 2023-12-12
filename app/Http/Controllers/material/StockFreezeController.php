@@ -82,10 +82,10 @@ class StockFreezeController extends defaultController
                 'frzdate' => Carbon::now("Asia/Kuala_Lumpur"),//freeze date
                 'frztime' => Carbon::now("Asia/Kuala_Lumpur")->format('h:i:s'),//freeze time
                 'phycntdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'phycnttime' => Carbon::now("Asia/Kuala_Lumpur"),
                 'respersonid' => session('username'), //freeze user
                 'remarks' => strtoupper($request->remarks),
                 'rackno' => $request->rackno,
-                'phycnttime' => $request->phycnttime,
                 'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -122,8 +122,13 @@ class StockFreezeController extends defaultController
                                 $join = $join->where('se.compcode', '=', session('compcode'));
                                 $join = $join->where('se.unit', '=', session('unit'));
                                 $join = $join->on('se.year', '=', 's.year');
-                            })
+                            });
 
+            if(!empty($request->rackno)){
+                $stockloc = $stockloc->where('rackno',$request->rackno);
+            }
+
+            $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
                             ->where('s.deptcode',$request->srcdept)
                             ->whereBetween('s.itemcode',[$request->itemfrom,$request->itemto])
@@ -135,7 +140,7 @@ class StockFreezeController extends defaultController
                         'compcode' => session('compcode'),
                         'srcdept' => $phycnthd->srcdept,
                         'phycntdate' => $phycnthd->phycntdate,
-                        'phycnttime' => $phycnthd->frztime,
+                        'phycnttime' => $phycnthd->phycnttime,
                         'lineno_' => $key,
                         'itemcode' => $value->itemcode,
                         'uomcode' => $value->uomcode,
@@ -598,6 +603,8 @@ class StockFreezeController extends defaultController
                     ->where('recstatus','=','ACTIVE')
                     ->where('compcode','=',session('compcode'))
                     ->where('year', '=', $request->filterVal[3])
+                    ->whereNotNull('rackno')
+                    ->where('rackno','<>','')
                     ->distinct('rackno');
         
         if(!empty($request->searchCol)){
@@ -629,6 +636,7 @@ class StockFreezeController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
         
         return json_encode($responce);
         

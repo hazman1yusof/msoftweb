@@ -765,11 +765,11 @@ $(document).ready(function () {
 	dialog_srcdept.makedialog(true);
 	
 	var dialog_rackno = new ordialog(
-		'rackno','material.stockloc','#rackno',errorField,
+		'rackno','material.stockloc','#rackno','errorField',
 		{
 			colModel:[
 				{label:'Rack No',name:'rackno',width:200,classes:'pointer',canSearch:true,or_search:true,checked:true},
-				// {label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true,checked:true},
+				{label:'itemcode',name:'itemcode', hidden:true},
 				// {label:'Unit',name:'sector', hidden:true},
 			],
 			urlParam: {
@@ -777,7 +777,7 @@ $(document).ready(function () {
 				filterVal:[$("#srcdept").val(), 'ACTIVE','session.compcode',moment().year()],
 			},
 			ondblClickRow: function () {
-				$("#itemto").val('ZZZ').prop('disabled',true);
+				$("#itemto").val('ZZZ').prop('readonly',true);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
