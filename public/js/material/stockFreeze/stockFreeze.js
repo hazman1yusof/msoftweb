@@ -777,8 +777,7 @@ $(document).ready(function () {
 				filterVal:[$("#srcdept").val(), 'ACTIVE','session.compcode',moment().year()],
 			},
 			ondblClickRow: function () {
-				let data=selrowData('#'+dialog_rackno.gridname);
-				$("#itemto").val('ZZZ');
+				$("#itemto").val('ZZZ').prop('disabled',true);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
