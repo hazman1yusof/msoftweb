@@ -10,7 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 
-class StockFreezeController extends defaultController
+class StockCountController extends defaultController
 {   
 
     public function __construct()
@@ -20,7 +20,7 @@ class StockFreezeController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.stockFreeze.stockFreeze');
+        return view('material.stockCount.stockCount');
     }
 
     public function table(Request $request)

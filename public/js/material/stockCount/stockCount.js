@@ -40,8 +40,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			$('#srcdept').focus();
-			$('#jqGridPager2EditAll').data('click',false);
+			$('#jqGridPager2EditAll').data('click',true);
 			unsaved = false;
 			errorField.length=0;
 			parent_close_disabled(true);
@@ -57,7 +56,10 @@ $(document).ready(function () {
 				case state = 'edit':
 					$("#pg_jqGridPager2 table").hide();
 					disableForm('#formdata');
+                    enableForm('#formdata2');
+                    $("#pg_jqGridPager2 table").show();
 					rdonly('#formdata');
+                    $('#jqGridPager2EditAll').data('click',true);
 					break;
 				case state = 'view':
 					disableForm('#formdata');
@@ -130,8 +132,8 @@ $(document).ready(function () {
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
-		action:'stockFreeze_save',
-		url:'./stockFreeze/form',
+		action:'stockCount_save',
+		url:'./stockCount/form',
 		field:'',
 		oper:oper,
 		table_name:'material.phycnthd',
@@ -152,7 +154,7 @@ $(document).ready(function () {
 			{ label: 'Phy. Count Date', name: 'phycntdate', width: 20, align: 'right', classes: 'wrap'},
             { label: 'Created By', name: 'adduser', width: 20},
             { label: 'Status', name: 'recstatus', width: 20, classes: 'wrap'},	
-			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox, hidden:true},
+			{ label: ' ', name: 'Checkbox',sortable:false, width: 10,align: "center", formatter: formatterCheckbox, hidden:false},
 			{ label: 'remarks', name: 'remarks', width: 90, hidden:true, classes: 'wrap'},
             { label: 'adddate', name: 'adddate', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'upduser', name: 'upduser', width: 90, hidden:true, classes: 'wrap'},
@@ -182,7 +184,6 @@ $(document).ready(function () {
 			$('#txndeptdepan').text(selrowData("#jqGrid").srcdept);//tukar kat depan tu
 			$('#docnodepan').text(selrowData("#jqGrid").docno);
 
-
 			refreshGrid("#jqGrid3",urlParam2);
 
 			$("#pdfgen1").attr('href','./inventoryTransaction/showpdf?recno='+selrowData("#jqGrid").recno);
@@ -197,6 +198,7 @@ $(document).ready(function () {
 			}else{
 				$("#jqGridPager td[title='Edit Selected Row']").click();
 			}
+            
 		},
 		gridComplete: function () {
 			$('#but_cancel_jq,#but_post_jq,#but_reopen_jq').hide();
@@ -257,16 +259,8 @@ $(document).ready(function () {
 			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
+            $('#jqGridPager2EditAll').data('click',true);
 		}, 
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first",  
-		buttonicon:"glyphicon glyphicon-plus", 
-		id: 'glyphicon-plus',
-		title:"Add New Row", 
-		onClickButton: function(){
-			oper='add';
-			$( "#dialogForm" ).dialog( "open" );
-		},
 	});
 
 	//////////handle searching, its radio button and toggle /////////////////////////////////////////////
@@ -287,7 +281,7 @@ $(document).ready(function () {
 		obj._token = $('#_token').val();
 		oper=null;
 
-		$.post('stockFreeze/form',obj,function (data) {
+		$.post('stockCount/form',obj,function (data) {
 			cbselect.empty_sel_tbl();
 			refreshGrid("#jqGrid", urlParam);
 		}).fail(function (data) {
@@ -483,19 +477,19 @@ $(document).ready(function () {
 	////////////////////////////////////////////////jqgrid2//////////////////////////////////////////////
 	$("#jqGrid2").jqGrid({
 		datatype: "local",
-		editurl: "./stockFreezeDetail/form",
+		editurl: "./stockCountDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
 			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
-			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:true,
+			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:false,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
 						    {  custom_element:itemcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'UOM Code', name: 'uomcode', width: 130, classes: 'wrap', editable:true,
+			{ label: 'UOM Code', name: 'uomcode', width: 130, classes: 'wrap', editable:false,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 					formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -503,23 +497,23 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Unit Cost', name: 'unitcost', width: 100, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Unit Cost', name: 'unitcost', width: 100, align: 'right', classes: 'wrap', editable:false,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'System<br>Quantity', name: 'thyqty', width: 100, align: 'right', classes: 'wrap', editable:true,	
+			{ label: 'System<br>Quantity', name: 'thyqty', width: 100, align: 'right', classes: 'wrap', editable:false,	
 				formatter:'integer',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
             { label: 'Physical<br>Quantity', name: 'phyqty', width: 100, align: 'right', classes: 'wrap', editable:true,	
                 formatter:'integer',formatoptions:{thousandsSeparator: ",",},
-                editrules:{required: true},editoptions:{readonly: "readonly"},
+                editrules:{required: true},
             },
-            { label: 'Variance<br>Quantity', name: 'vrqty', width: 100, align: 'right', classes: 'wrap', editable:true,	
+            { label: 'Variance<br>Quantity', name: 'vrqty', width: 100, align: 'right', classes: 'wrap', editable:false,	
                 formatter:vrqty_formatter,
                 editrules:{required: true},editoptions:{readonly: "readonly"},
             },
-			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:false,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editrules:{required: false,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
@@ -527,7 +521,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:false,
 					maxlength: 30,
 			},
 		],
@@ -564,6 +558,83 @@ $(document).ready(function () {
 
 	addParamField('#jqGrid2',false,urlParam2,['vrqty']);
 
+    //////////////////////////////////////////myEditOptions/////////////////////////////////////////////
+	var myEditOptions = {
+        keys: true,
+        extraparam:{
+		    "_token": $("#_token").val()
+        },
+        oneditfunc: function (rowid) {
+			myfail_msg.clear_fail();
+        	calc_jq_height_onchange("jqGrid2",false,1200);
+			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
+			errorField.length=0;
+			$("#jqGrid2 input[name='pricecode']").focus().select();
+        	$("#jqGridPager2EditAll").show();
+
+			mycurrency2.array.length = 0;
+			mycurrency_np.array.length = 0;
+			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='unitcost']"]);
+			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='thyqty']", "#jqGrid2 input[name='phyqty']"]);
+
+			mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+
+			$("#jqGrid2 input[name='unitcost']").on('blur',{currency: mycurrency2});
+			$("#jqGrid2 input[name='thyqty']", "#jqGrid2 input[name='phyqty']").on('keyup',{currency: mycurrency_np});
+
+			$("input[name='batchno']").keydown(function(e) {//when click tab at batchno, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid2_ilsave').click();
+			});
+
+        },
+        aftersavefunc: function (rowid, response, options) {
+			myfail_msg.clear_fail();
+			var resobj = JSON.parse(response.responseText);
+			mycurrency.formatOn();
+	    	if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=false; //only addmore after save inline
+	    	//state true maksudnyer ada isi, tak kosong
+			urlParam2.filterVal[0] = resobj.recno;
+	    	refreshGrid('#jqGrid2',urlParam2);
+	    	$("#jqGridPager2EditAll").hide();
+			errorField.length=0;
+        }, 
+        errorfunc: function(rowid,response){
+			errorField.length=0;
+        	// alert(response.responseText);
+        	myfail_msg.add_fail({
+				id:'response',
+				textfld:"",
+				msg:response.responseText,
+			});
+        	refreshGrid('#jqGrid2',urlParam2,'add');
+        },
+        beforeSaveRow: function(options, rowid) {
+       	
+        	mycurrency2.formatOff();
+			mycurrency_np.formatOff();
+
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
+			
+			let editurl = "./stockCountDetail/form?"+
+				$.param({
+					action: 'stockCountDetail_save',
+					idno: $('#idno').val(),
+					docno:$('#docno').val(),
+					recno:$('#recno').val(),
+					srcdept:$('#srcdept').val(),
+					phycntdate:$('#phycntdate').val(),
+					phyqty:data.phyqty,
+					lineno_:data.lineno_,
+				});
+			$("#jqGrid2").jqGrid('setGridParam',{editurl:editurl});
+        },
+        afterrestorefunc : function( response ) {
+			$('#jqGrid2').jqGrid ('setSelection', "1");
+	    }
+    };
+
     //////////////////////////////////////////pager jqgrid2/////////////////////////////////////////////
 	$("#jqGrid2").inlineNav('#jqGridPager2',{	
 		add:false,
@@ -571,11 +642,37 @@ $(document).ready(function () {
 		cancel: false,
 		//to prevent the row being edited/added from being automatically cancelled once the user clicks another row
 		restoreAfterSelect: false,
-	}).jqGrid('navButtonAdd',"#jqGridPager2",{
-		id: "saveDetailLabel",
-		caption:"Save",cursor: "pointer",position: "last", 
-		buttonicon:"",
-		title:"Save"
+        editParams: myEditOptions
+
+    }).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2EditAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-th-list",
+		title:"Edit All Row",
+		onClickButton: function(){
+			mycurrency2.array.length = 0;
+			mycurrency_np.array.length = 0;
+			var ids = $("#jqGrid2").jqGrid('getDataIDs');
+		    for (var i = 0; i < ids.length; i++) {
+
+		        $("#jqGrid2").jqGrid('editRow',ids[i]);
+
+		    }
+            $("#jqGridPager2EditAll").hide();
+            $("#jqGridPager2CancelAll").show();
+
+		},
+    }).jqGrid('navButtonAdd',"#jqGridPager2",{
+		id: "jqGridPager2CancelAll",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-remove-circle",
+		title:"Cancel",
+		onClickButton: function(){
+			refreshGrid("#jqGrid2",urlParam2);
+            $("#jqGridPager2CancelAll").hide();
+            $("#jqGridPager2EditAll").show();
+
+		},
 	});
 
 	//////////////////////////////////////formatter checkdetail//////////////////////////////////////////
@@ -591,7 +688,7 @@ $(document).ready(function () {
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
-		fdl.get_array('stockFreeze',options,param,case_,cellvalue);
+		fdl.get_array('stockCount',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
