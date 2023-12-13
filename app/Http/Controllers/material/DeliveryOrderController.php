@@ -296,8 +296,8 @@ class DeliveryOrderController extends defaultController
                         ->where('deptcode','=',$value->deldept)
                         ->where('itemcode','=',$value->itemcode)
                         ->where('uomcode','=',$value->uomcode)
+                        ->where('year', '=',defaultController::toYear($value->trandate))
                         ->where('unit','=',$value->unit)
-                        // ->where('year','=', defaultController::toYear($value->trandate))
                         ->where('frozen','=','1')
                         ->exists();
 

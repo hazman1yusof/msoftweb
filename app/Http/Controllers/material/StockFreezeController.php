@@ -189,51 +189,51 @@ class StockFreezeController extends defaultController
 
     }
 
-    public function edit(Request $request){
-        if(!empty($request->fixPost)){
-            $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
-        }else{
-            $field = $request->field;
-            $idno = $request->table_id;
-        }
+    // public function edit(Request $request){
+    //     if(!empty($request->fixPost)){
+    //         $field = $this->fixPost2($request->field);
+    //         $idno = substr(strstr($request->table_id,'_'),1);
+    //     }else{
+    //         $field = $request->field;
+    //         $idno = $request->table_id;
+    //     }
 
-        DB::beginTransaction();
+    //     DB::beginTransaction();
 
-        $table = DB::table("material.phycnthd");
+    //     $table = DB::table("material.phycnthd");
 
-        $array_update = [
-            'compcode' => session('compcode'),
-            'upduser' => session('username'),
-            'upddate' => Carbon::now("Asia/Kuala_Lumpur")
-        ];
+    //     $array_update = [
+    //         'compcode' => session('compcode'),
+    //         'upduser' => session('username'),
+    //         'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+    //     ];
 
-        foreach ($field as $key => $value) {
-            $array_update[$value] = $request[$request->field[$key]];
-        }
+    //     foreach ($field as $key => $value) {
+    //         $array_update[$value] = $request[$request->field[$key]];
+    //     }
 
-        try {
-            //////////where//////////
-            $table = $table->where('idno','=',$request->idno);
-            $table->update($array_update);
+    //     try {
+    //         //////////where//////////
+    //         $table = $table->where('idno','=',$request->idno);
+    //         $table->update($array_update);
 
-            $responce = new stdClass();
-           // $responce->totalAmount = $request->delordhd_totamount;
-           $responce->upduser = session('username');
-           $responce->upddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
-            echo json_encode($responce);
+    //         $responce = new stdClass();
+    //        // $responce->totalAmount = $request->delordhd_totamount;
+    //        $responce->upduser = session('username');
+    //        $responce->upddate = Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d H:i:s');
+    //         echo json_encode($responce);
 
-            // $queries = DB::getQueryLog();
-            // dump($queries);
+    //         // $queries = DB::getQueryLog();
+    //         // dump($queries);
 
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
+    //         DB::commit();
+    //     } catch (\Exception $e) {
+    //         DB::rollback();
 
             
-            return response($e->getMessage(), 500);
-        }
-    }
+    //         return response($e->getMessage(), 500);
+    //     }
+    // }
 
     public function posted(Request $request){
 
