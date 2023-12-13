@@ -1570,6 +1570,9 @@
                                                 </tr>
                                             </thead>
                                         </table>
+                                        <button class="btn btn-default btn-sm" type="button" id="tbl_prescription_refresh" style="float: right;">
+                                            <span class="icon glyphicon glyphicon-refresh"></span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1627,18 +1630,18 @@
                                         <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
                                             <div class="panel panel-info" id="jqGridPatMedic_c">
                                                 <div class="panel-body">
+                                                    <div style="float: right; padding-right: 60px; padding-bottom: 15px;">
+                                                        <label class="col-md-5 control-label">Total Quantity</label>
+                                                        <div class="col-md-5">
+                                                            <input id="tot_qty" name="tot_qty" type="text" class="form-control input-sm" rdonly>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <div class='col-md-12' style="padding:0 0 15px 0">
                                                         <table id="jqGridPatMedic" class="table table-striped"></table>
                                                         <div id="jqGridPagerPatMedic"></div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div style="float: right; padding-right: 60px;">
-                                            <label class="col-md-5 control-label">Total Quantity</label>
-                                            <div class="col-md-5">
-                                                <input id="tot_qty" name="tot_qty" type="text" class="form-control input-sm" rdonly>
                                             </div>
                                         </div>
                                     </div>

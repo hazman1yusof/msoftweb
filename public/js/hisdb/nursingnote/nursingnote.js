@@ -441,6 +441,10 @@ $(document).ready(function () {
         // });
     });
     
+    $("#tbl_prescription_refresh").click(function(){
+        $('#tbl_prescription').DataTable().ajax.reload();
+    });
+    
     //////////////////////////jqGridPatMedic//////////////////////////
     var addmore_jqgrid={more:false,state:false,edit:false}
     
@@ -532,7 +536,7 @@ $(document).ready(function () {
             
             $("#jqGridPatMedic input[name='qty']").on('blur',calculate_total_qty);
             
-            $("input[name='enteredby']").keydown(function(e) {	// when click tab at last column in header, auto save
+            $("input[name='qty']").keydown(function(e) {	// when click tab at last column in header, auto save
                 var code = e.keyCode || e.which;
                 if (code == '9')$('#jqGridPatMedic_ilsave').click();
                 // addmore_jqgrid.state = true;
@@ -545,6 +549,7 @@ $(document).ready(function () {
             refreshGrid('#jqGridPatMedic',urlParam_PatMedic,'add_patMedic');
             errorField.length=0;
             $("#jqGridPagerRefresh_patMedic").show();
+            get_total_qty();
         },
         errorfunc: function(rowid,response){
             $('#p_error').text(response.responseText);
