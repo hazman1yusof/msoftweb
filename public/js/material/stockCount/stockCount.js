@@ -40,7 +40,7 @@ $(document).ready(function () {
 		modal: true,
 		autoOpen: false,
 		open: function( event, ui ) {
-			$('#jqGridPager2EditAll').data('click');
+			$('#jqGridPager2EditAll').data('click',true);
 			unsaved = false;
 			errorField.length=0;
 			parent_close_disabled(true);
@@ -59,6 +59,7 @@ $(document).ready(function () {
                     enableForm('#formdata2');
                     $("#pg_jqGridPager2 table").show();
 					rdonly('#formdata');
+                    $('#jqGridPager2EditAll').data('click',true);
 					break;
 				case state = 'view':
 					disableForm('#formdata');
@@ -255,10 +256,10 @@ $(document).ready(function () {
 		title:"Edit Selected Row",  
 		onClickButton: function(){
 			oper='edit';
-            $('#jqGridPager2EditAll').data('click');
 			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
 			refreshGrid("#jqGrid2",urlParam2);
+            $('#jqGridPager2EditAll').data('click',true);
 		}, 
 	});
 
@@ -657,6 +658,9 @@ $(document).ready(function () {
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
 		    }
+            $("#jqGridPager2EditAll").hide();
+            $("#jqGridPager2CancelAll").show();
+
 		},
     }).jqGrid('navButtonAdd',"#jqGridPager2",{
 		id: "jqGridPager2CancelAll",
@@ -665,6 +669,9 @@ $(document).ready(function () {
 		title:"Cancel",
 		onClickButton: function(){
 			refreshGrid("#jqGrid2",urlParam2);
+            $("#jqGridPager2CancelAll").hide();
+            $("#jqGridPager2EditAll").show();
+
 		},
 	});
 
