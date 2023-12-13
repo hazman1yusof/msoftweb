@@ -546,7 +546,14 @@ var myEditOptions_phar_edit = {
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
-		// $("#jqGrid_phar input[name='chgcode']").focus();
+		
+		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_phar input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		dialog_dosage_phar.off();
@@ -758,6 +765,13 @@ var dialog_deptcode_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -909,6 +923,13 @@ var dialog_chgcode_phar = new ordialog(
 		},
 		close: function(obj){
 			$("#jqGrid_phar input[name='quantity']").focus().select();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 );
@@ -1022,8 +1043,8 @@ var dialog_uomcode_phar = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		justb4refresh: function(obj_){
-			dialog_uomcode_phar.urlParam.searchCol2=[];
-			dialog_uomcode_phar.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -1135,8 +1156,8 @@ var dialog_uom_recv_phar = new ordialog(
 		after_check: function(data,self,id,fail){
 		},
 		justb4refresh: function(obj_){
-			dialog_uom_recv_phar.urlParam.searchCol2=[];
-			dialog_uom_recv_phar.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -1194,6 +1215,13 @@ var dialog_tax_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1245,6 +1273,13 @@ var dialog_dosage_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1294,6 +1329,13 @@ var dialog_frequency_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1343,6 +1385,13 @@ var dialog_instruction_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1392,6 +1441,13 @@ var dialog_drugindicator_phar = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );

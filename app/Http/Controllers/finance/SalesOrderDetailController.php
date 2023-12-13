@@ -1003,7 +1003,7 @@ class SalesOrderDetailController extends defaultController
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.chgcode','=',$chgcode)
                             ->where('cm.uom','=',$uom)
-                            ->where('cm.recstatus','=','ACTIVE');
+                            ->where('cm.recstatus','<>','DELETE');
                             // ->where(function ($query) {
                             //    $query->whereNotNull('st.idno')
                             //          ->orWhere('cm.invflag', '=', 0);

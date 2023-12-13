@@ -260,7 +260,7 @@ class OrdcomController extends defaultController
         }
 
         $table_chgtrx = DB::table('hisdb.chargetrx as trx')
-                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname')
                     ->where('trx.mrn' ,'=', $request->mrn)
                     ->where('trx.episno' ,'=', $request->episno)
                     ->where('trx.compcode','=',session('compcode'))
@@ -273,6 +273,13 @@ class OrdcomController extends defaultController
                             $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
                             $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
                             $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('cm.uom', '=', 'trx.uom');
+                            $join = $join->where('cm.unit', '=', session('unit'));
                         });
 
         $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
@@ -2095,15 +2102,19 @@ class OrdcomController extends defaultController
     public function get_itemcode_uom_recv_check(Request $request){
         $chgcode = $request->chgcode;
         $deptcode = $request->deptcode;
-        $uom = $request->filterVal[1];
-        $chggroup = $request->filterVal[0];
+        if($request->from == 'uom_recv_oth'){
+            $uom = $request->filterVal[0];
+        }else{
+            $uom = $request->filterVal[1];
+            $chggroup = $request->filterVal[0];
+        }
         $entrydate = $request->entrydate;
 
         $table = DB::table('hisdb.chgmast as cm')
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','uom.description','cm.uom as uomcode','st.idno as st_idno','st.qtyonhand','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                             ->where('cm.compcode','=',session('compcode'))
                             ->where('cm.chgcode','=',$chgcode)
-                            ->where('cm.chggroup','=',$chggroup)
+                            // ->where('cm.chggroup','=',$chggroup)
                             ->where('cm.uom','=',$uom)
                             ->where('cm.recstatus','<>','DELETE');
 
@@ -2207,8 +2218,13 @@ class OrdcomController extends defaultController
         $deptcode = $request->deptcode;
         $priceuse = $request->price;
         $entrydate = $request->entrydate;
-        $chgcode = $request->filterVal[1];
+        if($request->from == 'chgcode_oth'){
+            $chgcode = $request->filterVal[0];
+        }else{
+            $chgcode = $request->filterVal[1];
+        }
         $uom = $request->uom;
+        $dfee = $request->dfee;
         $billtype_obj = $this->billtype_obj_get($request);
 
         switch ($priceuse) {
@@ -2230,8 +2246,10 @@ class OrdcomController extends defaultController
                         ->select('cm.chgcode','cm.chggroup','cm.invflag','cm.description','cm.brandname','cm.overwrite','cm.uom','st.idno as st_idno','st.qtyonhand','cp.optax as taxcode','tm.rate', 'cp.idno','cp.'.$cp_fld.' as price','pt.idno as pt_idno','pt.avgcost','uom.convfactor','cm.constype','cm.revcode')
                         ->where('cm.compcode','=',session('compcode'))
                         ->where('cm.recstatus','<>','DELETE')
-                        ->where('cm.chgcode','=',$chgcode)
-                        ->where('cm.uom','=',$uom);
+                        ->where('cm.chgcode','=',$chgcode);
+        if(!$dfee){
+            $table = $table->where('cm.uom','=',$uom);
+        }
 
         $table = $table->join('hisdb.chgprice as cp', function($join) use ($request,$cp_fld,$entrydate){
                             $join = $join->where('cp.compcode', '=', session('compcode'));
@@ -2281,9 +2299,11 @@ class OrdcomController extends defaultController
                 ->select('cp.idno',$cp_fld,'cp.optax','tm.rate','cp.chgcode')
                 ->leftJoin('hisdb.taxmast as tm', 'cp.optax', '=', 'tm.taxcode')
                 ->where('cp.compcode', '=', session('compcode'))
-                ->where('cp.chgcode', '=', $value->chgcode)
-                ->where('cp.uom', '=', $value->uom)
-                ->whereDate('cp.effdate', '<=', $entrydate)
+                ->where('cp.chgcode', '=', $value->chgcode);
+                if(!$dfee){
+                    $chgprice_obj = $chgprice_obj->where('cp.uom', '=', $value->uom);
+                }
+            $chgprice_obj = $chgprice_obj->whereDate('cp.effdate', '<=', $entrydate)
                 ->orderBy('cp.effdate','desc');
 
             if($chgprice_obj->exists()){

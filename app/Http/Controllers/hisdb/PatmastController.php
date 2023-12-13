@@ -40,12 +40,6 @@ class PatmastController extends defaultController
                         ->exists();
 
         $btype_ = DB::table('hisdb.billtymst')->where('compcode','=',session('compcode'))->where('billtype','=',$btype->pvalue1)->first();
-        $dietdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','DIETATIC')->first();
-        $dispdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','DISP')->first();
-        $labdept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','LAB')->first();
-        $raddept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','RAD')->first();
-        $phydept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','PHYSIOTERAPHY')->first();
-        $phardept_dflt = DB::table('sysdb.sysparam')->where('compcode','=',session('compcode'))->where('source','=','OE')->where('trantype','=','PHAR')->first();
 
         $data_send = [
                 'userdeptcode' => $dept->deptcode,
@@ -53,12 +47,6 @@ class PatmastController extends defaultController
                 'billtype_def_code' => $btype_->billtype,
                 'billtype_def_desc' => $btype_->description,
                 'cashier' => $cashier,
-                'dietdept_dflt' => $dietdept_dflt->pvalue2,
-                'dispdept_dflt' => $dispdept_dflt->pvalue2,
-                'labdept_dflt' => $labdept_dflt->pvalue2,
-                'raddept_dflt' => $raddept_dflt->pvalue2,
-                'phydept_dflt' => $phydept_dflt->pvalue2,
-                'phardept_dflt' => $phardept_dflt->pvalue2
             ];
 
         if(Auth::user()->billing == 1){
@@ -82,10 +70,6 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','PHYSIOTERAPHY')->first();
-            $ordcomtt_rehab = DB::table('sysdb.sysparam')
-                        ->where('compcode',session('compcode'))
-                        ->where('source','=','OE')
-                        ->where('trantype','=','REHABILITATION')->first();
             $ordcomtt_diet = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
@@ -104,10 +88,17 @@ class PatmastController extends defaultController
             $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
             $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
             $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
-            $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
+            $data_send['ordcomtt_rehab'] = $ordcomtt_phys->pvalue1;
             $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
             $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
             $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
+
+            $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
+            $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
+            $data_send['dispdept_dflt'] = $ordcomtt_disp->pvalue2;
+            $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
+            $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
+            $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
         }
 
         return view('hisdb.pat_mgmt.landing',$data_send);

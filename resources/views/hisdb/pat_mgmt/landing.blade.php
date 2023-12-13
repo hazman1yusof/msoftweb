@@ -157,8 +157,10 @@
         <input name="dispdept_dflt" id="dispdept_dflt" type="hidden" value="{{$userdeptcode ?? 'PHAR'}}">
         <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
         <input name="raddept_dflt" id="raddept_dflt" type="hidden" value="{{$raddept_dflt ?? 'RAD'}}">
-        <input name="phydept_dflt" id="phydept_dflt" type="hidden" value="{{$phydept_dflt ?? 'PHY'}}">
+        <input name="physdept_dflt" id="physdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
+        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
         <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
+        <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{'OTH'}}">
 
         <div id="info"></div>
 

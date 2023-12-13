@@ -264,6 +264,14 @@ var myEditOptions_disp = {
 		$("#jqGrid_disp input[name='quantity']").on('blur',{currency: [mycurrency_disp,mycurrency_np_disp]},calculate_line_totgst_and_totamt_disp);
 
 		calc_jq_height_onchange("jqGrid_disp",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+
+		$("#jqGrid_disp input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_disp input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		calc_jq_height_onchange("jqGrid_disp",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
@@ -337,6 +345,7 @@ var myEditOptions_disp_edit = {
 
 		dialog_deptcode_disp.on();
 		dialog_deptcode_disp.id_optid = rowid;
+		dialog_deptcode_disp.skipfdl = true;
 		dialog_deptcode_disp.check(errorField,rowid+"_deptcode","jqGrid_disp",null,null,null );
 
 		dialog_chgcode_disp.on();
@@ -363,6 +372,7 @@ var myEditOptions_disp_edit = {
 
 		dialog_uomcode_disp.on();
 		dialog_uomcode_disp.id_optid = rowid;
+		dialog_uomcode_disp.skipfdl = true;
 		dialog_uomcode_disp.check(errorField,rowid+"_uom","jqGrid_disp",null,
         	function(self){
 				self.urlParam.deptcode = $("#jqGrid_disp input[name='deptcode']").val();
@@ -383,6 +393,7 @@ var myEditOptions_disp_edit = {
 
 		dialog_uom_recv_disp.on();
 		dialog_uom_recv_disp.id_optid = rowid;
+		dialog_uom_recv_disp.skipfdl = true;
 		dialog_uom_recv_disp.check(errorField,rowid+"_uom_recv","jqGrid_disp",null,
         	function(self){
 				self.urlParam.deptcode = $("#jqGrid_disp input[name='deptcode']").val();
@@ -432,7 +443,14 @@ var myEditOptions_disp_edit = {
 		$("#jqGrid_disp input[name='quantity']").on('blur',{currency: [mycurrency_disp,mycurrency_np_disp]},calculate_line_totgst_and_totamt_disp);
 
 		calc_jq_height_onchange("jqGrid_disp",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
-		// $("#jqGrid_disp input[name='chgcode']").focus();
+		
+		$("#jqGrid_disp input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_disp input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		// dialog_dosage_disp.off();
@@ -534,7 +552,7 @@ function calculate_line_totgst_and_totamt_disp(event) {
 	let real_quantity = convfactor_uom*quantity;
 	let st_idno = $("#jqGrid_disp #"+id_optid+"_chgcode").data('st_idno');
 
-	if(qtyonhand<quantity && st_idno!=''){
+	if(qtyonhand<real_quantity && st_idno!=''){
 		myfail_msg_disp.add_fail({
 			id:'qtyonhand',
 			textfld:"#jqGrid_disp #"+id_optid+"_quantity",
@@ -641,6 +659,13 @@ var dialog_deptcode_disp = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -786,6 +811,13 @@ var dialog_chgcode_disp = new ordialog(
 		},
 		close: function(obj){
 			$("#jqGrid_disp input[name='quantity']").focus().select();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 );
@@ -897,8 +929,8 @@ var dialog_uomcode_disp = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		justb4refresh: function(obj_){
-			dialog_uomcode_disp.urlParam.searchCol2=[];
-			dialog_uomcode_disp.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -1004,8 +1036,8 @@ var dialog_uom_recv_disp = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		justb4refresh: function(obj_){
-			dialog_uom_recv_disp.urlParam.searchCol2=[];
-			dialog_uom_recv_disp.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -1063,6 +1095,13 @@ var dialog_tax_disp = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );

@@ -1137,6 +1137,8 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		filterCol:jqgrid_.urlParam.filterCol,filterVal:jqgrid_.urlParam.filterVal,
 		join_type:jqgrid_.urlParam.join_type,join_onCol:jqgrid_.urlParam.join_onCol,join_onVal:jqgrid_.urlParam.join_onVal,
 		join_filterCol:jqgrid_.urlParam.join_filterCol,join_filterVal:jqgrid_.urlParam.join_filterVal,
+		whereNotInVal:jqgrid_.urlParam.whereNotInVal,whereNotInCol:jqgrid_.urlParam.whereNotInCol,
+		whereInVal:jqgrid_.urlParam.whereInVal,whereInCol:jqgrid_.urlParam.whereInCol,
 		searchCol2:null,searchCol2:null,searchCol:null,searchCol:null
 	};
 	this.id_optid=null;

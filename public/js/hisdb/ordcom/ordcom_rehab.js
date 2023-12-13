@@ -160,7 +160,7 @@ $(document).ready(function(){
 			$("#jqGrid_rehab").data('lastselrow',rowId);
 		}
     });
-	jqgrid_rehabel_align_right("#jqGrid_rehab");
+	jqgrid_label_align_right("#jqGrid_rehab");
 	
 	$("#jqGrid_rehab").inlineNav('#jqGrid_rehab_pager', {
 		add: true,
@@ -224,14 +224,12 @@ var myEditOptions_rehab = {
     },
 	oneditfunc: function (rowid) {
 		set_userdeptcode();
-		var selrowdata = $('#jqGrid_rehab').jqGrid ('getRowData', rowid);
 		errorField.length=0;
 		myfail_msg_rehab.clear_fail();
 		$("#jqGrid_rehab input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
     	$("#jqGrid_rehab_pagerRefresh,#jqGrid_rehab_pagerDelete").hide();
-		// write_detail_dosage(selrowdata,true);
 
-		$("#jqGrid_rehab input[name='deptcode']").val($("#userdeptcode").val());
+		$("#jqGrid_rehab input[name='deptcode']").val($("#rehabdept_dflt").val());
 		dialog_deptcode_rehab.on();
 		dialog_deptcode_rehab.id_optid = rowid;
 		dialog_deptcode_rehab.check(errorField,rowid+"_deptcode","jqGrid_rehab",null,
@@ -266,6 +264,14 @@ var myEditOptions_rehab = {
 		$("#jqGrid_rehab input[name='quantity']").on('blur',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 
 		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+
+		$("#jqGrid_rehab input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_rehab input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
@@ -337,7 +343,6 @@ var myEditOptions_rehab_edit = {
 		errorField.length=0;
     	$("#jqGrid_rehab_pagerRefresh,#jqGrid_rehab_pagerDelete").hide();
 
-		$("#jqGrid_rehab input[name='deptcode']").val($("#userdeptcode").val());
 		dialog_deptcode_rehab.on();
 		dialog_deptcode_rehab.id_optid = rowid;
 		dialog_deptcode_rehab.check(errorField,rowid+"_deptcode","jqGrid_rehab",null,null,null );
@@ -435,7 +440,14 @@ var myEditOptions_rehab_edit = {
 		$("#jqGrid_rehab input[name='quantity']").on('blur',{currency: [mycurrency_rehab,mycurrency_np_rehab]},calculate_line_totgst_and_totamt_rehab);
 
 		calc_jq_height_onchange("jqGrid_rehab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
-		// $("#jqGrid_rehab input[name='chgcode']").focus();
+		
+		$("#jqGrid_rehab input[name='trxdate']").on('focus',function(){
+			let focus = $(this).data('focus');
+			if(focus == undefined){
+				$(this).data('focus',1);
+				$("#jqGrid_rehab input#"+rowid+"_chgcode").focus();
+			}
+		});
 	},
 	aftersavefunc: function (rowid, response, options) {
 		// dialog_dosage_rehab.off();
@@ -529,10 +541,15 @@ function calculate_line_totgst_and_totamt_rehab(event) {
 		});
 	}
 
+	let convfactor_uom = parseFloat($("#jqGrid_rehab #"+id_optid+"_convfactor_uom").val());
+	let convfactor_uom_recv = parseFloat($("#jqGrid_rehab #"+id_optid+"_convfactor_uom_recv").val());
+	var balconv = convfactor_uom*quantity%convfactor_uom_recv;
+
 	let qtyonhand = parseFloat($("#"+id_optid+"_qtyonhand").val());
+	let real_quantity = convfactor_uom*quantity;
 	let st_idno = $("#jqGrid_rehab #"+id_optid+"_chgcode").data('st_idno');
 
-	if(qtyonhand<quantity && st_idno!=''){
+	if(qtyonhand<real_quantity && st_idno!=''){
 		myfail_msg_rehab.add_fail({
 			id:'qtyonhand',
 			textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
@@ -546,30 +563,24 @@ function calculate_line_totgst_and_totamt_rehab(event) {
 		});
 	}
 
-	// let convfactor_uom = parseFloat($("#jqGrid_rehab #"+id_optid+"_convfactor_uom").val());
-	// let convfactor_uom_recv = parseFloat($("#jqGrid_rehab #"+id_optid+"_convfactor_uom_recv").val());
-
-	// var balconv = convfactor_uom*quantity%convfactor_uom_recv;
-
-	// if (balconv != 0) {
-	// 	myfail_msg_rehab.add_fail({
-	// 		id:'convfactor',
-	// 		textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
-	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-	// 	});
-	// } else {
-	// 	myfail_msg_rehab.del_fail({
-	// 		id:'convfactor',
-	// 		textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
-	// 		msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
-	// 	});
-	// }
-
+	if (balconv != 0) {
+		myfail_msg_rehab.add_fail({
+			id:'convfactor',
+			textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
+			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+		});
+	} else {
+		myfail_msg_rehab.del_fail({
+			id:'convfactor',
+			textfld:"#jqGrid_rehab #"+id_optid+"_quantity",
+			msg:"Please Choose Suitable UOM Code & UOM Code Store Dept",
+		});
+	}
 
 	let unitprce = parseFloat($("#"+id_optid+"_unitprce").val());
 	let billtypeperct = 100 - parseFloat($("#"+id_optid+"_billtypeperct").val());
 	let billtypeamt = parseFloat($("#"+id_optid+"_billtypeamt").val());
-	let rate =  parseFloat($("#"+id_optid+"_uom_rate").val());
+	let rate =  parseFloat($("#"+id_optid+"_tax_rate").val());
 	if(isNaN(rate)){
 		rate = 0;
 	}
@@ -582,7 +593,7 @@ function calculate_line_totgst_and_totamt_rehab(event) {
 	var totamount = amount - discamount + taxamount;
 
 	$("#"+id_optid+"_taxamount").val(taxamount);
-	$("#"+id_optid+"_discamount").val(discamount);
+	$("#"+id_optid+"_discamt").val(discamount);
 	$("#"+id_optid+"_totamount").val(totamount);
 	$("#"+id_optid+"_amount").val(amount);
 
@@ -645,6 +656,13 @@ var dialog_deptcode_rehab = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -680,7 +698,7 @@ var dialog_chgcode_rehab = new ordialog(
 				price : 'PRICE2',
 				entrydate : moment().format('YYYY-MM-DD'),
 				billtype : $('#billtype_def_code').val(),
-				deptcode : $("#userdeptcode").val(),
+				deptcode : $("#rehabdept_dflt").val(),
 				filterCol : ['cm.chggroup'],
 				filterVal : [$('#ordcomtt_rehab').val()],
 			},
@@ -699,7 +717,7 @@ var dialog_chgcode_rehab = new ordialog(
 
 			$("#jqGrid_rehab #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_rehab #"+id_optid+"_taxcode").val(data['taxcode']);
-			$("#jqGrid_rehab #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_rehab #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_rehab #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 
 			dialog_chgcode_rehab.urlParam.uom = data['uom'];
@@ -790,6 +808,13 @@ var dialog_chgcode_rehab = new ordialog(
 		},
 		close: function(obj){
 			$("#jqGrid_rehab input[name='quantity']").focus().select();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam','radio','tab'//urlParam means check() using urlParam not check_input
 );
@@ -821,7 +846,7 @@ var dialog_uomcode_rehab = new ordialog(
 					action: 'get_itemcode_uom',
 					action_chk: 'get_itemcode_uom_check_oe',
 					entrydate : moment().format('YYYY-MM-DD'),
-					deptcode : $("#userdeptcode").val(),
+					deptcode : $("#rehabdept_dflt").val(),
 					chgcode : null,
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
@@ -849,7 +874,7 @@ var dialog_uomcode_rehab = new ordialog(
 
 			$("#jqGrid_rehab #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_rehab #"+id_optid+"_taxcode").val(data['taxcode']);
-			$("#jqGrid_rehab #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_rehab #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_rehab #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 			$("#jqGrid_rehab #"+id_optid+"_uom").val(data['uomcode']);
 			if(data['qtyonhand']!= null && parseInt(data['qtyonhand'] > 0)){
@@ -867,6 +892,7 @@ var dialog_uomcode_rehab = new ordialog(
 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
 				$(gridname+' tr#1').click();
 				$(gridname+' tr#1').dblclick();
+				$("#jqGrid_rehab input[name='qty']").focus();
 				$(obj.textfield).closest('td').next().find("input[type=text]").focus();
 			}
 		}
@@ -900,8 +926,8 @@ var dialog_uomcode_rehab = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		justb4refresh: function(obj_){
-			dialog_uomcode_rehab.urlParam.searchCol2=[];
-			dialog_uomcode_rehab.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -937,7 +963,7 @@ var dialog_uom_recv_rehab = new ordialog(
 					action: 'get_itemcode_uom_recv',
 					action_chk: 'get_itemcode_uom_recv_check',
 					entrydate : moment().format('YYYY-MM-DD'),
-					deptcode : $("#userdeptcode").val(),
+					deptcode : $("#rehabdept_dflt").val(),
 					chgcode : null,
 					uom:null,
 					billtype : $('#billtype_def_code').val(),
@@ -1007,8 +1033,8 @@ var dialog_uom_recv_rehab = new ordialog(
 			// 	.find("input[type=text]").focus();
 		},
 		justb4refresh: function(obj_){
-			dialog_uom_recv_rehab.urlParam.searchCol2=[];
-			dialog_uom_recv_rehab.urlParam.searchVal2=[];
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
 		},
 		justaftrefresh: function(obj_){
 			$("#Dtext_"+obj_.unique).val('');
@@ -1041,7 +1067,7 @@ var dialog_tax_rehab = new ordialog(
 				var id_optid = optid.substring(0,optid.search("_"));
 			}
 			let data=selrowData('#'+dialog_tax_rehab.gridname);
-			$("#jqGrid_rehab #"+id_optid+"_uom_rate").val(data['rate']);
+			$("#jqGrid_rehab #"+id_optid+"_tax_rate").val(data['rate']);
 			$("#jqGrid_rehab input#"+id_optid+"_taxcode").val(data.taxcode);
 		},
 		gridComplete: function(obj){
@@ -1055,6 +1081,7 @@ var dialog_tax_rehab = new ordialog(
 		
 	},{
 		title:"Select Tax Code For Item",
+		check_take_all_field : true,
 		open:function(obj_){
 
 			dialog_tax_rehab.urlParam.filterCol=['compcode','recstatus'];
@@ -1065,6 +1092,13 @@ var dialog_tax_rehab = new ordialog(
 			// 	.closest('td')						//utk dialog dalam jqgrid jer
 			// 	.next()
 			// 	.find("input[type=text]").focus();
+		},
+		justb4refresh: function(obj_){
+			obj_.urlParam.searchCol2=[];
+			obj_.urlParam.searchVal2=[];
+		},
+		justaftrefresh: function(obj_){
+			$("#Dtext_"+obj_.unique).val('');
 		}
 	},'urlParam', 'radio', 'tab' 	
 );
@@ -1082,10 +1116,10 @@ function itemcodeCustomEdit_rehab(val, opt) {
 
 	myreturn += `<div><input type='hidden' name='billtypeperct' id='`+id_optid+`_billtypeperct'>`;
 	myreturn += `<input type='hidden' name='billtypeamt' id='`+id_optid+`_billtypeamt'>`;
-	myreturn += `<input type='hidden' name='discamount' id='`+id_optid+`_discamount'>`;
+	myreturn += `<input type='hidden' name='discamount' id='`+id_optid+`_discamt'>`;
 	myreturn += `<input type='hidden' name='taxamount' id='`+id_optid+`_taxamount'>`;
 	// myreturn += `<input type='hidden' name='unitprce' id='`+id_optid+`_unitprce'>`;
-	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_uom_rate'>`;
+	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_tax_rate'>`;
 	myreturn += `<input type='hidden' name='qtyonhand' id='`+id_optid+`_qtyonhand'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
@@ -1110,17 +1144,13 @@ function taxcodeCustomEdit_rehab(val,opt){
 }
 function deptcodeCustomEdit_rehab(val,opt){  	
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-	if(val.trim() == ''){
-		val = $('#userdeptcode').val();
-		// write_detail_rehab('#jqgrid_detail_rehab_dept',val);
-	}
 	return $(`<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="deptcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>`);
 }
 function remarkCustomEdit_rehab(val,opt){
-	var myreturn = `<label class='oe_rehab_rehabel'>Dose</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="dosage" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
-	myreturn += `<label class='oe_rehab_rehabel'>Frequency</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="frequency" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
-	myreturn += `<label class='oe_rehab_rehabel'>Instruction</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="instruction" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
-	myreturn += `<label class='oe_rehab_rehabel'>Indicator</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="drugindicator" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`
+	var myreturn = `<label class='oe_rehab_label'>Dose</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="dosage" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
+	myreturn += `<label class='oe_rehab_label'>Frequency</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="frequency" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
+	myreturn += `<label class='oe_rehab_label'>Instruction</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="instruction" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`;
+	myreturn += `<label class='oe_rehab_label'>Indicator</label><div class="oe_rehab_div input-group"><input autocomplete="off" jqgrid="jqGrid_rehab" optid="`+opt.id+`" id="`+opt.id+`" name="drugindicator" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="`+val+`" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div>`
 
 	return $(myreturn);
 }
@@ -1171,6 +1201,6 @@ function cust_rules_rehab(value, name) {
 function set_userdeptcode(){
 	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
 		let rowdata = getrow_bootgrid();
-		$('#userdeptcode').val(rowdata.ward);
+		$('#rehabdept_dflt').val(rowdata.ward);
 	}
 }
