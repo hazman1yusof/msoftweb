@@ -148,6 +148,7 @@ class StockFreezeController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'unitcost' => $value->avgcost,
                         'thyqty' => $value->qtyonhand,
+                        'phyqty' => $value->qtyonhand,
                         'recno' => $phycnthd->recno,
                         'expdate' => $value->expdate,
                         'frzdate' => $phycnthd->frzdate,

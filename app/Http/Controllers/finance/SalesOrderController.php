@@ -75,6 +75,11 @@ class SalesOrderController extends defaultController
                         'db.upduser AS db_upduser',
                         'db.upddate AS db_upddate'
                     );
+
+        $table = $table->join('debtor.debtormast as dm', function($join) use ($request){
+                $join = $join->where('dm.compcode', '=', session('compcode'));
+                $join = $join->on('dm.debtorcode', '=', 'db.debtorcode');
+            });
         
         if(!empty($request->filterCol)){
             $table = $table->where($request->filterCol[0],'=',$request->filterVal[0]);
