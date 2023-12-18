@@ -138,7 +138,7 @@
 							[
 								
 								{text:'{{$obj->pricecode}}'},
-								{text:'{{$obj->itemcode}}\n{{$obj->description}}'},
+								{text:'{{$obj->itemcode}}\n{{!!$obj->description!!}}'},
 								{text:'{{$obj->uomcode}}'},
                                 {text:'{{$obj->qtydelivered}}'},
 								{text:'{{$obj->taxcode}}'},
