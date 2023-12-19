@@ -1838,7 +1838,102 @@
                         </div>
                     </div>
                     <div id="tab-careplan" class="tab-pane fade">
-                    
+                        <div class='col-md-12' style="padding-left: 0px; padding-right: 0px;">
+                            <div class="panel panel-info">
+                                <div class="panel-heading text-center" style="height:40px">
+                                    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
+                                        id="btn_grp_edit_careplan"
+                                        style="position: absolute;
+                                                padding: 0 0 0 0;
+                                                right: 40px;
+                                                top: 5px;">
+                                        <button type="button" class="btn btn-default" id="new_careplan">
+                                            <span class="fa fa-plus-square-o"></span> New
+                                        </button>
+                                        <button type="button" class="btn btn-default" data-oper='add' id="save_careplan">
+                                            <span class="fa fa-save fa-lg"></span> Save
+                                        </button>
+                                        <button type="button" class="btn btn-default" id="cancel_careplan">
+                                            <span class="fa fa-ban fa-lg" aria-hidden="true"> </span> Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="padding-right: 0px;">
+                                    <form class='form-horizontal' style='width:99%' id='formCarePlan'>
+                                        <div class="col-md-2" style="padding:0 0 0 0">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body">
+                                                    <table id="tbl_careplan_date" class="ui celled table" style="width: 100%;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="scope">idno</th>
+                                                                <th class="scope">mrn</th>
+                                                                <th class="scope">episno</th>
+                                                                <th class="scope">Date</th>
+                                                                <th class="scope">Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class='col-md-10' style="padding-right: 0px;">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body" style="padding-left: 0px; padding-right: 0px;">
+                                                    <div class='col-md-4' style="padding-left: 0px; padding-right: 0px;">
+                                                        <div class='col-md-12'>
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading text-center">PROBLEM</div>
+                                                                <div class="panel-body">
+                                                                    <textarea id="problem" name="problem" type="text" class="form-control input-sm"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class='col-md-12'>
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading text-center">DATA</div>
+                                                                <div class="panel-body">
+                                                                    <textarea id="problemdata" name="problemdata" type="text" class="form-control input-sm"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class='col-md-12'>
+                                                            <div class="panel panel-info">
+                                                                <div class="panel-heading text-center">INTEND INCOME</div>
+                                                                <div class="panel-body">
+                                                                    <textarea id="problemintincome" name="problemintincome" type="text" class="form-control input-sm"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class='col-md-4' style="padding-left: 0px;">
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading text-center">INTERVENTION</div>
+                                                            <div class="panel-body">
+                                                                <textarea id="nursintervention" name="nursintervention" type="text" class="form-control input-sm"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class='col-md-4' style="padding-left: 0px;">
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading text-center">EVALUATION</div>
+                                                            <div class="panel-body">
+                                                                <textarea id="nursevaluation" name="nursevaluation" type="text" class="form-control input-sm"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

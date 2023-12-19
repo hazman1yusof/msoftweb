@@ -26,14 +26,17 @@ class NursingNoteController extends defaultController
     public function table(Request $request)
     {
         switch($request->action){
-            case 'get_table_datetime':
+            case 'get_table_datetime':  // Progress Note
                 return $this->get_table_datetime($request);
             
-            case 'get_prescription':
+            case 'get_prescription':    // Drug Administration
                 return $this->get_prescription($request);
             
-            case 'get_datetime_treatment':
+            case 'get_datetime_treatment':  // Treatment
                 return $this->get_datetime_treatment($request);
+            
+            case 'get_datetime_careplan':   // Care Plan
+                return $this->get_datetime_careplan($request);
             
             default:
                 return 'error happen..';
@@ -90,6 +93,14 @@ class NursingNoteController extends defaultController
                         return 'error happen..';
                 }
             
+            case 'save_table_careplan':
+                switch($request->oper){
+                    case 'add':
+                        return $this->add_careplan($request);
+                    default:
+                        return 'error happen..';
+                }
+            
             case 'get_table_progress':
                 return $this->get_table_progress($request);
             
@@ -101,6 +112,9 @@ class NursingNoteController extends defaultController
             
             case 'get_table_treatment':
                 return $this->get_table_treatment($request);
+            
+            case 'get_table_careplan':
+                return $this->get_table_careplan($request);
             
             default:
                 return 'error happen..';
@@ -253,6 +267,48 @@ class NursingNoteController extends defaultController
                 // }else{
                 //     $date['enteredtime'] =  '-';
                 // }
+                
+                array_push($data,$date);
+            }
+            
+            $responce->data = $data;
+        }else{
+            $responce->data = [];
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_datetime_careplan(Request $request){
+        
+        $responce = new stdClass();
+        
+        $nurscareplan_obj = DB::table('nursing.nurscareplan')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('mrn','=',$request->mrn)
+                            ->where('episno','=',$request->episno);
+        
+        if($nurscareplan_obj->exists()){
+            $nurscareplan_obj = $nurscareplan_obj->get();
+            
+            $data = [];
+            
+            foreach ($nurscareplan_obj as $key => $value) {
+                $date['idno'] = $value->idno;
+                $date['mrn'] = $value->mrn;
+                $date['episno'] = $value->episno;
+                if(!empty($value->entereddate)){
+                    $date['entereddate'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->entereddate)->format('d-m-Y');
+                }else{
+                    $date['entereddate'] =  '-';
+                }
+                // $date['enteredtime'] = $value->enteredtime;
+                if(!empty($value->enteredtime)){
+                    $date['enteredtime'] =  Carbon::createFromFormat('H:i:s', $value->enteredtime)->format('h:i A');
+                }else{
+                    $date['enteredtime'] =  '-';
+                }
                 
                 array_push($data,$date);
             }
@@ -1092,6 +1148,44 @@ class NursingNoteController extends defaultController
         
     }
     
+    public function add_careplan(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table('nursing.nurscareplan')
+                ->insert([
+                    'compcode' => session('compcode'),
+                    'mrn' => $request->mrn_nursNote,
+                    'episno' => $request->episno_nursNote,
+                    'problem' => $request->problem,
+                    'problemdata' => $request->problemdata,
+                    'problemintincome' => $request->problemintincome,
+                    'nursintervention' => $request->nursintervention,
+                    'nursevaluation' => $request->nursevaluation,
+                    'entereddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'enteredtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'adduser'  => session('username'),
+                    'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'addtime'  => Carbon::now("Asia/Kuala_Lumpur"),
+                    'lastuser'  => session('username'),
+                    'lastupdate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                    'lastupdtime'  => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response('Error DB rollback!'.$e, 500);
+            
+        }
+        
+    }
+    
     public function get_table_progress(Request $request){
         
         $nurshandover_obj = DB::table('nursing.nurshandover')
@@ -1198,6 +1292,25 @@ class NursingNoteController extends defaultController
         if($injection_obj->exists()){
             $injection_obj = $injection_obj->first();
             $responce->injection = $injection_obj;
+        }
+        
+        return json_encode($responce);
+        
+    }
+    
+    public function get_table_careplan(Request $request){
+        
+        $nurscareplan_obj = DB::table('nursing.nurscareplan')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('idno','=',$request->idno);
+                            // ->where('mrn','=',$request->mrn)
+                            // ->where('episno','=',$request->episno);
+        
+        $responce = new stdClass();
+        
+        if($nurscareplan_obj->exists()){
+            $nurscareplan_obj = $nurscareplan_obj->first();
+            $responce->nurscareplan = $nurscareplan_obj;
         }
         
         return json_encode($responce);
