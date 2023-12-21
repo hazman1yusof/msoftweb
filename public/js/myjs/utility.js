@@ -1528,7 +1528,7 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 		renull_search(this);
 		if (before_check !== undefined && before_check !== null) {
-			renull_search(this);
+			// renull_search(this);
 			before_check(self);
 		}
 		if(idtopush){ /// ni nk tgk sama ada from idtopush exist atau tak
@@ -1672,11 +1672,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 			}
 
 			if(self.dialog_.hasOwnProperty('after_check')){
-				self.dialog_.after_check(data,self,id,fail);
+				self.dialog_.after_check(data,self,id,fail,errorField);
 			}
 
-			if (after_check !== undefined && after_check !== null) {
-				after_check(data,self,id,fail);
+			if(after_check !== undefined && after_check !== null) {
+				after_check(data,self,id,fail,errorField);
 			}
 
 			if(index == -1){

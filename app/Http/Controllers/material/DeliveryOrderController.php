@@ -1091,8 +1091,8 @@ class DeliveryOrderController extends defaultController
                     'amtdisc' => $value->amtdisc, 
                     'amtslstax' => $value->amtslstax, 
                     'netunitprice' => $value->netunitprice,
-                    'amount' => $value->amount, 
-                    'totamount' => $value->totamount,
+                    'amount' => 0, 
+                    'totamount' => 0,
                     'productcat' => $productcat,
                     'srcdocno' => $po_hd->purordno,
                     'prdept' => $value->prdept, 
@@ -1259,6 +1259,7 @@ class DeliveryOrderController extends defaultController
             $podt_obj = DB::table('material.purorddt')
                             ->where('compcode','=',session('compcode'))
                             ->where('purordno','=',$do_hd->srcdocno)
+                            ->where('prdept','=',$do_hd->prdept)
                             ->where('recstatus','!=','COMPLETED');
 
             if($podt_obj->exists()){
@@ -1268,7 +1269,9 @@ class DeliveryOrderController extends defaultController
             }
 
             $po_hd = DB::table('material.purordhd')
+                    ->where('compcode','=',session('compcode'))
                     ->where('purordno', '=', $do_hd->srcdocno)
+                    ->where('prdept', '=', $do_hd->prdept)
                     ->update(['recstatus'  => $recstatus]);
         }
     }

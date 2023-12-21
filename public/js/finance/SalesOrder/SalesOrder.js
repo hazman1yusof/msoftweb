@@ -882,7 +882,10 @@ $(document).ready(function () {
 		loadonce: false,
 		width: 1150,
 		height: 200,
-		rowNum: 10,
+	    rowNum: 1000000,
+	    pgbuttons: false,
+	    pginput: false,
+	    pgtext: "",
 		sortname: 'idno',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -903,7 +906,7 @@ $(document).ready(function () {
 				$('#jqGrid2').jqGrid ('setSelection', "1");
 			}
 
-			setjqgridHeight(data,'jqGrid2');
+			// setjqgridHeight(data,'jqGrid2');
 			
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 			
@@ -1054,6 +1057,7 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='unitprice'],#jqGrid2 input[name='billtypeamt'],#jqGrid2 input[name='quantity'],#jqGrid2 input[name='chggroup']").on('focus',remove_noti);
 
 			$("#jqGrid2 input[name='qtyonhand']").keydown(function(e) {//when click tab at totamount, auto save
+				console.log(code)
 				var code = e.keyCode || e.which;
 				if (code == '9'){
 					delay(function(){

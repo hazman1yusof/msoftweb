@@ -2121,7 +2121,10 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 30,
+	    rowNum: 1000000,
+	    pgbuttons: false,
+	    pginput: false,
+	    pgtext: "",
 		sortname: 'idno',
 		pager: "#jqGridPager4",
 		onSelectRow:function(rowid, selected){

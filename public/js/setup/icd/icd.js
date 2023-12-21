@@ -28,23 +28,23 @@ $(document).ready(function () {
 	var err_reroll = new err_reroll('#jqGrid',['icdcode', 'description']);
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
     var urlParam={
-        action:'get_table_default',
-        //url:'icd/table',
-        // field:'',
-		// table_name:['hisdb.diagtab AS dt', 'sysdb.sysparam AS sp'],
-		// table_id:'idno',
-		// join_type:['LEFT JOIN'],
-		// join_onCol:['dt.type'],
-		// join_onVal:['sp.pvalue1'],
-		// filterCol:['dt.type','dt.compcode'],
-		// filterVal:['','session.coompcode'],
-		// sort_idno: true,
-		url: 'util/get_table_default',
-		field: '',
-		table_name: 'hisdb.diagtab',
-		table_id: 'idno',
-		filterCol:['compcode'],
-		filterVal:['session.compcode']
+        action:'',
+        url:'icd/table',
+        field:'',
+		table_name:['hisdb.diagtab AS dt', 'sysdb.sysparam AS sp'],
+		table_id:'idno',
+		join_type:['LEFT JOIN'],
+		join_onCol:['dt.type'],
+		join_onVal:['sp.pvalue1'],
+		filterCol:['dt.type','dt.compcode'],
+		filterVal:['','session.coompcode'],
+		sort_idno: true,
+		// url: 'util/get_table_default',
+		// field: '',
+		// table_name: 'hisdb.diagtab',
+		// table_id: 'idno',
+		// filterCol:[],
+		// filterVal:[]
 	}
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
@@ -54,7 +54,7 @@ $(document).ready(function () {
         editurl: "/icd/form",
 		colModel: [
             { label: 'idno', name: 'idno', width: 5,hidden:true, key:true},
-			{ label: 'compcode', name: 'compcode', hidden: true },
+			// { label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'ICD Code', name: 'icdcode', width: 20, canSearch: true, editable: true, editrules: { required: true }, editoptions: {style: "text-transform: uppercase" }},
 			{ label: 'Description', name: 'description', classes: 'wrap', width: 100, canSearch: true, checked: true, editable: true, edittype: "textarea", editrules: { required: true }, 
 				editoptions: 

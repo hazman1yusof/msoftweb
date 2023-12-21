@@ -487,6 +487,17 @@ class StockCountController extends defaultController
                             ]);
                     }
 
+                    DB::table('material.stockloc')
+                            ->where('compcode','=',session('compcode'))
+                            ->where('unit','=',session('unit'))
+                            ->where('itemcode','=',$value->itemcode)
+                            ->where('uomcode','=',$value->uomcode)
+                            ->where('deptcode','=',$value->srcdept)
+                            ->where('year', '=', $yearperiod->year)
+                            ->update([
+                                'frozen' => '0',
+                            ]);
+
                 }
 
                 //--- 8. change recstatus to posted ---//
@@ -567,7 +578,7 @@ class StockCountController extends defaultController
             dump($queries);
 
 
-            // DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
 

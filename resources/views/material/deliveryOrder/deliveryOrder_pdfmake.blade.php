@@ -26,7 +26,7 @@
 		@foreach($delorddt as $key => $dodt)
 		[
 			@foreach($dodt as $key2 => $val)
-				{'{{$key2}}' : `{{$val}}`},
+				{'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`},
 			@endforeach
 		],
 		@endforeach 
@@ -138,8 +138,8 @@
 							[
 								
 								{text:'{{$obj->pricecode}}'},
-								{text:'{{$obj->itemcode}}\n{{!!$obj->description!!}}'},
-								{text:'{{$obj->uomcode}}'},
+								{text:`{{$obj->itemcode}}\n{!!str_replace('`', '', $obj->description)!!}`},
+								{text:`{!!$obj->uomcode!!}`},
                                 {text:'{{$obj->qtydelivered}}'},
 								{text:'{{$obj->taxcode}}'},
 								{text:'{{number_format($obj->unitprice,2)}}', alignment: 'right'},

@@ -16,6 +16,7 @@ $(document).ready(function () {
 	conf = {
 		onValidate : function($form) {
 			if(errorField.length>0){
+				console.log(errorField);
 				show_errors(errorField,'#formdata');
 				return [{
 					element : $('#'+$form.attr('id')+' input[name='+errorField[0]+']'),
@@ -51,17 +52,18 @@ $(document).ready(function () {
 				case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", true);
 					$("#pg_jqGridPager2 table").show();
+					$("#jqGrid2_ilsave").hide();
 					enableForm('#formdata');
 					rdonly('#formdata');
 					break;
 				case state = 'edit':
-					$("#pg_jqGridPager2 table").hide();
+					$("#saveDetailLabel, #jqGrid2_ilsave").hide();
 					disableForm('#formdata');
 					rdonly('#formdata');
 					break;
 				case state = 'view':
 					disableForm('#formdata');
-					$("#pg_jqGridPager2 table").hide();
+					$("#saveDetailLabel, #jqGrid2_ilsave").hide();
 					break;
 			}if(oper!='add'){
 
@@ -538,7 +540,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 30,
+		rowNum: 50,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -552,6 +554,8 @@ $(document).ready(function () {
 								if(text.search("jqg") != -1)return false;return true;
 							});
 			if(result.length == 0 && oper=='edit')unsaved = true;
+
+        	calc_jq_height_onchange("jqGrid2",false,900);
 		},
 		afterShowForm: function (rowid) {
 		},
@@ -667,6 +671,7 @@ $(document).ready(function () {
 		mycurrency.formatOff();
 		mycurrency.check0value(errorField);
 		unsaved = false;
+		console.log($('#formdata').isValid({requiredFields:''},conf,true));
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
 			dialog_srcdept.off();
 			dialog_rackno.off();
@@ -916,7 +921,16 @@ $(document).ready(function () {
 				dialog_itemcodeto.urlParam.join_filterVal = [['p.compcode','p.uomcode','p.unit'],['e.compcode','e.uomcode','e.unit','e.deptcode','e.year']];
 			},
 			close: function(obj_){
-			}
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('itemto',errorField)!==-1){
+						errorField.splice($.inArray('itemto',errorField), 1);
+					}
+				}
+			},
 		},'urlParam','radio','tab'
 	);
 	dialog_itemcodeto.makedialog(true);
@@ -998,16 +1012,6 @@ function populate_form(obj){
 function empty_form(){
 	$('#srcdept_show').text('');
 	$('#docno_show').text('');
-}
-
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<50){
-		scrollHeight = 50;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
 }
 
 function fail_msg_func(fail_msg_div=null){

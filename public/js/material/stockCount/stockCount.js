@@ -491,7 +491,7 @@ $(document).ready(function () {
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'idno', name: 'idno',hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 50, classes: 'wrap',editable:false, hidden:true},
-			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:false, hidden:true},
+			{ label: 'Line No', name: 'lineno_', width: 30, classes: 'wrap', editable:false},
 			{ label: 'Item Code', name: 'itemcode', width: 200, classes: 'wrap', editable:false,
 					editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
 						edittype:'custom',	editoptions:
@@ -542,10 +542,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-	    rowNum: 1000000,
-	    pgbuttons: false,
-	    pginput: false,
-	    pgtext: "",
+		rowNum: 50,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
@@ -675,10 +672,10 @@ $(document).ready(function () {
 		    }
 
             $("#jqGridPager2CancelAll,#jqGridPager2SaveAll").show();
-            $("#jqGridPager2EditAll").hide();
+            $("#jqGridPager2EditAll,#jqGridPager2_center").hide();
 
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='thyqty']"]);
-			mycurrency_np.formatOnBlur();
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='phyqty']"]);
+			// mycurrency_np.formatOnBlur();
 
 			$("#jqGrid2 input[name='phyqty']").on('blur',{currency: mycurrency_np},calculate_vrqty);
 
@@ -720,7 +717,7 @@ $(document).ready(function () {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
 				
-	            $("#jqGridPager2EditAll").show();
+	            $("#jqGridPager2EditAll,#jqGridPager2_center").show();
 	            $("#jqGrid2_ilsave,#jqGridPager2CancelAll,#jqGridPager2SaveAll").hide();
 				refreshGrid("#jqGrid2",urlParam2);
 			});
@@ -733,7 +730,7 @@ $(document).ready(function () {
 		onClickButton: function(){
 			refreshGrid("#jqGrid2",urlParam2);
 
-            $("#jqGridPager2EditAll").show();
+            $("#jqGridPager2EditAll,#jqGridPager2_center").show();
             $("#jqGridPager2CancelAll,#jqGridPager2SaveAll").hide();
 
 		},
@@ -1221,17 +1218,19 @@ function vrqty_formatter(cellvalue, options, rowObject){
 }
 
 function calculate_vrqty(event){
-		event.data.currency.formatOff();
-		
-		var optid = event.currentTarget.id;
-		var id_optid = optid.substring(0,optid.search("_"));
+	// event.data.currency.formatOff();
+	
+	var optid = event.currentTarget.id;
+	var id_optid = optid.substring(0,optid.search("_"));
 
-		let phyqty = parseFloat($("#jqGrid2 #"+id_optid+"_phyqty").val());
-		let thyqty = parseFloat($("#jqGrid2 #"+id_optid+"_thyqty").val());
-		let vrqty =  phyqty - thyqty;
+	let phyqty = parseFloat($("#jqGrid2 #"+id_optid+"_phyqty").val());
+	let thyqty = parseFloat($("#jqGrid2 #"+id_optid+"_thyqty").val());
+	let vrqty =  phyqty - thyqty;
 
-		$("#jqGrid2 #"+id_optid+"_vrqty").val(vrqty);
+	$("#jqGrid2 #"+id_optid+"_vrqty").val(vrqty);
 
-		event.data.currency.formatOn();
-	}
+
+	$("#jqGrid2 #"+id_optid+"_phyqty").val(numeral($("#jqGrid2 #"+id_optid+"_phyqty").val()).format('0,0'));
+	// event.data.currency.formatOn();
+}
 

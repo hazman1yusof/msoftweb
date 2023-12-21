@@ -106,16 +106,16 @@ class StockFreezeController extends defaultController
                             ->first();
 
             $stockloc = DB::table('material.stockloc as s')
-                            ->select('s.itemcode','s.uomcode','p.avgcost','s.qtyonhand','se.expdate','se.batchno')
+                            ->select('s.itemcode','s.uomcode','p.avgcost','se.balqty','se.expdate','se.batchno')
 
-                            ->leftjoin('material.product as p', function($join) use ($request){
+                            ->join('material.product as p', function($join) use ($request){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
                                 $join = $join->on('p.uomcode', '=', 's.uomcode');
                                 $join = $join->where('p.compcode', '=', session('compcode'));
                                 $join = $join->where('p.unit', '=', session('unit'));
                             })
 
-                            ->leftjoin('material.stockexp as se', function($join) use ($request){
+                            ->join('material.stockexp as se', function($join) use ($request){
                                 $join = $join->on('se.itemcode', '=', 's.itemcode');
                                 $join = $join->on('se.deptcode', '=', 's.deptcode');
                                 $join = $join->on('se.uomcode', '=', 's.uomcode');
@@ -128,10 +128,19 @@ class StockFreezeController extends defaultController
                 $stockloc = $stockloc->where('rackno',$request->rackno);
             }
 
+            if(empty($request->itemfrom)){
+                $itemfrom = '0';
+            }else{
+                $itemfrom = $request->itemfrom;
+            }
+
             $stockloc =  $stockloc
                             ->where('s.compcode',session('compcode'))
+                            ->where('s.unit',session('unit'))
                             ->where('s.deptcode',$request->srcdept)
-                            ->whereBetween('s.itemcode',[$request->itemfrom,$request->itemto])
+                            ->whereBetween('s.itemcode',[$itemfrom,$request->itemto])
+                            ->where('s.year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
+                            ->orderBy('s.itemcode', 'DESC')
                             ->get();
 
             foreach ($stockloc as $key => $value){
@@ -147,8 +156,8 @@ class StockFreezeController extends defaultController
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'unitcost' => $value->avgcost,
-                        'thyqty' => $value->qtyonhand,
-                        'phyqty' => $value->qtyonhand,
+                        'thyqty' => $value->balqty,
+                        'phyqty' => $value->balqty,
                         'recno' => $phycnthd->recno,
                         'expdate' => $value->expdate,
                         'frzdate' => $phycnthd->frzdate,
@@ -159,8 +168,11 @@ class StockFreezeController extends defaultController
                // update frozen = yes at stockloc
                 DB::table('material.stockloc')
                     ->where('compcode','=',session('compcode'))
+                    ->where('unit','=',session('unit'))
                     ->where('itemcode','=',$value->itemcode)
+                    ->where('uomcode','=',$value->uomcode)
                     ->where('deptcode','=',$phycnthd->srcdept)
+                    ->where('year', '=', Carbon::now("Asia/Kuala_Lumpur")->format('Y'))
                     ->update([
                         'frozen' => '1',
                     ]);
