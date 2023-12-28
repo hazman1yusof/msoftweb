@@ -17,10 +17,12 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Events\BeforeSheet;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\FromView;
+use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithColumnWidths, WithColumnFormatting
+class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -30,128 +32,67 @@ class SalesOrderExport implements FromCollection,WithEvents,WithHeadings,WithCol
     {
         $this->datefr = $datefr;
         $this->dateto = $dateto;
+        $this->dbacthdr_len=0;
 
         $this->comp = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
     }
 
-    public function collection()
-    {
-        $dbacthdr = DB::table('debtor.dbacthdr')
-                        ->select('compcode','source','trantype','auditno','entrydate','debtorcode','payercode','remark','deptcode')
-                        ->whereBetween('entrydate',[$this->datefr,$this->dateto])
-                        ->get();
-
-        return $dbacthdr;
-    }
-
-    public function headings(): array
-    {
-        return [
-            'compcode','source','trantype','auditno','entrydate','deptcode','debtorcode','payercode','remark'
-        ];
-    }
-
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 10,    
-            'C' => 10,
-            'D' => 8,   
-            'E' => 12,
-            'F' => 12,   
-            'G' => 12,
-            'H' => 12,   
-            'I' => 50,          
+            'A' => 10,
+            'B' => 20,    
+            'C' => 15,
+            'D' => 15,   
+            'E' => 40,
+            'F' => 15,   
+                 
         ];
     }
 
-    public function columnFormats(): array
+    public function view(): View
     {
-        return [
-
-           'B' => NumberFormat::FORMAT_DATE_DDMMYYYY,
-
-          
-        ];
+        $datefr = Carbon::parse($this->datefr)->format('Y-m-d H:i:s');
+        $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.invno', 'dh.entrydate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode','=',session('compcode'))
+                    ->whereIn('dh.trantype',['IN'])
+                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->get();
+        
+        $title = "SALES REPORT";
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr','company', 'title'));
     }
 
     public function registerEvents(): array
     {
-
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                // set up a style array for cell formatting
-                $style_header = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
-                ];
-
-                $style_address = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_RIGHT
-                    ]
-                ];
-
-                $style_datetime = [
-                    'font' => [
-                        'bold' => true,
-                    ],
-                    'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_LEFT
-                    ]
-                ];
-
-                // at row 1, insert 2 rows
-                $event->sheet->insertNewRowBefore(1, 6);
-
-                // merge cells for full-width
-                // $event->sheet->mergeCells('A5:I5');
-                // $event->sheet->mergeCells('A6:I6');
-
-                ///// assign cell values
-                $event->sheet->setCellValue('A1','PRINTED DATE :');
-                $event->sheet->setCellValue('B1', Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y'));
-                $event->sheet->setCellValue('A2','PRINTED TIME :');
-                $event->sheet->setCellValue('B2', Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
-                $event->sheet->setCellValue('A3','PRINTED BY :');
-                $event->sheet->setCellValue('B3', session('username'));
-                $event->sheet->setCellValue('F1','SALES ORDER REPORT');
-                $event->sheet->setCellValue('F2',sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto));
-                $event->sheet->setCellValue('I1',$this->comp->name);
-                $event->sheet->setCellValue('I2',$this->comp->address1);
-                $event->sheet->setCellValue('I3',$this->comp->address2);
-                $event->sheet->setCellValue('I4',$this->comp->address3);
-                $event->sheet->setCellValue('I5',$this->comp->address4);
-
-                //Date::dateTimeToExcel($invoice->created_at);
-
-                ///// assign cell styles
-                $event->sheet->getStyle('A1:A3')->applyFromArray($style_datetime);
-                $event->sheet->getStyle('F1:F2')->applyFromArray($style_header);
-                $event->sheet->getStyle('I1:I5')->applyFromArray($style_address);
-
-                // $drawing = new Drawing();
-                // $drawing->setName('Logo');
-                // $drawing->setDescription('This is my logo');
-                // $drawing->setPath(public_path('/img/logo.jpg'));
-                // $drawing->setHeight(80);
-                // $drawing->setCoordinates('E1');
-                // $drawing->setOffsetX(40);
-                // $drawing->setWorksheet($event->sheet->getDelegate());
-
+                $event->sheet->getPageSetup()->setPaperSize(9);//A4
+                
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSALES REPORT"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                
+                $event->sheet->getPageMargins()->setTop(1);
+                
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
+                $event->sheet->getStyle('A:K')->getAlignment()->setWrapText(true);
+                $event->sheet->getPageSetup()->setFitToWidth(1);
+                $event->sheet->getPageSetup()->setFitToHeight(0);
             },
         ];
     }
-
 
 }
