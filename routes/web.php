@@ -438,6 +438,7 @@ Route::get('/stockCount/table','material\StockCountController@table');
 Route::post('/stockCount/form','material\StockCountController@form');
 Route::get('/stockCount/form','material\StockCountController@form');
 Route::get('/stockCount/showpdf','material\StockCountController@showpdf');
+Route::get('/stockCount/showExcel','material\StockCountController@showExcel');
 Route::post('/stockCountDetail/form','material\StockCountDetailController@form');
 Route::get('/stockCountDetail/table','material\StockCountDetailController@table');
 

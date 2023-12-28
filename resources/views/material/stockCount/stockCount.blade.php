@@ -119,8 +119,11 @@ i.fa {
 
     <div class="panel panel-default">
     	<div class="panel-heading">Stock Count Header
-			<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
-				<span class='fa fa-print'></span> Print 
+    		<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel' href="" target="_blank" >
+				<span class='fa fa-file-excel-o fa-lg'></span> Download Excel 
+			</a>
+			<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #a35252;" id='pdfgen1' href="" target="_blank">
+				<span class='fa fa-file-pdf-o fa-lg'></span> Print PDF
 			</a>
 		</div>
     		<div class="panel-body">

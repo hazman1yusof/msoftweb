@@ -43,8 +43,6 @@ $(document).ready(function () {
 
             $("#jqGridPager2EditAll").show();
             $("#jqGrid2_ilsave,#jqGridPager2CancelAll,#jqGridPager2SaveAll").hide();
-
-			$('#jqGridPager2EditAll').data('click',true);
 			unsaved = false;
 			errorField.length=0;
 			parent_close_disabled(true);
@@ -53,20 +51,16 @@ $(document).ready(function () {
 			switch(oper) {
 				case state = 'add':
 					$("#jqGrid2").jqGrid("clearGridData", true);
-					$("#pg_jqGridPager2 table").show();
 					enableForm('#formdata');
 					rdonly('#formdata');
 					break;
 				case state = 'edit':
-					$("#pg_jqGridPager2 table").hide();
 					disableForm('#formdata');
                     enableForm('#formdata2');
-                    $("#pg_jqGridPager2 table").show();
 					rdonly('#formdata');
 					break;
 				case state = 'view':
 					disableForm('#formdata');
-					$("#pg_jqGridPager2 table").hide();
 					break;
 			}if(oper!='add'){
 
@@ -85,6 +79,9 @@ $(document).ready(function () {
 				dialog_itemcodefrom.check(errorField);
 				if($('#itemto').val() != 'ZZZ'){
 					dialog_itemcodeto.check(errorField);
+				}
+				if(selrowData("#jqGrid").recstatus.toUpperCase() != 'OPEN'){
+            		$("#jqGridPager2EditAll").hide();
 				}
 
 			}if(oper!='view'){
@@ -195,9 +192,9 @@ $(document).ready(function () {
 
 			refreshGrid("#jqGrid3",urlParam2);
 
-			$("#pdfgen1").attr('href','./inventoryTransaction/showpdf?recno='+selrowData("#jqGrid").recno);
+			$("#pdfgen1").attr('href','./stockCount/showpdf?recno='+selrowData("#jqGrid").recno);
 
-			$("#pdfgen2").attr('href','./inventoryTransaction/showpdf?recno='+selrowData("#jqGrid").recno);
+			$("#pdfgen_excel").attr('href','./stockCount/showExcel?recno='+selrowData("#jqGrid").recno);
 
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){

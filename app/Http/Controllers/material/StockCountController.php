@@ -9,6 +9,8 @@ use DB;
 use DateTime;
 use Carbon\Carbon;
 use PDF;
+use App\Exports\StockTakeExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StockCountController extends defaultController
 {   
@@ -765,124 +767,28 @@ class StockCountController extends defaultController
             abort(404);
         }
         
-        $ivtmphd = DB::table('material.ivtmphd')
+        $phycnthd = DB::table('material.phycnthd')
             ->where('compcode','=',session('compcode'))
             ->where('recno','=',$recno)
             ->first();
 
-        $ivtmpdt = DB::table('material.ivtmpdt AS ivdt')
-            ->select('ivdt.compcode','ivdt.recno','ivdt.lineno_','ivh.trandate','ivdt.itemcode','p.description', 'ivdt.qtyonhand','ivdt.uomcode', 'ivdt.qtyonhandrecv','ivdt.uomcoderecv',
-            'ivdt.txnqty','ivdt.qtyrequest','ivdt.netprice','ivdt.amount','ivdt.expdate','ivdt.batchno')
-            ->leftJoin('material.productmaster as p', function($join) use ($request){
-                        $join = $join->on('ivdt.itemcode', '=', 'p.itemcode')
-                                ->where('p.compcode','=',session('compcode'));
+        $phycntdt = DB::table('material.phycntdt AS pdt')
+            ->select('pdt.idno','pdt.compcode','pdt.srcdept','pdt.phycntdate','pdt.phycnttime','pdt.lineno_','pdt.itemcode','pdt.uomcode','pdt.adduser','pdt.adddate','pdt.upduser','pdt.upddate','pdt.unitcost','pdt.phyqty','pdt.thyqty','pdt.recno','pdt.expdate','pdt.updtime','pdt.stktime','pdt.frzdate','pdt.frztime','pdt.dspqty','pdt.batchno','p.description')
+            ->leftJoin('material.product as p', function($join) use ($request){
+                        $join = $join->on('p.itemcode', '=', 'pdt.itemcode')
+                                     ->on('p.uomcode', '=', 'pdt.uomcode')
+                                     ->where('p.unit','=',session('unit'))
+                                     ->where('p.compcode','=',session('compcode'));
                     })
-            ->leftJoin('material.ivtmphd as ivh', function($join) use ($request){
-                        $join = $join->on('ivh.recno', '=', 'ivdt.recno')
-                                ->where('ivh.compcode','=',session('compcode'));
-                    })
-            ->where('ivdt.compcode','=',session('compcode'))
-            ->where('ivdt.recno','=',$recno)
+            ->where('pdt.compcode','=',session('compcode'))
+            ->where('pdt.recno','=',$recno)
             ->get();
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
 
-        $total_amt = DB::table('material.ivtmpdt')
-            ->where('compcode','=',session('compcode'))
-            ->where('recno','=',$recno)
-            ->sum('amount');
-
-        // $total_tax = DB::table('material.ivtmpdt')
-        //     ->where('compcode','=',session('compcode'))
-        //     ->where('recno','=',$recno)
-        //     ->sum('amtslstax');
-        
-        // $total_discamt = DB::table('material.ivtmpdt')
-        //     ->where('compcode','=',session('compcode'))
-        //     ->where('recno','=',$recno)
-        //     ->sum('amtdisc');
-
-        $totamount_expld = explode(".", (float)$ivtmphd->amount);
-
-        // $totamt_bm_rm = $this->convertNumberToWordBM($totamount_expld[0])." RINGGIT ";
-        // $totamt_bm = $totamt_bm_rm." SAHAJA";
-
-        // if(count($totamount_expld) > 1){
-        //     $totamt_bm_sen = $this->convertNumberToWordBM($totamount_expld[1])." SEN";
-        //     $totamt_bm = $totamt_bm_rm.$totamt_bm_sen." SAHAJA";
-        // }
-
-
-        //account
-        $cc_acc = [];
-        foreach ($ivtmpdt as $value) {
-            $gltran = DB::table('finance.gltran as gl')
-                   ->where('gl.compcode',session('compcode'))
-                   ->where('gl.auditno',$value->recno)
-                   ->where('gl.lineno_',$value->lineno_)
-                   ->where('gl.source',$ivtmphd->source)
-                   ->where('gl.trantype',$ivtmphd->trantype)
-                   ->first();
-
-            $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
-            $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
-
-            if(!array_key_exists($drkey,$cc_acc)){
-                $cc_acc[$drkey] = floatval($gltran->amount);
-            }else{
-                $curamt = floatval($cc_acc[$drkey]);
-                $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
-            }
-            if(!array_key_exists($crkey,$cc_acc)){
-                $cc_acc[$crkey] = -floatval($gltran->amount);
-            }else{
-                $curamt = floatval($cc_acc[$crkey]);
-                $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
-            }
-        }
-
-        $cr_acc=[];
-        $db_acc=[];
-        foreach ($cc_acc as $key => $value) {
-            $cc = explode("_",$key)[0];
-            $acc = explode("_",$key)[1];
-            $cc_desc = '';
-            $acc_desc = '';
-
-            $costcenter = DB::table('finance.costcenter')
-                        ->where('compcode',session('compcode'))
-                        ->where('costcode',$cc);
-
-            $glmasref = DB::table('finance.glmasref')
-                        ->where('compcode',session('compcode'))
-                        ->where('glaccno',$acc);
-
-            if($costcenter->exists()){
-                $cc_desc = $costcenter->first()->description;
-            }
-
-            if($glmasref->exists()){
-                $acc_desc = $glmasref->first()->description;
-            }
-
-            if(floatval($value) > 0){
-                array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
-            }else{
-                array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
-            }
-        }
-
-        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm."";
-
-        if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-        }
-        
-        return view('material.inventoryTransaction.inventoryTransaction_pdfmake',compact('ivtmphd','ivtmpdt', 'company','total_amt','cr_acc','db_acc'));
+        return view('material.stockCount.stockCount_pdfmake',compact('phycnthd','phycntdt','company'));
         
     }
 
@@ -916,6 +822,10 @@ class StockCountController extends defaultController
         $responce->drccode = $drccode;
 
         return $responce;
+    }
+
+    public function showExcel(Request $request){
+        return Excel::download(new StockTakeExport($request->recno), 'StockTakeExport.xlsx');
     }
 }
 
