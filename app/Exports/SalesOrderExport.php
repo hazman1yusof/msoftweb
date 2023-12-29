@@ -43,7 +43,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 10,
-            'B' => 20,    
+            'B' => 15,    
             'C' => 15,
             'D' => 15,   
             'E' => 40,
