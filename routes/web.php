@@ -442,6 +442,10 @@ Route::get('/stockCount/showExcel','material\StockCountController@showExcel');
 Route::post('/stockCountDetail/form','material\StockCountDetailController@form');
 Route::get('/stockCountDetail/table','material\StockCountDetailController@table');
 
+//// stock balance report ///
+Route::get('/stockBalance','material\stockBalanceController@show');
+Route::get('/stockBalance/report','material\stockBalanceController@report');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');

@@ -64,8 +64,10 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.source','=','PB')
+                    ->where('dh.recstatus','=', 'POSTED')
                     ->whereIn('dh.trantype',['IN'])
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
         
         $title = "SALES REPORT";

@@ -410,6 +410,7 @@ class SalesOrderController extends defaultController
                             'chggroup' => $chgmast->chggroup,
                             'taxamount' => $billsum_obj->taxamt,
                             'billno' => $invno,
+                            'invno' => $invno,
                             'uom' => $billsum_obj->uom,
                             'billtime' => $dbacthdr->entrytime,
                             'invgroup' => $chgmast->invgroup,
