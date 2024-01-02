@@ -270,6 +270,7 @@ class StockCountController extends defaultController
                     DB::table('material.ivtxndt')
                         ->insert([
                             'compcode' => session('compcode'), 
+                            'unit' => session('unit'), 
                             'recno' => $value->recno, 
                             'lineno_' => $value->lineno_, 
                             'itemcode' => $value->itemcode, 
@@ -293,6 +294,8 @@ class StockCountController extends defaultController
                             // 'qtyonhandrecv' => $value->phyqty,  
                             'batchno' => $value->batchno, 
                             'amount' => $amount, 
+                            'gstamount' => 0.00, 
+                            'totamount' => $amount, 
                             'trandate' => Carbon::now("Asia/Kuala_Lumpur"),
                             // 'sndrcv' => $value->srcdept,
                         ]);
