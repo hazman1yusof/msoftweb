@@ -4,6 +4,7 @@ namespace App\Http\Controllers\material;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use DB;
 
 class StocklocEnquiryController extends defaultController
 {   
@@ -19,7 +20,12 @@ class StocklocEnquiryController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('material.stocklocEnquiry.stocklocEnquiry');
+        $lastperiod = DB::table('sysdb.period')
+                        ->where('compcode',session('compcode'))
+                        ->orderBy('idno','desc')
+                        ->first();
+
+        return view('material.stocklocEnquiry.stocklocEnquiry',compact('lastperiod'));
     }
 
     public function form(Request $request)

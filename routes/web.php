@@ -446,6 +446,12 @@ Route::get('/stockCountDetail/table','material\StockCountDetailController@table'
 Route::get('/stockBalance','material\stockBalanceController@show');
 Route::get('/stockBalance/report','material\stockBalanceController@report');
 
+//// stock balance report ///
+Route::get('/yearEnd','material\YearEndController@yearEnd');
+Route::get('/yearEndProcess','material\YearEndController@yearEndProcess');
+Route::post('/yearEnd/form','material\YearEndController@form');
+Route::get('/yearEnd/table','material\YearEndController@table');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
