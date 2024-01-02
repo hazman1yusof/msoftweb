@@ -59,18 +59,11 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.dbacthdr as da')
-                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name', 'da.trantype as da_trantype', 'da.recptno as da_recptno', 'da.paymode as da_paymode')
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
                                     ->where('dm.compcode', '=', session('compcode'));
-                    })
-                    ->leftJoin('debtor.dbacthdr as da', function($join){
-                        $join = $join->on('da.payercode', '=', 'dh.payercode')
-                                    ->on('da.entrydate', '=', 'dh.entrydate')
-                                    ->where('da.compcode', '=', session('compcode'))
-                                    ->where('da.source', '=', 'PB')
-                                    ->whereIn('da.trantype',['RC','RD','CN']);
                     })
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source', '=', 'PB')
@@ -78,8 +71,80 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                     ->whereBetween('dh.entrydate', [$datefr, $dateto])
                     ->orderBy('dh.entrydate','ASC')
                     ->get();
-        
-        // dd($dbacthdr);
+
+
+        $array_report = [];
+        foreach ($dbacthdr as $key => $value){
+            $value->card_amount = 0;
+            $value->cheque_amount = 0;
+            $value->cash_amount = 0;
+            $value->tt_amount = 0;
+            $value->cn_amount = 0;
+            array_push($array_report, $value);
+
+            $dbacthdr_ex = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
+                        ->leftJoin('debtor.debtormast as dm', function($join){
+                            $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                        ->where('dm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dh.payercode', '=', $value->payercode)
+                        ->where('dh.entrydate', '=', $value->entrydate)
+                        ->where('dh.compcode','=',session('compcode'))
+                        ->where('dh.source', '=', 'PB');
+
+            if($dbacthdr_ex->exists()){
+                foreach ($dbacthdr_ex->get() as $dbacthdr_exkey => $dbacthdr_exvalue) {
+                    $dbacthdr_exvalue->card_amount = 0;
+                    $dbacthdr_exvalue->cheque_amount = 0;
+                    $dbacthdr_exvalue->cash_amount = 0;
+                    $dbacthdr_exvalue->tt_amount = 0;
+                    $dbacthdr_exvalue->cn_amount = 0;
+                    switch ($dbacthdr_exvalue->trantype) {
+                        case 'CN':
+                            $dbacthdr_exvalue->cn_amount = $dbacthdr_exvalue->amount; 
+                            array_push($array_report, $dbacthdr_exvalue);
+                            break;
+                        case 'DN':
+                            // code...
+                            break;
+                        case 'RC':
+                            switch ($dbacthdr_exvalue->paytype) {
+                                case '#F_TAB-CARD':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount; 
+                                    $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount; 
+                                    break;
+                                case '#F_TAB-CHEQUE':
+                                    $dbacthdr_exvalue->cheque_amount = $dbacthdr_exvalue->amount; 
+                                    $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount; 
+                                    break;
+                                case '#F_TAB-CASH':
+                                    $dbacthdr_exvalue->cash_amount = $dbacthdr_exvalue->amount; 
+                                    $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount; 
+                                    break;
+                                case '#F_TAB-DEBIT':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount; 
+                                    $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount; 
+                                    break;
+                            }
+
+                            array_push($array_report, $dbacthdr_exvalue);
+                            break;
+                        case 'RD':
+                            // code...
+                            break;
+                        case 'RF':
+                            // code...
+                            break;
+
+                        
+                        default:
+                            // code...
+                            break;
+                    }
+                }
+            }
+        }
         
         $title = "DAILY BILL AND COLLECTION";
         
@@ -97,7 +162,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_excel',compact('dbacthdr','title','company'));
+        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_excel',compact('array_report','title','company'));
     }
     
     public function registerEvents(): array
@@ -162,4 +227,8 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
         return implode(' ', $words);
     }
     
+    public function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
 }
