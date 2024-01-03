@@ -16,9 +16,13 @@
     <script>
         
         var dbacthdr=[
-            @foreach($dbacthdr as $key => $val) 
-			    '{{$key}}' : '{{$val}}',
-		    @endforeach 
+            @foreach($dbacthdr as $key => $dbacthdr2)
+            [
+                @foreach($dbacthdr2 as $key2 => $val)
+                    {'{{$key2}}' : `{{$val}}`},
+                @endforeach
+            ],
+            @endforeach 
         ];
         
         var title = {
@@ -81,18 +85,34 @@
                                 @foreach ($dbacthdr as $obj)
                                 [
                                     { text: '{{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}'},
-                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->posteddate)->format('d-m-Y')}}'},
+                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}'},
                                     { text: '{{$obj->deptcode}}'},
-                                    { text: '{{$obj->dm_debtorcode}}' },
-                                    { text: '{{$obj->debtorname}}' },
-                                    { text: '{{number_format($obj->dh_amount,2)}}', alignment: 'right' },
+                                    { text: '{{$obj->dm_debtorcode}}'},
+                                    { text: '{{$obj->debtorname}}'},
+                                    { text: '{{number_format($obj->amount,2)}}', alignment: 'right'},
                                 ],
                                 @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
-                    // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
+                    { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            headerRows: 1,
+                            widths: ['*'], //panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'Total Amount', style: 'tableHeader', alignment: 'right' },
+                                ],
+                                [
+                                    { text: '{{number_format($totalAmount,2)}}', alignment: 'right' },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
                 ],
                 styles: {
                     header: {

@@ -17,4 +17,14 @@
             <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
         </tr>
     @endforeach
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td style="font-weight:bold">Total Amount</td>
+        <td data-format="0.00" style="text-align: right">{{number_format($totalAmount, 2, '.', ',')}}</td>
+    </tr>
+    <tr></tr>
+    <tr></tr>
 </table>

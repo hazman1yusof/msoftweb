@@ -69,14 +69,16 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                     ->whereIn('dh.trantype',['IN'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
-        
+                    
+        $totalAmount = $dbacthdr->sum('amount');
+
         $title = "SALES";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr','company', 'title'));
+                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title'));
     }
 
     public function registerEvents(): array
