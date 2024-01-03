@@ -8,7 +8,7 @@
 	<div class='row'>
 		<form id="searchForm" class="formclass" style='width:99%; position:relative' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-				<input id="getYear" name="getYear" type="hidden"  value="{{ Carbon\Carbon::now()->year }}">
+				<input id="getYear" name="getYear" type="hidden"  value="{{ $lastperiod->year }}">
 
 				<div class='col-md-12' style="padding:0 0 15px 0;">
 					<div class="form-group"> 
@@ -21,6 +21,11 @@
 					  		<label class="control-label"></label>  
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
+
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Year : </label>  
+					  		<select id='Syear' name='Syear' class="form-control input-sm" tabindex="1"></select>
+		              	</div>
 						
 						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
 					  		<p id="p_error"></p>

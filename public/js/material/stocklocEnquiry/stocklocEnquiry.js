@@ -3,7 +3,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
-	$("body").show();
+	getYear();
 	
 	/////////////////////////validation//////////////////////////
 	$.validate({
@@ -237,32 +237,32 @@ $(document).ready(function () {
 					
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
-				$(form+' #openbalqty').val(data.rows[0].openbalqty);
-				$(form+' #openbalval').val(data.rows[0].openbalval);
-				$(form+' #netmvqty1').val(data.rows[0].netmvqty1);
-				$(form+' #netmvval1').val(data.rows[0].netmvval1);
-				$(form+' #netmvqty2').val(data.rows[0].netmvqty2);
-				$(form+' #netmvval2').val(data.rows[0].netmvval2);
-				$(form+' #netmvqty3').val(data.rows[0].netmvqty3);
-				$(form+' #netmvval3').val(data.rows[0].netmvval3);
-				$(form+' #netmvqty4').val(data.rows[0].netmvqty4);
-				$(form+' #netmvval4').val(data.rows[0].netmvval4);
-				$(form+' #netmvqty5').val(data.rows[0].netmvqty5);
-				$(form+' #netmvval5').val(data.rows[0].netmvval5);
-				$(form+' #netmvqty6').val(data.rows[0].netmvqty6);
-				$(form+' #netmvval6').val(data.rows[0].netmvval6);
-				$(form+' #netmvqty7').val(data.rows[0].netmvqty7);
-				$(form+' #netmvval7').val(data.rows[0].netmvval7);
-				$(form+' #netmvqty8').val(data.rows[0].netmvqty8);
-				$(form+' #netmvval8').val(data.rows[0].netmvval8);
-				$(form+' #netmvqty9').val(data.rows[0].netmvqty9);
-				$(form+' #netmvval9').val(data.rows[0].netmvval9);
-				$(form+' #netmvqty10').val(data.rows[0].netmvqty10);
-				$(form+' #netmvval10').val(data.rows[0].netmvval10);
-				$(form+' #netmvqty11').val(data.rows[0].netmvqty11);
-				$(form+' #netmvval11').val(data.rows[0].netmvval11);
-				$(form+' #netmvqty12').val(data.rows[0].netmvqty12);
-				$(form+' #netmvval12').val(data.rows[0].netmvval12);
+				$(form+' #openbalqty').val(numeral(data.rows[0].openbalqty).format('0,0.00'));
+				$(form+' #openbalval').val(numeral(data.rows[0].openbalval).format('0,0.0000'));
+				$(form+' #netmvqty1').val(numeral(data.rows[0].netmvqty1).format('0,0.00'));
+				$(form+' #netmvval1').val(numeral(data.rows[0].netmvval1).format('0,0.0000'));
+				$(form+' #netmvqty2').val(numeral(data.rows[0].netmvqty2).format('0,0.00'));
+				$(form+' #netmvval2').val(numeral(data.rows[0].netmvval2).format('0,0.0000'));
+				$(form+' #netmvqty3').val(numeral(data.rows[0].netmvqty3).format('0,0.00'));
+				$(form+' #netmvval3').val(numeral(data.rows[0].netmvval3).format('0,0.0000'));
+				$(form+' #netmvqty4').val(numeral(data.rows[0].netmvqty4).format('0,0.00'));
+				$(form+' #netmvval4').val(numeral(data.rows[0].netmvval4).format('0,0.0000'));
+				$(form+' #netmvqty5').val(numeral(data.rows[0].netmvqty5).format('0,0.00'));
+				$(form+' #netmvval5').val(numeral(data.rows[0].netmvval5).format('0,0.0000'));
+				$(form+' #netmvqty6').val(numeral(data.rows[0].netmvqty6).format('0,0.00'));
+				$(form+' #netmvval6').val(numeral(data.rows[0].netmvval6).format('0,0.0000'));
+				$(form+' #netmvqty7').val(numeral(data.rows[0].netmvqty7).format('0,0.00'));
+				$(form+' #netmvval7').val(numeral(data.rows[0].netmvval7).format('0,0.0000'));
+				$(form+' #netmvqty8').val(numeral(data.rows[0].netmvqty8).format('0,0.00'));
+				$(form+' #netmvval8').val(numeral(data.rows[0].netmvval8).format('0,0.0000'));
+				$(form+' #netmvqty9').val(numeral(data.rows[0].netmvqty9).format('0,0.00'));
+				$(form+' #netmvval9').val(numeral(data.rows[0].netmvval9).format('0,0.0000'));
+				$(form+' #netmvqty10').val(numeral(data.rows[0].netmvqty10).format('0,0.00'));
+				$(form+' #netmvval10').val(numeral(data.rows[0].netmvval10).format('0,0.0000'));
+				$(form+' #netmvqty11').val(numeral(data.rows[0].netmvqty11).format('0,0.00'));
+				$(form+' #netmvval11').val(numeral(data.rows[0].netmvval11).format('0,0.0000'));
+				$(form+' #netmvqty12').val(numeral(data.rows[0].netmvqty12).format('0,0.00'));
+				$(form+' #netmvval12').val(numeral(data.rows[0].netmvval12).format('0,0.0000'));
 
 	            var accumqty=0;
 			    var netmvqty=0;
@@ -272,18 +272,18 @@ $(document).ready(function () {
 					}
 				});
 
-				$("#accumqty").val(accumqty);
+				$("#accumqty").val(numeral(accumqty).format('0,0.00'));
 
 	            var accumval=0;
 			    var netmvval=0;
 		    
 			    $.each(data.rows[0], function( index, value ) {
-				    if(!isNaN(parseInt(value)) && index.indexOf('netmvval') !== -1){
-						accumval+=parseInt(value);
+				    if(!isNaN(parseFloat(value)) && index.indexOf('netmvval') !== -1){
+						accumval+=parseFloat(value);
 					}
 				});
 
-				$("#accumval").val(accumval);
+				$("#accumval").val(numeral(accumval).format('0,0.0000'));
 			}
 		});
 	}
@@ -317,6 +317,10 @@ $(document).ready(function () {
 	}
 
 	addParamField('#jqGrid',true,urlParam);
+
+	$( "#Syear" ).change(function(){
+     	refreshGrid('#jqGrid',urlParam);
+	});
 });
 
 function calc_jq_height_onchange(jqgrid){
@@ -327,4 +331,32 @@ function calc_jq_height_onchange(jqgrid){
 		scrollHeight = 300;
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+}
+
+function getYear(){
+	let param={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field: ['*'],
+		table_name:'sysdb.period',
+		table_id:'idno',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
+	}
+
+	$.get( "util/get_value_default?"+$.param(param), function( data ) {
+					
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data.rows)){
+			var lastyear;
+			data.rows.forEach(function(e,i){
+				lastyear = e.year;
+				if(i == data.rows.length - 1){
+					$( "#Syear" ).prepend( "<option val="+e.year+" selected>"+e.year+"</option>" );
+				}else{
+					$( "#Syear" ).prepend( "<option val="+e.year+">"+e.year+"</option>" );
+				}
+			});
+		}
+	});
 }

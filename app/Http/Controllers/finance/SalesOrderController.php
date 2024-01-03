@@ -598,7 +598,7 @@ class SalesOrderController extends defaultController
                         'compcode' => session('compcode'),
                         'adduser' => session('username'),
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                        'auditno' => $dbacthdr->auditno,
+                        'auditno' => $invno,
                         'lineno_' => 1,
                         'source' => 'PB', //kalau stock 'IV', lain dari stock 'DO'
                         'trantype' => 'IN',
