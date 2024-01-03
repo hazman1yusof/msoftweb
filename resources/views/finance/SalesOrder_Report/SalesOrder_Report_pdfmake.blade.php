@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sales Report</title>
+        <title>Sales</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -15,14 +15,10 @@
     
     <script>
         
-        var dballoc=[
-            @foreach($dballoc as $key => $dballoc1)
-            [
-                @foreach($dballoc1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
-                @endforeach
-            ],
-            @endforeach
+        var dbacthdr=[
+            @foreach($dbacthdr as $key => $val) 
+			    '{{$key}}' : '{{$val}}',
+		    @endforeach 
         ];
         
         var title = {
@@ -68,43 +64,28 @@
                         },
                         layout: 'noBorders',
                     },
-                    // {
-                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
-                    //     alignment: 'center',
-                    //     style: 'comp_header'
-                    // },
                     {
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [22,32,44,35,40,32,20,44,41,28,40],  //panjang standard dia 515
+                            widths: ['*','*','*','*','*','*'],  //panjang standard dia 515
                             body: [
                                 [   
-                                    { text: 'Trx Type', style: 'tableHeader' },
-                                    { text: 'Receipt Date', style: 'tableHeader' },
-                                    { text: 'Allocation Date', style: 'tableHeader' },
-                                    { text: 'Receipt No', style: 'tableHeader' },
-                                    { text: 'Payment Details', style: 'tableHeader' },
-                                    { text: 'Receipt Amt', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Bill No', style: 'tableHeader' },
-                                    { text: 'Bill Date', style: 'tableHeader' },
-                                    { text: 'Allocated Amt', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Invoice No', style: 'tableHeader' },
+                                    { text: 'Date', style: 'tableHeader' },
+                                    { text: 'Store Dept', style: 'tableHeader' },
                                     { text: 'Debtor Code', style: 'tableHeader' },
-                                    { text: 'Name', style: 'tableHeader' },
+                                    { text: 'Debtor Name', style: 'tableHeader' },
+                                    { text: 'Amount', style: 'tableHeader', alignment: 'right' },
                                 ],
-                                @foreach ($dballoc as $obj)
+                                @foreach ($dbacthdr as $obj)
                                 [
-                                    { text: '{{$obj->doctrantype}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->doc_entrydate)->format('d/m/Y')}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->da_recptno}}' },
-                                    { text: '{{$obj->reference}}' },
-                                    { text: '{{number_format($obj->dh_amount,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->refauditno}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->ref_entrydate)->format('d/m/Y')}}' },
-                                    { text: '{{number_format($obj->allocamount,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->debtorcode}}' },
+                                    { text: '{{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}'},
+                                    { text: '{{\Carbon\Carbon::createFromFormat('Y-m-d',$obj->posteddate)->format('d-m-Y')}}'},
+                                    { text: '{{$obj->deptcode}}'},
+                                    { text: '{{$obj->dm_debtorcode}}' },
                                     { text: '{{$obj->debtorname}}' },
+                                    { text: '{{number_format($obj->dh_amount,2)}}', alignment: 'right' },
                                 ],
                                 @endforeach
                             ]

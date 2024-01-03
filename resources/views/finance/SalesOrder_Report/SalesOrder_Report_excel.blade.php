@@ -10,7 +10,7 @@
     @foreach ($dbacthdr as $obj)
         <tr>
             <td>{{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}</td>
-            <td>{{\Carbon\Carbon::parse($obj->entrydate)->format('d/m/Y')}}</td>
+            <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
             <td>{{$obj->deptcode}}</td>
             <td>{{$obj->dm_debtorcode}}</td>
             <td>{{$obj->debtorname}}</td>

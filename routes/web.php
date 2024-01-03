@@ -499,6 +499,7 @@ Route::get('/SalesOrder_Report','finance\SalesOrder_ReportController@show');
 Route::get('/SalesOrder_Report/table','finance\SalesOrder_ReportController@table');
 Route::post('/SalesOrder_Report/form','finance\SalesOrder_ReportController@form');
 Route::get('/SalesOrder_Report/showExcel','finance\SalesOrder_ReportController@showExcel');
+Route::get('/SalesOrder_Report/showpdf','finance\SalesOrder_ReportController@showpdf');
 
 //// Delivery Department material setup ///
 Route::get('/deliveryDept','material\DeliveryDeptController@show');

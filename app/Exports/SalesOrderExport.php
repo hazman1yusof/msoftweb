@@ -58,7 +58,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.entrydate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
+                    ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -70,7 +70,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
         
-        $title = "SALES REPORT";
+        $title = "SALES";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
@@ -93,6 +93,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                 $event->sheet->getStyle('A:K')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
+                $event->sheet->getStyle('D')->setQuotePrefix(true);
             },
         ];
     }
