@@ -12,7 +12,7 @@
             <td>{{str_pad($obj->invno, 7, "0", STR_PAD_LEFT)}}</td>
             <td>{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}</td>
             <td>{{$obj->deptcode}}</td>
-            <td>{{$obj->dm_debtorcode}}</td>
+            <td style="text-align: left">{{$obj->dm_debtorcode}}</td>
             <td>{{$obj->debtorname}}</td>
             <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
         </tr>
