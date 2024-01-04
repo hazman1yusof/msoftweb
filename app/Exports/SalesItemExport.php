@@ -59,54 +59,73 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
-        $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
-                    ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode' )
+        // $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
+        //             ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode' )
+        //             ->leftJoin('hisdb.chgmast as c', function($join){
+        //                 $join = $join->on('c.chgcode', '=', 'b.chgcode')
+        //                             ->where('c.compcode', '=', session('compcode'));
+        //             })
+        //             ->join('debtor.dbacthdr as d', function($join){
+        //                 $join = $join->on('d.invno', '=', 'b.invno')
+        //                             ->where('d.compcode', '=', session('compcode'))
+        //                             ->where('d.source', '=', 'PB')
+        //                             ->where('d.trantype', '=', 'IN');
+        //             })
+        //             ->where('b.compcode','=',session('compcode'))
+        //             ->where('b.recstatus','=','POSTED')
+        //             ->where('b.amount','!=','0')
+        //             ->whereBetween('b.trxdate', [$datefr, $dateto])
+        //             ->orderBy('b.trxdate','ASC')
+        //             ->get();
+
+        // dd($billdet);
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as d')
+                    ->select('d.debtorcode', 'dm.name AS dm_desc', 'd.invno','b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'd.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->join('hisdb.billdet as b', function($join){
+                        $join = $join->on('b.invno', '=', 'd.invno')
+                                    ->where('b.compcode', '=', session('compcode'));
+                    })
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
                                     ->where('c.compcode', '=', session('compcode'));
                     })
-                    ->leftJoin('debtor.dbacthdr as d', function($join){
-                        $join = $join->on('d.invno', '=', 'b.invno')
-                                    ->where('d.compcode', '=', session('compcode'));
-                    })
-                    ->where('b.compcode','=',session('compcode'))
+                    ->where('d.compcode','=',session('compcode'))
                     ->where('d.source', '=', 'PB')
                     ->where('d.trantype', '=', 'IN')
-                    ->where('b.recstatus','=','POSTED')
-                    ->where('b.amount','!=','0')
-                    ->whereBetween('b.trxdate', [$datefr, $dateto])
-                    ->orderBy('b.trxdate','ASC')
+                    ->where('d.recstatus', '=', 'POSTED')
+                    ->where('d.amount','!=','0')
+                    ->orderBy('d.debtorcode','DESC')
+                    ->orderBy('d.invno','DESC')
+                    ->whereBetween('d.entrydate', [$datefr, $dateto])
                     ->get();
-        
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.debtorcode', 'dm.name AS dm_desc', 'dh.invno') 
-                    ->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-                                    ->where('dm.compcode', '=', session('compcode'));
-                    })
-                    ->where('dh.compcode','=',session('compcode'))
-                    ->where('dh.source', '=', 'PB')
-                    ->where('dh.trantype', '=', 'IN')
-                    ->where('dh.recstatus', '=', 'POSTED')
-                    ->where('dh.amount','!=','0')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->distinct('dh.debtorcode');
-        
-        $dbacthdr = $dbacthdr->get(['dh.debtorcode']);
-        
-        $totalAmount = $billdet->sum('amount');
-        
-        $totamount_expld = explode(".", (float)$totalAmount);
-        
-        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm." ONLY";
-        
-        if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+
+        $invno_array = [];
+        foreach ($dbacthdr as $obj) {
+            if(!in_array($obj->invno, $invno_array)){
+                array_push($invno_array, $obj->invno);
+            }
         }
         
-        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('billdet','dbacthdr','totamt_eng','totalAmount'));
+        // $dbacthdr = $dbacthdr->get(['dh.debtorcode']);
+        
+        // $totalAmount = $billdet->sum('amount');
+        
+        // $totamount_expld = explode(".", (float)$totalAmount);
+        
+        // $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        // $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        // if(count($totamount_expld) > 1){
+        //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+        //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        // }
+        
+        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('dbacthdr','invno_array'));
     }
     
     public function registerEvents(): array

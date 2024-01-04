@@ -74,7 +74,10 @@ class SalesOrderController extends defaultController
                         'db.adddate AS db_adddate',
                         'db.upduser AS db_upduser',
                         'db.upddate AS db_upddate'
-                    );
+                    )
+                    ->where('db.compcode',session('compcode'))
+                    ->where('db.source','PB')
+                    ->where('db.trantype','IN');
 
         $table = $table->join('debtor.debtormast as dm', function($join) use ($request){
                 $join = $join->where('dm.compcode', '=', session('compcode'));
