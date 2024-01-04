@@ -48,4 +48,33 @@ class SalesOrder_ReportController extends defaultController
     public function showExcel(Request $request){
         return Excel::download(new SalesOrderExport($request->datefr,$request->dateto), 'SalesOrderReport.xlsx');
     }
+
+    public function showpdf(Request $request)
+    {
+        $datefr = Carbon::parse($request->datefr)->format('Y-m-d H:i:s');
+        $dateto = Carbon::parse($request->dateto)->format('Y-m-d H:i:s');
+        
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.source','=','PB')
+                    ->where('dh.recstatus','=', 'POSTED')
+                    ->where('dh.trantype', '=', 'IN')
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->get();
+        
+        $totalAmount = $dbacthdr->sum('amount');
+
+        $title = "SALES";
+        
+        $company = DB::table('sysdb.company')
+                    ->where('compcode','=',session('compcode'))
+                    ->first();
+        
+        return view('finance.SalesOrder_Report.SalesOrder_Report_pdfmake',compact('dbacthdr','totalAmount', 'company', 'title'));
+    }
 }

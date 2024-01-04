@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
+class SalesItemExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -43,55 +43,65 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 5,
-            'B' => 12,
-            'C' => 12,
+            'A' => 15,
+            'B' => 13,
+            'C' => 35,
             'D' => 10,
-            'E' => 13,
-            'F' => 10,
-            'G' => 7,
-            'H' => 12,
-            'I' => 11,
-            'J' => 15,
-            'K' => 20,
+            'E' => 12,
+           
         ];
     }
     
     public function view(): View
     {
-        $datefr = Carbon::parse($this->datefr)->format('Y-m-d H:i:s');
-        $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
+        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
-        $dballoc = DB::table('debtor.dballoc as da', 'debtor.dbacthdr as dh', 'debtor.dbacthdr as dc', 'debtor.debtormast as dm')
-                    ->select('da.doctrantype', 'da.allocdate', 'da.recptno as da_recptno', 'da.refauditno', 'da.amount as allocamount', 'da.debtorcode', 'dh.entrydate as doc_entrydate', 'dh.recptno as dh_recptno', 'dh.reference', 'dh.amount as dh_amount', 'dc.entrydate as ref_entrydate', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
-                    ->leftJoin('debtor.dbacthdr as dh', function($join){
-                        $join = $join->on('dh.source', '=', 'da.docsource')
-                                    ->on('dh.trantype', '=', 'da.doctrantype')
-                                    ->on('dh.auditno', '=', 'da.docauditno');
+        $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
+                    ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'c.description AS cm_desc', 'd.debtorcode AS debtorcode' )
+                    ->leftJoin('hisdb.chgmast as c', function($join){
+                        $join = $join->on('c.chgcode', '=', 'b.chgcode')
+                                    ->where('c.compcode', '=', session('compcode'));
                     })
-                    ->leftJoin('debtor.dbacthdr as dc', function($join){
-                        $join = $join->on('dc.source', '=', 'da.refsource')
-                                    ->on('dc.trantype', '=', 'da.reftrantype')
-                                    ->on('dc.auditno', '=', 'da.refauditno');
+                    ->leftJoin('debtor.dbacthdr as d', function($join){
+                        $join = $join->on('d.invno', '=', 'b.invno')
+                                    ->where('d.compcode', '=', session('compcode'));
                     })
-                    ->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'da.payercode')
-                                    ->where('dm.compcode', '=', session('compcode'));
-                    })
-                    ->where('da.compcode','=',session('compcode'))
-                    ->where('da.recstatus','=',"POSTED")
-                    ->whereIn('da.doctrantype',['RD','RC'])
-                    ->whereBetween('da.allocdate', [$datefr, $dateto])
-                    // ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->where('b.compcode','=',session('compcode'))
+                    ->where('b.recstatus','=','POSTED')
+                    ->where('b.amount','!=','0')
+                    ->whereBetween('b.trxdate', [$datefr, $dateto])
+                    ->orderBy('b.trxdate','ASC')
                     ->get();
         
-        $title = "PAYMENT ALLOCATION LISTING";
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.debtorcode', 'dm.name AS dm_desc') 
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.trantype', '=', 'IN')
+                    ->where('dh.recstatus', '=', 'POSTED')
+                    ->where('dh.amount','!=','0')
+                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->distinct('dh.debtorcode');
         
-        $company = DB::table('sysdb.company')
-                    ->where('compcode','=',session('compcode'))
-                    ->first();
+        $dbacthdr = $dbacthdr->get(['dh.debtorcode']);
         
-        return view('finance.AR.paymentAlloc_Report.paymentAlloc_Report_excel',compact('dballoc', 'title', 'company'));
+        $totalAmount = $billdet->sum('amount');
+        
+        $totamount_expld = explode(".", (float)$totalAmount);
+        
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm." ONLY";
+        
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        return view('finance.SalesItem_Report.SalesItem_Report_excel',compact('billdet','dbacthdr','totamt_eng','totalAmount'));
     }
     
     public function registerEvents(): array
@@ -100,12 +110,12 @@ class PaymentAllocExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nPAYMENT ALLOCATION LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y')).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSALES BY ITEM"."\n".sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y')).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
                 $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:K')->getAlignment()->setWrapText(true);
+                $event->sheet->getStyle('A:G')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
             },

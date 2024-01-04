@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Sales Report')
+@section('title', 'Sales')
 
 @section('css')
 	<style>
@@ -19,7 +19,7 @@
 <div class="container">
 	<div class="jumbotron" style="margin-top: 30px;text-align: center;">
 		<form method="get" id="genreport" action="/SalesOrder_Report/showExcel">
-			<h2>SALES REPORT</h2>
+			<h2>SALES</h2>
 			<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 		
 			<table class="reporttable" style="width: 30%;margin: auto;">

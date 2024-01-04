@@ -14,11 +14,11 @@
     </tr>
     @foreach($array_report as $db_obj)
     <tr>
-        <td>{{\Carbon\Carbon::parse($db_obj->entrydate)->format('d/m/Y')}}</td>
-        <td>{{$db_obj->payercode}}</td>
+        <td>{{\Carbon\Carbon::parse($db_obj->posteddate)->format('d/m/Y')}}</td>
+        <td style="text-align: left">{{$db_obj->payercode}}</td>
         <td>{{$db_obj->dm_name}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->amount, 2, '.', ',') }}</td>
-        <td>{{$db_obj->auditno}}</td>
+        <td>{{$db_obj->invno}}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cash_amount, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->card_amount, 2, '.', ',') }}</td>
         <td data-format="0.00" style="text-align: right">{{ number_format($db_obj->cheque_amount, 2, '.', ',') }}</td>

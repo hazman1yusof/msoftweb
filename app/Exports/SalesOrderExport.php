@@ -58,7 +58,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d H:i:s');
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.invno', 'dh.entrydate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
+                    ->select('dh.invno', 'dh.posteddate', 'dh.deptcode', 'dh.amount', 'dm.debtorcode as dm_debtorcode', 'dm.name as debtorname')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -69,14 +69,16 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                     ->whereIn('dh.trantype',['IN'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->get();
-        
-        $title = "SALES REPORT";
+                    
+        $totalAmount = $dbacthdr->sum('amount');
+
+        $title = "SALES";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr','company', 'title'));
+                    return view('finance.SalesOrder_Report.SalesOrder_Report_excel',compact('dbacthdr', 'totalAmount', 'company', 'title'));
     }
 
     public function registerEvents(): array
@@ -93,6 +95,7 @@ class SalesOrderExport implements  FromView, WithEvents, WithColumnWidths
                 $event->sheet->getStyle('A:K')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
+                $event->sheet->getStyle('D')->setQuotePrefix(true);
             },
         ];
     }
