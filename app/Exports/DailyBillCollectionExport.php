@@ -93,7 +93,8 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                             ->where('dh.payercode', '=', $value->payercode)
                             ->where('dh.entrydate', '=', $value->entrydate)
                             ->where('dh.compcode','=',session('compcode'))
-                            ->where('dh.source', '=', 'PB');
+                            ->where('dh.source', '=', 'PB')
+                            ->whereIn('dh.trantype',['RC','RD','CN']);
             
             if($dbacthdr_ex->exists()){
                 foreach ($dbacthdr_ex->get() as $dbacthdr_exkey => $dbacthdr_exvalue) {
