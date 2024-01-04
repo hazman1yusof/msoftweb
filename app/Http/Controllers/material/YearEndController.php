@@ -86,6 +86,7 @@ class YearEndController extends defaultController
                 $stockloc = $stockloc->whereBetween('itemcode',[$request->item_from,$request->item_to]);
             }
 
+            $counter=0;
             foreach ($stockloc->get() as $key => $value){
                 $exists = DB::table('material.stockloc')
                             ->where('compcode',session('compcode'))
@@ -99,6 +100,7 @@ class YearEndController extends defaultController
                 if($exists){
                     continue;
                 }else{
+                    $counter++;
                     DB::table('material.stockloc')
                         ->insert([
                             'compcode' => session('compcode'),
@@ -106,8 +108,8 @@ class YearEndController extends defaultController
                             'itemcode' => $value->itemcode,
                             'uomcode' => $value->uomcode,
                             'year' => $request->year,
-                            'stocktxntype' => $request->stocktxntype,
-                            'disptype' => $request->disptype,
+                            'stocktxntype' => $value->stocktxntype,
+                            'disptype' => $value->disptype,
                             'adduser' => session('username'),
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                             'recstatus' => $value->recstatus,
@@ -116,8 +118,12 @@ class YearEndController extends defaultController
                 }
             }
 
-
             DB::commit();
+
+            $responce = new stdClass();
+            $responce->counter = $counter;
+            echo json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
             
@@ -151,7 +157,8 @@ class YearEndController extends defaultController
             }else{
                 $stockloc = $stockloc->whereBetween('itemcode',[$request->item_from,$request->item_to]);
             }
-
+            
+            $counter=0;
             foreach ($stockloc->get() as $key => $value){
                 $stockloc = DB::table('material.stockloc')
                             ->where('compcode',session('compcode'))
@@ -164,6 +171,7 @@ class YearEndController extends defaultController
                 if(!$stockloc->exists()){
                     continue;
                 }else{
+                    $counter++;
 
                     $array_obj = (array)$value;
                     $get_bal = $this->get_bal($array_obj);
@@ -182,8 +190,12 @@ class YearEndController extends defaultController
                 }
             }
 
-
             DB::commit();
+
+            $responce = new stdClass();
+            $responce->counter = $counter;
+            echo json_encode($responce);
+
         } catch (\Exception $e) {
             DB::rollback();
             

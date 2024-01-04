@@ -1883,6 +1883,7 @@ class SalesOrderDetailController extends defaultController
             'adduser' => session('username'),
             'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,
+            'saleamt' => $billsum_obj->amount,
             'productcat' => $product->first()->productcat,
             'issdept' => $dbacthdr->deptcode,
             'reqdept' => $dbacthdr->deptcode,
@@ -2001,6 +2002,7 @@ class SalesOrderDetailController extends defaultController
             'upduser' => session('username'),
             'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
             'netprice' => $curr_netprice,
+            'saleamt' => $billsum_obj->amount,
             'amount' => floatval(floatval($curr_netprice) * floatval($curr_quan)),
             'updtime' => Carbon::now("Asia/Kuala_Lumpur")
         ];

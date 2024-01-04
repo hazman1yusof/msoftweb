@@ -54,6 +54,13 @@ $(document).ready(function () {
 				dept_from.urlParam.filterVal=['1', 'ACTIVE','session.compcode'];//, 'session.unit'
 			},
 			close: function(obj_){
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
 			}
 		},'urlParam','radio','tab'
 	);
@@ -99,6 +106,13 @@ $(document).ready(function () {
 					}
 				}
 			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
 		},'urlParam','radio','tab'
 	);
 	dept_to.makedialog(true);
@@ -152,6 +166,13 @@ $(document).ready(function () {
 				dialog_itemcodefrom.urlParam.join_filterVal = [['p.compcode','p.uomcode','p.unit']];
 			},
 			close: function(obj_){
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
 			}
 		},'urlParam','radio','tab'
 	);
@@ -220,6 +241,13 @@ $(document).ready(function () {
 					}
 				}
 			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
 		},'urlParam','radio','tab'
 	);
 	dialog_itemcodeto.makedialog(true);

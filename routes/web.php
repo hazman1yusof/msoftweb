@@ -452,6 +452,11 @@ Route::get('/yearEndProcess','material\YearEndController@yearEndProcess');
 Route::post('/yearEnd/form','material\YearEndController@form');
 Route::get('/yearEnd/table','material\YearEndController@table');
 
+//// itemmov report ///
+Route::get('/ItemMovReport','material\ItemMovReportController@show');
+Route::get('/ItemMovReport/pdf','material\ItemMovReportController@pdf');
+Route::get('/ItemMovReport/excel','material\ItemMovReportController@excel');
+
 //// delivery Order setup page ///
 Route::get('/deliveryOrder','material\DeliveryOrderController@show');
 Route::get('/deliveryOrder/table','material\DeliveryOrderController@table');
@@ -899,13 +904,6 @@ Route::get('/bankReceipt_Report/table','finance\bankReceipt_ReportController@tab
 Route::post('/bankReceipt_Report/form','finance\bankReceipt_ReportController@form');
 Route::get('/bankReceipt_Report/showExcel','finance\bankReceipt_ReportController@showExcel');
 Route::get('/bankReceipt_Report/showpdf','finance\bankReceipt_ReportController@showpdf');
-
-//// Daily Bill And Collection -- Report
-Route::get('/DailyBillCollection_Report','finance\DailyBillCollection_ReportController@show');
-Route::get('/DailyBillCollection_Report/table','finance\DailyBillCollection_ReportController@table');
-Route::post('/DailyBillCollection_Report/form','finance\DailyBillCollection_ReportController@form');
-Route::get('/DailyBillCollection_Report/showExcel','finance\DailyBillCollection_ReportController@showExcel');
-Route::get('/DailyBillCollection_Report/showpdf','finance\DailyBillCollection_ReportController@showpdf');
 
 //// Refund Listing -- Report
 Route::get('/refundListing_Report','finance\refundListing_ReportController@show');

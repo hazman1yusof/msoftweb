@@ -216,6 +216,8 @@ $(document).ready(function () {
 	$('#generate').click(function(){
 		$('#generate').prop('disabled',true);
 		if($('#formdata').isValid({requiredFields:''},conf,true)){
+			$('#ops_success').hide();
+			$('#ops_wait').show();
 			var serializedForm =  $('#formdata').serializeArray()
 
 			var param={
@@ -224,10 +226,20 @@ $(document).ready(function () {
 
 			$.post( param.url, serializedForm , function( data ) {
 		
-			}).fail(function(data) {
+			},'json').fail(function(data) {
 				$('#generate').prop('disabled',false);
+				alert('fail');
+				$('#ops_success').hide();
+				$('#ops_wait').hide();
 			}).done(function(data){
 				$('#generate').prop('disabled',false);
+				var counter = data.counter;
+				var year = $('#year').val();
+
+				$('#span_counter').text(counter);
+				$('#span_year').text(year);
+				$('#ops_success').show();
+				$('#ops_wait').hide();
 			});
 		}
 

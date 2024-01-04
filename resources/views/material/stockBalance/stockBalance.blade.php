@@ -68,7 +68,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept To</label>  
 							<div class='input-group'>
-								<input id="dept_to" name="dept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+								<input id="dept_to" name="dept_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -87,7 +87,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Item To</label>  
 							<div class='input-group'>
-								<input id="item_to" name="item_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+								<input id="item_to" name="item_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>

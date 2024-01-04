@@ -105,8 +105,15 @@
 				<div class='col-md-12 btnform' style="padding:0px">
 					<button name="generate" id="generate" type="button" class="btn btn-sm btn-primary">
 						<span class="fa fa-plus-square fa-lg"></span>
-						 Generate
+						 Update
 					</button>
+					<div class="alert alert-info" role="alert" id="ops_wait" style="display: none;margin-top: 20px;">
+						<i class="fa fa-refresh fa-spin" aria-hidden="true"></i><strong> Updating : </strong>Please wait 
+					</div>
+					<div class="alert alert-success" role="alert" id="ops_success" style="display: none;margin-top: 20px;">
+						<strong>Operation Success : </strong> 
+						<span id="span_counter"></span> new Stock Location are being updated at year <span id="span_year"></span>
+					</div>
 				</div>
 			</div>
 		</div>

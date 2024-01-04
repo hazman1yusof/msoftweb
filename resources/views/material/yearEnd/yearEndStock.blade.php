@@ -90,7 +90,7 @@
 
 					<div class="form-group">
 						<div class="col-md-6">
-						  	<label class="control-label" for="Scol">Year</label>  
+						  	<label class="control-label" for="Scol">New Year</label>  
 							<input id="year" name="year" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value">
 						 </div>
 					</div>
@@ -100,13 +100,20 @@
 	</div> 
 
 	<div class="col-md-3">
-		<div class="panel panel-default" style="height: 210px;">
+		<div class="panel panel-default" style="height: 278px;">
 			<div class="panel-body">
 				<div class='col-md-12 btnform' style="padding:0px">
 					<button name="generate" id="generate" type="button" class="btn btn-sm btn-primary">
 						<span class="fa fa-plus-square fa-lg"></span>
 						 Generate
 					</button>
+					<div class="alert alert-info" role="alert" id="ops_wait" style="display: none;margin-top: 20px;">
+						<i class="fa fa-refresh fa-spin" aria-hidden="true"></i><strong> Generating : </strong>Please wait 
+					</div>
+					<div class="alert alert-success" role="alert" id="ops_success" style="display: none;margin-top: 20px;">
+						<strong>Operation Success : </strong> 
+						<span id="span_counter"></span> new Stock Location are being generated at year <span id="span_year"></span>
+					</div>
 				</div>
 			</div>
 		</div>
