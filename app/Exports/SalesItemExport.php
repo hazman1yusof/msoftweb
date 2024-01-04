@@ -48,6 +48,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
             'C' => 40,
             'D' => 10,
             'E' => 12,
+            'F' => 12,
+            'G' => 12,
            
         ];
     }
@@ -58,7 +60,7 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         
         $billdet = DB::table('hisdb.billdet as b', 'hisdb.chgmast as c', 'debtor.dbacthdr as d')
-                    ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'c.description AS cm_desc', 'd.debtorcode AS debtorcode' )
+                    ->select('b.idno', 'b.compcode', 'b.trxdate', 'b.chgcode', 'b.quantity', 'b.amount', 'b.invno', 'b.taxamount', 'c.description AS cm_desc', 'd.trantype','d.source','d.debtorcode AS debtorcode' )
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
                                     ->where('c.compcode', '=', session('compcode'));
@@ -68,6 +70,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                                     ->where('d.compcode', '=', session('compcode'));
                     })
                     ->where('b.compcode','=',session('compcode'))
+                    ->where('d.source', '=', 'PB')
+                    ->where('d.trantype', '=', 'IN')
                     ->where('b.recstatus','=','POSTED')
                     ->where('b.amount','!=','0')
                     ->whereBetween('b.trxdate', [$datefr, $dateto])
@@ -75,12 +79,13 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                     ->get();
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.debtorcode', 'dm.name AS dm_desc') 
+                    ->select('dh.debtorcode', 'dm.name AS dm_desc', 'dh.invno') 
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
                     })
                     ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.source', '=', 'PB')
                     ->where('dh.trantype', '=', 'IN')
                     ->where('dh.recstatus', '=', 'POSTED')
                     ->where('dh.amount','!=','0')
