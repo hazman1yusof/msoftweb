@@ -9,10 +9,9 @@
     @foreach($dbacthdr as $debtcode)
         
         <tr>
-            <td style="font-weight:bold">{{$debtcode->debtorcode}}</td>
-            <td style="font-weight:bold">{{$debtcode->dm_desc}}</td>
+            <td style="font-weight:bold" colspan="3">{{$debtcode->debtorcode}} {{$debtcode->dm_desc}}</td>
         </tr>
-        @php($totalAmount = 0)
+        @php($tot = 0)
         @foreach ($billdet as $obj)
             @if($obj->debtorcode == $debtcode->debtorcode)
                 <tr>
@@ -22,17 +21,25 @@
                     <td>{{$obj->quantity}}</td>
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->amount, 2, '.', ',')}}</td>
                 </tr>
-            @php($totalAmount += $obj->amount)
+            @php($tot += $obj->amount)
             @endif
         @endforeach
         <tr></tr>
+        <!-- <table> 
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight:bold">TOTAL</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot, 2, '.', ',')}}</td>
+        </table> -->
     @endforeach
-    
+    <tr></tr>
+    <table> 
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight:bold">TOTAL</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($totalAmount, 2, '.', ',')}}</td>
+        </table>
 </table>
-<table> 
-    <td></td>
-    <td></td>
-    <td></td>
-    <td style="font-weight:bold">TOTAL</td>
-    <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($totalAmount, 2, '.', ',')}}</td>
-</table>
+
