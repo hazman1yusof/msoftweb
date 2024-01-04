@@ -913,6 +913,13 @@ Route::post('/bankReceipt_Report/form','finance\bankReceipt_ReportController@for
 Route::get('/bankReceipt_Report/showExcel','finance\bankReceipt_ReportController@showExcel');
 Route::get('/bankReceipt_Report/showpdf','finance\bankReceipt_ReportController@showpdf');
 
+//// Daily Bill And Collection -- Report
+Route::get('/DailyBillCollection_Report','finance\DailyBillCollection_ReportController@show');
+Route::get('/DailyBillCollection_Report/table','finance\DailyBillCollection_ReportController@table');
+Route::post('/DailyBillCollection_Report/form','finance\DailyBillCollection_ReportController@form');
+Route::get('/DailyBillCollection_Report/showExcel','finance\DailyBillCollection_ReportController@showExcel');
+Route::get('/DailyBillCollection_Report/showpdf','finance\DailyBillCollection_ReportController@showpdf');
+
 //// Refund Listing -- Report
 Route::get('/refundListing_Report','finance\refundListing_ReportController@show');
 Route::get('/refundListing_Report/table','finance\refundListing_ReportController@table');
