@@ -72,7 +72,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: ['*','*','*','*','*','*'],  //panjang standard dia 515
+                            widths: [40,50,50,60,200,40],  //panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Invoice No', style: 'tableHeader' },
@@ -131,7 +131,7 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 8,
+                        fontSize: 9,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {
