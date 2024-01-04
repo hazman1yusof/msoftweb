@@ -52,204 +52,119 @@ class DailyBillCollection_ReportController extends defaultController
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
-
-        $tilldetl = DB::table('debtor.tilldetl')
-                    ->where('compcode',session('compcode'))
-                    ->where('tillcode',$request->tillcode)
-                    ->where('tillno',$request->tillno)
-                    ->first();
         
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 
-                'dh.recstatus', 'dh.entrydate','dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description')
-                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                ->where('dm.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
-                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                ->where('dt.compcode', '=', session('compcode'));
-                })
-                ->where('dh.compcode','=',session('compcode'))
-                ->where('dh.paytype', '=', '#F_TAB-CHEQUE')
-                ->whereIn('dh.trantype',['RD','RC'])
-                ->orderBy('dh.entrydate','ASC')
-                ->get();
-                // dd($dbacthdr);
-        $totalAmount = $dbacthdr->sum('amount');
-
-        $dbacthdr_rf = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm', 'debtor.debtortype as dt')
-                ->select('dh.idno', 'dh.compcode', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.posteddate', 'dm.debtortype as dm_debtortype', 'dt.description as dt_description', )
-                ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
-                    $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                ->where('dm.compcode', '=', session('compcode'));
-                })
-                ->leftJoin('debtor.debtortype as dt', function($join) use ($request){
-                    $join = $join->on('dt.debtortycode', '=', 'dm.debtortype')
-                                ->where('dt.compcode', '=', session('compcode'));
-                })
-                ->where('dh.compcode','=',session('compcode'))
-                ->where('dh.trantype', '=','RF')
-                ->orderBy('dh.entrydate','ASC')
-                ->get();
-                
-        $db_dbacthdr = DB::table('debtor.dbacthdr as db')
-                    ->where('db.compcode',session('compcode'))
-                    ->where('db.tillcode',$request->tillcode)
-                    ->where('db.tillno',$request->tillno)
-                    // ->where('db.hdrtype','A')
-                    ->join('debtor.paymode as pm', function($join) use ($request){
-                        $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                    ->where('pm.source','AR')
-                                    ->where('pm.compcode',session('compcode'));
-                    });
+        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode','=',session('compcode'))
+                    ->where('dh.source', '=', 'PB')
+                    ->where('dh.trantype', '=', 'IN')
+                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
+                    ->orderBy('dh.entrydate','ASC')
+                    ->get();
         
-        if($db_dbacthdr->exists()){
-    
-            $sum_cash = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CASH')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-
+        $array_report = [];
+        foreach ($dbacthdr as $key => $value){
+            $value->card_amount = 0;
+            $value->cheque_amount = 0;
+            $value->cash_amount = 0;
+            $value->tt_amount = 0;
+            $value->cn_amount = 0;
+            array_push($array_report, $value);
             
-            $sum_chq = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CHEQUE')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_card = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','CARD')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_bank = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->join('debtor.paymode as pm', function($join) use ($request){
-                            $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                        ->where('pm.source','AR')
-                                        ->where('pm.paytype','BANK')
-                                        ->where('pm.compcode',session('compcode'));
-                        })
-                        ->sum('amount');
-            
-            $sum_all = DB::table('debtor.dbacthdr as db')
-                        ->where('db.compcode',session('compcode'))
-                        // ->where('db.tillcode',$request->tillcode)
-                        // ->where('db.tillno',$request->tillno)
-                        ->whereIn('db.trantype',['RD','RC'])
-                        ->sum('amount');
-            
-            $sum_cash_ref = DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            // ->where('db.tillcode',$request->tillcode)
-                            // ->where('db.tillno',$request->tillno)
-                            ->whereIn('db.trantype',['RF'])
-                            ->join('debtor.paymode as pm', function($join) use ($request){
-                                $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                            ->where('pm.source','AR')
-                                            ->where('pm.paytype','CASH')
-                                            ->where('pm.compcode',session('compcode'));
+            $dbacthdr_ex = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
+                            ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
+                            ->leftJoin('debtor.debtormast as dm', function($join){
+                                $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
+                                            ->where('dm.compcode', '=', session('compcode'));
                             })
-                            ->sum('amount');
+                            ->where('dh.payercode', '=', $value->payercode)
+                            ->where('dh.entrydate', '=', $value->entrydate)
+                            ->where('dh.compcode','=',session('compcode'))
+                            ->where('dh.source', '=', 'PB');
             
-            $sum_chq_ref = DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            // ->where('db.tillcode',$request->tillcode)
-                            // ->where('db.tillno',$request->tillno)
-                            ->whereIn('db.trantype',['RF'])
-                            ->join('debtor.paymode as pm', function($join) use ($request){
-                                $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                            ->where('pm.source','AR')
-                                            ->where('pm.paytype','CHEQUE')
-                                            ->where('pm.compcode',session('compcode'));
-                            })
-                            ->sum('amount');
-            
-            $sum_card_ref = DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            // ->where('db.tillcode',$request->tillcode)
-                            // ->where('db.tillno',$request->tillno)
-                            ->whereIn('db.trantype',['RF'])
-                            ->join('debtor.paymode as pm', function($join) use ($request){
-                                $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                            ->where('pm.source','AR')
-                                            ->where('pm.paytype','CARD')
-                                            ->where('pm.compcode',session('compcode'));
-                            })
-                            ->sum('amount');
-            
-            $sum_bank_ref = DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            // ->where('db.tillcode',$request->tillcode)
-                            // ->where('db.tillno',$request->tillno)
-                            ->whereIn('db.trantype',['RF'])
-                            ->join('debtor.paymode as pm', function($join) use ($request){
-                                $join = $join->on('pm.paymode', '=', 'db.paymode')
-                                            ->where('pm.source','AR')
-                                            ->where('pm.paytype','BANK')
-                                            ->where('pm.compcode',session('compcode'));
-                            })
-                            ->sum('amount');
-            
-            $sum_all_ref = DB::table('debtor.dbacthdr as db')
-                            ->where('db.compcode',session('compcode'))
-                            // ->where('db.tillcode',$request->tillcode)
-                            // ->where('db.tillno',$request->tillno)
-                            ->whereIn('db.trantype',['RF'])
-                            ->sum('amount');
-
-
-            $grandtotal_cash = $sum_cash - $sum_cash_ref;
-            $grandtotal_card = $sum_card - $sum_card_ref;
-            $grandtotal_chq = $sum_chq - $sum_chq_ref;
-
+            if($dbacthdr_ex->exists()){
+                foreach ($dbacthdr_ex->get() as $dbacthdr_exkey => $dbacthdr_exvalue) {
+                    $dbacthdr_exvalue->card_amount = 0;
+                    $dbacthdr_exvalue->cheque_amount = 0;
+                    $dbacthdr_exvalue->cash_amount = 0;
+                    $dbacthdr_exvalue->tt_amount = 0;
+                    $dbacthdr_exvalue->cn_amount = 0;
+                    switch ($dbacthdr_exvalue->trantype) {
+                        case 'CN':
+                            $dbacthdr_exvalue->cn_amount = $dbacthdr_exvalue->amount;
+                            array_push($array_report, $dbacthdr_exvalue);
+                            break;
+                        case 'RC':
+                            switch ($dbacthdr_exvalue->paytype) {
+                                case '#F_TAB-CARD':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-CHEQUE':
+                                    $dbacthdr_exvalue->cheque_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-CASH':
+                                    $dbacthdr_exvalue->cash_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-DEBIT':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                            }
+                            array_push($array_report, $dbacthdr_exvalue);
+                            break;
+                        case 'RD':
+                            switch ($dbacthdr_exvalue->paytype) {
+                                case '#F_TAB-CARD':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-CHEQUE':
+                                    $dbacthdr_exvalue->cheque_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-CASH':
+                                    $dbacthdr_exvalue->cash_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                                case '#F_TAB-DEBIT':
+                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
+                                    break;
+                            }
+                            array_push($array_report, $dbacthdr_exvalue);
+                            break;
+                        default:
+                            // code...
+                            break;
+                    }
+                }
+            }
         }
         
-        $title = "CHEQUE LISTING";
+        $title = "DAILY BILL AND COLLECTION";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode','=',session('compcode'))
                     ->first();
         
-        $totamount_expld = explode(".", (float)$totalAmount);
+        // $totamount_expld = explode(".", (float)$totalAmount);
         
-        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        $totamt_eng = $totamt_eng_rm." ONLY";
+        // $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        // $totamt_eng = $totamt_eng_rm." ONLY";
         
-        if(count($totamount_expld) > 1){
-            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-        }
+        // if(count($totamount_expld) > 1){
+        //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+        //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        // }
         
-        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_pdfmake',compact('dbacthdr', 'dbacthdr_rf','totalAmount','sum_cash','sum_chq','sum_card','sum_bank','sum_all','sum_cash_ref','sum_chq_ref','sum_card_ref','sum_bank_ref','sum_all_ref','grandtotal_cash','grandtotal_card', 'grandtotal_chq', 'title','company','totamt_eng'));
-        
+        return view('finance.AR.DailyBillCollection_Report.DailyBillCollection_Report_pdfmake',compact('array_report','title','company'));
         
     }
     
