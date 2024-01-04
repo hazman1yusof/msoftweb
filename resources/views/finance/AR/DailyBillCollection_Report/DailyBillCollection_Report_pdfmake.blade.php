@@ -84,7 +84,7 @@
                                     { text: 'Payer Code', style: 'tableHeader' },
                                     { text: 'Name', style: 'tableHeader' },
                                     { text: 'Bill Amt', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Bill No', style: 'tableHeader' },
+                                    { text: 'Inv No', style: 'tableHeader' },
                                     { text: 'Cash', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Card', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Cheque', style: 'tableHeader', alignment: 'right' },

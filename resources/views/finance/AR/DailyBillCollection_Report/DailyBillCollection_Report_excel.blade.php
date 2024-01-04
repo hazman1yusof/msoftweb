@@ -4,7 +4,7 @@
         <td style="font-weight:bold;text-align: right">PAYER CODE</td>
         <td style="font-weight:bold;text-align: right">NAME</td>
         <td style="font-weight:bold;text-align: right">BILL AMOUNT</td>
-        <td style="font-weight:bold;text-align: right">BILL NO</td>
+        <td style="font-weight:bold;text-align: right">INV NO</td>
         <td style="font-weight:bold;text-align: right">CASH</td>
         <td style="font-weight:bold;text-align: right">CARD</td>
         <td style="font-weight:bold;text-align: right">CHEQUE</td>

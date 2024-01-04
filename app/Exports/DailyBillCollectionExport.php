@@ -122,7 +122,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                                     // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
                                     break;
                                 case '#F_TAB-DEBIT':
-                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    $dbacthdr_exvalue->tt_amount = $dbacthdr_exvalue->amount;
                                     // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
                                     break;
                             }
@@ -143,7 +143,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                                     // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
                                     break;
                                 case '#F_TAB-DEBIT':
-                                    $dbacthdr_exvalue->card_amount = $dbacthdr_exvalue->amount;
+                                    $dbacthdr_exvalue->tt_amount = $dbacthdr_exvalue->amount;
                                     // $dbacthdr_exvalue->amount = $dbacthdr_exvalue->amount + $dbacthdr_exvalue->outamount;
                                     break;
                             }
