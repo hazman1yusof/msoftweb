@@ -91,7 +91,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                                             ->where('dm.compcode', '=', session('compcode'));
                             })
                             ->where('dh.payercode', '=', $value->payercode)
-                            ->where('dh.posteddate', '=', $value->posteddate)
+                            ->where('dh.entrydate', '=', $value->entrydate)
                             ->where('dh.compcode','=',session('compcode'))
                             ->where('dh.source', '=', 'PB')
                             ->whereIn('dh.trantype',['RC','RD','CN']);
