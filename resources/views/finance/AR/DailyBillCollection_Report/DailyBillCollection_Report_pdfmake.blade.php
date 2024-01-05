@@ -45,6 +45,7 @@
                     ]
                 },
                 pageSize: 'A4',
+                pageOrientation: 'landscape',
                 content: [
                     {
                         image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -77,13 +78,13 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [38,40,50,32,25,32,32,35,32,32,32],  //panjang standard dia 515
+                            widths: [50,70,90,55,30,50,50,50,50,55,55],  //panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Date', style: 'tableHeader' },
                                     { text: 'Payer Code', style: 'tableHeader' },
                                     { text: 'Name', style: 'tableHeader' },
-                                    { text: 'Bill Amt', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Bill Amount', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Inv No', style: 'tableHeader' },
                                     { text: 'Cash', style: 'tableHeader', alignment: 'right' },
                                     { text: 'Card', style: 'tableHeader', alignment: 'right' },

@@ -18,7 +18,7 @@
 @section('body')
 	<div class="container">
 		<div class="jumbotron" style="margin-top: 30px;text-align: center;">
-			<form method="get" id="genreport" action="/DailyBillCollection_Report/showExcel">
+			<form method="get" id="genreport" action="./DailyBillCollection_Report/showExcel">
 				<h2>DAILY BILL AND COLLECTION</h2>
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 				

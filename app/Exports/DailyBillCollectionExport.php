@@ -71,8 +71,8 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                     ->where('dh.compcode','=',session('compcode'))
                     ->where('dh.source', '=', 'PB')
                     ->where('dh.trantype', '=', 'IN')
-                    ->whereBetween('dh.entrydate', [$datefr, $dateto])
-                    ->orderBy('dh.entrydate','ASC')
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->orderBy('dh.posteddate','ASC')
                     ->get();
         
         $array_report = [];
@@ -91,7 +91,7 @@ class DailyBillCollectionExport implements FromView, WithEvents, WithColumnWidth
                                             ->where('dm.compcode', '=', session('compcode'));
                             })
                             ->where('dh.payercode', '=', $value->payercode)
-                            ->where('dh.entrydate', '=', $value->entrydate)
+                            ->where('dh.posteddate', '=', $value->posteddate)
                             ->where('dh.compcode','=',session('compcode'))
                             ->where('dh.source', '=', 'PB')
                             ->whereIn('dh.trantype',['RC','RD','CN']);
