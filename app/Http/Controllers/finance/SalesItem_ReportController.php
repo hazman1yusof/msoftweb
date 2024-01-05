@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
 use DB;
 use DateTime;
+use stdClass;
 use Carbon\Carbon;
 use App\Exports\SalesItemExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -67,6 +68,8 @@ class SalesItem_ReportController extends defaultController
                     })
                     ->leftJoin('hisdb.chgmast as c', function($join) use ($request){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
+                                    ->on('c.uom', '=', 'b.uom')
+                                    ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
                     })
                     ->where('d.compcode','=',session('compcode'))
@@ -85,20 +88,18 @@ class SalesItem_ReportController extends defaultController
                 array_push($invno_array, $obj->invno);
             }
         }
-        
-       //$totalAmount = $dbacthdr->sum('amount');
-        
-        // $totamount_expld = explode(".", (float)$totalAmount);
-        
-        // $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
-        // $totamt_eng = $totamt_eng_rm." ONLY";
-        
-        // if(count($totamount_expld) > 1){
-        //     $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
-        //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
-        // }
-        
-        return view('finance.SalesItem_Report.SalesItem_Report_pdfmake',compact('dbacthdr','invno_array'));
+       
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->datefrom = Carbon::parse($request->datefr)->format('d-m-Y');
+        $header->dateto = Carbon::parse($request->dateto)->format('d-m-Y');
+        $header->compname = $company->name;
+
+        return view('finance.SalesItem_Report.SalesItem_Report_pdfmake',compact('dbacthdr','invno_array','header'));
         
     }
 

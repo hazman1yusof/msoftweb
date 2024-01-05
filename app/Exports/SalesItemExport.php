@@ -92,6 +92,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                     })
                     ->leftJoin('hisdb.chgmast as c', function($join){
                         $join = $join->on('c.chgcode', '=', 'b.chgcode')
+                                    ->on('c.uom', '=', 'b.uom')
+                                    ->where('c.unit', '=', session('unit'))
                                     ->where('c.compcode', '=', session('compcode'));
                     })
                     ->where('d.compcode','=',session('compcode'))
@@ -190,4 +192,8 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
         return implode(' ', $words);
     }
     
+    public static function getQueries($builder){
+        $addSlashes = str_replace('?', "'?'", $builder->toSql());
+        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
 }

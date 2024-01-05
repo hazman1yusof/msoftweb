@@ -32,7 +32,6 @@
                 @php($amt += $obj->amount)
                 @php($tax += $obj->taxamount)
                 @php($tot += $obj->amount+$obj->taxamount)
-                @php($totalAmount += $tot)
             @endif
         @endforeach
             <tr></tr>
@@ -45,6 +44,7 @@
                 <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tax, 2, '.', ',')}}</td>
                 <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot, 2, '.', ',')}}</td>
             </table>
+        @php($totalAmount += $tot)
     @endforeach
     <tr></tr>
     <table> 
