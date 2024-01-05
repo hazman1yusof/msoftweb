@@ -34,6 +34,10 @@ class CMEnquiryController extends defaultController
                 return $this->populate_ft($request);
             case 'populate_dp':
                 return $this->populate_dp($request);
+            case 'populate_ca':
+                return $this->populate_ca($request);
+            case 'populate_da':
+                return $this->populate_da($request);
             default:
                 return 'error happen..';
         }
@@ -185,6 +189,28 @@ class CMEnquiryController extends defaultController
     }
 
     public function populate_dp(Request $request){
+        $table = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno);
+ 
+
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+
+        return json_encode($responce);
+    }
+
+    public function populate_ca(Request $request){
+        $table = DB::table('finance.apacthdr')
+                        ->where('idno','=',$request->idno);
+ 
+
+        $responce = new stdClass();
+        $responce->rows = $table->first();
+
+        return json_encode($responce);
+    }
+
+    public function populate_da(Request $request){
         $table = DB::table('finance.apacthdr')
                         ->where('idno','=',$request->idno);
  
