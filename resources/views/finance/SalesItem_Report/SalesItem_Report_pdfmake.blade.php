@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Item List PDF</title>
+<title>Sales By Item</title>
 
 </head>
 
@@ -65,7 +65,7 @@
                         layout: 'noBorders',
                     }
 
-                var title = {text: header.compname+'\nSale By Item',fontSize:10,alignment: 'center',bold: true, margin: [0, 20, 0, 0]};
+                var title = {text: header.compname+'\nSales By Item',fontSize:10,alignment: 'center',bold: true, margin: [0, 20, 0, 0]};
                 retval.push(title);
 
                 retval.push(header_tbl);
@@ -169,7 +169,7 @@
                     retval.push(arr1);
                     amt = amt + parseFloat(e.amount);
                     tax = tax + parseFloat(e.taxamount);
-                    tot = amt + parseFloat(e.amount) + parseFloat(e.taxamount);
+                    tot = tot + parseFloat(e.amount) + parseFloat(e.taxamount);
                 }
 
             });
