@@ -98,10 +98,10 @@ class SalesItemExport implements FromView, WithEvents, WithColumnWidths
                     ->where('d.source', '=', 'PB')
                     ->where('d.trantype', '=', 'IN')
                     ->where('d.recstatus', '=', 'POSTED')
-                    ->where('d.amount','!=','0')
+                    // ->where('d.amount','!=','0')
                     ->orderBy('d.debtorcode','DESC')
                     ->orderBy('d.invno','DESC')
-                    ->whereBetween('d.entrydate', [$datefr, $dateto])
+                    ->whereBetween('b.trxdate', [$datefr, $dateto])
                     ->get();
 
         $invno_array = [];
