@@ -228,7 +228,7 @@ $(document).ready(function () {
 			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 28, classes: 'wrap text-uppercase',align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 28, classes: 'wrap text-uppercase',},
 			{ label: 'Last Payment<br/>Date', name: 'apalloc_allocdate', width: 30, classes: 'wrap text-uppercase',formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap'},
+			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap text-uppercase'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},

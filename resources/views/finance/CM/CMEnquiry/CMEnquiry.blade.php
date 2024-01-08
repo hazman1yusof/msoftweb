@@ -90,6 +90,26 @@
 				</div>
 			</div>
 
+			<div class="panel panel-default" id="jqGrid3_div_ca" style="display:none;">
+			    <div class="panel-heading">Credit Transaction Detail</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_ca" class="table table-striped"></table>
+						<div id="jqGridPager3_ca"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default" id="jqGrid3_div_da" style="display:none;">
+			    <div class="panel-heading">Debit Transaction Detail</div>
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3_da" class="table table-striped"></table>
+						<div id="jqGridPager3_da"></div>
+					</div>
+				</div>
+			</div>
+
 		</div>
     </div>
 	<!-------------------------------- End Search + table ------------------>
@@ -318,8 +338,169 @@
 		</div>
 	</div>
 
-    <!--- CREDIT DEBIT -->
+    <!--- CREDIT -->
+	<div id="dialogForm_ca" title="Credit Transaction" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Transaction Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:100%' id='formdata_ca'>
 
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="auditno">Audit No</label>  
+							<div class="col-md-3">
+								<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
+							</div>
+
+						<label class="col-md-2 control-label" for="pvno">PV No</label>  
+							<div class="col-md-3">
+								<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
+							</div>
+							<div id="recstatus"></div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
+							<div class="col-md-3">
+								<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+							</div>
+
+					
+						<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
+							<div class="col-md-3">
+								<div class='input-group'>
+									<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+					</div>
+
+					<div class="form-group">
+							<label class="col-md-2 control-label" for="amount">Amount</label>  
+							<div class="col-md-3">
+									<input id="amount" name="amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
+							</div>
+
+						<label class="col-md-2 control-label" for="TaxClaimable">GST</label>  
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Claimable'>Claimable</label><br>
+								<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Non-Claimable'>Non-Claimable</label>
+							</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="refsource">Reference</label>  
+							<div class="col-md-8">
+								<input id="refsource" class="form-control input-sm text-uppercase" name="refsource" rows="1" cols="55" maxlength="100" id="remarks">
+							</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="remarks">Remarks</label> 
+							<div class="col-md-8"> 
+								<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
+							</div>
+					</div>
+				</form>    
+			</div>
+		</div>	
+
+
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Transaction Detail</div>
+				<div class="panel-body">
+					<form id='formdata2_ca' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_ca_c" class='col-md-12'>
+							<table id="jqGrid2_ca" class="table table-striped"></table>
+							<div id="jqGridPager2_ca"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--- DEBIT -->
+	<div id="dialogForm_da" title="Debit Transaction" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Credit Transaction Header</div>
+			<div class="panel-body" style="position: relative;">
+				<form class='form-horizontal' style='width:100%' id='formdata_da'>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="auditno">Audit No</label>  
+							<div class="col-md-3">
+								<input id="auditno" name="auditno" type="text" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
+							</div>
+
+						<label class="col-md-2 control-label" for="pvno">PV No</label>  
+							<div class="col-md-3">
+								<input id="pvno" name="pvno" type="text" maxlength="30" class="form-control input-sm" frozeOnEdit rdonly>
+							</div>
+							<div id="recstatus"></div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="actdate">Payment Date</label>  
+							<div class="col-md-3">
+								<input id="actdate" name="actdate" type="date" maxlength="12" class="form-control input-sm" data-validation="required"  data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+							</div>
+
+					
+						<label class="col-md-2 control-label" for="bankcode">Bank Code</label>  
+							<div class="col-md-3">
+								<div class='input-group'>
+									<input id="bankcode" name="bankcode" type="text" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+					</div>
+
+					<div class="form-group">
+							<label class="col-md-2 control-label" for="amount">Amount</label>  
+							<div class="col-md-3">
+									<input id="amount" name="amount" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00" value="0.00" rdonly>  <!--data-validation-allowing="float" -->
+							</div>
+
+						<label class="col-md-2 control-label" for="TaxClaimable">GST</label>  
+							<div class="col-md-3">
+								<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Claimable'>Claimable</label><br>
+								<label class="radio-inline"><input type="radio" name="TaxClaimable" data-validation="required" value='Non-Claimable'>Non-Claimable</label>
+							</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="refsource">Reference</label>  
+							<div class="col-md-8">
+								<input id="refsource" class="form-control input-sm text-uppercase" name="refsource" rows="1" cols="55" maxlength="100" id="remarks">
+							</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="remarks">Remarks</label> 
+							<div class="col-md-8"> 
+								<textarea class="form-control input-sm text-uppercase" name="remarks" rows="2" cols="55" maxlength="400" id="remarks" data-validation="required" data-validation-error-msg="Please Enter Value"></textarea>
+							</div>
+					</div>
+				</form>    
+			</div>
+		</div>	
+
+
+		<div class='panel panel-info'>
+			<div class="panel-heading">Debit Transaction Detail</div>
+				<div class="panel-body">
+					<form id='formdata2_da' class='form-vertical' style='width:99%'>
+						<div id="jqGrid2_da_c" class='col-md-12'>
+							<table id="jqGrid2_da" class="table table-striped"></table>
+							<div id="jqGridPager2_da"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
 
 @section('scripts')
