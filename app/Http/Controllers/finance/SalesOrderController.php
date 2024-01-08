@@ -1337,7 +1337,7 @@ class SalesOrderController extends defaultController
         $billtymst2 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
                             ->where('recstatus','ACTIVE')
-                            ->where('opprice',1)
+                            ->where('opprice',1);
         if($billtymst2->exists()){
             foreach ($billtymst2->get() as $key => $value) {
                 $billtymst->push($value);
