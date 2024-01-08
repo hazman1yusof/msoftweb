@@ -1337,11 +1337,7 @@ class SalesOrderController extends defaultController
         $billtymst2 = DB::table('hisdb.billtymst')
                             ->where('compcode',session('compcode'))
                             ->where('recstatus','ACTIVE')
-                            ->whereNotNull('effdatefrom')
-                            ->whereNotNull('effdatefrom')
                             ->where('opprice',1)
-                            ->whereDate('effdatefrom','<=',$today)
-                            ->whereDate('effdateto','>=',$today);
         if($billtymst2->exists()){
             foreach ($billtymst2->get() as $key => $value) {
                 $billtymst->push($value);
@@ -1390,11 +1386,7 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('billtype',$hdrtype)
                             ->where('recstatus','ACTIVE')
-                            ->whereNotNull('effdatefrom')
-                            ->whereNotNull('effdatefrom')
-                            ->where('opprice',1)
-                            ->whereDate('effdatefrom','<=',$today)
-                            ->whereDate('effdateto','>=',$today);
+                            ->where('opprice',1);
         if($billtymst2->exists()){
             foreach ($billtymst2->get() as $key => $value) {
                 $billtymst->push($value);
@@ -1405,10 +1397,7 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('billtype',$hdrtype)
                             ->where('recstatus','ACTIVE')
-                            ->whereNull('effdatefrom')
-                            ->whereNotNull('effdateto')
-                            ->where('opprice',1)
-                            ->whereDate('effdateto','>=',$today);
+                            ->where('opprice',1);
         if($billtymst3->exists()){
             foreach ($billtymst3->get() as $key => $value) {
                 $billtymst->push($value);
@@ -1419,10 +1408,7 @@ class SalesOrderController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('billtype',$hdrtype)
                             ->where('recstatus','ACTIVE')
-                            ->whereNotNull('effdatefrom')
-                            ->whereNull('effdateto')
-                            ->where('opprice',1)
-                            ->whereDate('effdatefrom','<=',$today);
+                            ->where('opprice',1);
         if($billtymst4->exists()){
             foreach ($billtymst4->get() as $key => $value) {
                 $billtymst->push($value);
