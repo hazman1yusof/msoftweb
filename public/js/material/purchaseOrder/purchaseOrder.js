@@ -2629,13 +2629,47 @@ $(document).ready(function () {
 				}
 
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
-				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				if(data['p_TaxCode'] == ''){
+					$("#jqGrid2 #"+id_optid+"_taxcode").val('EP');
+				}else{
+					$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				}
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
 
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
+
+				dialog_uomcode.id_optid = id_optid;
+		        dialog_uomcode.check(errorField,id_optid+"_uomcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
+
+			    dialog_pouom.id_optid = id_optid;
+		        dialog_pouom.check(errorField,id_optid+"_pouom","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        },function(self){
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			        }
+			    );
+
+				dialog_taxcode.id_optid = id_optid;
+		        dialog_taxcode.check(errorField,id_optid+"_taxcode","jqGrid2",null,
+		        	undefined,
+		        	function(data,self){
+			        	if(data.rows.length > 0){
+							$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+			        	}
+						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		        	}
+		        );
 
 				if($("input#"+id_optid+"_pricecode").val() != 'MS'){
 					dialog_uomcode.urlParam.filterVal[1] = data['p_itemcode'];
@@ -2722,7 +2756,7 @@ $(document).ready(function () {
 				// 	.closest('td')						//utk dialog dalam jqgrid jer
 				// 	.next()
 				// 	.find("input[type=text]").focus();
-				$("#jqGrid2 #"+obj_.id_optid+"_pouom").focus().select();
+				$("#jqGrid2 #"+obj_.id_optid+"_qtyrequest").focus().select();
 			}
 		},'none','radio','tab'//urlParam means check() using urlParam not check_input
 	);

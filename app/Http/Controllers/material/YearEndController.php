@@ -57,7 +57,6 @@ class YearEndController extends defaultController
 
     public function yearEnd_form(Request $request){
         DB::beginTransaction();
-
         try {
             $stockloc = DB::table('material.stockloc')
                         ->where('compcode',session('compcode'))
@@ -160,7 +159,7 @@ class YearEndController extends defaultController
             
             $counter=0;
             foreach ($stockloc->get() as $key => $value){
-                $stockloc = DB::table('material.stockloc')
+                $stockloc_ = DB::table('material.stockloc')
                             ->where('compcode',session('compcode'))
                             ->where('deptcode',$value->deptcode)
                             ->where('itemcode',$value->itemcode)
@@ -168,7 +167,7 @@ class YearEndController extends defaultController
                             ->where('year',$lastyear)
                             ->where('unit',session('unit'));
 
-                if(!$stockloc->exists()){
+                if(!$stockloc_->exists()){
                     continue;
                 }else{
                     $counter++;
@@ -186,7 +185,76 @@ class YearEndController extends defaultController
                         ->update([
                             'openbalqty' => $get_bal->open_balqty,
                             'openbalval' => $get_bal->open_balval,
+                            'qtyonhand' => $value->qtyonhand,
+                            'minqty' => $value->minqty,
+                            'maxqty' => $value->maxqty,
+                            'reordlevel' => $value->reordlevel,
+                            'reordqty' => $value->reordqty,
                         ]);
+                }
+            }
+
+            $counter_exp=0;
+            foreach ($stockloc->get() as $key => $value){
+                //yg tahun baru
+                $exists = DB::table('material.stockexp')
+                            ->where('stockexp.compcode','=',session('compcode'))
+                            ->where('stockexp.unit','=',session('unit'))
+                            ->where('stockexp.deptcode','=',$value->deptcode)
+                            ->where('stockexp.itemcode','=',$value->itemcode)
+                            ->where('stockexp.uomcode','=',$value->uomcode)
+                            ->where('stockexp.year','=', $lastyear)
+                            ->exists();
+
+                if($exists){
+                    continue;
+                }else{
+                    //yg tahun lepas
+                    $stockexp_lama = DB::table('material.stockexp')
+                                    ->where('stockexp.compcode','=',session('compcode'))
+                                    ->where('stockexp.unit','=',session('unit'))
+                                    ->where('stockexp.deptcode','=',$value->deptcode)
+                                    ->where('stockexp.itemcode','=',$value->itemcode)
+                                    ->where('stockexp.uomcode','=',$value->uomcode)
+                                    ->where('stockexp.year','=', $request->year);
+
+                    if($stockexp_lama->exists()){
+                        foreach ($stockexp_lama->get() as $obj_exp) {
+                            $counter_exp++;
+                            DB::table('material.stockexp')
+                                ->insert([
+                                    'compcode' => session('compcode'), 
+                                    'unit' => session('unit'), 
+                                    'deptcode' => $obj_exp->deptcode, 
+                                    'itemcode' => $obj_exp->itemcode, 
+                                    'uomcode' => $obj_exp->uomcode, 
+                                    'expdate' => $obj_exp->expdate, 
+                                    'batchno' => $obj_exp->batchno, 
+                                    'balqty' => $obj_exp->balqty, 
+                                    'adduser' => $obj_exp->adduser, 
+                                    'adddate' => $obj_exp->adddate, 
+                                    'upduser' => $obj_exp->upduser, 
+                                    'upddate' => $obj_exp->upddate, 
+                                   // 'lasttt' => 'GRN', 
+                                    'year' => $lastyear
+                                ]);
+                        }
+                    }else{
+                        $counter_exp++;
+                        DB::table('material.stockexp')
+                                ->insert([
+                                    'compcode' => session('compcode'), 
+                                    'unit' => session('unit'), 
+                                    'deptcode' => $value->deptcode, 
+                                    'itemcode' => $value->itemcode, 
+                                    'uomcode' => $value->uomcode, 
+                                    'balqty' => $value->qtyonhand, 
+                                    'adduser' => session('username'), 
+                                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                                   // 'lasttt' => 'GRN', 
+                                    'year' => $lastyear
+                                ]);
+                    }
                 }
             }
 
@@ -194,6 +262,7 @@ class YearEndController extends defaultController
 
             $responce = new stdClass();
             $responce->counter = $counter;
+            $responce->counter_exp = $counter_exp;
             echo json_encode($responce);
 
         } catch (\Exception $e) {

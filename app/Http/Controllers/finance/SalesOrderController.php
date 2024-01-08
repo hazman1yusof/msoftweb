@@ -459,7 +459,6 @@ class SalesOrderController extends defaultController
                                 ->where('trantype','AD')
                                 ->first();
 
-
                     // 1. buat gltran
                     DB::table('finance.gltran')
                         ->insert([

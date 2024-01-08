@@ -1185,7 +1185,7 @@ $(document).ready(function () {
 			    );
 
 				dialog_taxcode.id_optid = ids[i];
-		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(self,data){
+		        dialog_taxcode.check(errorField,ids[i]+"_taxcode","jqGrid2",null,undefined,function(data,self){
 		        	if(data.rows.length > 0){
 						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
 		        	}
@@ -1353,15 +1353,7 @@ $(document).ready(function () {
 	}
 	function pouomCustomEdit(val, opt) {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
-		return $(`<div class="input-group">
-					<input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-				</div>
-				<span class="help-block"></span>
-				<div class="input-group">
-					<input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden">
-					<input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`>
-					<input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`>
-				</div>`);
+		return $(`<div class="input-group"><input jqgrid="jqGrid2" optid="`+opt.id+`" id="`+opt.id+`" name="pouom" type="text" class="form-control input-sm" data-validation="required" value="` + val + `"style="z-index: 0" ><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span><div class="input-group"><input id="`+opt.id+`_gstpercent" name="gstpercent" type="hidden"><input id="`+opt.id+`_convfactor_uom" name="convfactor_uom" type="hidden" value=`+1+`><input id="`+opt.id+`_convfactor_pouom" name="convfactor_pouom" type="hidden" value=`+1+`></div>`);
 	}
 	function taxcodeCustomEdit(val,opt){
 		val = getEditVal(val);
@@ -1971,17 +1963,39 @@ $(document).ready(function () {
 				}
 
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
-				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				$("#jqGrid2 #"+id_optid+"_pouom").val(data['p_uomcode']);
+				if(data['p_TaxCode'] == ''){
+					$("#jqGrid2 #"+id_optid+"_taxcode").val('EP');
+				}else{
+					$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
+				}
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
 				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
+				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val(data['u_convfactor']);
 				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
 
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
 				$("#jqGrid2").jqGrid('setRowData', rowid ,{description:data['p_description']});
 
-				// if($("input#"+id_optid+"_pricecode").val() != 'MS'){
-				// 	dialog_uomcode.urlParam.filterVal[1] = data['p_itemcode'];
-				// }
+				dialog_uomcode.id_optid = id_optid;
+		        dialog_uomcode.check(errorField,id_optid+"_uomcode","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        }
+			    );
+			    dialog_pouom.id_optid = id_optid;
+		        dialog_pouom.check(errorField,id_optid+"_pouom","jqGrid2",null,
+		        	function(self){
+			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+			        }
+			    );
+				dialog_taxcode.id_optid = id_optid;
+		        dialog_taxcode.check(errorField,id_optid+"_taxcode","jqGrid2",null,undefined,function(data,self){
+		        	if(data.rows.length > 0){
+						$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+		        	}
+		        });
+
 
 			},
 			gridComplete: function(obj){
@@ -2056,7 +2070,7 @@ $(document).ready(function () {
 				}
 			},
 			close: function(obj_){
-				$("#jqGrid2 #"+obj_.id_optid+"_pouom").focus().select();
+				$("#jqGrid2 #"+obj_.id_optid+"_qtyrequest").focus().select();
 			}
 		},'urlParam','radio','tab',true//urlParam means check() using urlParam not check_input
 	);

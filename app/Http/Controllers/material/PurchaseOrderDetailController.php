@@ -95,6 +95,7 @@ class PurchaseOrderDetailController extends defaultController
         $responce->rows = $paginate->items();
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
 
         return json_encode($responce);
     }

@@ -100,6 +100,8 @@ $(document).ready(function () {
 		fixPost: true,
 		table_name:['material.stockloc as s','material.product as p'],
 		table_id:'s_idno',
+		filterCol:['s.compcode','s.year'],
+		filterVal:['session.compcode',moment().year()],
 		join_type:['LEFT JOIN'],
 		join_onCol:['s.itemcode'],
 		join_onVal:['p.itemcode'],
@@ -319,6 +321,11 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 
 	$( "#Syear" ).change(function(){
+		console.log($(this).val())
+		let year = $(this).val();
+
+		urlParam.filterCol = ['s.compcode','s.year'];
+		urlParam.filterVal = ['session.compcode',year];
      	refreshGrid('#jqGrid',urlParam);
 	});
 });

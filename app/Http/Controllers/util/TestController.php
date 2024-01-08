@@ -26,6 +26,8 @@ class TestController extends defaultController
                 return $this->chgmast_invflag_tukar_dari_product($request);
             case 'load_discipline':
                 return $this->load_discipline($request);
+            case 'insert_phst':
+                return $this->insert_phst($request);
             default:
                 return 'error happen..';
         }
@@ -178,6 +180,68 @@ class TestController extends defaultController
 
                 dd('Error'.$e);
             }
+        }
+    }
+
+    public function insert_phst(Request $request){
+
+        DB::beginTransaction();
+
+        try {
+
+            $stockloc = DB::table('material.stockloc')
+                            ->where('compcode','9A')
+                            ->where('deptcode','PHAR')
+                            ->where('year','2024')
+                            ->get();
+
+            foreach ($stockloc as $key => $value) {
+                $exist = DB::table('material.stockloc')
+                            ->where('compcode','9A')
+                            ->where('deptcode','PHST')
+                            ->where('year',$value->year)
+                            ->where('itemcode',$value->itemcode)
+                            ->where('uomcode',$value->uomcode)
+                            ->exists();
+
+                if(!$exist){
+                    DB::table('material.stockloc')
+                        ->insert([
+                            'compcode' => $value->compcode,
+                            'deptcode' => 'PHST',
+                            'itemcode' => $value->itemcode,
+                            'uomcode' => $value->uomcode,
+                            'bincode' => $value->bincode,
+                            'year' => $value->year,
+                            'stocktxntype' => $value->stocktxntype,
+                            'disptype' => $value->disptype,
+                            'minqty' => $value->minqty,
+                            'maxqty' => $value->maxqty,
+                            'reordlevel' => $value->reordlevel,
+                            'reordqty' => $value->reordqty,
+                            'lastissdate' => $value->lastissdate,
+                            'frozen' => $value->frozen,
+                            'adduser' => $value->adduser,
+                            'adddate' => $value->adddate,
+                            'upduser' => $value->upduser,
+                            'upddate' => $value->upddate,
+                            'recstatus' => $value->recstatus,
+                            'deluser' => $value->deluser,
+                            'deldate' => $value->deldate,
+                            'unit' => $value->unit
+                        ]);
+                    }else{
+                        dump($value->itemcode.'exists');
+                    }
+                
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            report($e);
+
+            dd('Error'.$e);
         }
     }
 

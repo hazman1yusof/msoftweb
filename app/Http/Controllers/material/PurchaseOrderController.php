@@ -1006,6 +1006,7 @@ class PurchaseOrderController extends defaultController
         $pr_dt = DB::table('material.purreqdt')
                 ->where('recno', '=', $refer_recno)
                 ->where('compcode', '=', session('compcode'))
+                ->where('unit', '=', session('unit'))
                 ->where('recstatus', '<>', 'DELETE')
                 ->get();
 
@@ -1014,6 +1015,7 @@ class PurchaseOrderController extends defaultController
             $table = DB::table("material.purorddt");
             $table->insert([
                 'compcode' => session('compcode'), 
+                'unit' => session('unit'), 
                 'recno' => $recno, 
                 'lineno_' => $value->lineno_, 
                 'pricecode' => $value->pricecode, 

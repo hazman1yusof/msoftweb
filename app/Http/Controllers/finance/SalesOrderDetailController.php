@@ -1867,7 +1867,24 @@ class SalesOrderDetailController extends defaultController
                 }
 
             }else{
-                throw new \Exception("No stockexp");
+                //3.kalu xde Stock Expiry, buat baru
+                $BalQty = -$curr_quan;
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $my_chggroup, 
+                        'uomcode' => $my_uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
             }
 
 
@@ -1992,7 +2009,23 @@ class SalesOrderDetailController extends defaultController
                         ]);
 
             }else{
-                throw new \Exception("No stockloc");
+                $BalQty = floatval($prev_quan) - floatval($curr_quan);
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $billsum_obj->chggroup, 
+                        'uomcode' => $billsum_obj->uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
             }
 
         }
@@ -2087,7 +2120,23 @@ class SalesOrderDetailController extends defaultController
                         ]);
 
             }else{
-                throw new \Exception("No stockexp");
+                $BalQty = $curr_quan;
+
+                DB::table('material.stockexp')
+                    ->insert([
+                        'compcode' => session('compcode'), 
+                        'unit' => session('unit'), 
+                        'deptcode' => $dbacthdr->deptcode, 
+                        'itemcode' => $billsum_obj->chggroup, 
+                        'uomcode' => $billsum_obj->uom, 
+                        'balqty' => $BalQty, 
+                        'adduser' => session('username'), 
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                        'upduser' => session('username'), 
+                        'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                       // 'lasttt' => 'GRN', 
+                        'year' => Carbon::now("Asia/Kuala_Lumpur")->year
+                    ]);
             }
 
         }
