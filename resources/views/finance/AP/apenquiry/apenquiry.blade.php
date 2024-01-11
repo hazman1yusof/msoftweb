@@ -90,7 +90,11 @@
 		</form>    
 
             <div class="panel panel-default">
-                <div class="panel-heading">AP Enquiry Header</div>
+                <div class="panel-heading">AP Enquiry Header
+					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel'>
+						<span class='fa fa-file-excel-o fa-lg'></span> Statement 
+					</a>
+				</div>
                     <div class="panel-body">
                         <div class='col-md-12' style="padding:0 0 15px 0">
                             <table id="jqGrid" class="table table-striped"></table>
@@ -160,8 +164,49 @@
     </div>
 	<!-------------------------------- End Search + table ------------------>
 
-	<!--- PAYMENT VOUCHER -->
+	<!------------------------- statement dialog search -------------------->
+	<div id="statementDialog" title="Statement">
+		<input id="statement" type="hidden" class="form-control input-sm" readonly>
+			<div class="panel-body">
+				<form class='form-horizontal' style='width:99%' id='formdata'>
+					<input type="hidden" name="action" >
 
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Creditor From</label> 
+									<div class='input-group'> 
+										<input id="suppcode_from" name="suppcode_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+							</div>
+
+							<div class="col-md-6">
+							<label class="control-label" for="Scol">Creditor To</label>  
+								<div class='input-group'>
+									<input id="suppcode_to" name="suppcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Date From</label>  
+									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+							</div>
+
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Date To</label>  
+									<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+						</div>
+					</div>
+				</form>
+			</div>
+	</div>
+	
+	<!--- PAYMENT VOUCHER -->
 	<div id="dialogForm_pv" title="Payment Voucher">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Payment Voucher Header</div>

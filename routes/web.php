@@ -857,6 +857,7 @@ Route::get('/apenquiry','finance\APEnquiryController@show');
 Route::get('/apenquiry/table','finance\APEnquiryController@table');
 Route::post('/apenquiry/form','finance\APEnquiryController@form');
 Route::get('/apenquiry/form','finance\APEnquiryController@form');
+Route::get('/apenquiry/excel','finance\APEnquiryController@excel');
 
 //// AR Enquiry
 Route::get('/arenquiry','finance\arenquiryController@show');
