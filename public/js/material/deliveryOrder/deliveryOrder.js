@@ -1288,7 +1288,7 @@ $(document).ready(function () {
 		    	var objdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-				if(objdata.pricecode == 'MS'){
+				if(objdata.pricecode.slice(0, objdata.pricecode.search("[<]")) == 'MS'){
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount", "#"+ids[i]+"_qtydelivered"]);
 				}else{
 			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
@@ -1602,15 +1602,20 @@ $(document).ready(function () {
 	 function calculate_conversion_factor(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
+		var pricecode = $("#jqGrid2 input#"+id_optid+"_pricecode").val();
+
+		if(pricecode == 'MS'){
+			return true;
+		}
 
 		var id="#jqGrid2 #"+id_optid+"_qtydelivered";
 		var fail_msg = "Please Choose Suitable UOMCode & POUOMCode";
 		var name = "calculate_conversion_factor";
 
 		let convfactor_bool = false;
-		let convfactor_uom = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val());
-		let convfactor_pouom = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val());
-		let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		let convfactor_uom = parseFloat($("#jqGrid2 input#"+id_optid+"_pouom_convfactor_uom").val());
+		let convfactor_pouom = parseFloat($("#jqGrid2 input#"+id_optid+"_pouom_convfactor_pouom").val());
+		let qtydelivered = parseFloat($("#jqGrid2 input#"+id_optid+"_qtydelivered").val());
 
 		var balconv = convfactor_pouom*qtydelivered%convfactor_uom;
 		if (balconv  == 0) {
@@ -1636,8 +1641,8 @@ $(document).ready(function () {
 	}
 
 	function check_qtydlr_qtyout(id_optid){
-		var qtyoutstand_ = parseFloat($("#jqGrid2 #"+id_optid+"_qtyoutstand").val());
-		var qtydelivered_ = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		var qtyoutstand_ = parseFloat($("#jqGrid2 input#"+id_optid+"_qtyoutstand").val());
+		var qtydelivered_ = parseFloat($("#jqGrid2 input#"+id_optid+"_qtydelivered").val());
 		var name = 'check_qtydlr_qtyout';
 
 		if(qtydelivered_ > qtyoutstand_){
