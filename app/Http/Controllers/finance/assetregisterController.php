@@ -441,29 +441,29 @@ class assetregisterController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
             }else{
-                DB::table('finance.facompnt')
-                    ->insert([
-                        'assetcode' => $fatemp->assetcode,
-                        'assettype' => $fatemp->assettype,
-                        'assetno' => $assetno, // got padding
-                        'assetlineno' => $x,
-                        'deptcode' => $fatemp->deptcode,
-                        'loccode' => $fatemp->loccode,
-                        'currdeptcode' => $fatemp->deptcode,
-                        'currloccode' => $fatemp->loccode,
-                        'qty' => $fatemp->qty,
-                        'condition' => null,
-                        'expdate' => null,
-                        'brand' => null,
-                        'model' => null,
-                        'equipmentname' => null,
-                        'trackingno' => null,
-                        'bem_no' => null,
-                        'ppmschedule' => null,
-                        'compcode' => session('compcode'),
-                        'adduser' => strtoupper(session('username')),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                // DB::table('finance.facompnt')
+                //     ->insert([
+                //         'assetcode' => $fatemp->assetcode,
+                //         'assettype' => $fatemp->assettype,
+                //         'assetno' => $assetno, // got padding
+                //         'assetlineno' => $x,
+                //         'deptcode' => $fatemp->deptcode,
+                //         'loccode' => $fatemp->loccode,
+                //         'currdeptcode' => $fatemp->deptcode,
+                //         'currloccode' => $fatemp->loccode,
+                //         'qty' => $fatemp->qty,
+                //         'condition' => null,
+                //         'expdate' => null,
+                //         'brand' => null,
+                //         'model' => null,
+                //         'equipmentname' => null,
+                //         'trackingno' => null,
+                //         'bem_no' => null,
+                //         'ppmschedule' => null,
+                //         'compcode' => session('compcode'),
+                //         'adduser' => strtoupper(session('username')),
+                //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                //     ]);
             }
             
         }
