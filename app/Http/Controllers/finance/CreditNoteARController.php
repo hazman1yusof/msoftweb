@@ -235,9 +235,6 @@ class CreditNoteARController extends defaultController
                     ->where('docauditno',$request->auditno)
                     ->where('recstatus','!=','CANCELLED');
         
-        // dump($dbacthdr->get());
-        // dump($dballoc->get());
-        
         $return_array=[];
         $got_array=[];
         if($dballoc->exists()){
