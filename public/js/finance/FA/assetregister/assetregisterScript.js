@@ -224,7 +224,7 @@ $(document).ready(function () {
 		{
 			title:"Select Delivery Order No",
 			open: function(){
-				dialog_delordno.urlParam.url = "/assetregister/table";
+				dialog_delordno.urlParam.url = "./assetregister/table";
 				dialog_delordno.urlParam.suppcode = $("#suppcode").val();
 				dialog_delordno.urlParam.deldept = $("#deptcode").val();
 			}
@@ -497,7 +497,7 @@ $(document).ready(function () {
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 	var urlParam={
 		action:'assetregisterController',
-		url: 'assetregister/table',
+		url: './assetregister/table',
 		field:'',
 		table_name:'finance.fatemp',	
 	}
@@ -506,7 +506,7 @@ $(document).ready(function () {
 	var saveParam={
 		action:'save_table_default',
 		field:'',
-		url:'assetregister/form',
+		url:'./assetregister/form',
 		oper:oper,
 		table_name:'finance.fatemp'
 	};
@@ -645,7 +645,7 @@ $(document).ready(function () {
 			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
 
 		}
-		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
+		var param={action:'input_check',url:'./util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('assetregister',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('assetregister',options,param,case_,cellvalue));
