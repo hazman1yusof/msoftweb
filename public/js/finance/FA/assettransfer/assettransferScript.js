@@ -103,7 +103,8 @@ $(document).ready(function () {
 		var butt1=[{
 			text: "Save",click: function() {
 				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
-					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,{idno:selrowData('#jqGrid').idno});
+					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,{_token:$('#_token').val(),idno:selrowData('#jqGrid').idno});
+
 				}
 			}
 		},{
