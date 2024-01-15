@@ -385,10 +385,10 @@ $(document).ready(function () {
 
 					populateFormdata("#jqGrid","","#formEnquiryDtl2",rowid,'view');
 					populateFormdata("#jqGrid","","#formtransferFA",rowid,'view');
-					// populate_EnquiryDtl2AE(selrowData("#jqGrid"));
-					// populate_transferAE(selrowData("#jqGrid"));
-					// populate_form_movementAE(selrowData("#jqGrid"));
-					// populate_form_SerialAE(selrowData("#jqGrid"));
+					populate_EnquiryDtl2AE(selrowData("#jqGrid"));
+					populate_transferAE(selrowData("#jqGrid"));
+					populate_form_movementAE(selrowData("#jqGrid"));
+					populate_form_SerialAE(selrowData("#jqGrid"));
 
 					if(parseInt(selrowData('#jqGrid').qty)<=1){
 						$('#jqGrid3_c').hide();
