@@ -181,6 +181,8 @@ var decodeEntities = (function() {
       // strip script/html tags
       str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
       str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      str = str.replace('</br>', '');
+      str = str.replace('</BR>', '');
       element.innerHTML = str;
       str = element.textContent;
       element.textContent = '';
