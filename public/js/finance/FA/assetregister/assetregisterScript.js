@@ -453,7 +453,7 @@ $(document).ready(function () {
 					break;
 			}
 			if(oper!='view'){
-				set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
+				// set_compid_from_storage("input[name='lastcomputerid']", "input[name='lastipaddress']", "input[name='computerid']", "input[name='ipaddress']");
 				dialog_assetcode.on();
 				dialog_loccode.on();
 			}
