@@ -1261,11 +1261,12 @@ class PurchaseOrderController extends defaultController
                             ->where('lineno_','=',$value->lineno_)
                             ->first();
 
+                        $qtyreq = $purorddt->qtyrequest;  
                         $qtytxn = $purorddt->qtyorder;
                         $qtybalance = $value->qtybalance;
                         $qtyapproved = $value->qtyapproved;
 
-                        $newbalance = Floatval($qtybalance) - Floatval($qtytxn);
+                        $newbalance = Floatval($qtyreq) - Floatval($qtytxn);
                         $newqtyapproved = Floatval($qtytxn) + Floatval($qtyapproved);
                         // if($newbalance > 0){
                         //     $status = 'PARTIAL';
