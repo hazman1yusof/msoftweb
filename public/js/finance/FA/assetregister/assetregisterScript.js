@@ -290,7 +290,7 @@ $(document).ready(function () {
 				$('#qty').val(data['dodt_qtydelivered']);
 				$('#currentcost').val(data['dodt_amount']);
 				$('#lineno_').val(data['dodt_lineno_']);
-				$('textarea#description').val(data['p_description']);
+				$('textarea#description').val(data['p_description'] +' '+data['dodt_remarks']);
 				$("#purprice,#qty").blur();
 				$("#origcost,#lstytddep,#cuytddep").blur();
 			},
