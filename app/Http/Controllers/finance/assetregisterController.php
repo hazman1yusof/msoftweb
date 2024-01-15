@@ -398,7 +398,7 @@ class assetregisterController extends defaultController
                         'assetcode' => $fatemp->assetcode,
                         'assettype' => $fatemp->assettype,
                         'assetno' => $assetno, // got padding
-                        'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                        'description' => $fatemp->description,
                         'dolineno' => $fatemp->lineno_,
                         'deptcode' => $fatemp->deptcode,
                         'loccode' => $fatemp->loccode,
@@ -481,7 +481,7 @@ class assetregisterController extends defaultController
                     'assetcode' => $fatemp->assetcode,
                     'assettype' => $fatemp->assettype,
                     'assetno' => $assetno, // got padding
-                    'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                    'description' => $fatemp->description,
                     'dolineno' => $fatemp->lineno_,
                     'deptcode' => $fatemp->deptcode,
                     'loccode' => $fatemp->loccode,
