@@ -1143,8 +1143,8 @@ class PurchaseOrderController extends defaultController
                       });
 
             $array_update = [];
-            $array_update['requestby'] = session('username');
-            $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // $array_update['requestby'] = session('username');
+            // $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
             $array_update['recstatus'] = 'APPROVED';
             foreach ($authdtl->get() as $key => $value) {
 
