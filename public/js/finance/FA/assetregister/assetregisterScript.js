@@ -336,7 +336,7 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_itemcode_direct.gridname);
 				$('#uomcode').val(data['uomcode']);
 				$('#purprice').val(data['currprice']);
-				$('#description').val(data['itemcode']);
+				$('#description').val(data['itemcode']+'-'+data['description']);
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -627,8 +627,7 @@ $(document).ready(function () {
 	}
 
 	function description_show(cellvalue, options, rowObject) {
-		let description = (rowObject.description_show == null)?' ':rowObject.description_show;
-		return rowObject.itemcode+'-'+rowObject.itemcode_desc+'\n\n'+description;
+		return cellvalue;
 	}
 
 	function description_show_unformat(cellvalue, options) {
