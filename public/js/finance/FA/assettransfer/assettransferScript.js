@@ -233,7 +233,7 @@ $(document).ready(function () {
 			$('#currdeptcode').val(selrowData('#jqGrid').deptcode);
 			$('#currloccode').val(selrowData('#jqGrid').loccode);
 			$('#assetno').val(selrowData('#jqGrid').assetno);
-			$('#description').val(selrowData('#jqGrid').description);
+			$('#description').val(decodeEntities(selrowData('#jqGrid').description));
 			$('#assetcode').val(selrowData('#jqGrid').assetcode);
 			$('#assettype').val(selrowData('#jqGrid').assettype);
 		},
@@ -308,7 +308,7 @@ $(document).ready(function () {
 			alert('Please select row');
 		}else{
 			$("span[name='itemcode']").text(selrowData('#jqGrid').itemcode);
-			$("span[name='description']").text(selrowData('#jqGrid').description);
+			$("span[name='description']").text(decodeEntities(selrowData('#jqGrid').description));
 			
 			$("#msgBox").dialog("open");
 		}
