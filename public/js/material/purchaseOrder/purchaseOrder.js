@@ -2462,7 +2462,6 @@ $(document).ready(function () {
 					},
 			ondblClickRow:function(event){
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
-				$("#jqGrid2 input[name='itemcode']").focus().select();
 				let data = selrowData('#'+dialog_pricecode.gridname);
 
 				if(data.pricecode == 'MS'){
@@ -2510,6 +2509,14 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_onVal=null;
 					dialog_uomcode.urlParam.join_filterCol=null;
 					dialog_uomcode.urlParam.join_filterVal=null;
+
+
+					mycurrency2.array.length = 0;
+					mycurrency_np.array.length = 0;
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtyorder']"]);
+
+					mycurrency2.formatOnBlur();//make field to currency on leave cursor
+					mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 				}else{
 					let newcolmodel = [
@@ -2560,6 +2567,11 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
+					mycurrency2.array.length = 0;
+					mycurrency_np.array.length = 0;
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+					Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyorder']"]);
+
 				}
 			},
 			gridComplete: function(obj){
@@ -2573,15 +2585,16 @@ $(document).ready(function () {
 			}
 		},{
 			title:"Select Price Code For Item",
-			open: function(){
+			open: function(obj_){
 				dialog_pricecode.urlParam.filterCol=['compcode','recstatus'];
 				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
-			close: function(){
+			close: function(obj_){
 				// $(dialog_pricecode.textfield)			//lepas close dialog focus on next textfield 
 				// 	.closest('td')						//utk dialog dalam jqgrid jer
 				// 	.next()
 				// 	.find("input[type=text]").focus();
+				$("#jqGrid2 input[name='itemcode']").focus().select();
 			}
 		},'urlParam',jgrid2='#jqGrid2', 'tab'
 	);
