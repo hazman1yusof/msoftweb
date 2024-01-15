@@ -1097,6 +1097,11 @@ Route::get('/assettransfer','finance\assettransferController@show');
 Route::get('/assettransfer/table','finance\assettransferController@table');
 Route::post('/assettransfer/form','finance\assettransferController@form');
 
+/// Asset Transfer /// 
+Route::get('/assetWriteOff','finance\assetWriteOffController@show');
+Route::get('/assetWriteOff/table','finance\assetWriteOffController@table');
+Route::post('/assetWriteOff/form','finance\assetWriteOffController@form');
+
 /// Register setup /// 
 Route::get('/assetregister','finance\assetregisterController@show');
 Route::get('/assetregister/table','finance\assetregisterController@table');

@@ -36,13 +36,13 @@
 					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">					
 				</div>
 				<div class="col-md-3 col-md-offset-9" style="padding-top: 0; text-align: end;">
-					<button type="button" id='transferButn' class='btn btn-info' >Transfer</button> 
+					<button type="button" id='writeoffButn' class='btn btn-info' >Write-Off</button> 
 				</div>
 			 </fieldset> 
 		</form>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Asset Transfer Header</div>
+			<div class="panel-heading">Asset Write-Off Header</div>
 			<div class="panel-body">
 				<div class='col-md-12' style="padding:0 0 15px 0">
 					<table id="jqGrid" class="table table-striped"></table>
@@ -88,31 +88,38 @@
 					</div>
 			</div>
 
-		<hr>
+			<hr>
+			
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="trandate">Transfer Date</label>
+				<label class="col-md-2 control-label" for="trandate">Cost</label>
 				<div class="col-md-2">
-					<input type="date" name="trandate" id="trandate" class="form-control input-sm" data-validation="required">
+					<input type="text" name="cost" id="cost" class="form-control input-sm" data-validation="required">
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="deptcode">New Department</label>
-				<div class="col-md-3">
-					<div class='input-group'>
-						<input type="text" name="deptcode" id="deptcode" class="form-control input-sm" style="text-transform:uppercase" data-validation="required">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					</div>
-					<span class="help-block"></span>
+				<label class="col-md-2 control-label" for="trandate">Accumulated</label>
+				<div class="col-md-2">
+					<input type="text" name="acuum" id="acuum" class="form-control input-sm" data-validation="required">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="trandate">NBV</label>
+				<div class="col-md-2">
+					<input type="text" name="nbv" id="nbv" class="form-control input-sm" data-validation="required">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-2 control-label" for="trandate">Date</label>
+				<div class="col-md-2">
+					<input type="date" name="date" id="date" class="form-control input-sm" data-validation="required">
 				</div>
 
-				<label class="col-md-2 control-label" for="loccode">New Location</label>
-				<div class="col-md-3">
-					<div class='input-group'>
-						<input type="text" name="loccode" id="loccode" class="form-control input-sm" style="text-transform:uppercase" data-validation="required">
-						<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-					</div>
-					<span class="help-block"></span>
+				<label class="col-md-2 control-label" for="trandate">Reason</label>
+				<div class="col-md-6">
+					<textarea class="form-control input-sm text-uppercase" name="reason" rows="4" cols="55" id="reason" data-validation="required"> </textarea>
 				</div>
 			</div>						
 		</form>				
@@ -169,6 +176,6 @@
 		});
 	</script>
 		
-	<script src="js/finance/FA/assettransfer/assettransferScript.js"></script>
+	<script src="js/finance/FA/assetWriteOff/assetWriteOff.js"></script>
 	
 @endsection

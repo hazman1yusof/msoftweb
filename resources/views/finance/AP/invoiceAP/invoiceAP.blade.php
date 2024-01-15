@@ -4,6 +4,11 @@
 
 @section('style')
 
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;;
+  font-size: 12px !important;
+}
+
 .panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
  display: none;

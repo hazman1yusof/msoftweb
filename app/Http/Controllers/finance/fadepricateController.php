@@ -145,7 +145,6 @@ class fadepricateController extends defaultController
             }
 
             $queries = DB::getQueryLog();
-            // dump($queries);
 
             DB::commit();
 
