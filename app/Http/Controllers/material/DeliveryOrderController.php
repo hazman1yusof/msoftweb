@@ -460,7 +460,7 @@ class DeliveryOrderController extends defaultController
 
                         $podt_obj->update([
                             'qtydelivered' => $jumlah_qtydelivered,
-                            // 'qtyoutstand' => $qtyoutstand,
+                            'qtyoutstand' => $qtyoutstand,
                             'recstatus' => $status
                         ]);
 

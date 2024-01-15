@@ -1850,15 +1850,14 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_onVal=null;
 					dialog_uomcode.urlParam.join_filterCol=null;
 					dialog_uomcode.urlParam.join_filterVal=null;
-					
+
 					mycurrency2.formatOff();
 					mycurrency_np.formatOff();
-					
+
 					mycurrency2.array.length = 0;
 					mycurrency_np.array.length = 0;
 					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtyrequest']"]);
-					console.log(mycurrency_np)
-					console.log(mycurrency2)
+					
 					mycurrency2.formatOnBlur();//make field to currency on leave cursor
 					mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 

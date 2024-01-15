@@ -1016,13 +1016,13 @@ $(document).ready(function () {
 	//     });
 
 
-	$("#jqGrid2").jqGrid('setGroupHeaders', {
-  	useColSpanStyle: false, 
-	  groupHeaders:[
-		{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-		{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-	  ]
-	})
+	// $("#jqGrid2").jqGrid('setGroupHeaders', {
+  	// useColSpanStyle: false, 
+	//   groupHeaders:[
+	// 	{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+	// 	{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+	//   ]
+	// })
 
 
 	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
@@ -1124,18 +1124,18 @@ $(document).ready(function () {
 
 			//}
 
-			mycurrency2.array.length = 0;
-			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyorder']"]);
+			// mycurrency2.array.length = 0;
+			// mycurrency_np.array.length = 0;
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyorder']"]);
 			
-			$("input[name='gstpercent']").val('0')//reset gst to 0
-			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+			// $("input[name='gstpercent']").val('0')//reset gst to 0
+			// mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			// mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 			
 			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 
-			$("#jqGrid2 input[name='qtyorder']").on('keyup',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
+			$("#jqGrid2 input[name='qtyorder']").on('blur',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
 
 			$("#jqGrid2 input[name='qtyorder']").on('blur',calculate_conversion_factor);
 			$("#jqGrid2 input[name='uomcode'],#jqGrid2 input[name='pouom']").on('focus',remove_noti);
@@ -1277,12 +1277,16 @@ $(document).ready(function () {
 			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
-
+		    	var objdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+		        if(objdata.pricecode == 'MS'){
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount", "#"+ids[i]+"_qtyorder"]);
+		        }else{
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
 
-		        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyorder"]);
+			        Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtyorder"]);
+		        }
 
 		        dialog_itemcode.id_optid = ids[i];
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
@@ -2232,6 +2236,7 @@ $(document).ready(function () {
 				dialog_suppcode.check(errorField);
 				dialog_deldept.check(errorField);
 
+				mycurrency.formatOn();
 
 				var urlParam2 = {
 					action: 'get_value_default',
@@ -2306,7 +2311,7 @@ $(document).ready(function () {
 				dialog_purreqno.urlParam.WhereInVal = [['PARTIAL','APPROVED']];
 			},
 			close: function(){
-				$("#purordhd_suppcode").focus();
+				// $("#purordhd_suppcode").focus();
 			}
 		},'none'
 	);
@@ -2510,6 +2515,8 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterCol=null;
 					dialog_uomcode.urlParam.join_filterVal=null;
 
+					mycurrency2.formatOff();
+					mycurrency_np.formatOff();
 
 					mycurrency2.array.length = 0;
 					mycurrency_np.array.length = 0;
@@ -2567,10 +2574,16 @@ $(document).ready(function () {
 					dialog_uomcode.urlParam.join_filterCol=[['s.compcode on =']];
 					dialog_uomcode.urlParam.join_filterVal=[['u.compcode']];
 
+					mycurrency2.formatOff();
+					mycurrency_np.formatOff();
+
 					mycurrency2.array.length = 0;
 					mycurrency_np.array.length = 0;
 					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
 					Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtyorder']"]);
+
+					mycurrency2.formatOnBlur();//make field to currency on leave cursor
+					mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 				}
 			},
