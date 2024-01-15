@@ -104,20 +104,6 @@ $(document).ready(function () {
 			text: "Save",click: function() {
 				if( $('#formdata').isValid({requiredFields: ''}, conf, true) ) {
 					saveFormdata("#jqGrid","#dialogForm","#formdata",oper,saveParam,urlParam,null,{idno:selrowData('#jqGrid').idno});
-
-					saveOnly(saveParam2,
-					{
-						'deptcode' : $("#deptcode").val(),
-						'olddeptcode' : $("#currdeptcode").val(),
-						'trantype' : 'TRF',
-						'trandate' : $("#trandate").val(),
-						'curloccode' : $("#loccode").val(),
-						'oldloccode' : $("#currloccode").val(),
-						'assetno' : $("#assetno").val(),
-						'assetcode' : $("#assetcode").val(),
-						'assettype' : $("#assettype").val()
-
-					});
 				}
 			}
 		},{

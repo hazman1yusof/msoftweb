@@ -23,7 +23,6 @@
 @endsection
 
 @section('body')
-<input id="_token" name="_token" type="hidden" value="{{ csrf_token() }}">
 	 
 	<!-------------------------------- Search + table ---------------------->
 	<div class='row'>
@@ -53,8 +52,8 @@
 		</div>
 
 		<div id="dialogForm" title="Transfer Form">	
-		{{ csrf_field() }}
 			<form class='form-horizontal' style='width:89%' >
+				{{ csrf_field() }}
 				<div class="prevnext btn-group pull-right">
 					<input id="source" name="source" type="hidden">
 					<input id="trantype" name="trantype" type="hidden">
