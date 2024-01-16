@@ -496,6 +496,13 @@ Route::get('/invoiceAP_Report/table','finance\InvoiceAP_ReportController@table')
 Route::post('/invoiceAP_Report/form','finance\InvoiceAP_ReportController@form');
 Route::get('/invoiceAP_Report/showExcel','finance\InvoiceAP_ReportController@showExcel');
 
+
+//// attachment_upload  ///
+Route::get('/attachment_upload','util\attachment_uploadController@page');
+Route::get('/attachment_upload/table','util\attachment_uploadController@table');
+Route::post('/attachment_upload/form','util\attachment_uploadController@form');
+Route::get('/attachment_upload/thumbnail/{folder}/{image_path}','util\attachment_uploadController@thumbnail');
+
 //// Finance - SalesOrder page ///
 Route::get('/SalesOrder','finance\SalesOrderController@show');
 Route::get('/SalesOrder/table','finance\SalesOrderController@table');
@@ -1089,6 +1096,11 @@ Route::post('/assettransfer2/form','finance\assettransfer2Controller@form');
 Route::get('/assettransfer','finance\assettransferController@show');
 Route::get('/assettransfer/table','finance\assettransferController@table');
 Route::post('/assettransfer/form','finance\assettransferController@form');
+
+/// Asset Transfer /// 
+Route::get('/assetWriteOff','finance\assetWriteOffController@show');
+Route::get('/assetWriteOff/table','finance\assetWriteOffController@table');
+Route::post('/assetWriteOff/form','finance\assetWriteOffController@form');
 
 /// Register setup /// 
 Route::get('/assetregister','finance\assetregisterController@show');

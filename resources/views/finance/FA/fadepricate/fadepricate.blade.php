@@ -23,7 +23,7 @@
 
 	  <br>
 	  <br>
-	  <form method="post" id="depreciation" action="/fadepricate/form">
+	  <form method="post" id="depreciation" action="./fadepricate/form">
 	  	{{ csrf_field() }}
 	  	<input type="hidden" name="oper" value="depreciation">
 	  	<button type="submit" class="btn btn-primary btn-lg">Start Depreciation Process</button>

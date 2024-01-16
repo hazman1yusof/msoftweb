@@ -28,69 +28,69 @@ $(document).ready(function () {
 	var fdl = new faster_detail_load();
 
 	/////////////////////////////START NEW DIALOG///////////////////////////////////////////
-	var dialog_deptcode= new ordialog(
-		'deptcode','sysdb.department','#deptcode',errorField,
-		{	colModel:[
-			    {label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode'],
-				filterVal:['session.compcode']
-			},
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-					$('#loccode').focus();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},
-		{
-			title:"Select Department",
-			open: function(){
-				dialog_deptcode.urlParam.filterCol=['compcode'],
-				dialog_deptcode.urlParam.filterVal=['session.compcode']
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_deptcode.makedialog();
+	// var dialog_deptcode= new ordialog(
+	// 	'deptcode','sysdb.department','#deptcode',errorField,
+	// 	{	colModel:[
+	// 		    {label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode'],
+	// 			filterVal:['session.compcode']
+	// 		},
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 				$('#loccode').focus();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},
+	// 	{
+	// 		title:"Select Department",
+	// 		open: function(){
+	// 			dialog_deptcode.urlParam.filterCol=['compcode'],
+	// 			dialog_deptcode.urlParam.filterVal=['session.compcode']
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_deptcode.makedialog();
 
-	var dialog_loccode= new ordialog(
-		'loccode','sysdb.location','#loccode',errorField,
-		{	colModel:[
-				{label:'Location Code',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
-			],
-			urlParam: {
-				filterCol:['compcode'],
-				filterVal:['session.compcode']
-			},
-			sortname:'idno',
-			sortorder:'desc',
-			gridComplete: function(obj){
-				var gridname = '#'+obj.gridname;
-				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
-					$(gridname+' tr#1').click();
-					$(gridname+' tr#1').dblclick();
-				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
-					$('#'+obj.dialogname).dialog('close');
-				}
-			}
-		},
-		{
-			title:"Select Location",
-			open: function(){
-				dialog_loccode.urlParam.filterCol=['compcode'];
-				dialog_loccode.urlParam.filterVal=['session.compcode'];
+	// var dialog_loccode= new ordialog(
+	// 	'loccode','sysdb.location','#loccode',errorField,
+	// 	{	colModel:[
+	// 			{label:'Location Code',name:'loccode',width:200,classes:'pointer',canSearch:true,or_search:true},
+	// 			{label:'Description',name:'description',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true},
+	// 		],
+	// 		urlParam: {
+	// 			filterCol:['compcode'],
+	// 			filterVal:['session.compcode']
+	// 		},
+	// 		sortname:'idno',
+	// 		sortorder:'desc',
+	// 		gridComplete: function(obj){
+	// 			var gridname = '#'+obj.gridname;
+	// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+	// 				$(gridname+' tr#1').click();
+	// 				$(gridname+' tr#1').dblclick();
+	// 			}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+	// 				$('#'+obj.dialogname).dialog('close');
+	// 			}
+	// 		}
+	// 	},
+	// 	{
+	// 		title:"Select Location",
+	// 		open: function(){
+	// 			dialog_loccode.urlParam.filterCol=['compcode'];
+	// 			dialog_loccode.urlParam.filterVal=['session.compcode'];
 				
-			}
-		},'urlParam','radio','tab'
-	);
-	dialog_loccode.makedialog();
+	// 		}
+	// 	},'urlParam','radio','tab'
+	// );
+	// dialog_loccode.makedialog();
 	/////////////////Object for Dialog Handler////////////////////////////////////////////////////
 
 		// //department
@@ -148,13 +148,25 @@ $(document).ready(function () {
 						break;
 				}
 				if(oper!='view'){
-					dialog_deptcode.on();
-					dialog_loccode.on();
+					// dialog_deptcode.on();
+					// dialog_loccode.on();
+					var cost = parseFloat(selrowData('#jqGrid').currentcost);
+					var lstytddep = parseFloat(selrowData('#jqGrid').lstytddep);
+					var cuytddep = parseFloat(selrowData('#jqGrid').cuytddep);
+					var accum = parseFloat(lstytddep) + parseFloat(cuytddep);
+					var nbv = parseFloat(cost) - parseFloat(accum);
+
+					$('#cost').val(cost);
+					$('#acuum').val(accum);
+					$('#nbv').val(nbv);
 				}
 				if(oper!='add'){
 					//dialog_deptcode.check(errorField);
 					//dialog_loccode.check(errorField);
 				}
+
+
+
 			},
 			close: function( event, ui ) {
 				parent_close_disabled(false);
@@ -187,9 +199,9 @@ $(document).ready(function () {
 
 	/////////////////////parameter for saving url////////////////////////////////////////////////
 	var saveParam={
-		action:'save_table_default',
+		action:'save_WriteOff',
 		field:['deptcode','loccode','trandate'],
-		url:'assettransfer/form',
+		url:'./assetWriteOff/form',
 		oper:oper,
 		table_name:'finance.faregister',
 		table_id:'idno'
@@ -207,20 +219,21 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",	
 			colModel: [
-			{label: 'compcode', name: 'compcode', hidden: true},
-			{label: 'Tagging No', name: 'assetno', width: 10, canSearch: true, checked: true},
-			{label: 'Item Code', name:'itemcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
-			{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true, formatter: showdetail,unformat:un_showdetail},
-			{label: 'Type', name:'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true, formatter: showdetail,unformat:un_showdetail},
-			{label: 'Department', name:'currdeptcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
-			{label: 'Location', name:'currloccode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{label: 'Department', name:'deptcode', hidden:true },
-			{label: 'Location', name:'loccode', hidden:true},
-			{label: 'Description', name:'description', width: 40, classes: 'wrap'},
-			{label: 'idno', name: 'idno', hidden: true},
-			{label: 'Transfer Date', name:'trandate', formatter:dateFormatter, hidden:true},
-			{label: 'Add User', name:'adduser', width:20, classes:'wrap',  hidden:true},
-			{label: 'Add Date', name:'adddate', width:20, classes:'wrap',  hidden:true},
+				{label: 'compcode', name: 'compcode', hidden: true},
+				{label: 'Tagging No', name: 'assetno', width: 10, canSearch: true, checked: true},
+				{label: 'Item Code', name:'itemcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
+				{label: 'Category', name: 'assetcode', width: 20, classes: 'wrap', canSearch: true,checked:true, formatter: showdetail,unformat:un_showdetail},
+				{label: 'Type', name:'assettype', width: 20, classes: 'wrap', canSearch: true, checked:true, formatter: showdetail,unformat:un_showdetail},
+				{label: 'Department', name:'deptcode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
+				{label: 'Location', name:'loccode', width: 20, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
+				{label: 'Description', name:'description', width: 40, classes: 'wrap'},
+				{label: 'idno', name: 'idno', hidden: true},
+				{label: 'Transfer Date', name:'trandate', formatter:dateFormatter, hidden:true},
+				{label: 'currentcost', name:'currentcost', hidden:true},
+				{label: 'lstytddep', name:'lstytddep', hidden:true},
+				{label: 'cuytddep', name:'cuytddep', hidden:true},
+				{label: 'Add User', name:'adduser', width:20, classes:'wrap',  hidden:true},
+				{label: 'Add Date', name:'adddate', width:20, classes:'wrap',  hidden:true},
 			],
 		autowidth:true,
 		multiSort: true,
@@ -232,8 +245,8 @@ $(document).ready(function () {
 		multiselect:false,
 		pager: "#jqGridPager",
 		onSelectRow: function(){
-			$('#currdeptcode').val(selrowData('#jqGrid').currdeptcode);
-			$('#currloccode').val(selrowData('#jqGrid').currloccode);
+			$('#currdeptcode').val(selrowData('#jqGrid').deptcode);
+			$('#currloccode').val(selrowData('#jqGrid').loccode);
 			$('#assetno').val(selrowData('#jqGrid').assetno);
 			$('#description').val(decodeEntities(selrowData('#jqGrid').description));
 			$('#assetcode').val(selrowData('#jqGrid').assetcode);
@@ -271,8 +284,8 @@ $(document).ready(function () {
 			case 'itemcode':field=['itemcode','description'];table="material.productmaster";case_='itemcode';break;
 			case 'assetcode':field=['assetcode','description'];table="finance.facode";case_='assetcode';break;
 			case 'assettype':field=['assettype','description'];table="finance.fatype";case_='assettype';break;
-			case 'currdeptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
-			case 'currloccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
+			case 'deptcode':field=['deptcode','description'];table="sysdb.department";case_='deptcode';break;
+			case 'loccode':field=['loccode','description'];table="sysdb.location";case_='loccode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -304,7 +317,7 @@ $(document).ready(function () {
 		}]
 	});
 
-	$("#transferButn").click(function(){
+	$("#writeoffButn").click(function(){
 		var selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 		if(!selRowId){
 			alert('Please select row');

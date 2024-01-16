@@ -398,12 +398,12 @@ class assetregisterController extends defaultController
                         'assetcode' => $fatemp->assetcode,
                         'assettype' => $fatemp->assettype,
                         'assetno' => $assetno, // got padding
-                        'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                        'description' => $fatemp->description,
                         'dolineno' => $fatemp->lineno_,
                         'deptcode' => $fatemp->deptcode,
                         'loccode' => $fatemp->loccode,
-                        'currdeptcode' => $request->deptcode,
-                        'currloccode' => $request->loccode,
+                        'currdeptcode' => $fatemp->deptcode,
+                        'currloccode' => $fatemp->loccode,
                         'suppcode' => $fatemp->suppcode,
                         'purordno' => $fatemp->purordno,
                         'delordno'  => $fatemp->delordno,
@@ -441,29 +441,29 @@ class assetregisterController extends defaultController
                         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                     ]);
             }else{
-                DB::table('finance.facompnt')
-                    ->insert([
-                        'assetcode' => $fatemp->assetcode,
-                        'assettype' => $fatemp->assettype,
-                        'assetno' => $assetno, // got padding
-                        'assetlineno' => $x,
-                        'deptcode' => $fatemp->deptcode,
-                        'loccode' => $fatemp->loccode,
-                        'currdeptcode' => $request->deptcode,
-                        'currloccode' => $request->loccode,
-                        'qty' => $fatemp->qty,
-                        'condition' => null,
-                        'expdate' => null,
-                        'brand' => null,
-                        'model' => null,
-                        'equipmentname' => null,
-                        'trackingno' => null,
-                        'bem_no' => null,
-                        'ppmschedule' => null,
-                        'compcode' => session('compcode'),
-                        'adduser' => strtoupper(session('username')),
-                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                    ]);
+                // DB::table('finance.facompnt')
+                //     ->insert([
+                //         'assetcode' => $fatemp->assetcode,
+                //         'assettype' => $fatemp->assettype,
+                //         'assetno' => $assetno, // got padding
+                //         'assetlineno' => $x,
+                //         'deptcode' => $fatemp->deptcode,
+                //         'loccode' => $fatemp->loccode,
+                //         'currdeptcode' => $fatemp->deptcode,
+                //         'currloccode' => $fatemp->loccode,
+                //         'qty' => $fatemp->qty,
+                //         'condition' => null,
+                //         'expdate' => null,
+                //         'brand' => null,
+                //         'model' => null,
+                //         'equipmentname' => null,
+                //         'trackingno' => null,
+                //         'bem_no' => null,
+                //         'ppmschedule' => null,
+                //         'compcode' => session('compcode'),
+                //         'adduser' => strtoupper(session('username')),
+                //         'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                //     ]);
             }
             
         }
@@ -481,7 +481,7 @@ class assetregisterController extends defaultController
                     'assetcode' => $fatemp->assetcode,
                     'assettype' => $fatemp->assettype,
                     'assetno' => $assetno, // got padding
-                    'description' => $fatemp->itemcode.'-'.$product->description.'</br>'.$fatemp->description,
+                    'description' => $fatemp->description,
                     'dolineno' => $fatemp->lineno_,
                     'deptcode' => $fatemp->deptcode,
                     'loccode' => $fatemp->loccode,

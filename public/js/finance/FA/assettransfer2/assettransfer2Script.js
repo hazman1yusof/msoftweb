@@ -170,7 +170,7 @@ function populate_transferAE(obj,rowdata){
 
     };
 
-    $.post( "/assettransfer2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+    $.post( "./assettransfer2/form?"+$.param(saveParam), $.param(postobj), function( data ) {
         
     },'json').fail(function(data) {
         alert('there is an error');
@@ -197,7 +197,7 @@ function autoinsert_rowdata(form,rowData){
 				$(form+" [name='"+index+"']").prop('checked', true);
 			}
 		}else{
-			input.val(value);
+			input.val(decodeEntities(value));
 		}
 	});
 }
@@ -213,7 +213,7 @@ function saveForm_transferFA(callback){
 
 	values = $("#formtransferFA").serializeArray();
 
-    $.post( "/assettransfer2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
+    $.post( "./assettransfer2/form?"+$.param(saveParam), $.param(postobj)+'&'+$.param(values) , function( data ) {
         
     },'json').fail(function(data) {
         // alert('there is an error');

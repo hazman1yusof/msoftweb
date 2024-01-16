@@ -1138,14 +1138,14 @@ $(document).ready(function () {
 				dialog_taxcode.on();
 			//}
 
-			mycurrency2.array.length = 0;
-			mycurrency_np.array.length = 0;
-			Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
-			Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
+			// mycurrency2.array.length = 0;
+			// mycurrency_np.array.length = 0;
+			// Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+			// Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
 
 			$("input[name='gstpercent']").val('0')//reset gst to 0
-			mycurrency2.formatOnBlur();//make field to currency on leave cursor
-			mycurrency_np.formatOnBlur();//make field to currency on leave cursor
+			// mycurrency2.formatOnBlur();//make field to currency on leave cursor
+			// mycurrency_np.formatOnBlur();//make field to currency on leave cursor
 
 			$("#jqGrid2 input[name='unitprice'], #jqGrid2 input[name='amtdisc'], #jqGrid2 input[name='taxcode'], #jqGrid2 input[name='perdisc']").on('blur',{currency: mycurrency2},calculate_line_totgst_and_totamt);
 			$("#jqGrid2 input[name='qtydelivered']").on('keyup',{currency: mycurrency_np},calculate_line_totgst_and_totamt);
@@ -1285,11 +1285,15 @@ $(document).ready(function () {
 			mycurrency_np.array.length = 0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 		    for (var i = 0; i < ids.length; i++) {
-
+		    	var objdata = $("#jqGrid2").jqGrid ('getRowData', ids[i]);
 		        $("#jqGrid2").jqGrid('editRow',ids[i]);
 
-		        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
-				Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtydelivered"]);
+				if(objdata.pricecode.slice(0, objdata.pricecode.search("[<]")) == 'MS'){
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount", "#"+ids[i]+"_qtydelivered"]);
+				}else{
+			        Array.prototype.push.apply(mycurrency2.array, ["#"+ids[i]+"_amtdisc","#"+ids[i]+"_unitprice","#"+ids[i]+"_amount","#"+ids[i]+"_tot_gst", "#"+ids[i]+"_totamount"]);
+					Array.prototype.push.apply(mycurrency_np.array, ["#"+ids[i]+"_qtydelivered"]);
+				}
 
 		        dialog_itemcode.id_optid = ids[i];
 		        dialog_itemcode.check(errorField,ids[i]+"_itemcode","jqGrid2",null,
@@ -1598,15 +1602,20 @@ $(document).ready(function () {
 	 function calculate_conversion_factor(event) {
 		var optid = event.currentTarget.id;
 		var id_optid = optid.substring(0,optid.search("_"));
+		var pricecode = $("#jqGrid2 input#"+id_optid+"_pricecode").val();
+
+		if(pricecode == 'MS'){
+			return true;
+		}
 
 		var id="#jqGrid2 #"+id_optid+"_qtydelivered";
 		var fail_msg = "Please Choose Suitable UOMCode & POUOMCode";
 		var name = "calculate_conversion_factor";
 
 		let convfactor_bool = false;
-		let convfactor_uom = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val());
-		let convfactor_pouom = parseFloat($("#jqGrid2 #"+id_optid+"_pouom_convfactor_pouom").val());
-		let qtydelivered = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		let convfactor_uom = parseFloat($("#jqGrid2 input#"+id_optid+"_pouom_convfactor_uom").val());
+		let convfactor_pouom = parseFloat($("#jqGrid2 input#"+id_optid+"_pouom_convfactor_pouom").val());
+		let qtydelivered = parseFloat($("#jqGrid2 input#"+id_optid+"_qtydelivered").val());
 
 		var balconv = convfactor_pouom*qtydelivered%convfactor_uom;
 		if (balconv  == 0) {
@@ -1632,8 +1641,8 @@ $(document).ready(function () {
 	}
 
 	function check_qtydlr_qtyout(id_optid){
-		var qtyoutstand_ = parseFloat($("#jqGrid2 #"+id_optid+"_qtyoutstand").val());
-		var qtydelivered_ = parseFloat($("#jqGrid2 #"+id_optid+"_qtydelivered").val());
+		var qtyoutstand_ = parseFloat($("#jqGrid2 input#"+id_optid+"_qtyoutstand").val());
+		var qtydelivered_ = parseFloat($("#jqGrid2 input#"+id_optid+"_qtydelivered").val());
 		var name = 'check_qtydlr_qtyout';
 
 		if(qtydelivered_ > qtyoutstand_){
@@ -2301,7 +2310,6 @@ $(document).ready(function () {
 						filterVal:['session.compcode','ACTIVE']
 					},
 			ondblClickRow:function(event){
-				$("#jqGrid2 input[name='itemcode']").focus().select();
 				if(event.type == 'keydown'){
 					var optid = $(event.currentTarget).get(0).getAttribute("optid");
 					var id_optid = optid.substring(0,optid.search("_"));
@@ -2310,6 +2318,28 @@ $(document).ready(function () {
 					var id_optid = optid.substring(0,optid.search("_"));
 				}
 				$("#jqGrid2 #"+id_optid+"_itemcode").focus().select();
+
+				let data = selrowData('#'+dialog_pricecode.gridname);
+
+				if(data.pricecode == 'MS'){
+					mycurrency2.array.length = 0;
+					mycurrency_np.array.length = 0;
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']","#jqGrid2 input[name='qtydelivered']"]);
+
+					mycurrency2.formatOnBlur();//make field to currency on leave cursor
+					mycurrency_np.formatOnBlur();
+				}else{
+					mycurrency2.array.length = 0;
+					mycurrency_np.array.length = 0;
+					Array.prototype.push.apply(mycurrency2.array, ["#jqGrid2 input[name='amtdisc']","#jqGrid2 input[name='unitprice']","#jqGrid2 input[name='amount']","#jqGrid2 input[name='tot_gst']","#jqGrid2 input[name='totamount']"]);
+					Array.prototype.push.apply(mycurrency_np.array, ["#jqGrid2 input[name='qtydelivered']"]);
+
+					mycurrency2.formatOnBlur();//make field to currency on leave cursor
+					mycurrency_np.formatOnBlur();
+				}
+
+				
+
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
@@ -2325,7 +2355,7 @@ $(document).ready(function () {
 				dialog_pricecode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
 			close: function(){
-				$("#jqGrid2 input[name='itemcode']").focus();
+				$("#jqGrid2 input[name='itemcode']").focus().select();
 				fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			}
 		},'urlParam','radio','tab'

@@ -447,8 +447,8 @@ class DeliveryOrderController extends defaultController
 
                         $podt_obj_lama = $podt_obj->first();
 
-                        $jumlah_qtydelivered = intval($podt_obj_lama->qtydelivered) + intval($value->qtydelivered);
-                        $qtyoutstand = intval($podt_obj_lama->qtyorder) - intval($jumlah_qtydelivered);
+                        $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) + Floatval($value->qtydelivered);
+                        $qtyoutstand = Floatval($podt_obj_lama->qtyorder) - Floatval($jumlah_qtydelivered);
 
                         if($qtyoutstand > 0){
                             $status = 'PARTIAL';
@@ -460,7 +460,7 @@ class DeliveryOrderController extends defaultController
 
                         $podt_obj->update([
                             'qtydelivered' => $jumlah_qtydelivered,
-                            // 'qtyoutstand' => $qtyoutstand,
+                            'qtyoutstand' => $qtyoutstand,
                             'recstatus' => $status
                         ]);
 
@@ -990,8 +990,8 @@ class DeliveryOrderController extends defaultController
 
                     $podt_obj_lama = $podt_obj->first();
 
-                    $jumlah_qtydelivered = $podt_obj_lama->qtydelivered - $value->qtydelivered;
-                    $qtyoutstand = $podt_obj_lama->qtyorder + $jumlah_qtydelivered;
+                    $jumlah_qtydelivered = Floatval($podt_obj_lama->qtydelivered) - Floatval($value->qtydelivered);
+                    $qtyoutstand = Floatval($podt_obj_lama->qtyorder) + Floatval($jumlah_qtydelivered);
 
                     $podt_obj->update([
                         'qtydelivered' => $jumlah_qtydelivered,

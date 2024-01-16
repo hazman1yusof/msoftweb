@@ -1143,8 +1143,8 @@ class PurchaseOrderController extends defaultController
                       });
 
             $array_update = [];
-            $array_update['requestby'] = session('username');
-            $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // $array_update['requestby'] = session('username');
+            // $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
             $array_update['recstatus'] = 'APPROVED';
             foreach ($authdtl->get() as $key => $value) {
 
@@ -1175,17 +1175,31 @@ class PurchaseOrderController extends defaultController
                     'upddate' => Carbon::now("Asia/Kuala_Lumpur")
                 ]);
 
-            DB::table("material.queuepo")
-                ->insert([
-                    'compcode' => session('compcode'),
-                    'recno' => $purordhd_get->recno,
-                    'AuthorisedID' => session('username'),
-                    'deptcode' => $purordhd_get->prdept,
-                    'recstatus' => 'APPROVED',
-                    'trantype' => 'DONE',
-                    'adduser' => session('username'),
-                    'adddate' => Carbon::now("Asia/Kuala_Lumpur")
-                ]);
+            $queuepo = DB::table("material.queuepo")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('recno','=',$purordhd_get->recno);
+
+            if($queuepr->exists()){
+                $queuepo
+                    ->update([
+                        'recstatus' => 'APPROVED',
+                        'trantype' => 'DONE',
+                    ]);
+                    
+            }else{
+
+                DB::table("material.queuepo")
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'recno' => $purordhd_get->recno,
+                        'AuthorisedID' => session('username'),
+                        'deptcode' => $purordhd_get->prdept,
+                        'recstatus' => 'APPROVED',
+                        'trantype' => 'DONE',
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now("Asia/Kuala_Lumpur")
+                    ]);
+            }
 
             return true;
         }
@@ -1247,12 +1261,13 @@ class PurchaseOrderController extends defaultController
                             ->where('lineno_','=',$value->lineno_)
                             ->first();
 
+                        $qtyreq = $purorddt->qtyrequest;  
                         $qtytxn = $purorddt->qtyorder;
                         $qtybalance = $value->qtybalance;
                         $qtyapproved = $value->qtyapproved;
 
-                        $newbalance = intval($qtybalance) - intval($qtytxn);
-                        $newqtyapproved = intval($qtytxn) + intval($qtyapproved);
+                        $newbalance = Floatval($qtyreq) - Floatval($qtytxn);
+                        $newqtyapproved = Floatval($qtytxn) + Floatval($qtyapproved);
                         // if($newbalance > 0){
                         //     $status = 'PARTIAL';
                         //     $status_header = 'PARTIAL';
@@ -1270,7 +1285,7 @@ class PurchaseOrderController extends defaultController
                         $convfactorUOM = $convfactorUOM_obj->convfactor;
 
                         $qtyrequest1S_purorddt = $purorddt->qtyorder * $convfactorUOM;
-                        $newqtybalance1S = intval($value->qtybalance1S) - intval($qtyrequest1S_purorddt);
+                        $newqtybalance1S = Floatval($value->qtybalance1S) - Floatval($qtyrequest1S_purorddt);
                         if($newqtybalance1S > 0){
                             $status = 'PARTIAL';
                             $status_header = 'PARTIAL';

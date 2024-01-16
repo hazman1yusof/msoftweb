@@ -182,17 +182,22 @@ class assettransfer2Controller extends defaultController
             }
 
             if($transferFAtoFatran->exists()){
-                $count = $transferFAtoFatran->count();
+                // $count = $transferFAtoFatran->count();
 
-                $count = intval($count) + 1;
+                // $count = intval($count) + 1;
+
+                $recno = $this->recno('FA','TRF');
+
+                //AMIK DARI SYSPARAM FA,TRF 
 
                 DB::table('finance.fatran')
                     ->insert([
                         'compcode' => session('compcode'),
+                        'trantype' => 'TRF',
                         'assetcode' => $request->assetcode,
                         'assettype' => $request->assettype,
                         'assetno' => $request->assetno,
-                        'auditno' => $count,
+                        'auditno' => $recno,
                         'deptcode' => $request->newdeptcode,
                         'olddeptcode' => $request->currdeptcode,
                         'curloccode' => $request->newloccode,
@@ -229,21 +234,21 @@ class assettransfer2Controller extends defaultController
                 //         'upddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
                     // ]);
             }else{
-                DB::table('finance.fatran')
-                    ->insert([
-                        'compcode' => session('compcode'),
-                        'assetcode' => $request->assetcode,
-                        'assettype' => $request->assettype,
-                        'assetno' => $request->assetno,
-                        'auditno' => 1,
-                        'deptcode' => $request->newdeptcode,
-                        'olddeptcode' => $request->deptcode,
-                        'curloccode' => $request->newloccode,
-                        'oldloccode' => $request->loccode,
-                        'trandate' => $request->trandate,
-                        'adduser'  => session('username'),
-                        'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
-                    ]);
+                // DB::table('finance.fatran')
+                //     ->insert([
+                //         'compcode' => session('compcode'),
+                //         'assetcode' => $request->assetcode,
+                //         'assettype' => $request->assettype,
+                //         'assetno' => $request->assetno,
+                //         'auditno' => 1,
+                //         'deptcode' => $request->newdeptcode,
+                //         'olddeptcode' => $request->deptcode,
+                //         'curloccode' => $request->newloccode,
+                //         'oldloccode' => $request->loccode,
+                //         'trandate' => $request->trandate,
+                //         'adduser'  => session('username'),
+                //         'adddate'  => Carbon::now("Asia/Kuala_Lumpur")->toDateString(),
+                //     ]);
             }
             
             $queries = DB::getQueryLog();

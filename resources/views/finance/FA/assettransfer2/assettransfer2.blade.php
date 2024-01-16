@@ -52,7 +52,7 @@
 
 									<label class="col-md-2 control-label" for="description">Item Code</label>  
 									<div class="col-md-3">
-										<input id="description" name="description" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
+										<input id="itemcode" name="itemcode" type="text" class="form-control input-sm uppercase" data-validation="required"  frozeOnEdit>
 									</div>
 								</div>
 

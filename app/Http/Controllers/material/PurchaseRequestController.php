@@ -606,7 +606,7 @@ class PurchaseRequestController extends defaultController
 
                 $purreqhd_get = $purreqhd->first();
 
-                if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
+                // if(!$this->skip_authorization($request,$purreqhd_get->reqdept,$value)){
 
                     $authorise = DB::table('material.authdtl')
                         ->where('authorid','=',session('username'))
@@ -662,7 +662,7 @@ class PurchaseRequestController extends defaultController
                             'adddate' => Carbon::now("Asia/Kuala_Lumpur")
                         ]);
 
-                }
+                // }
 
 
                 // 4. email and whatsapp
@@ -823,8 +823,8 @@ class PurchaseRequestController extends defaultController
                       });
 
             $array_update = [];
-            $array_update['requestby'] = session('username');
-            $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
+            // $array_update['requestby'] = session('username');
+            // $array_update['requestdate'] = Carbon::now("Asia/Kuala_Lumpur");
             $array_update['recstatus'] = 'APPROVED';
             foreach ($authdtl->get() as $key => $value) {
 
@@ -858,9 +858,7 @@ class PurchaseRequestController extends defaultController
 
             $queuepr = DB::table("material.queuepr")
                         ->where('compcode','=',session('compcode'))
-                        ->where('recno','=',$purreqhd_get->recno)
-                        ->where('AuthorisedID','=',session('username'))
-                        ->where('deptcode','=',$purreqhd_get->reqdept);
+                        ->where('recno','=',$purreqhd_get->recno);
 
             if($queuepr->exists()){
 

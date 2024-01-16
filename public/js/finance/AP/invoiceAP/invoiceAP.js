@@ -212,23 +212,23 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: 'Audit No', name: 'apacthdr_auditno', width: 20, classes: 'wrap text-uppercase',formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 23, classes: 'wrap text-uppercase',formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'apacthdr_trantype', width: 10, classes: 'wrap text-uppercase'},
 			{ label: 'Document<br/> Type', name: 'apacthdr_doctype', width: 20, classes: 'wrap text-uppercase', hidden:true},
-			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 70, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Creditor', name: 'apacthdr_suppcode', width: 62, classes: 'wrap text-uppercase', canSearch: true, formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Creditor Name', name: 'supplier_name', width: 40, classes: 'wrap text-uppercase', checked: true, hidden:true},
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase',canSearch: true, hidden:true},
-			{ label: 'Document<br/> Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Post<br/> Date', name: 'apacthdr_postdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Rec<br/> Date', name: 'apacthdr_recdate', width: 22, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
+			{ label: 'Document<br/> Date', name: 'apacthdr_actdate', width: 28, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Post<br/> Date', name: 'apacthdr_postdate', width: 28, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
+			{ label: 'Rec<br/> Date', name: 'apacthdr_recdate', width: 28, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter, hidden:true},
 			{ label: 'Document No', name: 'apacthdr_document', width: 30, classes: 'wrap text-uppercase', canSearch: true},
 			{ label: 'Department', name: 'apacthdr_deptcode', width: 32, classes: 'wrap text-uppercase', formatter: showdetail, unformat:un_showdetail},
 			{ label: 'Amount', name: 'apacthdr_amount', width: 28, classes: 'wrap text-uppercase',align: 'right', formatter:'currency'},
 			{ label: 'outamt', name: 'apactdtl_outamt', width: 25 , classes: 'wrap text-uppercase',hidden:true,},
-			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 28, classes: 'wrap text-uppercase',align: 'right',formatter:'currency'},
+			{ label: 'Outstanding', name: 'apacthdr_outamount', width: 32, classes: 'wrap text-uppercase',align: 'right',formatter:'currency'},
 			{ label: 'Status', name: 'apacthdr_recstatus', width: 28, classes: 'wrap text-uppercase',},
 			{ label: 'Last Payment<br/>Date', name: 'apalloc_allocdate', width: 30, classes: 'wrap text-uppercase',formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Remarks', name: 'apacthdr_remarks', width: 90, hidden:false, classes: 'wrap text-uppercase'},
+			{ label: 'Remarks', name: 'apacthdr_remarks', width: 80, hidden:false, classes: 'wrap text-uppercase'},
 			{ label: ' ', name: 'Checkbox',sortable:false, width: 15,align: "center", formatter: formatterCheckbox },	
 			{ label: 'category', name: 'apacthdr_category', width: 90, hidden:true, classes: 'wrap'},
 			{ label: 'adduser', name: 'apacthdr_adduser', width: 90, hidden:true, classes: 'wrap'},
@@ -284,6 +284,8 @@ $(document).ready(function () {
 			refreshGrid("#jqgridpv",urlparampv);
 			populate_form(selrowData("#jqGrid"));
 			if_cancel_hide();
+
+			$("#attcahment_page").attr('href','./attachment_upload/?page=invoiceap&idno='+selrowData("#jqGrid").apacthdr_idno);
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			let stat = selrowData("#jqGrid").apacthdr_recstatus;

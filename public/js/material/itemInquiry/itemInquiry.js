@@ -534,29 +534,29 @@ $(document).ready(function () {
 					
 		},'json').done(function(data) {
 			if(!$.isEmptyObject(data.rows)){
-	            var accumqty=0;
+	            var accumqty=parseFloat(data.rows[0].openbalqty);
+	            var accumval=parseFloat(data.rows[0].openbalval);
+	            var monthfrom = parseInt($('#monthfrom').val());
 
-			    $.each(data.rows[0], function( index, value ) {
-					var lastChar = index.match(/\d+/g);
+	            if(monthfrom>0){
+				    $.each(data.rows[0], function( index, value ) {
+						var lastChar = parseInt(index.match(/\d+/g));
 
-				    if(!isNaN(parseInt(value)) && index.indexOf('netmvqty') !== -1 && parseInt(mon_from)>parseInt(lastChar[0])){
-						accumqty+=parseInt(value);
-					}
-				});
+						if(lastChar<monthfrom){
+							if(index.startsWith("netmvval")){
+								accumval = accumval + parseFloat(value);
+							}
+
+							if(index.startsWith("netmvqty")){
+								accumqty = accumqty + parseFloat(value);
+							}
+						}
+					});
+	            }
 
 				$("#openbalqty").val(numeral(accumqty).format('0,0.00'));
-
-	            var accumval=0;
-
-			    $.each(data.rows[0], function( index, value ) {
-					var lastChar = index.match(/\d+/g);
-
-				    if(!isNaN(parseInt(value)) && index.indexOf('netmvval') !== -1 && parseInt(mon_from)>parseInt(lastChar[0])){
-						accumval+=parseInt(value);
-					}
-				});
-
 				$("#openbalval").val(numeral(accumval).format('0,0.00'));
+
 
 				getdtlmov()
 			}

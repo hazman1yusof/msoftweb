@@ -4,6 +4,11 @@
 
 @section('style')
 
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;;
+  font-size: 12px !important;
+}
+
 .panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
  display: none;
@@ -30,6 +35,33 @@ i.fa {
 
 .whtspc_wrap{
 	white-space: pre-wrap !important;
+}
+
+.imgcontainer {
+  position: relative;
+  width: fit-content;
+}
+
+.imgcontainer img {
+}
+
+.imgcontainer .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: #55554452;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.imgcontainer .btn:hover {
+  background-color: black;
 }
 
 @endsection
@@ -137,7 +169,11 @@ i.fa {
 		</div>
 		 
 		<div class="panel panel-default">
-		    <div class="panel-heading">Invoice AP Data Entry Header</div>
+		    <div class="panel-heading">Invoice AP Data Entry Header
+				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
+			    	<span class='fa fa-paperclip'></span> Attachment 
+				</a>
+		    </div>
 		    	<div class="panel-body">
 		    		<div class='col-md-12' style="padding:0 0 15px 0">
             			<table id="jqGrid" class="table table-striped"></table>
@@ -215,7 +251,44 @@ i.fa {
 					</div>
 				</div>
 			</div>	
-		</div>       
+		</div>    
+
+
+		<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Attachment</h5>
+				</div>
+			</div>
+			<div id="gridAttch_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<h4 class="ui header">This user uploaded Files</h4>
+						<a class='small circular orange ui icon button btn' style="position: absolute;top: -10px;right: 20px;" id='attcahment_page' href="" target="_blank">
+					    	<i class="cloud upload alternate icon"></i> Attachment Upload
+						</a>
+						<table class="ui celled table" id='tablePreview'>
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Date</th>
+									<th>Remark</th>
+									<th>File Preview</th>
+									<th>MRN</th>
+									<th>Add User</th>
+									<th>Add Date</th>
+									<th>Download</th>
+									<th>type</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>	
+		</div>     
     </div>
 	
 	<!-- ***************End Search + table ********************* -->
@@ -360,6 +433,15 @@ i.fa {
 @endsection
 
 
+@section('css')
+	<link rel="stylesheet" type="text/css" href="{{ asset('patientcare/assets/DataTables/datatables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/dataTables.semanticui.min.css">
+@endsection
+
+@section('js')
+@endsection
+
 @section('scripts')
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -397,8 +479,14 @@ i.fa {
 	</script>
 
 	<script src="js/finance/AP/invoiceAP/invoiceAP.js"></script>
+	<script src="js/finance/AP/invoiceAP/attach_invoiceAP.js"></script>
 	<script src="js/finance/AP/invoiceAP/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
+
+	<script src="{{ asset('js/other/attachment_upload/attachment_upload_invoiceAP.js') }}"></script>
+	<script src="{{ asset('patientcare/assets/DataTables/datatables.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 	
 @endsection

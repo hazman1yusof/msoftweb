@@ -334,11 +334,7 @@ $(document).ready(function () {
 			{ label: 'Purchase Price', name:'purprice', width: 8, classes:'wrap', hidden:true},
             { label: 'D/O No', name: 'delordno', width: 12, classes: 'wrap'},
             { label: 'DO Date', name:'delorddate', classes:'wrap', hidden:true},
-			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden:true, cellattr: function(rowid, cellvalue)
-				{
-					return cellvalue == 'DEACTIVE' ? 'class="alert alert-danger"': ''
-				}, 
-			},
+			{ label: 'Record Status', name: 'recstatus', width: 10, classes: 'wrap', hidden:false},
 			{ label: 'nprefid', name: 'nprefid', width: 90,hidden:true},
 			{ label: 'idno', name: 'idno', hidden: true},
 			{ label: 'Tran Type', name:'trantype', width:20, classes:'wrap', hidden:true},

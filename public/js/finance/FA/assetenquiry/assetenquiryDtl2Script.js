@@ -132,7 +132,7 @@ function autoinsert_rowdata(form,rowData){
 				$(form+" [name='"+index+"']").prop('checked', true);
 			}
 		}else{
-			input.val(value);
+			input.val(decodeEntities(value));
 		}
 	});
 }
