@@ -8,6 +8,8 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\ARStatementListingExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class arenquiryController extends defaultController
 {
@@ -201,6 +203,10 @@ class arenquiryController extends defaultController
         
     }
     
+    public function showExcel(Request $request){
+        return Excel::download(new ARStatementListingExport($request->debtorcode,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
+    }
+    
     public function populate_rc(Request $request){
         
         $table = DB::table('debtor.dbacthdr')
@@ -232,7 +238,7 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function populate_rf(Request $request){
         
         $table = DB::table('debtor.dbacthdr')
@@ -265,7 +271,7 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function form(Request $request)
     {
         switch($request->oper){
@@ -421,30 +427,28 @@ class arenquiryController extends defaultController
         return json_encode($responce);
         
     }
-
+    
     public function get_debtorcode_outamount(Request $request){
+        
         $dbacthdr = DB::table('debtor.dbacthdr')
-                        ->where('compcode',session('compcode'))
-                        ->where('payercode',$request->payercode)
-                        ->where('source','PB')
-                        ->where('recstatus','POSTED')
-                        ->where('outamount','>',0)
-                        ->whereIn('trantype',['DN','IN']);
-
-
-
+                    ->where('compcode',session('compcode'))
+                    ->where('payercode',$request->payercode)
+                    ->where('source','PB')
+                    ->where('recstatus','POSTED')
+                    ->where('outamount','>',0)
+                    ->whereIn('trantype',['DN','IN']);
+        
         $responce = new stdClass();
-
-
+        
         if($dbacthdr->exists()){
             $responce->result = 'true';
             $responce->outamount = $dbacthdr->sum('dbacthdr.outamount');
         }else{
             $responce->result = 'false';
         }
-
-
+        
         return json_encode($responce);
+        
     }
     
     public function allocate(Request $request){
@@ -555,4 +559,5 @@ class arenquiryController extends defaultController
         }
         
     }
+    
 }

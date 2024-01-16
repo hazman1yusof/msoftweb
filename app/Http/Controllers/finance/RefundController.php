@@ -270,6 +270,7 @@ class RefundController extends defaultController
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrydate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'entrytime' => Carbon::now("Asia/Kuala_Lumpur"),
+                'posteddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'reference' => strtoupper($request->dbacthdr_reference),
                 'authno' => $request->dbacthdr_authno,
                 'bankcharges' => $request->dbacthdr_bankcharges,

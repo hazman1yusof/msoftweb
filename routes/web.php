@@ -871,6 +871,7 @@ Route::get('/arenquiry','finance\arenquiryController@show');
 Route::get('/arenquiry/table','finance\arenquiryController@table');
 Route::post('/arenquiry/form','finance\arenquiryController@form');
 Route::get('/arenquiry/form','finance\arenquiryController@form');
+Route::get('/arenquiry/showExcel','finance\arenquiryController@showExcel');
 
 //// Till Enquiry
 Route::get('/tillenquiry','finance\TillEnquiryController@show');

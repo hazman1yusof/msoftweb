@@ -82,7 +82,7 @@ class DailyBillCollection_ReportController extends defaultController
                                             ->where('dm.compcode', '=', session('compcode'));
                             })
                             ->where('dh.payercode', '=', $value->payercode)
-                            ->where('dh.entrydate', '=', $value->entrydate)
+                            ->where('dh.posteddate', '=', $value->posteddate)
                             ->where('dh.compcode','=',session('compcode'))
                             ->where('dh.source', '=', 'PB')
                             ->whereIn('dh.trantype',['RC','RD','CN']);
