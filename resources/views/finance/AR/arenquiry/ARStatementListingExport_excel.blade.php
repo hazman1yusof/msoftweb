@@ -21,7 +21,7 @@
         <td>OPENING BALANCE</td>
         <td></td>
         <td></td>
-        <td> </td>
+        <td data-format="0.00" style="text-align: right">{{number_format($openbal, 2, '.', ',')}}</td>
     </tr>
     @php($totalAmount_dr = 0)
     @php($totalAmount_cr = 0)

@@ -59,96 +59,100 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $debtorcode = $this->debtorcode;
         
-        $dbacthdr = DB::table('debtor.dbacthdr as dh', 'debtor.debtormast as dm')
-                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode as dm_debtorcode', 'dm.name as dm_name')
-                    ->leftJoin('debtor.debtormast as dm', function($join){
-                        $join = $join->on('dm.debtorcode', '=', 'dh.payercode')
-                                    ->where('dm.compcode', '=', session('compcode'));
-                    })
+        $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
                     ->where('dh.compcode', '=', session('compcode'))
                     ->where('dh.debtorcode', '=', $debtorcode)
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->orderBy('dh.posteddate', 'ASC');
         
+        $debtormast = DB::table('debtor.debtormast as dm')
+                    ->where('dm.compcode', '=', session('compcode'))
+                    ->where('dm.debtorcode', '=', $debtorcode)
+                    ->first();
+
+        $debtorname = $debtormast->name;
+
+        $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->where('dh.debtorcode', '=', $debtorcode)
+                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->whereDate('dh.posteddate', '<', $datefr);
+
+        $openbal = $this->calc_openbal($calc_openbal);
+        
         $array_report = [];
-        // if($dbacthdr->exists()){
-            foreach ($dbacthdr->get() as $key => $value){
-                $value->reference = '';
-                $value->amount_dr = 0;
-                $value->amount_cr = 0;
-                // $value->balance = floatval($value->openingBal);
-                $value->balance = 0;
-                // array_push($array_report, $value);
-                
-                // if($value->trantype == 'IN'||$value->trantype == 'DN'||$value->trantype == 'BC'||$value->trantype == 'RF'){
-                //     $value->amount_dr = $value->amount;
-                //     array_push($array_report, $value);
-                // }else{
-                //     $value->amount_cr = $value->amount;
-                //     array_push($array_report, $value);
-                // }
-                
-                switch ($value->trantype) {
-                    case 'IN':
-                        $value->reference = $value->remark;
-                        $value->amount_dr = $value->amount;
-                        $value->balance = $value->balance + floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'DN':
-                        $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                        $value->amount_dr = $value->amount;
-                        $value->balance = $value->balance + floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'BC':
-                        // $value->reference
-                        $value->amount_dr = $value->amount;
-                        $value->balance = $value->balance + floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'RF':
-                        $value->reference = $value->recptno;
-                        $value->amount_dr = $value->amount;
-                        $value->balance = $value->balance + floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'CN':
-                        $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
-                        $value->amount_cr = $value->amount;
-                        $value->balance = $value->balance - floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'RC':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $value->balance = $value->balance - floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'RD':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $value->balance = $value->balance - floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    case 'RT':
-                        // $value->reference
-                        $value->amount_cr = $value->amount;
-                        $value->balance = $value->balance - floatval($value->amount);
-                        array_push($array_report, $value);
-                        break;
-                    default:
-                        // code...
-                        break;
-                }
+        $balance = $openbal;
+        foreach ($dbacthdr->get() as $key => $value){
+            $value->reference = '';
+            $value->amount_dr = 0;
+            $value->amount_cr = 0;
+            
+            switch ($value->trantype) {
+                case 'IN':
+                    $value->reference = $value->remark;
+                    $value->amount_dr = $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'DN':
+                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_dr = $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'BC':
+                    // $value->reference
+                    $value->amount_dr = $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'RF':
+                    $value->reference = $value->recptno;
+                    $value->amount_dr = $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'CN':
+                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->amount_cr = $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'RC':
+                    $value->reference = $value->recptno;
+                    $value->amount_cr = $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'RD':
+                    $value->reference = $value->recptno;
+                    $value->amount_cr = $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                case 'RT':
+                    // $value->reference
+                    $value->amount_cr = $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
+                    array_push($array_report, $value);
+                    break;
+                default:
+                    // code...
+                    break;
             }
-        // }
+        }
         
         // dd($array_report);
-        
-        $dbacthdr_1 = $dbacthdr->first();
-        $debtorname = $dbacthdr_1->dm_name;
         
         $title = "STATEMENT LISTING";
         
@@ -166,7 +170,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','array_report','debtorname','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','array_report','debtorname','title','company','openbal'));
     }
     
     public function registerEvents(): array
@@ -234,6 +238,45 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     public function getQueries($builder){
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+    }
+
+    public function calc_openbal($obj){
+
+        $balance = 0;
+        foreach ($obj->get() as $key => $value){
+            
+            switch ($value->trantype) {
+                case 'IN':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'DN':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'BC':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'RF':
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'CN':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RC':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RD':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'RT':
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+        }
+
+        return $balance;
     }
     
 }
