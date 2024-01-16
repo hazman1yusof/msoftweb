@@ -229,6 +229,7 @@ $(document).ready(function () {
 		buttons:
 		[{
 			text: "Generate Excel",click: function() {
+				window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
 			}
 		},{
 			text: "Close",click: function() {

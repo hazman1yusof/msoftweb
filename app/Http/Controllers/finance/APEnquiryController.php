@@ -8,6 +8,8 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\APEnquiryExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class APEnquiryController extends defaultController
 {   
@@ -35,6 +37,10 @@ class APEnquiryController extends defaultController
             default:
                 return 'error happen..';
         }
+    }
+
+    public function showExcel(Request $request){
+        return Excel::download(new APEnquiryExport($request->suppcode_from,$request->suppcode_to,$request->datefrom,$request->dateto), 'APStatement.xlsx');
     }
 
     public function get_table_dtl(Request $request){

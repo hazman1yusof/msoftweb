@@ -23,26 +23,19 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class itemMov_xlsExport implements FromView, WithEvents, WithColumnWidths
+class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($type,$dept_from,$dept_to,$date_from,$date_to)
+    public function __construct($suppcode_from,$suppcode_to,$datefrom,$dateto)
     {
-        $this->type = $type;
-        if($this->type == 'fast'){
-            $this->title = 'Fast Moving Item';
-        }else{
-            $this->title = 'Slow Moving Item';
-        }
-
-        $this->dept_from = $dept_from;
-        $this->dept_to = $dept_to;
-        $this->date_from = $date_from;
-        $this->date_to = $date_to;
+        $this->suppcode_from = $suppcode_from;
+        $this->suppcode_to = $suppcode_to;
+        $this->datefrom = $datefrom;
+        $this->dateto = $dateto;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -53,8 +46,8 @@ class itemMov_xlsExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 15,
-            'B' => 50,
-            'C' => 15,
+            'B' => 17,
+            'C' => 40,
             'D' => 15,
             'E' => 15,
             'F' => 15,
@@ -65,87 +58,80 @@ class itemMov_xlsExport implements FromView, WithEvents, WithColumnWidths
     
     public function view(): View
     {
-        $type = $this->type;
-        $dept_from = $this->dept_from;
-        $dept_to = $this->dept_to;
-        $date_from = $this->date_from;
-        $date_to = $this->date_to;
+        $suppcode_from = $this->suppcode_from;
+        $suppcode_to = $this->suppcode_to;
+        $datefrom = Carbon::parse($this->datefrom)->format('Y-m-d');
+        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
 
-        $stockloc = DB::table('material.stockloc as s')
-                        ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
-                        ->join('material.product as p', function($join){
-                                $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
-                            })
-                        ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'));
-
-        if(strtoupper($dept_from) != 'ZZZ' || strtoupper($dept_to) != 'ZZZ'){
-            $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from,$dept_to]);
-        }
-
-        $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
-
-        $ivdspdt_array=[];
-        foreach ($stockloc->get() as $key => $value) {
-
-            $ivdspdt = DB::table('material.ivdspdt as ivdt')
-                        ->where('ivdt.issdept',$value->deptcode)
-                        ->where('ivdt.itemcode',$value->itemcode)
-                        ->where('ivdt.uomcode',$value->uomcode)
-                        ->where('ivdt.compcode',session('compcode'))
-                        ->whereDate('trandate', '>=', $date_from)
-                        ->whereDate('trandate', '<=', $date_to);
-
-            if(!$ivdspdt->exists()){
-                continue;
-            }else{
-
-                $array_obj = (array)$value;
-                $get_bal = $this->get_bal($array_obj,$this->toMonth($date_to));
-                $qtyonhand = $get_bal->close_balqty;
-                $qtyonhandval = $get_bal->close_balval;
-
-                $disp_qty = 0;
-                $disp_cost = 0;
-                $disp_saleamt = 0;
-
-                foreach ($ivdspdt->get() as $key_ivdspdt => $value_ivdspdt){
-                    $disp_qty = floatval($disp_qty) + floatval($value_ivdspdt->txnqty);
-                    $disp_cost = floatval($disp_cost) + floatval($value_ivdspdt->amount);
-                    $disp_saleamt = floatval($disp_saleamt) + floatval($value_ivdspdt->saleamt);
-                }
-
-                $topush= [
-                    'itemcode' => $value->itemcode,
-                    'description' => $value->description,
-                    'uomcode' => $value->uomcode,
-                    'qtyonhand' => $qtyonhand,
-                    'qtyonhandval' => $qtyonhandval,
-                    'disp_qty' => $disp_qty,
-                    'disp_cost' => $disp_cost,
-                    'disp_saleamt' => $disp_saleamt,
-                ];
-
-                array_push($ivdspdt_array,$topush);
-            }
-        }
-
-        if($type == 'fast'){
-            usort($ivdspdt_array, function($a, $b){
-                return floatval($a['disp_qty']) < floatval($b['disp_qty']);
-            });
+        if(strtoupper($suppcode_from) != 'ZZZ' || strtoupper($suppcode_from) != 'ZZZ'){
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                        ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name AS supplier_name','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                        ->join('material.supplier as su', function($join){
+                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                            $join = $join->where('su.compcode', '=', session('compcode'));
+                        })
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.unit',session('unit'))
+                        ->where('ap.recstatus', '=', 'POSTED')
+                        ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                        ->whereBetween('ap.suppcode',[$suppcode_from,$suppcode_to])
+                        ->orderBy('ap.postdate','ASC')
+                        ->get();
         }else{
-            usort($ivdspdt_array, function($a, $b){
-                return floatval($a['disp_qty']) > floatval($b['disp_qty']);
-            });
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                        ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name AS supplier_name','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                        ->join('material.supplier as su', function($join){
+                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                            $join = $join->where('su.compcode', '=', session('compcode'));
+                        })
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.unit',session('unit'))
+                        ->where('ap.recstatus', '=', 'POSTED')
+                        ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                        ->orderBy('ap.postdate','ASC')
+                        ->get();
         }
 
-        // dd($ivdspdt_array);
-        
-        return view('material.itemMovReport.itemMovFast_excel',compact('ivdspdt_array'));
+        $array_report = [];
+        foreach ($apacthdr as $key => $value){
+            $value->amount_dr = 0;
+            $value->amount_cr = 0;
+            $value->balance = 0;
+            
+            switch ($value->trantype) {
+                case 'IN': //dr
+                    $value->amount_dr = $value->amount;
+                    $value->balance = $value->balance + $value->amount;
+                    array_push($array_report, $value);
+                    break;
+                case 'DN': //dr
+                    $value->amount_dr = $value->amount;
+                    $value->balance = $value->balance + $value->amount;
+                    array_push($array_report, $value);
+                    break;
+                case 'CN': //cr
+                    $value->amount_cr = $value->amount;
+                    $value->balance = $value->balance - $value->amount;
+                    array_push($array_report, $value);
+                    break;
+                case 'PV': //cr
+                    $value->amount_cr = $value->amount;
+                    $value->balance = $value->balance - $value->amount;
+                    array_push($array_report, $value);
+                    break;
+                case 'PD': //cr
+                    $value->amount_cr = $value->amount;
+                    $value->balance = $value->balance - $value->amount;
+                    array_push($array_report, $value);
+                    break;
+                default:
+                    // code...
+                    break;
+            }
+
+        }
+
+        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr'));
     }
     
     public function registerEvents(): array
@@ -154,7 +140,14 @@ class itemMov_xlsExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function(AfterSheet $event) {
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\n".$this->title."\n".sprintf('FROM DATE %s TO DATE %s',$this->date_from, $this->date_to).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT"."\n"
+                .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefrom)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
+                .sprintf('FROM %s TO %s',$this->suppcode_from, $this->suppcode_to)
+                .'&L'
+                .'PRINTED BY : '.session('username')
+                ."\nPAGE : &P/&N"
+                .'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')
+                ."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 

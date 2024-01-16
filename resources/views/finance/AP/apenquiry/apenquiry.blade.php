@@ -162,15 +162,14 @@
 				</div>	
 			</div>  
     </div>
-	<!-------------------------------- End Search + table ------------------>
+	<!-------------------------------- End Search + table --------------------->
 
-	<!------------------------- statement dialog search -------------------->
+	<!------------------------- AP Statement dialog search -------------------->
 	<div id="statementDialog" title="Statement">
 		<input id="statement" type="hidden" class="form-control input-sm" readonly>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					<input type="hidden" name="action" >
-
 						<div class="form-group">
 							<div class="col-md-6">
 								<label class="control-label" for="Scol">Creditor From</label> 
@@ -194,12 +193,12 @@
 						<div class="form-group">
 							<div class="col-md-6">
 								<label class="control-label" for="Scol">Date From</label>  
-									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+									<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 							</div>
 
 							<div class="col-md-6">
 								<label class="control-label" for="Scol">Date To</label>  
-									<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+									<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 						</div>
 					</div>
 				</form>
@@ -256,7 +255,6 @@
 					</div>
 
 					<div class="form-group">
-
 						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
@@ -388,7 +386,6 @@
 					</div>
 
 					<div class="form-group">
-
 						<label class="col-md-2 control-label" for="apacthdr_bankcode" id="bankcode_parent">Bank Code</label>	 
 						 	<div class="col-md-2">
 							  	<div class='input-group'>
@@ -411,7 +408,6 @@
 				  			<div class="col-md-2" id="apacthdr_cheqdate">
 								<input id="apacthdr_cheqdate" name="apacthdr_cheqdate" type="date" maxlength="12" class="form-control input-sm" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
 				  			</div>
-							
 					</div>
 
 					<hr/>
@@ -644,7 +640,6 @@
 
 					<hr/>
 
-
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
 			    			<div class="col-md-8"> 
@@ -696,7 +691,6 @@
 			</div>
 		</div>
 			
-
 		<div class='panel panel-info' id="cn_detail">
 			<div class="panel-heading">Credit Note Detail</div>
 				<div class="panel-body">
@@ -785,7 +779,6 @@
 					</div>
 
 					<hr/>
-
 
 					<div class="form-group">
 			    		<label class="col-md-2 control-label" for="apacthdr_remarks">Remarks</label> 
@@ -918,6 +911,7 @@
 			    </div>
 			</div>
 		</div>	
+
 		<div class='panel panel-info' id="dn_detail">
 			<div class="panel-heading">Debit Note Detail</div>
 				<div class="panel-body">
