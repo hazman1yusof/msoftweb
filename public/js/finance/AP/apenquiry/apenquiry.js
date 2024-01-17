@@ -227,7 +227,13 @@ $(document).ready(function () {
 			parent_close_disabled(false);
 		},
 		buttons:
-		[{
+		[
+		{
+			text: "Generate PDF",click: function() {
+				window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
+			}
+		},
+		{
 			text: "Generate Excel",click: function() {
 				window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
 			}
