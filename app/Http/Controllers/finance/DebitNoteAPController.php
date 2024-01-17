@@ -328,6 +328,8 @@ use Carbon\Carbon;
                 'recstatus' => 'OPEN',
                 'amount' => $request->apacthdr_amount,
                 'outamount' => $request->apacthdr_amount,
+                'unit' => session('unit'),
+
             ];
 
             foreach ($field as $key => $value){

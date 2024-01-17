@@ -349,6 +349,7 @@ use Carbon\Carbon;
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'recstatus' => 'OPEN',
                 'outamount' => $request->apacthdr_amount,
+                'unit' => session('unit'),
             ];
 
             foreach ($field as $key => $value){

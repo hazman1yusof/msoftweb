@@ -91,13 +91,8 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">AP Enquiry Header
-<<<<<<< HEAD
-                	<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
-						<span class='fa fa-print'></span>Statement 
-=======
 					<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel'>
-						<span class='fa fa-file-excel-o fa-lg'></span> Statement 
->>>>>>> ce1404813e4e3022d841a278416605d665a4f28f
+						<span class='fa fa-print'></span> Statement 
 					</a>
 				</div>
                     <div class="panel-body">

@@ -77,6 +77,20 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
                         ->whereBetween('ap.suppcode',[$suppcode_from,$suppcode_to])
                         ->orderBy('ap.postdate','ASC')
                         ->get();
+
+            $calc_openbal = DB::table('finance.apacthdr as ap')
+                        ->join('material.supplier as su', function($join){
+                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                            $join = $join->where('su.compcode', '=', session('compcode'));
+                        })
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.unit',session('unit'))
+                        ->where('ap.recstatus', '=', 'POSTED')
+                        ->whereDate('ap.postdate', '<',$datefrom)
+                        ->where('ap.suppcode','<',$suppcode_from);
+
+            $openbal = $this->calc_openbal($calc_openbal); 
+
         }else{
             $apacthdr = DB::table('finance.apacthdr as ap')
                         ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name AS supplier_name','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
@@ -90,38 +104,55 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
                         ->whereBetween('ap.postdate', [$datefrom, $dateto])
                         ->orderBy('ap.postdate','ASC')
                         ->get();
+
+            $calc_openbal = DB::table('finance.apacthdr as ap')
+                        ->join('material.supplier as su', function($join){
+                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                            $join = $join->where('su.compcode', '=', session('compcode'));
+                        })
+                        ->where('ap.compcode',session('compcode'))
+                        ->where('ap.unit',session('unit'))
+                        ->where('ap.recstatus', '=', 'POSTED')
+                        ->whereDate('ap.postdate', '<',$datefrom);
+
+            $openbal = $this->calc_openbal($calc_openbal); 
         }
 
         $array_report = [];
+        $balance = $openbal;
         foreach ($apacthdr as $key => $value){
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            $value->balance = 0;
             
             switch ($value->trantype) {
                 case 'IN': //dr
                     $value->amount_dr = $value->amount;
-                    $value->balance = $value->balance + $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'DN': //dr
                     $value->amount_dr = $value->amount;
-                    $value->balance = $value->balance + $value->amount;
+                    $balance = $balance + floatval($value->amount);
+                    $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'CN': //cr
                     $value->amount_cr = $value->amount;
-                    $value->balance = $value->balance - $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'PV': //cr
                     $value->amount_cr = $value->amount;
-                    $value->balance = $value->balance - $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'PD': //cr
                     $value->amount_cr = $value->amount;
-                    $value->balance = $value->balance - $value->amount;
+                    $balance = $balance - floatval($value->amount);
+                    $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 default:
@@ -131,7 +162,7 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
 
         }
 
-        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr'));
+        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr', 'openbal'));
     }
     
     public function registerEvents(): array
@@ -159,39 +190,32 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
         ];
     }
 
-    public static function toYear($date){
-        $carbon = new Carbon($date);
-        return $carbon->year;
-    }
-
-    public static function toMonth($date){
-        $carbon = new Carbon($date);
-        return $carbon->month;
-    }
-
-    public function get_bal($array_obj,$period){
-        $open_balqty = $array_obj['openbalqty'];
-        $close_balqty = 0;
-        $open_balval = $array_obj['openbalval'];
-        $close_balval = 0;
-        $until = intval($period) - 1;
-
-        for ($from = 1; $from <= $until; $from++) { 
-            $open_balqty = $open_balqty + $array_obj['netmvqty'.$from];
-            $open_balval = $open_balval + $array_obj['netmvval'.$from];
+    public function calc_openbal($obj){
+        $balance = 0;
+        foreach ($obj->get() as $key => $value){
+            
+            switch ($value->trantype) {
+                 case 'IN': //dr
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'DN': //dr
+                    $balance = $balance + floatval($value->amount);
+                    break;
+                case 'CN': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'PV': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                case 'PD': //cr
+                    $balance = $balance - floatval($value->amount);
+                    break;
+                default:
+                    // code...
+                    break;
+            }
         }
 
-        for ($from = 1; $from <= intval($period); $from++) { 
-            $close_balqty = $close_balqty + $array_obj['netmvqty'.$from];
-            $close_balval = $close_balval + $array_obj['netmvval'.$from];
-        }
-
-        $responce = new stdClass();
-        $responce->open_balqty = $open_balqty;
-        $responce->open_balval = $open_balval;
-        $responce->close_balqty = $close_balqty;
-        $responce->close_balval = $close_balval;
-        return $responce;
+        return $balance;
     }
-    
 }
