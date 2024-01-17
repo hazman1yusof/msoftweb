@@ -71,15 +71,15 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     ->where('dm.compcode', '=', session('compcode'))
                     ->where('dm.debtorcode', '=', $debtorcode)
                     ->first();
-
+        
         $debtorname = $debtormast->name;
-
+        
         $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                    ->where('dh.compcode', '=', session('compcode'))
-                    ->where('dh.debtorcode', '=', $debtorcode)
-                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->whereDate('dh.posteddate', '<', $datefr);
-
+                        ->where('dh.compcode', '=', session('compcode'))
+                        ->where('dh.debtorcode', '=', $debtorcode)
+                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                        ->whereDate('dh.posteddate', '<', $datefr);
+        
         $openbal = $this->calc_openbal($calc_openbal);
         
         $array_report = [];
@@ -170,7 +170,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','array_report','debtorname','title','company','openbal'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','debtorname','openbal','array_report','title','company'));
     }
     
     public function registerEvents(): array
@@ -239,12 +239,11 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $addSlashes = str_replace('?', "'?'", $builder->toSql());
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
-
+    
     public function calc_openbal($obj){
-
         $balance = 0;
+        
         foreach ($obj->get() as $key => $value){
-            
             switch ($value->trantype) {
                 case 'IN':
                     $balance = $balance + floatval($value->amount);
@@ -275,7 +274,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     break;
             }
         }
-
+        
         return $balance;
     }
     
