@@ -15,8 +15,6 @@
         <td></td>
         <td></td>
         <td data-format="0.00" style="text-align: right">{{number_format($openbal, 2, '.', ',')}}</td>
-        <td></td>
-        <td></td>
     </tr>
     @php($tot_dr = 0)
     @php($tot_cr = 0)
