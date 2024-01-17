@@ -168,7 +168,7 @@
 	<div id="statementDialog" title="Statement">
 		<input id="statement" type="hidden" class="form-control input-sm" readonly>
 			<div class="panel-body">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
+				<form class='form-horizontal' style='width:99%' id='formdata_statement'>
 					<input type="hidden" name="action" >
 						<div class="form-group">
 							<div class="col-md-6">
