@@ -4,11 +4,11 @@
 
 @section('style')
 
-body {
+<!-- body {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;;
   font-size: 12px !important;
 }
-
+ -->
 .panel-heading.collapsed .fa-angle-double-up,
 .panel-heading .fa-angle-double-down {
  display: none;
@@ -267,10 +267,7 @@ i.fa {
 				<div class="panel-body">
 					<div class='col-md-12' style="padding:0 0 15px 0">
 						<h4 class="ui header">This user uploaded Files</h4>
-						<a class='small circular orange ui icon button btn' style="position: absolute;top: -10px;right: 20px;" id='attcahment_page' href="" target="_blank">
-					    	<i class="cloud upload alternate icon"></i> Attachment Upload
-						</a>
-						<table class="ui celled table" id='tablePreview'>
+						<table class="ui celled table" id='attch_tablePreview'>
 							<thead>
 								<tr>
 									<th>ID</th>
@@ -289,7 +286,7 @@ i.fa {
 				</div>
 			</div>	
 		</div>     
-    </div>
+  </div>
 	
 	<!-- ***************End Search + table ********************* -->
 
@@ -478,15 +475,15 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/AP/invoiceAP/invoiceAP.js"></script>
 	<script src="js/finance/AP/invoiceAP/attach_invoiceAP.js"></script>
+
+	<script src="js/finance/AP/invoiceAP/invoiceAP.js"></script>
 	<script src="js/finance/AP/invoiceAP/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
 
-	<script src="{{ asset('js/other/attachment_upload/attachment_upload_invoiceAP.js') }}"></script>
+	<!-- <script src="{{ asset('js/other/attachment_upload/attachment_upload_invoiceAP.js') }}"></script> -->
 	<script src="{{ asset('patientcare/assets/DataTables/datatables.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
 	
 @endsection
