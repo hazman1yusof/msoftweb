@@ -230,7 +230,7 @@ $(document).ready(function () {
 		[
 		{
 			text: "Generate PDF",click: function() {
-				window.location='./apenquiry/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val();
+				window.open('./apenquiry/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefrom='+$("#datefrom").val()+'&dateto='+$("#dateto").val(),  '_blank'); 
 			}
 		},
 		{
@@ -978,8 +978,8 @@ $(document).ready(function () {
 		'suppcode_from','material.supplier','#suppcode_from',errorField,
 		{	
 			colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
@@ -1028,8 +1028,8 @@ $(document).ready(function () {
 		'suppcode_to','material.supplier','#suppcode_to',errorField,
 		{	
 			colModel:[
-				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer'},
-				{label:'Supplier Name',name:'name',width:400,classes:'pointer'},
+				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Supplier Name',name:'name',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],
