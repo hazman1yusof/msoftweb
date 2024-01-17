@@ -2873,6 +2873,11 @@ $(document).ready(function () {
 		},
 		buttons:
 		[{
+			text: "Generate PDF",click: function() {
+				window.open('./arenquiry/showpdf?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+				// window.location='./arenquiry/showpdf?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+			}
+		},{
 			text: "Generate Excel",click: function() {
 				// window.open('./arenquiry/showExcel?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
 				window.location='./arenquiry/showExcel?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
@@ -2906,8 +2911,8 @@ var dialog_debtor_statement = new ordialog(
 	'debtor_arStatement','debtor.debtormast','#formARStatement input[name = ar_debtorcode]','errorField',
 	{
 		colModel: [
-			{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer',canSearch:true,or_search:true  },
-			{ label: 'Debtor Name', name: 'name', width:400, classes: 'pointer',canSearch:true,or_search:true  },
+			{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+			{ label: 'Debtor Name', name: 'name', width:400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
 			{ label: 'debtortype', name: 'debtortype', hidden: true },
 			{ label: 'actdebccode', name: 'actdebccode', hidden: true },
 			{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },

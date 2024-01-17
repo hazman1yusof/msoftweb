@@ -5,6 +5,9 @@
     <tr>
         <td colspan="4">{{$debtorname}}</td>
     </tr>
+    <tr>
+        <td colspan="5">{{$debtor_addr}}</td>
+    </tr>
     <tr></tr>
     <tr>
         <td style="font-weight:bold;text-align: left">DATE</td>
@@ -50,8 +53,8 @@
         <td></td>
         <td></td>
         <td style="font-weight:bold">TOTAL</td>
-        <td data-format="0.00" style="text-align: right">{{number_format($totalAmount_dr, 2, '.', ',')}}</td>
-        <td data-format="0.00" style="text-align: right">{{number_format($totalAmount_cr, 2, '.', ',')}}</td>
-        <td data-format="0.00" style="text-align: right"> </td>
+        <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($totalAmount_dr, 2, '.', ',')}}</td>
+        <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($totalAmount_cr, 2, '.', ',')}}</td>
+        <td></td>
     </tr>
 </table>

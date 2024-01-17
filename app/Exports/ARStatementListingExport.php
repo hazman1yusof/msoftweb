@@ -74,6 +74,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         
         $debtorname = $debtormast->name;
         
+        $debtor_addr = $debtormast->address1.' '.$debtormast->address2.' '.$debtormast->address3.' '.$debtormast->address4;
+        
         $calc_openbal = DB::table('debtor.dbacthdr as dh')
                         ->where('dh.compcode', '=', session('compcode'))
                         ->where('dh.debtorcode', '=', $debtorcode)
@@ -170,7 +172,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','debtorname','openbal','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','debtorname','debtor_addr','openbal','array_report','title','company'));
     }
     
     public function registerEvents(): array
