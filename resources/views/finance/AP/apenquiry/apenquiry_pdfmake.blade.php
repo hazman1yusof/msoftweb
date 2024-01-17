@@ -110,7 +110,7 @@
                                 [
                                     { text: '', style: 'tableHeader' },
                                     { text: '', style: 'tableHeader' },
-                                    { text: 'Total Amount', colSpan: 2,style: 'tableHeader' },
+                                    { text: 'Total Amount',style: 'tableHeader' },
                                     { text: '{{number_format($tot_dr,2)}}', alignment: 'right', style: 'tableHeader' },
                                     { text: '{{number_format($tot_cr,2)}}', alignment: 'right', style: 'tableHeader' },
                                     { text: '{{number_format($tot_bal,2)}}', alignment: 'right', style: 'tableHeader' },
