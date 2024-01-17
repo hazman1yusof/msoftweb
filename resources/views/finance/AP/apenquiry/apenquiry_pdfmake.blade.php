@@ -89,8 +89,17 @@
                                         { text: '{{\Carbon\Carbon::parse($obj->postdate)->format('d/m/Y')}}' },
                                         { text: '{{strtoupper($obj->document)}}', alignment: 'left' },
                                         { text: '{{strtoupper($obj->remarks)}}', alignment: 'left' },
-                                        { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
-                                        { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
+                                        @if(!empty($obj->amount_dr))
+                                            { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
+                                        @else
+                                            {},
+                                        @endif 
+
+                                        @if(!empty($obj->amount_cr))
+                                            { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
+                                        @else
+                                            {},
+                                        @endif
                                         { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
 
                                     ],
