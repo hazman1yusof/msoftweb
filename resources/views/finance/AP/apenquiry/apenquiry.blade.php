@@ -174,7 +174,7 @@
 							<div class="col-md-6">
 								<label class="control-label" for="Scol">Creditor From</label> 
 									<div class='input-group'> 
-										<input id="suppcode_from" name="suppcode_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+										<input id="suppcode_from" name="suppcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 									</div>
 									<span class="help-block"></span>

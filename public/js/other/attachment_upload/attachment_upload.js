@@ -8,7 +8,7 @@ $(document).ready(function () {
     var DataTable_preview = $('#tablePreview').DataTable({
     
         responsive: true,
-        scrollY: 450,
+        scrollY: 250,
         paging: false,
         order: [[ 0, "desc" ]],
         columns: [
@@ -27,6 +27,26 @@ $(document).ready(function () {
         initComplete: function( settings, json ) {
         }
 
+    });
+
+    $("#click").on("click",function(){
+        $("#file").click();
+    });
+
+    $('#file').on("change", function(){
+        let filename = $(this).val();
+
+        $("#cancel").show();
+        $("#submit").show();
+        $("#rename").show();
+    });
+
+    $("#cancel").on("click", function(){
+        $("#cancel").hide();
+        $("#submit").hide();
+        $("#rename").hide();
+
+        $("#formdata").trigger('reset');
     });
 
     preview_load_data();
@@ -173,37 +193,24 @@ $(document).ready(function () {
         
     }
 
-    $("#click").on("click",function(){
-        $("#file").click();
-    });
+    // $("#click").on("click",function(){
+    //     $("#file").click();
+    // });
 
-    $('#file').on("change", function(){
-        let filename = $(this).val();
+    // $('#file').on("change", function(){
+    //     let filename = $(this).val();
 
-        $("#cancel").show();
-        $("#submit").show();
-        $("#remark_,#rename").show();
-    });
+    //     $("#cancel").show();
+    //     $("#submit").show();
+    //     $("#remark_,#rename").show();
+    // });
 
-    $("#cancel").on("click", function(){
-        $("#cancel").hide();
-        $("#submit").hide();
-        $("#remark_,#rename").hide();
+    // $("#cancel").on("click", function(){
+    //     $("#cancel").hide();
+    //     $("#submit").hide();
+    //     $("#remark_,#rename").hide();
 
-        $("#formdata").trigger('reset');
-    });
-
-    $('#biodob').text(formatDate_mom($('#biodob').text(),'YYYY-MM-DD'));
-
-    $('#bio_reg_date').text(formatDate_mom($('#bio_reg_date').text(),'YYYY-MM-DD'));
-
-    $("#bioage").html(getAge($('#biodob').text()));
-
-    function getAge(dateString) {
-        var datedob = moment(dateString,"DD-MM-YYYY");
-        var today = moment();
-        var age = today.diff(datedob, 'years');
-        return age;
-    }
+    //     $("#formdata").trigger('reset');
+    // });
 
 });

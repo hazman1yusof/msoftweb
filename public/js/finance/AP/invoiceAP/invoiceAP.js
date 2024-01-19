@@ -28,8 +28,7 @@ $(document).ready(function () {
 	var mycurrency =new currencymode(['#amount','#apacthdr_amount','#apactdtl_outamt']);
 	var mycurrency2 =new currencymode([]);
 	var fdl = new faster_detail_load();
-	var myattachment = new attachment_page();
-	console.log(myattachment.gridid);
+	var myattachment = new attachment_page("invoiceap","#jqGrid","apacthdr_idno");
 	
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#apacthdr_postdate"]);

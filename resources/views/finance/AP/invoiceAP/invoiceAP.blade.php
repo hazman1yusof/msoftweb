@@ -253,7 +253,7 @@ i.fa {
 			</div>	
 		</div>    
 
-
+		<!-- attachment -->
 		<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
 			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
 
@@ -264,28 +264,14 @@ i.fa {
 				</div>
 			</div>
 			<div id="gridAttch_panel" class="panel-collapse collapse">
-				<div class="panel-body">
-					<div class='col-md-12' style="padding:0 0 15px 0">
-						<h4 class="ui header">This user uploaded Files</h4>
-						<table class="ui celled table" id='attch_tablePreview'>
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Date</th>
-									<th>Remark</th>
-									<th>File Preview</th>
-									<th>MRN</th>
-									<th>Add User</th>
-									<th>Add Date</th>
-									<th>Download</th>
-									<th>type</th>
-								</tr>
-							</thead>
-						</table>
+				<div class="panel-body" style="height: calc(100vh - 70px); padding: 0px;">
+					<div class='col-md-12' style="padding:0 0 15px 0" >
+						<iframe id='attach_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
 					</div>
 				</div>
 			</div>	
-		</div>     
+		</div>
+
   </div>
 	
 	<!-- ***************End Search + table ********************* -->
@@ -475,15 +461,8 @@ i.fa {
 		});
 	</script>
 
-	<script src="js/finance/AP/invoiceAP/attach_invoiceAP.js"></script>
-
 	<script src="js/finance/AP/invoiceAP/invoiceAP.js"></script>
 	<script src="js/finance/AP/invoiceAP/pdfgen.js"></script>
 	<script src="plugins/pdfmake/pdfmake.min.js"></script>
 	<script src="plugins/pdfmake/vfs_fonts.js"></script>
-
-	<!-- <script src="{{ asset('js/other/attachment_upload/attachment_upload_invoiceAP.js') }}"></script> -->
-	<script src="{{ asset('patientcare/assets/DataTables/datatables.min.js') }}"></script>
-  <script src="https://cdn.datatables.net/1.10.16/js/dataTables.semanticui.min.js"></script>
-	
 @endsection

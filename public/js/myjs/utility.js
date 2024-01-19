@@ -2274,6 +2274,43 @@ function get_char_str_pos(string, symbol, nth) {
   return string.indexOf(symbol, (string.indexOf(symbol) + nth));
 }
 
+//attachment_page
+function attachment_page(page,grid,idno){
+		this.page=page;
+		this.grid=grid;
+		this.idno=idno;
+		var self=this;
+    $('#attcahment_go').click(function(){
+        if($("#gridAttch_panel").attr('aria-expanded') == 'false' || 
+           $("#gridAttch_panel").attr('aria-expanded') == undefined)
+        {
+            $("#gridAttch_panel").collapse('show');
+        }else{
+            $("#gridAttch_panel").collapse('hide');
+            $("#gridAttch_panel").data('reopen','true');
+        }
+    });
+
+    $("#gridAttch_panel").on("hidden.bs.collapse", function(){
+        if($(this).data('reopen') == 'true'){
+            $(this).collapse('show');
+        }
+    });
+
+    $("#gridAttch_panel").on("shown.bs.collapse", function(){
+        $(this).data('reopen','false');
+        make_attchiframe();
+        SmoothScrollTo("#gridAttch_c",100);
+    });
+
+    function make_attchiframe(){
+    		let page = self.page;
+    		let idno = selrowData(self.grid)[self.idno];
+        $('iframe#attach_iframe').attr('src','attachment_upload?page='+page+'&idno='+idno);
+    }
+}
+
+
 $(document).ready(function () {
 
 	$('.panel-heading.clearfix.collapsed.position .arrow.fa').click(function(){

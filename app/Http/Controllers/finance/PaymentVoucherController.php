@@ -688,7 +688,7 @@ use PDF;
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
@@ -1036,7 +1036,7 @@ use PDF;
                         'compcode' => session('compcode'),
                         'bankcode' => $apacthdr_obj->bankcode,
                         'year' => $yearperiod->year,
-                        'actamount'.$yearperiod->period => $totamt->amount,
+                        'actamount'.$yearperiod->period => -$apacthdr_obj->amount,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
 

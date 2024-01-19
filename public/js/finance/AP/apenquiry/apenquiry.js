@@ -975,7 +975,7 @@ $(document).ready(function () {
 
 	////////dialog handler statement/////
 	var suppcode_from = new ordialog(
-		'suppcode_from','material.supplier','#suppcode_from',errorField,
+		'suppcode_from','material.supplier','#suppcode_from','errorField',
 		{	
 			colModel:[
 				{label:'Supplier Code',name:'suppcode',width:200,classes:'pointer', canSearch: true, or_search: true },

@@ -268,8 +268,8 @@ $(document).ready(function () {
 		table_name:'material.stockexp',
 		table_id:'itemcode',
 		sort_itemcode:true,
-		filterCol:['itemcode','uomcode','deptcode','compcode','unit'],
-		filterVal:['','','','session.compcode','session.unit'],
+		filterCol:['itemcode','uomcode','deptcode','compcode','unit','year'],
+		filterVal:['','','','session.compcode','session.unit',moment().format('YYYY')],
 		sortby:['expdate asc']
 	}
 

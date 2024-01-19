@@ -24,7 +24,7 @@ class attachment_uploadController extends defaultController
     {   
         switch($request->page){
             case 'invoiceap':
-                return $this->invoiceap_page($request);
+                return $this->default_page($request);
             default:
                 abort(404);
         }
@@ -34,7 +34,7 @@ class attachment_uploadController extends defaultController
     {   
         switch($request->page){
             case 'invoiceap':
-                return $this->invoiceap_data($request);
+                return $this->default_data($request);
             default:
                 abort(404);
         }
@@ -44,23 +44,18 @@ class attachment_uploadController extends defaultController
     {   
         switch($request->page){
             case 'invoiceap':
-                return $this->invoiceap_form($request);
+                return $this->default_form($request);
             default:
                 abort(404);
         }
     }
     
-    public function invoiceap_page(Request $request)
+    public function default_page(Request $request)
     {   
-        $invoice = DB::table('finance.apacthdr')
-                        ->where('compcode',session('compcode'))
-                        ->where('idno',$request->idno)
-                        ->first();
-
-        return view('other.attachment_upload.attachment_upload_invoiceAP',compact('invoice'));
+        return view('other.attachment_upload.attachment_upload');
     }
 
-    public function invoiceap_data(Request $request)
+    public function default_data(Request $request)
     {   
         $table = DB::table('finance.attachment')
                 ->where('compcode','=',session('compcode'))
@@ -73,7 +68,7 @@ class attachment_uploadController extends defaultController
         return json_encode($responce);
     }
 
-    public function invoiceap_form(Request $request)
+    public function default_form(Request $request)
     {   
         $type = $request->file('file')->getClientMimeType();
         if(!empty($request->rename)){
@@ -109,25 +104,25 @@ class attachment_uploadController extends defaultController
         $attachment_path = 'D:\laragon\www\msoftweb\public';
 
         if($folder == 'attachment'){ //image
-            $img = Image::make($attachment_path.'/uploads/'.$folder.'/'.$image_path)->resize(96, 96);
+            $img = Image::make($attachment_path.'/uploads/'.$folder.'/'.$image_path)->resize(64, 64);
         }else if($folder == 'application'){
             switch($image_path){
-                case 'pdf': $img = Image::make($attachment_path.'/uploads/pat_enq/pdf_icon.png')->resize(96, 96); break;
-                case 'msword': $img = Image::make($attachment_path.'/uploads/pat_enq/word_icon.png')->resize(96, 96); break;
-                case 'powerpoint': $img = Image::make($attachment_path.'/uploads/pat_enq/powerpoint_icon.png')->resize(96, 96); break;
-                case 'excel': $img = Image::make($attachment_path.'/uploads/pat_enq/excel_icon.png')->resize(96, 96); break;
+                case 'pdf': $img = Image::make($attachment_path.'/uploads/pat_enq/pdf_icon.png')->resize(64, 64); break;
+                case 'msword': $img = Image::make($attachment_path.'/uploads/pat_enq/word_icon.png')->resize(64, 64); break;
+                case 'powerpoint': $img = Image::make($attachment_path.'/uploads/pat_enq/powerpoint_icon.png')->resize(64, 64); break;
+                case 'excel': $img = Image::make($attachment_path.'/uploads/pat_enq/excel_icon.png')->resize(64, 64); break;
             }
         }else if($folder == 'video'){
             switch($image_path){
-                case 'video': $img = Image::make($attachment_path.'/uploads/pat_enq/video-icon.png')->resize(96, 96); break;
+                case 'video': $img = Image::make($attachment_path.'/uploads/pat_enq/video-icon.png')->resize(64, 64); break;
             }
         }else if($folder == 'audio'){
             switch($image_path){
-                case 'audio': $img = Image::make($attachment_path.'/uploads/pat_enq/audio-icon.png')->resize(96, 96); break;
+                case 'audio': $img = Image::make($attachment_path.'/uploads/pat_enq/audio-icon.png')->resize(64, 64); break;
             }
         }else if($folder == 'text'){
             switch($image_path){
-                case 'notepad': $img = Image::make($attachment_path.'/uploads/pat_enq/notepad_icon.png')->resize(96, 96); break;
+                case 'notepad': $img = Image::make($attachment_path.'/uploads/pat_enq/notepad_icon.png')->resize(64, 64); break;
             }
         }else{
 
