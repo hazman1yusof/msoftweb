@@ -50,93 +50,90 @@ class APEnquiryController extends defaultController
         $datefrom = Carbon::parse($request->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         
-        if(strtoupper($suppcode_from) != 'ZZZ' || strtoupper($suppcode_from) != 'ZZZ'){
-            $apacthdr = DB::table('finance.apacthdr as ap')
-                        ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name AS supplier_name','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
-                        ->join('material.supplier as su', function($join) use ($request){
-                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                            $join = $join->where('su.compcode', '=', session('compcode'));
-                        })
-                        ->where('ap.compcode',session('compcode'))
-                        ->where('ap.unit',session('unit'))
-                        ->where('ap.recstatus', '=', 'POSTED')
-                        ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                        ->whereBetween('ap.suppcode',[$suppcode_from,$suppcode_to])
-                        ->orderBy('ap.postdate','ASC')
-                        ->get();
+        $apacthdr = DB::table('finance.apacthdr as ap')
+                    ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4', 'ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                    ->join('material.supplier as su', function($join) use ($request){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
+                    ->orderBy('ap.postdate','ASC')
+                    ->get();
 
-            $calc_openbal = DB::table('finance.apacthdr as ap')
-                        ->join('material.supplier as su', function($join) use ($request){
-                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                            $join = $join->where('su.compcode', '=', session('compcode'));
-                        })
-                        ->where('ap.compcode',session('compcode'))
-                        ->where('ap.unit',session('unit'))
-                        ->where('ap.recstatus', '=', 'POSTED')
-                        ->whereDate('ap.postdate', '<',$datefrom)
-                        ->where('ap.suppcode','<',$suppcode_from);
+                    // dd($apacthdr);
 
-            $openbal = $this->calc_openbal($calc_openbal); 
+        $supp_code = DB::table('finance.apacthdr as ap')
+                    ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
+                    ->join('material.supplier as su', function($join) {
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode','=',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
+                    ->distinct('ap.suppcode');
+    
+        $supp_code = $supp_code->get(['ap.suppcode', 'su.supplier_name', 'su.Addr1', 'su.Addr2', 'su.Addr3', 'su.Addr4']);
 
-        }else{
-            $apacthdr = DB::table('finance.apacthdr as ap')
-                        ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.name AS supplier_name','ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
-                        ->join('material.supplier as su', function($join) use ($request){
-                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                            $join = $join->where('su.compcode', '=', session('compcode'));
-                        })
-                        ->where('ap.compcode',session('compcode'))
-                        ->where('ap.unit',session('unit'))
-                        ->where('ap.recstatus', '=', 'POSTED')
-                        ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                        ->orderBy('ap.postdate','ASC')
-                        ->get();
+                    // dd($supp_code);
 
-            $calc_openbal = DB::table('finance.apacthdr as ap')
-                        ->join('material.supplier as su', function($join) use ($request){
-                            $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                            $join = $join->where('su.compcode', '=', session('compcode'));
-                        })
-                        ->where('ap.compcode',session('compcode'))
-                        ->where('ap.unit',session('unit'))
-                        ->where('ap.recstatus', '=', 'POSTED')
-                        ->whereDate('ap.postdate', '<',$datefrom);
+        $calc_openbal = DB::table('finance.apacthdr as ap')
+                    ->join('material.supplier as su', function($join) use ($request){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereDate('ap.postdate', '<',$datefrom);
+                    // ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to]);
 
-            $openbal = $this->calc_openbal($calc_openbal); 
-        }
+        $openbal = $this->calc_openbal($calc_openbal); 
 
         $array_report = [];
         $balance = $openbal;
         foreach ($apacthdr as $key => $value){
+            $value->docno = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
             
             switch ($value->trantype) {
                 case 'IN': //dr
+                    $value->docno = $value->document;
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'DN': //dr
+                    $value->docno = $value->document;
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'CN': //cr
+                    $value->docno = $value->document;
                     $value->amount_cr = $value->amount;
                     $balance = $balance - floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'PV': //cr
+                    $value->docno = str_pad($value->pvno, 5, "0", STR_PAD_LEFT);
                     $value->amount_cr = $value->amount;
                     $balance = $balance - floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'PD': //cr
+                    $value->docno = $value->document;
                     $value->amount_cr = $value->amount;
                     $balance = $balance - floatval($value->amount);
                     $value->balance = $balance;
@@ -161,7 +158,7 @@ class APEnquiryController extends defaultController
         $header->suppcode_to = $request->suppcode_to;
         $header->compname = $company->name;
 
-        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('apacthdr','array_report','header', 'openbal'));
+        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('apacthdr','array_report','header', 'openbal', 'supp_code'));
         
     }
 
