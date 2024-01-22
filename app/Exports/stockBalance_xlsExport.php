@@ -84,10 +84,11 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             })
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'))
-                        ->whereIn('s.deptcode',[$dept_from,$dept_to])
-                        ->whereBetween('s.itemcode',[$item_from,$item_to])
+                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
                         ->where('s.year', '=', $year)
-                        ->orderBy('s.itemcode', 'DESC')
+                        ->orderBy('s.deptcode', 'ASC')
+                        ->orderBy('s.itemcode', 'ASC')
                         ->get();
 
         foreach ($stockloc as $obj) {

@@ -1,4 +1,6 @@
 <table>
+    <tr>
+    </tr>
     @foreach($debtormast as $index => $debtor)
     <tr>
         <td style="font-weight:bold">{{++$index}}. {{$debtor->debtorcode}}</td>
@@ -36,19 +38,19 @@
             <td>{{$db_obj->trantype}}</td>
             <td style="text-align: left">{{$db_obj->reference}}</td>
             @if(!empty($db_obj->amount_dr))
+                @php($totalAmount_dr += $db_obj->amount_dr)
                 <td data-format="0.00" style="text-align: right">{{number_format($db_obj->amount_dr, 2, '.', ',')}}</td>
             @else
                 <td></td>
             @endif
             @if(!empty($db_obj->amount_cr))
+                @php($totalAmount_cr += $db_obj->amount_cr)
                 <td data-format="0.00" style="text-align: right">{{number_format($db_obj->amount_cr, 2, '.', ',')}}</td>
             @else
                 <td></td>
             @endif
             <td data-format="0.00" style="text-align: right">{{number_format($db_obj->balance, 2, '.', ',')}}</td>
         </tr>
-        @php($totalAmount_dr += $db_obj->amount_dr)
-        @php($totalAmount_cr += $db_obj->amount_cr)
         @endif
     @endforeach
     <tr>
@@ -60,5 +62,6 @@
         <td></td>
     </tr>
     <tr></tr>
+    <div style="page-break-after:always" />
     @endforeach
 </table>

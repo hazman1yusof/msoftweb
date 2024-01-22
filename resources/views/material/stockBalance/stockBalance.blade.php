@@ -60,7 +60,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Dept From</label> 
 							<div class='input-group'> 
-								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -79,7 +79,7 @@
 						<div class="col-md-6">
 						  	<label class="control-label" for="Scol">Item From</label> 
 							<div class='input-group'> 
-								<input id="item_from" name="item_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+								<input id="item_from" name="item_from" type="text" class="form-control input-sm" autocomplete="off">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -137,12 +137,12 @@
 				  </fieldset>
 
 				 <fieldset>
-				  <legend>Item List :</legend>
+				  <legend>Stock Balance :</legend>
 					<button name="stockBalance_pdf" type="button" class="mybtn btn btn-sm mybtnpdf">
-						<span class="fa fa-file-pdf-o fa-lg"></span> Item List PDF
+						<span class="fa fa-file-pdf-o fa-lg"></span> Stock Balance PDF
 					</button>
 					<button name="stockBalance_xls" type="button" class="mybtn btn btn-sm mybtnxls">
-						<span class="fa fa-file-excel-o fa-lg"></span> Item List XLS
+						<span class="fa fa-file-excel-o fa-lg"></span> Stock Balance XLS
 					</button>
 				  </fieldset>
 				</div>

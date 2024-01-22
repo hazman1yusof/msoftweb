@@ -47,9 +47,7 @@ class stockBalanceController extends defaultController
     
     public function stockBalance_pdf(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
-            'item_from' => 'required',
             'item_to' => 'required',
             'year' => 'required',
             'period' => 'required',
@@ -76,10 +74,11 @@ class stockBalanceController extends defaultController
                             })
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'))
-                        ->whereIn('s.deptcode',[$dept_from,$dept_to])
-                        ->whereBetween('s.itemcode',[$item_from,$item_to])
+                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
                         ->where('s.year', '=', $year)
-                        ->orderBy('s.itemcode', 'DESC')
+                        ->orderBy('s.deptcode', 'ASC')
+                        ->orderBy('s.itemcode', 'ASC')
                         ->get();
 
         foreach ($stockloc as $obj) {
@@ -230,9 +229,7 @@ class stockBalanceController extends defaultController
 
     public function stockBalance_xls(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
-            'item_from' => 'required',
             'item_to' => 'required',
             'year' => 'required',
             'period' => 'required',
@@ -254,9 +251,7 @@ class stockBalanceController extends defaultController
 
     public function stockSheet_pdf(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
-            'item_from' => 'required',
             'item_to' => 'required',
             'year' => 'required',
             'period' => 'required',
@@ -283,10 +278,11 @@ class stockBalanceController extends defaultController
                             })
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'))
-                        ->whereIn('s.deptcode',[$dept_from,$dept_to])
-                        ->whereBetween('s.itemcode',[$item_from,$item_to])
+                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
                         ->where('s.year', '=', $year)
-                        ->orderBy('s.itemcode', 'DESC')
+                        ->orderBy('s.deptcode', 'ASC')
+                        ->orderBy('s.itemcode', 'ASC')
                         ->get();
 
         foreach ($stockloc as $obj) {
@@ -314,14 +310,11 @@ class stockBalanceController extends defaultController
         $header->period = $period;
 
         return view('material.stockBalance.stockSheet_pdf_pdfmake',compact('stockloc','company','header'));
-        
     }
 
     public function stockSheet_xls(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
-            'item_from' => 'required',
             'item_to' => 'required',
             'year' => 'required',
             'period' => 'required',

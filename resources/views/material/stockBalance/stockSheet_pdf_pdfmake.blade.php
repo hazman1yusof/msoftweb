@@ -50,9 +50,9 @@
 	                        widths: ['*','*','*','*','*','*',],//panjang standard dia 515
 	                        body: [
 	                            [
-									{text: 'Department From',bold: true}, 
+									{text: 'Department',bold: true}, 
 									{text: ': '+header.deptfrom},
-									{text: 'Department To',bold: true}, 
+									{text: '',bold: true}, 
 									{text: ': '+header.deptto},
 									{text: 'Year',bold: true}, 
 									{text: ': '+header.year},

@@ -96,19 +96,19 @@
                                         { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 5, "0", STR_PAD_LEFT)}}' },
                                         { text: '{{$obj->reference}}' },
                                         @if(!empty($obj->amount_dr))
+                                            @php($totalAmount_dr += $obj->amount_dr)
                                             { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
                                         @else
                                             { text: ' ' },
                                         @endif
                                         @if(!empty($obj->amount_cr))
+                                            @php($totalAmount_cr += $obj->amount_cr)
                                             { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
                                         @else
                                             { text: ' ' },
                                         @endif
                                         { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
                                     ],
-                                    @php($totalAmount_dr += $obj->amount_dr)
-                                    @php($totalAmount_cr += $obj->amount_cr)
                                     @endif
                                 @endforeach
                                 [
@@ -117,13 +117,15 @@
                                     { text: 'TOTAL', bold: true },
                                     { text: '{{number_format($totalAmount_dr,2)}}', alignment: 'right', bold: true },
                                     { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
-                                    { text: ' ', pageBreak: 'after' },
+                                    { text: ' ' },
                                 ],
                                 
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
+
+                    { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     @endforeach
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                 ],

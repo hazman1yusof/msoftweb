@@ -174,7 +174,12 @@ i.fa {
 
         <div class="panel panel-default">
 		    	<div class="panel-heading">Purchase Request DataEntry Header
-					<a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
+						<span class='fa fa-print'></span> Print 
+					</a>
+					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
+				    <span class='fa fa-paperclip'></span> Attachment 
+					</a>
 		    	</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
@@ -209,6 +214,25 @@ i.fa {
 	    		</div>
 	    	</div>	
 		</div>
+
+			<!-- attachment -->
+			<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>Attachment</h5>
+					</div>
+				</div>
+				<div id="gridAttch_panel" class="panel-collapse collapse">
+					<div class="panel-body" style="height: calc(100vh - 70px); padding: 0px;">
+						<div class='col-md-12' style="padding:0 0 15px 0" >
+							<iframe id='attach_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
+						</div>
+					</div>
+				</div>	
+			</div> 
         
     </div>
 	<!-- ***************End Search + table ********************* -->

@@ -55,7 +55,6 @@ class ItemMovReportController extends defaultController
 
     public function itemMovFast_pdf(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',
@@ -81,9 +80,7 @@ class ItemMovReportController extends defaultController
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'));
 
-        if(strtoupper($dept_from) != 'ZZZ' || strtoupper($dept_to) != 'ZZZ'){
-            $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from,$dept_to]);
-        }
+        $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%']);
 
         $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
 
@@ -154,7 +151,6 @@ class ItemMovReportController extends defaultController
 
     public function itemMovSlow_pdf(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',
@@ -180,9 +176,7 @@ class ItemMovReportController extends defaultController
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'));
 
-        if(strtoupper($dept_from) != 'ZZZ' || strtoupper($dept_to) != 'ZZZ'){
-            $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from,$dept_to]);
-        }
+        $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%']);
 
         $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
 
@@ -253,7 +247,6 @@ class ItemMovReportController extends defaultController
 
     public function itemMovFast_excel(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',
@@ -274,7 +267,6 @@ class ItemMovReportController extends defaultController
 
     public function itemMovSlow_excel(Request $request){
         $validator = Validator::make($request->all(), [
-            'dept_from' => 'required',
             'dept_to' => 'required',
             'datefrom' => 'required',
             'dateto' => 'required',

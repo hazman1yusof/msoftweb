@@ -25,7 +25,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 $(document).ready(function () {
 	set_yearperiod();
 	var dept_from = new ordialog(
-		'dept_from','sysdb.department','#dept_from',errorField,
+		'dept_from','sysdb.department','#dept_from','errorField',
 		{	
 			colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -36,6 +36,8 @@ $(document).ready(function () {
 				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
 				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
+			sortname:'deptcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){
@@ -78,6 +80,8 @@ $(document).ready(function () {
 				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
 				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
+			sortname:'deptcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){
@@ -118,7 +122,7 @@ $(document).ready(function () {
 	dept_to.makedialog(true);
 
 	var dialog_itemcodefrom = new ordialog(
-		'item_from',['material.stockloc AS s','material.product AS p'],"#item_from",errorField,
+		'item_from',['material.stockloc AS s','material.product AS p'],"#item_from",'errorField',
 		{	
 			colModel:[
 				{label: 'Item Code',name:'s_itemcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -139,6 +143,8 @@ $(document).ready(function () {
 				join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on =']],
 				join_filterVal:[['p.compcode','p.uomcode','p.unit']],
 			},
+			sortname:'s_itemcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 	
 			},
@@ -200,6 +206,8 @@ $(document).ready(function () {
 				join_filterCol:[['s.compcode on =','s.uomcode on =','s.unit on =']],
 				join_filterVal:[['p.compcode','p.uomcode','p.unit']],
 			},
+			sortname:'s_itemcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				let item_from = $('#item_from').val();

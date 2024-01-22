@@ -82,9 +82,7 @@ class itemMov_xlsExport implements FromView, WithEvents, WithColumnWidths
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'));
 
-        if(strtoupper($dept_from) != 'ZZZ' || strtoupper($dept_to) != 'ZZZ'){
-            $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from,$dept_to]);
-        }
+        $stockloc = $stockloc->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%']);
 
         $stockloc = $stockloc->where('s.year', $this->toYear($date_to));
 

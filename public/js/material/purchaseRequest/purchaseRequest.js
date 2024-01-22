@@ -30,6 +30,7 @@ $(document).ready(function () {
 	var sequence = new Sequences('PR','#purreqhd_purreqdt');
 	sequence.set($("#deptcode").val()).get();
 	var fdl = new faster_detail_load();
+	var myattachment = new attachment_page("purchaserequest","#jqGrid","purreqhd_idno");
 
 	////////////////////////////////////start dialog//////////////////////////////////////
 	var oper = null;

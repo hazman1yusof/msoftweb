@@ -61,7 +61,7 @@
 						<div class="col-md-6">
 						  <label class="control-label" for="Scol">Dept From</label> 
 							<div class='input-group'> 
-								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+								<input id="dept_from" name="dept_from" type="text" class="form-control input-sm" autocomplete="off" value="">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>
@@ -80,11 +80,11 @@
 					<div class="form-group">
 						<div class="col-md-6">
 						  <label class="control-label" for="Scol">Date From</label>  
-							<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+							<input type="date" name="datefrom" id="datefrom" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-01')}}">
 			      </div>
 						<div class="col-md-6">
 						  <label class="control-label" for="Scol">Date To</label>  
-							<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" >
+							<input type="date" name="dateto" id="dateto" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-t')}}">
 			      </div>
 			    </div>
 

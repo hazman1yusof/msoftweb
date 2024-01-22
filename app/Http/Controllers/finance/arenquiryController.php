@@ -567,24 +567,24 @@ class arenquiryController extends defaultController
         $debtorcode_from = $request->debtorcode_from;
         $debtorcode_to = $request->debtorcode_to;
         
-        $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-                    ->where('dh.compcode', '=', session('compcode'))
-                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                    ->orderBy('dh.posteddate', 'ASC')
-                    ->get();
+        // $dbacthdr = DB::table('debtor.dbacthdr as dh')
+        //             ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
+        //             ->where('dh.compcode', '=', session('compcode'))
+        //             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+        //             ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
+        //             ->whereBetween('dh.posteddate', [$datefr, $dateto])
+        //             ->orderBy('dh.posteddate', 'ASC')
+        //             ->get();
         
-        foreach ($dbacthdr as $key => $value){
-            $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                            ->where('dh.compcode', '=', session('compcode'))
-                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                            ->where('dh.debtorcode', '=', $value->debtorcode)
-                            ->whereDate('dh.posteddate', '<', $datefr);
+        // foreach ($dbacthdr as $key => $value){
+        //     $calc_openbal = DB::table('debtor.dbacthdr as dh')
+        //                     ->where('dh.compcode', '=', session('compcode'))
+        //                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+        //                     ->where('dh.debtorcode', '=', $value->debtorcode)
+        //                     ->whereDate('dh.posteddate', '<', $datefr);
             
-            $openbal = $this->calc_openbal($calc_openbal);
-        }
+        //     $openbal = $this->calc_openbal($calc_openbal);
+        // }
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.debtorcode','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
@@ -596,91 +596,113 @@ class arenquiryController extends defaultController
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                     ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');
         
         $debtormast = $debtormast->get(['dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4']);
         
         $array_report = [];
-        $balance = $openbal;
-        foreach ($dbacthdr as $key => $value){
+        foreach ($debtormast as $key => $value){
+            $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
+                    ->leftJoin('hisdb.pat_mast as pm', function($join){
+                        $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                                    ->where('pm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->where('debtorcode',$value->debtorcode)
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->orderBy('dh.posteddate', 'ASC')
+                    ->get();
+
+            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereDate('dh.posteddate', '<', $datefr);
+            
+            $openbal = $this->calc_openbal($calc_openbal);
+
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            
-            $pat_mast = DB::table('hisdb.pat_mast')
-                        ->where('CompCode', '=', session('compcode'))
-                        ->where('MRN', '=', $value->mrn)
-                        ->first();
-            
-            switch ($value->trantype) {
-                case 'IN':
-                    if($value->mrn == '0' || $value->mrn == ''){
+            $balance = $openbal;
+            foreach ($dbacthdr as $key => $value){
+                
+                switch ($value->trantype) {
+                    case 'IN':
+                        if($value->mrn == '0' || $value->mrn == ''){
+                            $value->reference = $value->remark;
+                        }else{
+                            $value->reference = $value->Name;
+                        }
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'DN':
                         $value->reference = $value->remark;
-                    }else{
-                        $value->reference = $pat_mast->Name;
-                    }
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'DN':
-                    $value->reference = $value->remark;
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'BC':
-                    // $value->reference
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'RF':
-                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'BC':
+                        // $value->reference
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RF':
+                        if($value->mrn == '0' || $value->mrn == ''){
+                            $value->reference = $value->remark;
+                        }else{
+                            $value->reference = $value->Name;
+                        }
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'CN':
                         $value->reference = $value->remark;
-                    }else{
-                        $value->reference = $pat_mast->Name;
-                    }
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'CN':
-                    $value->reference = $value->remark;
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'RC':
-                    $value->reference = $value->recptno;
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'RD':
-                    $value->reference = $value->recptno;
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'RT':
-                    // $value->reference
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                default:
-                    // code...
-                    break;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RC':
+                        $value->reference = $value->recptno;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RD':
+                        $value->reference = $value->recptno;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'RT':
+                        // $value->reference
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
+
+
             }
+
         }
         
         // dd($array_report);

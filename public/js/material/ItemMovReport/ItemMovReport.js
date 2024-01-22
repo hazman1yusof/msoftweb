@@ -24,7 +24,7 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 
 $(document).ready(function () {
 	var dept_from = new ordialog(
-		'dept_from','sysdb.department','#dept_from',errorField,
+		'dept_from','sysdb.department','#dept_from','errorField',
 		{	
 			colModel:[
 				{label:'Department',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
@@ -35,6 +35,8 @@ $(document).ready(function () {
 				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
 				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
+			sortname:'deptcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){
@@ -86,6 +88,8 @@ $(document).ready(function () {
 				filterCol:['storedept', 'recstatus','compcode'],//,'sector'
 				filterVal:['1', 'ACTIVE','session.compcode']//, 'session.unit'
 			},
+			sortname:'deptcode',
+			sortorder:'asc',
 			ondblClickRow: function () {
 			},
 			gridComplete: function(obj){

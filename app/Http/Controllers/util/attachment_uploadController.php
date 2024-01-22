@@ -25,6 +25,10 @@ class attachment_uploadController extends defaultController
         switch($request->page){
             case 'invoiceap':
                 return $this->default_page($request);
+            case 'purchaseorder':
+                return $this->default_page($request);
+            case 'purchaserequest':
+                return $this->default_page($request);
             default:
                 abort(404);
         }
@@ -35,6 +39,10 @@ class attachment_uploadController extends defaultController
         switch($request->page){
             case 'invoiceap':
                 return $this->default_data($request);
+            case 'purchaseorder':
+                return $this->default_data($request);
+            case 'purchaserequest':
+                return $this->default_data($request);
             default:
                 abort(404);
         }
@@ -44,6 +52,10 @@ class attachment_uploadController extends defaultController
     {   
         switch($request->page){
             case 'invoiceap':
+                return $this->default_form($request);
+            case 'purchaseorder':
+                return $this->default_form($request);
+            case 'purchaserequest':
                 return $this->default_form($request);
             default:
                 abort(404);
