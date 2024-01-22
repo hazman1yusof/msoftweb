@@ -14,10 +14,7 @@
     </object>
     
     <script>
-    
-        var debtorcode = '{{$debtorcode}}';
-        var debtorname = '{{$debtorname}}';
-        var debtor_addr = '{{$debtor_addr}}';
+        
         var openbal = '{{$openbal}}';
         
         var array_report=[
@@ -59,30 +56,15 @@
                         style: 'header',
                         alignment: 'center'
                     },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: ['*'], //panjang standard dia 515
-                            body: [
-                                [
-                                    { text: '{{$debtorcode}}' },
-                                ],
-                                [
-                                    { text: '{{$debtorname}}' },
-                                ],
-                                [
-                                    { text: '{{$debtor_addr}}' },
-                                ],
-                            ]
-                        },
-                        layout: 'noBorders',
-                    },
                     // {
                     //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
                     //     alignment: 'center',
                     //     style: 'comp_header'
                     // },
+                    @foreach($debtormast as $index => $debtor)
+                    { text: '{{++$index}}. {{$debtor->debtorcode}}', alignment: 'left', fontSize: 9, bold: true },
+                    { text: '{!!$debtor->name!!}', alignment: 'left', fontSize: 9, bold: true },
+                    { text: '{!!$debtor->address1!!} {!!$debtor->address2!!} {!!$debtor->address3!!} {!!$debtor->address4!!}', alignment: 'left', fontSize: 9, bold: true },
                     {
                         style: 'tableExample',
                         table: {
@@ -108,43 +90,27 @@
                                 @php($totalAmount_dr = 0)
                                 @php($totalAmount_cr = 0)
                                 @foreach ($array_report as $obj)
-                                [
-                                    { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->trantype}}' },
-                                    { text: '{{$obj->reference}}' },
-                                    @if(!empty($obj->amount_dr))
-                                        { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
-                                    @else
-                                        { text: ' ' },
+                                    @if($obj->debtorcode == $debtor->debtorcode)
+                                    [
+                                        { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
+                                        { text: '{{$obj->trantype}}/{{str_pad($obj->auditno, 5, "0", STR_PAD_LEFT)}}' },
+                                        { text: '{{$obj->reference}}' },
+                                        @if(!empty($obj->amount_dr))
+                                            { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
+                                        @if(!empty($obj->amount_cr))
+                                            { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
+                                        @else
+                                            { text: ' ' },
+                                        @endif
+                                        { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
+                                    ],
+                                    @php($totalAmount_dr += $obj->amount_dr)
+                                    @php($totalAmount_cr += $obj->amount_cr)
                                     @endif
-                                    @if(!empty($obj->amount_cr))
-                                        { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
-                                    @else
-                                        { text: ' ' },
-                                    @endif
-                                    { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
-                                ],
-                                @php($totalAmount_dr += $obj->amount_dr)
-                                @php($totalAmount_cr += $obj->amount_cr)
                                 @endforeach
-                                // [
-                                //     { text: ' ' },
-                                //     { text: ' ' },
-                                //     { text: 'TOTAL', bold: true },
-                                //     { text: '{{number_format($totalAmount_dr,2)}}', alignment: 'right', bold: true },
-                                //     { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
-                                //     { text: ' ' },
-                                // ],
-                            ]
-                        },
-                        layout: 'lightHorizontalLines',
-                    },
-                    {
-                        style: 'tableExample',
-                        table: {
-                            headerRows: 1,
-                            widths: [60,60,120,60,60,60],  //panjang standard dia 515
-                            body: [
                                 [
                                     { text: ' ' },
                                     { text: ' ' },
@@ -153,10 +119,12 @@
                                     { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
                                     { text: ' ' },
                                 ],
+                                
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
+                    @endforeach
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                 ],
                 styles: {

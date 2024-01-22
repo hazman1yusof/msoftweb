@@ -1377,9 +1377,18 @@
 					
 					<div class="form-group">
 						<div class="col-md-6">
-							<label class="control-label" for="Scol">Debtor</label>
+							<label class="control-label" for="Scol">Debtor From</label>
 							<div class='input-group'>
-								<input id="ar_debtorcode" name="ar_debtorcode" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value">
+								<input id="debtorcode_from" name="debtorcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
+								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+							</div>
+							<span class="help-block"></span>
+						</div>
+						
+						<div class="col-md-6">
+							<label class="control-label" for="Scol">Debtor To</label>
+							<div class='input-group'>
+								<input id="debtorcode_to" name="debtorcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							</div>
 							<span class="help-block"></span>

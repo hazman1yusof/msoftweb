@@ -557,57 +557,75 @@ class arenquiryController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new ARStatementListingExport($request->debtorcode,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
+        return Excel::download(new ARStatementListingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARStatementListingExport.xlsx');
     }
     
     public function showpdf(Request $request){
         
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
-        $debtorcode = $request->debtorcode;
+        $debtorcode_from = $request->debtorcode_from;
+        $debtorcode_to = $request->debtorcode_to;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
                     ->where('dh.compcode', '=', session('compcode'))
-                    ->where('dh.debtorcode', '=', $debtorcode)
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                    ->orderBy('dh.posteddate', 'ASC');
+                    ->orderBy('dh.posteddate', 'ASC')
+                    ->get();
         
-        $debtormast = DB::table('debtor.debtormast as dm')
-                    ->where('dm.compcode', '=', session('compcode'))
-                    ->where('dm.debtorcode', '=', $debtorcode)
-                    ->first();
+        foreach ($dbacthdr as $key => $value){
+            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereDate('dh.posteddate', '<', $datefr);
+            
+            $openbal = $this->calc_openbal($calc_openbal);
+        }
         
-        $debtorname = $debtormast->name;
+        $debtormast = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.debtorcode','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->distinct('dm.debtorcode');
         
-        $debtor_addr = $debtormast->address1.' '.$debtormast->address2.' '.$debtormast->address3.' '.$debtormast->address4;
-        
-        $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->where('dh.debtorcode', '=', $debtorcode)
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->whereDate('dh.posteddate', '<', $datefr);
-        
-        $openbal = $this->calc_openbal($calc_openbal);
+        $debtormast = $debtormast->get(['dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4']);
         
         $array_report = [];
         $balance = $openbal;
-        foreach ($dbacthdr->get() as $key => $value){
+        foreach ($dbacthdr as $key => $value){
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
             
+            $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('CompCode', '=', session('compcode'))
+                        ->where('MRN', '=', $value->mrn)
+                        ->first();
+            
             switch ($value->trantype) {
                 case 'IN':
-                    $value->reference = $value->remark;
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->reference = $value->remark;
+                    }else{
+                        $value->reference = $pat_mast->Name;
+                    }
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'DN':
-                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->reference = $value->remark;
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
@@ -621,14 +639,18 @@ class arenquiryController extends defaultController
                     array_push($array_report, $value);
                     break;
                 case 'RF':
-                    $value->reference = $value->recptno;
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->reference = $value->remark;
+                    }else{
+                        $value->reference = $pat_mast->Name;
+                    }
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'CN':
-                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->reference = $value->remark;
                     $value->amount_cr = $value->amount;
                     $balance = $balance - floatval($value->amount);
                     $value->balance = $balance;
@@ -668,7 +690,7 @@ class arenquiryController extends defaultController
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
                     ->first();
-                
+        
         // $totamount_expld = explode(".", (float)$totalAmount);
         
         // $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
@@ -679,7 +701,7 @@ class arenquiryController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtorcode','debtorname','debtor_addr','openbal','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('openbal','debtormast','array_report','title','company'));
         
     }
     

@@ -2864,23 +2864,25 @@ $(document).ready(function () {
 		width: 5/10 * $(window).width(),
 		modal: true,
 		open: function(){
-			dialog_debtor_statement.on();
+			dialog_debtorFrom.on();
+			dialog_debtorTo.on();
 			parent_close_disabled(true);
 		},
 		close: function( event, ui ){
-			dialog_debtor_statement.off();
+			dialog_debtorFrom.off();
+			dialog_debtorTo.off();
 			parent_close_disabled(false);
 		},
 		buttons:
 		[{
 			text: "Generate PDF",click: function() {
-				window.open('./arenquiry/showpdf?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-				// window.location='./arenquiry/showpdf?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+				window.open('./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+				// window.location='./arenquiry/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
 			}
 		},{
 			text: "Generate Excel",click: function() {
-				// window.open('./arenquiry/showExcel?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-				window.location='./arenquiry/showExcel?debtorcode='+$('#ar_debtorcode').val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+				// window.open('./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+				window.location='./arenquiry/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
 			}
 		},{
 			text: "Cancel",click: function() {
@@ -2892,6 +2894,112 @@ $(document).ready(function () {
 	$('#ar_statement').click(function(){
 		$("#ARStatementDialog").dialog("open");
 	});
+	
+	var dialog_debtorFrom = new ordialog(
+		'debtorcode_from','debtor.debtormast','#formARStatement input[name = debtorcode_from]','errorField',
+		{
+			colModel: [
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Debtor Name', name: 'name', width:400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'debtortype', name: 'debtortype', hidden: true },
+				{ label: 'actdebccode', name: 'actdebccode', hidden: true },
+				{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },
+			],
+			urlParam: {
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Debtor Code",
+			open: function(){
+				dialog_debtorFrom.urlParam.filterCol= ['recstatus', 'compcode'],
+				dialog_debtorFrom.urlParam.filterVal= ['ACTIVE', 'session.compcode']
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('debtorcode_to',errorField)!==-1){
+						errorField.splice($.inArray('debtorcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_debtorFrom.makedialog(true);
+	
+	var dialog_debtorTo = new ordialog(
+		'debtorcode_to','debtor.debtormast','#formARStatement input[name = debtorcode_to]',errorField,
+		{
+			colModel: [
+				{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
+				{ label: 'Debtor Name', name: 'name', width:400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
+				{ label: 'debtortype', name: 'debtortype', hidden: true },
+				{ label: 'actdebccode', name: 'actdebccode', hidden: true },
+				{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },
+			],
+			urlParam: {
+				filterCol: ['compcode','recstatus'],
+				filterVal: ['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+				if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+					$(gridname+' tr#1').click();
+					$(gridname+' tr#1').dblclick();
+				}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+					$('#'+obj.dialogname).dialog('close');
+				}
+			}
+		},{
+			title:"Select Debtor Code",
+			open: function(){
+				dialog_debtorTo.urlParam.filterCol= ['recstatus', 'compcode'],
+				dialog_debtorTo.urlParam.filterVal= ['ACTIVE', 'session.compcode']
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('debtorcode_to',errorField)!==-1){
+						errorField.splice($.inArray('debtorcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	dialog_debtorTo.makedialog(true);
 	///////////////////////////////AR STATEMENT LISTING ENDS///////////////////////////////
 	
 });
@@ -2905,34 +3013,6 @@ function calc_jq_height_onchange(jqgrid){
 	}
 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+30);
 }
-
-// AR STATEMENT LISTING
-var dialog_debtor_statement = new ordialog(
-	'debtor_arStatement','debtor.debtormast','#formARStatement input[name = ar_debtorcode]','errorField',
-	{
-		colModel: [
-			{ label: 'Debtor Code', name: 'debtorcode', width: 200, classes: 'pointer', canSearch: true, or_search: true },
-			{ label: 'Debtor Name', name: 'name', width:400, classes: 'pointer', canSearch: true, checked: true, or_search: true },
-			{ label: 'debtortype', name: 'debtortype', hidden: true },
-			{ label: 'actdebccode', name: 'actdebccode', hidden: true },
-			{ label: 'actdebglacc', name: 'actdebglacc', hidden: true },
-		],
-		urlParam: {
-			filterCol: ['compcode','recstatus'],
-			filterVal: ['session.compcode','ACTIVE']
-		},
-	},{
-		title:"Select Debtor Code",
-		open: function(){
-			dialog_debtor_statement.urlParam.filterCol=['recstatus', 'compcode'],
-			dialog_debtor_statement.urlParam.filterVal=['ACTIVE', 'session.compcode']
-		},
-		close: function(){
-			let data=selrowData('#'+dialog_debtor_statement.gridname);
-		}
-	},'urlParam','radio','tab'
-);
-dialog_debtor_statement.makedialog();
 
 function getdata(mode,idno){
 	switch(mode){

@@ -29,9 +29,10 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($debtorcode,$datefr,$dateto)
+    public function __construct($debtorcode_from,$debtorcode_to,$datefr,$dateto)
     {
-        $this->debtorcode = $debtorcode;
+        $this->debtorcode_from = $debtorcode_from;
+        $this->debtorcode_to = $debtorcode_to;
         $this->datefr = $datefr;
         $this->dateto = $dateto;
         $this->dbacthdr_len=0;
@@ -57,50 +58,68 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-        $debtorcode = $this->debtorcode;
+        $debtorcode_from = $this->debtorcode_from;
+        $debtorcode_to = $this->debtorcode_to;
         
         $dbacthdr = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
                     ->where('dh.compcode', '=', session('compcode'))
-                    ->where('dh.debtorcode', '=', $debtorcode)
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                    ->orderBy('dh.posteddate', 'ASC');
+                    ->orderBy('dh.posteddate', 'ASC')
+                    ->get();
         
-        $debtormast = DB::table('debtor.debtormast as dm')
-                    ->where('dm.compcode', '=', session('compcode'))
-                    ->where('dm.debtorcode', '=', $debtorcode)
-                    ->first();
+        foreach ($dbacthdr as $key => $value){
+            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereDate('dh.posteddate', '<', $datefr);
+            
+            $openbal = $this->calc_openbal($calc_openbal);
+        }
         
-        $debtorname = $debtormast->name;
+        $debtormast = DB::table('debtor.dbacthdr as dh')
+                    ->select('dh.debtorcode','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
+                    ->leftJoin('debtor.debtormast as dm', function($join){
+                        $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+                                    ->where('dm.compcode', '=', session('compcode'));
+                    })
+                    ->where('dh.compcode', '=', session('compcode'))
+                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
+                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                    ->distinct('dm.debtorcode');
         
-        $debtor_addr = $debtormast->address1.' '.$debtormast->address2.' '.$debtormast->address3.' '.$debtormast->address4;
-        
-        $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->where('dh.debtorcode', '=', $debtorcode)
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->whereDate('dh.posteddate', '<', $datefr);
-        
-        $openbal = $this->calc_openbal($calc_openbal);
+        $debtormast = $debtormast->get(['dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4']);
         
         $array_report = [];
         $balance = $openbal;
-        foreach ($dbacthdr->get() as $key => $value){
+        foreach ($dbacthdr as $key => $value){
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
             
+            $pat_mast = DB::table('hisdb.pat_mast')
+                        ->where('CompCode', '=', session('compcode'))
+                        ->where('MRN', '=', $value->mrn)
+                        ->first();
+            
             switch ($value->trantype) {
                 case 'IN':
-                    $value->reference = $value->remark;
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->reference = $value->remark;
+                    }else{
+                        $value->reference = $pat_mast->Name;
+                    }
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'DN':
-                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->reference = $value->remark;
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
@@ -114,14 +133,18 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     array_push($array_report, $value);
                     break;
                 case 'RF':
-                    $value->reference = $value->recptno;
+                    if($value->mrn == '0' || $value->mrn == ''){
+                        $value->reference = $value->remark;
+                    }else{
+                        $value->reference = $pat_mast->Name;
+                    }
                     $value->amount_dr = $value->amount;
                     $balance = $balance + floatval($value->amount);
                     $value->balance = $balance;
                     array_push($array_report, $value);
                     break;
                 case 'CN':
-                    $value->reference = $value->trantype.'-'.str_pad($value->auditno, 5, "0", STR_PAD_LEFT);
+                    $value->reference = $value->remark;
                     $value->amount_cr = $value->amount;
                     $balance = $balance - floatval($value->amount);
                     $value->balance = $balance;
@@ -172,7 +195,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtorcode','debtorname','debtor_addr','openbal','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('openbal','debtormast','array_report','title','company'));
     }
     
     public function registerEvents(): array
