@@ -68,7 +68,7 @@
                     {
                         style: 'tableExample',
                         table: {
-                            headerRows: 1,
+                            // headerRows: 1,
                             widths: [60,60,120,60,60,60],  //panjang standard dia 515
                             body: [
                                 [
@@ -117,7 +117,7 @@
                                     { text: 'TOTAL', bold: true },
                                     { text: '{{number_format($totalAmount_dr,2)}}', alignment: 'right', bold: true },
                                     { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
-                                    { text: ' ' },
+                                    { text: ' ', pageBreak: 'after' },
                                 ],
                                 
                             ]
