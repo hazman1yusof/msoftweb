@@ -49,7 +49,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 400, height: 80, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -119,12 +119,10 @@
                                     { text: '{{number_format($totalAmount_cr,2)}}', alignment: 'right', bold: true },
                                     { text: ' ' },
                                 ],
-                                
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
-
                     { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     @endforeach
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },

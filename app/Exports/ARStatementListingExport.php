@@ -82,18 +82,18 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $loop = 0;
         foreach ($debtormast as $key => $value){
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                    ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-                    ->leftJoin('hisdb.pat_mast as pm', function($join){
-                        $join = $join->on('pm.MRN', '=', 'dh.mrn')
-                                    ->where('pm.compcode', '=', session('compcode'));
-                    })
-                    ->where('dh.compcode', '=', session('compcode'))
-                    ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->where('debtorcode',$value->debtorcode)
-                    ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                    ->orderBy('dh.posteddate', 'ASC')
-                    ->get();
-
+                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
+                        ->leftJoin('hisdb.pat_mast as pm', function($join){
+                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
+                                        ->where('pm.compcode', '=', session('compcode'));
+                        })
+                        ->where('dh.compcode', '=', session('compcode'))
+                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                        ->where('debtorcode',$value->debtorcode)
+                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
+                        ->orderBy('dh.posteddate', 'ASC')
+                        ->get();
+            
             $calc_openbal = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
                             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
@@ -101,7 +101,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                             ->whereDate('dh.posteddate', '<', $datefr);
             
             $openbal = $this->calc_openbal($calc_openbal);
-
+            
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
@@ -181,7 +181,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $loop = $loop + 9;
             array_push($break_loop, $loop);
         }
-
+        
         $this->break_loop = $break_loop;
         
         $title = "STATEMENT LISTING";
@@ -210,7 +210,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                 foreach ($this->break_loop as $value) {
                     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
                 }
-
+                
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
