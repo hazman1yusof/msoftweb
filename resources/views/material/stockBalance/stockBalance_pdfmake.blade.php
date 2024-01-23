@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Item List PDF</title>
+<title>Stock Balance PDF</title>
 
 </head>
 
@@ -23,7 +23,16 @@
 				'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
 			@endforeach
 			},
-		
+		@endforeach 
+	];
+
+	var deptcode = [
+		@foreach($deptcode as $key => $dtobj)
+			{
+			@foreach($dtobj as $key2 => $val)
+				'{{$key2}}' : `{{$val}}`,
+			@endforeach
+			},
 		@endforeach 
 	];
 
@@ -43,43 +52,43 @@
 		var docDefinition = {
 			header: function(currentPage, pageCount, pageSize) {
 				var retval=[];
-				var header_tbl = {
-	                    style: 'header_tbl',
-	                    table: {
-	                        headerRows: 1,
-	                        widths: ['*','*','*','*','*','*',],//panjang standard dia 515
-	                        body: [
-	                            [
-									{text: 'Department From',bold: true}, 
-									{text: ': '+header.deptfrom},
-									{text: 'Department To',bold: true}, 
-									{text: ': '+header.deptto},
-									{text: 'Year',bold: true}, 
-									{text: ': '+header.year},
-								],[
-									{text: 'Item From',bold: true}, 
-									{text: ': '+header.itemfrom},
-									{text: 'Item To',bold: true}, 
-									{text: ': '+header.itemto},
-									{text: 'Period',bold: true}, 
-									{text: ': '+header.period},
-								],[
-									{text: 'Print By',bold: true}, 
-									{text: ': '+header.printby},
-									{text: 'Print Date',bold: true}, 
-									{text: ': '+moment().format("DD-MM-YYYY")},
-									{text: 'Page',bold: true}, 
-									{text: ': '+currentPage+' / '+pageCount},
-								]
-	                        ]
-	                    },
-				        layout: 'noBorders',
-			        }
+				// var header_tbl = {
+	            //         style: 'header_tbl',
+	            //         table: {
+	            //             headerRows: 1,
+	            //             widths: ['*','*','*','*','*','*',],//panjang standard dia 515
+	            //             body: [
+	            //                 [
+				// 					{text: 'Department From',bold: true}, 
+				// 					{text: ': '+header.deptfrom},
+				// 					{text: 'Department To',bold: true}, 
+				// 					{text: ': '+header.deptto},
+				// 					{text: 'Year',bold: true}, 
+				// 					{text: ': '+header.year},
+				// 				],[
+				// 					{text: 'Item From',bold: true}, 
+				// 					{text: ': '+header.itemfrom},
+				// 					{text: 'Item To',bold: true}, 
+				// 					{text: ': '+header.itemto},
+				// 					{text: 'Period',bold: true}, 
+				// 					{text: ': '+header.period},
+				// 				],[
+				// 					{text: 'Print By',bold: true}, 
+				// 					{text: ': '+header.printby},
+				// 					{text: 'Print Date',bold: true}, 
+				// 					{text: ': '+moment().format("DD-MM-YYYY")},
+				// 					{text: 'Page',bold: true}, 
+				// 					{text: ': '+currentPage+' / '+pageCount},
+				// 				]
+	            //             ]
+	            //         },
+				//         layout: 'noBorders',
+			    //     }
 
-				var title = {text: company.name+'\nItem Listing',fontSize:10,alignment: 'center',bold: true, margin: [0, 20, 0, 0]};
+				var title = {text: company.name+'\nStock Balance',fontSize:10,alignment: 'center',bold: true, margin: [0, 20, 0, 0]};
 				retval.push(title);
 
-				retval.push(header_tbl);
+				// retval.push(header_tbl);
 				return retval
 
 			},
@@ -89,18 +98,19 @@
 			    ]
 			},
 			pageSize: 'A4',
-			pageMargins: [20, 110, 20, 50],
-		  	content: [
-				{
-					style: 'tableExample',
-					table: {
-	                    headerRows: 1,
-	                	dontBreakRows: true,
-	                    widths: [24,50,24,30,30,24,24,24,24,24,24,24,24,30,30],//panjang standard dia 515
-						body: make_body()
-					}
-				},
-			],
+			pageMargins: [5, 50, 5, 50],
+		  	content: init_content(),
+		  	// content: [
+			// 	{
+			// 		style: 'tableExample',
+			// 		table: {
+	        //             headerRows: 1,
+	        //         	dontBreakRows: true,
+	        //             widths: [24,50,24,30,30,24,24,24,24,24,24,24,24,30,30],//panjang standard dia 515
+			// 			body: make_body()
+			// 		}
+			// 	},
+			// ],
 			styles: {
 				tableExample: {
 					fontSize: 9,
@@ -108,7 +118,7 @@
 				},
 				header_tbl: {
 					fontSize: 9,
-					margin: [30, 20, 40, 20]
+					margin: [0, 0, 0, 10]
 				},
 				body_ttl: {
 					margin: [-2, 2, -2, 2]
@@ -133,10 +143,63 @@
 		});
 	});
 
-	function make_body(){
+	function init_content(){
+		var content=[];
+
+		deptcode.forEach(function(e,i){
+			let ret_con ={
+				style: 'tableExample',
+				table: {
+                    headerRows: 2,
+                	dontBreakRows: true,
+                    widths: [50,26,40,30,30,30,30,30,30,30,30,30,30,40],//panjang standard dia 515
+					body: make_body(e.deptcode.trim().toUpperCase(),e.description)
+				}
+			};
+    		content.push(ret_con);
+    		content.push({ text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' });
+		});
+
+		return content;
+	}
+
+	function make_body(dept,desc){
 		var retval = [
+			[
+				{
+					style: 'header_tbl',
+                    table: {
+                        headerRows: 1,
+                        widths: ['*','*','*','*','*','*',],//panjang standard dia 515
+                        body: [
+                            [
+								{text: 'Department',bold: true}, 
+								{text: ': '+dept.toUpperCase()},
+								{text: 'Name',bold: true}, 
+								{text: ': '+desc.toUpperCase()},
+								{text: 'Year',bold: true}, 
+								{text: ': '+header.year},
+							],[
+								{text: 'Item From',bold: true}, 
+								{text: ': '+header.itemfrom.toUpperCase()},
+								{text: 'Item To',bold: true}, 
+								{text: ': '+header.itemto.toUpperCase()},
+								{text: 'Period',bold: true}, 
+								{text: ': '+header.period},
+							],[
+								{text: 'Print By',bold: true}, 
+								{text: ': '+header.printby},
+								{text: 'Print Date',bold: true}, 
+								{text: ': '+moment().format("DD-MM-YYYY")},
+								{text: '',bold: true}, 
+								{text: ''},
+							]
+                        ]
+                    },
+			        layout: 'noBorders',colSpan: 14,border: [false, false, false, false]
+				},{},{},{},{},{},{},{},{},{},{},{},{},{}
+			],
 	        [
-				{text:'Dept',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'Itemcode\nDescription',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'Uom Code',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'Opening\nAmount',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
@@ -155,42 +218,42 @@
 	    ];
 
 		stockloc.forEach(function(e,i){
-			let arr1 = [
-				{text:e.deptcode, style: 'body_row', border: [false, false, false, false]},
-				{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
-				{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.open_balval),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.open_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.grn_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.tr_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.ds_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.wof_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.ai_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.ao_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.phy_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.oth_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.close_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.close_balval),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-			];
-    		retval.push(arr1);
-    		let arr2 = [
-				{text:'', style: 'body_row2', border: [false, false, false, false]},
-				{text:e.description,colSpan: 14, style: 'body_row2', border: [false, false, false, false]},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-				{},
-			];
-    		retval.push(arr2);
+			if(e.deptcode.trim().toUpperCase() == dept){
+				let arr1 = [
+					{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
+					{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.open_balval),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.open_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.grn_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.tr_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.ds_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.wof_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.ai_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.ao_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.phy_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.oth_qty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.close_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.close_balval),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+				];
+	    		retval.push(arr1);
+	    		let arr2 = [
+					{text:e.description,colSpan: 14, style: 'body_row2', border: [false, false, false, false]},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+					{},
+				];
+	    		retval.push(arr2);
+	    	}
 		});
 
     	return retval;

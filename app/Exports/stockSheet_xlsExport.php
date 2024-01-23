@@ -38,6 +38,7 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
         $this->item_to = $item_to;
         $this->year = $year;
         $this->period = $period;
+        $this->break_loop=[];
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -59,13 +60,36 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
     public function view(): View
     {
         $dept_from = $this->dept_from;
+        if(empty($dept_from)){
+            $dept_from = '%';
+        }
         $dept_to = $this->dept_to;
         $item_from = $this->item_from;
+        if(empty($item_from)){
+            $item_from = '%';
+        }
         $item_to = $this->item_to;
         $year = $this->year;
         $period = $this->period;
 
-        $stockloc = DB::table('material.stockloc as s')
+        $deptcode = DB::table('material.stockloc as s')
+                        ->select('s.deptcode','d.description')
+                        ->join('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->where('s.compcode',session('compcode'))
+                        ->where('s.unit',session('unit'))
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->where('s.year', '=', $year)
+                        ->distinct('s.deptcode')
+                        ->get('deptcode','description');
+
+        $array_report = [];
+        $break_loop = [];
+        $loop = 0;
+        foreach ($deptcode as $dept) {
+            $stockloc = DB::table('material.stockloc as s')
                         ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
                         ->join('material.product as p', function($join){
                                 $join = $join->on('p.itemcode', '=', 's.itemcode');
@@ -75,31 +99,42 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
                             })
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'))
-                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
-                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
+                        ->where('s.deptcode',$dept->deptcode)
+                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                         ->where('s.year', '=', $year)
-                        ->orderBy('s.deptcode', 'ASC')
                         ->orderBy('s.itemcode', 'ASC')
                         ->get();
 
-        foreach ($stockloc as $obj) {
-            $array_obj = (array)$obj;
+            foreach ($stockloc as $obj){
+                $loop = $loop + 1;
 
+                $array_obj = (array)$obj; 
+                $get_bal = $this->get_bal($array_obj,$period);
+                $obj->open_balqty = $get_bal->open_balqty;
+                $obj->open_balval = $get_bal->open_balval;
+                $obj->close_balqty = $get_bal->close_balqty;
+                $obj->close_balval = $get_bal->close_balval;
 
-            $get_bal = $this->get_bal($array_obj,$period);
-            $obj->open_balqty = $get_bal->open_balqty;
-            $obj->open_balval = $get_bal->open_balval;
-            $obj->close_balqty = $get_bal->close_balqty;
-            $obj->close_balval = $get_bal->close_balval;
+                array_push($array_report, $obj);
+
+            }
+            $loop = $loop + 3;
+            array_push($break_loop, $loop);
         }
+
+        $this->break_loop = $break_loop;
         
-        return view('material.stockBalance.stockSheet_excel',compact('stockloc'));
+        return view('material.stockBalance.stockSheet_excel',compact('deptcode','array_report'));
     }
     
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
+                foreach ($this->break_loop as $value) {
+                    $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+                }
+
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTOCK SHEET"."\n".sprintf('FROM ITEM %s TO ITEM %s',$this->item_from, $this->item_to).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
@@ -116,9 +151,9 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
     
     public function get_bal($array_obj,$period){
         $open_balqty = $array_obj['openbalqty'];
-        $close_balqty = 0;
+        $close_balqty = $array_obj['openbalqty'];
         $open_balval = $array_obj['openbalval'];
-        $close_balval = 0;
+        $close_balval = $array_obj['openbalval'];
         $until = intval($period) - 1;
 
         for ($from = 1; $from <= $until; $from++) { 
@@ -136,83 +171,6 @@ class stockSheet_xlsExport implements FromView, WithEvents, WithColumnWidths
         $responce->open_balval = $open_balval;
         $responce->close_balqty = $close_balqty;
         $responce->close_balval = $close_balval;
-        return $responce;
-    }
-
-    public function get_ivtxndt($obj,$period,$year){
-        $grn_qty=0;
-        $tr_qty=0;
-        $wof_qty=0;
-        $ai_qty=0;
-        $ao_qty=0;
-        $phy_qty=0;
-
-        $ivtxndt = DB::table('material.ivtxndt')
-                    ->where('compcode',session('compcode'))
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('uomcode',$obj->uomcode)
-                    ->where('deptcode',$obj->deptcode)
-                    ->whereMonth('trandate', '=', $period)
-                    ->whereYear('trandate', '=', $year);
-
-        if($ivtxndt->exists()){
-            foreach ($ivtxndt->get() as $obj) {
-                switch ($obj->trantype) {
-                    case 'GRN':
-                        $grn_qty = $grn_qty + $obj->txnqty;
-                        break;
-                    case 'TR':
-                        $tr_qty = $tr_qty + $obj->txnqty;
-                        break;
-                    case 'WOF':
-                        $wof_qty = $wof_qty + $obj->txnqty;
-                        break;
-                    case 'AI':
-                        $ai_qty = $ai_qty + $obj->txnqty;
-                        break;
-                    case 'AO':
-                        $ao_qty = $ao_qty + $obj->txnqty;
-                        break;
-                    case 'PHY':
-                        $phy_qty = $phy_qty + $obj->txnqty;
-                        break;
-                }
-            }
-        }
-
-        $responce = new stdClass();
-        $responce->grn_qty = $grn_qty;
-        $responce->tr_qty = $tr_qty;
-        $responce->wof_qty = $wof_qty;
-        $responce->ai_qty = $ai_qty;
-        $responce->ao_qty = $ao_qty;
-        $responce->phy_qty = $phy_qty;
-        return $responce;
-    }
-
-    public function get_ivdspdt($obj,$period,$year){
-        $ds_qty=0;
-
-        $ivdspdt = DB::table('material.ivdspdt')
-                    ->where('compcode',session('compcode'))
-                    ->where('itemcode',$obj->itemcode)
-                    ->where('uomcode',$obj->uomcode)
-                    ->where('reqdept',$obj->deptcode)
-                    ->whereMonth('trandate', '=', $period)
-                    ->whereYear('trandate', '=', $year);
-
-        if($ivdspdt->exists()){
-            foreach ($ivdspdt->get() as $obj) {
-                switch ($obj->trantype) {
-                    case 'DS':
-                        $ds_qty = $ds_qty + $obj->txnqty;
-                        break;
-                }
-            }
-        }
-
-        $responce = new stdClass();
-        $responce->ds_qty = $ds_qty;
         return $responce;
     }
     

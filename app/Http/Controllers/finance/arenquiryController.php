@@ -623,6 +623,7 @@ class arenquiryController extends defaultController
                             ->whereDate('dh.posteddate', '<', $datefr);
             
             $openbal = $this->calc_openbal($calc_openbal);
+            $value->openbal=$openbal;
             
             $value->reference = '';
             $value->amount_dr = 0;
@@ -721,7 +722,7 @@ class arenquiryController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('openbal','debtormast','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_pdfmake', compact('debtormast','array_report','title','company'));
         
     }
     

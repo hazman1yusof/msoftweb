@@ -15,8 +15,6 @@
     
     <script>
         
-        var openbal = '{{$openbal}}';
-        
         var array_report=[
             @foreach($array_report as $key => $array_report1)
             [
@@ -85,7 +83,7 @@
                                     { text: 'OPENING BALANCE' },
                                     { text: ' ' },
                                     { text: ' ' },
-                                    { text: '{{number_format($openbal,2)}}', alignment: 'right' },
+                                    { text: '{{number_format($debtor->openbal,2)}}', alignment: 'right' },
                                 ],
                                 @php($totalAmount_dr = 0)
                                 @php($totalAmount_cr = 0)

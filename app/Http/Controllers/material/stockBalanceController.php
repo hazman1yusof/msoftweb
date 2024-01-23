@@ -58,11 +58,30 @@ class stockBalanceController extends defaultController
         }
 
         $dept_from = $request->dept_from;
+        if(empty($dept_from)){
+            $dept_from = '%';
+        }
         $dept_to = $request->dept_to;
         $item_from = $request->item_from;
+        if(empty($item_from)){
+            $item_from = '%';
+        }
         $item_to = $request->item_to;
         $year = $request->year;
         $period = $request->period;
+
+        $deptcode = DB::table('material.stockloc as s')
+                        ->select('s.deptcode','d.description')
+                        ->join('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->where('s.compcode',session('compcode'))
+                        ->where('s.unit',session('unit'))
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->where('s.year', '=', $year)
+                        ->distinct('s.deptcode')
+                        ->get('deptcode','description');
      
         $stockloc = DB::table('material.stockloc as s')
                         ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
@@ -74,8 +93,8 @@ class stockBalanceController extends defaultController
                             })
                         ->where('s.compcode',session('compcode'))
                         ->where('s.unit',session('unit'))
-                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
-                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
                         ->where('s.year', '=', $year)
                         ->orderBy('s.deptcode', 'ASC')
                         ->orderBy('s.itemcode', 'ASC')
@@ -102,7 +121,7 @@ class stockBalanceController extends defaultController
             $get_ivdspdt = $this->get_ivdspdt($obj,$period,$year);
             $obj->ds_qty = $get_ivdspdt->ds_qty;
 
-            $totmv = floatval($get_ivtxndt->grn_qty)+floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)+floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty)+floatval($get_ivdspdt->ds_qty);
+            $totmv = floatval($get_ivtxndt->grn_qty)-floatval($get_ivdspdt->ds_qty)+floatval($get_ivtxndt->tr_qty)+floatval($get_ivtxndt->wof_qty)-floatval($get_ivtxndt->ai_qty)+floatval($get_ivtxndt->ao_qty)+floatval($get_ivtxndt->phy_qty);
             $oth_qty = floatval($get_bal->close_balqty) - floatval($get_bal->open_balqty) - floatval($totmv);
             $obj->oth_qty = $oth_qty;
 
@@ -114,22 +133,149 @@ class stockBalanceController extends defaultController
 
         $header = new stdClass();
         $header->printby = session('username');
-        $header->deptfrom = $dept_from;
+        $header->deptfrom = $request->dept_from;
         $header->deptto = $dept_to;
-        $header->itemfrom = $item_from;
+        $header->itemfrom = $request->item_from;
         $header->itemto = $item_to;
         $header->year = $year;
         $header->period = $period;
 
-        return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header'));
+        return view('material.stockBalance.stockBalance_pdfmake',compact('stockloc','company','header','deptcode'));
+    }
+
+    public function stockBalance_xls(Request $request){
+        $validator = Validator::make($request->all(), [
+            'dept_to' => 'required',
+            'item_to' => 'required',
+            'year' => 'required',
+            'period' => 'required',
+        ]);
+
+        if($validator->fails()){
+            abort(404);
+        }
+
+        $dept_from = $request->dept_from;
+        $dept_to = $request->dept_to;
+        $item_from = $request->item_from;
+        $item_to = $request->item_to;
+        $year = $request->year;
+        $period = $request->period;
+
+        return Excel::download(new stockBalance_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
+    }
+
+    public function stockSheet_pdf(Request $request){
+        $validator = Validator::make($request->all(), [
+            'dept_to' => 'required',
+            'item_to' => 'required',
+            'year' => 'required',
+            'period' => 'required',
+        ]);
+
+        if($validator->fails()){
+            abort(404);
+        }
+
+        $dept_from = $request->dept_from;
+        if(empty($dept_from)){
+            $dept_from = '%';
+        }
+        $dept_to = $request->dept_to;
+        $item_from = $request->item_from;
+        if(empty($item_from)){
+            $item_from = '%';
+        }
+        $item_to = $request->item_to;
+        $year = $request->year;
+        $period = $request->period;
+
+        $deptcode = DB::table('material.stockloc as s')
+                        ->select('s.deptcode','d.description')
+                        ->join('sysdb.department as d', function($join){
+                            $join = $join->on('d.deptcode', '=', 's.deptcode');
+                            $join = $join->where('d.compcode', '=', session('compcode'));
+                        })
+                        ->where('s.compcode',session('compcode'))
+                        ->where('s.unit',session('unit'))
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->where('s.year', '=', $year)
+                        ->distinct('s.deptcode')
+                        ->get('deptcode','description');
+
+        $stockloc = DB::table('material.stockloc as s')
+                        ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
+                        ->join('material.product as p', function($join) use ($request){
+                                $join = $join->on('p.itemcode', '=', 's.itemcode');
+                                $join = $join->on('p.uomcode', '=', 's.uomcode');
+                                $join = $join->where('p.compcode', '=', session('compcode'));
+                                $join = $join->where('p.unit', '=', session('unit'));
+                            })
+                        ->where('s.compcode',session('compcode'))
+                        ->where('s.unit',session('unit'))
+                        ->whereBetween('s.deptcode',[$dept_from,$dept_to.'%'])
+                        ->whereBetween('s.itemcode',[$item_from,$item_to.'%'])
+                        ->where('s.year', '=', $year)
+                        ->orderBy('s.deptcode', 'ASC')
+                        ->orderBy('s.itemcode', 'ASC')
+                        ->get();
+
+        // dd($this->getQueries($stockloc));
+
+        foreach ($stockloc as $obj) {
+            $array_obj = (array)$obj;
+
+
+            $get_bal = $this->get_bal($array_obj,$period);
+            $obj->open_balqty = $get_bal->open_balqty;
+            $obj->open_balval = $get_bal->open_balval;
+            $obj->close_balqty = $get_bal->close_balqty;
+            $obj->close_balval = $get_bal->close_balval;
+        }
         
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->deptfrom = $request->dept_from;
+        $header->deptto = $dept_to;
+        $header->itemfrom = $request->item_from;
+        $header->itemto = $item_to;
+        $header->year = $year;
+        $header->period = $period;
+
+        return view('material.stockBalance.stockSheet_pdf_pdfmake',compact('stockloc','company','header','deptcode'));
+    }
+
+    public function stockSheet_xls(Request $request){
+        $validator = Validator::make($request->all(), [
+            'dept_to' => 'required',
+            'item_to' => 'required',
+            'year' => 'required',
+            'period' => 'required',
+        ]);
+
+        if($validator->fails()){
+            abort(404);
+        }
+
+        $dept_from = $request->dept_from;
+        $dept_to = $request->dept_to;
+        $item_from = $request->item_from;
+        $item_to = $request->item_to;
+        $year = $request->year;
+        $period = $request->period;
+        
+        return Excel::download(new stockSheet_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'stockSheet.xlsx');
     }
 
     public function get_bal($array_obj,$period){
         $open_balqty = $array_obj['openbalqty'];
-        $close_balqty = 0;
+        $close_balqty = $array_obj['openbalqty'];
         $open_balval = $array_obj['openbalval'];
-        $close_balval = 0;
+        $close_balval = $array_obj['openbalval'];
         $until = intval($period) - 1;
 
         for ($from = 1; $from <= $until; $from++) { 
@@ -191,6 +337,24 @@ class stockBalanceController extends defaultController
             }
         }
 
+        $ivtxndt_sndrcv = DB::table('material.ivtxndt')
+                            ->where('compcode',session('compcode'))
+                            ->where('itemcode',$obj->itemcode)
+                            ->where('uomcoderecv',$obj->uomcode)
+                            ->where('sndrcv',$obj->deptcode)
+                            ->whereMonth('trandate', '=', $period)
+                            ->whereYear('trandate', '=', $year);
+
+        if($ivtxndt->exists()){
+            foreach ($ivtxndt->get() as $obj) {
+                switch ($obj->trantype) {
+                    case 'TR':
+                        $tr_qty = $tr_qty - $obj->txnqty;
+                        break;
+                }
+            }
+        }
+
         $responce = new stdClass();
         $responce->grn_qty = $grn_qty;
         $responce->tr_qty = $tr_qty;
@@ -225,113 +389,6 @@ class stockBalanceController extends defaultController
         $responce = new stdClass();
         $responce->ds_qty = $ds_qty;
         return $responce;
-    }
-
-    public function stockBalance_xls(Request $request){
-        $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
-            'item_to' => 'required',
-            'year' => 'required',
-            'period' => 'required',
-        ]);
-
-        if($validator->fails()){
-            abort(404);
-        }
-
-        $dept_from = $request->dept_from;
-        $dept_to = $request->dept_to;
-        $item_from = $request->item_from;
-        $item_to = $request->item_to;
-        $year = $request->year;
-        $period = $request->period;
-
-        return Excel::download(new stockBalance_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'Item List.xlsx');
-    }
-
-    public function stockSheet_pdf(Request $request){
-        $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
-            'item_to' => 'required',
-            'year' => 'required',
-            'period' => 'required',
-        ]);
-
-        if($validator->fails()){
-            abort(404);
-        }
-
-        $dept_from = $request->dept_from;
-        $dept_to = $request->dept_to;
-        $item_from = $request->item_from;
-        $item_to = $request->item_to;
-        $year = $request->year;
-        $period = $request->period;
-     
-        $stockloc = DB::table('material.stockloc as s')
-                        ->select('p.description','s.idno','s.compcode','s.deptcode','s.itemcode','s.uomcode','s.bincode','s.rackno','s.year','s.openbalqty','s.openbalval','s.netmvqty1','s.netmvqty2','s.netmvqty3','s.netmvqty4','s.netmvqty5','s.netmvqty6','s.netmvqty7','s.netmvqty8','s.netmvqty9','s.netmvqty10','s.netmvqty11','s.netmvqty12','s.netmvval1','s.netmvval2','s.netmvval3','s.netmvval4','s.netmvval5','s.netmvval6','s.netmvval7','s.netmvval8','s.netmvval9','s.netmvval10','s.netmvval11','s.netmvval12','s.stocktxntype','s.disptype','s.qtyonhand','s.minqty','s.maxqty','s.reordlevel','s.reordqty','s.lastissdate','s.frozen','s.adduser','s.adddate','s.upduser','s.upddate','s.cntdocno','s.fix_uom','s.locavgcs','s.lstfrzdt','s.lstfrztm','s.frzqty','s.recstatus','s.deluser','s.deldate','s.computerid','s.ipaddress','s.lastcomputerid','s.lastipaddress','s.unit')
-                        ->join('material.product as p', function($join) use ($request){
-                                $join = $join->on('p.itemcode', '=', 's.itemcode');
-                                $join = $join->on('p.uomcode', '=', 's.uomcode');
-                                $join = $join->where('p.compcode', '=', session('compcode'));
-                                $join = $join->where('p.unit', '=', session('unit'));
-                            })
-                        ->where('s.compcode',session('compcode'))
-                        ->where('s.unit',session('unit'))
-                        ->whereBetween('s.deptcode',[$dept_from.'%',$dept_to.'%'])
-                        ->whereBetween('s.itemcode',[$item_from.'%',$item_to.'%'])
-                        ->where('s.year', '=', $year)
-                        ->orderBy('s.deptcode', 'ASC')
-                        ->orderBy('s.itemcode', 'ASC')
-                        ->get();
-
-        foreach ($stockloc as $obj) {
-            $array_obj = (array)$obj;
-
-
-            $get_bal = $this->get_bal($array_obj,$period);
-            $obj->open_balqty = $get_bal->open_balqty;
-            $obj->open_balval = $get_bal->open_balval;
-            $obj->close_balqty = $get_bal->close_balqty;
-            $obj->close_balval = $get_bal->close_balval;
-        }
-        
-        $company = DB::table('sysdb.company')
-            ->where('compcode','=',session('compcode'))
-            ->first();
-
-        $header = new stdClass();
-        $header->printby = session('username');
-        $header->deptfrom = $dept_from;
-        $header->deptto = $dept_to;
-        $header->itemfrom = $item_from;
-        $header->itemto = $item_to;
-        $header->year = $year;
-        $header->period = $period;
-
-        return view('material.stockBalance.stockSheet_pdf_pdfmake',compact('stockloc','company','header'));
-    }
-
-    public function stockSheet_xls(Request $request){
-        $validator = Validator::make($request->all(), [
-            'dept_to' => 'required',
-            'item_to' => 'required',
-            'year' => 'required',
-            'period' => 'required',
-        ]);
-
-        if($validator->fails()){
-            abort(404);
-        }
-
-        $dept_from = $request->dept_from;
-        $dept_to = $request->dept_to;
-        $item_from = $request->item_from;
-        $item_to = $request->item_to;
-        $year = $request->year;
-        $period = $request->period;
-        
-        return Excel::download(new stockSheet_xlsExport($dept_from,$dept_to,$item_from,$item_to,$year,$period), 'stockSheet.xlsx');
     }
 }
 

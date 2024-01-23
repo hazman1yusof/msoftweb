@@ -23,7 +23,16 @@
 				'{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
 			@endforeach
 			},
-		
+		@endforeach 
+	];
+
+	var deptcode = [
+		@foreach($deptcode as $key => $dtobj)
+			{
+			@foreach($dtobj as $key2 => $val)
+				'{{$key2}}' : `{{$val}}`,
+			@endforeach
+			},
 		@endforeach 
 	];
 
@@ -43,43 +52,43 @@
 		var docDefinition = {
 			header: function(currentPage, pageCount, pageSize) {
 				var retval=[];
-				var header_tbl = {
-	                    style: 'header_tbl',
-	                    table: {
-	                        headerRows: 1,
-	                        widths: ['*','*','*','*','*','*',],//panjang standard dia 515
-	                        body: [
-	                            [
-									{text: 'Department',bold: true}, 
-									{text: ': '+header.deptfrom},
-									{text: '',bold: true}, 
-									{text: ': '+header.deptto},
-									{text: 'Year',bold: true}, 
-									{text: ': '+header.year},
-								],[
-									{text: 'Item From',bold: true}, 
-									{text: ': '+header.itemfrom},
-									{text: 'Item To',bold: true}, 
-									{text: ': '+header.itemto},
-									{text: 'Period',bold: true}, 
-									{text: ': '+header.period},
-								],[
-									{text: 'Print By',bold: true}, 
-									{text: ': '+header.printby},
-									{text: 'Print Date',bold: true}, 
-									{text: ': '+moment().format("DD-MM-YYYY")},
-									{text: 'Page',bold: true}, 
-									{text: ': '+currentPage+' / '+pageCount},
-								]
-	                        ]
-	                    },
-				        layout: 'noBorders',
-			        }
+				// var header_tbl = {
+	            //         style: 'header_tbl',
+	            //         table: {
+	            //             headerRows: 1,
+	            //             widths: ['*','*','*','*','*','*',],//panjang standard dia 515
+	            //             body: [
+	            //                 [
+				// 					{text: 'Department',bold: true}, 
+				// 					{text: ': '+header.deptfrom},
+				// 					{text: '',bold: true}, 
+				// 					{text: ': '+header.deptto},
+				// 					{text: 'Year',bold: true}, 
+				// 					{text: ': '+header.year},
+				// 				],[
+				// 					{text: 'Item From',bold: true}, 
+				// 					{text: ': '+header.itemfrom},
+				// 					{text: 'Item To',bold: true}, 
+				// 					{text: ': '+header.itemto},
+				// 					{text: 'Period',bold: true}, 
+				// 					{text: ': '+header.period},
+				// 				],[
+				// 					{text: 'Print By',bold: true}, 
+				// 					{text: ': '+header.printby},
+				// 					{text: 'Print Date',bold: true}, 
+				// 					{text: ': '+moment().format("DD-MM-YYYY")},
+				// 					{text: 'Page',bold: true}, 
+				// 					{text: ': '+currentPage+' / '+pageCount},
+				// 				]
+	            //             ]
+	            //         },
+				//         layout: 'noBorders',
+			    //     }
 
 				var title = {text: company.name+'\nStock Sheet',fontSize:10,alignment: 'center',bold: true, margin: [0, 20, 0, 0]};
 				retval.push(title);
 
-				retval.push(header_tbl);
+				// retval.push(header_tbl);
 				return retval
 
 			},
@@ -89,18 +98,8 @@
 			    ]
 			},
 			pageSize: 'A4',
-			pageMargins: [20, 110, 20, 20],
-		  	content: [
-				{
-					style: 'tableExample',
-					table: {
-	                    headerRows: 1,
-	                	dontBreakRows: true,
-	                    widths: [55,130,20,50,50,200],//panjang standard dia 515
-						body: make_body()
-					}
-				},
-			],
+			pageMargins: [20, 50, 20, 20],
+		  	content: init_content(),
 			styles: {
 				tableExample: {
 					fontSize: 9,
@@ -108,7 +107,7 @@
 				},
 				header_tbl: {
 					fontSize: 9,
-					margin: [30, 20, 40, 20]
+					margin: [0, 0, 0, 10]
 				},
 				body_ttl: {
 					margin: [0, 2, 0, 2]
@@ -133,8 +132,62 @@
 		});
 	});
 
-	function make_body(){
+	function init_content(){
+		var content=[];
+
+		deptcode.forEach(function(e,i){
+			let ret_con ={
+				style: 'tableExample',
+				table: {
+	                headerRows: 2,
+	            	dontBreakRows: true,
+	                widths: [55,130,40,50,50,180],//panjang standard dia 515
+					body: make_body(e.deptcode.trim().toUpperCase(),e.description)
+				}
+			};
+    		content.push(ret_con);
+    		content.push({ text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' });
+		});
+
+		return content;
+	}
+
+	function make_body(dept,desc){
 		var retval = [
+	        [
+				{
+					style: 'header_tbl',
+                    table: {
+                        headerRows: 1,
+                        widths: ['*','*','*','*','*','*',],//panjang standard dia 515
+                        body: [
+                            [
+								{text: 'Department',bold: true}, 
+								{text: ': '+dept.toUpperCase()},
+								{text: 'Name',bold: true}, 
+								{text: ': '+desc.toUpperCase()},
+								{text: 'Year',bold: true}, 
+								{text: ': '+header.year},
+							],[
+								{text: 'Item From',bold: true}, 
+								{text: ': '+header.itemfrom},
+								{text: 'Item To',bold: true}, 
+								{text: ': '+header.itemto},
+								{text: 'Period',bold: true}, 
+								{text: ': '+header.period},
+							],[
+								{text: 'Print By',bold: true}, 
+								{text: ': '+header.printby},
+								{text: 'Print Date',bold: true}, 
+								{text: ': '+moment().format("DD-MM-YYYY")},
+								{text: '',bold: true}, 
+								{text: ''},
+							]
+                        ]
+                    },
+			        layout: 'noBorders',colSpan: 6,border: [false, false, false, false]
+				},{},{},{},{},{}
+			],
 	        [
 				{text:'Item Code',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 				{text:'Description',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
@@ -144,20 +197,21 @@
 				{text:'Remark',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
 			]
 	    ];
-
 		stockloc.forEach(function(e,i){
-			let arr1 = [
-				{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
-				{text:e.description, style: 'body_row', border: [false, false, false, false]},
-				{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
-				{text:myparseFloat(e.close_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-				{text:'___________',alignment: 'right', style: 'body_row2', border: [false, false, false, false]},
-				{text:'_________________________________________________',alignment: 'right', style: 'body_row2', border: [false, false, false, false]},
-			];
-    		retval.push(arr1);
+			if(e.deptcode.trim().toUpperCase() == dept){
+				let arr1 = [
+					{text:e.itemcode, style: 'body_row', border: [false, false, false, false]},
+					{text:e.description, style: 'body_row', border: [false, false, false, false]},
+					{text:e.uomcode, style: 'body_row', border: [false, false, false, false]},
+					{text:myparseFloat(e.close_balqty),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+					{text:'___________',alignment: 'right', style: 'body_row2', border: [false, false, false, false]},
+					{text:'____________________________________________',alignment: 'right', style: 'body_row2', border: [false, false, false, false]},
+				];
+	    		retval.push(arr1);
+			}
 		});
 
-    	return retval;
+		return retval;
 	}
 
 	function dateFormatter(val){
