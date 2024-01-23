@@ -55,8 +55,8 @@
                         {
                             style: 'tableExample',
                             table: {
-                                headerRows: 1,
-                                widths: [50, 60, '*', 55, 55, 55],  //panjang standard dia 515
+                                //headerRows: 1,
+                                widths: [50, 65, '*', 55, 55, 55],  //panjang standard dia 515
                                 body: [
                                     [
                                         { text: 'Date', style: 'tableHeader' },
@@ -79,44 +79,44 @@
                                     @php($tot_dr = 0)
                                     @php($tot_cr = 0)
                                     @php($tot_bal = 0)
-                                    @foreach ($apacthdr as $obj)
+                                    @foreach ($array_report as $obj)
                                         @if($obj->suppcode == $scode->suppcode)
                                         [
                                             { text: '{{\Carbon\Carbon::parse($obj->postdate)->format('d/m/Y')}}' },
                                             { text: '{{strtoupper($obj->trantype)}}/{{strtoupper($obj->docno)}}', alignment: 'left' },
                                             { text: '{{strtoupper($obj->remarks)}}', alignment: 'left' },
                                             @if(!empty($obj->amount_dr))
+                                                @php($tot_dr += $obj->amount_dr)
                                                 { text: '{{number_format($obj->amount_dr,2)}}', alignment: 'right' },
                                             @else
                                                 {},
                                             @endif 
 
                                             @if(!empty($obj->amount_cr))
+                                                @php($tot_cr += $obj->amount_cr)
                                                 { text: '{{number_format($obj->amount_cr,2)}}', alignment: 'right' },
                                             @else
                                                 {},
                                             @endif
+                                                @php($tot_bal += $obj->balance)
                                             { text: '{{number_format($obj->balance,2)}}', alignment: 'right' },
-
                                         ],
-                                        @php($tot_dr += $obj->amount_dr)
-                                        @php($tot_cr += $obj->amount_cr)
-                                        @php($tot_bal += $obj->balance)
                                         @endif
                                     @endforeach
                                     [
-                                        { text: '', style: 'tableHeader' },
-                                        { text: '', style: 'tableHeader' },
+                                        {},
+                                        {},
                                         { text: 'Total Amount',style: 'tableHeader' },
                                         { text: '{{number_format($tot_dr,2)}}', alignment: 'right', style: 'tableHeader' },
                                         { text: '{{number_format($tot_cr,2)}}', alignment: 'right', style: 'tableHeader' },
-                                        { text: '{{number_format($tot_bal,2)}}', alignment: 'right', style: 'tableHeader', pageBreak: 'after'},
+                                        { text: '{{number_format($tot_bal,2)}}', alignment: 'right', style: 'tableHeader'},
                                     
                                     ]
                                 ]
                             },
                             layout: 'lightHorizontalLines',
                         },
+                        { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     @endforeach
                 ],
                 styles: {

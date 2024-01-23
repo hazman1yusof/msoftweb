@@ -1,6 +1,7 @@
-
 <table>
-@foreach ($supp_code as $index => $scode)
+    <tr>
+    </tr>
+    @foreach ($supp_code as $index => $scode)
         <tr>
             <td style="font-weight:bold">{{++$index}}. {{$scode->suppcode}}</td>
         </tr>
@@ -19,6 +20,7 @@
             <td style="font-weight:bold; text-align: right">AMOUNT CR</td>
             <td style="font-weight:bold; text-align: right">BALANCE</td>
         </tr>
+        <tr></tr>
         <tr>
             <td></td>
             <td></td>
@@ -30,41 +32,40 @@
         @php($tot_dr = 0)
         @php($tot_cr = 0)
         @php($tot_bal = 0)
-
-        @foreach($apacthdr as $obj)
+        @foreach ($array_report as $obj)
             @if($obj->suppcode == $scode->suppcode)
                 <tr>
                     <td>{{\Carbon\Carbon::parse($obj->postdate)->format('d/m/Y')}}</td>
                     <td>{{strtoupper($obj->trantype)}}/{{strtoupper($obj->docno)}}</td>
                     <td style="text-align: left">{{strtoupper($obj->remarks)}}</td>
                     @if(!empty($obj->amount_dr))
+                        @php($tot_dr += $obj->amount_dr)
                         <td data-format="0.00" style="text-align: right">{{number_format($obj->amount_dr, 2, '.', ',')}}</td>
                     @else
                         <td data-format="0.00" style="text-align: right"></td>
                     @endif
 
                     @if(!empty($obj->amount_cr))
+                        @php($tot_cr += $obj->amount_cr)
                         <td data-format="0.00" style="text-align: right">{{number_format($obj->amount_cr, 2, '.', ',')}}</td>
                     @else
                         <td data-format="0.00" style="text-align: right"></td>
                     @endif
+                    
+                    @php($tot_bal += $obj->balance)
                     <td data-format="0.00" style="text-align: right">{{number_format($obj->balance, 2, '.', ',')}}</td>
                 </tr>
-                @php($tot_dr += $obj->amount_dr)
-                @php($tot_cr += $obj->amount_cr)
-                @php($tot_bal += $obj->balance)
             @endif
         @endforeach
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="font-weight:bold">TOTAL</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_dr, 2, '.', ',')}}</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_cr, 2, '.', ',')}}</td>
+            <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_bal, 2, '.', ',')}}</td>
+        </tr>
         <tr></tr>
-        <tr></tr>
-            <table> 
-                <td></td>
-                <td></td>
-                <td style="font-weight:bold">TOTAL</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_dr, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_cr, 2, '.', ',')}}</td>
-                <td data-format="0.00" style="text-align: right; font-weight:bold">{{number_format($tot_bal, 2, '.', ',')}}</td>
-            </table>
-        <tr></tr>
+        <div style="page-break-after:always" />
     @endforeach
 </table>

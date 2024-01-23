@@ -36,6 +36,7 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
         $this->suppcode_to = $suppcode_to;
         $this->datefrom = $datefrom;
         $this->dateto = $dateto;
+        $this->break_loop=[];
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -63,109 +64,113 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
         $datefrom = Carbon::parse($this->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
 
-        $apacthdr = DB::table('finance.apacthdr as ap')
-                ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4', 'ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
-                ->join('material.supplier as su', function($join) {
-                    $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                    $join = $join->where('su.compcode', '=', session('compcode'));
-                })
-                ->where('ap.compcode',session('compcode'))
-                ->where('ap.unit',session('unit'))
-                ->where('ap.recstatus', '=', 'POSTED')
-                ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
-                ->orderBy('ap.postdate','ASC')
-                ->get();
-
-        // dd($apacthdr);
-
         $supp_code = DB::table('finance.apacthdr as ap')
-                ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
-                ->join('material.supplier as su', function($join) {
-                    $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                    $join = $join->where('su.compcode', '=', session('compcode'));
-                })
-                ->where('ap.compcode','=',session('compcode'))
-                ->where('ap.unit',session('unit'))
-                ->where('ap.recstatus', '=', 'POSTED')
-                ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
-                ->distinct('ap.suppcode');
+                    ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
+                    ->join('material.supplier as su', function($join) {
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode','=',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
+                    ->orderBy('ap.suppcode', 'ASC')
+                    ->distinct('ap.suppcode');
 
         $supp_code = $supp_code->get(['ap.suppcode', 'su.supplier_name', 'su.Addr1', 'su.Addr2', 'su.Addr3', 'su.Addr4']);
 
-        // dd($supp_code);
-
-        $calc_openbal = DB::table('finance.apacthdr as ap')
-                ->join('material.supplier as su', function($join) {
-                    $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
-                    $join = $join->where('su.compcode', '=', session('compcode'));
-                })
-                ->where('ap.compcode',session('compcode'))
-                ->where('ap.unit',session('unit'))
-                ->where('ap.recstatus', '=', 'POSTED')
-                ->whereDate('ap.postdate', '<',$datefrom)
-                ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to]);
-
-        $openbal = $this->calc_openbal($calc_openbal);
-
         $array_report = [];
-        $balance = $openbal;
-        foreach ($apacthdr as $key => $value){
+        $break_loop = [];
+        $loop = 0;
+        foreach ($supp_code as $key => $value){
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                    ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4', 'ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                    ->join('material.supplier as su', function($join) {
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->where('ap.suppcode','=',$value->suppcode)
+                    ->whereBetween('ap.postdate', [$datefrom, $dateto])
+                    ->orderBy('ap.postdate','ASC')
+                    ->get();
+            
+            $calc_openbal = DB::table('finance.apacthdr as ap')
+                    ->where('ap.compcode',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->where('ap.suppcode','=',$value->suppcode)
+                    ->whereDate('ap.postdate', '<',$datefrom);
+    
+            $openbal = $this->calc_openbal($calc_openbal);
+
             $value->docno = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            
-            switch ($value->trantype) {
-                case 'IN': //dr
-                    $value->docno = $value->document;
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'DN': //dr
-                    $value->docno = $value->document;
-                    $value->amount_dr = $value->amount;
-                    $balance = $balance + floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'CN': //cr
-                    $value->docno = $value->document;
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'PV': //cr
-                    $value->docno = str_pad($value->pvno, 5, "0", STR_PAD_LEFT);
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                case 'PD': //cr
-                    $value->docno = $value->document;
-                    $value->amount_cr = $value->amount;
-                    $balance = $balance - floatval($value->amount);
-                    $value->balance = $balance;
-                    array_push($array_report, $value);
-                    break;
-                default:
-                    // code...
-                    break;
+            $balance = $openbal;
+            foreach ($apacthdr as $key => $value){
+                $loop = $loop + 1;
+                switch ($value->trantype) {
+                    case 'IN': //dr
+                        $value->docno = $value->document;
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'DN': //dr
+                        $value->docno = $value->document;
+                        $value->amount_dr = $value->amount;
+                        $balance = $balance + floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'CN': //cr
+                        $value->docno = $value->document;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'PV': //cr
+                        $value->docno = str_pad($value->pvno, 5, "0", STR_PAD_LEFT);
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    case 'PD': //cr
+                        $value->docno = $value->document;
+                        $value->amount_cr = $value->amount;
+                        $balance = $balance - floatval($value->amount);
+                        $value->balance = $balance;
+                        array_push($array_report, $value);
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
             }
-
+            $loop = $loop + 9;
+            array_push($break_loop, $loop);
         }
+        
+        $this->break_loop = $break_loop;
 
-        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr','supp_code','openbal'));
+        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr','supp_code','openbal', 'array_report'));
     }
     
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
+                foreach ($this->break_loop as $value) {
+                    $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+                }
+                
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT"."\n"
@@ -179,7 +184,7 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
-                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([2,2]);
+                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
                 $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
                 $event->sheet->getPageSetup()->setFitToWidth(1);
                 $event->sheet->getPageSetup()->setFitToHeight(0);
