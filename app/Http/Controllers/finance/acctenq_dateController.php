@@ -56,11 +56,11 @@ class acctenq_dateController extends defaultController
 
         foreach ($gltran as $key => $value) {
             if($value->dracc == $request->glaccount){
-                $value->acccode = $value->dracc;
+                $value->acccode = $value->cracc;
                 $value->cramount = 0;
                 $value->dramount = $value->amount;
             }else{
-                $value->acccode = $value->cracc;
+                $value->acccode = $value->dracc;
                 $value->cramount = $value->amount;
                 $value->dramount = 0;
             }
