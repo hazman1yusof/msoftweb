@@ -106,6 +106,7 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
                     ->whereDate('ap.postdate', '<',$datefrom);
     
             $openbal = $this->calc_openbal($calc_openbal);
+            $value->openbal = $openbal;
 
             $value->docno = '';
             $value->amount_dr = 0;

@@ -73,7 +73,7 @@
                                         { text: 'OPENING BALANCE', style: 'tableHeader'},
                                         {},
                                         {},
-                                        { text: '{{number_format($openbal,2)}}', alignment: 'right', style: 'tableHeader'},
+                                        { text: '{{number_format($scode->openbal,2)}}', alignment: 'right', style: 'tableHeader'},
 
                                     ],
                                     @php($tot_dr = 0)

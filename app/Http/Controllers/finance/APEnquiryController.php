@@ -90,7 +90,8 @@ class APEnquiryController extends defaultController
                     ->whereDate('ap.postdate', '<',$datefrom);
 
             $openbal = $this->calc_openbal($calc_openbal); 
- //dd($openbal);
+            $value->openbal = $openbal;
+            
             $value->docno = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
@@ -153,7 +154,7 @@ class APEnquiryController extends defaultController
         $header->suppcode_to = $request->suppcode_to;
         $header->compname = $company->name;
 
-        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('apacthdr','array_report','header', 'openbal', 'supp_code'));
+        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('apacthdr','array_report','header', 'supp_code'));
         
     }
 
