@@ -291,7 +291,11 @@ $(document).ready(function () {
 	   			}
 	   		},{targets: 7,
 	        	createdCell: function (td, cellData, rowData, row, col) {
-					$(td).append(`<span class='help-block'>`+rowData.acctname+`</span>`);
+	        		if(rowData.acctname == null){
+						$(td).append(`<span class='help-block'>-</span>`);
+	        		}else{
+						$(td).append(`<span class='help-block'>`+rowData.acctname+`</span>`);
+	        		}
 	   			}
 	   		},{targets: 8,
 	        	createdCell: function (td, cellData, rowData, row, col) {
