@@ -20,7 +20,6 @@
             <td style="font-weight:bold; text-align: right">AMOUNT CR</td>
             <td style="font-weight:bold; text-align: right">BALANCE</td>
         </tr>
-        <tr></tr>
         <tr>
             <td></td>
             <td></td>

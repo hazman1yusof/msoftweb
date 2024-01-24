@@ -46,6 +46,9 @@ class APEnquiryController extends defaultController
     public function showpdf(Request $request){
 
         $suppcode_from = $request->suppcode_from;
+        if(empty($this->suppcode_from)){
+            $suppcode_from = '%';
+        }
         $suppcode_to = $request->suppcode_to;
         $datefrom = Carbon::parse($request->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
