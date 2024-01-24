@@ -60,6 +60,9 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
     public function view(): View
     {
         $suppcode_from = $this->suppcode_from;
+        if(empty($this->suppcode_from)){
+            $suppcode_from = '%';
+        }
         $suppcode_to = $this->suppcode_to;
         $datefrom = Carbon::parse($this->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
@@ -73,8 +76,8 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
                     ->where('ap.compcode','=',session('compcode'))
                     ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to.'%'])
                     ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
                     ->orderBy('ap.suppcode', 'ASC')
                     ->distinct('ap.suppcode');
 
@@ -161,7 +164,7 @@ class APEnquiryExport implements FromView, WithEvents, WithColumnWidths
         
         $this->break_loop = $break_loop;
 
-        return view('finance.AP.apenquiry.apenquiry_excel',compact('apacthdr','supp_code','openbal', 'array_report'));
+        return view('finance.AP.apenquiry.apenquiry_excel',compact('supp_code','array_report'));
     }
     
     public function registerEvents(): array

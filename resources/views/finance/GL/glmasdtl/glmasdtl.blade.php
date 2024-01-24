@@ -179,6 +179,7 @@
 						<th>Account Code</th>
 						<th>DR Amount</th>
 						<th>CR Amount</th>
+						<th>id</th>
 					</tr>
 				</thead>
 				<tbody>

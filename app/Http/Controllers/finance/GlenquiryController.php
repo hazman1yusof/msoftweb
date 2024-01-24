@@ -139,7 +139,7 @@ class GlenquiryController extends defaultController
         }
 
         $table_dr = DB::table('finance.gltran')
-                    ->select(DB::raw("'open' as open"),DB::raw("'' as cramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc as acccode','gltran.amount as dramount','glmasref.description as acctname')
+                    ->select(DB::raw("'open' as open"),DB::raw("'' as cramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc as acccode','gltran.amount as dramount','glmasref.description as acctname','gltran.id')
                     ->leftJoin('finance.glmasref', function($join) use ($request){
                         $join = $join->on('glmasref.glaccno', '=', 'gltran.cracc')
                                         ->where('glmasref.compcode','=',session('compcode'));
@@ -152,7 +152,7 @@ class GlenquiryController extends defaultController
                     ->get();
 
         $table_cr = DB::table('finance.gltran')
-                    ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as cramount','glmasref.description as acctname')
+                    ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as cramount','glmasref.description as acctname','gltran.id')
                     ->leftJoin('finance.glmasref', function($join) use ($request){
                         $join = $join->on('glmasref.glaccno', '=', 'gltran.dracc')
                                         ->where('glmasref.compcode','=',session('compcode'));

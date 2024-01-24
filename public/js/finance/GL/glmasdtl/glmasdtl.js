@@ -263,7 +263,7 @@ $(document).ready(function () {
 
 	var DataTable = $('#TableGlmasTran').DataTable({
     	ajax: './glenquiry/table?action=getdata',
-    	order: [[ 4, 'desc' ]],
+    	order: [[ 10, 'desc' ]],
 		scrollY: 500,
     	deferRender: true,
     	scroller: true,
@@ -279,6 +279,7 @@ $(document).ready(function () {
 			{ data: 'acccode'},
 			{ data: 'dramount', "sClass": "numericCol"},
 			{ data: 'cramount', "sClass": "numericCol"},
+			{ data: 'id'},
 		],
 		columnDefs: [
 			{targets: 0,
@@ -305,6 +306,7 @@ $(document).ready(function () {
 	        	createdCell: function (td, cellData, rowData, row, col) {
 					$(td).html(numeral(cellData).format('0,0.00'));
 	   			}
+	   		},{targets: 10,visible: false
 	   		}
 		],
 		drawCallback: function( settings ) {
