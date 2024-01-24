@@ -225,13 +225,13 @@ $(document).ready(function () {
 	function getdata(){
 		var param={
 					action:'getdata',
-					url:'/acctenq_date/table',
+					url:'./acctenq_date/table',
 					glaccount:$('#glaccount').val(),
 					fromdate:$('#fromdate').val(),
 					todate:$('#todate').val(),
 				}
 
-		$.get( "/acctenq_date/table?"+$.param(param), function( data ) {
+		$.get( "./acctenq_date/table?"+$.param(param), function( data ) {
 				
 		},'json').done(function(data) {
 			mymodal.hide();
