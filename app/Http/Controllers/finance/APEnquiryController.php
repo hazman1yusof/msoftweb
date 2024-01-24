@@ -63,7 +63,7 @@ class APEnquiryController extends defaultController
                     ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
                     ->whereBetween('ap.postdate', [$datefrom, $dateto])
-                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to])
+                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to.'%'])
                     ->orderBy('ap.suppcode', 'ASC')
                     ->distinct('ap.suppcode');
     
