@@ -565,6 +565,9 @@ class arenquiryController extends defaultController
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         $debtorcode_from = $request->debtorcode_from;
+        if(empty($this->debtorcode_from)){
+            $debtorcode_from = '%';
+        }
         $debtorcode_to = $request->debtorcode_to;
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
@@ -575,7 +578,7 @@ class arenquiryController extends defaultController
                     })
                     ->where('dh.compcode', '=', session('compcode'))
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');

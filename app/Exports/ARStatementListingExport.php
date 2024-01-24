@@ -60,6 +60,9 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
         $debtorcode_from = $this->debtorcode_from;
+        if(empty($this->debtorcode_from)){
+            $debtorcode_from = '%';
+        }
         $debtorcode_to = $this->debtorcode_to;
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
@@ -70,7 +73,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                     })
                     ->where('dh.compcode', '=', session('compcode'))
                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
+                    ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
                     ->whereBetween('dh.posteddate', [$datefr, $dateto])
                     ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');
