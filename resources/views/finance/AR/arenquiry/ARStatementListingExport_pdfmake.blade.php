@@ -60,9 +60,31 @@
                     //     style: 'comp_header'
                     // },
                     @foreach($debtormast as $index => $debtor)
-                    { text: '{{++$index}}. {{$debtor->debtorcode}}', alignment: 'left', fontSize: 9, bold: true },
-                    { text: '{!!$debtor->name!!}', alignment: 'left', fontSize: 9, bold: true },
-                    { text: '{!!$debtor->address1!!} {!!$debtor->address2!!} {!!$debtor->address3!!} {!!$debtor->address4!!}', alignment: 'left', fontSize: 9, bold: true },
+                    {
+                        style: 'tableExample',
+                        table: {
+                            // headerRows: 1,
+                            widths: [40,5,400],  //panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'CODE', fontSize: 9, bold: true },
+                                    { text: ':', fontSize: 9, bold: true },
+                                    { text: '{{$debtor->debtorcode}}', fontSize: 9, bold: true },
+                                ],
+                                [
+                                    { text: 'NAME', fontSize: 9, bold: true },
+                                    { text: ':', fontSize: 9, bold: true },
+                                    { text: '{!!$debtor->name!!}', fontSize: 9, bold: true },
+                                ],
+                                [
+                                    { text: 'ADDRESS', fontSize: 9, bold: true },
+                                    { text: ':', fontSize: 9, bold: true },
+                                    { text: '{!!$debtor->address1!!} {!!$debtor->address2!!} {!!$debtor->address3!!} {!!$debtor->address4!!}', fontSize: 9, bold: true },
+                                ],
+                            ]
+                        },
+                        layout: 'noBorders',
+                    },
                     {
                         style: 'tableExample',
                         table: {

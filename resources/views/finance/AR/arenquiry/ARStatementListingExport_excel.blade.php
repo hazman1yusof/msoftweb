@@ -3,13 +3,16 @@
     </tr>
     @foreach($debtormast as $index => $debtor)
     <tr>
-        <td style="font-weight:bold">{{++$index}}. {{$debtor->debtorcode}}</td>
+        <td style="font-weight:bold">CODE</td>
+        <td colspan="3" style="font-weight:bold">:  {{$debtor->debtorcode}}</td>
     </tr>
     <tr>
-        <td colspan="3" style="font-weight:bold">{{$debtor->name}}</td>
+        <td style="font-weight:bold">NAME</td>
+        <td colspan="3" style="font-weight:bold">:  {{$debtor->name}}</td>
     </tr>
     <tr>
-        <td colspan="5" style="font-weight:bold">{{$debtor->address1}} {{$debtor->address2}} {{$debtor->address3}} {{$debtor->address4}}</td>
+        <td style="font-weight:bold">ADDRESS</td>
+        <td colspan="5" style="font-weight:bold">:  {{$debtor->address1}} {{$debtor->address2}} {{$debtor->address3}} {{$debtor->address4}}</td>
     </tr>
     <tr></tr>
     <tr>
