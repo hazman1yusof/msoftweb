@@ -101,6 +101,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                             ->whereDate('dh.posteddate', '<', $datefr);
             
             $openbal = $this->calc_openbal($calc_openbal);
+            $value->openbal = $openbal;
             
             $value->reference = '';
             $value->amount_dr = 0;
@@ -200,7 +201,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('openbal','debtormast','array_report','title','company'));
+        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','title','company'));
     }
     
     public function registerEvents(): array

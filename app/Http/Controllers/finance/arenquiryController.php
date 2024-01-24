@@ -567,25 +567,6 @@ class arenquiryController extends defaultController
         $debtorcode_from = $request->debtorcode_from;
         $debtorcode_to = $request->debtorcode_to;
         
-        // $dbacthdr = DB::table('debtor.dbacthdr as dh')
-        //             ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-        //             ->where('dh.compcode', '=', session('compcode'))
-        //             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-        //             ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to])
-        //             ->whereBetween('dh.posteddate', [$datefr, $dateto])
-        //             ->orderBy('dh.posteddate', 'ASC')
-        //             ->get();
-        
-        // foreach ($dbacthdr as $key => $value){
-        //     $calc_openbal = DB::table('debtor.dbacthdr as dh')
-        //                     ->where('dh.compcode', '=', session('compcode'))
-        //                     ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-        //                     ->where('dh.debtorcode', '=', $value->debtorcode)
-        //                     ->whereDate('dh.posteddate', '<', $datefr);
-            
-        //     $openbal = $this->calc_openbal($calc_openbal);
-        // }
-        
         $debtormast = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.debtorcode','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
                     ->leftJoin('debtor.debtormast as dm', function($join){
@@ -623,13 +604,11 @@ class arenquiryController extends defaultController
                             ->whereDate('dh.posteddate', '<', $datefr);
             
             $openbal = $this->calc_openbal($calc_openbal);
-            $value->openbal=$openbal;
+            $value->openbal = $openbal;
             
             $value->reference = '';
             $value->amount_dr = 0;
             $value->amount_cr = 0;
-            // $value->openbal = $openbal;
-            // array_push($array_report, $value);
             $balance = $openbal;
             foreach ($dbacthdr as $key => $value){
                 switch ($value->trantype) {
