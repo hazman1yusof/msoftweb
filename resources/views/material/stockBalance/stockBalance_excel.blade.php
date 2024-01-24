@@ -25,7 +25,7 @@
         <td style="font-weight:bold">Closing Amount</td>
     </tr>
     @foreach($array_report as $obj)
-        @if($obj->deptcode == $dept->deptcode)
+        @if(strtoupper(trim($obj->deptcode)) == strtoupper(trim($dept->deptcode)))
         <tr>
             <td>{{$obj->deptcode}}</td>
             <td>{{$obj->itemcode}}</td>

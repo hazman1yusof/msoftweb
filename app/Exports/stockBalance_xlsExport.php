@@ -96,6 +96,7 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
 
         $array_report = [];
         $break_loop = [];
+        $isi_array = [];
         $loop = 0;
         foreach ($deptcode as $dept) {
 
@@ -116,8 +117,10 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                             ->orderBy('s.itemcode', 'ASC')
                             ->get();
 
+            $isi = 0;
             foreach ($stockloc as $obj) {
                 $loop = $loop + 1;
+                $isi = $isi + 1;
 
                 $array_obj = (array)$obj;
                 $get_bal = $this->get_bal($array_obj,$period);
@@ -144,7 +147,8 @@ class stockBalance_xlsExport implements FromView, WithEvents, WithColumnWidths
                 array_push($array_report, $obj);
 
             }
-            $loop = $loop + 3;
+            array_push($isi_array, $isi);
+            $loop = $loop + 4;
             array_push($break_loop, $loop);
         }
 

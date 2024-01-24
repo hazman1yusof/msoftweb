@@ -42,8 +42,6 @@ class acctenq_dateController extends defaultController
     }
 
     public function getdata(Request $request){
-
-        
         $gltran = DB::table('finance.gltran')
                         ->select('source','trantype','auditno','postdate','description','reference','cracc','dracc','amount')
                         ->where(function($gltran) use ($request){
