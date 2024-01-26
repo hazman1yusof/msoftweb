@@ -944,6 +944,13 @@ Route::get('/paymentAlloc_Report/table','finance\paymentAlloc_ReportController@t
 Route::post('/paymentAlloc_Report/form','finance\paymentAlloc_ReportController@form');
 Route::get('/paymentAlloc_Report/showExcel','finance\paymentAlloc_ReportController@showExcel');
 Route::get('/paymentAlloc_Report/showpdf','finance\paymentAlloc_ReportController@showpdf');
+
+//// AP Summary -- Report
+Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
+Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
+Route::post('/APSummary_Report/form','finance\APSummary_ReportController@form');
+Route::get('/APSummary_Report/showExcel','finance\APSummary_ReportController@showExcel');
+Route::get('/APSummary_Report/showpdf','finance\APSummary_ReportController@showpdf');
 ////////////////patient mgt setup/////////////////////////////////////////
 
 //// pat_mast registration ////
