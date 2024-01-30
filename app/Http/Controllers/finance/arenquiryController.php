@@ -565,7 +565,7 @@ class arenquiryController extends defaultController
         $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
         $debtorcode_from = $request->debtorcode_from;
-        if(empty($this->debtorcode_from)){
+        if(empty($request->debtorcode_from)){
             $debtorcode_from = '%';
         }
         $debtorcode_to = $request->debtorcode_to;

@@ -945,6 +945,13 @@ Route::post('/paymentAlloc_Report/form','finance\paymentAlloc_ReportController@f
 Route::get('/paymentAlloc_Report/showExcel','finance\paymentAlloc_ReportController@showExcel');
 Route::get('/paymentAlloc_Report/showpdf','finance\paymentAlloc_ReportController@showpdf');
 
+//// AR Summary -- Report
+Route::get('/ARSummary_Report','finance\ARSummary_ReportController@show');
+Route::get('/ARSummary_Report/table','finance\ARSummary_ReportController@table');
+Route::post('/ARSummary_Report/form','finance\ARSummary_ReportController@form');
+Route::get('/ARSummary_Report/showExcel','finance\ARSummary_ReportController@showExcel');
+Route::get('/ARSummary_Report/showpdf','finance\ARSummary_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
