@@ -571,7 +571,7 @@ class arenquiryController extends defaultController
         $debtorcode_to = $request->debtorcode_to;
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
-                    ->select('dh.debtorcode','dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4')
+                    ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
                     ->leftJoin('debtor.debtormast as dm', function($join){
                         $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
                                     ->where('dm.compcode', '=', session('compcode'));
@@ -583,7 +583,7 @@ class arenquiryController extends defaultController
                     ->orderBy('dm.debtorcode', 'ASC')
                     ->distinct('dm.debtorcode');
         
-        $debtormast = $debtormast->get(['dm.debtorcode','dm.name','dm.address1','dm.address2','dm.address3','dm.address4']);
+        $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
         
         $array_report = [];
         foreach ($debtormast as $key => $value){

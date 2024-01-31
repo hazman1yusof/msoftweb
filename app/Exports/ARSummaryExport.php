@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
+class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -47,8 +47,8 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 15,
-            'B' => 12,
-            'C' => 25,
+            'B' => 70,
+            'C' => 15,
             'D' => 15,
             'E' => 15,
             'F' => 15,
@@ -188,7 +188,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         
         $this->break_loop = $break_loop;
         
-        $title = "STATEMENT LISTING";
+        $title = "AR SUMMARY";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
@@ -204,7 +204,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','title','company'));
+        return view('finance.AR.ARSummary_Report.ARSummary_Report_excel', compact('debtormast','array_report','title','company'));
     }
     
     public function registerEvents(): array
