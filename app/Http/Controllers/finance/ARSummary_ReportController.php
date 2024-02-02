@@ -77,9 +77,18 @@ class ARSummary_ReportController extends defaultController
                     ->distinct('dm.debtorcode');
         
         $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
-        
+
         $array_report = [];
         foreach ($debtormast as $key => $value){
+
+            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+                        ->where('dh.compcode', '=', session('compcode'))
+                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                        ->where('dh.debtorcode', '=', $value->debtorcode)
+                        ->whereYear('dh.posteddate', '<', Carbon::parse($request->datefr)->format('Y'));
+        
+            $openbalb4 = $this->calc_bal($calc_openbal);
+
             foreach ($years as $year) {
                 $dbacthdr = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
@@ -88,7 +97,9 @@ class ARSummary_ReportController extends defaultController
                             ->whereYear('dh.posteddate', $year);
             
                 $balance = $this->calc_bal($dbacthdr);
-                $value->{$year} = $balance;
+                $total_bal = $balance + $openbalb4;
+                $value->{$year} = $total_bal;
+                $openbalb4 = $total_bal;
             }
             array_push($array_report, $value);
         }
