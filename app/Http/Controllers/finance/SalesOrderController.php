@@ -605,7 +605,7 @@ class SalesOrderController extends defaultController
                         'source' => 'PB', //kalau stock 'IV', lain dari stock 'DO'
                         'trantype' => 'IN',
                         'reference' => $invno,
-                        'description' => $billsum_obj->chggroup, 
+                        'description' => $dbacthdr->remark, 
                         'postdate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'year' => $yearperiod->year,
                         'period' => $yearperiod->period,

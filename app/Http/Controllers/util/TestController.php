@@ -245,4 +245,21 @@ class TestController extends defaultController
         }
     }
 
+    public function betulakn_AP(Request $request){
+        DB::beginTransaction();
+
+            try {
+
+                $apacthdr = DB::table('finance.apacthdr')
+                                ->where('compcode','9A')
+                                ->where('source','PV')
+                                ->where('trantype','9A')
+
+                DB::commit();
+            } catch (Exception $e) {
+                DB::rollback();
+                dd($e);
+            }
+    }
+
 }

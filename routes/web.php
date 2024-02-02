@@ -1151,6 +1151,10 @@ Route::post('/barcode/print','util\BarcodeController@print');
 Route::get('/num2words','util\num2wordsController@show');
 Route::post('/num2words/form','util\num2wordsController@form');
 
+/// webserice route /// 
+Route::get('/webservice','util\WebserviceController@page');
+Route::get('/webservice/table','util\WebserviceController@table');
+Route::post('/webservice/form','util\WebserviceController@form');
 
 //dari ptcare
 

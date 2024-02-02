@@ -163,6 +163,8 @@ class ReceiptController extends defaultController
             DB::table('debtor.dbacthdr')
                         ->insert($array_insert);
 
+            $this->gltran($auditno,$request->dbacthdr_trantype);
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
@@ -490,6 +492,155 @@ class ReceiptController extends defaultController
             return null;
         }
 
+    }
+
+    public function gltran($auditno,$trantype){
+        $dbacthdr = DB::table('debtor.dbacthdr')
+                            ->where('compcode',session('compcode'))
+                            ->where('source','PB')
+                            ->where('trantype',$trantype)
+                            ->where('auditno',$auditno);
+
+        if($dbacthdr->exists()){
+            $dbacthdr_obj = $dbacthdr->first();
+            $yearperiod = defaultController::getyearperiod_($dbacthdr_obj->entrydate);
+            $paymode_obj = $this->gltran_frompaymode($dbacthdr_obj->paymode);
+            $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
+            $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
+
+            if(strtoupper($trantype) == 'RD'){
+                $crcostcode = $debtormast_obj->depccode;
+                $cracc = $debtormast_obj->depglacc;
+            }else{
+                $crcostcode = $debtormast_obj->actdebccode;
+                $cracc = $debtormast_obj->actdebglacc;
+            }
+
+            $gltran = DB::table('finance.gltran')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('source','=','PB')
+                        ->where('trantype','=',$dbacthdr_obj->trantype)
+                        ->where('auditno','=',$dbacthdr_obj->auditno)
+                        ->where('lineno_','=',1);
+
+            if($gltran->exists()){
+                throw new \Exception("gltran already exists",500);
+            }
+
+            //1. buat gltran
+            DB::table('finance.gltran')
+                ->insert([
+                    'compcode' => $dbacthdr_obj->compcode,
+                    'auditno' => $dbacthdr_obj->auditno,
+                    'lineno_' => 1,
+                    'source' => 'PB',
+                    'trantype' => $dbacthdr_obj->trantype,
+                    'reference' => $dbacthdr_obj->remark,
+                    'description' => $dbacthdr_obj->remark,
+                    'year' => $yearperiod->year,
+                    'period' => $yearperiod->period,
+                    'drcostcode' => $dept_obj->costcode,
+                    'dracc' => $paymode_obj->glaccno,
+                    'crcostcode' => $crcostcode,
+                    'cracc' => $cracc,
+                    'amount' => $dbacthdr_obj->amount,
+                    'postdate' => $dbacthdr_obj->entrydate,
+                    'adduser' => $dbacthdr_obj->adduser,
+                    'adddate' => $dbacthdr_obj->adddate,
+                    'idno' => null
+                ]);
+
+            //2. check glmastdtl utk debit, kalu ada update kalu xde create
+            $gltranAmount =  defaultController::isGltranExist_($dept_obj->costcode,$paymode_obj->glaccno,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$dept_obj->costcode)
+                    ->where('glaccount','=',$paymode_obj->glaccno)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $dbacthdr_obj->amount + $gltranAmount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $dept_obj->costcode,
+                        'glaccount' => $paymode_obj->glaccno,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => $dbacthdr_obj->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+
+            //3. check glmastdtl utk credit pulak, kalu ada update kalu xde create
+            $gltranAmount = defaultController::isGltranExist_($crcostcode,$cracc,$yearperiod->year,$yearperiod->period);
+
+            if($gltranAmount!==false){
+                DB::table('finance.glmasdtl')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('costcode','=',$crcostcode)
+                    ->where('glaccount','=',$cracc)
+                    ->where('year','=',$yearperiod->year)
+                    ->update([
+                        'upduser' => session('username'),
+                        'upddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'actamount'.$yearperiod->period => $gltranAmount - $dbacthdr_obj->amount,
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }else{
+                DB::table('finance.glmasdtl')
+                    ->insert([
+                        'compcode' => session('compcode'),
+                        'costcode' => $crcostcode,
+                        'glaccount' => $cracc,
+                        'year' => $yearperiod->year,
+                        'actamount'.$yearperiod->period => - $dbacthdr_obj->amount,
+                        'adduser' => session('username'),
+                        'adddate' => Carbon::now('Asia/Kuala_Lumpur'),
+                        'recstatus' => 'ACTIVE'
+                    ]);
+            }
+        }else{
+            throw new \Exception("Dbacthdr doesnt exists",500);
+        }
+    }
+
+    public function gltran_fromdept($deptcode){
+        $obj = DB::table('sysdb.department')
+                ->select('costcode')
+                ->where('compcode','=',session('compcode'))
+                ->where('deptcode','=',$deptcode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_frompaymode($paymode){
+        $obj = DB::table('debtor.paymode')
+                ->select('glaccno')
+                ->where('compcode','=',session('compcode'))
+                ->where('source','=','AR')
+                ->where('paymode','=',$paymode)
+                ->first();
+
+        return $obj;
+    }
+
+    public function gltran_fromdebtormast($payercode){
+        $obj = DB::table('debtor.debtormast')
+                ->select('actdebglacc','actdebccode','depccode','depglacc')
+                ->where('compcode','=',session('compcode'))
+                ->where('debtorcode','=',$payercode)
+                ->first();
+
+        return $obj;
     }
     
     public function showpdf(Request $request){

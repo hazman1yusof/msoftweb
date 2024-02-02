@@ -10,7 +10,7 @@ use DateTime;
 use Carbon\Carbon;
 use PDF;
 
-    class PaymentVoucherController extends defaultController
+class PaymentVoucherController extends defaultController
 {   
 
     public function __construct()
