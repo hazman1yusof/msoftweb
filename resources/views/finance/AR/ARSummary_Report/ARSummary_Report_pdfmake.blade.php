@@ -17,11 +17,27 @@
         
         var array_report=[
             @foreach($array_report as $key => $array_report1)
-            [
+            {
                 @foreach($array_report1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
+                    '{{$key2}}' : `{{$val}}`,
                 @endforeach
-            ],
+            },
+            @endforeach
+        ];
+
+        var years_bal_all = [
+            @foreach($years_bal_all as $key => $val)
+                [
+                @foreach($val as $key2 => $val2)
+                    `{{$val2}}`,
+                @endforeach
+                ],
+            @endforeach
+        ];
+
+        var years = [
+            @foreach($years as $key => $val)
+               '{{$val}}',
             @endforeach
         ];
         
@@ -75,28 +91,29 @@
                     // },
                     {
                         style: 'tableExample',
-                        table: {
-                            // headerRows: 1,
-                            widths: [50,'*','*','*'],  //panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'Code', style: 'tableHeader' },
-                                    { text: 'Name', style: 'tableHeader' },
-                                    @foreach ($years as $year)
-                                    { text: '{{$year}}', style: 'tableHeader', alignment: 'right' },
-                                    @endforeach
-                                ],
-                                @foreach ($array_report as $obj)
-                                [
-                                    { text: '{{$obj->debtorcode}}' },
-                                    { text: '{!!$obj->name!!}' },
-                                    @foreach ($years as $year)
-                                    { text: ' ' },
-                                    @endforeach
-                                ],
-                                @endforeach
-                            ]
-                        },
+                        table: make_table(),
+                        // table: {
+                        //     // headerRows: 1,
+                        //     widths: [50,'*','*','*'],  //panjang standard dia 515
+                        //     body: [
+                        //         [
+                        //             { text: 'Code', style: 'tableHeader' },
+                        //             { text: 'Name', style: 'tableHeader' },
+                        //             @foreach ($years as $year)
+                        //             { text: '{{$year}}', style: 'tableHeader', alignment: 'right' },
+                        //             @endforeach
+                        //         ],
+                        //         @foreach ($array_report as $obj)
+                        //         [
+                        //             { text: '{{$obj->debtorcode}}' },
+                        //             { text: '{!!$obj->name!!}' },
+                        //             @foreach ($years as $year)
+                        //             { text: ' ' },
+                        //             @endforeach
+                        //         ],
+                        //         @endforeach
+                        //     ]
+                        // },
                         layout: 'lightHorizontalLines',
                     },
                     { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
@@ -158,8 +175,35 @@
             });
         });
         
-        function make_header(){
-            
+        function make_table(){
+            var width = [50,'*'];
+            years.forEach(function(e,i){
+                width.push('*');
+            });
+            var body = [[{ text: 'Code', style: 'tableHeader' },{ text: 'Name', style: 'tableHeader' }]];
+            years.forEach(function(e,i){
+                body[0].push({ text: e, style: 'tableHeader', alignment: 'right' });
+            });
+
+
+            array_report.forEach(function(e,i){
+                let arr1 = [
+                    { text: e.debtorcode },
+                    { text: e.name },
+                ];
+                years.forEach(function(ey,iy){
+                    arr1[iy+2] = { text:years_bal_all[i][iy], alignment: 'right'  };
+                });
+                body.push(arr1);
+            });
+
+            var ret_obj = {
+                headerRows: 1,
+                widths: width,
+                body: body,
+            };
+
+            return ret_obj;
         }
         
         // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {

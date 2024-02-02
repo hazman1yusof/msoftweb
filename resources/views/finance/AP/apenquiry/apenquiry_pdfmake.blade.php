@@ -67,7 +67,7 @@
                                     [
                                         { text: 'ADDRESS',fontSize: 9,bold: true},
                                         { text: ':',fontSize: 9,bold: true},
-                                        { text: '{!!$scode->Addr1!!} {!!$scode->Addr2!!} {!!$scode->Addr3!!} {!!$scode->Addr4!!}', alignment:'left', fontSize: 9,bold: true},
+                                        { text: `{!!str_replace('`', '', $scode->Addr1)!!} {!!str_replace('`', '', $scode->Addr2)!!} {!!str_replace('`', '', $scode->Addr3)!!} {!!str_replace('`', '', $scode->Addr4)!!}`, alignment:'left', fontSize: 9,bold: true},
                                     ],
                                 ]
                             },

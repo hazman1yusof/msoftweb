@@ -73,7 +73,7 @@ class APSummary_ReportController extends defaultController
                             ->where('ap.unit',session('unit'))
                             ->where('ap.recstatus', '=', 'POSTED')
                             ->where('ap.suppcode', $value->suppcode)
-                            ->whereYear('ap.postdate', '<', $year);
+                            ->whereYear('ap.postdate', $year);
             
                 $balance = $this->calc_bal($apacthdr);
                 $total_bal = $balance + $openbalb4;

@@ -79,7 +79,9 @@ class ARSummary_ReportController extends defaultController
         $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
         
         $array_report = [];
+        $years_bal_all = [];
         foreach ($debtormast as $key => $value){
+            $years_bal = [];
             $calc_openbal = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
                             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
@@ -97,13 +99,14 @@ class ARSummary_ReportController extends defaultController
                 
                 $balance = $this->calc_bal($dbacthdr);
                 $total_bal = $balance + $openbalb4;
-                $value->{$year} = $total_bal;
+                array_push($years_bal,$total_bal);
                 $openbalb4 = $total_bal;
             }
             array_push($array_report, $value);
+            array_push($years_bal_all,$years_bal);
         }
         
-        // dd($array_report);
+        // dd($years_bal_all);
         
         $title = "AR SUMMARY";
         
@@ -121,7 +124,7 @@ class ARSummary_ReportController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('years','debtormast','array_report','title','company'));
+        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('years','years_bal_all','debtormast','array_report','title','company'));
         
     }
     
