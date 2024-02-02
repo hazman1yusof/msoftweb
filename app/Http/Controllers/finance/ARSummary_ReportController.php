@@ -4,6 +4,7 @@ namespace App\Http\Controllers\finance;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\defaultController;
+use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
@@ -59,25 +60,8 @@ class ARSummary_ReportController extends defaultController
             $debtorcode_from = '%';
         }
         $debtorcode_to = $request->debtorcode_to;
-        
-        // $debtor = DB::table('debtor.dbacthdr as dh')
-        //         ->select(
-        //             'dm.debtorcode',
-        //             DB::raw("(DATE_FORMAT(posteddate, '%Y')) as my_year"),
-        //         )
-        //         ->leftJoin('debtor.debtormast as dm', function($join){
-        //             $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-        //                         ->where('dm.compcode', '=', session('compcode'));
-        //         })
-        //         ->where('dh.compcode', '=', session('compcode'))
-        //         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-        //         ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
-        //         ->whereBetween('dh.posteddate', [$datefr, $dateto])
-        //         ->groupBy('dm.debtorcode')
-        //         ->orderBy('dm.debtorcode', 'ASC')
-        //         ->get();
-        
-        // dd($debtor);
+
+        $years = range(Carbon::parse($request->datefr)->format('Y'), Carbon::parse($request->dateto)->format('Y'));
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
@@ -96,124 +80,20 @@ class ARSummary_ReportController extends defaultController
         
         $array_report = [];
         foreach ($debtormast as $key => $value){
-            $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-                        ->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
-                                        ->where('pm.compcode', '=', session('compcode'));
-                        })
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->where('debtorcode',$value->debtorcode)
-                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                        ->orderBy('dh.posteddate', 'ASC')
-                        ->get();
-            
-            $calc_openbal = DB::table('debtor.dbacthdr as dh')
+            foreach ($years as $year) {
+                $dbacthdr = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
                             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                             ->where('dh.debtorcode', '=', $value->debtorcode)
-                            ->whereDate('dh.posteddate', '<', $datefr);
+                            ->whereYear('dh.posteddate', $year);
             
-            $openbal = $this->calc_openbal($calc_openbal);
-            $value->openbal = $openbal;
-            
-            $value->reference = '';
-            $value->amount_dr = 0;
-            $value->amount_cr = 0;
-            $balance = $openbal;
-            foreach ($dbacthdr as $key => $value){
-                switch ($value->trantype) {
-                    case 'IN':
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'DN':
-                        $value->reference = $value->remark;
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'BC':
-                        // $value->reference
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RF':
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'CN':
-                        $value->reference = $value->remark;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RC':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RD':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RT':
-                        // $value->reference
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    default:
-                        // code...
-                        break;
-                }
+                $balance = $this->calc_bal($dbacthdr);
+                $value->{$year} = $balance;
             }
+            array_push($array_report, $value);
         }
         
-        // dd($array_report);
-        
-        $array_collection = collect($array_report)->groupBy('posteddate');
-        
-        // ->groupBy(DB::raw('year(posteddate)'));
-        // ->groupByRaw("DATE_FORMAT(posteddate, '%Y-%m-%d')");
-        // dd($array_collection);
-        
-        // $array_collection = collect($array_report);
-        
-        // $array_collect = $array_collection
-        //                 ->map(function ($values) {
-        //                     return $values->groupBy(function ($val) {
-        //                         return Carbon::parse($val->posteddate)->format('Y');
-        //                     });
-        //                 })
-        //                 ->toArray();
-        
-        // dd($array_collect);
+        dd($array_report);
         
         $title = "AR SUMMARY";
         
@@ -235,7 +115,7 @@ class ARSummary_ReportController extends defaultController
         
     }
     
-    public function calc_openbal($obj){
+    public function calc_bal($obj){
         
         $balance = 0;
         
