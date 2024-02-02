@@ -77,18 +77,22 @@
                         style: 'tableExample',
                         table: {
                             // headerRows: 1,
-                            widths: [50,'*',50],  //panjang standard dia 515
+                            widths: [50,'*','*','*'],  //panjang standard dia 515
                             body: [
                                 [
                                     { text: 'Code', style: 'tableHeader' },
                                     { text: 'Name', style: 'tableHeader' },
-                                    { text: 'Balance', style: 'tableHeader', alignment: 'right' },
+                                    @foreach ($years as $year)
+                                    { text: '{{$year}}', style: 'tableHeader', alignment: 'right' },
+                                    @endforeach
                                 ],
-                                @foreach($debtormast as $index => $debtor)
+                                @foreach ($array_report as $obj)
                                 [
-                                    { text: '{{$debtor->debtorcode}}' },
-                                    { text: '{!!$debtor->name!!}' },
+                                    { text: '{{$obj->debtorcode}}' },
+                                    { text: '{!!$obj->name!!}' },
+                                    @foreach ($years as $year)
                                     { text: ' ' },
+                                    @endforeach
                                 ],
                                 @endforeach
                             ]

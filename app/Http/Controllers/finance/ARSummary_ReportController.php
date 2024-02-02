@@ -60,7 +60,7 @@ class ARSummary_ReportController extends defaultController
             $debtorcode_from = '%';
         }
         $debtorcode_to = $request->debtorcode_to;
-
+        
         $years = range(Carbon::parse($request->datefr)->format('Y'), Carbon::parse($request->dateto)->format('Y'));
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
@@ -77,25 +77,24 @@ class ARSummary_ReportController extends defaultController
                     ->distinct('dm.debtorcode');
         
         $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
-
+        
         $array_report = [];
         foreach ($debtormast as $key => $value){
-
             $calc_openbal = DB::table('debtor.dbacthdr as dh')
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->where('dh.debtorcode', '=', $value->debtorcode)
-                        ->whereYear('dh.posteddate', '<', Carbon::parse($request->datefr)->format('Y'));
-        
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereYear('dh.posteddate', '<', Carbon::parse($request->datefr)->format('Y'));
+            
             $openbalb4 = $this->calc_bal($calc_openbal);
-
+            
             foreach ($years as $year) {
                 $dbacthdr = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
                             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                             ->where('dh.debtorcode', '=', $value->debtorcode)
                             ->whereYear('dh.posteddate', $year);
-            
+                
                 $balance = $this->calc_bal($dbacthdr);
                 $total_bal = $balance + $openbalb4;
                 $value->{$year} = $total_bal;
@@ -104,7 +103,7 @@ class ARSummary_ReportController extends defaultController
             array_push($array_report, $value);
         }
         
-        dd($array_report);
+        // dd($array_report);
         
         $title = "AR SUMMARY";
         
@@ -122,7 +121,7 @@ class ARSummary_ReportController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('debtormast','array_report','title','company'));
+        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('years','debtormast','array_report','title','company'));
         
     }
     
