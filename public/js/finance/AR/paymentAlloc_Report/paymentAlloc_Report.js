@@ -10,4 +10,12 @@ $(document).ready(function () {
         $("#genreportpdf input[name='dateto']").val($(this).val());
     });
     
+    $("#pdfgen1").click(function() {
+        window.open('./paymentAlloc_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+    });
+    
+    $("#excelgen1").click(function() {
+        window.location='./paymentAlloc_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+    });
+    
 });

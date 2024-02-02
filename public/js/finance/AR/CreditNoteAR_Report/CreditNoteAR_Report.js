@@ -10,12 +10,12 @@ $(document).ready(function () {
         $("#genreportpdf input[name='dateto']").val($(this).val());
     });
     
-    $("#pdfgen1").click(function() {
-        window.open('./DailyBillCollection_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
-    });
+    // $("#pdfgen1").click(function() {
+    //     window.open('./CreditNoteAR_Report/showpdf?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+    // });
     
     $("#excelgen1").click(function() {
-        window.location='./DailyBillCollection_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+        window.location='./CreditNoteAR_Report/showExcel?datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
     });
     
 });

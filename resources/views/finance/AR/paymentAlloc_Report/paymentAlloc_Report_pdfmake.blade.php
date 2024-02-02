@@ -45,9 +45,10 @@
                     ]
                 },
                 pageSize: 'A4',
+                pageOrientation: 'landscape',
                 content: [
                     {
-                        image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead', width: 400, height: 80, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\n{{$title}}\n',
@@ -61,8 +62,8 @@
                             widths: ['*', '*'], //panjang standard dia 515
                             body: [
                                 [
-                                    {text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
-                                    {text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}'},
+                                    { text: 'DATE : {{\Carbon\Carbon::now()->format('d/m/Y')}}' },
+                                    { text: 'TIME : {{\Carbon\Carbon::now("Asia/Kuala_Lumpur")->format('h:i A')}}' },
                                 ],
                             ]
                         },
@@ -77,7 +78,7 @@
                         style: 'tableExample',
                         table: {
                             headerRows: 1,
-                            widths: [22,32,44,35,40,32,20,44,41,28,40],  //panjang standard dia 515
+                            widths: [25,50,50,60,60,50,30,50,50,60,130],  //panjang standard dia 515
                             body: [
                                 [   
                                     { text: 'Trx Type', style: 'tableHeader' },
@@ -130,7 +131,7 @@
                         margin: [0, 10, 0, 5]
                     },
                     tableExample: {
-                        fontSize: 8,
+                        fontSize: 9,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {

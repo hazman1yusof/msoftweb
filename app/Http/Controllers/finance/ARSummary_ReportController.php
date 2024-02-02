@@ -195,7 +195,7 @@ class ARSummary_ReportController extends defaultController
             }
         }
         
-        // dd($array_report);
+        dd($array_report);
         
         // $array_report = $array_report
         //                 ->map(function ($values) {

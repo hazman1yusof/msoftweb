@@ -3,16 +3,58 @@
 @section('title', 'AR Summary')
 
 @section('css')
-	<style>
-		table.reporttable th{
-			border:none;
-			text-align: right;
-			padding-right: 20px;
-		}
-		table.reporttable td{
-			padding:5px;
-		}
-	</style>
+    <style>
+        table.reporttable th{
+            border:none;
+            text-align: right;
+            padding-right: 20px;
+        }
+        table.reporttable td{
+            padding:5px;
+        }
+        
+        /* body{
+            background: #00808024 !important;
+        }
+        .container.mycontainer{
+            padding-top: 5%;
+        }
+        .mycontainer .panel-default {
+            border-color: #9bb7b7 !important;
+        }
+        .mycontainer .panel-default > .panel-heading {
+            background-image: linear-gradient(to bottom, #b4cfcf 0%, #c1dddd 100%) !important;
+            font-weight: bold;
+        } */
+        .mycontainer .mybtnpdf{
+            background-image: linear-gradient(to bottom, #ffbbbb 0%, #ffd1d1 100%) !important;
+            color: #af2525;
+            border-color: #af2525;
+            margin-bottom: 5px;
+        }
+        .mycontainer .mybtnxls{
+            background-image: linear-gradient(to bottom, #a0cda0 0%, #b3d1b3 100%) !important;
+            color: darkgreen;
+            border-color: darkgreen;
+            margin-bottom: 20px;
+        }
+        .mycontainer .btnvl {
+            border-left: 1px solid #386e6e;
+            width: 0px;
+            padding: 0px;
+            height: 32px;
+            cursor: unset;
+            margin: 0px 7px;
+        }
+        legend{
+            margin-bottom: 5px !important;
+            font-size: 12px !important;
+            font-weight:bold;
+        }
+        .btnform .btn{
+            width: -webkit-fill-available !important;
+        }
+    </style>
 @endsection
 
 @section('body')
@@ -22,7 +64,7 @@
                 <h2>AR SUMMARY</h2>
                 <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
                 
-                <div style="width: 800px;margin: 0 auto;">
+                <div style="width: 900px;margin: 0 auto;">
                     <div class="col-md-7">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -61,16 +103,23 @@
                         </div>
                     </div>
                     
-					<div class="col-md-4" style="padding-top: 30px;">
-						<div class="col-md-12">
-							{{ csrf_field() }}
-							<input type="hidden" name="oper" value="genreport">
-							<button type="submit" class="btn btn-primary">Generate Report Excel</button>
-						</div>
-						<div class="col-md-12" style=" padding-top: 5px;">
-							<input type="button" class="btn btn-primary" value="Generate Report PDF" id="pdfgen1">
-						</div>
-					</div>
+                    <div class="col-md-4" style="margin-left: 50px;">
+                        <div class="panel panel-default" style="height: 137px;">
+                            <div class="panel-body">
+                                <div class='col-md-12 btnform' style="padding: 20px 0px">
+                                    <fieldset>
+                                        <!-- <legend>Stock Sheet :</legend> -->
+                                        <button name="ARSummary_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+                                            <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
+                                        </button>
+                                        <button name="ARSummary_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
+                                            <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
+                                        </button>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
