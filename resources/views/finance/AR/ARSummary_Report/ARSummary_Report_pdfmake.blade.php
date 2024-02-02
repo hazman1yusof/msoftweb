@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Payment Allocation Listing</title>
+        <title>AR Summary</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -15,10 +15,10 @@
     
     <script>
         
-        var dballoc=[
-            @foreach($dballoc as $key => $dballoc1)
+        var array_report=[
+            @foreach($array_report as $key => $array_report1)
             [
-                @foreach($dballoc1 as $key2 => $val)
+                @foreach($array_report1 as $key2 => $val)
                     {'{{$key2}}' : `{{$val}}`},
                 @endforeach
             ],
@@ -45,7 +45,6 @@
                     ]
                 },
                 pageSize: 'A4',
-                pageOrientation: 'landscape',
                 content: [
                     {
                         image: 'letterhead', width: 400, height: 80, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -77,41 +76,26 @@
                     {
                         style: 'tableExample',
                         table: {
-                            headerRows: 1,
-                            widths: [25,50,50,60,60,50,30,50,50,60,130],  //panjang standard dia 515
+                            // headerRows: 1,
+                            widths: [50,'*',50],  //panjang standard dia 515
                             body: [
-                                [   
-                                    { text: 'Trx Type', style: 'tableHeader' },
-                                    { text: 'Receipt Date', style: 'tableHeader' },
-                                    { text: 'Allocation Date', style: 'tableHeader' },
-                                    { text: 'Receipt No', style: 'tableHeader' },
-                                    { text: 'Payment Details', style: 'tableHeader' },
-                                    { text: 'Receipt Amt', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Bill No', style: 'tableHeader' },
-                                    { text: 'Bill Date', style: 'tableHeader' },
-                                    { text: 'Allocated Amt', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Debtor Code', style: 'tableHeader' },
-                                    { text: 'Name', style: 'tableHeader' },
-                                ],
-                                @foreach ($dballoc as $obj)
                                 [
-                                    { text: '{{$obj->doctrantype}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->doc_entrydate)->format('d/m/Y')}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->allocdate)->format('d/m/Y')}}' },
-                                    { text: '{{$obj->da_recptno}}' },
-                                    { text: '{{$obj->reference}}' },
-                                    { text: '{{number_format($obj->dh_amount,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->refauditno}}' },
-                                    { text: '{{\Carbon\Carbon::parse($obj->ref_entrydate)->format('d/m/Y')}}' },
-                                    { text: '{{number_format($obj->allocamount,2)}}', alignment: 'right' },
-                                    { text: '{{$obj->debtorcode}}' },
-                                    { text: '{{$obj->debtorname}}' },
+                                    { text: 'Code', style: 'tableHeader' },
+                                    { text: 'Name', style: 'tableHeader' },
+                                    { text: 'Balance', style: 'tableHeader', alignment: 'right' },
+                                ],
+                                @foreach($debtormast as $index => $debtor)
+                                [
+                                    { text: '{{$debtor->debtorcode}}' },
+                                    { text: '{!!$debtor->name!!}' },
+                                    { text: ' ' },
                                 ],
                                 @endforeach
                             ]
                         },
                         layout: 'lightHorizontalLines',
                     },
+                    { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                 ],
                 styles: {

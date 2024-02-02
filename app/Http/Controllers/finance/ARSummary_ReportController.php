@@ -1,69 +1,83 @@
 <?php
 
-namespace App\Exports;
+namespace App\Http\Controllers\finance;
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\defaultController;
 use DB;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithDrawings;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Events\BeforeSheet;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
-use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\FromView;
-use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
+use App\Exports\ARSummaryExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
+class ARSummary_ReportController extends defaultController
 {
     
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+    var $table;
+    var $duplicateCode;
+    var $auditno;
     
-    public function __construct($debtorcode_from,$debtorcode_to,$datefr,$dateto)
+    public function __construct()
     {
-        $this->debtorcode_from = $debtorcode_from;
-        $this->debtorcode_to = $debtorcode_to;
-        $this->datefr = $datefr;
-        $this->dateto = $dateto;
-        $this->dbacthdr_len=0;
-        $this->break_loop=[];
+        $this->middleware('auth');
+    }
+    
+    public function show(Request $request)
+    {
+        $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
+        return view('finance.AR.ARSummary_Report.ARSummary_Report',[
+            'company_name' => $comp->name
+        ]);
+    }
+    
+    public function form(Request $request)
+    {
+        switch($request->oper){
+            case 'add':
+                return $this->defaultAdd($request);
+            case 'edit':
+                return $this->defaultEdit($request);
+            case 'del':
+                return $this->defaultDel($request);
+            case 'depreciation':
+                return $this->depreciation($request);
+            default:
+                return 'error happen..';
+        }
+    }
+    
+    public function showExcel(Request $request){
+        return Excel::download(new ARSummaryExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARSummaryExport.xlsx');
+    }
+    
+    public function showpdf(Request $request){
         
-        $this->comp = DB::table('sysdb.company')
-                    ->where('compcode', '=' ,session('compcode'))
-                    ->first();
-    }
-    
-    public function columnWidths(): array
-    {
-        return [
-            'A' => 15,
-            'B' => 12,
-            'C' => 25,
-            'D' => 15,
-            'E' => 15,
-            'F' => 15,
-        ];
-    }
-    
-    public function view(): View
-    {
-        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
-        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
-        $debtorcode_from = $this->debtorcode_from;
-        if(empty($this->debtorcode_from)){
+        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
+        $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
+        $debtorcode_from = $request->debtorcode_from;
+        if(empty($request->debtorcode_from)){
             $debtorcode_from = '%';
         }
-        $debtorcode_to = $this->debtorcode_to;
+        $debtorcode_to = $request->debtorcode_to;
+        
+        // $debtor = DB::table('debtor.dbacthdr as dh')
+        //         ->select(
+        //             'dm.debtorcode',
+        //             DB::raw("(DATE_FORMAT(posteddate, '%Y')) as my_year"),
+        //         )
+        //         ->leftJoin('debtor.debtormast as dm', function($join){
+        //             $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
+        //                         ->where('dm.compcode', '=', session('compcode'));
+        //         })
+        //         ->where('dh.compcode', '=', session('compcode'))
+        //         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+        //         ->whereBetween('dh.debtorcode',[$debtorcode_from,$debtorcode_to.'%'])
+        //         ->whereBetween('dh.posteddate', [$datefr, $dateto])
+        //         ->groupBy('dm.debtorcode')
+        //         ->orderBy('dm.debtorcode', 'ASC')
+        //         ->get();
+        
+        // dd($debtor);
         
         $debtormast = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
@@ -81,8 +95,6 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
         
         $array_report = [];
-        $break_loop = [];
-        $loop = 0;
         foreach ($debtormast as $key => $value){
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
                         ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
@@ -111,7 +123,6 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
             $value->amount_cr = 0;
             $balance = $openbal;
             foreach ($dbacthdr as $key => $value){
-                $loop = $loop + 1;
                 switch ($value->trantype) {
                     case 'IN':
                         if($value->mrn == '0' || $value->mrn == ''){
@@ -182,13 +193,29 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
                         break;
                 }
             }
-            $loop = $loop + 9;
-            array_push($break_loop, $loop);
         }
         
-        $this->break_loop = $break_loop;
+        // dd($array_report);
         
-        $title = "STATEMENT LISTING";
+        $array_collection = collect($array_report)->groupBy('posteddate');
+        
+        // ->groupBy(DB::raw('year(posteddate)'));
+        // ->groupByRaw("DATE_FORMAT(posteddate, '%Y-%m-%d')");
+        // dd($array_collection);
+        
+        // $array_collection = collect($array_report);
+        
+        // $array_collect = $array_collection
+        //                 ->map(function ($values) {
+        //                     return $values->groupBy(function ($val) {
+        //                         return Carbon::parse($val->posteddate)->format('Y');
+        //                     });
+        //                 })
+        //                 ->toArray();
+        
+        // dd($array_collect);
+        
+        $title = "AR SUMMARY";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
@@ -204,81 +231,12 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.arenquiry.ARStatementListingExport_excel', compact('debtormast','array_report','title','company'));
-    }
-    
-    public function registerEvents(): array
-    {
-        return [
-            AfterSheet::class => function(AfterSheet $event) {
-                foreach ($this->break_loop as $value) {
-                    $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
-                }
-                
-                $event->sheet->getPageSetup()->setPaperSize(9);//A4
-                
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
-                
-                $event->sheet->getPageMargins()->setTop(1);
-                
-                $event->sheet->getPageSetup()->setRowsToRepeatAtTop([1,1]);
-                $event->sheet->getStyle('A:H')->getAlignment()->setWrapText(true);
-                $event->sheet->getPageSetup()->setFitToWidth(1);
-                $event->sheet->getPageSetup()->setFitToHeight(0);
-            },
-        ];
-    }
-    
-    public function convertNumberToWordENG($num = false)
-    {
-        $num = str_replace(array(',', ' '), '' , trim($num));
-        if(! $num) {
-            return false;
-        }
-        $num = (int) $num;
-        $words = array();
-        $list1 = array('', 'ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN', 'ELEVEN',
-            'TWELVE', 'THIRTEEN', 'FOURTEEN', 'FIFTEEN', 'SIXTEEN', 'SEVENTEEN', 'EIGHTEEN', 'NINETEEN'
-        );
-        $list2 = array('', 'TENTH', 'TWENTY', 'THIRTY', 'FORTY', 'FIFTY', 'SIXTY', 'SEVENTY', 'EIGHTY', 'NINETY', 'HUNDRED');
-        $list3 = array('', 'THOUSAND', 'MILLION', 'BILLION', 'TRILLION', 'quadrillion', 'quintillion', 'sextillion', 'septillion',
-            'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion', 'quattuordecillion',
-            'quindecillion', 'sexdecillion', 'septendecillion', 'octodecillion', 'novemdecillion', 'vigintillion'
-        );
-        $num_length = strlen($num);
-        $levels = (int) (($num_length + 2) / 3);
-        $max_length = $levels * 3;
-        $num = substr('00' . $num, -$max_length);
-        $num_levels = str_split($num, 3);
-        for ($i = 0; $i < count($num_levels); $i++) {
-            $levels--;
-            $hundreds = (int) ($num_levels[$i] / 100);
-            $hundreds = ($hundreds ? '' .$list1[$hundreds].' HUNDRED' .' ' : '');
-            $tens = (int) ($num_levels[$i] % 100);
-            $singles = '';
-            if ( $tens < 20 ) {
-                $tens = ($tens ? '' . $list1[$tens] .' ' : '' );
-            } else {
-                $tens = (int)($tens / 10);
-                $tens = '' . $list2[$tens] . ' ';
-                $singles = (int) ($num_levels[$i] % 10);
-                $singles = '' . $list1[$singles] . ' ';
-            }
-            $words[] = $hundreds . $tens . $singles . ( ( $levels && ( int ) ( $num_levels[$i] ) ) ? '' . $list3[$levels] .' ' : '' );
-        } //end for loop
-        $commas = count($words);
-        if ($commas > 1) {
-            $commas = $commas - 1;
-        }
-        return implode(' ', $words);
-    }
-    
-    public function getQueries($builder){
-        $addSlashes = str_replace('?', "'?'", $builder->toSql());
-        return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
+        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('debtormast','array_report','title','company'));
+        
     }
     
     public function calc_openbal($obj){
+        
         $balance = 0;
         
         foreach ($obj->get() as $key => $value){
@@ -314,6 +272,7 @@ class ARStatementListingExport implements FromView, WithEvents, WithColumnWidths
         }
         
         return $balance;
+        
     }
     
 }

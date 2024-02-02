@@ -47,11 +47,33 @@
                         layout: 'noBorders',
                     },
 
-                    @foreach ($supp_code as $index => $scode) 
+                    @foreach ($supp_code as $scode) 
+                        {
+                            style: 'tableExample',
+                            table: {
+                                headerRows: 1,
+                                widths: [40, 20, 500], //panjang standard dia 515
+                                body: [
+                                    [
+                                        { text: 'CODE',fontSize: 9,bold: true},
+                                        { text: ':',fontSize: 9,bold: true},
+                                        { text: '{{$scode->suppcode}}',fontSize: 9,bold: true},
+                                    ],
+                                    [
+                                        { text: 'NAME',fontSize: 9,bold: true},
+                                        { text: ':',fontSize: 9,bold: true},
+                                        { text: '{!!$scode->supplier_name!!}',fontSize: 9,bold: true},
+                                    ],
+                                    [
+                                        { text: 'ADDRESS',fontSize: 9,bold: true},
+                                        { text: ':',fontSize: 9,bold: true},
+                                        { text: '{!!$scode->Addr1!!} {!!$scode->Addr2!!} {!!$scode->Addr3!!} {!!$scode->Addr4!!}', alignment:'left', fontSize: 9,bold: true},
+                                    ],
+                                ]
+                            },
+                            layout: 'noBorders',
+                        },
 
-                        { text: '{{++$index}}. {{$scode->suppcode}}',alignment: 'left' ,fontSize: 9,bold: true},
-                        { text: '{!!$scode->supplier_name!!}',alignment: 'left' ,fontSize: 9,bold: true},
-                        { text: '{!!$scode->Addr1!!} {!!$scode->Addr2!!} {!!$scode->Addr3!!} {!!$scode->Addr4!!}',alignment: 'left' ,fontSize: 9,bold: true},
                         {
                             style: 'tableExample',
                             table: {

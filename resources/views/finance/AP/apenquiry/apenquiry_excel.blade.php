@@ -1,15 +1,20 @@
 <table>
     <tr>
     </tr>
-    @foreach ($supp_code as $index => $scode)
+    @foreach ($supp_code as $scode)
         <tr>
-            <td style="font-weight:bold">{{++$index}}. {{$scode->suppcode}}</td>
+            <td style="font-weight:bold">CODE</td>
+            <td style="font-weight:bold">:  {{$scode->suppcode}}</td>
+
         </tr>
         <tr>
-            <td  colspan = '3' style="font-weight:bold">{{$scode->supplier_name}}</td>
+            <td style="font-weight:bold">NAME</td>
+            <td colspan = '3' style="font-weight:bold">:  {{$scode->supplier_name}}</td>
+
         </tr>
         <tr>
-            <td colspan = '4' style="font-weight:bold">{{$scode->Addr1}} {{$scode->Addr2}} {{$scode->Addr3}} {{$scode->Addr4}}</td>
+            <td style="font-weight:bold">ADDRESS</td>
+            <td colspan = '6' style="font-weight:bold">:  {{$scode->Addr1}} {{$scode->Addr2}} {{$scode->Addr3}} {{$scode->Addr4}}</td>
         </tr>
         <tr></tr>
         <tr>
