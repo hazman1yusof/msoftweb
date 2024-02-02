@@ -63,7 +63,7 @@ class ARSummary_ReportController extends defaultController
         // $debtor = DB::table('debtor.dbacthdr as dh')
         //         ->select(
         //             'dm.debtorcode',
-        //             DB::raw("(DATE_FORMAT(created_at, '%Y')) as my_year"),
+        //             DB::raw("(DATE_FORMAT(posteddate, '%Y')) as my_year"),
         //         )
         //         ->leftJoin('debtor.debtormast as dm', function($join){
         //             $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
@@ -195,15 +195,25 @@ class ARSummary_ReportController extends defaultController
             }
         }
         
-        dd($array_report);
+        // dd($array_report);
         
-        // $array_report = $array_report
+        $array_collection = collect($array_report)->groupBy('posteddate');
+        
+        // ->groupBy(DB::raw('year(posteddate)'));
+        // ->groupByRaw("DATE_FORMAT(posteddate, '%Y-%m-%d')");
+        // dd($array_collection);
+        
+        // $array_collection = collect($array_report);
+        
+        // $array_collect = $array_collection
         //                 ->map(function ($values) {
         //                     return $values->groupBy(function ($val) {
-        //                         return Carbon::parse($val->dataPagamento)->format('M');
+        //                         return Carbon::parse($val->posteddate)->format('Y');
         //                     });
         //                 })
         //                 ->toArray();
+        
+        // dd($array_collect);
         
         $title = "AR SUMMARY";
         
