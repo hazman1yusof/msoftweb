@@ -46,15 +46,12 @@ class APEnquiryController extends defaultController
     public function showpdf(Request $request){
 
         $suppcode_from = $request->suppcode_from;
-        if(empty($this->suppcode_from)){
+        if(empty($request->suppcode_from)){
             $suppcode_from = '%';
         }
         $suppcode_to = $request->suppcode_to;
         $datefrom = Carbon::parse($request->datefrom)->format('Y-m-d');
         $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
-
-        $yearperiod = defaultController::getyearperiod_($datefrom, $dateto);
-
 
         $supp_code = DB::table('finance.apacthdr as ap')
                     ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
