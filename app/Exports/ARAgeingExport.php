@@ -22,7 +22,7 @@ use Illuminate\Contracts\View\View;
 use DateTime;
 use Carbon\Carbon;
 
-class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
+class ARAgeingExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -65,6 +65,8 @@ class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
         }
         $debtorcode_to = $this->debtorcode_to;
         
+        $years = range(Carbon::parse($this->datefr)->format('Y'), Carbon::parse($this->dateto)->format('Y'));
+        
         $debtormast = DB::table('debtor.dbacthdr as dh')
                     ->select('dh.debtorcode', 'dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4')
                     ->leftJoin('debtor.debtormast as dm', function($join){
@@ -81,114 +83,36 @@ class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
         $debtormast = $debtormast->get(['dm.debtorcode', 'dm.name', 'dm.address1', 'dm.address2', 'dm.address3', 'dm.address4']);
         
         $array_report = [];
-        $break_loop = [];
-        $loop = 0;
+        $years_bal_all = [];
         foreach ($debtormast as $key => $value){
-            $dbacthdr = DB::table('debtor.dbacthdr as dh')
-                        ->select('dh.idno', 'dh.source', 'dh.trantype', 'pm.Name', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate')
-                        ->leftJoin('hisdb.pat_mast as pm', function($join){
-                            $join = $join->on('pm.MRN', '=', 'dh.mrn')
-                                        ->where('pm.compcode', '=', session('compcode'));
-                        })
-                        ->where('dh.compcode', '=', session('compcode'))
-                        ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                        ->where('debtorcode',$value->debtorcode)
-                        ->whereBetween('dh.posteddate', [$datefr, $dateto])
-                        ->orderBy('dh.posteddate', 'ASC')
-                        ->get();
-            
+            $years_bal = [];
             $calc_openbal = DB::table('debtor.dbacthdr as dh')
                             ->where('dh.compcode', '=', session('compcode'))
                             ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
                             ->where('dh.debtorcode', '=', $value->debtorcode)
-                            ->whereDate('dh.posteddate', '<', $datefr);
+                            ->whereYear('dh.posteddate', '<', Carbon::parse($this->datefr)->format('Y'));
             
-            $openbal = $this->calc_openbal($calc_openbal);
-            $value->openbal = $openbal;
+            $openbalb4 = $this->calc_bal($calc_openbal);
             
-            $value->reference = '';
-            $value->amount_dr = 0;
-            $value->amount_cr = 0;
-            $balance = $openbal;
-            foreach ($dbacthdr as $key => $value){
-                $loop = $loop + 1;
-                switch ($value->trantype) {
-                    case 'IN':
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'DN':
-                        $value->reference = $value->remark;
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'BC':
-                        // $value->reference
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RF':
-                        if($value->mrn == '0' || $value->mrn == ''){
-                            $value->reference = $value->remark;
-                        }else{
-                            $value->reference = $value->Name;
-                        }
-                        $value->amount_dr = $value->amount;
-                        $balance = $balance + floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'CN':
-                        $value->reference = $value->remark;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RC':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RD':
-                        $value->reference = $value->recptno;
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    case 'RT':
-                        // $value->reference
-                        $value->amount_cr = $value->amount;
-                        $balance = $balance - floatval($value->amount);
-                        $value->balance = $balance;
-                        array_push($array_report, $value);
-                        break;
-                    default:
-                        // code...
-                        break;
-                }
+            foreach ($years as $year) {
+                $dbacthdr = DB::table('debtor.dbacthdr as dh')
+                            ->where('dh.compcode', '=', session('compcode'))
+                            ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
+                            ->where('dh.debtorcode', '=', $value->debtorcode)
+                            ->whereYear('dh.posteddate', $year);
+                
+                $balance = $this->calc_bal($dbacthdr);
+                $total_bal = $balance + $openbalb4;
+                array_push($years_bal,$total_bal);
+                $openbalb4 = $total_bal;
             }
-            $loop = $loop + 9;
-            array_push($break_loop, $loop);
+            array_push($array_report, $value);
+            array_push($years_bal_all,$years_bal);
         }
         
-        $this->break_loop = $break_loop;
+        // dd($years_bal_all);
         
-        $title = "AR SUMMARY";
+        $title = "AR AGEING";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
@@ -204,7 +128,7 @@ class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.ARSummary_Report.ARSummary_Report_excel', compact('debtormast','array_report','title','company'));
+        return view('finance.AR.ARAgeing_Report.ARAgeing_Report_excel', compact('years','debtormast','array_report','years_bal_all','title','company'));
     }
     
     public function registerEvents(): array
@@ -217,7 +141,7 @@ class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSTATEMENT LISTING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAR AGEING"."\n".sprintf('FROM DATE %s TO DATE %s',$this->datefr, $this->dateto).'&L'.'PRINTED BY : '.session('username')."\nPAGE : &P/&N".'&R'.'PRINTED DATE : '.Carbon::now("Asia/Kuala_Lumpur")->format('d-m-Y')."\n".'PRINTED TIME : '.Carbon::now("Asia/Kuala_Lumpur")->format('H:i'));
                 
                 $event->sheet->getPageMargins()->setTop(1);
                 
@@ -278,7 +202,7 @@ class ARSummaryExport implements FromView, WithEvents, WithColumnWidths
         return vsprintf(str_replace('?', '%s', $addSlashes), $builder->getBindings());
     }
     
-    public function calc_openbal($obj){
+    public function calc_bal($obj){
         $balance = 0;
         
         foreach ($obj->get() as $key => $value){
