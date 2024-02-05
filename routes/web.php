@@ -946,11 +946,11 @@ Route::get('/paymentAlloc_Report/showExcel','finance\paymentAlloc_ReportControll
 Route::get('/paymentAlloc_Report/showpdf','finance\paymentAlloc_ReportController@showpdf');
 
 //// AR Summary -- Report
-Route::get('/ARSummary_Report','finance\ARSummary_ReportController@show');
-Route::get('/ARSummary_Report/table','finance\ARSummary_ReportController@table');
-Route::post('/ARSummary_Report/form','finance\ARSummary_ReportController@form');
-Route::get('/ARSummary_Report/showExcel','finance\ARSummary_ReportController@showExcel');
-Route::get('/ARSummary_Report/showpdf','finance\ARSummary_ReportController@showpdf');
+Route::get('/ARAgeing_Report','finance\ARAgeing_ReportController@show');
+Route::get('/ARAgeing_Report/table','finance\ARAgeing_ReportController@table');
+Route::post('/ARAgeing_Report/form','finance\ARAgeing_ReportController@form');
+Route::get('/ARAgeing_Report/showExcel','finance\ARAgeing_ReportController@showExcel');
+Route::get('/ARAgeing_Report/showpdf','finance\ARAgeing_ReportController@showpdf');
 
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
