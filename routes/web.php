@@ -945,7 +945,7 @@ Route::post('/paymentAlloc_Report/form','finance\paymentAlloc_ReportController@f
 Route::get('/paymentAlloc_Report/showExcel','finance\paymentAlloc_ReportController@showExcel');
 Route::get('/paymentAlloc_Report/showpdf','finance\paymentAlloc_ReportController@showpdf');
 
-//// AR Summary -- Report
+//// AR Ageing -- Report
 Route::get('/ARAgeing_Report','finance\ARAgeing_ReportController@show');
 Route::get('/ARAgeing_Report/table','finance\ARAgeing_ReportController@table');
 Route::post('/ARAgeing_Report/form','finance\ARAgeing_ReportController@form');
