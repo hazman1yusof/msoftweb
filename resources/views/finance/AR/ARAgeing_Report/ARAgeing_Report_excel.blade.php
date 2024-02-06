@@ -11,8 +11,8 @@
     <tr></tr>
     @foreach($array_report as $array_key => $array_val)
     <tr>
-        <td style="text-align: left">{{$array_val->debtorcode}}</td>
-        <td>{!!$array_val->name!!}</td>
+        <td style="text-align: left">{{strtoupper($array_val->debtorcode)}}</td>
+        <td style="text-align: left">{{strtoupper($array_val->name)}}</td>
         @foreach($years as $year_key => $year_val)
             @foreach($years_bal_all as $bal_key => $bal_val)
                 @foreach($bal_val as $bal_key2 => $bal_val2)
