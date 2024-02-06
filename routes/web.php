@@ -952,6 +952,13 @@ Route::post('/ARAgeing_Report/form','finance\ARAgeing_ReportController@form');
 Route::get('/ARAgeing_Report/showExcel','finance\ARAgeing_ReportController@showExcel');
 Route::get('/ARAgeing_Report/showpdf','finance\ARAgeing_ReportController@showpdf');
 
+//// AR Ageing Details -- Report
+Route::get('/ARAgeingDtl_Report','finance\ARAgeingDtl_ReportController@show');
+Route::get('/ARAgeingDtl_Report/table','finance\ARAgeingDtl_ReportController@table');
+Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@form');
+Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
+Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
