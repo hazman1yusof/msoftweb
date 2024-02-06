@@ -8,10 +8,10 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\APSummaryExport;
+use App\Exports\APAgeingExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class APSummary_ReportController extends defaultController
+class APAgeing_ReportController extends defaultController
 {   
 
     public function __construct()
@@ -21,11 +21,11 @@ class APSummary_ReportController extends defaultController
 
     public function show(Request $request)
     {   
-        return view('finance.AP.APSummary_Report.APSummary_Report');
+        return view('finance.AP.APAgeing_Report.APAgeing_Report');
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new APSummaryExport($request->suppcode_from,$request->suppcode_to,$request->datefr,$request->dateto), 'APSummary.xlsx');
+        return Excel::download(new APAgeingExport($request->suppcode_from,$request->suppcode_to,$request->datefr,$request->dateto), 'APAgeing.xlsx');
     }
     
     public function showpdf(Request $request){
@@ -87,7 +87,7 @@ class APSummary_ReportController extends defaultController
             array_push($years_bal_all,$years_bal);
 
         }
-      // dd($array_report);
+        //dd($array_report);
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -101,7 +101,7 @@ class APSummary_ReportController extends defaultController
         $header->suppcode_to = $request->suppcode_to;
         $header->compname = $company->name;
 
-        return view('finance.AP.APSummary_Report.APSummary_Report_pdfmake',compact('years','years_bal_all','array_report','header', 'supp_code'));
+        return view('finance.AP.APAgeing_Report.APAgeing_Report_pdfmake',compact('years','years_bal_all','array_report','header', 'supp_code'));
         
     }
 

@@ -38,11 +38,11 @@ $(document).ready(function () {
     });
     
     $("#pdfgen1").click(function() {
-        window.open('./ARSummary_Report/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+        window.open('./ARAgeing_Report/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
     });
     
     $("#excelgen1").click(function() {
-        window.location='./ARSummary_Report/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+        window.location='./ARAgeing_Report/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
     });
     
     var dialog_debtorFrom = new ordialog(

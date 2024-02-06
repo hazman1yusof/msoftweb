@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AR Summary</title>
+        <title>AR Ageing</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
     
     </object>
     
@@ -24,20 +25,20 @@
             },
             @endforeach
         ];
-
+        
         var years_bal_all = [
             @foreach($years_bal_all as $key => $val)
-                [
+            [
                 @foreach($val as $key2 => $val2)
                     `{{$val2}}`,
                 @endforeach
-                ],
+            ],
             @endforeach
         ];
-
+        
         var years = [
             @foreach($years as $key => $val)
-               '{{$val}}',
+                '{{$val}}',
             @endforeach
         ];
         
@@ -116,7 +117,7 @@
                         // },
                         layout: 'lightHorizontalLines',
                     },
-                    { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
+                    // { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                     // { canvas: [ { type: 'line', x1: 0, y1: 5, x2: 515, y2: 5, lineWidth: 0.5 } ] },
                 ],
                 styles: {
@@ -184,26 +185,31 @@
             years.forEach(function(e,i){
                 body[0].push({ text: e, style: 'tableHeader', alignment: 'right' });
             });
-
-
+            
             array_report.forEach(function(e,i){
                 let arr1 = [
                     { text: e.debtorcode },
                     { text: e.name },
                 ];
                 years.forEach(function(ey,iy){
-                    arr1[iy+2] = { text:years_bal_all[i][iy], alignment: 'right'  };
+                    arr1[iy+2] = { text: myparseFloat(years_bal_all[i][iy]), alignment: 'right' };
                 });
                 body.push(arr1);
             });
-
+            
             var ret_obj = {
                 headerRows: 1,
                 widths: width,
                 body: body,
             };
-
+            
             return ret_obj;
+        }
+        
+        function myparseFloat(val){
+            if(val == null) return '0.00';
+            // if(val.trim() == '') return '0.00';
+            return numeral(val).format('0,0.00');
         }
         
         // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {

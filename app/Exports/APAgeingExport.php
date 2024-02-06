@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class APSummaryExport implements FromView, WithEvents, WithColumnWidths
+class APAgeingExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -36,7 +36,7 @@ class APSummaryExport implements FromView, WithEvents, WithColumnWidths
         $this->suppcode_to = $suppcode_to;
         $this->datefr = $datefr;
         $this->dateto = $dateto;
-        $this->break_loop=[];
+        //$this->break_loop=[];
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -47,8 +47,8 @@ class APSummaryExport implements FromView, WithEvents, WithColumnWidths
     {
         return [
             'A' => 15,
-            'B' => 17,
-            'C' => 40,
+            'B' => 40,
+            'C' => 15,
             'D' => 15,
             'E' => 15,
             'F' => 15,
@@ -87,8 +87,8 @@ class APSummaryExport implements FromView, WithEvents, WithColumnWidths
 
         $array_report = [];
         $years_bal_all = [];
-        $break_loop = [];
-        $loop = 0;
+        // $break_loop = [];
+        // $loop = 0;
         foreach ($supp_code as $key => $value){
             $years_bal = [];
             $calc_openbal = DB::table('finance.apacthdr as ap') 
@@ -118,22 +118,22 @@ class APSummaryExport implements FromView, WithEvents, WithColumnWidths
 
         }
         
-        $this->break_loop = $break_loop;
+        //$this->break_loop = $break_loop;
 
-        return view('finance.AP.APSummary_Report.APSummary_Report_excel',compact('years','years_bal_all','supp_code','array_report'));
+        return view('finance.AP.APAgeing_Report.APAgeing_Report_excel',compact('years','years_bal_all','supp_code','array_report'));
     }
     
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                foreach ($this->break_loop as $value) {
-                    $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
-                }
+                // foreach ($this->break_loop as $value) {
+                //     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+                // }
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nSUMMARY"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAP AGEING"."\n"
                 .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
                 .sprintf('FROM %s TO %s',$this->suppcode_from, $this->suppcode_to)
                 .'&L'

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'AR Summary')
+@section('title', 'AR Ageing')
 
 @section('css')
     <style>
@@ -60,8 +60,8 @@
 @section('body')
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
-            <form method="get" id="genreport" action="./ARSummary_Report/showExcel">
-                <h2>AR SUMMARY</h2>
+            <form method="get" id="genreport" action="./ARAgeing_Report/showExcel">
+                <h2>AR AGEING</h2>
                 <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
                 
                 <div style="width: 900px;margin: 0 auto;">
@@ -109,10 +109,10 @@
                                 <div class='col-md-12 btnform' style="padding: 20px 0px">
                                     <fieldset>
                                         <!-- <legend>Stock Sheet :</legend> -->
-                                        <button name="ARSummary_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
+                                        <button name="ARAgeing_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen1">
                                             <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
                                         </button>
-                                        <button name="ARSummary_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
+                                        <button name="ARAgeing_xls" type="button" class="mybtn btn btn-sm mybtnxls" id="excelgen1">
                                             <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
                                         </button>
                                     </fieldset>
@@ -127,5 +127,5 @@
 @endsection
 
 @section('scripts')
-    <script src="js/finance/AR/ARSummary_Report/ARSummary_Report.js"></script>
+    <script src="js/finance/AR/ARAgeing_Report/ARAgeing_Report.js"></script>
 @endsection

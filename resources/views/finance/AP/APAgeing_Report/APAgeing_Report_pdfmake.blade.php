@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AP Summary</title>
+        <title>AP Ageing</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -21,7 +21,7 @@
             @foreach($array_report as $key => $array_report1)
             {
                 @foreach($array_report1 as $key2 => $val)
-                    '{{$key2}}' : `{{$val}}`,
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
                 @endforeach
             },
             @endforeach
@@ -56,7 +56,7 @@
                         image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nAP SUMMARY\n',
+                        text: '\nAP AGEING\n',
                         style: 'header',
                         alignment: 'center'
                     },

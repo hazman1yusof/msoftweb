@@ -8,10 +8,10 @@ use stdClass;
 use DB;
 use DateTime;
 use Carbon\Carbon;
-use App\Exports\ARSummaryExport;
+use App\Exports\ARAgeingExport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class ARSummary_ReportController extends defaultController
+class ARAgeing_ReportController extends defaultController
 {
     
     var $table;
@@ -26,7 +26,7 @@ class ARSummary_ReportController extends defaultController
     public function show(Request $request)
     {
         $comp = DB::table('sysdb.company')->where('compcode','=',session('compcode'))->first();
-        return view('finance.AR.ARSummary_Report.ARSummary_Report',[
+        return view('finance.AR.ARAgeing_Report.ARAgeing_Report',[
             'company_name' => $comp->name
         ]);
     }
@@ -48,7 +48,7 @@ class ARSummary_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new ARSummaryExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARSummaryExport.xlsx');
+        return Excel::download(new ARAgeingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARAgeingExport.xlsx');
     }
     
     public function showpdf(Request $request){
@@ -106,9 +106,9 @@ class ARSummary_ReportController extends defaultController
             array_push($years_bal_all,$years_bal);
         }
         
-        // dd($years_bal_all);
+        // dd($array_report);
         
-        $title = "AR SUMMARY";
+        $title = "AR AGEING";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
@@ -124,7 +124,7 @@ class ARSummary_ReportController extends defaultController
         //     $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
         // }
         
-        return view('finance.AR.ARSummary_Report.ARSummary_Report_pdfmake', compact('years','years_bal_all','debtormast','array_report','title','company'));
+        return view('finance.AR.ARAgeing_Report.ARAgeing_Report_pdfmake', compact('years','debtormast','array_report','years_bal_all','title','company'));
         
     }
     
