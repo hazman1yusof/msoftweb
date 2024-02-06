@@ -177,7 +177,7 @@
         });
         
         function make_table(){
-            var width = [50,'*'];
+            var width = [70,'*'];
             years.forEach(function(e,i){
                 width.push('*');
             });

@@ -46,7 +46,7 @@ class ARAgeingExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
+            'A' => 20,
             'B' => 70,
             'C' => 15,
             'D' => 15,
