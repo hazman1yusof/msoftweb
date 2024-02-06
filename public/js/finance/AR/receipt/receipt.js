@@ -216,9 +216,9 @@ $(document).ready(function () {
 				{label:'Last Episode',name:'Episno',width:100,classes:'pointer'},
 			],
 			urlParam: {
-					filterCol:['compcode'],
-					filterVal:['session.compcode']
-				},
+				filterCol:['compcode','active'],
+				filterVal:['session.compcode','1']
+			},
 			ondblClickRow:function(){
 				let data=selrowData('#'+dialog_mrn.gridname);
 				//$('#apacthdr_actdate').focus();
@@ -238,11 +238,11 @@ $(document).ready(function () {
 		},{
 			title:"Select MRN",
 			open: function(){
-				dialog_payercode.urlParam.filterCol=['compcode'],
-				dialog_payercode.urlParam.filterVal=['session.compcode']
-				}
-			},'urlParam','radio','tab'
-		);
+				dialog_mrn.urlParam.filterCol=['compcode','active'];
+				dialog_mrn.urlParam.filterVal=['session.compcode','1'];
+			}
+		},'urlParam','radio','tab'
+	);
 	dialog_mrn.makedialog(true);
 
 	var dialog_logindeptcode = new ordialog(
@@ -312,8 +312,8 @@ $(document).ready(function () {
 		},{
 			title:"Select MRN",
 			open: function(){
-				dialog_payercode.urlParam.filterCol=['compcode','recstatus'],
-				dialog_payercode.urlParam.filterVal=['session.compcode','ACTIVE']
+				dialog_payercode.urlParam.filterCol=['compcode','recstatus'];
+				dialog_payercode.urlParam.filterVal=['session.compcode','ACTIVE'];
 				}
 			},'urlParam','radio','tab'
 		);

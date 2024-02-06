@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Repost AR')
+@section('title', 'Repost update AR')
 
 @section('style')
 	body{
@@ -51,7 +51,7 @@
   <div class="row">
 	<div class="col-md-9">
 		<div class="panel panel-default">
-			<div class="panel-heading">Repost AR</div>
+			<div class="panel-heading">Repost Update AR - update yang sebelum, baru tambah</div>
 			<div class="panel-body">
 				<form class='form-horizontal' style='width:99%' id='formdata'>
 					<input id="action" name="action" type="hidden" value='repost_ar_upd'>

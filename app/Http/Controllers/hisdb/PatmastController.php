@@ -3279,5 +3279,34 @@ class PatmastController extends defaultController
         return "'".implode("','",$array)."'";
     }
 
+    public function patlabel(Request $request){   
+
+        $company = DB::table('sysdb.company')
+                        ->where('compcode',session('compcode'))
+                        ->first();
+        
+        $ini_array = [
+            'comp_name' => $company->name,
+            'name' => $request->name,
+            'mrn' => $request->mrn,
+            'sex' => $request->sex,
+            'age' => $request->age,
+            'date' => $request->date,
+            'newic' => $request->newic,
+            'dob' => $request->dob,
+            'race' => $request->race,
+            'bedno' => $request->bedno,
+            'ward' => $request->ward,
+            'doc' => $request->doc,
+            'pages' => $request->pages,
+        ];
+
+        if(true){
+            return view('hisdb.pat_mgmt.patlabel_pdfmake',compact('ini_array'));
+        }else{
+            abort(403, 'MC not found');
+        }
+    }
+
 
 }

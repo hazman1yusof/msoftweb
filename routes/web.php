@@ -974,6 +974,7 @@ Route::post('/pat_mast/new_title_form','hisdb\PatmastController@new_title_form')
 Route::post('/pat_mast/new_areacode_form','hisdb\PatmastController@new_areacode_form');
 Route::post('/pat_mast/new_relationship_form','hisdb\PatmastController@new_relationship_form');
 Route::post('/pat_mast/auto_save','hisdb\PatmastController@auto_save');
+Route::get('/pat_mast/patlabel','hisdb\PatmastController@patlabel');
 
 
 Route::post('/episode/save_doc','hisdb\PatmastController@save_doc');

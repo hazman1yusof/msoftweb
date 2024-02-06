@@ -387,12 +387,12 @@ class WebserviceController extends defaultController
 
                 if(strtoupper($request->trantype) == 'RD'){
                     $drcostcode = $dept_obj->costcode;
-                    $dracc => $paymode_obj->glaccno;
+                    $dracc = $paymode_obj->glaccno;
                     $crcostcode = $debtormast_obj->depccode;
                     $cracc = $debtormast_obj->depglacc;
                 }else{
                     $drcostcode = $dept_obj->costcode;
-                    $dracc => $paymode_obj->glaccno;
+                    $dracc = $paymode_obj->glaccno;
                     $crcostcode = $debtormast_obj->actdebccode;
                     $cracc = $debtormast_obj->actdebglacc;
                 }
@@ -588,7 +588,7 @@ class WebserviceController extends defaultController
         }
     }
 
-    public function repost_ar_upd_rc(Request $request,$type){
+    public function repost_ar_upd_rc(Request $request){
         DB::beginTransaction();
 
         try {
@@ -599,7 +599,7 @@ class WebserviceController extends defaultController
                                 ->where('auditno',$request->auditno);
 
             if($dbacthdr->exists()){
-                $dbacthdr_obj = $dbacthdr_obj->first();
+                $dbacthdr_obj = $dbacthdr->first();
                 $gltran = DB::table('finance.gltran')
                             ->where('compcode','=',session('compcode'))
                             ->where('source','=',$dbacthdr_obj->source)
@@ -613,6 +613,7 @@ class WebserviceController extends defaultController
 
                 //update glmasdtl
                 $gltran_first = $gltran->first();
+                $yearperiod = defaultController::getyearperiod_($dbacthdr_obj->posteddate);
 
                 $gltranAmount =  defaultController::isGltranExist_($gltran_first->crcostcode,$gltran_first->cracc,$gltran_first->year,$gltran_first->period);
                 DB::table('finance.glmasdtl')
@@ -646,16 +647,16 @@ class WebserviceController extends defaultController
                 $dept_obj = $this->gltran_fromdept($dbacthdr_obj->deptcode);
                 $debtormast_obj = $this->gltran_fromdebtormast($dbacthdr_obj->payercode);
 
-                if(strtoupper($trantype) == 'RD'){
+                if(strtoupper($request->trantype) == 'RD'){
                     $crcostcode = $debtormast_obj->depccode;
                     $cracc = $debtormast_obj->depglacc;
-                    $drcostcode => $dept_obj->costcode,
-                    $dracc => $paymode_obj->glaccno,
+                    $drcostcode = $dept_obj->costcode;
+                    $dracc = $paymode_obj->glaccno;
                 }else{
                     $crcostcode = $debtormast_obj->actdebccode;
                     $cracc = $debtormast_obj->actdebglacc;
-                    $drcostcode => $dept_obj->costcode,
-                    $dracc => $paymode_obj->glaccno,
+                    $drcostcode = $dept_obj->costcode;
+                    $dracc = $paymode_obj->glaccno;
                 }
 
                 DB::table('finance.gltran')
@@ -665,6 +666,8 @@ class WebserviceController extends defaultController
                     ->where('auditno','=',$dbacthdr_obj->auditno)
                     ->where('lineno_','=',1)
                     ->update([
+                        'year' => $yearperiod->year,
+                        'period' => $yearperiod->period,
                         'drcostcode' => $drcostcode,
                         'dracc' => $dracc,
                         'crcostcode' => $crcostcode,
@@ -677,8 +680,7 @@ class WebserviceController extends defaultController
                         $dracc,//dracc
                         $crcostcode,//crcostcode
                         $cracc,//cracc
-                        $gltran_first->year,
-                        $gltran_first->period,
+                        $yearperiod,
                         $dbacthdr_obj->amount
                 );
 
@@ -716,7 +718,7 @@ class WebserviceController extends defaultController
 
     public function gltran_fromdebtormast($payercode){
         $obj = DB::table('debtor.debtormast')
-                ->select('actdebglacc','actdebccode')
+                ->select('actdebglacc','actdebccode','depccode','depglacc')
                 ->where('compcode','=',session('compcode'))
                 ->where('debtorcode','=',$payercode)
                 ->first();

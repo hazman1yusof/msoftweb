@@ -173,6 +173,11 @@
 			&nbsp;&nbsp;
 			<button id="btn_biometric" type="button" class="btn btn-default btn-md" >
 			<img src="img/biometric.png" width="22" /> Biometric </button>
+			&nbsp;&nbsp;
+			@if (request()->get('curpat') == 'true')
+			<button id="btn_patlabel" type="button" class="btn btn-default btn-md" >
+			<img src="img/labelprinter.png" width="22" /> Pat Label </button>
+			@endif
 		</div>
 
 		@if (request()->get('epistycode') == 'OP' && !Session::has('isdoctor') && request()->get('curpat') == 'true')
@@ -198,6 +203,28 @@
             </div>
         </div>
         @endif
+
+        <div class="panel panel-default" style="position: relative;margin: 0 12px 12px 12px">
+	        <div class="panel-heading collapsed" id="toggle_preepis" data-toggle="collapse" data-target="#tabpreepis" style="padding: 20px 20px 25px 20px;">
+
+	        <i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i>
+	        <i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px;bottom: 3px;"></i >
+	        <div class="pull-right" style="position: absolute; padding: 0 0 0 0; left: 10px; top: 0px;">
+	            <h5><strong>PRE EPISODE</strong></h5>
+	        </div> 
+	        </div>
+
+	        <div id="tabpreepis" class="panel-collapse collapse">
+	        <div class="panel-body form-horizontal">
+	            <div id="jqGrid_preepis_c">
+	                <div class='col-md-12' style="padding:0 0 15px 0">
+	                    <table id="jqGrid_preepis" class="table table-striped"></table>
+	                    <div id="jqGridPager_preepis"></div>
+	                </div>
+	            </div>
+	        </div>
+            </div>
+        </div>
 
 		<div class="panel panel-primary" style="position: relative;margin: 0 12px 12px 12px">
 			<div  class="panel-heading clearfix">
@@ -247,6 +274,7 @@
 		@include('hisdb.pat_mgmt.mdl_patient')
 		@include('hisdb.pat_mgmt.mdl_episode')
 		@include('hisdb.pat_mgmt.itemselector')
+		@include('hisdb.pat_mgmt.patlabel')
 
 
 		@if (request()->get('curpat') == 'true')
@@ -458,6 +486,7 @@
 	@endif
 
 
+	<script type="text/javascript" src="js/hisdb/pat_mgmt/patlabel.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_doctor.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_nok.js"></script>
 	<script type="text/javascript" src="js/hisdb/pat_mgmt/epis_payer.js"></script>
