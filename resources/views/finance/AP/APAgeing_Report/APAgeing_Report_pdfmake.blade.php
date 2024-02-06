@@ -21,7 +21,7 @@
             @foreach($array_report as $key => $array_report1)
             {
                 @foreach($array_report1 as $key2 => $val)
-                    '{{$key2}}' : `{{$val}}`,
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
                 @endforeach
             },
             @endforeach

@@ -87,7 +87,7 @@ class APAgeing_ReportController extends defaultController
             array_push($years_bal_all,$years_bal);
 
         }
-      // dd($array_report);
+        //dd($array_report);
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
