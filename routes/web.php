@@ -959,12 +959,19 @@ Route::post('/APSummary_Report/form','finance\APSummary_ReportController@form');
 Route::get('/APSummary_Report/showExcel','finance\APSummary_ReportController@showExcel');
 Route::get('/APSummary_Report/showpdf','finance\APSummary_ReportController@showpdf');
 
-//// AP Ageing -- Report
+//// AP Ageing Summary -- Report
 Route::get('/APAgeing_Report','finance\APAgeing_ReportController@show');
 Route::get('/APAgeing_Report/table','finance\APAgeing_ReportController@table');
 Route::post('/APAgeing_Report/form','finance\APAgeing_ReportController@form');
 Route::get('/APAgeing_Report/showExcel','finance\APAgeing_ReportController@showExcel');
 Route::get('/APAgeing_Report/showpdf','finance\APAgeing_ReportController@showpdf');
+
+//// AP Ageing Details -- Report
+Route::get('/APAgeingDtl_Report','finance\APAgeingDtl_ReportController@show');
+Route::get('/APAgeingDtl_Report/table','finance\APAgeingDtl_ReportController@table');
+Route::post('/APAgeingDtl_Report/form','finance\APAgeingDtl_ReportController@form');
+Route::get('/APAgeingDtl_Report/showExcel','finance\APAgeingDtl_ReportController@showExcel');
+Route::get('/APAgeingDtl_Report/showpdf','finance\APAgeingDtl_ReportController@showpdf');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 
