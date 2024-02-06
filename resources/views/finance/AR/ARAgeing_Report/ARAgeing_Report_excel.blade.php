@@ -15,13 +15,13 @@
         <td>{!!$array_val->name!!}</td>
         @foreach($years as $year_key => $year_val)
             @foreach($years_bal_all as $bal_key => $bal_val)
-                @if($array_key == $bal_key)
-                    @foreach($bal_val as $bal_key2 => $bal_val2)
+                @foreach($bal_val as $bal_key2 => $bal_val2)
+                    @if($array_key == $bal_key)
                         @if($year_key == $bal_key2)
                             <td data-format="0.00" style="text-align: right">{{number_format($bal_val2, 2, '.', ',')}}</td>
                         @endif
-                    @endforeach
-                @endif
+                    @endif
+                @endforeach
             @endforeach
         @endforeach
     </tr>
