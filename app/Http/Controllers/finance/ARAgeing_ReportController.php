@@ -48,7 +48,7 @@ class ARAgeing_ReportController extends defaultController
     }
     
     public function showExcel(Request $request){
-        return Excel::download(new ARAgeingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARAgeingExport.xlsx');
+        return Excel::download(new ARAgeingExport($request->debtorcode_from,$request->debtorcode_to,$request->datefr,$request->dateto), 'ARAgeingSummaryExport.xlsx');
     }
     
     public function showpdf(Request $request){
@@ -108,7 +108,7 @@ class ARAgeing_ReportController extends defaultController
         
         // dd($array_report);
         
-        $title = "AR AGEING";
+        $title = "AR AGEING SUMMARY";
         
         $company = DB::table('sysdb.company')
                     ->where('compcode', '=', session('compcode'))
