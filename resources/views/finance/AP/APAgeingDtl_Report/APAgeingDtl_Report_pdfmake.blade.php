@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AP Ageing Summary</title>
+        <title>AP Ageing Details</title>
     </head>
     
     <!-- <script src="https://unpkg.com/@jsreport/browser-client/dist/jsreport.umd.js"></script>
@@ -56,7 +56,7 @@
                         image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
-                        text: '\nAP AGEING SUMMARY\n',
+                        text: '\nAP AGEING DETAILS\n',
                         style: 'header',
                         alignment: 'center'
                     },
@@ -120,7 +120,7 @@
         });
         
         function make_table(){
-            var width = [55,'*'];
+            var width = [50,'*'];
             years.forEach(function(e,i){
                 width.push('*');
             });

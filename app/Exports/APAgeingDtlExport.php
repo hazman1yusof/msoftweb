@@ -23,7 +23,7 @@ use DateTime;
 use Carbon\Carbon;
 use stdClass;
 
-class APAgeingExport implements FromView, WithEvents, WithColumnWidths
+class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
 {
     
     /**
@@ -46,7 +46,7 @@ class APAgeingExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 20,
+            'A' => 15,
             'B' => 40,
             'C' => 15,
             'D' => 15,
@@ -120,7 +120,7 @@ class APAgeingExport implements FromView, WithEvents, WithColumnWidths
         
         //$this->break_loop = $break_loop;
 
-        return view('finance.AP.APAgeing_Report.APAgeing_Report_excel',compact('years','years_bal_all','supp_code','array_report'));
+        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('years','years_bal_all','supp_code','array_report'));
     }
     
     public function registerEvents(): array
@@ -133,7 +133,7 @@ class APAgeingExport implements FromView, WithEvents, WithColumnWidths
                 
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAP AGEING SUMMARY"."\n"
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAP AGEING DETAILS"."\n"
                 .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
                 .sprintf('FROM %s TO %s',$this->suppcode_from, $this->suppcode_to)
                 .'&L'

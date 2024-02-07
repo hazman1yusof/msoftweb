@@ -272,7 +272,7 @@ class PaymentVoucherController extends defaultController
         try {
             
             $auditno = $this->defaultSysparam($request->apacthdr_source, $request->apacthdr_trantype);
-
+            $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
             
             if ($request->apacthdr_trantype == 'PV'){
 
@@ -297,6 +297,7 @@ class PaymentVoucherController extends defaultController
                     'remarks' => strtoupper($request->apacthdr_remarks),
                     'suppcode' => $request->apacthdr_suppcode,
                     'payto' => $request->apacthdr_payto,
+                    'suppgroup' => $suppgroup,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),
@@ -428,6 +429,7 @@ class PaymentVoucherController extends defaultController
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
                     'outamount' => $request->apacthdr_amount,
+                    'suppgroup' => $suppgroup,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'AP Ageing Summary')
+@section('title', 'AP Ageing Details')
 
 @section('css')
     <style>
@@ -60,8 +60,8 @@
 @section('body')
 	<div class="container mycontainer">
 		<div class="jumbotron" style="margin-top: 30px;text-align: center; height:500px">
-			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./APAgeing_Report/showExcel">
-				<h2>AP AGEING SUMMARY</h2>
+			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./APAgeingDtl_Report/showExcel">
+				<h2>AP AGEING DETAILS</h2>
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 			
 				<div class="col-md-9">
@@ -131,5 +131,5 @@
 @endsection
 
 @section('scripts')
-	<script src="js/finance/AP/APAgeing_Report/APAgeing_Report.js"></script>
+	<script src="js/finance/AP/APAgeingDtl_Report/APAgeingDtl_Report.js"></script>
 @endsection
