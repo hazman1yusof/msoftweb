@@ -334,6 +334,7 @@ use Carbon\Carbon;
                 $this->checkduplicate_docno('add', $request);
 
                 $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
+                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
                 $table = DB::table("finance.apacthdr");
 
@@ -353,6 +354,7 @@ use Carbon\Carbon;
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
                     'outamount' => $request->apacthdr_amount,
+                    'suppgroup' => $suppgroup,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),
@@ -367,6 +369,7 @@ use Carbon\Carbon;
                 $this->checkduplicate_docno('add', $request);
 
                 $auditno = $this->defaultSysparam($request->apacthdr_source,'CN');
+                $suppgroup = $this->suppgroup($request->apacthdr_suppcode);
 
                 $table = DB::table("finance.apacthdr");
 
@@ -386,6 +389,7 @@ use Carbon\Carbon;
                     'payto' => $request->apacthdr_payto,
                     'amount' => $request->apacthdr_amount,
                     'outamount' => $request->apacthdr_amount,
+                    'suppgroup' => $suppgroup,
                     'compcode' => session('compcode'),
                     'unit' => session('unit'),
                     'adduser' => session('username'),
