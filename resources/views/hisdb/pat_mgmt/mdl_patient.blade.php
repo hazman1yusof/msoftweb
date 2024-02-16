@@ -9,7 +9,7 @@
             <input name="apptidno" id="apptidno_pat" type="hidden">
 
             <div class="modal-content">
-                <div class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
+                <div id="mdl_patient_header" class="modal-header label-info" style="position: sticky;top: 0px;z-index: 3;">
                     <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
                             color: white;
                             background: #d34242;
@@ -449,7 +449,7 @@
 
                                 <div id="tabNok_pat" class="panel-collapse collapse">
                                 <div class="panel-body form-horizontal">
-                                    <div class="col-xs-6">
+                                    <div class="col-md-6">
                                         <div id="jqGrid_nok_pat_c">
                                             <div class='col-md-12' style="padding:0 0 15px 0">
                                                 <table id="jqGrid_nok_pat" class="table table-striped"></table>
@@ -457,7 +457,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6" id="form_nok_pat">
+                                    <div class="col-md-6" id="form_nok_pat">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                             <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 
@@ -564,7 +564,7 @@
 
                                 <div id="tabNok_emr" class="panel-collapse collapse">
                                 <div class="panel-body form-horizontal">
-                                    <div class="col-xs-6">
+                                    <div class="col-md-6">
                                         <div id="jqGrid_nok_emr_c">
                                             <div class='col-md-12' style="padding:0 0 15px 0">
                                                 <table id="jqGrid_nok_emr" class="table table-striped"></table>
@@ -572,7 +572,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xs-6" id="form_nok_emr">
+                                    <div class="col-md-6" id="form_nok_emr">
                                         <div class="form-group">
                                             <div class="col-md-12">
                                             <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 

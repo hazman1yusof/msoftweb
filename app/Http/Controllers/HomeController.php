@@ -74,6 +74,25 @@ class HomeController extends Controller
         return view('init.container_ptcare',compact('menu','units','unit_user','title','dept_desc'));
     }
 
+    public function mobile(){
+        $user = Auth::user();
+        $menu = $this->create_mobile_menu();
+        $units = DB::table('sysdb.sector')
+                ->where('compcode','=',$user->compcode)
+                ->get();
+        $unit_user = '';
+        $title="Primary Care";
+        if($user->dept != ''){
+            $unit_user_ = DB::table('sysdb.department')
+                ->where('compcode','=',$user->compcode)
+                ->where('deptcode','=',$user->dept)
+                ->first();
+            $unit_user = $unit_user_->sector;
+        }
+        $dept_desc = $unit_user_->description;
+        return view('init.container_mobile',compact('menu','units','unit_user','title','dept_desc'));
+    }
+
 
     public function create_main_menu(){
         $user = Auth::user();
@@ -137,6 +156,24 @@ class HomeController extends Controller
         $menu.="<li><a style='padding-left:9px;' title='Dialysis' class='clickable' programid='dialysis' targetURL='dialysis_dialysis' >Dialysis</a></li>";
         $menu.="<li><a style='padding-left:9px;' title='Enquiry' class='clickable' programid='enquiry_order' targetURL='dialysis_enquiry_order' >Order Enquiry</a></li>";
         $menu.="<li><a style='padding-left:9px;' title='Enquiry' class='clickable' programid='enquiry' targetURL='dialysis_enquiry' >Enquiry</a></li>";
+
+        return $menu;
+    }
+
+    public function create_mobile_menu(){
+        $user = Auth::user();
+        $groupid = $user->groupid;
+        $company = $user->compcode;
+
+        $menu="<li><a style='padding-left:9px;' title='Patient List' class='clickable' programid='pat_list' targetURL='pat_mast?epistycode=OP&curpat=false&PatClass=HIS' >Patient List</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Dashboard' class='clickable' programid='dashboard' targetURL='ptcare_dashboard' >Dashboard</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Document Upload' class='clickable' programid='docupload' targetURL='ptcare_emergency' >Document Upload</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Alert' class='clickable' programid='alert' targetURL='' >Alert</a></li>";
+
+        $menu.="<li><a style='padding-left:9px;' title='Log Out' class='clickable' programid='logout' targetURL='' href='./logout' >Log Out</a></li>";
 
         return $menu;
     }

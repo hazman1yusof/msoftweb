@@ -138,35 +138,65 @@ class GlenquiryController extends defaultController
             return json_encode($responce);
         }
 
-        $table_dr = DB::table('finance.gltran')
-                    ->select(DB::raw("'open' as open"),DB::raw("'' as cramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc as acccode','gltran.amount as dramount','glmasref.description as acctname','gltran.id')
-                    ->leftJoin('finance.glmasref', function($join) use ($request){
-                        $join = $join->on('glmasref.glaccno', '=', 'gltran.cracc')
-                                        ->where('glmasref.compcode','=',session('compcode'));
+        $table_ = DB::table('finance.gltran')
+                    ->select(DB::raw("'open' as open"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.cracc','gltran.dracc','gltran.amount','glcr.description as acctname_cr','gldr.description as acctname_dr','gltran.id')
+                    ->leftJoin('finance.glmasref as glcr', function($join) use ($request){
+                        $join = $join->on('glcr.glaccno', '=', 'gltran.cracc')
+                                        ->where('glcr.compcode','=',session('compcode'));
+                    })
+                    ->leftJoin('finance.glmasref as gldr', function($join) use ($request){
+                        $join = $join->on('gldr.glaccno', '=', 'gltran.dracc')
+                                        ->where('gldr.compcode','=',session('compcode'));
                     })
                     ->where('gltran.compcode',session('compcode'))
-                    ->where('gltran.drcostcode',$request->costcode)
-                    ->where('gltran.dracc',$request->acc)
                     ->where('gltran.year',$request->year)
                     ->where('gltran.period',$request->period)
-                    ->get();
-
-        $table_cr = DB::table('finance.gltran')
-                    ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as cramount','glmasref.description as acctname','gltran.id')
-                    ->leftJoin('finance.glmasref', function($join) use ($request){
-                        $join = $join->on('glmasref.glaccno', '=', 'gltran.dracc')
-                                        ->where('glmasref.compcode','=',session('compcode'));
-                    })
-                    ->where('gltran.compcode',session('compcode'))
                     ->where('gltran.crcostcode',$request->costcode)
                     ->where('gltran.cracc',$request->acc)
-                    ->where('gltran.year',$request->year)
-                    ->where('gltran.period',$request->period)
-                    ->get();
+                    ->orWhere(function ($table) use ($request) {
+                        $table
+                        ->where('gltran.compcode',session('compcode'))
+                        ->where('gltran.year',$request->year)
+                        ->where('gltran.period',$request->period)
+                        ->where('gltran.drcostcode',$request->costcode)
+                        ->where('gltran.dracc',$request->acc);
+                    })->orderBy('gltran.id','desc');
 
-        $table_merge = $table_dr->merge($table_cr);
+        $count = $table_->count();
+        $table = $table_->get();
 
-        $responce->data = $table_merge;
+        foreach ($table as $key => $value) {
+            if(strtoupper($value->cracc) == strtoupper($request->acc)){
+                $value->acccode = $value->dracc;
+                $value->dramount = '';
+                $value->cramount = $value->amount;
+                $value->acctname = $value->acctname_dr;
+            }else{
+                $value->acccode = $value->cracc;
+                $value->dramount = $value->amount;
+                $value->cramount = '';
+                $value->acctname = $value->acctname_cr;
+            }
+        }
+
+        // $table_cr = DB::table('finance.gltran')
+        //             ->select(DB::raw("'open' as open"),DB::raw("'' as dramount"),'gltran.source','gltran.trantype','gltran.auditno','gltran.postdate','gltran.description','gltran.reference','gltran.dracc as acccode','gltran.amount as cramount','glmasref.description as acctname','gltran.id')
+        //             ->leftJoin('finance.glmasref', function($join) use ($request){
+        //                 $join = $join->on('glmasref.glaccno', '=', 'gltran.dracc')
+        //                                 ->where('glmasref.compcode','=',session('compcode'));
+        //             })
+        //             ->where('gltran.compcode',session('compcode'))
+        //             ->where('gltran.crcostcode',$request->costcode)
+        //             ->where('gltran.cracc',$request->acc)
+        //             ->where('gltran.year',$request->year)
+        //             ->where('gltran.period',$request->period)
+        //             ->get();
+
+        // $table_merge = $table_dr->merge($table_cr);
+
+        $responce->data = $table;
+        $responce->recordsTotal = $count;
+        $responce->recordsFiltered = $count;
         return json_encode($responce);
 
     }

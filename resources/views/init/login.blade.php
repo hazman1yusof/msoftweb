@@ -58,6 +58,7 @@
           @endforeach
       </select>
       <input type="hidden" id="myurl" name="myurl" value="">
+      <input type="hidden" id="mobile" name="mobile" value="false">
       <input type="hidden" id="computerid" name="computerid" >
       <button class="btn btn-lg btn-primary btn-block">Sign in</button>
       <div id="computerid_warning" class="alert alert-danger" role="alert" style="display:none;">Computer ID are not set yet, please ask admin to set your computer id</div>
@@ -81,20 +82,19 @@
 <script>
   document.getElementById("myurl").value = window.location.hostname;
 
-    $(document).ready(function() 
-    {
-        $('#showpwd').click(function(){
-          if($(this).hasClass('glyphicon-eye-open')){
-            $(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
-            $('#inputPassword').attr('type','text');
-          }else if($(this).hasClass('glyphicon-eye-close')){
-            $(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
-            $('#inputPassword').attr('type','password');
-          }
-        });
-
-        
-
+    $(document).ready(function(){
+      let mql = window.matchMedia("(max-width: 768px)");
+      $('#mobile').val(mql.matches);
+      
+      $('#showpwd').click(function(){
+        if($(this).hasClass('glyphicon-eye-open')){
+          $(this).addClass('glyphicon-eye-close').removeClass('glyphicon-eye-open');
+          $('#inputPassword').attr('type','text');
+        }else if($(this).hasClass('glyphicon-eye-close')){
+          $(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+          $('#inputPassword').attr('type','password');
+        }
+      });
     });
 
     var computerid_val = localStorage.getItem('computerid');

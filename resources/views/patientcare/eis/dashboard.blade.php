@@ -52,11 +52,11 @@ Dashboard
 
 @section('content')
 
-<section class="section col-12">
+<section class="section col-12" style="padding: 60px 0px 0px 0px;">
 
   <div class="row justify-content-center">
 
-    <div class="col-6">
+    <div class="col-md-6 col-xs-12" style="padding: 0px;">
       <div class="card">
         <div class="card-header">
           <h4>Revenue By Services</h4>
@@ -67,7 +67,7 @@ Dashboard
       </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-md-6 col-xs-12" style="padding: 0px;">
       <div class="card">
         <div class="card-header">
           <h4>Patient Statistics</h4>
@@ -82,7 +82,7 @@ Dashboard
 
   <div class="row">
 
-    <div class="col-md-12">
+    <div class="col-md-12" style="padding: 0px;">
       <div class="card card-hero">
         <!-- <div class="card-header p-3">
           <div class="card-icon">

@@ -1577,7 +1577,10 @@ $(document).ready(function () {
 
 	
 	$('#allocate').click(function(){
-		$( "#allocateDialog" ).dialog( "open" );
+		var outamt = parseFloat(selrowData("#jqGrid").dbacthdr_outamount);
+		if(outamt > 0){
+			$( "#allocateDialog" ).dialog( "open" );
+		}
 	});
 	////////////////////////////////end allocation part/////////////////////////////////////
 

@@ -24,6 +24,7 @@ Route::get('/qrcode','SessionController@qrcode');
 Route::post('/qrcode','SessionController@qrcode_prereg');
 Route::post('/login','SessionController@store');
 Route::get('/logout','SessionController@destroy')->name('logout');
+Route::get('/mobile','HomeController@mobile')->name('mobile');
 
 /// Utility function ///
 Route::get('/util/getcompid','UtilController@getcompid');

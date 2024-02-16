@@ -1,5 +1,8 @@
 var preepisode;
 $(document).ready(function() {
+
+    let mql = window.matchMedia("(max-width: 768px)");
+
     $(".preloader").fadeOut();
     stop_scroll_on();
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
@@ -7,21 +10,25 @@ $(document).ready(function() {
       debug: true,
       success: "valid"
     });
-    // $('#frm_patient_info').validate({
-    //     rules: {
-    //         telh: {
-    //           require_from_group: [1, ".phone-group"]
-    //         },
-    //         telhp: {
-    //           require_from_group: [1, ".phone-group"]
-    //         }
-    //     }
-    // });    // patient form validation
+
+    if(mql.matches){ // utk mobile
+        $("#grid-command-buttons th").data('visible',false);
+        $("#grid-command-buttons th[data-column-id='commands']").data('visible',true);
+        $("#grid-command-buttons th[data-column-id='commands']").data('width','100%');
+
+        $('#mdl_patient_header').css('position','unset');
+        $('#mdl_item_selector div.modal-dialog').css('width','98%');
+    }else{
+        $("#grid-command-buttons th").data('visible',true);
+        $("#grid-command-buttons th[data-column-id='commands']").data('width','7%');
+    }
+    
 
     var counter = 0;
     var grid = $("#grid-command-buttons").bootgrid({
         selection: false,
         rowSelect: true,
+        columnSelection: false,
         ajax: true,
         ajaxSettings: {
             cache: false
@@ -102,20 +109,35 @@ $(document).ready(function() {
             },
             "commands": function (column,row) {
                 let rowid = row.idno;//just for specify each row
+                let retval = '';
                 if(row.q_epistycode == '' || row.q_epistycode == undefined){
-                    return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                    retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
                            "<div class='btn-group'><button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+$("#epistycode").val()+"</b></button>" +
-                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div>";
+                           "<button title='OTC Episode' type='button' class='btn btn-xs btn-danger btn-md command-otc-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" id=\"cmd_otc" + row.MRN + "\"><b>"+$("#epistycode2").val()+"</b></button></div></span>";
 
                 }else{
                     if(row.q_epistycode == $("#epistycode").val() && $('#curpat').val() == 'true'){
-                        return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
-                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+row.q_epistycode+"</b></button>";
+                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> " +
+                           "<button title='Episode' type='button' class='btn btn-xs btn-danger btn-md command-episode' data-row-id=\"" + rowid + "\" data-mrn=\"" + row.MRN + "\" data-patstatus=\"" + row.PatStatus + "\"  id=\"cmd_history" + row.MRN + "\"><b>"+row.q_epistycode+"</b></button></span>";
                     }else{
-                        return "<button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button> ";
+                        retval = "<span style='float: right;'><button title='Edit' type='button' class='btn btn-xs btn-warning btn-md command-edit' data-row-id=\"" + rowid + "\"  id=\"cmd_edit" + row.MRN + "\"><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></button></span>";
                     }
-                    
                 }
+
+                if(mql.matches){
+                    retval += `
+                        <span class='m_span'><b>MRN :</b>`+show_field(row.MRN)+`</span>
+                        <span class='m_span'><b>Episode :</b>`+show_field(row.Episno)+`</span>
+                        <span class='m_span'><b>Name :</b>`+show_field(row.Name)+`</span>
+                        <span class='m_span'><b>Doctor :</b>`+show_field(row.q_doctorname)+`</span>
+                        <span class='m_span'><b>I/C :</b>`+show_field(row.Newic)+`</span>
+                        <span class='m_span'><b>H/P :</b>`+show_field(row.telhp)+`</span>
+                        <span class='m_span'><b>DOB :</b>`+show_field(row.DOB)+`</span>
+                        <span class='m_span'><b>Sex :</b>`+show_field(row.Sex)+`</span>
+                    `;
+                }
+
+                return retval;
             }
         }
     }).on("loaded.rs.jquery.bootgrid", function(){
@@ -124,15 +146,27 @@ $(document).ready(function() {
 
 
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field
-            $(".actionBar").prepend(`
-                <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
-                    <option value='MRN'>MRN</option>
-                    <option selected='true' value='Name'>Name</option>
-                    <option value='Newic'>Newic</option>
-                    <option value='Staffid'>Staffid</option>
-                    <option value='telhp'>Handphone</option>
-                    <option value='doctor'>Doctor</option>
-                </select>`);
+            if(mql.matches){
+                $(".actionBar").prepend(`
+                    <select id='Scol' class='search form-group form-control'>
+                        <option value='MRN'>MRN</option>
+                        <option selected='true' value='Name'>Name</option>
+                        <option value='Newic'>Newic</option>
+                        <option value='Staffid'>Staffid</option>
+                        <option value='telhp'>Handphone</option>
+                        <option value='doctor'>Doctor</option>
+                    </select>`);
+            }else{
+                $(".actionBar").prepend(`
+                    <select id='Scol' class='search form-group form-control' style='width: fit-content !important;'>
+                        <option value='MRN'>MRN</option>
+                        <option selected='true' value='Name'>Name</option>
+                        <option value='Newic'>Newic</option>
+                        <option value='Staffid'>Staffid</option>
+                        <option value='telhp'>Handphone</option>
+                        <option value='doctor'>Doctor</option>
+                    </select>`);
+            }
         }
 
         var detailRows = '';
@@ -160,7 +194,6 @@ $(document).ready(function() {
 
             populate_episode(rowid,rowdata);
             $('#editEpisode').modal({backdrop: "static"});
-
         }).end().find(".command-add").on("click", function(e) {
             var html = '';
 
@@ -211,8 +244,8 @@ $(document).ready(function() {
             $('[name='+childName+']').hide();
 
             var addDetail='';
-            addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"8\">';
-            addDetail =  addDetail + detailRows;
+            addDetail = '<tr ><td><a href="javascript:void(0);" class="remCF btn btn-xs btn-primary btn-md"> <span class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></span> </a></td><td colspan=\"10\">';
+            addDetail = addDetail + detailRows;
             addDetail = addDetail + '<td></tr>';
 
             tr.after(addDetail);
@@ -899,4 +932,8 @@ function getrow_bootgrid(
             }
         });
         return retval;
+}
+
+function show_field(fld){
+    return (fld==undefined || fld==null)?'':fld;
 }

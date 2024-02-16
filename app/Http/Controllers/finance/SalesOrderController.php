@@ -229,7 +229,7 @@ class SalesOrderController extends defaultController
                 'lineno_' => 1,
                 // 'invno' => $invno,
                 'deptcode' => strtoupper($request->db_deptcode),
-                'unit' => strtoupper($request->db_deptcode),//department.sector
+                'unit' => session('unit'),//department.sector
                 'debtorcode' => strtoupper($request->db_debtorcode),
                 'payercode' => strtoupper($request->db_debtorcode),
                 'entrydate' => strtoupper($request->db_entrydate),
@@ -274,7 +274,7 @@ class SalesOrderController extends defaultController
         
         $array_update = [
             'deptcode' => strtoupper($request->db_deptcode),
-            'unit' => strtoupper($request->db_deptcode),
+            'unit' => session('unit'),
             'debtorcode' => strtoupper($request->db_debtorcode),
             'payercode' => strtoupper($request->db_debtorcode),
             'entrydate' => strtoupper($request->db_entrydate),

@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="panel-body form-horizontal">
-        <div class="col-xs-6">
+        <div class="col-md-6">
             <div id="jqGrid_nok_pat_c">
                 <div class='col-md-12' style="padding:0 0 15px 0">
                     <table id="jqGrid_nok_pat" class="table table-striped"></table>
@@ -8,7 +8,7 @@
                 </div>
             </div>
         </div>
-        <form class="col-xs-6" id="form_nok_pat" autocomplete="off">
+        <form class="col-md-6" id="form_nok_pat" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-12">
                 <div class="btn-group btn-group-sm pull-right" role="group" aria-label="..." 

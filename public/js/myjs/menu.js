@@ -60,7 +60,7 @@ var Menu = function () {
 					"closable" : true,
 					"maximizable" : false,
 					"minimizable" : true,
-					"collapsable" : true,
+					"collapsable" : false,
 					"dblclick" : "minimize",
 					"restore" : function(evt) { 
 						$(this).dialog( "moveToTop" );

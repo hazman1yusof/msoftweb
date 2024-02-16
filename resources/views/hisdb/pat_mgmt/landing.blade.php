@@ -238,8 +238,7 @@
 			<table id="grid-command-buttons" class="table table-condensed table-hover table-striped" width="100%" data-ajax="true">
                 <thead>
                 <tr>
-                	<th data-column-id="idno" data-type="numeric" data-visible="false" data-identifier="true"></th>
-                	<th data-column-id="mrn" data-formatter="col_add" data-width="4%">#</th>
+                	<th data-column-id="no" data-formatter="col_add" data-width="4%">#</th>
                     @if (request()->get('curpat') == 'true')
                     <!-- <th data-column-id="QueueNo" data-width="3%">Queue</th> -->
                     <th data-column-id="reg_date" data-width="7%">Reg Date</th>
@@ -261,7 +260,7 @@
                     <th data-column-id="DOB" data-formatter="col_dob" data-width="6%">DOB</th>
                     <th data-column-id="Sex" data-width="2%">Sex</th>
                     <th data-column-id="col_age" data-formatter="col_age" data-sortable="false" data-width="2%">Age</th>
-					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%">Action</th>
+					<th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7%"> </th>
 				</tr>
 				</thead>
 

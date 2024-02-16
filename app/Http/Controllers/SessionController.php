@@ -74,6 +74,8 @@ class SessionController extends Controller
             
             if(request('myurl') == '192.168.0.108'){
                 return redirect('/home');
+            }else if(!empty($request->mobile) && $request->mobile == 'true'){
+                return redirect('/mobile');
             }else{
                 return redirect()->home();
             }

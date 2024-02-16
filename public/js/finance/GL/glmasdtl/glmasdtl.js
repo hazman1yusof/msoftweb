@@ -225,7 +225,7 @@ $(document).ready(function () {
 		hidetbl(true);
 		$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 		$("#TableGlmasdtl td span").text("");
-		DataTable.clear().draw();
+		// DataTable.clear().draw();
 	});
 
 	var counter=20, moredr=true, morecr=true, DTscrollTop = 0;
@@ -247,7 +247,7 @@ $(document).ready(function () {
 		$("#TableGlmasdtl td[id^='glmasdtl_actamount']").removeClass('bg-primary');
 		$(this).addClass("bg-primary");
 		DataTable.clear().draw();
-		DataTable.ajax.reload();
+		// DataTable.ajax.reload();
 		hidetbl(false);
 		if($(this).text().length>0){
 			moredr=true;morecr=true;
@@ -264,12 +264,12 @@ $(document).ready(function () {
 	var DataTable = $('#TableGlmasTran').DataTable({
     	ajax: './glenquiry/table?action=getdata',
     	order: [[ 10, 'desc' ]],
+    	processing: true,
+    	serverSide: true,
 		scrollY: 500,
-    	deferRender: true,
-    	scroller: true,
-		paging: false,
+		paging: true,
 	    columns: [
-	    	{ data: 'open' ,"width": "5%", "sClass": "opendetail"},
+	    	{ data: 'open' ,"width": "5%", "sClass": "opendetail","searchable":false},
 			{ data: 'source', "sClass": "source"},
 			{ data: 'trantype', "sClass": "trantype"},
 			{ data: 'auditno', "sClass": "auditno"},
@@ -319,7 +319,21 @@ $(document).ready(function () {
         data.costcode = selrowData("#jqGrid").glmasdtl_costcode;
         data.acc = $('#glaccount').val();
         data.period = $("td[class='bg-primary']").attr('period');
-    });
+        data.searchby = $("#Scol_dtb").val();
+    }).on( 'init.dt', function () {
+    	$('#TableGlmasTran_filter.dataTables_filter').prepend(`
+    		<label style='width: fit-content !important;display: inline-block !important;margin-right: 10px;'>Search By: </label>
+	        <select id='Scol_dtb' class='search form-group form-control' style='width: fit-content !important;display: inline-block !important;margin-right: 10px;'>
+	            <option value='source'>Source</option>
+	            <option value='trantype'>Trantype</option>
+	            <option value='auditno'>Auditno</option>
+	            <option value='postdate'>Postdate</option>
+	            <option value='description'>Description</option>
+	            <option selected='true' value='reference'>Reference</option>
+	            <option value='acccode'>Account Code</option>
+	        </select>`);
+        console.log( 'Table initialisation complete: '+new Date().getTime() );
+    } );
 
 	$('#TableGlmasTran tbody').on( 'click', 'tr', function () {
 		DataTable.$('tr.bg-info').removeClass('bg-info');
