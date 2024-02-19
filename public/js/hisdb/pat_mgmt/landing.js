@@ -16,6 +16,8 @@ $(document).ready(function() {
         $("#grid-command-buttons th[data-column-id='commands']").data('visible',true);
         $("#grid-command-buttons th[data-column-id='commands']").data('width','100%');
 
+        $('button#btn_mykad,button#btn_biometric').hide();
+
         $('#mdl_patient_header').css('position','unset');
         $('#mdl_item_selector div.modal-dialog').css('width','98%');
     }else{
@@ -143,8 +145,6 @@ $(document).ready(function() {
     }).on("loaded.rs.jquery.bootgrid", function(){
         counter = 0;
 
-
-
         if(!$("#Scol").length){ //tambah search col kat atas utk search by field
             if(mql.matches){
                 $(".actionBar").prepend(`
@@ -270,9 +270,14 @@ $(document).ready(function() {
         }
         $("#load_from_addupd").data('info','false');
 
-        // if($('#showTriage_curpt').length > 0){
-        //     document.getElementById('showTriage_curpt').style.display = 'inline'; //hide and show heading details dekat triage
-        // }
+        if(mql.matches){ // utk mobile
+            console.log($("#grid-command-buttons-header select.search"))
+
+            $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
+            $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
+            $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
+
+        }
 
     }).on("click.rs.jquery.bootgrid", function (e,c,r){
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");

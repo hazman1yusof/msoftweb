@@ -175,7 +175,7 @@ div.wrapper > div.row > div.panel.panel-default > div.panel-heading.clearfix > i
 }
 
 .search{
-	width: 40% !important;
+	width: 40%;
 }
 
 .panel-primary {
@@ -444,4 +444,11 @@ form#.form_medc p{
 .form-horizontal .myformgroup{
 	margin-right: -15px;
 	margin-left: -15px;
+}
+.search2{
+    margin-right: 2% !important;
+}
+#grid-command-buttons-header,#grid-command-buttons-header div.actionBar{
+	padding-right: 0px !important;
+    padding-left: 0px !important;
 }
