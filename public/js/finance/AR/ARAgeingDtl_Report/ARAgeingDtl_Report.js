@@ -30,16 +30,34 @@ $(document).ready(function () {
     $("#genreport input[name='debtorcode_to']").change(function(){
         $("#genreportpdf input[name='debtorcode_to']").val($(this).val());
     });
-    $("#genreport input[name='datefr']").change(function(){
-        $("#genreportpdf input[name='datefr']").val($(this).val());
+    $("#genreport input[name='date']").change(function(){
+        $("#genreportpdf input[name='date']").val($(this).val());
+    });
+    $("#genreport input[name='groupOne']").change(function(){
+        $("#genreportpdf input[name='groupOne']").val($(this).val());
+    });
+    $("#genreport input[name='groupTwo']").change(function(){
+        $("#genreportpdf input[name='groupTwo']").val($(this).val());
+    });
+    $("#genreport input[name='groupThree']").change(function(){
+        $("#genreportpdf input[name='groupThree']").val($(this).val());
+    });
+    $("#genreport input[name='groupFour']").change(function(){
+        $("#genreportpdf input[name='groupFour']").val($(this).val());
+    });
+    $("#genreport input[name='groupFive']").change(function(){
+        $("#genreportpdf input[name='groupFive']").val($(this).val());
+    });
+    $("#genreport input[name='groupSix']").change(function(){
+        $("#genreportpdf input[name='groupSix']").val($(this).val());
     });
     
     $("#pdfgen1").click(function() {
-        window.open('./ARAgeingDtl_Report/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(), '_blank');
+        window.open('./ARAgeingDtl_Report/showpdf?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(), '_blank');
     });
     
     $("#excelgen1").click(function() {
-        window.location='./ARAgeingDtl_Report/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+        window.location='./ARAgeingDtl_Report/showExcel?debtorcode_from='+$('#debtorcode_from').val()+'&debtorcode_to='+$("#debtorcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val();
     });
     
     var dialog_debtorFrom = new ordialog(

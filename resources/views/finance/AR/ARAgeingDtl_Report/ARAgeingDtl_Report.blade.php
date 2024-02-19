@@ -59,7 +59,7 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 700px;">
             <form method="get" id="genreport" action="./ARAgeingDtl_Report/showExcel">
                 <h2>AR AGEING DETAILS</h2>
                 <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
@@ -68,8 +68,8 @@
                     <div class="col-md-5" style="margin-left: 50px;">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <label class="control-label" for="Scol">Date From</label>
-                                <input id="datefr" name="datefr" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+                                <label class="control-label" for="Scol">Date</label>
+                                <input id="date" name="date" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                             </div>
                         </div>
                         
@@ -110,6 +110,119 @@
                                         </button>
                                     </fieldset>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class='col-md-6' style="padding: 30px 0;margin-left: 140px;">
+                        <div class="panel panel-info">
+                            <div class="panel-heading text-center">PRINTING OPTION</div>
+                            <div class="panel-body" style="padding: 15px 0;">
+                                <div class="col-md-6" style="padding-left: 0px;padding-right: 0px;">
+                                    <div class="col-md-12">
+                                        <label for="groupOne">Group 1</label>
+                                        <div class="input-group">
+                                            <input id="groupOne" name="groupOne" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="padding-top: 15px;">
+                                        <label for="groupTwo">Group 2</label>
+                                        <div class="input-group">
+                                            <input id="groupTwo" name="groupTwo" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="padding-top: 15px;">
+                                        <label for="groupThree">Group 3</label>
+                                        <div class="input-group">
+                                            <input id="groupThree" name="groupThree" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6" style="padding-left: 0px;padding-right: 0px;">
+                                    <div class="col-md-12">
+                                        <label for="groupFour">Group 4</label>
+                                        <div class="input-group">
+                                            <input id="groupFour" name="groupFour" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="padding-top: 15px;">
+                                        <label for="groupFive">Group 5</label>
+                                        <div class="input-group">
+                                            <input id="groupFive" name="groupFive" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12" style="padding-top: 15px;">
+                                        <label for="groupSix">Group 6</label>
+                                        <div class="input-group">
+                                            <input id="groupSix" name="groupSix" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="form-group">
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupOne">Group 1</label>
+                                        <div class="input-group">
+                                            <input id="groupOne" name="groupOne" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupFour">Group 4</label>
+                                        <div class="input-group">
+                                            <input id="groupFour" name="groupFour" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupTwo">Group 2</label>
+                                        <div class="input-group">
+                                            <input id="groupTwo" name="groupTwo" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupFive">Group 5</label>
+                                        <div class="input-group">
+                                            <input id="groupFive" name="groupFive" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupThree">Group 3</label>
+                                        <div class="input-group">
+                                            <input id="groupThree" name="groupThree" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6" style="padding-top: 15px;">
+                                        <label for="groupSix">Group 6</label>
+                                        <div class="input-group">
+                                            <input id="groupSix" name="groupSix" type="number" class="form-control input-sm">
+                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
+                                        </div>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
