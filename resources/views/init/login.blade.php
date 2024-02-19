@@ -15,7 +15,7 @@
   <link href="css/login.css" rel="stylesheet">
   <style type="text/css">
     body {
-      background-image:url( {{ asset('img/page-hospital.jpg') }} ) !important;
+      background-image:url('./img/page-hospital.jpg');
       background-repeat: no-repeat !important;
       background-size: cover !important;
       background-position: bottom !important;
@@ -38,7 +38,7 @@
 
     <form class="form-signin" name="login" method="POST" action="./login">
       {{ csrf_field() }}
-      <h2 class="form-signin-heading">Please Log in</h2>
+      <h2 class="form-signin-heading"></h2>
       <label for="username" class="sr-only">Email address</label>
       <input type="text" id="username" name='username' class="form-control" placeholder="Username" required autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
@@ -81,6 +81,11 @@
 
 <script>
   document.getElementById("myurl").value = window.location.hostname;
+  let mql = window.matchMedia("(max-width: 768px)");
+  if(mql.matches){
+    $('body').css('background-image',"url('./img/page-hospital2.jpg')");
+  }
+
 
     $(document).ready(function(){
       let mql = window.matchMedia("(max-width: 768px)");
