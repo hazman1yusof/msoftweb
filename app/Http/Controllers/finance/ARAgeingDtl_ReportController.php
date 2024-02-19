@@ -103,20 +103,6 @@ class ARAgeingDtl_ReportController extends defaultController
         
         $debtorcode = $debtorcode->get(['dm.debtortype', 'dm.debtorcode', 'dm.name']);
         
-        // $dbacthdr_hdr = DB::table('debtor.dbacthdr as dh')
-        //                 ->select('dh.idno', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.lineno_', 'dh.amount', 'dh.outamount', 'dh.recstatus', 'dh.entrydate', 'dh.entrytime', 'dh.entryuser', 'dh.reference', 'dh.recptno', 'dh.paymode', 'dh.tillcode', 'dh.tillno', 'dh.debtortype', 'dh.debtorcode', 'dh.payercode', 'dh.billdebtor', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.authno', 'dh.expdate', 'dh.adddate', 'dh.adduser', 'dh.upddate', 'dh.upduser', 'dh.deldate', 'dh.deluser', 'dh.epistype', 'dh.cbflag', 'dh.conversion', 'dh.payername', 'dh.hdrtype', 'dh.currency', 'dh.rate', 'dh.unit', 'dh.invno', 'dh.paytype', 'dh.bankcharges', 'dh.RCCASHbalance', 'dh.RCOSbalance', 'dh.RCFinalbalance', 'dh.PymtDescription', 'dh.orderno', 'dh.ponum', 'dh.podate', 'dh.termdays', 'dh.termmode', 'dh.deptcode', 'dh.posteddate', 'dh.approvedby', 'dh.approveddate', 'dm.debtorcode', 'dm.name')
-        //                 ->leftJoin('debtor.debtormast as dm', function($join){
-        //                     $join = $join->on('dm.debtorcode', '=', 'dh.debtorcode')
-        //                                 ->where('dm.compcode', '=', session('compcode'));
-        //                 })
-        //                 ->where('dh.compcode', '=', session('compcode'))
-        //                 ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-        //                 ->whereBetween('dh.debtorcode', [$debtorcode_from,$debtorcode_to.'%'])
-        //                 ->whereDate('dh.posteddate', '<=', $date)
-        //                 ->get();
-        
-        // dd($debtorcode);
-        
         $array_report = [];
         foreach ($debtorcode as $key => $value){
             $dbacthdr = DB::table('debtor.dbacthdr as dh')
@@ -132,13 +118,6 @@ class ARAgeingDtl_ReportController extends defaultController
                         ->whereDate('dh.posteddate', '<=', $date)
                         ->orderBy('dh.posteddate', 'ASC')
                         ->get();
-            
-            // $dbacthdr_hdr = DB::table('debtor.dbacthdr as dh')
-            //                 ->where('dh.compcode', '=', session('compcode'))
-            //                 ->where('dh.debtorcode', '=', $value->debtorcode)
-            //                 ->first();
-            
-            // dd($dbacthdr);
             
             $value->remark = '';
             $value->doc_no = '';
@@ -161,7 +140,6 @@ class ARAgeingDtl_ReportController extends defaultController
                 
                 if($value->trantype == 'IN' || $value->trantype =='DN') {
                     $alloc_sum = DB::table('debtor.dballoc as da')
-                            ->select('da.docsource', 'da.doctrantype', 'da.docauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate')
                             ->where('da.compcode', '=', session('compcode'))
                             ->where('da.debtorcode', '=', $value->debtorcode)
                             ->where('da.refsource', '=', $value->source)
@@ -172,40 +150,8 @@ class ARAgeingDtl_ReportController extends defaultController
                             ->sum('da.amount');
                     
                     $newamt = $hdr_amount - $alloc_sum;
-                    
-                    // $dballoc = DB::table('debtor.dballoc as da')
-                    //         ->select('da.docsource', 'da.doctrantype', 'da.docauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount as alloc_amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.amount', 'dh.outamount', 'dh.reference', 'dh.recptno', 'dh.debtorcode', 'dh.payercode', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.unit', 'dh.posteddate')
-                    //         ->join('debtor.dbacthdr as dh', function($join) use ($request){
-                    //             $join = $join->on('dh.source', '=', 'da.refsource')
-                    //                         ->on('dh.trantype', '=', 'da.reftrantype')
-                    //                         ->on('dh.auditno', '=', 'da.refauditno')
-                    //                         ->where('dh.compcode', '=', session('compcode'));
-                    //         })
-                    //         ->where('da.compcode', '=', session('compcode'))
-                    //         ->where('da.debtorcode', '=', $value->debtorcode)
-                    //         ->where('da.refsource', '=', $value->source)
-                    //         ->where('da.reftrantype', '=', $value->trantype)
-                    //         ->where('da.refauditno', '=', $value->auditno)
-                    //         ->where('da.recstatus', '=', "POSTED")
-                    //         ->whereDate('da.allocdate', '<=', $date);
-                    
-                    // $dballoc = DB::table('debtor.dbacthdr as dh')
-                    //         ->select('dh.source', 'dh.trantype', 'dh.auditno', 'dh.amount', 'dh.outamount', 'dh.reference', 'dh.recptno', 'dh.debtorcode', 'dh.payercode', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.unit', 'dh.posteddate', 'da.docsource', 'da.doctrantype', 'da.docauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount as alloc_amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate')
-                    //         ->join('debtor.dballoc as da', function($join) use ($request){
-                    //             $join = $join->on('da.refsource', '=', 'dh.source')
-                    //                         ->on('da.reftrantype', '=', 'dh.trantype')
-                    //                         ->on('da.refauditno', '=', 'dh.auditno')
-                    //                         ->where('da.compcode', '=', session('compcode'));
-                    //         })
-                    //         ->where('dh.compcode', '=', session('compcode'))
-                    //         ->where('dh.source', '=', $value->source)
-                    //         ->where('dh.trantype', '=', $value->trantype)
-                    //         ->where('dh.auditno', '=', $value->auditno)
-                    //         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    //         ->whereDate('da.allocdate', '<=', $date);
                 }else{
                     $doc_sum = DB::table('debtor.dballoc as da')
-                            ->select('da.refsource', 'da.reftrantype', 'da.refauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate')
                             ->where('da.compcode', '=', session('compcode'))
                             ->where('da.debtorcode', '=', $value->debtorcode)
                             ->where('da.docsource', '=', $value->source)
@@ -216,7 +162,6 @@ class ARAgeingDtl_ReportController extends defaultController
                             ->sum('da.amount');
                     
                     $ref_sum = DB::table('debtor.dballoc as da')
-                            ->select('da.docsource', 'da.doctrantype', 'da.docauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate')
                             ->where('da.compcode', '=', session('compcode'))
                             ->where('da.debtorcode', '=', $value->debtorcode)
                             ->where('da.refsource', '=', $value->source)
@@ -227,37 +172,6 @@ class ARAgeingDtl_ReportController extends defaultController
                             ->sum('da.amount');
                     
                     $newamt = -($hdr_amount - $doc_sum - $ref_sum);
-                    
-                    // $dballoc = DB::table('debtor.dballoc as da')
-                    //         ->select('da.refsource', 'da.reftrantype', 'da.refauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount as alloc_amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate', 'dh.source', 'dh.trantype', 'dh.auditno', 'dh.amount', 'dh.outamount', 'dh.reference', 'dh.recptno', 'dh.debtorcode', 'dh.payercode', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.unit', 'dh.posteddate')
-                    //         ->join('debtor.dbacthdr as dh', function($join) use ($request){
-                    //             $join = $join->on('dh.source', '=', 'da.docsource')
-                    //                         ->on('dh.trantype', '=', 'da.doctrantype')
-                    //                         ->on('dh.auditno', '=', 'da.docauditno')
-                    //                         ->where('dh.compcode', '=', session('compcode'));
-                    //         })
-                    //         ->where('da.compcode', '=', session('compcode'))
-                    //         ->where('da.debtorcode', '=', $value->debtorcode)
-                    //         ->where('da.docsource', '=', $value->source)
-                    //         ->where('da.doctrantype', '=', $value->trantype)
-                    //         ->where('da.docauditno', '=', $value->auditno)
-                    //         ->where('da.recstatus', '=', "POSTED")
-                    //         ->whereDate('da.allocdate', '<=', $date);
-                    
-                    // $dballoc = DB::table('debtor.dbacthdr as dh')
-                    //         ->select('dh.source', 'dh.trantype', 'dh.auditno', 'dh.amount', 'dh.outamount', 'dh.reference', 'dh.recptno', 'dh.debtorcode', 'dh.payercode', 'dh.remark', 'dh.mrn', 'dh.episno', 'dh.unit', 'dh.posteddate', 'da.refsource', 'da.reftrantype', 'da.refauditno', 'da.recptno as alloc_recptno', 'da.mrn as alloc_mrn', 'da.episno as alloc_episno', 'da.amount as alloc_amount', 'da.outamount as alloc_outamount', 'da.debtortype', 'da.debtorcode as alloc_debtorcode', 'da.payercode as alloc_payercode', 'da.allocdate')
-                    //         ->join('debtor.dballoc as da', function($join) use ($request){
-                    //             $join = $join->on('da.docsource', '=', 'dh.source')
-                    //                         ->on('da.doctrantype', '=', 'dh.trantype')
-                    //                         ->on('da.docauditno', '=', 'dh.auditno')
-                    //                         ->where('da.compcode', '=', session('compcode'));
-                    //         })
-                    //         ->where('dh.compcode', '=', session('compcode'))
-                    //         ->where('dh.source', '=', $value->source)
-                    //         ->where('dh.trantype', '=', $value->trantype)
-                    //         ->where('dh.auditno', '=', $value->auditno)
-                    //         ->whereIn('dh.recstatus', ['POSTED','ACTIVE'])
-                    //         ->whereDate('da.allocdate', '<=', $date);
                 }
                 
                 // $calc_ageing = $this->calc_ageing($newamt,$days,$groupOne,$groupTwo,$groupThree,$groupFour,$groupFive,$groupSix);

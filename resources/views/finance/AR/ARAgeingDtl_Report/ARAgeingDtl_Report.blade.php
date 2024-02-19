@@ -169,60 +169,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- <div class="form-group">
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupOne">Group 1</label>
-                                        <div class="input-group">
-                                            <input id="groupOne" name="groupOne" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupFour">Group 4</label>
-                                        <div class="input-group">
-                                            <input id="groupFour" name="groupFour" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupTwo">Group 2</label>
-                                        <div class="input-group">
-                                            <input id="groupTwo" name="groupTwo" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupFive">Group 5</label>
-                                        <div class="input-group">
-                                            <input id="groupFive" name="groupFive" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupThree">Group 3</label>
-                                        <div class="input-group">
-                                            <input id="groupThree" name="groupThree" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-6" style="padding-top: 15px;">
-                                        <label for="groupSix">Group 6</label>
-                                        <div class="input-group">
-                                            <input id="groupSix" name="groupSix" type="number" class="form-control input-sm">
-                                            <span class="input-group-addon" style="color:#000000 !important">days</span>
-                                        </div>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
