@@ -14,6 +14,12 @@
 	<link rel="stylesheet" href="css/container.css">
 
 	<script type="text/javascript">
+
+    let mql = window.matchMedia("(max-width: 768px)");
+    if(mql.matches){
+    	window.location.replace("./mobile");
+    }
+
 		function disableCloseButton(isClose){
 			if(isClose){
 				$('button[role=button][title=Close]').prop('disabled',true);

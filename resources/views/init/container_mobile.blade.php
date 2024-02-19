@@ -19,9 +19,9 @@
 	    font-weight: 600 !important;
 	  }
 	  .navmenu ul li {
-	  	background: #ffffffbf;
-	    margin: 8px;
-	    border: 1px #898989 solid;
+	  	background: #ffffff;
+	    margin: 4px;
+    	border: 1px #565656 solid;
 	  }
 
 	</style>
