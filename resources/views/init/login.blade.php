@@ -104,7 +104,9 @@
 
     var computerid_val = localStorage.getItem('computerid');
     if(!computerid_val){
-      $('#computerid_warning').show();
+      if(!mql.matches){
+        $('#computerid_warning').show();
+      }
     }else{
       $('#computerid').val(computerid_val);
     }
