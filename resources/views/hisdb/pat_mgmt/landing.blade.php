@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="plugins/form-validator/theme-default.css" />
 
     <link rel="stylesheet" href="plugins/css/trirand/ui.jqgrid-bootstrap.css" />
-	<link rel="stylesheet" href="css/landing.css">
+	<link rel="stylesheet" href="css/landing.css?v=1">
 
 </head>
 <script type="text/javascript">
