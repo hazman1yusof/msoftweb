@@ -30,13 +30,11 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
     * @return \Illuminate\Support\Collection
     */
     
-    public function __construct($suppcode_from,$suppcode_to,$datefr,$dateto)
+    public function __construct($suppcode_from,$suppcode_to,$date_ag)
     {
         $this->suppcode_from = $suppcode_from;
         $this->suppcode_to = $suppcode_to;
-        $this->datefr = $datefr;
-        $this->dateto = $dateto;
-        //$this->break_loop=[];
+        $this->date_ag = $date_ag;
 
         $this->comp = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -46,14 +44,17 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 40,
+            'A' => 10,
+            'B' => 50,
             'C' => 15,
-            'D' => 15,
-            'E' => 15,
-            'F' => 15,
-            'G' => 15,
-            'H' => 15,
+            'D' => 13,
+            'E' => 13,
+            'F' => 13,
+            'G' => 13,
+            'H' => 13,
+            'I' => 13,
+            'J' => 13,
+            'K' => 10,
         ];
     }
     
@@ -64,77 +65,136 @@ class APAgeingDtlExport implements FromView, WithEvents, WithColumnWidths
             $suppcode_from = '%';
         }
         $suppcode_to = $this->suppcode_to;
-        $datefr = Carbon::parse($this->datefr)->format('Y-m-d');
-        $dateto = Carbon::parse($this->dateto)->format('Y-m-d');
+        $date_ag = Carbon::parse($this->date_ag)->format('Y-m-d');
 
-        $years = range(Carbon::parse($this->datefr)->format('Y'), Carbon::parse($this->dateto)->format('Y'));
+        $supp_group = DB::table('finance.apacthdr as ap')
+                ->select('ap.suppgroup', 'sg.description AS sg_desc')
+                ->join('material.suppgroup as sg', function($join){
+                    $join = $join->on('sg.suppgroup', '=', 'ap.suppgroup');
+                    $join = $join->where('sg.compcode', '=', session('compcode'));
+                })
+                ->where('ap.compcode','=',session('compcode'))
+                ->where('ap.unit',session('unit'))
+                ->where('ap.recstatus', '=', 'POSTED')
+                ->whereDate('ap.postdate', '<=', $date_ag)
+                ->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%'])
+                ->orderBy('ap.suppgroup', 'ASC')
+                ->distinct('ap.suppgroup');
+
+        $supp_group = $supp_group->get(['ap.suppgroup','sg.sg_desc']);
 
         $supp_code = DB::table('finance.apacthdr as ap')
-                    ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
-                    ->join('material.supplier as su', function($join) {
+                    ->select('ap.suppcode', 'su.Name AS supplier_name', 'ap.suppgroup')
+                    ->join('material.supplier as su', function($join){
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
                         $join = $join->where('su.compcode', '=', session('compcode'));
                     })
                     ->where('ap.compcode','=',session('compcode'))
                     ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
-                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to.'%'])
-                    ->whereBetween('ap.postdate', [$datefr, $dateto])
+                    ->whereDate('ap.postdate', '<=', $date_ag)
+                    ->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%'])
                     ->orderBy('ap.suppcode', 'ASC')
                     ->distinct('ap.suppcode');
 
-        $supp_code = $supp_code->get(['ap.suppcode', 'su.supplier_name', 'su.Addr1', 'su.Addr2', 'su.Addr3', 'su.Addr4']);
+        $supp_code = $supp_code->get(['ap.suppcode','su.supplier_name', 'ap.suppgroup']);
 
         $array_report = [];
-        $years_bal_all = [];
-        // $break_loop = [];
-        // $loop = 0;
+
         foreach ($supp_code as $key => $value){
-            $years_bal = [];
-            $calc_openbal = DB::table('finance.apacthdr as ap') 
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                    ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','ap.suppgroup','su.Name AS supplier_name', 'ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                    ->join('material.supplier as su', function($join){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
                     ->where('ap.compcode',session('compcode'))
                     ->where('ap.unit',session('unit'))
-                    ->where('ap.recstatus', '=', 'POSTED')
-                    ->where('ap.suppcode', $value->suppcode)
-                    ->whereYear('ap.postdate', '<', Carbon::parse($this->datefr)->format('Y'));
+                    ->where('ap.recstatus', '=', "POSTED")
+                    ->where('ap.suppcode','=',$value->suppcode)
+                    ->whereDate('ap.postdate', '<=', $date_ag)
+                    ->orderBy('ap.postdate','ASC')
+                    // ->where('ap.outamount','>',0)
+                    ->get();
 
-            $openbalb4 = $this->calc_bal($calc_openbal);
+            //dd($apacthdr);
 
-            foreach ($years as $year) {
-                $apacthdr = DB::table('finance.apacthdr as ap')
-                            ->where('ap.compcode', '=', session('compcode'))
-                            ->where('ap.unit',session('unit'))
-                            ->where('ap.recstatus', '=', 'POSTED')
-                            ->where('ap.suppcode', $value->suppcode)
-                            ->whereYear('ap.postdate', $year);
+            $value->docno = '';
+            $value->outamt = 0;
             
-                $balance = $this->calc_bal($apacthdr);
-                $total_bal = $balance + $openbalb4;
-                array_push($years_bal,$total_bal);
-                $openbalb4 = $total_bal;
+            foreach ($apacthdr as $key => $value){
+                $apacthdramt = $value->amount;
+                //dd($apacthdramt);
+                // if($value->trantype == 'IN' || $value->trantype == 'DN') {
+                    $apalloc = DB::table('finance.apalloc as al')
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.docsource','=',$value->source)
+                        ->where('al.doctrantype','=',$value->trantype)
+                        ->where('al.docauditno','=',$value->auditno)
+                        ->where('al.recstatus','=',"POSTED")
+                        ->where('al.suppcode','=',$value->suppcode)
+                        ->whereDate('al.allocdate', '<=', $date_ag)
+                        ->sum('al.allocamount');
+
+                    //dd($apalloc);
+                    //calculate o/s amount hdr - allocamt
+                    $outamt = Floatval($apacthdramt) - Floatval($apalloc);
+                    // dd($apacthdramt);
+
+                // } else {
+                //     $apalloc = DB::table('finance.apalloc as al')
+                //         ->where('al.compcode','=',session('compcode'))
+                //         ->where('al.docsource','=',$value->source)
+                //         ->where('al.doctrantype','=',$value->trantype)
+                //         ->where('al.docauditno','=',$value->auditno)
+                //         ->where('al.recstatus','=',"POSTED")
+                //         ->where('al.suppcode','=',$value->suppcode)
+                //         ->whereDate('al.allocdate', '<=', $date_ag)
+                //         ->sum('al.allocamount');
+
+                //         //calculate o/s amount hdr - allocamt
+                //         $outamt = -(Floatval($apacthdramt) - Floatval($apalloc));
+                //         //dd($outamt);
+                // }
+                
+                switch ($value->trantype) {
+                    case 'IN': //dr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'DN': //dr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'CN': //cr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'PV': //cr
+                        $value->docno = str_pad($value->pvno, 5, "0", STR_PAD_LEFT);
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
             }
-            array_push($array_report, $value);
-            array_push($years_bal_all,$years_bal);
-
         }
-        
-        //$this->break_loop = $break_loop;
-
-        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('years','years_bal_all','supp_code','array_report'));
+        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_excel',compact('array_report', 'supp_group', 'supp_code', 'apacthdr', 'apalloc', 'outamt'));
     }
     
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
-                // foreach ($this->break_loop as $value) {
-                //     $event->sheet->setBreak('A'.$value, \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
-                // }
-                
+            AfterSheet::class => function(AfterSheet $event) {        
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
                 $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAP AGEING DETAILS"."\n"
-                .sprintf('FROM DATE %s TO DATE %s',Carbon::parse($this->datefr)->format('d-m-Y'), Carbon::parse($this->dateto)->format('d-m-Y'))."\n"
+                .sprintf('FROM DATE %s',Carbon::parse($this->date_ag)->format('d-m-Y'))."\n"
                 .sprintf('FROM %s TO %s',$this->suppcode_from, $this->suppcode_to)
                 .'&L'
                 .'PRINTED BY : '.session('username')

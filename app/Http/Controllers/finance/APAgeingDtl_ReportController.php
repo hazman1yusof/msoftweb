@@ -25,69 +25,152 @@ class APAgeingDtl_ReportController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new APAgeingDtlExport($request->suppcode_from,$request->suppcode_to,$request->datefr,$request->dateto), 'APAgeingDtl.xlsx');
+        return Excel::download(new APAgeingDtlExport($request->suppcode_from,$request->suppcode_to,$request->date_ag), 'APAgeingDtl.xlsx');
     }
     
     public function showpdf(Request $request){
 
+        $date_ag = Carbon::parse($request->date_ag)->format('Y-m-d');
         $suppcode_from = $request->suppcode_from;
         if(empty($request->suppcode_from)){
             $suppcode_from = '%';
         }
         $suppcode_to = $request->suppcode_to;
-        $datefr = Carbon::parse($request->datefr)->format('Y-m-d');
-        $dateto = Carbon::parse($request->dateto)->format('Y-m-d');
 
-        $years = range(Carbon::parse($request->datefr)->format('Y'), Carbon::parse($request->dateto)->format('Y'));
+        $supp_group = DB::table('finance.apacthdr as ap')
+                    ->select('ap.suppgroup', 'sg.description AS sg_desc')
+                    ->join('material.suppgroup as sg', function($join){
+                        $join = $join->on('sg.suppgroup', '=', 'ap.suppgroup');
+                        $join = $join->where('sg.compcode', '=', session('compcode'));
+                    })
+                    ->where('ap.compcode','=',session('compcode'))
+                    ->where('ap.unit',session('unit'))
+                    ->where('ap.recstatus', '=', 'POSTED')
+                    ->whereDate('ap.postdate', '<=', $date_ag)
+                    ->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%'])
+                    ->orderBy('ap.suppgroup', 'ASC')
+                    ->distinct('ap.suppgroup');
+    
+        $supp_group = $supp_group->get(['ap.suppgroup','sg.sg_desc']);
+
+        //dd($supp_group);
 
         $supp_code = DB::table('finance.apacthdr as ap')
-                    ->select('ap.suppcode', 'su.Name AS supplier_name','su.Addr1 AS Addr1','su.Addr2 AS Addr2', 'su.Addr3 AS Addr3', 'su.Addr4 AS Addr4')
-                    ->join('material.supplier as su', function($join) {
+                    ->select('ap.suppcode', 'su.Name AS supplier_name', 'ap.suppgroup')
+                    ->join('material.supplier as su', function($join){
                         $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
                         $join = $join->where('su.compcode', '=', session('compcode'));
                     })
                     ->where('ap.compcode','=',session('compcode'))
                     ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
-                    ->whereBetween('ap.postdate', [$datefr, $dateto])
-                    ->whereBetween('su.SuppCode', [$suppcode_from, $suppcode_to.'%'])
+                    ->whereDate('ap.postdate', '<=', $date_ag)
+                    ->whereBetween('ap.suppcode', [$suppcode_from, $suppcode_to.'%'])
                     ->orderBy('ap.suppcode', 'ASC')
                     ->distinct('ap.suppcode');
-    
-        $supp_code = $supp_code->get(['ap.suppcode', 'su.supplier_name', 'su.Addr1', 'su.Addr2', 'su.Addr3', 'su.Addr4']);
+
+        $supp_code = $supp_code->get(['ap.suppcode','su.supplier_name', 'ap.suppgroup']);
+
+        //dd($supp_code);
 
         $array_report = [];
-        $years_bal_all = [];
 
         foreach ($supp_code as $key => $value){
-            $years_bal = [];
-            $calc_openbal = DB::table('finance.apacthdr as ap') 
+            $apacthdr = DB::table('finance.apacthdr as ap')
+                    ->select('ap.compcode','ap.auditno','ap.trantype','ap.doctype','ap.suppcode','ap.suppgroup','su.Name AS supplier_name', 'ap.actdate','ap.document','ap.cheqno','ap.deptcode','ap.amount','ap.outamount','ap.recstatus','ap.payto','ap.recdate','ap.postdate','ap.postuser','ap.category','ap.remarks','ap.adduser','ap.adddate','ap.upduser','ap.upddate','ap.source','ap.idno','ap.unit','ap.pvno','ap.paymode','ap.bankcode','ap.unallocated')
+                    ->join('material.supplier as su', function($join){
+                        $join = $join->on('su.SuppCode', '=', 'ap.suppcode');
+                        $join = $join->where('su.compcode', '=', session('compcode'));
+                    })
                     ->where('ap.compcode',session('compcode'))
                     ->where('ap.unit',session('unit'))
-                    ->where('ap.recstatus', '=', 'POSTED')
-                    ->where('ap.suppcode', $value->suppcode)
-                    ->whereYear('ap.postdate', '<', Carbon::parse($request->datefr)->format('Y'));
+                    ->where('ap.recstatus', '=', "POSTED")
+                    ->where('ap.suppcode','=',$value->suppcode)
+                    ->whereDate('ap.postdate', '<=', $date_ag)
+                    ->orderBy('ap.postdate','ASC')
+                    // ->where('ap.outamount','>',0)
+                    ->get();
 
-            $openbalb4 = $this->calc_bal($calc_openbal);
+            //dd($apacthdr);
 
-            foreach ($years as $year) {
-                $apacthdr = DB::table('finance.apacthdr as ap')
-                            ->where('ap.compcode', '=', session('compcode'))
-                            ->where('ap.unit',session('unit'))
-                            ->where('ap.recstatus', '=', 'POSTED')
-                            ->where('ap.suppcode', $value->suppcode)
-                            ->whereYear('ap.postdate', $year);
+            $value->docno = '';
+            $value->outamt = 0;
             
-                $balance = $this->calc_bal($apacthdr);
-                $total_bal = $balance + $openbalb4;
-                array_push($years_bal,$total_bal);
-                $openbalb4 = $total_bal;
+            foreach ($apacthdr as $key => $value){
+                $apacthdramt = $value->amount;
+                //dd($apacthdramt);
+                // if($value->trantype == 'IN' || $value->trantype == 'DN') {
+                    $apalloc = DB::table('finance.apalloc as al')
+                        ->where('al.compcode','=',session('compcode'))
+                        ->where('al.docsource','=',$value->source)
+                        ->where('al.doctrantype','=',$value->trantype)
+                        ->where('al.docauditno','=',$value->auditno)
+                        ->where('al.recstatus','=',"POSTED")
+                        ->where('al.suppcode','=',$value->suppcode)
+                        ->whereDate('al.allocdate', '<=', $date_ag)
+                        ->sum('al.allocamount');
+
+                    //dd($apalloc);
+                    //calculate o/s amount hdr - allocamt
+                    $outamt = Floatval($apacthdramt) - Floatval($apalloc);
+                    // dd($apacthdramt);
+
+                // } else {
+                //     $apalloc = DB::table('finance.apalloc as al')
+                //         ->where('al.compcode','=',session('compcode'))
+                //         ->where('al.docsource','=',$value->source)
+                //         ->where('al.doctrantype','=',$value->trantype)
+                //         ->where('al.docauditno','=',$value->auditno)
+                //         ->where('al.recstatus','=',"POSTED")
+                //         ->where('al.suppcode','=',$value->suppcode)
+                //         ->whereDate('al.allocdate', '<=', $date_ag)
+                //         ->sum('al.allocamount');
+
+                //         //calculate o/s amount hdr - allocamt
+                //         $outamt = -(Floatval($apacthdramt) - Floatval($apalloc));
+                //         //dd($outamt);
+                // }
+                
+                switch ($value->trantype) {
+                    case 'IN': //dr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'DN': //dr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'CN': //cr
+                        $value->docno = $value->document;
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    case 'PV': //cr
+                        $value->docno = str_pad($value->pvno, 5, "0", STR_PAD_LEFT);
+                        $value->outamt = $outamt;
+                        array_push($array_report, $value);
+                        break;
+                    default:
+                        // code...
+                        break;
+                }
+     
             }
-            array_push($array_report, $value);
-            array_push($years_bal_all,$years_bal);
 
         }
-        //dd($array_report);
+        // dd($array_report);
+
+        ///calculate ageing days
+        // $date_ag = Carbon::parse($request->date_ag)->format('Y-m-d');
+        // $postdate = $request->postdate;
+        // $datetime1 = new DateTime($date_ag);
+        // $datetime2 = new DateTime($postdate);
+        // $interval = $datetime1->diff($datetime2);
+        // $days = $interval->format('%a');
+
+        // dd($days);
         
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
@@ -95,13 +178,12 @@ class APAgeingDtl_ReportController extends defaultController
 
         $header = new stdClass();
         $header->printby = session('username');
-        $header->datefr = Carbon::parse($request->datefr)->format('d-m-Y');
-        $header->dateto = Carbon::parse($request->dateto)->format('d-m-Y');
+        $header->date_ag = Carbon::parse($request->date_ag)->format('d-m-Y');
         $header->suppcode_from = $request->suppcode_from;
         $header->suppcode_to = $request->suppcode_to;
         $header->compname = $company->name;
 
-        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_pdfmake',compact('years','years_bal_all','array_report','header', 'supp_code'));
+        return view('finance.AP.APAgeingDtl_Report.APAgeingDtl_Report_pdfmake',compact('array_report','header', 'supp_group', 'supp_code', 'apacthdr', 'apalloc', 'outamt'));
         
     }
 

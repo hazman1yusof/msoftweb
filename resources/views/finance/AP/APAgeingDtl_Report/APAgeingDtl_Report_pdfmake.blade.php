@@ -16,32 +16,6 @@
     </object>
     
     <script>
-        
-        var array_report=[
-            @foreach($array_report as $key => $array_report1)
-            {
-                @foreach($array_report1 as $key2 => $val)
-                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
-                @endforeach
-            },
-            @endforeach
-        ];
-
-        var years_bal_all = [
-            @foreach($years_bal_all as $key => $val)
-                [
-                @foreach($val as $key2 => $val2)
-                    `{{$val2}}`,
-                @endforeach
-                ],
-            @endforeach
-        ];
-
-        var years = [
-            @foreach($years as $key => $val)
-               '{{$val}}',
-            @endforeach
-        ];
 
         $(document).ready(function () {
             var docDefinition = {
@@ -51,6 +25,7 @@
                     ]
                 },
                 pageSize: 'A4',
+                pageOrientation: 'landscape',
                 content: [
                     {
                         image: 'letterhead',width:400, height:80, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -76,10 +51,123 @@
                     },
                     {
                         style: 'tableExample',
-                        table: make_table(),
+                        table: {
+                            headerRows: 1,
+                            widths: [40,200,50,45,40,40,40,40,40,40,33],  //panjang standard dia 515
+                            body: [
+                                [
+                                    { text: 'Code', style: 'tableHeader' },
+                                    { text: 'Company', style: 'tableHeader' },
+                                    { text: 'Document No', style: 'tableHeader', alignment: 'right' },
+                                    { text: 'Date', style: 'tableHeader' },
+                                    { text: '1-30 Days', style: 'tableHeader' },
+                                    { text: '31-60 Days', style: 'tableHeader' },
+                                    { text: '61-90 Days', style: 'tableHeader' },
+                                    { text: '91-120 Days', style: 'tableHeader' },
+                                    { text: '>120 Days', style: 'tableHeader' },
+                                    { text: 'Total', style: 'tableHeader' },
+                                    { text: 'Units', style: 'tableHeader' },
+                                ],
+                                
+                                @foreach ($supp_group as $suppgroup)
+                                    [
+                                        { text: '{{$suppgroup->suppgroup}}', bold: true},
+                                        { text: '{{$suppgroup->sg_desc}}', bold: true},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                        { text: ''},
+                                    ],
+                                    
+                                    @foreach ($supp_code as $suppcode)
+                                        @if($suppcode->suppgroup == $suppgroup->suppgroup)
+                                            [
+                                                { text: '{{$suppcode->suppcode}}' },
+                                                { text: '{!!$suppcode->supplier_name!!}' },
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                                { text: ''},
+                                            ],
+                                            @php($tot = 0)
+                                            @foreach ($array_report as $obj) 
+                                                @if($obj->suppcode == $suppcode->suppcode)
+                                                    [
+                                                        { text: ''},
+                                                        { text: '{{$obj->remarks}}'},
+                                                        { text: '{{strtoupper($obj->trantype)}}/{{strtoupper($obj->docno)}}', alignment: 'left' },
+                                                        { text: '{{\Carbon\Carbon::parse($obj->postdate)->format('d/m/Y')}}' },
+                                                        { text: '{{number_format($outamt,2)}}', alignment: 'right' },
+                                                        { text: ''},
+                                                        { text: ''},
+                                                        { text: ''},
+                                                        { text: ''},
+                                                        { text: ''},
+                                                        { text: '{{$obj->unit}}'},
+
+                                                    ],
+                                                    @php($tot += $outamt)
+                                                @endif
+                                            @endforeach
+                                            [
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '', style: 'tableHeader' },
+                                                { text: '', alignment: 'right' },
+                                                { text: 'TOTAL', style: 'tableHeader' },
+                                                { text: '{{number_format($tot,2)}}', alignment: 'right', bold: true },
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '',style: 'tableHeader' },
+                                                { text: '',style: 'tableHeader' },
+
+                                            ],
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                [
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', alignment: 'right' },
+                                    { text: 'SUB TOTAL', style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+
+                                ],
+                                [
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '', style: 'tableHeader' },
+                                    { text: '', alignment: 'right' },
+                                    { text: 'TOTAL', style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+                                    { text: '',style: 'tableHeader' },
+
+                                ]
+                            ]
+                        },
                         layout: 'lightHorizontalLines',
                     },
-                    { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
                 ],
                 styles: {
                     header: {
@@ -88,7 +176,7 @@
                         margin: [0, 0, 0, 3]
                     },
                     tableExample: {
-                        fontSize: 9,
+                        fontSize: 8,
                         margin: [0, 5, 0, 15]
                     },
                     tableHeader: {

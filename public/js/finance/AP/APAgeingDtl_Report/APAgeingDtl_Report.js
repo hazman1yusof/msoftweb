@@ -8,19 +8,16 @@ $(document).ready(function () {
 	$("#genreport input[name='suppcode_to']").change(function(){
 		$("#genreportpdf input[name='suppcode_to']").val($(this).val());
 	});
-	$("#genreport input[name='datefr']").change(function(){
-		$("#genreportpdf input[name='datefr']").val($(this).val());
-	});
-	$("#genreport input[name='dateto']").change(function(){
-		$("#genreportpdf input[name='dateto']").val($(this).val());
+	$("#genreport input[name='date_ag']").change(function(){
+		$("#genreportpdf input[name='date_ag']").val($(this).val());
 	});
    
 	$('#pdfgen').click(function(){
-		window.open('./APAgeingDtl_Report/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val(),  '_blank'); 
+		window.open('./APAgeingDtl_Report/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date_ag='+$("#date_ag").val(),  '_blank'); 
 	});
 
 	$('#excel').click(function(){
-		window.location='./APAgeingDtl_Report/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&datefr='+$("#datefr").val()+'&dateto='+$("#dateto").val();
+		window.location='./APAgeingDtl_Report/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date_ag='+$("#date_ag").val();
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////
