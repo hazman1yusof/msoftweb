@@ -960,6 +960,15 @@ Route::post('/ARAgeingDtl_Report/form','finance\ARAgeingDtl_ReportController@for
 Route::get('/ARAgeingDtl_Report/showExcel','finance\ARAgeingDtl_ReportController@showExcel');
 Route::get('/ARAgeingDtl_Report/showpdf','finance\ARAgeingDtl_ReportController@showpdf');
 
+//// Debtor List -- Report
+Route::get('/DebtorList_Report','finance\DebtorList_ReportController@show');
+Route::get('/DebtorList_Report/table','finance\DebtorList_ReportController@table');
+Route::post('/DebtorList_Report/form','finance\DebtorList_ReportController@form');
+Route::get('/DebtorList_Report/summaryExcel','finance\DebtorList_ReportController@summaryExcel');
+Route::get('/DebtorList_Report/summarypdf','finance\DebtorList_ReportController@summarypdf');
+Route::get('/DebtorList_Report/dtlExcel','finance\DebtorList_ReportController@dtlExcel');
+Route::get('/DebtorList_Report/dtlpdf','finance\DebtorList_ReportController@dtlpdf');
+
 //// AP Summary -- Report
 Route::get('/APSummary_Report','finance\APSummary_ReportController@show');
 Route::get('/APSummary_Report/table','finance\APSummary_ReportController@table');
