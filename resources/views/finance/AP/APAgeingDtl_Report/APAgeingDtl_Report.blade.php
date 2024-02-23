@@ -12,20 +12,6 @@
         table.reporttable td{
             padding:5px;
         }
-        
-        /* body{
-            background: #00808024 !important;
-        }
-        .container.mycontainer{
-            padding-top: 5%;
-        }
-        .mycontainer .panel-default {
-            border-color: #9bb7b7 !important;
-        }
-        .mycontainer .panel-default > .panel-heading {
-            background-image: linear-gradient(to bottom, #b4cfcf 0%, #c1dddd 100%) !important;
-            font-weight: bold;
-        } */
         .mycontainer .mybtnpdf{
             background-image: linear-gradient(to bottom, #ffbbbb 0%, #ffd1d1 100%) !important;
             color: #af2525;

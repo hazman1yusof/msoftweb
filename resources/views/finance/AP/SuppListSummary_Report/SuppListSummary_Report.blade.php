@@ -45,40 +45,42 @@
 
 @section('body')
 	<div class="container mycontainer">
-		<div class="jumbotron" style="margin-top: 30px;text-align: center; height:500px">
+		<div class="jumbotron" style="margin-top: 30px;text-align: center; height:400px">
 			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./SuppListSummary_Report/showExcel">
 				<h2>SUPPLIER LIST SUMMARY</h2>
 				<h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
 			
-				<div class="col-md-9">
-					<div class="form-group" style="width:800px; margin-left: 130px">
-						<div class="col-md-5">
-							<label class="control-label" for="Scol">Supplier List</label> 
-								<div class='input-group'> 
-									<input id="suppgroup" name="suppgroup" type="text" class="form-control input-sm" autocomplete="off">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								</div>
-								<span class="help-block"></span>
-						</div>
-					</div>
-				</div>
+                <div style="width: 800px;margin: 0 auto;">
+                    <div class="col-md-6" style="margin-top: 30px;">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label" for="Scol">Supplier List</label> 
+                                    <div class='input-group'> 
+                                        <input id="suppgroup" name="suppgroup" type="text" class="form-control input-sm" autocomplete="off">
+                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                                    </div>
+                                    <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </div>
 
-				<div class="col-md-3">
-					<div class="panel panel-default" style="height: 137px;">
-						<div class="panel-body">
-							<div class='col-md-12 btnform' style="padding: 20px 0px">
-							<fieldset>
-								<button name="pdfgen" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen">
-									<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-								</button>
-								<button name="excel" type="button" class="mybtn btn btn-sm mybtnxls" id="excel">
-									<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
-								</button>
-							</fieldset>
-							</div>
-						</div>
-					</div>
-				</div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default" style="height: 137px;">
+                            <div class="panel-body">
+                                <div class='col-md-12 btnform' style="padding: 20px 0px;">
+                                <fieldset>
+                                    <button name="pdfgen" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgen">
+                                        <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
+                                    </button>
+                                    <button name="excel" type="button" class="mybtn btn btn-sm mybtnxls" id="excel">
+                                        <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
+                                    </button>
+                                </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 			</form>
 		</div>
 	</div>

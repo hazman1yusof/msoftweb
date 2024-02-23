@@ -21,6 +21,7 @@ $(document).ready(function () {
 			colModel:[
 				{label:'Supplier Group',name:'suppgroup',width:200,classes:'pointer', canSearch: true, or_search: true },
 				{label:'Description',name:'description',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+				{label:'GL Account',name:'glaccno',width:400,classes:'pointer'},
 			],
 			urlParam: {
 				filterCol:['compcode','recstatus'],

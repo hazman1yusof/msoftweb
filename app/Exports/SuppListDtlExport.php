@@ -55,8 +55,8 @@ class SuppListDtlExport implements FromView, WithEvents, WithColumnWidths
         $suppgroup = $this->suppgroup;
 
         $supp_code = DB::table('material.supplier')
-                    ->select(['SuppCode','SuppGroup',
-                    DB::raw('CONCAT(supplier.Name, "\n", supplier.Addr1, "\n", supplier.Addr2, "\n", supplier.Addr3, "\n", supplier.Addr4) AS Address'), 'TelNo', 'Faxno'])
+                    // ->select(['SuppCode','SuppGroup','Name',
+                    // DB::raw('CONCAT(supplier.Addr1, "\n", supplier.Addr2, "\n", supplier.Addr3, "\n", supplier.Addr4) AS Address'), 'TelNo', 'Faxno'])
                     ->where('compcode','=',session('compcode'))
                     ->where('recstatus', '=', 'ACTIVE')
                     ->where('suppgroup', '=', $suppgroup)
