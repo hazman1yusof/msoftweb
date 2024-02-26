@@ -990,19 +990,14 @@ Route::post('/APAgeingDtl_Report/form','finance\APAgeingDtl_ReportController@for
 Route::get('/APAgeingDtl_Report/showExcel','finance\APAgeingDtl_ReportController@showExcel');
 Route::get('/APAgeingDtl_Report/showpdf','finance\APAgeingDtl_ReportController@showpdf');
 
-//// Supplier List Summary -- Report
-Route::get('/SuppListSummary_Report','finance\SuppListSummary_ReportController@show');
-Route::get('/SuppListSummary_Report/table','finance\SuppListSummary_ReportController@table');
-Route::post('/SuppListSummary_Report/form','finance\SuppListSummary_ReportController@form');
-Route::get('/SuppListSummary_Report/showExcel','finance\SuppListSummary_ReportController@showExcel');
-Route::get('/SuppListSummary_Report/showpdf','finance\SuppListSummary_ReportController@showpdf');
-
-//// Supplier List Detail -- Report
-Route::get('/SuppListDtl_Report','finance\SuppListDtl_ReportController@show');
-Route::get('/SuppListDtl_Report/table','finance\SuppListDtl_ReportController@table');
-Route::post('/SuppListDtl_Report/form','finance\SuppListDtl_ReportController@form');
-Route::get('/SuppListDtl_Report/showExcel','finance\SuppListDtl_ReportController@showExcel');
-Route::get('/SuppListDtl_Report/showpdf','finance\SuppListDtl_ReportController@showpdf');
+//// Supp List -- Report
+Route::get('/SuppList_Report','finance\SuppList_ReportController@show');
+Route::get('/SuppList_Report/table','finance\SuppList_ReportController@table');
+Route::post('/SuppList_Report/form','finance\SuppList_ReportController@form');
+Route::get('/SuppList_Report/summaryExcel','finance\SuppList_ReportController@summaryExcel');
+Route::get('/SuppList_Report/summarypdf','finance\SuppList_ReportController@summarypdf');
+Route::get('/SuppList_Report/dtlExcel','finance\SuppList_ReportController@dtlExcel');
+Route::get('/SuppList_Report/dtlpdf','finance\SuppList_ReportController@dtlpdf');
 
 ////////////////patient mgt setup/////////////////////////////////////////
 
