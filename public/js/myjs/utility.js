@@ -1418,6 +1418,10 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function makedialog(obj){
 		let width = 7/10 * $(window).width();
+		console.log($('#ismobile').val());
+		if($('#ismobile').val() == 'true'){
+			width = 9.5/10 * $(window).width();
+		}
 		if(obj.dialog_.hasOwnProperty('min_search_length')){
 			obj.min_search_length = obj.dialog_.min_search_length;
 		}

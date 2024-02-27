@@ -123,11 +123,14 @@ $(document).ready(function () {
 		},{
 			title: "Select Bed Type search",
 			open: function () {
+				if($('#ismobile').val() == 'true'){
+					
+				}
 				search_relate_pat.urlParam.filterCol=['compcode', 'recstatus'];
 				search_relate_pat.urlParam.filterVal=['session.compcode', 'ACTIVE'];
 
-				$('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
-				$('div.ui-widget-overlay.ui-front').css("z-index", "1099");
+				// $('div[aria-describedby="otherdialog_search_relate"]').css("z-index", "1100");
+				// $('div.ui-widget-overlay.ui-front').css("z-index", "1099");
 			}
 		},'urlParam','radio','tab'
 	);

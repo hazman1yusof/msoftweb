@@ -28,6 +28,8 @@ class TestController extends defaultController
                 return $this->load_discipline($request);
             case 'insert_phst':
                 return $this->insert_phst($request);
+            case 'debtortype_xde':
+                return $this->debtortype_xde($request);
             default:
                 return 'error happen..';
         }
@@ -245,21 +247,34 @@ class TestController extends defaultController
         }
     }
 
-    public function betulakn_AP(Request $request){
+    public function debtortype_xde(Request $request){
         DB::beginTransaction();
 
-            try {
+        try {
 
-                $apacthdr = DB::table('finance.apacthdr')
-                                ->where('compcode','9A')
-                                ->where('source','PV')
-                                ->where('trantype','9A')
+            $debtormast = DB::table('debtor.debtormast as dm')
+                            ->where('dm.compcode','9A')
+                            ->select('dm.debtortype')
+                            ->distinct();
 
-                DB::commit();
-            } catch (Exception $e) {
-                DB::rollback();
-                dd($e);
+            foreach ($debtormast->get() as $value) {
+                $debtortype = DB::table('debtor.debtortype as dy')
+                            ->select('dy.description')
+                            ->where('dy.compcode','9A')
+                            ->where('dy.debtortycode',$value->debtortype);
+
+                if(!$debtortype->exists()){
+                    dump($value->debtortype);
+                }
             }
+
+            dd('done');
+
+            // DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            dd($e);
+        }
     }
 
 }

@@ -61,8 +61,8 @@
     <div class="container mycontainer">
         <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 700px;">
             <form method="get" id="genreport" action="./ARAgeingDtl_Report/showExcel">
-                <h2>AR AGEING DETAILS</h2>
-                <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
+                <h2 style="padding-bottom: 30px;">AR AGEING DETAILS</h2>
+                <!-- <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4> -->
                 
                 <div style="width: 800px;margin: 0 auto;">
                     <div class="col-md-5" style="margin-left: 50px;">
@@ -72,9 +72,20 @@
                                 <input id="date" name="date" type="date" maxlength="12" class="form-control input-sm" data-validation="required" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12" style="padding-top: 10px;">
+                                <label class="control-label" for="Scol">Debtortype</label>
+                                <div class='input-group'>
+                                    <input id="debtortype" name="debtortype" type="text" class="form-control input-sm" autocomplete="off" value="ALL">
+                                    <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+                                </div>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 15px;">
+                            <div class="col-md-12" style="padding-top: 10px;">
                                 <label class="control-label" for="Scol">Debtor From</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_from" name="debtorcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
@@ -85,7 +96,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <div class="col-md-12" style="padding-top: 15px;">
+                            <div class="col-md-12" style="padding-top: 10px;">
                                 <label class="control-label" for="Scol">Debtor To</label>
                                 <div class='input-group'>
                                     <input id="debtorcode_to" name="debtorcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
@@ -122,7 +133,7 @@
                                     <div class="col-md-12">
                                         <label for="groupOne">Group 1</label>
                                         <div class="input-group">
-                                            <input id="groupOne" name="groupOne" type="number" class="form-control input-sm">
+                                            <input id="groupOne" name="groupOne" type="number" class="form-control input-sm" value="30">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
@@ -130,7 +141,7 @@
                                     <div class="col-md-12" style="padding-top: 15px;">
                                         <label for="groupTwo">Group 2</label>
                                         <div class="input-group">
-                                            <input id="groupTwo" name="groupTwo" type="number" class="form-control input-sm">
+                                            <input id="groupTwo" name="groupTwo" type="number" class="form-control input-sm" value="60">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
@@ -138,7 +149,7 @@
                                     <div class="col-md-12" style="padding-top: 15px;">
                                         <label for="groupThree">Group 3</label>
                                         <div class="input-group">
-                                            <input id="groupThree" name="groupThree" type="number" class="form-control input-sm">
+                                            <input id="groupThree" name="groupThree" type="number" class="form-control input-sm" value="90">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
@@ -148,7 +159,7 @@
                                     <div class="col-md-12">
                                         <label for="groupFour">Group 4</label>
                                         <div class="input-group">
-                                            <input id="groupFour" name="groupFour" type="number" class="form-control input-sm">
+                                            <input id="groupFour" name="groupFour" type="number" class="form-control input-sm" value="120">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>

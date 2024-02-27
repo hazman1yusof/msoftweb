@@ -10,18 +10,56 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.min.js" integrity="sha512-P0bOMePRS378NwmPDVPU455C/TuxDS+8QwJozdc7PGgN8kLqR4ems0U/3DeJkmiE31749vYWHvBOtR+37qDCZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     
     </object>
     
     <script>
+
+        var grouping_name = [
+            @foreach($grouping as $key => $val)
+                @if($key+1 < count($grouping))
+               '{{$val+1}}-{{$grouping[$key+1]}}',
+                @else
+                '> {{$val}}',
+                @endif
+            @endforeach
+        ];
+
+        var grouping = [
+            @foreach($grouping as $key => $val)
+            '{{$val}}',
+            @endforeach
+        ];
         
         var array_report=[
             @foreach($array_report as $key => $array_report1)
-            [
+            {
                 @foreach($array_report1 as $key2 => $val)
-                    {'{{$key2}}' : `{{$val}}`},
+                    '{{$key2}}' : `{{$val}}`,
                 @endforeach
-            ],
+            },
+            @endforeach
+        ];
+
+        var debtortype=[
+            @foreach($debtortype as $key => $debtortype1)
+            {
+                @foreach($debtortype1 as $key2 => $val)
+                    '{{$key2}}' : `{{$val}}`,
+                @endforeach
+            },
+            @endforeach
+        ];
+
+        var debtorcode=[
+            @foreach($debtorcode as $key => $debtorcode1)
+            {
+                @foreach($debtorcode1 as $key2 => $val)
+                    '{{$key2}}' : `{{$val}}`,
+                @endforeach
+            },
             @endforeach
         ];
         
@@ -46,6 +84,7 @@
                 },
                 pageSize: 'A4',
                 pageOrientation: 'landscape',
+                pageMargins: [15, 30, 15, 30],
                 content: [
                     {
                         image: 'letterhead', width: 400, height: 80, style: 'tableHeader', colSpan: 5, alignment: 'center'
@@ -69,162 +108,9 @@
                         },
                         layout: 'noBorders',
                     },
-                    // {
-                    //     text: '{{$company->name}}\n{{$company->address1}}\n{{$company->address2}}\n{{$company->address3}}\n{{$company->address4}}\n\n\n',
-                    //     alignment: 'center',
-                    //     style: 'comp_header'
-                    // },
-                    // {
-                    //     style: 'tableExample',
-                    //     table: {
-                    //         // headerRows: 1,
-                    //         widths: [40,80,50,40,60,60,60,60,60,60,45],  //panjang standard dia 515
-                    //         body: [
-                    //             [
-                    //                 { text: 'Code', style: 'tableHeader' },
-                    //                 { text: 'Company', style: 'tableHeader' },
-                    //                 { text: 'Document No', style: 'tableHeader' },
-                    //                 { text: 'Date', style: 'tableHeader' },
-                    //                 { text: '1-30 Days', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: '31-60 Days', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: '61-90 Days', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: '91-120 Days', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: '> 120 Days', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: 'Total', style: 'tableHeader', alignment: 'right' },
-                    //                 { text: 'Units', style: 'tableHeader' },
-                    //             ],
-                                
-                    //         ]
-                    //     },
-                    //     layout: 'lightHorizontalLines',
-                    // },
-                    @foreach($debtortype as $db_type)
-                    // {
-                    //     style: 'tableExample',
-                    //     table: {
-                    //         // headerRows: 1,
-                    //         widths: [40,80,50,40,60,60,60,60,60,60,45],  //panjang standard dia 515
-                    //         body: [
-                    //             [
-                    //                 { text: '{{$db_type->debtortycode}}', style: 'tableHeader' },
-                    //                 { text: '{{$db_type->description}}', colSpan: 2, style: 'tableHeader' },
-                    //                 { text: ' ' },
-                    //                 { text: ' ' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ', alignment: 'right' },
-                    //                 { text: ' ' },
-                    //             ],
-                    //             @foreach($debtorcode as $db_code)
-                    //                 @if($db_code->debtortype == $db_type->debtortycode)
-                    //                 [
-                    //                     { text: '{{$db_code->debtorcode}}' },
-                    //                     { text: '{{$db_code->name}}' },
-                    //                     { text: ' ' },
-                    //                     { text: ' ' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ', alignment: 'right' },
-                    //                     { text: ' ' },
-                    //                 ],
-                    //                 @endif
-                    //             @endforeach
-                    //         ]
-                    //     },
-                    //     layout: 'lightHorizontalLines',
-                    // },
-                    @endforeach
                     {
                         style: 'tableExample',
-                        table: {
-                            // headerRows: 1,
-                            widths: [40,90,45,50,60,60,60,60,60,60,45],  //panjang standard dia 515
-                            body: [
-                                [
-                                    { text: 'Code', style: 'tableHeader' },
-                                    { text: 'Company', style: 'tableHeader' },
-                                    { text: 'Document No', style: 'tableHeader' },
-                                    { text: 'Date', style: 'tableHeader' },
-                                    { text: '1-30 Days', style: 'tableHeader', alignment: 'right' },
-                                    { text: '31-60 Days', style: 'tableHeader', alignment: 'right' },
-                                    { text: '61-90 Days', style: 'tableHeader', alignment: 'right' },
-                                    { text: '91-120 Days', style: 'tableHeader', alignment: 'right' },
-                                    { text: '> 120 Days', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Total', style: 'tableHeader', alignment: 'right' },
-                                    { text: 'Units', style: 'tableHeader' },
-                                ],
-                                @foreach($debtortype as $db_type)
-                                    @if(!empty($db_type->debtortycode))
-                                    [
-                                        { text: '{{$db_type->debtortycode}}', style: 'tableHeader' },
-                                        { text: '{{$db_type->description}}', colSpan: 2, style: 'tableHeader' },
-                                        { text: ' ' },
-                                        { text: ' ' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ', alignment: 'right' },
-                                        { text: ' ' },
-                                    ],
-                                    @foreach($debtorcode as $db_code)
-                                        @if($db_code->debtortype == $db_type->debtortycode)
-                                        [
-                                            { text: '{{$db_code->debtorcode}}' },
-                                            { text: '{{$db_code->name}}' },
-                                            { text: ' ' },
-                                            { text: ' ' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ' },
-                                        ],
-                                        @foreach($array_report as $obj)
-                                            @if($obj->debtorcode == $db_code->debtorcode)
-                                            [
-                                                { text: '{{$obj->trantype}}.{{$obj->auditno}}' },
-                                                { text: '{{$obj->remark}}' },
-                                                { text: '{{$obj->doc_no}}' },
-                                                { text: '{{\Carbon\Carbon::parse($obj->posteddate)->format('d/m/Y')}}' },
-                                                { text: ' ', alignment: 'right' },
-                                                { text: '{{$obj->newamt}}', alignment: 'right' },
-                                                { text: ' ', alignment: 'right' },
-                                                { text: ' ', alignment: 'right' },
-                                                { text: ' ', alignment: 'right' },
-                                                { text: ' ', alignment: 'right' },
-                                                { text: '{{$obj->unit}}' },
-                                            ],
-                                            @endif
-                                        @endforeach
-                                        [
-                                            { text: ' ' },
-                                            { text: ' ' },
-                                            { text: ' ' },
-                                            { text: 'TOTAL', bold: true },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ', alignment: 'right' },
-                                            { text: ' ' },
-                                        ],
-                                        @endif
-                                    @endforeach
-                                    @endif
-                                @endforeach
-                            ]
-                        },
+                        table: make_table(),
                         layout: 'lightHorizontalLines',
                     },
                     // { text: '', alignment: 'left', fontSize: 9, pageBreak: 'after' },
@@ -248,16 +134,15 @@
                     },
                     tableExample: {
                         fontSize: 9,
-                        margin: [0, 5, 0, 15]
+                        margin: [-5, 5, -5, 15]
                     },
-                    tableHeader: {
-                        bold: true,
-                        fontSize: 10,
-                        color: 'black'
+                    table_td: {
+                        fontSize: 8,
+                        margin: [-2, 0, -5, 0]
                     },
                     totalbold: {
                         bold: true,
-                        fontSize: 10,
+                        fontSize: 9,
                     },
                     comp_header: {
                         bold: true,
@@ -286,27 +171,178 @@
             });
         });
         
-        function make_header(){
-            
+        function make_table(){
+
+            let widths = [60,80,80,48];
+            grouping.forEach(function(e,i){
+                widths.push('*');
+            });
+            widths.push('*');
+            widths.push(40);
+
+            var table = {
+                widths: widths,
+                body: null,
+            };
+            var retval = [];
+            var header = init_header();
+            retval.push(header);
+
+            debtortype.forEach(function(e_dty,i_dty){
+                if(e_dty.debtortycode != ''){
+                    var arr_dty = [
+                        { text: e_dty.debtortycode, style: 'table_td',bold:true },
+                        { text: e_dty.description, colSpan: 3, style: 'table_td',bold:true },
+                        { text: ' ' },
+                        { text: ' ' },
+                        //xxxxx
+                        { text: ' ', alignment: 'right' },
+                        { text: ' ' },
+                    ];
+                    retval.push(init_range(arr_dty,''));
+
+                    debtorcode.forEach(function(e_dcode,i_dcode){
+                        if(e_dcode.debtortype == e_dty.debtortycode){
+                            var arr_dcode = [
+                                { text: e_dcode.debtorcode, style:'table_td' },
+                                { text: e_dcode.name, colSpan: 2, style:'table_td' },
+                                { text: ' ', style:'table_td' },
+                                { text: ' ', style:'table_td' },
+                                //xxxxx
+                                { text: ' ', alignment: 'right', style:'table_td' },
+                                { text: ' ', style:'table_td' },
+                            ];
+                            retval.push(init_range(arr_dcode,''));
+
+                            var total = 0.00;
+                            array_report.forEach(function(e,i){
+                                if(e.debtorcode == e_dcode.debtorcode){
+                                    total += parseFloat(e.newamt);
+                                    var arr =[
+                                        { text: '', style:'table_td'},
+                                        { text: e.remark, style:'table_td' },
+                                        { text: e.doc_no, style:'table_td' },
+                                        { text: dateFormatter(e.posteddate), style:'table_td' },
+                                        /*
+                                        { text: ' ', alignment: 'right' },
+                                        { text: myparseFloat(e.newamt), alignment: 'right' },
+                                        { text: ' ', alignment: 'right' },
+                                        { text: ' ', alignment: 'right' },
+                                        { text: ' ', alignment: 'right' },
+                                        */
+                                        { text: ' ', alignment: 'right', style:'table_td' },
+                                        { text: e.unit, style:'table_td' },
+                                    ];
+                                    retval.push(init_range(arr,e));
+                                }
+                            });
+
+                            var arr_tot =[
+                                { text: ' ', style:'table_td' },
+                                { text: ' ', style:'table_td' },
+                                { text: ' ', style:'table_td' },
+                                { text: 'TOTAL', bold: true , alignment: 'right', style:'table_td'},
+                                // { text: myparseFloat(total), alignment: 'right' },
+                                // { text: ' ', alignment: 'right' },
+                                // { text: ' ', alignment: 'right' },
+                                // { text: ' ', alignment: 'right' },
+                                // { text: ' ', alignment: 'right' },
+                                { text: myparseFloat(total), alignment: 'right', style:'table_td' },
+                                { text: ' ' },
+                            ];
+                            retval.push(init_range(arr_tot,'total'));
+                        }
+
+                    });
+
+                }
+            });
+
+            table.body = retval;
+
+            return table;
+
+        }
+
+        function init_range(arr,type){
+            if(type == ''){
+                var newarr = arr.slice(0,4);
+
+                grouping.forEach(function(e,i){
+                    newarr.push({ text: ' ' });
+                });
+
+                newarr.push(arr[4]);
+                newarr.push(arr[5]);
+
+                return newarr;
+            }else if(type == 'total'){
+                var newarr = arr.slice(0,3);
+                arr[3].colSpan = grouping.length+1;
+
+                newarr.push(arr[3]);
+                grouping.forEach(function(e,i){
+                    newarr.push({ text: ' ' });
+                });
+
+                newarr.push(arr[4]);
+                newarr.push(arr[5]);
+
+                return newarr;
+            }else{
+                var newarr = arr.slice(0,4);
+
+                grouping.forEach(function(e,i){
+                    if(parseInt(type.group) == i){
+                        newarr.push({text: myparseFloat(type.newamt), alignment: 'right', style:'table_td'});
+                    }else{
+                        newarr.push({ text: myparseFloat(0), style:'table_td', alignment: 'right' });
+                    }
+                });
+
+                newarr.push(arr[4]);
+                newarr.push(arr[5]);
+
+                return newarr;
+            }
+
+            return arr;
+        }
+
+        function init_header(){
+
+            let header = [{ text: 'Code', style: 'tableHeader' },
+                        { text: 'Company', style: 'tableHeader' },
+                        { text: 'Document No', style: 'tableHeader' },
+                        { text: 'Date', style: 'tableHeader' }];
+
+            grouping_name.forEach(function(e,i){
+                header.push({ text: e+' days', style: 'tableHeader', alignment: 'right' });
+            });
+
+            header.push({ text: 'Total', style: 'tableHeader', alignment: 'right' });
+            header.push({ text: 'Units', style: 'tableHeader' });
+
+            return header;
         }
         
-        // pdfMake.createPdf(docDefinition).getDataUrl(function(dataURL) {
-        //     console.log(dataURL);
-        //     document.getElementById('pdfPreview').data = dataURL;
-        // });
-        
-        // jsreport.serverUrl = 'http://localhost:5488'
-        // async function preview() {
-        //     const report = await jsreport.render({
-        //         template: {
-        //             name: 'mc'
-        //         },
-        //         data: mydata
-        //     });
-        //     document.getElementById('pdfPreview').data = await report.toObjectURL()
-        // }
-        
-        // preview().catch(console.error)
+        function dateFormatter(val){
+            if(val == null) return '';
+            if(val.trim() == '') return '';
+            return moment(val).format("DD-MM-YYYY");
+        } 
+
+        function myparseFloat(val){
+            if(val == null) return '0.00';
+            if(val == '') return '0.00';
+            return numeral(val).format('0,0.00');
+        } 
+
+        function myparseFloatVV(unitcost,dspqty){
+            if(dspqty == null) return '0.00';
+            if(dspqty == '') return '0.00';
+            return numeral(unitcost*dspqty).format('0,0.00');
+        } 
         
     </script>
     

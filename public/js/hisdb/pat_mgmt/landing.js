@@ -1,8 +1,5 @@
 var preepisode;
 $(document).ready(function() {
-
-    let mql = window.matchMedia("(max-width: 768px)");
-
     $(".preloader").fadeOut();
     stop_scroll_on();
     $('#tab_patient_info a:last').hide();    // hide Medical Info tab
@@ -11,7 +8,7 @@ $(document).ready(function() {
       success: "valid"
     });
 
-    if(mql.matches){ // utk mobile
+    if($('#ismobile').val()=='true'){ // utk mobile
         $("#grid-command-buttons th").data('visible',false);
         $("#grid-command-buttons th[data-column-id='commands']").data('visible',true);
         $("#grid-command-buttons th[data-column-id='commands']").data('width','100%');
