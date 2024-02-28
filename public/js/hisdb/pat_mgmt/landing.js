@@ -280,6 +280,7 @@ $(document).ready(function() {
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
+        console.log($('#curpat').val());
         if($('#curpat').val() == 'true'){
             if($('#epistycode').val() == 'OP'){
                 if($('#user_doctor').val() == '1'){
