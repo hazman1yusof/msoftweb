@@ -61,7 +61,7 @@ class SuppListSummaryExport implements FromView, WithEvents, WithColumnWidths
                     ->orderBy('suppcode', 'ASC')
                     ->get();
         
-        return view('finance.AP.SuppListSummary_Report.SuppListSummary_Report_excel',compact('supp_code'));
+        return view('finance.AP.SuppList_Report.SuppListSummary_Report_excel',compact('supp_code'));
     }
     
     public function registerEvents(): array
