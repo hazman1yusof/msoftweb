@@ -61,23 +61,22 @@ $(document).ready(function () {
 			});
 		   
 			///summary
-			$('#summarypdf').click(function(){
+			$('#summary_pdf').click(function(){
 				window.open('./SuppList_Report/summarypdf?suppgroup='+selrowData("#jqGrid").suppgroup, '_blank'); 
 			});
 		
-			$('#summaryExcel').click(function(){
+			$('#summary_excel').click(function(){
 				window.location='./SuppList_Report/summaryExcel?suppgroup='+selrowData("#jqGrid").suppgroup;
 			});
 		
 			///detail
-			$('#dtlpdf').click(function(){
+			$('#dtl_pdf').click(function(){
 				window.open('./SuppList_Report/dtlpdf?suppgroup='+selrowData("#jqGrid").suppgroup, '_blank'); 
 			});
 		
-			$('#dtlExcel').click(function(){
+			$('#dtl_excel').click(function(){
 				window.location='./SuppList_Report/dtlExcel?suppgroup='+selrowData("#jqGrid").suppgroup;
 			});
-			//alert('hdhh');
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();

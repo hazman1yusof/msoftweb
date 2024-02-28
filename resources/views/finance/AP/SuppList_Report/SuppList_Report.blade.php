@@ -45,56 +45,56 @@
 
 @section('body')
 <div class="container mycontainer">
-		<div class="jumbotron" style="margin-top: 30px;text-align: center; height:600px">
-			<form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./SuppList_Report/showExcel">
-				<h2>SUPPLIER LIST</h2>
-				<h4 style="padding:3% 8% 3% 8%; letter-spacing: 1px;line-height: 1.0"> </h4>
+    <div class="jumbotron" style="margin-top: 30px;text-align: center; height:600px">
+        <form method="get" class='form-horizontal' style='width:99%' id="genreport" action="./SuppList_Report/showExcel">
+            <h2>SUPPLIER LIST</h2>
+            <h4 style="padding:3% 8% 3% 8%; letter-spacing: 1px;line-height: 1.0"> </h4>
 
-                <div style="width: 900px;margin: 0 auto;">
-                    <div class="col-md-7">
-                        <div class="col-md-12">
-                            <div class='row'>
-                                <div class="panel panel-default" >
-                                    <div class="panel-body">
-                                        <div class='col-md-12' style="padding:0 0 15px 0">
-                                            <table id="jqGrid" class="table table-striped"></table>
-                                            <div id="jqGridPager"></div>
-                                        </div>
+            <div style="width: 900px;margin: 0 auto;">
+                <div class="col-md-7">
+                    <div class="col-md-12">
+                        <div class='row'>
+                            <div class="panel panel-default" >
+                                <div class="panel-body">
+                                    <div class='col-md-12' style="padding:0 0 15px 0">
+                                        <table id="jqGrid" class="table table-striped"></table>
+                                        <div id="jqGridPager"></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-md-4" style="margin-left: 10px;">
-                        <div class="panel panel-default" style="width: 250px;">
-                            <div class="panel-body">
-                                <div class='col-md-12 btnform' style="padding: 20px 0px;">
-                                    <fieldset>
-                                        <legend>Summary :</legend>
-                                            <button name="SuppListSum_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
-                                                <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-                                            </button>
-                                            <button name="SuppListSum_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="summary_excel">
-                                                <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
-                                            </button>
+                <div class="col-md-4" style="margin-left: 10px;">
+                    <div class="panel panel-default" style="width: 250px;">
+                        <div class="panel-body">
+                            <div class='col-md-12 btnform' style="padding: 20px 0px;">
+                                <fieldset>
+                                    <legend>Summary :</legend>
+                                        <button name="SuppListSum_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="summary_pdf">
+                                            <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
+                                        </button>
+                                        <button name="SuppListSum_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="summary_excel">
+                                            <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
+                                        </button>
 
-                                        <legend>Detail :</legend>
-                                            <button name="SuppListDtl_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="dtl_pdf">
-                                                <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
-                                            </button>
-                                            <button name="SuppListDtl_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="dtl_excel">
-                                                <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
-                                            </button>
-                                    </fieldset>
-                                </div>
+                                    <legend>Detail :</legend>
+                                        <button name="SuppListDtl_pdf" type="button" class="mybtn btn btn-sm mybtnpdf" id="dtl_pdf">
+                                            <span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
+                                        </button>
+                                        <button name="SuppListDtl_excel" type="button" class="mybtn btn btn-sm mybtnxls" id="dtl_excel">
+                                            <span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
+                                        </button>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
                 </div>
-			</form>
-		</div>
-	</div>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
