@@ -50,7 +50,7 @@
             <h2>SUPPLIER LIST</h2>
             <h4 style="padding:3% 8% 3% 8%; letter-spacing: 1px;line-height: 1.0"> </h4>
 
-            <div style="width: 900px;margin: 0 auto;">
+            <div style="width: 1000px;margin: 0 auto;">
                 <div class="col-md-7">
                     <div class="col-md-12">
                         <div class='row'>
@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4" style="margin-left: 10px;">
+                <div class="col-md-4" style="margin-left: 30px;">
                     <div class="panel panel-default" style="width: 250px;">
                         <div class="panel-body">
                             <div class='col-md-12 btnform' style="padding: 20px 0px;">
