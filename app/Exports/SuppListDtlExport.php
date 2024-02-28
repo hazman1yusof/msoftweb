@@ -63,7 +63,7 @@ class SuppListDtlExport implements FromView, WithEvents, WithColumnWidths
                     ->orderBy('suppcode', 'ASC')
                     ->get();
         //dd($supp_code);
-        return view('finance.AP.SuppListDtl_Report.SuppListDtl_Report_excel',compact('supp_code'));
+        return view('finance.AP.SuppList_Report.SuppListDtl_Report_excel',compact('supp_code'));
     }
     
     public function registerEvents(): array
