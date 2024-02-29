@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="col-md-4" style="margin-left: 30px;">
-                    <div class="panel panel-default" style="width: 250px;">
+                    <div class="panel panel-default" style="width: 240px; height: 265px">
                         <div class="panel-body">
                             <div class='col-md-12 btnform' style="padding: 20px 0px;">
                                 <fieldset>
