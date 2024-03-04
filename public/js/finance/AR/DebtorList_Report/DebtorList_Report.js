@@ -28,21 +28,79 @@ $(document).ready(function () {
         $("#genreportpdf input[name='debtortype']").val($(this).val());
     });
     
-    $("#summary_pdf").click(function() {
-        window.open('./DebtorList_Report/summarypdf?debtortype='+$('#debtortype').val(), '_blank');
+    //////////////////////////////parameter for jqgrid url//////////////////////////////
+    var urlParam={
+        action: 'get_table_default',
+        url: 'util/get_table_default',
+        field: '',
+        table_name: 'debtor.debtortype',
+        table_id: 'idno',
+        filterCol: ['compcode'],
+        filterVal: ['session.compcode'],
+        sort_idno: true,
+    }
+    
+    $("#jqGrid").jqGrid({
+        datatype: "local",
+        colModel: [
+            { label: 'idno', name: 'idno', hidden: true },
+            { label: 'compcode', name: 'compcode', hidden: true },
+            { label: 'Debtor Type', name: 'debtortycode', width: 30 },
+            { label: 'Deposit Acc', name: 'depglacc', width: 30 },
+            { label: 'Debtor Acc', name: 'actdebglacc', width: 30 },
+            { label: 'Description', name: 'description', width: 30, classes: 'wrap' },
+            { label: 'adduser', name: 'adduser', width: 90, hidden: true },
+            { label: 'adddate', name: 'adddate', width: 90, hidden: true },
+            { label: 'upduser', name: 'upduser', width: 90, hidden: true },
+            { label: 'upddate', name: 'upddate', width: 90, hidden: true },
+        ],
+        autowidth: true,
+        multiSort: true,
+        viewrecords: true,
+        loadonce: false,
+        sortname: 'idno',
+        sortorder: "desc",
+        width: 900,
+        height: 350,
+        rowNum: 30,
+        pager: "#jqGridPager",
+        onSelectRow:function(rowid, selected){
+            $("#summary_pdf").click(function() {
+                window.open('./DebtorList_Report/summarypdf?debtortype='+selrowData("#jqGrid").debtortycode, '_blank');
+            });
+            
+            $("#summary_excel").click(function() {
+                window.location='./DebtorList_Report/summaryExcel?debtortype='+selrowData("#jqGrid").debtortycode;
+            });
+            
+            $("#dtl_pdf").click(function() {
+                window.open('./DebtorList_Report/dtlpdf?debtortype='+selrowData("#jqGrid").debtortycode, '_blank');
+            });
+            
+            $("#dtl_excel").click(function() {
+                window.location='./DebtorList_Report/dtlExcel?debtortype='+selrowData("#jqGrid").debtortycode;
+            });
+        },
+        ondblClickRow: function(rowid, iRow, iCol, e){
+        },
+        gridComplete: function(){
+            var ids = $("#jqGrid").jqGrid('getDataIDs');
+            var cl = ids[0];
+            $("#jqGrid").jqGrid('setSelection', cl);
+        },
     });
     
-    $("#summary_excel").click(function() {
-        window.location='./DebtorList_Report/summaryExcel?debtortype='+$('#debtortype').val();
+    //////////////////////////////////start grid pager//////////////////////////////////
+    $("#jqGrid").jqGrid('navGrid','#jqGridPager',{
+        view:false, edit:false, add:false, del:false, search:false,
+        beforeRefresh: function(){
+            refreshGrid("#jqGrid",urlParam);
+        },
     });
     
-    $("#dtl_pdf").click(function() {
-        window.open('./DebtorList_Report/dtlpdf?debtortype='+$('#debtortype').val(), '_blank');
-    });
-    
-    $("#dtl_excel").click(function() {
-        window.location='./DebtorList_Report/dtlExcel?debtortype='+$('#debtortype').val();
-    });
+    ////////////////////add field into param, refresh grid if needed////////////////////
+    addParamField('#jqGrid',true,urlParam);
+    //////////////////////////////////////end grid//////////////////////////////////////
     
     var dialog_debtortype = new ordialog(
         'debtortype','debtor.debtortype','#genreport input[name = debtortype]','errorField',
@@ -95,5 +153,7 @@ $(document).ready(function () {
         },'urlParam','radio','tab'
     );
     dialog_debtortype.makedialog(true);
+    
+    // $("#jqGrid").jqGrid ('setGridWidth', Math.floor($("#jqGrid_debtortype_c")[0].offsetWidth-$("#jqGrid_debtortype_c")[0].offsetLeft-20));
     
 });
