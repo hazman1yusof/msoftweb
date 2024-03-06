@@ -678,6 +678,12 @@ Route::get('/glmaster_Report/table','finance\Glmaster_ReportController@table');
 Route::post('/glmaster_Report/form','finance\Glmaster_ReportController@form');
 Route::get('/glmaster_Report/showExcel','finance\Glmaster_ReportController@showExcel');
 
+//// Consolidation Acc setup ///
+Route::get('/consolidationAcc','finance\ConsolidationAccController@show');
+Route::get('/consolidationAcc/table','finance\ConsolidationAccController@table');
+Route::post('/consolidationAcc/form','finance\ConsolidationAccController@form');
+Route::post('/consolidationAccDtl/form','finance\ConsolidationAccController@form');
+
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
 Route::get('/period/table','finance\PeriodController@table');

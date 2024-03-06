@@ -59,23 +59,17 @@
 
 @section('body')
     <div class="container mycontainer">
-        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 500px;">
+        <div class="jumbotron" style="margin-top: 30px;text-align: center;height: 700px;">
             <form method="get" id="genreport" action="./DebtorList_Report/showExcel">
                 <h2>DEBTOR LIST</h2>
                 <h4 style="padding:3% 10% 3% 10%; letter-spacing: 1px;line-height: 1.5"> </h4>
                 
                 <div style="width: 900px;margin: 0 auto;">
                     <div class="col-md-7">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <div class="col-md-12" style="margin-top: 70px;">
-                                    <label class="control-label" for="Scol">Debtor Type</label>
-                                    <div class='input-group'>
-                                        <input id="debtortype" name="debtortype" type="text" class="form-control input-sm" autocomplete="off" value="">
-                                        <a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-                                    </div>
-                                    <span class="help-block"></span>
-                                </div>
+                        <div class="panel panel-default" id="jqGrid_debtortype_c">
+                            <div class="panel panel-body">
+                                <table id="jqGrid" class="table table-striped"></table>
+                                <div id="jqGridPager"></div>
                             </div>
                         </div>
                     </div>
