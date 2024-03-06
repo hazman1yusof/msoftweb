@@ -82,10 +82,6 @@
 <script>
   document.getElementById("myurl").value = window.location.hostname;
   let mql = window.matchMedia("(max-width: 768px)");
-  if(mql.matches){
-    $('body').css('background-image',"url('./img/page-hospital2.jpg')");
-  }
-
 
     $(document).ready(function(){
       let mql = window.matchMedia("(max-width: 768px)");
