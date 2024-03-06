@@ -682,6 +682,7 @@ Route::get('/glmaster_Report/showExcel','finance\Glmaster_ReportController@showE
 Route::get('/consolidationAcc','finance\ConsolidationAccController@show');
 Route::get('/consolidationAcc/table','finance\ConsolidationAccController@table');
 Route::post('/consolidationAcc/form','finance\ConsolidationAccController@form');
+Route::post('/consolidationAccDtl/form','finance\ConsolidationAccController@form');
 
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
