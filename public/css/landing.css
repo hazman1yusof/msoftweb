@@ -7,46 +7,46 @@
         z-index: 99999;
         background: #fff;
     }
-    .cssload-speeding-wheel {
-        position: absolute;
-        top: calc(50% - 3.5px);
-        left: calc(50% - 3.5px);
-        width: 31px;
-        height: 31px;
-        margin: 0 auto;
-        border: 2px solid rgba(97,100,193,0.98);
-        border-radius: 50%;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        animation: cssload-spin 425ms infinite linear;
-        -o-animation: cssload-spin 425ms infinite linear;
-        -ms-animation: cssload-spin 425ms infinite linear;
-        -webkit-animation: cssload-spin 425ms infinite linear;
-        -moz-animation: cssload-spin 425ms infinite linear;
-    }
+.cssload-speeding-wheel {
+    position: absolute;
+    top: calc(50% - 3.5px);
+    left: calc(50% - 3.5px);
+    width: 31px;
+    height: 31px;
+    margin: 0 auto;
+    border: 2px solid rgba(97,100,193,0.98);
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation: cssload-spin 425ms infinite linear;
+    -o-animation: cssload-spin 425ms infinite linear;
+    -ms-animation: cssload-spin 425ms infinite linear;
+    -webkit-animation: cssload-spin 425ms infinite linear;
+    -moz-animation: cssload-spin 425ms infinite linear;
+}
 .stop-scrolling {
     padding-right: 16px;
     overflow: hidden;
 }
-    @keyframes cssload-spin {
-      100%{ transform: rotate(360deg); transform: rotate(360deg); }
-    }
+@keyframes cssload-spin {
+  100%{ transform: rotate(360deg); transform: rotate(360deg); }
+}
 
-    @-o-keyframes cssload-spin {
-      100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
-    }
+@-o-keyframes cssload-spin {
+  100%{ -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
-    @-ms-keyframes cssload-spin {
-      100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
-    }
+@-ms-keyframes cssload-spin {
+  100%{ -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
-    @-webkit-keyframes cssload-spin {
-      100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
-    }
+@-webkit-keyframes cssload-spin {
+  100%{ -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
-    @-moz-keyframes cssload-spin {
-      100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
-    }
+@-moz-keyframes cssload-spin {
+  100%{ -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
 
 #mdl_accomodation,#mdl_reference,#mdl_bill_type,#mdl_epis_pay_mode,#bs-guarantor,#mdl_new_gl,#mdl_new_panel,#mdl_glet{
 	display: none; z-index: 120;background-color: rgba(0, 0, 0, 0.3);
@@ -191,8 +191,16 @@ div.wrapper > div.row > div.panel.panel-default > div.panel-heading.clearfix > i
 
 .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
     word-wrap: break-word;
-    white-space: pre-line !important;
+    padding-bottom: 10px !important;
     vertical-align: top !important;
+}
+
+@media screen and (max-width: 768px){
+  .table-condensed>tbody>tr>td, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>td, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>thead>tr>th {
+	    word-wrap: break-word;
+	    white-space: pre-line !important;
+	    vertical-align: top !important;
+	}
 }
 
 tr.yellow{

@@ -267,8 +267,6 @@ $(document).ready(function() {
         $("#load_from_addupd").data('info','false');
 
         if(mql.matches){ // utk mobile
-            console.log($("#grid-command-buttons-header select.search"))
-
             $("#grid-command-buttons-header div.search").css("width","58%").addClass('search2');
             $("#grid-command-buttons-header select.search").css("width","35%").addClass('search2');
             $("#grid-command-buttons-header div.actions.btn-group").css("margin-top","2%").addClass('search2');
@@ -279,7 +277,6 @@ $(document).ready(function() {
         bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
         let rows = $("#grid-command-buttons").bootgrid("getCurrentRows");
         var lastrowdata = getrow_bootgrid(bootgrid_last_rowid,rows);
-        console.log($('#curpat').val());
         if($('#curpat').val() == 'true'){
             if($('#epistycode').val() == 'OP'){
                 if($('#user_doctor').val() == '1'){
