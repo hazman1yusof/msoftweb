@@ -39,9 +39,9 @@
             <div class="panel-body">
                 <div class='col-md-12' style="padding:0 0 15px 0">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" id="navtab_divs" href="#tab-divs" aria-expanded="true" data-type='DIVS'>Division</a></li>
-                        <li><a data-toggle="tab" id="navtab_unit" href="#tab-unit" data-type='UNIT'>Unit</a></li>
-                        <li><a data-toggle="tab" id="navtab_dept" href="#tab-dept" data-type='DEPT'>Department</a></li>
+                        <li class="active"><a data-toggle="tab" id="navtab_divs" href="#tab-divs" aria-expanded="true" data-trantype='DIVS'>Division</a></li>
+                        <li><a data-toggle="tab" id="navtab_unit" href="#tab-unit" data-trantype='UNIT'>Unit</a></li>
+                        <li><a data-toggle="tab" id="navtab_dept" href="#tab-dept" data-trantype='DEPT'>Department</a></li>
                     </ul>
                     <div class="tab-content" style="padding: 10px 5px;">
                         <input id="type" name="type" type="hidden">

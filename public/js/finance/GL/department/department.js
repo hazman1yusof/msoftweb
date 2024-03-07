@@ -27,23 +27,32 @@ $(document).ready(function () {
 	
 	$('.nav-tabs a').on('shown.bs.tab', function(e){
 		let trantype = $(this).data('trantype');
+		$('#searchForm input[name=Stext]').val('');
+		urlParam_divs.searchCol=null;
+		urlParam_divs.searchVal=null;
 		switch(trantype){
 			case 'DIVS':
 				refreshGrid('#jqGrid_divs', urlParam_divs);
+				populateSelect2('#jqGrid_divs', '#searchForm');
+				searchClick2('#jqGrid_divs', '#searchForm', urlParam_divs);
 				$("#jqGrid_divs").jqGrid ('setGridWidth', Math.floor($("#tab-divs")[0].offsetWidth-$("#tab-divs")[0].offsetLeft));
 				break;
 			case 'UNIT':
 				refreshGrid("#jqGrid_divunit",urlParam_divs);
+				populateSelect2('#jqGrid_unit', '#searchForm');
+				searchClick2('#jqGrid_unit', '#searchForm', urlParam_unit);
 				// refreshGrid("#jqGrid_unit", urlParam_unit);
-				$("#jqGrid_divunit").jqGrid ('setGridWidth', Math.floor($("#tab-unit")[0].offsetWidth-$("#tab-unit")[0].offsetLeft));
+				$("#jqGrid_divunit").jqGrid ('setGridWidth', Math.floor($("#tab-unit")[0].offsetWidth-$("#tab-unit")[0].offsetLeft)/2);
 				$("#jqGrid_unit").jqGrid ('setGridWidth', Math.floor($("#tab-unit")[0].offsetWidth-$("#tab-unit")[0].offsetLeft));
 				break;
 			case 'DEPT':
 				refreshGrid("#jqGrid_divdept",urlParam_divs);
+				populateSelect2('#jqGrid_dept','#searchForm');
+				searchClick2('#jqGrid_dept','#searchForm',urlParam_dept);
 				// refreshGrid("#jqGrid_unitdept",urlParam_unit);
 				// refreshGrid("#jqGrid_dept",urlParam_dept);
-				$("#jqGrid_divdept").jqGrid ('setGridWidth', Math.floor($("#tab-dept")[0].offsetWidth-$("#tab-dept")[0].offsetLeft));
-				$("#jqGrid_unitdept").jqGrid ('setGridWidth', Math.floor($("#tab-dept")[0].offsetWidth-$("#tab-dept")[0].offsetLeft));
+				$("#jqGrid_divdept").jqGrid ('setGridWidth', Math.floor($("#tab-dept")[0].offsetWidth-$("#tab-dept")[0].offsetLeft)/2);
+				$("#jqGrid_unitdept").jqGrid ('setGridWidth', Math.floor($("#tab-dept")[0].offsetWidth-$("#tab-dept")[0].offsetLeft)/2);
 				$("#jqGrid_dept").jqGrid ('setGridWidth', Math.floor($("#tab-dept")[0].offsetWidth-$("#tab-dept")[0].offsetLeft));
 				break;
 		}
@@ -585,7 +594,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 150,
 		rowNum: 30,
 		pager: "#jqGridPager_divunit",
 		onSelectRow:function(rowid, selected){
@@ -689,7 +698,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 150,
 		rowNum: 30,
 		pager: "#jqGridPager_unit",
 		onSelectRow:function(rowid, selected){
@@ -915,8 +924,6 @@ $(document).ready(function () {
 	
 	///////////////////////handle searching, its radio button and toggle ///////////////////////
 	// toogleSearch('#sbut1', '#searchForm', 'on');
-	populateSelect2('#jqGrid_unit', '#searchForm');
-	searchClick2('#jqGrid_unit', '#searchForm', urlParam_unit);
 	
 	////////////////////////add field into param, refresh grid if needed////////////////////////
 	addParamField('#jqGrid_divunit', true, urlParam_divs);
@@ -937,7 +944,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 150,
 		rowNum: 30,
 		pager: "#jqGridPager_divdept",
 		onSelectRow:function(rowid, selected){
@@ -1028,7 +1035,7 @@ $(document).ready(function () {
 		viewrecords: true,
 		loadonce: false,
 		width: 900,
-		height: 350,
+		height: 150,
 		rowNum: 30,
 		pager: "#jqGridPager_unitdept",
 		onSelectRow:function(rowid, selected){
@@ -1224,8 +1231,6 @@ $(document).ready(function () {
 	
 	//////////////////////////handle searching, its radio button and toggle//////////////////////////
 	// toogleSearch('#sbut1','#searchForm','on');
-	populateSelect2('#jqGrid_dept','#searchForm');
-	searchClick2('#jqGrid_dept','#searchForm',urlParam_dept);
 	
 	//////////////////////////add field into param, refresh grid if needed//////////////////////////
 	addParamField('#jqGrid_divdept',true,urlParam_divs);

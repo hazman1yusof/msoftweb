@@ -370,7 +370,7 @@ function populateSelect(grid,form){
 }
 
 function populateSelect2(grid,form){
-
+	$( form+" [id=Scol] option" ).remove();
 	$.each($(grid).jqGrid('getGridParam','colModel'), function( index, value ) {
 		if(value['canSearch']){
 			if(value['checked']){
@@ -414,6 +414,7 @@ function searchClick(grid,form,urlParam){
 }
 
 function searchClick2(grid,form,urlParam,withscol=true){
+	$(form+' [name=Stext]').off("keyup");
 	$(form+' [name=Stext]').on( "keyup", function(e) {
 		var code = e.keyCode || e.which;
 		if(code != '9'){
@@ -426,6 +427,7 @@ function searchClick2(grid,form,urlParam,withscol=true){
 		}
 	});
 	if(withscol){
+		$(form+' [name=Stext]').off("change");
 		$(form+' [name=Scol]').on( "change", function() {
 			search(grid,$(form+' [name=Stext]').val(),$(form+' [name=Scol] option:selected').val(),urlParam);
 			$('#recnodepan').text("");//tukar kat depan tu
@@ -1418,7 +1420,6 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 
 	function makedialog(obj){
 		let width = 7/10 * $(window).width();
-		console.log($('#ismobile').val());
 		if($('#ismobile').val() == 'true'){
 			width = 9.5/10 * $(window).width();
 		}
@@ -1746,6 +1747,11 @@ function ordialog(unique,table,id,errorField,jqgrid_,dialog_,checkstat='urlParam
 		}
 	}
 
+}
+
+function renull_urlparam_search(urlparam=null){
+	console.log(urlparam);
+	urlParam.searchCol2=urlParam.searchVal2=urlParam.searchCol=urlParam.searchVal=null;
 }
 
 function getfield(field,or_search){

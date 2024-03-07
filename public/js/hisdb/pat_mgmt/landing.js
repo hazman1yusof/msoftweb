@@ -22,7 +22,6 @@ $(document).ready(function() {
         $("#grid-command-buttons th[data-column-id='commands']").data('width','7%');
     }
     
-
     var counter = 0;
     var grid = $("#grid-command-buttons").bootgrid({
         selection: false,
