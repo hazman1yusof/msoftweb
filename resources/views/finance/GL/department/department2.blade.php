@@ -25,67 +25,24 @@
 							<label class="control-label"></label>
 							<input  name="Stext" type="search" seltext='true' placeholder="Search here ..." class="form-control text-uppercase" tabindex="2">
 						</div>
-						
-						<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
-							<p id="p_error"></p>
-						</div>
 					</div>
 				</div>
 			</fieldset>
 		</form>
 		
-		<div class="panel panel-default" id="jqGrid_dept_c">
-            <!-- <div class="panel-heading">Department</div> -->
-            <div class="panel-body">
-                <div class='col-md-12' style="padding:0 0 15px 0">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" id="navtab_divs" href="#tab-divs" aria-expanded="true" data-type='DIVS'>Division</a></li>
-                        <li><a data-toggle="tab" id="navtab_unit" href="#tab-unit" data-type='UNIT'>Unit</a></li>
-                        <li><a data-toggle="tab" id="navtab_dept" href="#tab-dept" data-type='DEPT'>Department</a></li>
-                    </ul>
-                    <div class="tab-content" style="padding: 10px 5px;">
-                        <input id="type" name="type" type="hidden">
-                        <div id="tab-divs" class="active in tab-pane fade">
-                            <div id="fail_msg_divs" class="fail_msg"></div>
-                            <div class='col-md-12' style="padding:0 0 15px 0" autocomplete="off">
-                                <table id="jqGrid_divs" class="table table-striped"></table>
-                                <div id="jqGridPager_divs"></div>
-                            </div>
-                        </div>
-                        <div id="tab-unit" class="tab-pane fade">
-                            <div id="fail_msg_unit" class="fail_msg"></div>
-                            <div class='col-md-6' style="padding:0 0 15px 0">
-                                <table id="jqGrid_divunit" class="table table-striped"></table>
-                                <div id="jqGridPager_divunit"></div>
-                            </div>
-                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                <table id="jqGrid_unit" class="table table-striped"></table>
-                                <div id="jqGridPager_unit"></div>
-                            </div>
-                        </div>
-                        <div id="tab-dept" class="tab-pane fade">
-                            <div id="fail_msg_dept" class="fail_msg"></div>
-                            <div class='col-md-6' style="padding:0 5px 15px 0">
-                                <table id="jqGrid_divdept" class="table table-striped"></table>
-                                <div id="jqGridPager_divdept"></div>
-                            </div>
-                            <div class='col-md-6' style="padding:0 0 15px 5px">
-                                <table id="jqGrid_unitdept" class="table table-striped"></table>
-                                <div id="jqGridPager_unitdept"></div>
-                            </div>
-                            <div class='col-md-12' style="padding:0 0 15px 0">
-                                <table id="jqGrid_dept" class="table table-striped"></table>
-                                <div id="jqGridPager_dept"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+		<div class="panel panel-default">
+			<div class="panel-heading">Department Setup Header</div>
+			<div class="panel-body">
+				<div class='col-md-12' style="padding:0 0 15px 0">
+					<table id="jqGrid" class="table table-striped"></table>
+					<div id="jqGridPager"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
-	<div id="dialogForm_dept" title="Add Form">
-		<form class='form-horizontal' style='width:99%' id='formdata_dept'>
+	<div id="dialogForm" title="Add Form">
+		<form class='form-horizontal' style='width:99%' id='formdata'>
 			{{ csrf_field() }}
 			<input type="hidden" name="idno">
 			
