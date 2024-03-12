@@ -658,7 +658,7 @@ class DoctorNoteController extends defaultController
             })
             ->where('e.compcode','=',session('compcode'))
             ->where('e.mrn','=',$request->mrn)
-            ->orderBy('p.adddate','desc');
+            ->orderBy('p.adddate','asc');
         
         // $patexam_obj = DB::table('hisdb.pathealth')
         //     ->select('mrn','episno','recordtime','adddate','adduser')
