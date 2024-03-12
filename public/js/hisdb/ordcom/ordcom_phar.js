@@ -193,38 +193,43 @@ $(document).ready(function(){
 						<div>
 							<label class="oe_phar_label">Dose</label>
 							<div class="input-group oe_phar_div">
-								<input autocomplete="off" name="dosage" id="dosage_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
-								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+							<select id="dosage_phar_`+row_id+`" class="form-control input-sm" name="dosage" style="width: 100%" optid="`+row_id+`">
+							</select>
 							</div>
 							<input type="hidden" id="dosage_phar_code_`+row_id+`">
 						</div>
 						<div>
 							<label class="oe_phar_label">Frequency</label>
 							<div class="input-group oe_phar_div">
-								<input autocomplete="off" name="frequency" id="frequency_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
-								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+							<select id="frequency_phar_`+row_id+`" class="form-control input-sm" name="frequency" style="width: 100%" optid="`+row_id+`">
+							</select>
 							</div>
 							<input type="hidden" id="frequency_phar_code_`+row_id+`">
 						</div>
 						<div>
 							<label class="oe_phar_label">Instruction</label>
 							<div class="input-group oe_phar_div">
-								<input autocomplete="off" name="instruction" id="instruction_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
-								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+							<select id="instruction_phar_`+row_id+`" class="form-control input-sm" name="instruction" style="width: 100%" optid="`+row_id+`">
+							</select>
 							</div>
 							<input type="hidden" id="instruction_phar_code_`+row_id+`">
 						</div>
 						<div>
 							<label class="oe_phar_label">Indicator</label>
 							<div class="input-group oe_phar_div">
-								<input autocomplete="off" name="drugindicator" id="drugindicator_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
-								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+							<select id="drugindicator_phar_`+row_id+`" class="form-control input-sm" name="drugindicator" style="width: 100%" optid="`+row_id+`">
+							</select>
 							</div>
 							<input type="hidden" id="drugindicator_phar_code_`+row_id+`">
 						</div>
 					</div>
 				</div>
 			`);
+
+			dropdown_dosage_phar.on();
+			dropdown_frequency_phar.on();
+			dropdown_instruction_phar.on();
+			dropdown_drugindicator_phar.on();
 
 			write_detail_phar('clearall',null,row_id);
 			write_detail_dosage('clearall');
@@ -244,6 +249,10 @@ $(document).ready(function(){
 			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight')));
 		}
     });
+// <div class="input-group oe_phar_div">
+// 								<input autocomplete="off" name="drugindicator" id="drugindicator_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
+// 								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
+// 							</div>
 	jqgrid_label_align_right("#jqGrid_phar");
 	
 	$("#jqGrid_phar").inlineNav('#jqGrid_phar_pager', {
@@ -338,10 +347,10 @@ var myEditOptions_phar = {
 		dialog_uomcode_phar.on();
 		dialog_uom_recv_phar.on();
 		dialog_tax_phar.on();
-		dialog_dosage_phar.on();
-		dialog_frequency_phar.on();
-		dialog_instruction_phar.on();
-		dialog_drugindicator_phar.on();
+		// dialog_dosage_phar.on();
+		// dialog_frequency_phar.on();
+		// dialog_instruction_phar.on();
+		// dialog_drugindicator_phar.on();
 		mycurrency_phar.array.length = 0;
 		mycurrency_np_phar.array.length = 0;
 		Array.prototype.push.apply(mycurrency_phar.array, ["#jqGrid_phar input[name='totamount']","#jqGrid_phar input[name='amount']"]);
@@ -532,10 +541,10 @@ var myEditOptions_phar_edit = {
 	        }
 	    );
 
-		dialog_dosage_phar.on();
-		dialog_frequency_phar.on();
-		dialog_instruction_phar.on();
-		dialog_drugindicator_phar.on();
+		// dialog_dosage_phar.on();
+		// dialog_frequency_phar.on();
+		// dialog_instruction_phar.on();
+		// dialog_drugindicator_phar.on();
 
 		mycurrency_phar.array.length = 0;
 		mycurrency_np_phar.array.length = 0;
@@ -559,20 +568,20 @@ var myEditOptions_phar_edit = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		dialog_dosage_phar.off();
-		dialog_frequency_phar.off();
-		dialog_instruction_phar.off();
-		dialog_drugindicator_phar.off();
+		// dialog_dosage_phar.off();
+		// dialog_frequency_phar.off();
+		// dialog_instruction_phar.off();
+		// dialog_drugindicator_phar.off();
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
 	},
 	errorfunc: function(rowid,response){
-		dialog_dosage_phar.off();
-		dialog_frequency_phar.off();
-		dialog_instruction_phar.off();
-		dialog_drugindicator_phar.off();
+		// dialog_dosage_phar.off();
+		// dialog_frequency_phar.off();
+		// dialog_instruction_phar.off();
+		// dialog_drugindicator_phar.off();
     	alert(response.responseText);
     	// refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	// $("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
@@ -608,10 +617,10 @@ var myEditOptions_phar_edit = {
 		$("#jqGrid_phar").jqGrid('setGridParam', { editurl: editurl });
 	},
 	afterrestorefunc: function( response ) {
-		dialog_dosage_phar.off();
-		dialog_frequency_phar.off();
-		dialog_instruction_phar.off();
-		dialog_drugindicator_phar.off();
+		// dialog_dosage_phar.off();
+		// dialog_frequency_phar.off();
+		// dialog_instruction_phar.off();
+		// dialog_drugindicator_phar.off();
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		myfail_msg_phar.clear_fail();
 		errorField.length=0;
@@ -1230,231 +1239,371 @@ var dialog_tax_phar = new ordialog(
 );
 dialog_tax_phar.makedialog(false);
 
-var dialog_dosage_phar = new ordialog(
-	'dosage_phar',['hisdb.dose'],"#jqGrid_phar input[name=dosage]",'errorField',
-	{	colModel:
-		[
-			{label:'Dosage Code', name:'dosecode', width:200, classes:'pointer', canSearch:true, or_search:true},
-			{label:'Description', name:'dosedesc', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(event){
+// var dialog_dosage_phar = new ordialog(
+// 	'dosage_phar',['hisdb.dose'],"#jqGrid_phar input[name=dosage]",'errorField',
+// 	{	colModel:
+// 		[
+// 			{label:'Dosage Code', name:'dosecode', width:200, classes:'pointer', canSearch:true, or_search:true},
+// 			{label:'Description', name:'dosedesc', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+// 		],
+// 		urlParam: {
+// 					filterCol:['compcode','recstatus'],
+// 					filterVal:['session.compcode','ACTIVE']
+// 				},
+// 		ondblClickRow:function(event){
 
-			if(event.type == 'keydown'){
+// 			if(event.type == 'keydown'){
 
-				var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}else{
+// 				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}else{
 
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}
+// 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}
 
-			let data=selrowData('#'+dialog_dosage_phar.gridname);
-			$(dialog_dosage_phar.textfield).val(data.dosedesc);
-			$('#dosage_phar_code_'+optid).val(data.dosecode);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-			}
-		}
+// 			let data=selrowData('#'+dialog_dosage_phar.gridname);
+// 			$(dialog_dosage_phar.textfield).val(data.dosedesc);
+// 			$('#dosage_phar_code_'+optid).val(data.dosecode);
+// 		},
+// 		gridComplete: function(obj){
+// 			var gridname = '#'+obj.gridname;
+// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+// 				$(gridname+' tr#1').click();
+// 				$(gridname+' tr#1').dblclick();
+// 			}
+// 		}
 		
-	},{
-		title:"Select Tax Code For Item",
-		open:function(obj_){
-			dialog_dosage_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_dosage_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
-		},
-		close: function(){
-			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
-			// 	.closest('td')						//utk dialog dalam jqgrid jer
-			// 	.next()
-			// 	.find("input[type=text]").focus();
-		},
-		justb4refresh: function(obj_){
-			obj_.urlParam.searchCol2=[];
-			obj_.urlParam.searchVal2=[];
-		},
-		justaftrefresh: function(obj_){
-			$("#Dtext_"+obj_.unique).val('');
-		}
-	},'urlParam', 'radio', 'tab' 	
-);
-dialog_dosage_phar.makedialog(false);
+// 	},{
+// 		title:"Select Tax Code For Item",
+// 		open:function(obj_){
+// 			dialog_dosage_phar.urlParam.filterCol=['compcode','recstatus'];
+// 			dialog_dosage_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
+// 		},
+// 		close: function(){
+// 			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
+// 			// 	.closest('td')						//utk dialog dalam jqgrid jer
+// 			// 	.next()
+// 			// 	.find("input[type=text]").focus();
+// 		},
+// 		justb4refresh: function(obj_){
+// 			obj_.urlParam.searchCol2=[];
+// 			obj_.urlParam.searchVal2=[];
+// 		},
+// 		justaftrefresh: function(obj_){
+// 			$("#Dtext_"+obj_.unique).val('');
+// 		}
+// 	},'urlParam', 'radio', 'tab' 	
+// );
+// dialog_dosage_phar.makedialog(false);
 
-var dialog_frequency_phar = new ordialog(
-	'freq_phar',['hisdb.freq'],"#jqGrid_phar input[name=frequency]",'errorField',
-	{	colModel:
-		[
-			{label:'Frequency Code', name:'freqcode', width:200, classes:'pointer', canSearch:true, or_search:true},
-			{label:'Description', name:'freqdesc', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(event){
-			if(event.type == 'keydown'){
+// var dialog_frequency_phar = new ordialog(
+// 	'freq_phar',['hisdb.freq'],"#jqGrid_phar input[name=frequency]",'errorField',
+// 	{	colModel:
+// 		[
+// 			{label:'Frequency Code', name:'freqcode', width:200, classes:'pointer', canSearch:true, or_search:true},
+// 			{label:'Description', name:'freqdesc', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+// 		],
+// 		urlParam: {
+// 					filterCol:['compcode','recstatus'],
+// 					filterVal:['session.compcode','ACTIVE']
+// 				},
+// 		ondblClickRow:function(event){
+// 			if(event.type == 'keydown'){
 
-				var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}else{
+// 				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}else{
 
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}
-			let data=selrowData('#'+dialog_frequency_phar.gridname);
-			$(dialog_frequency_phar.textfield).val(data.freqdesc);
-			$('#frequency_phar_code_'+optid).val(data.freqcode);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-			}
-		}
+// 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}
+// 			let data=selrowData('#'+dialog_frequency_phar.gridname);
+// 			$(dialog_frequency_phar.textfield).val(data.freqdesc);
+// 			$('#frequency_phar_code_'+optid).val(data.freqcode);
+// 		},
+// 		gridComplete: function(obj){
+// 			var gridname = '#'+obj.gridname;
+// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+// 				$(gridname+' tr#1').click();
+// 				$(gridname+' tr#1').dblclick();
+// 			}
+// 		}
 		
-	},{
-		title:"Select Tax Code For Item",
-		open:function(obj_){
-			dialog_frequency_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_frequency_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
-		},
-		close: function(){
-			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
-			// 	.closest('td')						//utk dialog dalam jqgrid jer
-			// 	.next()
-			// 	.find("input[type=text]").focus();
-		},
-		justb4refresh: function(obj_){
-			obj_.urlParam.searchCol2=[];
-			obj_.urlParam.searchVal2=[];
-		},
-		justaftrefresh: function(obj_){
-			$("#Dtext_"+obj_.unique).val('');
-		}
-	},'urlParam', 'radio', 'tab' 	
-);
-dialog_frequency_phar.makedialog(false);
+// 	},{
+// 		title:"Select Tax Code For Item",
+// 		open:function(obj_){
+// 			dialog_frequency_phar.urlParam.filterCol=['compcode','recstatus'];
+// 			dialog_frequency_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
+// 		},
+// 		close: function(){
+// 			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
+// 			// 	.closest('td')						//utk dialog dalam jqgrid jer
+// 			// 	.next()
+// 			// 	.find("input[type=text]").focus();
+// 		},
+// 		justb4refresh: function(obj_){
+// 			obj_.urlParam.searchCol2=[];
+// 			obj_.urlParam.searchVal2=[];
+// 		},
+// 		justaftrefresh: function(obj_){
+// 			$("#Dtext_"+obj_.unique).val('');
+// 		}
+// 	},'urlParam', 'radio', 'tab' 	
+// );
+// dialog_frequency_phar.makedialog(false);
 
-var dialog_instruction_phar = new ordialog(
-	'instruction_phar',['hisdb.instruction'],"#jqGrid_phar input[name=instruction]",'errorField',
-	{	colModel:
-		[
-			{label:'Dosage Code', name:'inscode', width:200, classes:'pointer', canSearch:true, or_search:true},
-			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(event){
-			if(event.type == 'keydown'){
+// var dialog_instruction_phar = new ordialog(
+// 	'instruction_phar',['hisdb.instruction'],"#jqGrid_phar input[name=instruction]",'errorField',
+// 	{	colModel:
+// 		[
+// 			{label:'Dosage Code', name:'inscode', width:200, classes:'pointer', canSearch:true, or_search:true},
+// 			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
+// 		],
+// 		urlParam: {
+// 					filterCol:['compcode','recstatus'],
+// 					filterVal:['session.compcode','ACTIVE']
+// 				},
+// 		ondblClickRow:function(event){
+// 			if(event.type == 'keydown'){
 
-				var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}else{
+// 				var optid = $(event.currentTarget).get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}else{
 
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}
-			let data=selrowData('#'+dialog_instruction_phar.gridname);
-			$(dialog_instruction_phar.textfield).val(data.description);
-			$('#instruction_phar_code_'+optid).val(data.inscode);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-			}
-		}
+// 				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
+// 				var id_optid = optid.substring(0,optid.search("_"));
+// 			}
+// 			let data=selrowData('#'+dialog_instruction_phar.gridname);
+// 			$(dialog_instruction_phar.textfield).val(data.description);
+// 			$('#instruction_phar_code_'+optid).val(data.inscode);
+// 		},
+// 		gridComplete: function(obj){
+// 			var gridname = '#'+obj.gridname;
+// 			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
+// 				$(gridname+' tr#1').click();
+// 				$(gridname+' tr#1').dblclick();
+// 			}
+// 		}
 		
-	},{
-		title:"Select Tax Code For Item",
-		open:function(obj_){
-			dialog_instruction_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_instruction_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
-		},
-		close: function(){
-			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
-			// 	.closest('td')						//utk dialog dalam jqgrid jer
-			// 	.next()
-			// 	.find("input[type=text]").focus();
-		},
-		justb4refresh: function(obj_){
-			obj_.urlParam.searchCol2=[];
-			obj_.urlParam.searchVal2=[];
-		},
-		justaftrefresh: function(obj_){
-			$("#Dtext_"+obj_.unique).val('');
-		}
-	},'urlParam', 'radio', 'tab' 	
-);
-dialog_instruction_phar.makedialog(false);
+// 	},{
+// 		title:"Select Tax Code For Item",
+// 		open:function(obj_){
+// 			dialog_instruction_phar.urlParam.filterCol=['compcode','recstatus'];
+// 			dialog_instruction_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
+// 		},
+// 		close: function(){
+// 			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
+// 			// 	.closest('td')						//utk dialog dalam jqgrid jer
+// 			// 	.next()
+// 			// 	.find("input[type=text]").focus();
+// 		},
+// 		justb4refresh: function(obj_){
+// 			obj_.urlParam.searchCol2=[];
+// 			obj_.urlParam.searchVal2=[];
+// 		},
+// 		justaftrefresh: function(obj_){
+// 			$("#Dtext_"+obj_.unique).val('');
+// 		}
+// 	},'urlParam', 'radio', 'tab' 	
+// );
+// dialog_instruction_phar.makedialog(false);
 
-var dialog_drugindicator_phar = new ordialog(
-	'drugindicator_phar',['hisdb.drugindicator'],"#jqGrid_phar input[name=drugindicator]",'errorField',
-	{	colModel:
-		[
-			{label:'Dosage Code', name:'drugindcode', width:200, classes:'pointer', canSearch:true, or_search:true},
-			{label:'Description', name:'description', width:400, classes:'pointer', canSearch:true, checked:true, or_search:true},
-		],
-		urlParam: {
-					filterCol:['compcode','recstatus'],
-					filterVal:['session.compcode','ACTIVE']
-				},
-		ondblClickRow:function(event){
-			if(event.type == 'keydown'){
+var dropdown_dosage_phar = new ordropdown("#jqGrid_phar select[name=dosage]",{
+	ajax: {
+	    url: './util/get_table_default',delay: 250,
+	    data: function (params) {
+	      var query = {
+	        table_name: ['hisdb.dose'],
+	        rows: 20,
+			page: params.page || 1,
+			sidx: null,
+			sord: null,
+	        field: ['dosecode','dosedesc'],
+	        filterCol:['compcode','recstatus'],
+	        filterVal:['session.compcode','ACTIVE']
+	      }
 
-				var optid = $(event.currentTarget).get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}else{
+	      if(params.term != undefined){
+	      	query.searchCol = ['dosedesc'];
+	      	query.searchVal = ['%'+params.term+'%'];
+	      }
 
-				var optid = $(event.currentTarget).siblings("input[type='text']").get(0).getAttribute("optid");
-				var id_optid = optid.substring(0,optid.search("_"));
-			}
-			let data=selrowData('#'+dialog_drugindicator_phar.gridname);
-			$(dialog_drugindicator_phar.textfield).val(data.description);
-			$('#drugindicator_phar_code_'+optid).val(data.drugindcode);
-		},
-		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-			}
+	      // Query parameters will be ?search=[term]&page=[page]
+	      return query;
+	    },
+	    processResults: function (data, params) {
+	    	let more=false;let result=[];
+	    	let json = JSON.parse(data);
+	    	let page = params.page || 1;
+	    	if(page < json.total){
+	    		more=true;
+	    	}
+	    	result = json.rows.map(function(e,i){
+	    		return {id:e.dosecode,text:e.dosedesc};
+	    	});
+		    return {
+				"results":  result,
+				"pagination": {
+					"more": more
+				}
+			};
 		}
-		
-	},{
-		title:"Select Tax Code For Item",
-		open:function(obj_){
-			dialog_drugindicator_phar.urlParam.filterCol=['compcode','recstatus'];
-			dialog_drugindicator_phar.urlParam.filterVal=['session.compcode','ACTIVE'];
-		},
-		close: function(){
-			// $(dialog_deptcode_phar.textfield)			//lepas close dialog focus on next textfield 
-			// 	.closest('td')						//utk dialog dalam jqgrid jer
-			// 	.next()
-			// 	.find("input[type=text]").focus();
-		},
-		justb4refresh: function(obj_){
-			obj_.urlParam.searchCol2=[];
-			obj_.urlParam.searchVal2=[];
-		},
-		justaftrefresh: function(obj_){
-			$("#Dtext_"+obj_.unique).val('');
+  	},
+  	templateSelection: function(state){
+  		var optid = $(state.element).parent('select').attr('optid');
+  		$('#dosage_phar_code_'+optid).val(state.id);
+
+  		return state.text;
+  	}
+});
+
+var dropdown_frequency_phar = new ordropdown("#jqGrid_phar select[name=frequency]",{
+	ajax: {
+	    url: './util/get_table_default',delay: 250,
+	    data: function (params) {
+	      var query = {
+	        table_name: ['hisdb.freq'],
+	        rows: 20,
+			page: params.page || 1,
+			sidx: null,
+			sord: null,
+	        field: ['freqcode','freqdesc'],
+	        filterCol:['compcode','recstatus'],
+	        filterVal:['session.compcode','ACTIVE']
+	      }
+
+	      if(params.term != undefined){
+	      	query.searchCol = ['freqdesc'];
+	      	query.searchVal = ['%'+params.term+'%'];
+	      }
+
+	      // Query parameters will be ?search=[term]&page=[page]
+	      return query;
+	    },
+	    processResults: function (data, params) {
+	    	let more=false;let result=[];
+	    	let json = JSON.parse(data);
+	    	let page = params.page || 1;
+	    	if(page < json.total){
+	    		more=true;
+	    	}
+	    	result = json.rows.map(function(e,i){
+	    		return {id:e.freqcode,text:e.freqdesc};
+	    	});
+		    return {
+				"results":  result,
+				"pagination": {
+					"more": more
+				}
+			};
 		}
-	},'urlParam', 'radio', 'tab' 	
-);
-dialog_drugindicator_phar.makedialog(false);
+  	},
+  	templateSelection: function(state){
+  		var optid = $(state.element).parent('select').attr('optid');
+  		$('#frequency_phar_code_'+optid).val(state.id);
+
+  		return state.text;
+  	}
+});
+
+var dropdown_instruction_phar = new ordropdown("#jqGrid_phar select[name=instruction]",{
+	ajax: {
+	    url: './util/get_table_default',delay: 250,
+	    data: function (params) {
+	      var query = {
+	        table_name: ['hisdb.instruction'],
+	        rows: 20,
+			page: params.page || 1,
+			sidx: null,
+			sord: null,
+	        field: ['inscode','description'],
+	        filterCol:['compcode','recstatus'],
+	        filterVal:['session.compcode','ACTIVE']
+	      }
+
+	      if(params.term != undefined){
+	      	query.searchCol = ['description'];
+	      	query.searchVal = ['%'+params.term+'%'];
+	      }
+
+	      // Query parameters will be ?search=[term]&page=[page]
+	      return query;
+	    },
+	    processResults: function (data, params) {
+	    	let more=false;let result=[];
+	    	let json = JSON.parse(data);
+	    	let page = params.page || 1;
+	    	if(page < json.total){
+	    		more=true;
+	    	}
+	    	result = json.rows.map(function(e,i){
+	    		return {id:e.inscode,text:e.description};
+	    	});
+		    return {
+				"results":  result,
+				"pagination": {
+					"more": more
+				}
+			};
+		}
+  	},
+  	templateSelection: function(state){
+  		var optid = $(state.element).parent('select').attr('optid');
+  		$('#instruction_phar_code_'+optid).val(state.id);
+
+  		return state.text;
+  	}
+});
+
+var dropdown_drugindicator_phar = new ordropdown("#jqGrid_phar select[name=drugindicator]",{
+	ajax: {
+	    url: './util/get_table_default',delay: 250,
+	    data: function (params) {
+	      var query = {
+	        table_name: ['hisdb.drugindicator'],
+	        rows: 20,
+			page: params.page || 1,
+			sidx: null,
+			sord: null,
+	        field: ['drugindcode','description'],
+	        filterCol:['compcode','recstatus'],
+	        filterVal:['session.compcode','ACTIVE']
+	      }
+
+	      if(params.term != undefined){
+	      	query.searchCol = ['description'];
+	      	query.searchVal = ['%'+params.term+'%'];
+	      }
+
+	      // Query parameters will be ?search=[term]&page=[page]
+	      return query;
+	    },
+	    processResults: function (data, params) {
+	    	let more=false;let result=[];
+	    	let json = JSON.parse(data);
+	    	let page = params.page || 1;
+	    	if(page < json.total){
+	    		more=true;
+	    	}
+	    	result = json.rows.map(function(e,i){
+	    		return {id:e.drugindcode,text:e.description};
+	    	});
+		    return {
+				"results":  result,
+				"pagination": {
+					"more": more
+				}
+			};
+		}
+  	},
+  	templateSelection: function(state){
+  		var optid = $(state.element).parent('select').attr('optid');
+  		$('#drugindicator_phar_code_'+optid).val(state.id);
+
+  		return state.text;
+  	}
+});
 
 function trxdateCustomEdit_phar(val, opt) {
 	val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));	
@@ -1608,13 +1757,21 @@ function write_detail_dosage(selrowdata,edit=false,rowid){
 	}
 	removeValidationClass(['#dosage_phar_'+rowid,'#frequency_phar_'+rowid,'#instruction_phar_'+rowid,'#drugindicator_phar_'+rowid]);
 	$('#ftxtdosage_phar_'+rowid).val(selrowdata.ftxtdosage);
-	$('#dosage_phar_'+rowid).val(selrowdata.doscode_desc);
+
+	var dosage_newOption = new Option(selrowdata.doscode_desc, selrowdata.doscode, false, false);
+	$('select#dosage_phar_'+rowid).append(dosage_newOption).trigger('change');
 	$('#dosage_phar_code_'+rowid).val(selrowdata.doscode);
-	$('#frequency_phar_'+rowid).val(selrowdata.frequency_desc);
+
+	var frequency_newOption = new Option(selrowdata.frequency_desc, selrowdata.frequency, false, false);
+	$('#frequency_phar_'+rowid).append(frequency_newOption).trigger('change');
 	$('#frequency_phar_code_'+rowid).val(selrowdata.frequency);
-	$('#instruction_phar_'+rowid).val(selrowdata.addinstruction_desc);
+
+	var instruction_newOption = new Option(selrowdata.addinstruction_desc, selrowdata.addinstruction, false, false);
+	$('#instruction_phar_'+rowid).append(instruction_newOption).trigger('change');
 	$('#instruction_phar_code_'+rowid).val(selrowdata.addinstruction);
-	$('#drugindicator_phar_'+rowid).val(selrowdata.drugindicator_desc);
+
+	var drugindicator_newOption = new Option(selrowdata.drugindicator_desc, selrowdata.drugindicator, false, false);
+	$('#drugindicator_phar_'+rowid).append(drugindicator_newOption).trigger('change');
 	$('#drugindicator_phar_code_'+rowid).val(selrowdata.drugindicator);
 }
 
@@ -1624,4 +1781,13 @@ function collapseallsubgrid(except){
 		$("#jqGrid_phar").jqGrid("collapseSubGridRow",e);
 	});
 	$("#jqGrid_phar").jqGrid("expandSubGridRow",except);
+}
+
+function ordropdown(id,obj){
+	this.id=id;
+	this.obj=obj;
+	this.on = function(){
+		let self = this;
+		$(self.id).select2(self.obj);
+	}
 }

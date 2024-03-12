@@ -262,8 +262,7 @@ var myEditOptions_phar = {
 			return false;
 		}
 
-		let justbc = $("#grid-command-buttons tr.justbc").data("rowId");
-		let rowdata = $("#grid-command-buttons").bootgrid("getCurrentRows")[justbc];
+		let rowdata = getrow_bootgrid();
 
 		let editurl = "./ordcom/form?"+
 			$.param({

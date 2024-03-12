@@ -271,7 +271,8 @@
 	<script type="text/ecmascript" src="plugins/moment.js"></script>
 	<script type="text/javascript" src="js/myjs/utility.js"></script>
 
-
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 	<script type="text/javascript" src="plugins/jquery-validator/jquery.validate.min.js"></script>
@@ -348,17 +349,21 @@
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
 				@if (Auth::user()->doctor == 1)
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
 				@else
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 				@endif
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
-				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
 			@endif
 		@endif
 	@endif
