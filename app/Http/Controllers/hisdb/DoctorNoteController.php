@@ -754,8 +754,8 @@ class DoctorNoteController extends defaultController
             
             $pathistory_obj = DB::table('hisdb.pathistory')
                 ->where('compcode','=',session('compcode'))
-                ->where('mrn','=',$request->mrn)
-                ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
+                ->where('mrn','=',$request->mrn);
+                // ->where('recorddate','=',Carbon::createFromFormat('d-m-Y H:i:s', $request->recorddate));
             
             $patexam_obj = DB::table('hisdb.patexam')
                 ->where('compcode','=',session('compcode'))
