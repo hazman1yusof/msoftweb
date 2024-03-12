@@ -647,7 +647,7 @@ class DoctorNoteController extends defaultController
         $responce = new stdClass();
         
         $episode_obj = DB::table('hisdb.episode as e')
-            ->select('e.mrn','e.episno','p.recordtime','p.adddate','p.adduser','e.admdoctor','d.doctorname')
+            ->select('e.mrn','e.episno','p.recordtime','p.recorddate','p.adduser','e.admdoctor','d.doctorname')
             ->leftJoin('hisdb.pathealth as p', function($join) use ($request){
                 $join = $join->on('p.mrn', '=', 'e.mrn');
                 $join = $join->on('p.episno', '=', 'e.episno');
@@ -673,7 +673,7 @@ class DoctorNoteController extends defaultController
             
             foreach ($episode_obj as $key => $value) {
                 if(!empty($value->adddate)){
-                    $date['date'] =  Carbon::createFromFormat('Y-m-d', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
                 }else{
                     $date['date'] =  '-';
                 }
