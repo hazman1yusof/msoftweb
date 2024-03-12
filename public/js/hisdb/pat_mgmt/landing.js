@@ -497,7 +497,7 @@ $(document).ready(function() {
 
     ////////////////habis mykad///////
 
-    if($('#curpat').val() == "true" && $("#epistycode").val() == "OP"){
+    if($('#curpat').val() == "true" && $("#epistycode").val() == "OP" && $('#isdoctor').val() == 'false'){
         preepisode = new preepisode_init();
         preepisode.makejqgrid();
     }
