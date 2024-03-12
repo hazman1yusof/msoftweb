@@ -672,8 +672,8 @@ class DoctorNoteController extends defaultController
             $data = [];
             
             foreach ($episode_obj as $key => $value) {
-                if(!empty($value->adddate)){
-                    $date['date'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->adddate)->format('d-m-Y').' '.$value->recordtime;
+                if(!empty($value->recorddate)){
+                    $date['date'] =  Carbon::createFromFormat('Y-m-d H:i:s', $value->recorddate)->format('d-m-Y').' '.$value->recordtime;
                 }else{
                     $date['date'] =  '-';
                 }
