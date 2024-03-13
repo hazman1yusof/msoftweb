@@ -25,6 +25,8 @@ class PatmastController extends defaultController
                 return $this->preepisode_table($request);
             case 'preepisode_epis':
                 return $this->preepisode_epis($request);
+            case 'dosage_table':
+                return $this->dosage_table($request);
         }
     }
 
@@ -3251,6 +3253,30 @@ class PatmastController extends defaultController
 
     public function preepisode_epis(Request $request){
 
+        $table=DB::table('hisdb.pre_episode as pre')
+                    ->select('pre.idno','pre.case_code','pre.admdoctor','pm.compcode','pm.Name','pm.MRN','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
+                    ->where('pre.compcode',session('compcode'))
+                    ->whereDate('pre.adddate',Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                    ->where('pre.MRN',$request->mrn)
+                    ->where('pm.episno',$request->episno)
+
+                    ->join('hisdb.pat_mast as pm', function($join) use ($request){
+                        $join = $join->on('pm.mrn', '=', 'pre.MRN')
+                                        ->where('pm.compcode','=',session('compcode'))
+                                        ->where('pm.Active','=','1');
+                    });
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
+    public function dosage_table(Request $request){
+        
         $table=DB::table('hisdb.pre_episode as pre')
                     ->select('pre.idno','pre.case_code','pre.admdoctor','pm.compcode','pm.Name','pm.MRN','pm.episno','pre.apptidno','pm.Newic','pm.telhp','pm.telh','pm.DOB','pm.sex')
                     ->where('pre.compcode',session('compcode'))

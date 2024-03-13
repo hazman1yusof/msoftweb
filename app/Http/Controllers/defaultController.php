@@ -162,15 +162,13 @@ abstract class defaultController extends Controller{
         }
 
         /////////searching/////////
-        if(!empty($request->searchCol)){
+        if(!empty($request->searchCol) && !empty($request->searchVal)){
             if(!empty($request->fixPost)){
                 $searchCol_array = $this->fixPost3($request->searchCol);
             }else{
                 $searchCol_array = $request->searchCol;
             }
-
             $count = array_count_values($searchCol_array);
-            // dump($count);
 
             foreach ($count as $key => $value) {
                 $occur_ar = $this->index_of_occurance($key,$searchCol_array);
@@ -831,7 +829,6 @@ abstract class defaultController extends Controller{
     }
 
     public static function begins_search_if($col_arr,$search_col,$search_val){
-
         $found=false;
         foreach($col_arr as $col_str){
             if(str_contains($search_col, $col_str)) {

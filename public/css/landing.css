@@ -360,6 +360,7 @@ label.oe_phar_label{
 div.oe_phar_div{
     width: 84% !important;
     display: inline-table !important;
+    padding-bottom: 4px;
 }
 div.panel.jqgrid_detail{
     background: #e6ffff;
@@ -459,4 +460,7 @@ form#.form_medc p{
 #grid-command-buttons-header,#grid-command-buttons-header div.actionBar{
 	padding-right: 0px !important;
     padding-left: 0px !important;
+}
+.select2-container{
+	display: unset;
 }
