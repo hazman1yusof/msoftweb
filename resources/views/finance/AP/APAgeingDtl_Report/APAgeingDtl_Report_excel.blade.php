@@ -1,97 +1,75 @@
 <table>
     <tr>
+    <tr>
+        <td style="font-weight:bold; text-align: left">Code</td>
+        <td style="font-weight:bold; text-align: left">Company</td>
+        <td style="font-weight:bold; text-align: left">Document No.</td>
+        <td style="font-weight:bold; text-align: left">Date</td>
+        @foreach ($grouping as $key => $group)
+            @if($key+1 < count($grouping))
+            <td style="font-weight:bold; text-align: left">{{$group+1}}-{{$grouping[$key+1]}} Days</td>
+            @else
+            <td style="font-weight:bold; text-align: left">> {{$group}} Days</td>
+            @endif
+        @endforeach
+        <td style="font-weight:bold; text-align: left">Total</td>
+        <td style="font-weight:bold; text-align: left">Units</td>
+    </tr>      
+
+    @foreach ($suppgroup as $obj_sg)
+    <tr>
+        <td style="font-weight:bold; text-align: left">{{$obj_sg->suppgroup}}</td>
+        <td style="font-weight:bold; text-align: left">{{$obj_sg->description}}</td>
     </tr>
-        <tr>
-            <td style="font-weight:bold">CODE</td>
-            <td style="font-weight:bold">COMPANY</td>
-            <td style="font-weight:bold">DOCUMENT NO</td>
-            <td style="font-weight:bold">DATE</td>
-            <td style="font-weight:bold">1-30 DAYS</td>
-            <td style="font-weight:bold">31-60 DAYS</td>
-            <td style="font-weight:bold">61-90 DAYS</td>
-            <td style="font-weight:bold">91-120 DAYS</td>
-            <td style="font-weight:bold">>120 DAYS</td>
-            <td style="font-weight:bold">TOTAL</td>
-            <td style="font-weight:bold">UNITS</td>
-        </tr>
-        <tr></tr>
-        @foreach ($supp_group as $suppgroup)
-            <tr>
-                <td style="font-weight:bold">{{strtoupper($suppgroup->suppgroup)}}</td>
-                <td style="font-weight:bold">{{strtoupper($suppgroup->sg_desc)}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>         
-            </tr>
 
-            @foreach ($supp_code as $suppcode)
-                @if($suppcode->suppgroup == $suppgroup->suppgroup)
-                    <tr>
-                        <td>{{strtoupper($suppcode->suppcode)}}</td>
-                        <td>{{strtoupper($suppcode->supplier_name)}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>         
-                    </tr>
+        @foreach ($suppcode as $obj_sc)
+            @if($obj_sc->suppgroup == $obj_sg->suppgroup)
+                <tr>
+                    <td style="font-weight:bold; text-align: left">{{$obj_sc->suppcode}}</td>
+                    <td style="font-weight:bold; text-align: left">{{$obj_sc->name}}</td>
+                </tr>
 
-                    @php($tot = 0)
-                    @foreach ($array_report as $obj) 
-                        @if($obj->suppcode == $suppcode->suppcode)
-                            <tr>
-                                <td></td>                      
-                                <td style="text-align: left">{{strtoupper($obj->remarks)}}</td>                    
-                                <td>{{strtoupper($obj->trantype)}}/{{strtoupper($obj->docno)}}</td>
-                                <td>{{\Carbon\Carbon::parse($obj->postdate)->format('d/m/Y')}}</td>
-                                <td data-format="0.00" style="text-align: right">{{number_format($outamt, 2, '.', ',')}}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>{{$obj->unit}}</td>         
-                            </tr>
-                        @php($tot += $outamt)
+                @php($total = 0.00)
+                @foreach ($array_report as $obj_ar)
+                    @if($obj_ar->suppcode == $obj_sc->suppcode)
+                        @php($total += $obj_ar->newamt)
+                        <tr>
+                            <td></td>
+                            <td>{{$obj_ar->remarks}}</td>
+                            <td>{{$obj_ar->document}}</td>
+                            <td>{{$obj_ar->postdate}}</td>
+
+                            @foreach ($grouping as $key => $group)
+                                @if($key == $obj_ar->group)
+                                <td>{{number_format($obj_ar->newamt, 2, '.', ',')}}</td>
+                                @else
+                                <td>{{number_format(0.00, 2, '.', ',')}}</td>
+                                @endif
+                            @endforeach
+
+                            <td></td>
+                            <td>{{$obj_ar->unit}}</td>
+                        </tr>
+                    @endif
+                @endforeach
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    @foreach ($grouping as $key => $group)
+                        @if($key+1 == count($grouping))
+                        <td style="font-weight:bold; text-align: left">Total</td>
+                        @else
+                        <td></td>
                         @endif
                     @endforeach
-                    <tr>
-                        <td></td>                      
-                        <td></td>                    
-                        <td></td>
-                        <td style="font-weight:bold">TOTAL</td>
-                        <td data-format="0.00" style="text-align: right">{{number_format($tot, 2, '.', ',')}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>         
-                    </tr>
-                @endif
-            @endforeach
+
+                    <td>{{number_format($total, 2, '.', ',')}}</td>
+                    <td></td>
+                </tr>
+            @endif
         @endforeach
-        <tr>
-            <td></td>                      
-            <td></td>                    
-            <td></td>
-            <td style="font-weight:bold">SUB TOTAL</td>
-            <td data-format="0.00" style="text-align: right"></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>         
-        </tr>
+    @endforeach
 </table>

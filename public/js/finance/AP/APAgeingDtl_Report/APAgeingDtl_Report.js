@@ -13,11 +13,11 @@ $(document).ready(function () {
 	});
    
 	$('#pdfgen').click(function(){
-		window.open('./APAgeingDtl_Report/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date_ag='+$("#date_ag").val(),  '_blank'); 
+		window.open('./APAgeingDtl_Report/showpdf?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(),  '_blank'); 
 	});
 
 	$('#excel').click(function(){
-		window.location='./APAgeingDtl_Report/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date_ag='+$("#date_ag").val();
+		window.open('./APAgeingDtl_Report/showExcel?suppcode_from='+$('#suppcode_from').val()+'&suppcode_to='+$("#suppcode_to").val()+'&date='+$("#date").val()+'&groupOne='+$("#groupOne").val()+'&groupTwo='+$("#groupTwo").val()+'&groupThree='+$("#groupThree").val()+'&groupFour='+$("#groupFour").val()+'&groupFive='+$("#groupFive").val()+'&groupSix='+$("#groupSix").val(),  '_blank'); 
 	});
 
     /////////////////////////////////////dialog handler///////////////////////////////

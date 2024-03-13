@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <div class="col-md-12">
 								<label class="control-label" for="Scol">Date</label>  
-								<input type="date" name="date_ag" id="date_ag" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
+								<input type="date" name="date" id="date" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="{{Carbon\Carbon::now()->format('Y-m-d')}}">
                             </div>
                         </div>
                         
@@ -104,52 +104,52 @@
                             <div id="printingoptn" class="panel-heading">PRINTING OPTION</div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="group1">Group 1</label>  
+                                    <label class="col-md-2 control-label" for="groupOne">Group 1</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group1" name="group1" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupOne" name="groupOne" type="number" maxlength="30" class="form-control input-sm" value="30">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
 
-                                    <label class="col-md-2 control-label" for="group4">Group 4</label>  
+                                    <label class="col-md-2 control-label" for="groupFour">Group 4</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group4" name="group4" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupFour" name="groupFour" type="number" maxlength="30" class="form-control input-sm" value="120">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="group2">Group 2</label>  
+                                    <label class="col-md-2 control-label" for="groupTwo">Group 2</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group2" name="group2" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupTwo" name="groupTwo" type="number" maxlength="30" class="form-control input-sm" value="60">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
 
-                                    <label class="col-md-2 control-label" for="group5">Group 5</label>  
+                                    <label class="col-md-2 control-label" for="groupFive">Group 5</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group5" name="group5" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupFive" name="groupFive" type="number" maxlength="30" class="form-control input-sm" value="">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-2 control-label" for="group3">Group 3</label>  
+                                    <label class="col-md-2 control-label" for="groupThree">Group 3</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group3" name="group3" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupThree" name="groupThree" type="number" maxlength="30" class="form-control input-sm" value="90">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
 
-                                    <label class="col-md-2 control-label" for="group6">Group 6</label>  
+                                    <label class="col-md-2 control-label" for="groupSix">Group 6</label>  
                                     <div class="col-md-4">
                                         <div class="input-group">
-                                            <input id="group6" name="group6" type="number" maxlength="30" class="form-control input-sm">
+                                            <input id="groupSix" name="groupSix" type="number" maxlength="30" class="form-control input-sm">
                                             <span class="input-group-addon" style="color:#000000 !important">days</span>
                                         </div>
                                     </div>
