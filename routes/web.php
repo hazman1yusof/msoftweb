@@ -682,7 +682,17 @@ Route::get('/glmaster_Report/showExcel','finance\Glmaster_ReportController@showE
 Route::get('/consolidationAcc','finance\ConsolidationAccController@show');
 Route::get('/consolidationAcc/table','finance\ConsolidationAccController@table');
 Route::post('/consolidationAcc/form','finance\ConsolidationAccController@form');
-Route::post('/consolidationAccDtl/form','finance\ConsolidationAccController@form');
+Route::get('/consolidationAcc/form','finance\ConsolidationAccController@form');
+Route::post('/consolidationAccDtl/form','finance\ConsolidationAccDtlController@form');
+Route::get('/consolidationAccDtl/table','finance\ConsolidationAccDtlController@table');
+
+//// Consolidation Cost Center setup ///
+Route::get('/consolidationCostCenter','finance\ConsolidationCostCenterController@show');
+Route::get('/consolidationCostCenter/table','finance\ConsolidationCostCenterController@table');
+Route::post('/consolidationCostCenter/form','finance\ConsolidationCostCenterController@form');
+Route::get('/consolidationCostCenter/form','finance\ConsolidationCostCenterController@form');
+Route::post('/consolidationCostCenterDtl/form','finance\ConsolidationCostCenterControllerDtl@form');
+Route::get('/consolidationCostCenterDtl/table','finance\ConsolidationCostCenterControllerDtl@table');
 
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
