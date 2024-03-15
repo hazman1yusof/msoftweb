@@ -207,7 +207,6 @@ $(document).ready(function () {
 			$("#delete").show();$("#view").show();
 			$("#save").hide();$("#cancel").hide();
 			refreshGrid("#jqGrid2",urlParam2, 'add');
-
 		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "save",
@@ -300,15 +299,18 @@ $(document).ready(function () {
 				$("#jqGridPager2_left").show();
 			}
 			if(selfoper=='add'){
-				
+
 				oper='edit';//sekali dia add terus jadi edit lepas tu
-				
+				refreshGrid("#jqGrid", urlParam);
+
 				$('#idno').val(data.idno);
 				$('#code').val(data.code);
 				$('#description').val(data.description);
 
 				urlParam2.filterVal[1]=data.code; 
 			}else if(selfoper=='edit'){
+				refreshGrid("#jqGrid", urlParam);
+
 				//doesnt need to do anything
 				$('#idno').val(data.idno);
 				$('#description').val(data.description);
@@ -414,18 +416,8 @@ $(document).ready(function () {
 				$('#jqGrid2_ilsave').click();
 			});
 		},
-		aftersavefunc: function (rowid, response, options) {
-			// //if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
-			//addmore_jqgrid2.more = true;
-			// //state true maksudnyer ada isi, tak kosong
-			// refreshGrid('#jqGrid2',urlParam2,'add');
-			// errorField.length=0;
-			// $("#jqGridPagerDelete2,#jqGridPagerRefresh2").show();
-			// var resobj = JSON.parse(response.responseText);
-			// $('#code').val(resobj.code);
+		aftersavefunc: function (rowid, response, options) {	
 	    	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-
-			// urlParam2.filterVal[1]=resobj.code;
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2Delete").show();
 		},

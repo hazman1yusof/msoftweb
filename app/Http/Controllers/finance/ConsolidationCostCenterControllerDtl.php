@@ -83,20 +83,10 @@ class ConsolidationCostCenterControllerDtl extends defaultController
         DB::beginTransaction();
         try {
 
-            // $consolecode = DB::table('finance.glconsol')
-            //             ->where('compcode','=',session('compcode'))
-            //             ->where('code','=',$request->code)
-            //             ->first();
-
-            // $code = $request->code;
-
             DB::table('finance.glcondept')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->where('lineno_','=',$request->lineno_)
-                ->where('groupcode','=',$request->groupcode)
                 ->update([  
-                    'compcode' => session('compcode'),
                     'recstatus' => 'ACTIVE',
                     'costcodefr' => $request->costcodefr,
                     'costcodeto' => $request->costcodeto,

@@ -137,6 +137,7 @@ $(document).ready(function () {
 				urlParam2.filterVal[1]=selrowData("#jqGrid").code;
 				$('#code').val(selrowData("#jqGrid").code);
 				$('#description').val(selrowData("#jqGrid").description);
+				$('#idno').val(selrowData("#jqGrid").idno);
 				$("#jqGridPager2_left").show();
 				$("#jqGridPager2_center").show();
 				$("#jqGridPager2_right").show();
@@ -145,8 +146,8 @@ $(document).ready(function () {
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			// $("#jqGridPager td[title='Edit Selected Row']").click();
-			$('#formdata :input[rdonly]').prop("readonly",false);
+			$("#jqGridPager td[title='Edit Selected Row']").click();
+			// $('#formdata :input[rdonly]').prop("readonly",false);
 			$("#add").hide();$("#edit").hide();
 			$("#delete").hide();$("#view").hide();
 			$("#save").show();$("#cancel").show();
@@ -172,35 +173,40 @@ $(document).ready(function () {
 		beforeRefresh: function(){
 			refreshGrid("#jqGrid",urlParam);
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-trash",
-		id: "delete",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			oper='del';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-info-sign",
-		id: "view",
-		title:"View Selected Year",  
-		onClickButton: function(){
-			oper='view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			$('#formdata :input[rdonly]').prop("readonly",true);
-			$("#save").hide();
-			refreshGrid("#jqGrid2",urlParam2, 'add');
-		},
+	// }).jqGrid('navButtonAdd',"#jqGridPager",{
+	// 	caption:"",cursor: "pointer",position: "first", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	id: "delete",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		oper='del';
+	// 		selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	// 	},
+	// }).jqGrid('navButtonAdd',"#jqGridPager",{
+	// 	caption:"",cursor: "pointer",position: "first", 
+	// 	buttonicon:"glyphicon glyphicon-info-sign",
+	// 	id: "view",
+	// 	title:"View Selected Year",  
+	// 	onClickButton: function(){
+	// 		oper='view';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		$("#jqGrid").data('lastselrow',selRowId);
+	// 		$('#formdata :input[rdonly]').prop("readonly",true);
+	// 		$("#save").hide();
+	// 		refreshGrid("#jqGrid2",urlParam2, 'add');
+	// 	},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "cancel",
 		caption:"",cursor: "pointer",position: "last",  
 		buttonicon:"glyphicon glyphicon-remove-circle", 
 		title:"Cancel", 
 		onClickButton: function(){
-			emptyFormdata(errorField,'#formdata');
+			$('#formdata :input[rdonly]').prop("readonly",true);
+			$('#formdata :input[frozeOnEdit]').prop("readonly",true);
+			$("#add").show();$("#edit").show();
+			$("#delete").show();$("#view").show();
+			$("#save").hide();$("#cancel").hide();
+			refreshGrid("#jqGrid2",urlParam2, 'add');
 		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "save",
@@ -217,10 +223,11 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			$('#formdata :input[rdonly]').prop("readonly",false);
+			$('#formdata :input[frozeOnEdit]').prop("readonly",true);
 			$("#add").hide();$("#edit").hide();
 			$("#delete").hide();$("#view").hide();
 			$("#save").show();$("#cancel").show();
-			refreshGrid("#jqGrid2",urlParam2, 'add');
+			refreshGrid("#jqGrid2",urlParam2);
 		}, 
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -246,7 +253,7 @@ $(document).ready(function () {
 			$("#add").show();$("#edit").show();
 			$("#delete").show();$("#view").show();
 			$("#save").hide();$("#cancel").hide();
-			saveHeader("#formdata",oper,saveParam,urlParam);
+			saveHeader("#formdata",oper,saveParam);
 			emptyFormdata(errorField,'#formdata');
 			$('.my-alert').detach();
 			refreshGrid("#jqGrid", urlParam);
@@ -292,6 +299,7 @@ $(document).ready(function () {
 			if(selfoper=='add'){
 
 				oper='edit';//sekali dia add terus jadi edit lepas tu
+				refreshGrid("#jqGrid", urlParam);
 				
 				$('#idno').val(data.idno);
 				$('#code').val(data.code);
@@ -299,7 +307,10 @@ $(document).ready(function () {
 
 				urlParam2.filterVal[1]=data.groupcode; 
 			}else if(selfoper=='edit'){
+				refreshGrid("#jqGrid", urlParam);
 				//doesnt need to do anything
+				$('#idno').val(data.idno);
+				$('#description').val(data.description);
 				urlParam2.filterVal[1]=$('#code').val(); 
 			}
 			disableForm('#formdata');
@@ -318,7 +329,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser']);
+	addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser','compcode','']);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	$("#jqGridPager_center").hide();
@@ -375,6 +386,9 @@ $(document).ready(function () {
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
 		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid2_iledit").click();
+		},
 		gridComplete: function(){
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
@@ -400,17 +414,7 @@ $(document).ready(function () {
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
-			// //if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
-			//addmore_jqgrid2.more = true;
-			// //state true maksudnyer ada isi, tak kosong
-			// refreshGrid('#jqGrid2',urlParam2,'add');
-			// errorField.length=0;
-			// $("#jqGridPagerDelete2,#jqGridPagerRefresh2").show();
-			// var resobj = JSON.parse(response.responseText);
-			// $('#code').val(resobj.code);
 	    	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline
-
-			// urlParam2.filterVal[1]=resobj.code;
 	    	refreshGrid('#jqGrid2',urlParam2,'add');
 	    	$("#jqGridPager2Delete").show();
 		},
@@ -440,7 +444,7 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$('#jqGrid').data('lastselrow',rowid);
+			$('#jqGrid2').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("jqGrid2 input[name='acctto']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
@@ -455,8 +459,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
-			//state true maksudnyer ada isi, tak kosong
+			addmore_jqgrid2.more=false; //only addmore after save inline
 			refreshGrid('#jqGrid2',urlParam2,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
