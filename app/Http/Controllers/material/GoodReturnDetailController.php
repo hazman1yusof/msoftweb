@@ -19,7 +19,6 @@ class GoodReturnDetailController extends defaultController
 
     public function form(Request $request)
     {   
-        // return $this->request_no('GRN','2FL');
         switch($request->oper){
             case 'add':
                 return $this->add($request);
@@ -77,11 +76,12 @@ class GoodReturnDetailController extends defaultController
     }
 
     public function chgDate($date){
+        dd(trim($date));
         if(!empty($date)){
             $newstr=explode("/", $date);
             return $newstr[2].'-'.$newstr[1].'-'.$newstr[0];
         }else{
-           return '0000-00-00';
+           return null;
         }
     }
 
@@ -254,6 +254,14 @@ class GoodReturnDetailController extends defaultController
 
         try {
 
+            $delordhd = DB::table('material.delordhd')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->idno);
+
+            if(!$delordhd->exists()){
+                throw new \Exception("No Delivery Order Header idno:".$request->idno);
+            }
+
             foreach ($request->dataobj as $key => $value) {
                 ///1. update detail
                 DB::table('material.delorddt')
@@ -309,7 +317,7 @@ class GoodReturnDetailController extends defaultController
             
             echo $totalAmount;
 
-            DB::commit();
+            // DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();

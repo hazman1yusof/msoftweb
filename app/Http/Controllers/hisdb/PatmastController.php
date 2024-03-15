@@ -241,31 +241,31 @@ class PatmastController extends defaultController
             $paginate_patm = $table_patm->paginate($request->rows);
 
 
-            // foreach ($paginate_patm->items() as $key => $value) {
-            //     // foreach ($paginate->items() as $key2 => $value2) {
-            //     //     if($value->MRN == $value2->mrn){
-            //     //         $value->q_doctorname = $value2->doctorname;
-            //     //         $value->q_epistycode = $value2->epistycode;
-            //     //     }
-            //     // }
+            foreach ($paginate_patm->items() as $key => $value) {
+                // foreach ($paginate->items() as $key2 => $value2) {
+                //     if($value->MRN == $value2->mrn){
+                //         $value->q_doctorname = $value2->doctorname;
+                //         $value->q_epistycode = $value2->epistycode;
+                //     }
+                // }
 
-            //     $episode = DB::table('hisdb.episode')
-            //                 ->select('newcaseP','newcaseNP','followupP','followupNP')
-            //                 ->where('mrn','=',$value->MRN)
-            //                 ->where('episno','=',$value->Episno);
+                $episode = DB::table('hisdb.episode')
+                            ->select('newcaseP','newcaseNP','followupP','followupNP')
+                            ->where('mrn','=',$value->MRN)
+                            ->where('episno','=',$value->Episno);
 
-            //     if($episode->exists()){
-            //         $episode = $episode->first();
-            //         if($episode->newcaseP == 1 || $episode->followupP == 1){
-            //             $value->pregnant = 1;
-            //         }else{
-            //             $value->pregnant = 0;
-            //         }
+                if($episode->exists()){
+                    $episode = $episode->first();
+                    if($episode->newcaseP == 1 || $episode->followupP == 1){
+                        $value->pregnant = 1;
+                    }else{
+                        $value->pregnant = 0;
+                    }
 
-            //     }
+                }
 
 
-            // }
+            }
 
             $responce = new stdClass();
             $responce->current = $paginate_patm->currentPage();
