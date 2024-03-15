@@ -879,7 +879,7 @@ $(document).ready(function () {
 		    "_token": $("#_token").val()
         },
         oneditfunc: function (rowid) {
-			calc_jq_height_onchange("jqGrid");
+			calc_jq_height_onchange("jqGrid2");
         	$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
 
         	unsaved = false;
@@ -1551,6 +1551,7 @@ $(document).ready(function () {
 							);
 						});
 
+						calc_jq_height_onchange("jqGrid2");
 					} else {
 
 					}
@@ -2210,26 +2211,16 @@ $(document).ready(function () {
 
 });
 
-	function populate_form(obj){
-		//panel header
-		$('#prdept_show').text(obj.delordhd_prdept);
-		$('#grtno_show').text(padzero(obj.delordhd_docno));
-		$('#suppcode_show').text(obj.supplier_name);
-	}
+function populate_form(obj){
+	//panel header
+	$('#prdept_show').text(obj.delordhd_prdept);
+	$('#grtno_show').text(padzero(obj.delordhd_docno));
+	$('#suppcode_show').text(obj.supplier_name);
+}
 
-	function empty_form(){
-		$('#prdept_show').text('');
-		$('#grtno_show').text('');
-		$('#suppcode_show').text('');
-		
-	}
-
-	function calc_jq_height_onchange(jqgrid){
-		let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-		if(scrollHeight<50){
-			scrollHeight = 50;
-		}else if(scrollHeight>300){
-			scrollHeight = 300;
-		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-	}
+function empty_form(){
+	$('#prdept_show').text('');
+	$('#grtno_show').text('');
+	$('#suppcode_show').text('');
+	
+}
