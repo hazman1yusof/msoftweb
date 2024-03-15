@@ -24,7 +24,6 @@ class ConsolidationAccController extends defaultController
             case 'add':
                 return $this->defaultAdd($request);
             case 'edit':
-            dd('sd');
                 return $this->defaultEdit($request);
             case 'del':
                 return $this->defaultDel($request);
