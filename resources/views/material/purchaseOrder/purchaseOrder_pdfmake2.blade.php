@@ -28,22 +28,22 @@
 	                        body: [
 	                            [
 									{text: 'SUPPLIER',bold: true}, 
-									{text: ': {{$supplier->Name}}'},
+									{text: `: {{$supplier->Name}}`},
 									{text: 'PURCHASE ORDER NO',bold: true}, 
 									{text: ': {{str_pad($purordhd->purordno, 9, '0', STR_PAD_LEFT)}}'},
 								],[
 									{text: ''}, 
-									{text: ': {{$supplier->Addr1}}'},
+									{text: `: {{$supplier->Addr1}}`},
 									{text: 'PURCHASE ORDER DATE',bold: true}, 
 									{text: ': {{$purordhd->purdate}}'},
 								],[
 									{text: ''}, 
-									{text: ': {{$supplier->Addr2}}'},
+									{text: `: {{$supplier->Addr2}}`},
 									{text: 'PAGE',bold: true}, 
 									{text: ': '+currentPage+' / '+pageCount},
 								],[
 									{text: ''}, 
-									{text: ': {{$supplier->Addr3}}'},
+									{text: `: {{$supplier->Addr3}}`},
 									{text: ''}, 
 									{text: ''},
 								],
@@ -102,7 +102,7 @@
 								{text:'{{$dtl->lineno_}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->itemcode}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->qtyorder}}', style: 'body_row', border: [false, false, false, false]},
-								{text:'{{$dtl->uom_desc}}', style: 'body_row', border: [false, false, false, false]},
+								{text:`{{$dtl->uom_desc}}`, style: 'body_row', border: [false, false, false, false]},
 								{text:'{{number_format($dtl->unitprice,2)}}', alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{number_format($dtl->amount,2)}}', alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->taxcode}}', style: 'body_row',border: [false, false, false, false]},
