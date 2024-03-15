@@ -102,7 +102,7 @@
 								{text:'{{$dtl->lineno_}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->itemcode}}', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->qtyorder}}', style: 'body_row', border: [false, false, false, false]},
-								{text:`{{$dtl->uom_desc}}`, style: 'body_row', border: [false, false, false, false]},
+								{text:`{!!str_replace('`', '', $dtl->uom_desc)!!}`, style: 'body_row', border: [false, false, false, false]},
 								{text:'{{number_format($dtl->unitprice,2)}}', alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{number_format($dtl->amount,2)}}', alignment: 'right', style: 'body_row', border: [false, false, false, false]},
 								{text:'{{$dtl->taxcode}}', style: 'body_row',border: [false, false, false, false]},
@@ -111,7 +111,7 @@
 							],
 							[
 								{text:'',style: 'body_row', border: [false, false, false, false]},
-								{colSpan:6,text:`{{$dtl->description}}`, border: [false, false, false, false]},
+								{colSpan:6,text:`{!!str_replace('`', '', $dtl->description)!!}`, border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
@@ -122,7 +122,7 @@
 					    	],
 					    	[
 								{text:'',style: 'body_row', border: [false, false, false, false]},
-								{colSpan:6,text:`{{$dtl->remarks}}`, border: [false, false, false, false]},
+								{colSpan:6,text:`{!!str_replace('`', '', $dtl->remarks)!!}`, border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
 								{text:'',style: 'body_row', border: [false, false, false, false]},
