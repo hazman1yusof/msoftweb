@@ -1006,7 +1006,7 @@ $(document).ready(function () {
 			        	if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 			        },function(data,self){
 			        	if(data.rows.length > 0){
-							$("#jqGrid2 #"+self.id_optid+"_pouom_gstpercent").val(data.rows[0].rate);
+							$("#jqGrid2 #"+self.id_optid+"_taxcode_gstpercent").val(data.rows[0].rate);
 			        	}
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
@@ -1884,8 +1884,8 @@ $(document).ready(function () {
 				$("#jqGrid2 #"+id_optid+"_uomcode").val(data['p_uomcode']);
 				$("#jqGrid2 #"+id_optid+"_taxcode").val(data['p_TaxCode']);
 				$("#jqGrid2 #"+id_optid+"_rate").val(data['t_rate']);
-				$("#jqGrid2 #"+id_optid+"_pouom_convfactor_uom").val(data['u_convfactor']);
-				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['t_rate']);
+				$("#jqGrid2 #"+id_optid+"_convfactor_uom").val(data['u_convfactor']);
+				$("#jqGrid2 #"+id_optid+"_gstpercent").val(data['t_rate']);
 
 
 				var rowid = $("#jqGrid2").jqGrid ('getGridParam', 'selrow');
@@ -2136,7 +2136,7 @@ $(document).ready(function () {
 
 				let data=selrowData('#'+dialog_taxcode.gridname);
 
-				$("#jqGrid2 #"+id_optid+"_pouom_gstpercent").val(data['rate']);
+				$("#jqGrid2 #"+id_optid+"_taxcode_gstpercent").val(data['rate']);
 				$(dialog_taxcode.textfield).closest('td').next().has("input[type=text]").focus();
 			},
 			gridComplete: function(obj){
@@ -2150,6 +2150,7 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
+				dialog_taxcode.urlParam.field=['taxcode','description','rate']
 				dialog_taxcode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_taxcode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
 			},
