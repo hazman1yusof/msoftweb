@@ -448,7 +448,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 			$('#jqGrid2').data('lastselrow',rowid);
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").hide();
 			$("jqGrid2 input[name='acctto']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
@@ -466,7 +466,7 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'edit');
 			errorField.length=0;
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
 		errorfunc: function(rowid,response){
 			refreshGrid('#jqGrid2',urlParam2,'edit');
@@ -485,7 +485,7 @@ $(document).ready(function () {
 		},
 		afterrestorefunc : function( response ) {
 			refreshGrid('#jqGrid2',urlParam2,'edit');
-			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
