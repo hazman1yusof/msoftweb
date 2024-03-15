@@ -38,7 +38,7 @@
 				<div class="panel panel-body">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
 					{{ csrf_field() }}
-					<input type="hidden" name="idno">
+					<input type="hidden" name="idno" id="idno">
 						<div class="form-group">
 							<label class="col-md-1 control-label" for="code">Code</label>  
 								<div class="col-md-2">

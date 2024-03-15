@@ -79,17 +79,13 @@ class ConsolidationAccDtlController extends defaultController
     }
 
     public function edit(Request $request){
-
         DB::beginTransaction();
         try {
 
             DB::table('finance.glcondtl')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->where('lineno_','=',$request->lineno_)
-                ->where('code','=',$request->code)
                 ->update([  
-                    'compcode' => session('compcode'),
                     'recstatus' => 'ACTIVE',
                     'acctfr' => $request->acctfr,
                     'acctto' => $request->acctto,

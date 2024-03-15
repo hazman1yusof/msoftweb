@@ -137,6 +137,7 @@ $(document).ready(function () {
 				urlParam2.filterVal[1]=selrowData("#jqGrid").code;
 				$('#code').val(selrowData("#jqGrid").code);
 				$('#description').val(selrowData("#jqGrid").description);
+				$('#idno').val(selrowData("#jqGrid").idno);
 				$("#jqGridPager2_left").show();
 				$("#jqGridPager2_center").show();
 				$("#jqGridPager2_right").show();
@@ -145,8 +146,8 @@ $(document).ready(function () {
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
-			// $("#jqGridPager td[title='Edit Selected Row']").click();
-			$('#formdata :input[rdonly]').prop("readonly",false);
+			$("#jqGridPager td[title='Edit Selected Row']").click();
+			// $('#formdata :input[rdonly]').prop("readonly",false);
 			$("#add").hide();$("#edit").hide();
 			$("#delete").hide();$("#view").hide();
 			$("#save").show();$("#cancel").show();
@@ -220,7 +221,7 @@ $(document).ready(function () {
 		title:"Edit Selected Row",  
 		onClickButton: function(){
 			oper='edit';
-			//console.log(oper);
+			console.log(oper);
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#description").focus();
 			$("#jqGrid").data('lastselrow',selRowId);
@@ -255,8 +256,7 @@ $(document).ready(function () {
 			$("#add").show();$("#edit").show();
 			$("#delete").show();$("#view").show();
 			$("#save").hide();$("#cancel").hide();
-			saveHeader("#formdata",oper,saveParam,urlParam);
-			 //console.log(oper);
+			saveHeader("#formdata",oper,saveParam);
 			emptyFormdata(errorField,'#formdata');
 			$('.my-alert').detach();
 			refreshGrid("#jqGrid", urlParam);
@@ -330,7 +330,7 @@ $(document).ready(function () {
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
 	addParamField('#jqGrid',true,urlParam);
-	addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser']);
+	addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser','compcode','']);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	$("#jqGridPager_center").hide();
@@ -386,6 +386,9 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false; //reset
+		},
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid2_iledit").click();
 		},
 		gridComplete: function(){
 			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') > 0 ){
@@ -452,12 +455,12 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			$('#jqGrid').data('lastselrow',rowid);
+			$('#jqGrid2').data('lastselrow',rowid);
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("jqGrid2 input[name='acctto']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
-				addmore_jqgrid2.state = true;
+				addmore_jqgrid2.state = false;
 				$('#jqGrid2_ilsave').click();
 			});
 			$("#jqGrid2 input[type='text']").on('focus',function(){
@@ -467,7 +470,7 @@ $(document).ready(function () {
 
 		},
 		aftersavefunc: function (rowid, response, options) {
-			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
+			addmore_jqgrid2.more=false; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid2',urlParam2,'edit');
 			errorField.length=0;
