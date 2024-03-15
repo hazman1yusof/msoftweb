@@ -32,6 +32,7 @@ class ConsolidationAccDtlController extends defaultController
                 return 'error happen..';
         }
     }
+
     public function add(Request $request){
 
         DB::beginTransaction();
@@ -43,9 +44,7 @@ class ConsolidationAccDtlController extends defaultController
                         ->first();
 
             $code = $request->code;
-            // if($costcode->exists()){
-            //     throw new \Exception("Record Duplicate");
-            // }
+            //dd($code);
            
             $sqlln = DB::table('finance.glcondtl')->select('lineno_')
                 ->where('compcode','=',session('compcode'))
@@ -58,7 +57,7 @@ class ConsolidationAccDtlController extends defaultController
                 ->insert([  
                     'compcode' => session('compcode'),
                     'lineno_' => $li,
-                    'code' => strtoupper($code),
+                    'code' => $code,
                     'recstatus' => 'ACTIVE',
                     'acctfr' => $request->acctfr,
                     'acctto' => $request->acctto,
@@ -79,5 +78,60 @@ class ConsolidationAccDtlController extends defaultController
         }
     }
 
+    public function edit(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            DB::table('finance.glcondtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->where('lineno_','=',$request->lineno_)
+                ->where('code','=',$request->code)
+                ->update([  
+                    'compcode' => session('compcode'),
+                    'recstatus' => 'ACTIVE',
+                    'acctfr' => $request->acctfr,
+                    'acctto' => $request->acctto,
+                    // 'computerid' => session('computerid'),
+                    'upduser' => strtoupper(session('username')),
+                    'upddate' => Carbon::now("Asia/Kuala_Lumpur")
+                ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
+        }
+    }
+
+    public function del(Request $request){
+
+        DB::beginTransaction();
+        try {
+
+            DB::table('finance.glcondtl')
+                ->where('compcode','=',session('compcode'))
+                ->where('code','=',$request->code)
+                ->where('idno','=',$request->idno)
+                ->where('lineno_','=',$request->lineno_)
+                ->delete();
+
+             DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            $responce = new stdClass();
+            $responce->errormsg = $e->getMessage();
+            $responce->request = $_REQUEST;
+
+            return response(json_encode($responce), 500);
+        }
+    }
 }
 

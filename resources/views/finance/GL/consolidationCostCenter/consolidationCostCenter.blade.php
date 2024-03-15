@@ -36,10 +36,6 @@
     		<div class="panel panel-body">
             <table id="jqGrid" class="table table-striped"></table>
             <div id="jqGridPager"></div>
-            	<div>
-					<!--<button type="button" id='saveyear' class='btn btn-info'>Save</button>
-					<button id='cancelyear' class='btn btn-info'>Cancel</button>-->
-				</div>
 			</div></div>
         </div>
 

@@ -145,7 +145,11 @@ $(document).ready(function () {
 			}
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
+			// $("#jqGridPager td[title='Edit Selected Row']").click();
 			$('#formdata :input[rdonly]').prop("readonly",false);
+			$("#add").hide();$("#edit").hide();
+			$("#delete").hide();$("#view").hide();
+			$("#save").show();$("#cancel").show();
 		},
 		gridComplete: function(){
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
@@ -166,37 +170,43 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',{	
 		view:false,edit:false,add:false,del:false,search:false,
 		beforeRefresh: function(){
-			refreshGrid("#jqGrid",urlParam);
+			refreshGrid("#jqGrid",urlParam, oper);
 		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-trash",
-		id: "delete",
-		title:"Delete Selected Row",
-		onClickButton: function(){
-			oper='del';
-			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
-		},
-	}).jqGrid('navButtonAdd',"#jqGridPager",{
-		caption:"",cursor: "pointer",position: "first", 
-		buttonicon:"glyphicon glyphicon-info-sign",
-		id: "view",
-		title:"View Selected Year",  
-		onClickButton: function(){
-			oper='view';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			$('#formdata :input[rdonly]').prop("readonly",true);
-			$("#save").hide();
-			refreshGrid("#jqGrid2",urlParam2, 'add');
-		},
+	// }).jqGrid('navButtonAdd',"#jqGridPager",{
+	// 	caption:"",cursor: "pointer",position: "first", 
+	// 	buttonicon:"glyphicon glyphicon-trash",
+	// 	id: "delete",
+	// 	title:"Delete Selected Row",
+	// 	onClickButton: function(){
+	// 		oper='del';
+	// 		selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
+	// 	},
+	// }).jqGrid('navButtonAdd',"#jqGridPager",{
+	// 	caption:"",cursor: "pointer",position: "first", 
+	// 	buttonicon:"glyphicon glyphicon-info-sign",
+	// 	id: "view",
+	// 	title:"View Selected Year",  
+	// 	onClickButton: function(){
+	// 		oper='view';
+	// 		selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+	// 		$("#jqGrid").data('lastselrow',selRowId);
+	// 		$('#formdata :input[rdonly]').prop("readonly",true);
+	// 		$("#save").hide();
+	// 		refreshGrid("#jqGrid2",urlParam2, 'add');
+	// 	},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "cancel",
 		caption:"",cursor: "pointer",position: "last",  
 		buttonicon:"glyphicon glyphicon-remove-circle", 
 		title:"Cancel", 
 		onClickButton: function(){
-			emptyFormdata(errorField,'#formdata');
+			$('#formdata :input[rdonly]').prop("readonly",true);
+			$('#formdata :input[frozeOnEdit]').prop("readonly",true);
+			$("#add").show();$("#edit").show();
+			$("#delete").show();$("#view").show();
+			$("#save").hide();$("#cancel").hide();
+			refreshGrid("#jqGrid2",urlParam2, 'add');
+
 		},	
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
 		id: "save",
@@ -210,10 +220,16 @@ $(document).ready(function () {
 		title:"Edit Selected Row",  
 		onClickButton: function(){
 			oper='edit';
+			//console.log(oper);
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+			$("#description").focus();
 			$("#jqGrid").data('lastselrow',selRowId);
 			$('#formdata :input[rdonly]').prop("readonly",false);
-			refreshGrid("#jqGrid2",urlParam2, 'add');
+			$('#formdata :input[frozeOnEdit]').prop("readonly",true);
+			$("#add").hide();$("#edit").hide();
+			$("#delete").hide();$("#view").hide();
+			$("#save").show();$("#cancel").show();
+			refreshGrid("#jqGrid2",urlParam2);
 		}, 
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
@@ -229,7 +245,8 @@ $(document).ready(function () {
 			$('#formdata :input[rdonly]').prop("readonly",false);
 			$('#formdata :input[frozeOnEdit]').prop("readonly",false);
 			emptyFormdata(errorField,'#formdata');
-			// emptyFormdata(errorField,'#formdata2');
+			emptyFormdata(errorField,'#formdata2');
+			refreshGrid("#jqGrid2",null,"kosongkan");
 		},
 	});
 
@@ -239,6 +256,7 @@ $(document).ready(function () {
 			$("#delete").show();$("#view").show();
 			$("#save").hide();$("#cancel").hide();
 			saveHeader("#formdata",oper,saveParam,urlParam);
+			 //console.log(oper);
 			emptyFormdata(errorField,'#formdata');
 			$('.my-alert').detach();
 			refreshGrid("#jqGrid", urlParam);
@@ -253,9 +271,8 @@ $(document).ready(function () {
 	// 			$("#delete").hide();$("#view").hide();
 	// 			$("#save").show();$("#cancel").show();
 	// 			saveHeader("#formdata",oper,saveParam,urlParam);
-	// 			// emptyFormdata(errorField,'#formdata');
+	// 			emptyFormdata(errorField,'#formdata');
 	// 			$('.my-alert').detach();
-	// 			// $("#jqGrid").trigger('reloadGrid');
 	// 			refreshGrid("#jqGrid", urlParam);
 	// 		}
 	// 		addmore_jqgrid2.state = true;
@@ -283,7 +300,7 @@ $(document).ready(function () {
 				$("#jqGridPager2_left").show();
 			}
 			if(selfoper=='add'){
-
+				
 				oper='edit';//sekali dia add terus jadi edit lepas tu
 				
 				$('#idno').val(data.idno);
@@ -293,6 +310,8 @@ $(document).ready(function () {
 				urlParam2.filterVal[1]=data.code; 
 			}else if(selfoper=='edit'){
 				//doesnt need to do anything
+				$('#idno').val(data.idno);
+				$('#description').val(data.description);
 				urlParam2.filterVal[1]=$('#code').val(); 
 			}
 			disableForm('#formdata');
@@ -382,14 +401,14 @@ $(document).ready(function () {
 			"_token": $("#_token").val()
 		},
 		oneditfunc: function (rowid) {
-			console.log(rowid);
+			//console.log(rowid);
 			$('#jqGrid2').data('lastselrow','none');
 			$("#jqGridPager2Delete,#jqGridPager2Refresh").hide();
 			$("jqGrid2 input[name='acctto']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 				addmore_jqgrid2.state = true;
-				$('#jqGrid_ilsave').click();
+				$('#jqGrid2_ilsave').click();
 			});
 		},
 		aftersavefunc: function (rowid, response, options) {
@@ -439,38 +458,38 @@ $(document).ready(function () {
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 				addmore_jqgrid2.state = true;
-				$('#jqGrid_ilsave').click();
+				$('#jqGrid2_ilsave').click();
 			});
-			$("#jqGrid input[type='text']").on('focus',function(){
-				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
-				$("#jqGrid input[type='text']").removeClass( "error" );
+			$("#jqGrid2 input[type='text']").on('focus',function(){
+				$("#jqGrid2 input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid2 input[type='text']").removeClass( "error" );
 			});
 
 		},
 		aftersavefunc: function (rowid, response, options) {
 			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true; //only addmore after save inline
 			//state true maksudnyer ada isi, tak kosong
-			refreshGrid('#jqGrid',urlParam,'edit');
+			refreshGrid('#jqGrid2',urlParam2,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorfunc: function(rowid,response){
-			refreshGrid('#jqGrid',urlParam,'edit');
+			refreshGrid('#jqGrid2',urlParam2,'edit');
 		},
 		beforeSaveRow: function (options, rowid) {
 			if(errorField.length>0)return false;
 
-			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
 			// console.log(data);
 
 			let editurl = "./consolidationAccDtl/form?"+
 				$.param({
 					action: 'consolidationAccDtl_save',
 				});
-			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
 		afterrestorefunc : function( response ) {
-			refreshGrid('#jqGrid',urlParam,'edit');
+			refreshGrid('#jqGrid2',urlParam2,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
 		errorTextFormat: function (data) {
