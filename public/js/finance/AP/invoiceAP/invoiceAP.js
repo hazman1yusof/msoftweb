@@ -855,6 +855,7 @@ $(document).ready(function () {
         aftersavefunc: function (rowid, response, options) {
 			var resobj = JSON.parse(response.responseText);
 			$('#apacthdr_auditno').val(resobj.auditno);
+        	$('#apacthdr_amount').val(resobj.totalAmount);
         	$('#apactdtl_outamt').val(resobj.totalAmount);
         	mycurrency.formatOn();
         	if(addmore_jqgrid2.state==true)addmore_jqgrid2.more=true; //only addmore after save inline

@@ -208,6 +208,7 @@ use Carbon\Carbon;
                     ->select('delordno','srcdocno','docno','deliverydate','subamount as amount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
                     ->where('compcode','=',session('compcode'))
                     ->where('suppcode','=',$request->suppcode)
+                    ->where('trantype','=','GRN')
                   //  ->where('prdept','=',$request->prdept)
                     ->where('recstatus','=','POSTED')
                     ->whereDate('trandate','<=',$request->postdate)
@@ -216,6 +217,22 @@ use Carbon\Carbon;
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
+
+        foreach ($paginate->items() as $key => $value) {//ini baru
+
+            $accum_grt_amt = DB::table('material.delordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('suppcode','=',$request->suppcode)
+                            ->where('trantype','=','GRT')
+                            ->where('recstatus','=','POSTED')
+                            ->whereNull('invoiceno')
+                            ->whereDate('trandate','<=',$request->postdate)
+                            ->sum('subamount');
+            $amount_ = $value->amount - $accum_grt_amt;
+
+            $value->amount = $amount_;
+            
+        }
 
         $responce = new stdClass();
         $responce->page = $paginate->currentPage();

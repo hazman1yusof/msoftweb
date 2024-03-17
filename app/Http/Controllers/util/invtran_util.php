@@ -70,6 +70,9 @@ class invtran_util extends defaultController{
                 }else if($stockloc_obj->disptype == 'DS1'){
                     $draccno = $category_obj->cosacct;
                     $drccode = $dept_obj->costcode;
+                }else{
+                    $draccno = $category_obj->stockacct;
+                    $drccode = $dept_obj->costcode;
                 }
             }else{
                 throw new \Exception("Stockloc not exist for item: ".$value->itemcode." | deptcode: ".$ivtmphd->sndrcv." | year: ".defaultController::toYear($ivtmphd->trandate)." | uomcode: ".$value->uomcode);
