@@ -42,7 +42,6 @@ class fadepricateController extends defaultController
     }
 
     public function depreciation(Request $request){
-
         DB::beginTransaction();
         DB::enableQueryLog();
 
@@ -97,7 +96,7 @@ class fadepricateController extends defaultController
 
                             //kira process_date
                             $facontrol = $facontrol_obj->first();
-                            $process_date = Carbon::createFromDate($facontrol->year,$facontrol->period,$dt->daysInMonth);
+                            $process_date = Carbon::create($facontrol->year, $facontrol->period)->lastOfMonth()->format('Y-m-d');
 
                             //6. buat fatran
                             $this->fainface(
@@ -170,7 +169,7 @@ class fadepricateController extends defaultController
             $sysparam = $sysparam_obj->first();
 
             //plus 1 sysparam
-            $this->auditno = $sysparam->pvalue1 + 1;
+            $auditno = $sysparam->pvalue1 + 1;
 
             $sysparam_obj->update([
                 'pvalue1' => $auditno,
@@ -208,8 +207,8 @@ class fadepricateController extends defaultController
             ->first();
 
         $facode = DB::table('finance.facode')
-            ->where('compcode','=', $value->compcode)
-            ->where('assetcode','=', $product_obj->productcat)
+            ->where('compcode','=', session('compcode'))
+            ->where('assetcode','=', $faregister->assetcode)
             ->first();
 
         $drcostcode = $row_dept->costcode;
@@ -220,7 +219,7 @@ class fadepricateController extends defaultController
         //1. buat gltran
         DB::table('finance.gltran')
             ->insert([
-                'compcode' => $value->compcode,
+                'compcode' => session('compcode'),
                 'adduser' => session('username'),
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'auditno' => $this->auditno,

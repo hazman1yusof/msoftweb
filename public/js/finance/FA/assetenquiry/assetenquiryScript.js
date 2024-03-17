@@ -445,6 +445,9 @@ $(document).ready(function () {
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('assetenquiry',options,param,case_,cellvalue);
+		delay(function(){
+			calc_jq_height_onchange(options.gid);
+		}, 500 );
 		
 		if(cellvalue==null)return "";
 		return cellvalue;
@@ -966,6 +969,12 @@ $(document).ready(function () {
 		return `<button title="Edit" type="button" class="btn btn-xs btn-warning btn-md btn_edit" data-idno=`+idno+`><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>&nbsp;&nbsp;<button title="Save" type="button" class="btn btn-xs btn-success btn-md btn_save" data-idno=`+idno+` disabled><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>&nbsp;&nbsp;<button title="Cancel" type="button" class="btn btn-xs btn-danger btn-md btn_cancel" data-idno=`+idno+` disabled><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>`;
 	}
 
+	$("#jqGrid2_panel").on("shown.bs.collapse", function(){
+        SmoothScrollTo("#jqGrid2_panel",100);
+		refreshGrid('#jqGrid2', urlParam2);
+		calc_jq_height_onchange("jqGrid2");
+	});
+
 
 	function showeditfunc(){
 		this.on = function(){
@@ -1209,12 +1218,12 @@ $(document).ready(function () {
 	}
 });
 
-function calc_jq_height_onchange(jqgrid){
-	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
-	if(scrollHeight<80){
-		scrollHeight = 80;
-	}else if(scrollHeight>300){
-		scrollHeight = 300;
-	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
-}
+// function calc_jq_height_onchange(jqgrid){
+// 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
+// 	if(scrollHeight<80){
+// 		scrollHeight = 80;
+// 	}else if(scrollHeight>300){
+// 		scrollHeight = 300;
+// 	}
+// 	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+// }
