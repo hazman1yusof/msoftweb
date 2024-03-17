@@ -410,7 +410,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid','#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam);
+	addParamField('#jqGrid',false,urlParam);
 	addParamField('#jqGrid',false,saveParam,['delordhd_trantype','delordhd_recno','delordhd_docno','delordhd_adduser','delordhd_adddate','delordhd_upduser','delordhd_upddate','delordhd_deluser','delordhd_idno','supplier_name','delordhd_recstatus','delordhd_unit','Refresh', 'Checkbox']);
 
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
@@ -525,6 +525,7 @@ $(document).ready(function () {
 						$( "#searchForm [id=trandept]" ).append(" <option value='"+value.deptcode+"'>"+value.deptcode+"</option>");
 					}
 				});
+				searchChange();
 			}
 		});
 	}
@@ -1463,9 +1464,9 @@ $(document).ready(function () {
 		'srcdocno',['material.delordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
 				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',canSearch:true,or_search:true,formatter: padzero},
+				{label:'DO NO',name:'h_delordno',width:300,classes:'pointer', hidden:false},
 				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
-				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
+				{label:'Supplier Code',name:'h_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
 				{label:'invoiceno',name:'h_invoiceno',width:400,classes:'pointer', hidden:true},
@@ -1478,7 +1479,7 @@ $(document).ready(function () {
 				{label:'Remarks',name:'h_remarks',width:400,classes:'pointer', hidden:true},
 				{label:'received time',name:'h_trantime',width:400,classes:'pointer', hidden:true},
 				{label:'h_taxclaimable',name:'h_taxclaimable',width:400,classes:'pointer', hidden:true},
-				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer'},
+				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer',align:'right', formatter: 'currency'},
 				
 			],
 			urlParam: {
@@ -1570,11 +1571,14 @@ $(document).ready(function () {
 
 		},{
 			title:"Select GRN No",
-			open: function(){
+			open: function(obj){
+				var gridname = '#'+obj.gridname;
 				$("#jqGrid2").jqGrid("clearGridData", true);
 				dialog_docno.urlParam.fixPost = "true";
 				dialog_docno.urlParam.filterCol = ['h.prdept','h.recstatus', 'h.trantype'];
 				dialog_docno.urlParam.filterVal = [$("#delordhd_prdept").val(),'POSTED', 'GRN'];
+
+				jqgrid_label_align_right(gridname);
 			}
 		},'none'
 	);
