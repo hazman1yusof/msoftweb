@@ -87,6 +87,9 @@ class ItemEnquiryController extends defaultController
             ->get();
 
         $det_mov_deptcode_ivdspdt = $det_mov_deptcode_ivdspdt->each(function ($item, $key) {
+            if(empty($item->amount)){
+                $item->amount = 0.00;
+            }
             $item->det_mov = 'deptcode';
             $item->sndrcv = '-';
         });
@@ -110,6 +113,9 @@ class ItemEnquiryController extends defaultController
                 ->get();
 
         $det_mov_sndrcv = $det_mov_sndrcv->each(function ($item, $key) {
+            if(empty($item->amount)){
+                $item->amount = 0.00;
+            }
             $item->det_mov = 'sndrcv';
             $item->mrn = '-';
             $item->episno = '-';
