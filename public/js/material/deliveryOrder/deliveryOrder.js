@@ -423,6 +423,8 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid ('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'view', '');
+			$('#delordhd_docno').val(padzero($('#delordhd_docno').val()));
+			$('#delordhd_srcdocno').val(padzero($('#delordhd_srcdocno').val()));
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd',"#jqGridPager",{
@@ -430,15 +432,17 @@ $(document).ready(function () {
 		buttonicon:"glyphicon glyphicon-edit",
 		title:"Edit Selected Row",  
 		onClickButton: function(){
-			oper='edit';
-			selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
-			refreshGrid("#jqGrid2",urlParam2);
-
-			if(selrowData("#jqGrid").delordhd_recstatus == 'POSTED'){
-				disableForm('#formdata');
-				$("#pg_jqGridPager2 table").hide();
+			let stat = selrowData("#jqGrid").delordhd_recstatus;
+			if(stat=='OPEN' || stat=='INCOMPLETED'){
+				oper='edit';
+				selRowId=$("#jqGrid").jqGrid ('getGridParam', 'selrow');
+				$("#jqGrid").data('lastselrow',selRowId);
+				populateFormdata("#jqGrid","#dialogForm","#formdata",selRowId,'edit', '');
+				$('#delordhd_docno').val(padzero($('#delordhd_docno').val()));
+				$('#delordhd_srcdocno').val(padzero($('#delordhd_srcdocno').val()));
+				refreshGrid("#jqGrid2",urlParam2);
+			}else{
+				$("#jqGridPager td[title='View Selected Row']").click();
 			}
 		}, 
 	}).jqGrid('navButtonAdd',"#jqGridPager",{

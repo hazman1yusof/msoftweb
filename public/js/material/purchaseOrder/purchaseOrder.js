@@ -229,7 +229,7 @@ $(document).ready(function () {
 	};
 
     function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -419,6 +419,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
+			$('#purordhd_purordno').val(padzero($('#purordhd_purordno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -426,11 +427,17 @@ $(document).ready(function () {
 		buttonicon: "glyphicon glyphicon-edit",
 		title: "Edit Selected Row",
 		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
-			refreshGrid("#jqGrid2", urlParam2);
+			let stat = selrowData("#jqGrid").purordhd_recstatus;
+			if(stat=='OPEN' || stat=='INCOMPLETED'){
+				oper = 'edit';
+				selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
+				$("#jqGrid").data('lastselrow',selRowId);
+				populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
+				$('#purordhd_purordno').val(padzero($('#purordhd_purordno').val()));
+				refreshGrid("#jqGrid2", urlParam2);
+			}else{
+				$("#jqGridPager td[title='View Selected Row']").click();
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
 		caption: "", cursor: "pointer", position: "first",
