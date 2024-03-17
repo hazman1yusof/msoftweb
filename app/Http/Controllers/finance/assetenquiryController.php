@@ -71,6 +71,16 @@ class assetenquiryController extends defaultController
                     'dots_'.$time,'more_'.$time,'moreBtn_'.$time
                 ];
             }
+
+            $fatran_amount = DB::table('finance.fatran')
+                            ->where('compcode',session('compcode'))
+                            ->where('trantype','DEP')
+                            ->where('assetno',$value->assetno)
+                            ->where('trandate','<=',Carbon::now("Asia/Kuala_Lumpur"))
+                            ->sum('amount');
+
+            $value->dep_calc = $fatran_amount;
+            $value->nbv_calc = $value->origcost - $fatran_amount;
             
         }
 

@@ -320,6 +320,9 @@ $(document).ready(function () {
             { label: 'Invoice No', name: 'invno', width: 8, classes: 'wrap',hidden:true},
             { label: 'Invoice Date', name:'invdate', width: 8, classes:'wrap', hidden:true},
             { label: 'Qty', name: 'qty', width: 6,  align: 'right',classes: 'wrap'},
+            { label: 'Cost', name: 'origcost', width: 10, classes: 'wrap', align: 'right',formatter:'currency'},
+			{ label: 'Accumulated<br>Depreciation', name:'dep_calc', width:10, classes:'wrap',align: 'right', formatter: 'currency'},
+			{ label: 'NBV', name:'nbv_calc', width:10, classes:'wrap',align: 'right', formatter: 'currency'},
             { label: 'Start Date', name:'statdate', width:20, classes:'wrap',  hidden:true},
 			{ label: 'Post Date', name:'trandate', width:20, classes:'wrap',  hidden:true},
             { label: 'Accum Prev', name:'lstytddep', width:20, classes:'wrap', hidden:true},
@@ -327,7 +330,6 @@ $(document).ready(function () {
 			{ label: 'NBV', name:'nbv', width:20, classes:'wrap', hidden:true, formatter: 'currency'},
 			{ label: 'Method', name:'method', width:20, classes:'wrap', hidden:true},
 			{ label: 'Residual Value', name:'residualvalue', width:20, classes:'wrap', hidden:true},
-            { label: 'Cost', name: 'origcost', width: 7, classes: 'wrap', align: 'right',formatter:'currency'},
             { label: 'Supplier Code', name: 'suppcode', width: 15, classes: 'wrap', formatter: showdetail, unformat:un_showdetail},
             { label: 'Purchase Order No', name:'purordno',width: 8, classes:'wrap', hidden:true},
             { label: 'Purchase Date', name:'purdate', width: 8, classes:'wrap', hidden:true},
@@ -747,7 +749,7 @@ $(document).ready(function () {
 	var urlParam2={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['ft.assetcode','ft.assettype','ft.assetno','ft.auditno','ft.trandate','fr.trantype','fr.origcost','ft.deptcode','ft.olddeptcode','ft.curloccode','ft.oldloccode','ft.idno'],
+		field:['ft.assetcode','ft.assettype','ft.assetno','ft.auditno','ft.trandate','ft.trantype','ft.amount','ft.deptcode','ft.olddeptcode','ft.curloccode','ft.oldloccode','ft.idno'],
 		table_name:['finance.fatran AS ft',' finance.faregister AS fr'],
 		table_id:'idno',
 		join_type:['LEFT JOIN'],
@@ -768,7 +770,7 @@ $(document).ready(function () {
 			{ label: 'No.', name:'auditno', width:30, classes:'wrap', align: 'right'},
 			{ label: 'Tran Date', name:'trandate', width:50, classes:'wrap'},
 			{ label: 'Tran Type', name:'trantype', width:50, classes:'wrap'},
-			{ label: 'Amount', name:'origcost', width:80, classes:'wrap', align: 'right'},
+			{ label: 'Amount', name:'amount', width:80, classes:'wrap', align: 'right'},
 			{ label: 'Old Department', name: 'olddeptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Old Location', name: 'oldloccode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'New Department', name: 'deptcode', width: 120, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
@@ -1163,7 +1165,7 @@ $(document).ready(function () {
 	searchClick('#jqGrid','#searchForm',urlParam);
 
 	//////////add field into param, refresh grid if needed////////////////////////////////////////////////
-	addParamField('#jqGrid',true,urlParam,['description_show']);
+	addParamField('#jqGrid',true,urlParam,['description_show','dep_calc','nbv_calc']);
 	addParamField('#jqGrid', false, saveParam, ['idno','adduser','adddate','upduser','upddate']);
 	// addParamField('#jqGrid2',true,urlParam2);
 	// addParamField('#jqGrid3',true,urlParam3);

@@ -93,6 +93,7 @@ class fadepricateController extends defaultController
                             //4. cost - dis * (rate / 100 / 12)
                             $cost = $cost - $accum_costdisp;
                             $accum_dep = $cost * $facode->rate / 100 /12;
+                            dd($accum_dep);
 
                             //kira process_date
                             $facontrol = $facontrol_obj->first();
