@@ -2017,8 +2017,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN','LEFT JOIN'],
 		join_onCol:['dodt.itemcode','dodt.taxcode'],
 		join_onVal:['p.itemcode','t.taxcode'],
-		filterCol:['dodt.recno','dodt.compcode','dodt.recstatus'],
-		filterVal:['','session.compcode','<>.DELETE']
+		filterCol:['dodt.recno','dodt.compcode','dodt.recstatus','dodt.qtyreturned'],
+		filterVal:['','session.compcode','<>.DELETE','>.0']
 	};
 
 	$("#gridDoHd").jqGrid({
@@ -2538,7 +2538,7 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 1000000,
-		sortname: 'lineno_',
+		sortname: 'qtyreturned',
 		sortorder: "desc",
 		pager: "#jqGridPagerGRTDt",
 		loadComplete: function(data){
