@@ -213,24 +213,81 @@ div#fail_msg{
 				</div>	
 			</div>
 
-			<div class="panel panel-default" style="position: relative;" id="gridDo_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDo_panel" id="panel_gridDo">
+			<div class="panel panel-default" style="position: relative;" id="gridDoHd_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoHd_panel" id="panel_gridDoHd">
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>GRN List</h5>
+						<h5>GRN Header</h5>
 					</div>
 				</div>
-				<div id="gridDo_panel" class="panel-collapse collapse">
+				<div id="gridDoHd_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridDo" class="table table-striped"></table>
-							<div id="jqGridPager4"></div>
+							<table id="gridDoHd" class="table table-striped"></table>
+							<div id="jqGridPagerDoHd"></div>
+						</div>
+					</div>
+				</div>	
+			</div>
+
+			<div class="panel panel-default" style="position: relative;" id="gridDoDt_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoDt_panel" id="panel_gridDoDt">
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>GRN Detail</h5>
+					</div>
+				</div>
+				<div id="gridDoDt_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="gridDoDt" class="table table-striped"></table>
+							<div id="jqGridPagerDoDt"></div>
 						</div>
 					</div>
 				</div>	
 			</div> 
+
+			<div class="panel panel-default" style="position: relative;" id="gridGRTHd_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTHd_panel" id="panel_gridGRTHd">
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>GRT Header</h5>
+					</div>
+				</div>
+				<div id="gridGRTHd_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="gridGRTHd" class="table table-striped"></table>
+							<div id="jqGridPagerGRTHd"></div>
+						</div>
+					</div>
+				</div>	
+			</div>
+
+			<div class="panel panel-default" style="position: relative;" id="gridGRTDt_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTDt_panel" id="panel_gridGRTDt">
+
+					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+						<h5>GRT Detail</h5>
+					</div>
+				</div>
+				<div id="gridGRTDt_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<div class='col-md-12' style="padding:0 0 15px 0">
+							<table id="gridGRTDt" class="table table-striped"></table>
+							<div id="jqGridPagerGRTDt"></div>
+						</div>
+					</div>
+				</div>	
+			</div>
 
 			<!-- attachment -->
 			<div class="panel panel-default" style="position: relative;" id="gridAttch_c">

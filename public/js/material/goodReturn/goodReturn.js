@@ -182,8 +182,8 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.SuppCode'],
 		join_onVal:['delordhd.suppcode'],
-		filterCol:['delordhd.trantype','delordhd.prdept'],
-		filterVal:['GRT', $('#deptcode').val()],
+		filterCol:['delordhd.compcode','delordhd.trantype'],
+		filterVal:['session.compcode','GRT'],
 	}
 	/////////////////////parameter for saving url///////////////////////////////////////////////////////
 	var saveParam={
@@ -429,14 +429,22 @@ $(document).ready(function () {
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
-		saveParam.oper = $(this).data("oper");
-		let obj={recno:selrowData('#jqGrid').delordhd_recno,_token:$('#_token').val()};
-		$.post(saveParam.url+"?" + $.param(saveParam),obj,function (data) {
-			refreshGrid("#jqGrid", urlParam);
-		}).fail(function (data) {
-			alert(data.responseText);
-		}).done(function (data) {
-			//2nd successs?
+		var idno_array = [];
+	
+		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
+		var obj={};
+		obj.idno_array = idno_array;
+		obj.oper = $(this).data('oper');
+		obj._token = $('#_token').val();
+		oper=null;
+		
+		$.post( './goodReturn/form', obj , function( data ) {
+			cbselect.empty_sel_tbl();
+			refreshGrid('#jqGrid', urlParam);
+		}).fail(function(data) {
+			$('#error_infront').text(data.responseText);
+		}).success(function(data){
+			
 		});
 	});
 	
@@ -754,7 +762,7 @@ $(document).ready(function () {
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'amount', name: 'amount', width: 20, classes: 'wrap', hidden:true},
-			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:false,
+			{ label: 'Expiry Date', name: 'expdate', width: 100, classes: 'wrap', editable:true,
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				editoptions: { readonly: "readonly",
                     dataInit: function (element) {
@@ -899,7 +907,7 @@ $(document).ready(function () {
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
 
-        	cari_gstpercent($("#jqGrid2 input[name='taxcode']").val());
+        	cari_gstpercent(rowid);
         },
         aftersavefunc: function (rowid, response, options) {
            $('#delordhd_totamount').val(response.responseText);
@@ -1011,6 +1019,8 @@ $(document).ready(function () {
 						fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 			        }
 		        );
+
+		        cari_gstpercent(ids[i]);
 		    }
 		    onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
@@ -2150,7 +2160,6 @@ $(document).ready(function () {
 		},{
 			title:"Select Tax Code For Item",
 			open: function(){
-				dialog_taxcode.urlParam.field=['taxcode','description','rate']
 				dialog_taxcode.urlParam.filterCol=['compcode','recstatus', 'taxtype'];
 				dialog_taxcode.urlParam.filterVal=['session.compcode','ACTIVE', 'Input'];
 			},
@@ -2169,7 +2178,7 @@ $(document).ready(function () {
 
 	function cari_gstpercent(id){
 		let data = $('#jqGrid2').jqGrid ('getRowData', id);
-		$("#jqGrid2 #"+id+"_gstpercent").val(data.rate);
+		$("#jqGrid2 #"+id+"_taxcode_gstpercent").val(data.rate);
 	}
 
 	$("#jqGrid_selection").jqGrid({
