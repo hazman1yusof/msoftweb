@@ -68,6 +68,9 @@ class ItemEnquiryController extends defaultController
                 ->get();
 
         $det_mov_deptcode = $det_mov_deptcode->each(function ($item, $key) {
+            if(empty($item->amount)){
+                $item->amount = 0.00;
+            }
             $item->det_mov = 'deptcode';
             $item->mrn = '-';
             $item->episno = '-';
