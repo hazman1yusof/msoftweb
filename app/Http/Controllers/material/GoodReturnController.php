@@ -361,6 +361,10 @@ class GoodReturnController extends defaultController
                     //2. start looping untuk delorddt
                 foreach ($delorddt_obj as $value) {
 
+                    if($value->qtyreturned <= 0){
+                        continue;
+                    }
+
                     //1.amik productcat dari table product
                     $productcat_obj = DB::table('material.delorddt')
                         ->select('product.productcat')
@@ -469,8 +473,7 @@ class GoodReturnController extends defaultController
                         ->where('stockexp.expdate','=',$value->expdate)
                         ->where('stockexp.year','=', defaultController::toYear($value->trandate))
                         ->where('stockexp.uomcode','=',$value->uomcode)
-                        ->where('stockexp.batchno','=',$value->batchno)
-                        ->where('stockexp.lasttt','=','GRN');
+                        ->where('stockexp.batchno','=',$value->batchno);
 
                     //2.kalu ada Stock Expiry, update
 
