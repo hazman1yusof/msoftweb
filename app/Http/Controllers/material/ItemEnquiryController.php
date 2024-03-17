@@ -90,7 +90,7 @@ class ItemEnquiryController extends defaultController
             ->where('d.trandate','<=',$request->trandate_to)
             ->where('d.amount','!=',0)
             ->orderBy('d.trandate', 'asc')
-            ->orderBy('h.trantime', 'asc')
+            ->orderBy('d.updtime', 'asc')
             ->get();
 
         $det_mov_deptcode_ivdspdt = $det_mov_deptcode_ivdspdt->each(function ($item, $key) {
