@@ -2042,6 +2042,7 @@ $(document).ready(function () {
 	var dialog_srcdocno = new ordialog(
 		'srcdocno',['material.purordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
+				{label:'Date',name:'h_purdate',width:200,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter},
 				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer wrap', hidden:false, formatter: showdetail,unformat:un_showdetail},
 				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,or_search:true, formatter: padzero },
 				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer wrap',canSearch:true,checked:true,or_search:true, formatter: showdetail,unformat:un_showdetail},

@@ -1476,6 +1476,7 @@ $(document).ready(function () {
 	var dialog_docno = new ordialog(
 		'srcdocno',['material.delordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
+				{label:'Date',name:'h_trandate',width:200,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter},
 				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',checked:true,canSearch:true,or_search:true,formatter: padzero},
 				{label:'DO NO',name:'h_delordno',width:200,classes:'pointer', hidden:false},
 				{label:'PO NO',name:'h_srcdocno',width:200,classes:'pointer', hidden:false,formatter: padzero},
