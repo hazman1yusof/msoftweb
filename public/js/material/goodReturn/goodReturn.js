@@ -1465,9 +1465,10 @@ $(document).ready(function () {
 	var dialog_docno = new ordialog(
 		'srcdocno',['material.delordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
-				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',canSearch:true,or_search:true,formatter: padzero},
-				{label:'DO NO',name:'h_delordno',width:300,classes:'pointer', hidden:false},
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',checked:true,canSearch:true,or_search:true},
+				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',checked:true,canSearch:true,or_search:true,formatter: padzero},
+				{label:'DO NO',name:'h_delordno',width:200,classes:'pointer', hidden:false},
+				{label:'PO NO',name:'h_srcdocno',width:200,classes:'pointer', hidden:false,formatter: padzero},
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Supplier Code',name:'h_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},

@@ -268,6 +268,10 @@
     .ui-dialog-buttonpane{
     	margin-bottom: 50px;
     }
+    div.Dcol_ordialog{
+    	padding: 5px;
+    }
+
 		@yield('style')
  	</style>	
     <title>@yield('title')</title>
