@@ -441,7 +441,9 @@ $(document).ready(function () {
 	}
 
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
-	$("#but_cancel_jq,#but_post_jq,#but_reopen_jq").click(function(){
+	$("#but_post_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -454,8 +456,10 @@ $(document).ready(function () {
 		$.post( './goodReturn/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
 		}).success(function(data){
 			
 		});

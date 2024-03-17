@@ -474,7 +474,8 @@ $(document).ready(function () {
 	///////////////////////////////////////save POSTED,CANCEL,REOPEN/////////////////////////////////////
 
 	$("#but_reopen_jq,#but_cancel_jq").click(function(){
-
+		$(this).attr('disabled',true);
+		var self_ = this;
 		var idno = selrowData('#jqGrid').purordhd_idno;
 		var obj={};
 		obj.idno = idno;
@@ -483,8 +484,10 @@ $(document).ready(function () {
 
 		$.post( './purchaseOrder/form', obj , function( data ) {
 			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$(self_).attr('disabled',false);
 		}).success(function(data){
 			
 		});
@@ -492,6 +495,8 @@ $(document).ready(function () {
 
 
 	$("#but_post_jq").click(function(){
+		$(this).attr('disabled',true);
+		var self_ = this;
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -504,8 +509,10 @@ $(document).ready(function () {
 		$.post( './purchaseOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
+			$(self_).attr('disabled',false);
 		}).fail(function(data) {
-			$('#error_infront').text(data.responseText);
+			$('#error_infront').text(data.responseText)
+			$(self_).attr('disabled',false);
 		}).success(function(data){
 			
 		});

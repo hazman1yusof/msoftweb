@@ -498,6 +498,7 @@ $(document).ready(function () {
 
 
 	$("#but_post_jq").click(function(){
+		$("#but_post_jq").attr('disabled',true);
 		var idno_array = [];
 	
 		idno_array = $('#jqGrid_selection').jqGrid ('getDataIDs');
@@ -510,8 +511,10 @@ $(document).ready(function () {
 		$.post( './deliveryOrder/form', obj , function( data ) {
 			cbselect.empty_sel_tbl();
 			refreshGrid('#jqGrid', urlParam);
+			$("#but_post_jq").attr('disabled',false);
 		}).fail(function(data) {
 			$('#error_infront').text(data.responseText);
+			$("#but_post_jq").attr('disabled',false);
 		}).success(function(data){
 			
 		});
