@@ -1085,7 +1085,6 @@ $(document).ready(function () {
 				_token: $("#_token").val(),
 				recno: $('#delordhd_recno').val(),
 				idno: $('#delordhd_srcdocno').data('idno'),
-				action: 'delOrdDetail_save',
 				docno:$('#delordhd_docno').val(),
 				suppcode:$('#delordhd_suppcode').val(),
 				trandate:$('#delordhd_trandate').val(),
@@ -1093,7 +1092,7 @@ $(document).ready(function () {
 				deliverydate:$('#delordhd_deliverydate').val(),
     		}
 
-    		$.post( "/goodReturnDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
+    		$.post( "./goodReturnDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
 			}).fail(function(data) {
 				//////////////////errorText(dialog,data.responseText);
 			}).done(function(data){
