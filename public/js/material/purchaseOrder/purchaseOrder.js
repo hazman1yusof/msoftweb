@@ -447,7 +447,7 @@ $(document).ready(function () {
 	populateSelect('#jqGrid', '#searchForm');
 
 	//////////add field into param, refresh grid if needed///////////////////////////////////////////////
-	addParamField('#jqGrid', true, urlParam);
+	addParamField('#jqGrid', false, urlParam);
 	addParamField('#jqGrid', false, saveParam, ['purordhd_recno','purordhd_purordno','purordhd_adduser', 'purordhd_adddate','purordhd_upduser','purordhd_upddate','purordhd_deluser', 'purordhd_idno', 'supplier_name','purordhd_recstatus','purordhd_unit','Checkbox']);
 	
 	////////////////////////////////hide at dialogForm///////////////////////////////////////////////////
