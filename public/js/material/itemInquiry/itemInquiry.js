@@ -3,6 +3,8 @@ $.jgrid.defaults.styleUI = 'Bootstrap';
 var editedRow=0;
 
 $(document).ready(function () {
+	getYear();
+
 	$("#dialogForm").dialog({ 
 		width: 9/10 * $(window).width(),
 		modal: true,
@@ -100,6 +102,7 @@ $(document).ready(function () {
 			if(rowid != null) {
 				urlParam2.filterVal[0]=selrowData("#jqGrid").p_itemcode; 
 				urlParam2.filterVal[1]=selrowData("#jqGrid").p_uomcode;
+				urlParam2.filterVal[2]=$("#getYear").val();
 				refreshGrid('#detail',urlParam2);
 
 				urlParam3.filterVal[0]=selrowData("#jqGrid").p_itemcode;
@@ -214,6 +217,7 @@ $(document).ready(function () {
 				urlParam3.filterVal[0]=selrowData('#detail').s_itemcode;
 				urlParam3.filterVal[1]=selrowData('#detail').s_uomcode;
 				urlParam3.filterVal[2]=selrowData('#detail').s_deptcode;
+				urlParam3.filterVal[5]=$("#getYear").val();
 				$('#deptcodedtl').val(selrowData("#detail").s_deptcode);
 				$('#deptcodedtl_').html(selrowData("#detail").d_description);
 			}
@@ -249,6 +253,13 @@ $(document).ready(function () {
 		}
 	}
 
+	$( "#Syear" ).change(function(){
+		let year = $(this).val();
+		$("#getYear").val(year);
+
+     	refreshGrid('#jqGrid',urlParam);
+	});
+
 	
 	$("#jqGrid").jqGrid('navGrid','#jqGridPager',
 		{	
@@ -269,7 +280,7 @@ $(document).ready(function () {
 		table_id:'itemcode',
 		sort_itemcode:true,
 		filterCol:['itemcode','uomcode','deptcode','compcode','unit','year'],
-		filterVal:['','','','session.compcode','session.unit',moment().format('YYYY')],
+		filterVal:['','','','session.compcode','session.unit',$("#getYear").val()],
 		sortby:['expdate asc']
 	}
 
@@ -728,5 +739,33 @@ function del_jqgrid(gridname){
 	let rowdatas = $(gridname).jqGrid('getRowData');
 	rowdatas.forEach(function(e,i){
 		$(gridname).jqGrid ('delRowData',i);
+	});
+}
+
+function getYear(){
+	let param={
+		action:'get_table_default',
+		url:'util/get_table_default',
+		field: ['*'],
+		table_name:'sysdb.period',
+		table_id:'idno',
+		filterCol:['compcode'],
+		filterVal:['session.compcode'],
+	}
+
+	$.get( "util/get_value_default?"+$.param(param), function( data ) {
+					
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data.rows)){
+			var lastyear;
+			data.rows.forEach(function(e,i){
+				lastyear = e.year;
+				if(i == data.rows.length - 1){
+					$( "#Syear" ).prepend( "<option val="+e.year+" selected>"+e.year+"</option>" );
+				}else{
+					$( "#Syear" ).prepend( "<option val="+e.year+">"+e.year+"</option>" );
+				}
+			});
+		}
 	});
 }

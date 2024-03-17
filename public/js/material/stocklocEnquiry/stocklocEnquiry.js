@@ -321,7 +321,6 @@ $(document).ready(function () {
 	addParamField('#jqGrid',true,urlParam);
 
 	$( "#Syear" ).change(function(){
-		console.log($(this).val())
 		let year = $(this).val();
 
 		urlParam.filterCol = ['s.compcode','s.year'];

@@ -52,13 +52,21 @@
 
 		<form id="searchForm" class="formclass" style='width:99%' onkeydown="return event.key != 'Enter';">
 			<fieldset>
-				<div class="ScolClass"  style="padding:0 0 0 15px">
-					<div name='Scol' style='font-weight:bold'>Search By : </div>
-				</div>
-				<div class="StextClass">
-					<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">
+					<div class="ScolClass"  style="padding:0 0 0 15px">
+						<div name='Scol' style='font-weight:bold'>Search By : </div>
+					</div>
+					<div class="StextClass" >
+					  <div class='col-md-12' style="padding:0 0 15px 0;">
+						<div class="col-md-8">
+							<input name="Stext" type="search" placeholder="Search here ..." class="form-control text-uppercase" tabindex="1">
+		              	</div>
 
-				</div>
+						<div class="col-md-2">
+					  		<select id='Syear' name='Syear' class="form-control input-sm" tabindex="1"></select>
+		              	</div>
+
+	              	  </div>
+					</div>
 
 			 </fieldset> 
 

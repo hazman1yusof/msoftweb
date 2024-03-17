@@ -22,8 +22,12 @@ class ItemEnquiryController extends defaultController
 
     public function show(Request $request)
     {   
+        $lastperiod = DB::table('sysdb.period')
+                        ->where('compcode',session('compcode'))
+                        ->orderBy('idno','desc')
+                        ->first();
         // $this->detailMovement($request);
-        return view('material.itemInquiry.itemInquiry');
+        return view('material.itemInquiry.itemInquiry',compact('lastperiod'));
     }
 
     public function form(Request $request)
