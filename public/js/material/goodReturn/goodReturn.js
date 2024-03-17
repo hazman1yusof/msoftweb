@@ -809,7 +809,7 @@ $(document).ready(function () {
 		width: 1150,
 		height: 200,
 		rowNum: 1000000,
-		sortname: 'lineno_',
+		sortname: 'qtyreturned',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
 		loadComplete: function(data){
@@ -1366,7 +1366,7 @@ $(document).ready(function () {
 		multiSort: true,
 		viewrecords: true,
 		rowNum: 10000,
-		sortname: 'lineno_',
+		sortname: 'qtyreturned',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
 		loadComplete: function(data){
