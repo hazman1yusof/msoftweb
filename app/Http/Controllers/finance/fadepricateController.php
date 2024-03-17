@@ -55,7 +55,7 @@ class fadepricateController extends defaultController
                 $faregister_obj = DB::table('finance.faregister')
                                     ->where('compcode','=',session('compcode'))
                                     ->where('recstatus','=','ACTIVE')
-                                    ->where('startdepdate','!=','')
+                                    ->whereNotNull('startdepdate')
                                     ->where('startdepdate','<=',Carbon::now("Asia/Kuala_Lumpur"));
                                     
                 if($faregister_obj->exists()){
