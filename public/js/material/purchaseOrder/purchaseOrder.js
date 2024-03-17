@@ -351,7 +351,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 
 			urlParam_gridDoHd.filterVal[1]=selrowData("#jqGrid").purordhd_purordno;
-			urlParam_gridDoHd.filterVal[2]=selrowData("#jqGrid").purordhd_deldept;
+			urlParam_gridDoHd.filterVal[2]=selrowData("#jqGrid").purordhd_prdept;
 			if($('#gridDoHd_panel').attr('aria-expanded') == 'true'){
 				refreshGrid('#gridDoHd', urlParam_gridDoHd);
 			}
@@ -1435,6 +1435,9 @@ $(document).ready(function () {
 	
 		fdl.get_array('purchaseOrder',options,param,case_,cellvalue);
 		if(cellvalue == null)cellvalue = " ";
+		delay(function(){
+			calc_jq_height_onchange(options.gid);
+		}, 500 );
 		return cellvalue;
 	}
 
@@ -1955,7 +1958,7 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.SuppCode'],
 		join_onVal:['delordhd.suppcode'],
-		filterCol:['trantype','srcdocno','deldept'],
+		filterCol:['trantype','srcdocno','prdept'],
 		filterVal:['GRN', 'DD','DD'],
 	}
 
@@ -1982,7 +1985,7 @@ $(document).ready(function () {
 		join_type:['LEFT JOIN'],
 		join_onCol:['supplier.SuppCode'],
 		join_onVal:['delordhd.suppcode'],
-		filterCol:['trantype','srcdocno','deldept'],
+		filterCol:['trantype','srcdocno','prdept'],
 		filterVal:['GRT', 'DD','DD'],
 	}
 
@@ -2066,9 +2069,17 @@ $(document).ready(function () {
 			if($('#gridDoDt_panel').attr('aria-expanded') == 'true'){
 				refreshGrid('#gridDoDt', urlParam_gridDoDt);
 			}
+
+			urlParam_gridGRTHd.filterVal[1]=selrowData("#gridDoHd").delordhd_docno;
+			urlParam_gridGRTHd.filterVal[2]=selrowData("#gridDoHd").delordhd_prdept;
+			if($('#gridGRTHd_panel').attr('aria-expanded') == 'true'){
+				refreshGrid('#gridGRTHd', urlParam_gridGRTHd);
+			}
 		},
 		gridComplete: function () {
 			$("#gridDoHd").setSelection($("#gridDoHd").getDataIDs()[0]);
+		},
+		loadComplete: function(data){
 			calc_jq_height_onchange("gridDoHd");
 			fdl.set_array().reset();
 		}
@@ -2335,6 +2346,8 @@ $(document).ready(function () {
 		},
 		gridComplete: function () {
 			$("#gridGRTHd").setSelection($("#gridGRTHd").getDataIDs()[0]);
+		},
+		loadComplete: function(data){
 			calc_jq_height_onchange("gridGRTHd");
 			fdl.set_array().reset();
 		},
@@ -2511,10 +2524,10 @@ $(document).ready(function () {
 		sortorder: "desc",
 		pager: "#jqGridPagerGRTDt",
 		loadComplete: function(data){
-		},
-		gridComplete: function(){
 			calc_jq_height_onchange("gridGRTDt");
 			fdl.set_array().reset();
+		},
+		gridComplete: function(){
 		}
 	});
 
@@ -3426,30 +3439,35 @@ $(document).ready(function () {
 	$("#jqGrid3_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#jqGrid3_panel",100);
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("jqGrid3");
 	});
 
 	$("#gridDoHd_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#gridDoHd_panel",100);
         refreshGrid('#gridDoHd', urlParam_gridDoHd);
 		$("#gridDoHd").jqGrid ('setGridWidth', Math.floor($("#gridDoHd_c")[0].offsetWidth-$("#gridDoHd_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("gridDoHd");
 	});
 
 	$("#gridDoDt_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#gridDoDt_panel",100);
         refreshGrid('#gridDoDt', urlParam_gridDoDt);
 		$("#gridDoDt").jqGrid ('setGridWidth', Math.floor($("#gridDoDt_c")[0].offsetWidth-$("#gridDoDt_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("gridDoDt");
 	});
 
 	$("#gridGRTHd_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#gridGRTHd_panel",100);
         refreshGrid('#gridGRTHd', urlParam_gridGRTHd);
 		$("#gridGRTHd").jqGrid ('setGridWidth', Math.floor($("#gridGRTHd_c")[0].offsetWidth-$("#gridGRTHd_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("gridGRTHd");
 	});
 
 	$("#gridGRTDt_panel").on("shown.bs.collapse", function(){
         SmoothScrollTo("#gridGRTDt_panel",100);
         refreshGrid('#gridGRTDt', urlParam_gridGRTDt);
 		$("#gridGRTDt").jqGrid ('setGridWidth', Math.floor($("#gridGRTDt_c")[0].offsetWidth-$("#gridGRTDt_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("gridGRTDt");
 	});
 
 	var add_fr_pr = new add_fr_pr();
@@ -3542,20 +3560,20 @@ $(document).ready(function () {
 	}
 });
 
-	function populate_form(obj){
-		//panel header
-		$('#prdept_show').text(obj.purordhd_prdept);
-		$('#purordno_show').text(padzero(obj.purordhd_purordno));
-		$('#suppcode_show').text(obj.supplier_name);
-		
-	}
+function populate_form(obj){
+	//panel header
+	$('.prdept_show').text(obj.purordhd_prdept);
+	$('.purordno_show').text(padzero(obj.purordhd_purordno));
+	$('.suppcode_show').text(obj.supplier_name);
+	
+}
 
-	function empty_form(){
-		$('#prdept_show').text('');
-		$('#purordno_show').text('');
-		$('#suppcode_show').text('');
+function empty_form(){
+	$('.prdept_show').text('');
+	$('.purordno_show').text('');
+	$('.suppcode_show').text('');
 
-	}
+}
 
 function fail_msg_func(fail_msg_div=null){
 	this.fail_msg_div = (fail_msg_div!=null)?fail_msg_div:'div#fail_msg';

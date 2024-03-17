@@ -194,8 +194,8 @@ div#fail_msg{
 
 	 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-					<b>PURCHASE ORDER NO: </b><span id="prdept_show"></span> - <span id="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span id="suppcode_show"></span>
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -215,6 +215,8 @@ div#fail_msg{
 
 			<div class="panel panel-default" style="position: relative;" id="gridDoHd_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoHd_panel" id="panel_gridDoHd">
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -234,6 +236,8 @@ div#fail_msg{
 
 			<div class="panel panel-default" style="position: relative;" id="gridDoDt_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoDt_panel" id="panel_gridDoDt">
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -253,6 +257,8 @@ div#fail_msg{
 
 			<div class="panel panel-default" style="position: relative;" id="gridGRTHd_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTHd_panel" id="panel_gridGRTHd">
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -272,6 +278,8 @@ div#fail_msg{
 
 			<div class="panel panel-default" style="position: relative;" id="gridGRTDt_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTDt_panel" id="panel_gridGRTDt">
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
@@ -292,6 +300,8 @@ div#fail_msg{
 			<!-- attachment -->
 			<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
 				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
+					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
 					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>

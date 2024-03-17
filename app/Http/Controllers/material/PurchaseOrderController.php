@@ -1179,7 +1179,7 @@ class PurchaseOrderController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('recno','=',$purordhd_get->recno);
 
-            if($queuepr->exists()){
+            if($queuepo->exists()){
                 $queuepo
                     ->update([
                         'recstatus' => 'APPROVED',

@@ -1128,6 +1128,7 @@ class DeliveryOrderController extends defaultController
     public function checkIfPOposted($delordhd){
         $po_hd = DB::table('material.purordhd')
                 ->where('purordno', '=', $delordhd->srcdocno)
+                ->where('prdept', '=', $delordhd->prdept)
                 ->where('compcode', '=', session('compcode'))
                 ->first();
 
@@ -1140,7 +1141,7 @@ class DeliveryOrderController extends defaultController
             case 'REQUEST':
             case 'SUPPORT':
             case 'VERIFIED':
-                throw new \Exception("Cannot posted, PO is CANCELLED");
+                throw new \Exception("Cannot posted, PO still not APPROVED");
                 break;
 
             case 'COMPLETED':
