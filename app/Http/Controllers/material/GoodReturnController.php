@@ -466,27 +466,69 @@ class GoodReturnController extends defaultController
 
                     //--- 4. posting stock enquiry ---//
                     //1. amik Stock Expiry
-                    $stockexp_obj = DB::table('material.stockexp')
-                        ->where('stockexp.compcode','=',session('compcode'))
-                        ->where('stockexp.deptcode','=',$value->deldept)
-                        ->where('stockexp.itemcode','=',$value->itemcode)
-                        ->where('stockexp.expdate','=',$value->expdate)
-                        ->where('stockexp.year','=', defaultController::toYear($value->trandate))
-                        ->where('stockexp.uomcode','=',$value->uomcode)
-                        ->where('stockexp.batchno','=',$value->batchno);
+                    // $stockexp_obj = DB::table('material.stockexp')
+                    //     ->where('stockexp.compcode','=',session('compcode'))
+                    //     ->where('stockexp.deptcode','=',$value->deldept)
+                    //     ->where('stockexp.itemcode','=',$value->itemcode)
+                    //     ->where('stockexp.expdate','=',$value->expdate)
+                    //     ->where('stockexp.year','=', defaultController::toYear($value->trandate))
+                    //     ->where('stockexp.uomcode','=',$value->uomcode)
+                    //     ->where('stockexp.batchno','=',$value->batchno);
+
+                    $expdate_obj = DB::table('material.stockexp')
+                        ->where('compcode',session('compcode'))
+                        ->where('Year','=',defaultController::toYear($value->trandate))
+                        ->where('DeptCode','=',$value->deldept)
+                        ->where('ItemCode','=',$value->itemcode)
+                        ->where('UomCode','=',$value->uomcode)
+                        ->orderBy('expdate', 'asc');
 
                     //2.kalu ada Stock Expiry, update
 
-                    if($stockexp_obj->exists()){
-                        $BalQty = $stockexp_obj->first()->balqty - $txnqty;
+                    if($expdate_obj->exists()){
 
-                        $stockexp_obj
-                            ->update([
-                                'balqty' => $BalQty
-                            ]);
+                        $expdate_get = $expdate_obj->get();
+                        $txnqty_ = $txnqty;
+                        $balqty = 0;
+                        foreach ($expdate_get as $value2) {
+                            $balqty = $value2->balqty;
+                            if($txnqty_-$balqty>0){
+                                $txnqty_ = $txnqty_-$balqty;
+                                DB::table('material.stockexp')
+                                    ->where('idno','=',$value2->idno)
+                                    ->update([
+                                        'balqty' => '0'
+                                    ]);
+                            }else{
+                                $balqty = $balqty-$txnqty_;
+                                DB::table('material.stockexp')
+                                    ->where('idno','=',$value2->idno)
+                                    ->update([
+                                        'balqty' => $balqty
+                                    ]);
+                                break;
+                            }
+                        }
 
                     }else{
                    
+                        //3.kalu xde Stock Expiry, buat baru
+                        $BalQty = -$txnqty;
+
+                        DB::table('material.stockexp')
+                            ->insert([
+                                'compcode' => session('compcode'), 
+                                'unit' => session('unit'), 
+                                'deptcode' => $value->deldept, 
+                                'itemcode' => $value->itemcode, 
+                                'uomcode' => $value->uomcode, 
+                                'balqty' => $BalQty, 
+                                'adduser' => session('username'), 
+                                'adddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'upduser' => session('username'), 
+                                'upddate' => Carbon::now("Asia/Kuala_Lumpur"), 
+                                'year' => defaultController::toYear($value->trandate)
+                            ]);
                     }
 
                     //--- 5. posting product -> update qtyonhand, avgcost, currprice ---//
