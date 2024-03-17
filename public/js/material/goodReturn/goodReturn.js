@@ -1366,7 +1366,7 @@ $(document).ready(function () {
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
-		rowNum: 30,
+		rowNum: 10000,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager3",
