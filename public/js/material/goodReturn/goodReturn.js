@@ -1402,6 +1402,15 @@ $(document).ready(function () {
 	jqgrid_label_align_right("#jqGrid3");
 
 
+	$("#jqGrid3_panel").on("shown.bs.collapse", function(){
+        SmoothScrollTo("#jqGrid3_panel",100);
+		refreshGrid("#jqGrid3",urlParam2);
+		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
+		calc_jq_height_onchange("jqGrid3");
+	});
+
+
+
 	////////////////////////////////////////////////////ordialog////////////////////////////////////////
 	// var dialog_authorise = new ordialog(
 	// 	'authorise',['material.authorise'],"#delordhd_respersonid",errorField,
