@@ -2290,8 +2290,8 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'delordhd_recno', width: 10, classes: 'wrap', canSearch: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true},
-			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap'},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, hidden: true, classes: 'wrap' },
 			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
 			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero},
