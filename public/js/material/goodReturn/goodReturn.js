@@ -808,7 +808,7 @@ $(document).ready(function () {
 		loadonce:false,
 		width: 1150,
 		height: 200,
-		rowNum: 30,
+		rowNum: 1000000,
 		sortname: 'lineno_',
 		sortorder: "desc",
 		pager: "#jqGridPager2",
