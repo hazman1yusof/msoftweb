@@ -226,9 +226,12 @@ $(document).ready(function () {
 		datatype: "local",
 		 colModel: [
 			{ label: 'Record No', name: 'delordhd_recno', width: 12, classes: 'wrap', canSearch: true},
-			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 20, classes: 'wrap', canSearch:true},
+			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, hidden: true, classes: 'wrap' },
 			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'DO No', name: 'delordhd_delordno', width: 15, classes: 'wrap'},
 			{ label: 'Returned Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 25, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 25, classes: 'wrap', canSearch: true },
@@ -355,6 +358,7 @@ $(document).ready(function () {
 			populate_form(selrowData("#jqGrid"));
 			//empty_form();
 
+			fdl.set_array().reset();
 			cbselect.checkbox_function_on();
 			cbselect.refresh_seltbl();
 
@@ -1126,9 +1130,17 @@ $(document).ready(function () {
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
+			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
+			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
+			case 'h_suppcode':field=['SuppCode','Name'];table="material.supplier";case_='h_suppcode';break;
+			case 'h_prdept':field=['deptcode','description'];table="sysdb.department";case_='h_prdept';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 		fdl.get_array('goodReturn',options,param,case_,cellvalue);
+		delay(function(){
+			calc_jq_height_onchange(options.gid);
+		}, 500 );
 		return cellvalue;
 	}
 
@@ -1468,8 +1480,8 @@ $(document).ready(function () {
 				{label:'GRN NO',name:'h_docno',width:200,classes:'pointer',checked:true,canSearch:true,or_search:true,formatter: padzero},
 				{label:'DO NO',name:'h_delordno',width:200,classes:'pointer', hidden:false},
 				{label:'PO NO',name:'h_srcdocno',width:200,classes:'pointer', hidden:false,formatter: padzero},
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Code',name:'h_suppcode',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer wrap',canSearch:true,or_search:true, formatter: showdetail,unformat:un_showdetail},
+				{label:'Supplier Code',name:'h_suppcode',width:300,classes:'pointer wrap',canSearch:true,or_search:true, formatter: showdetail,unformat:un_showdetail},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'recno',name:'h_recno',width:400,classes:'pointer', hidden:true},
 				{label:'invoiceno',name:'h_invoiceno',width:400,classes:'pointer', hidden:true},
@@ -1485,12 +1497,16 @@ $(document).ready(function () {
 				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer',align:'right', formatter: 'currency'},
 				
 			],
+			sortname: 'h_recno',
+			sortorder: "desc",
 			urlParam: {
 						filterCol:['compcode','recstatus'],
 						filterVal:['session.compcode','ACTIVE']
 					},
-
-		ondblClickRow: function () {
+			gridComplete: function() {
+				fdl.set_array().reset();
+			},
+			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_docno.gridname);
 				$("#delordhd_srcdocno").val(data['h_docno']);
 				$("#delordhd_srcdocno").data('idno',data['h_idno']);

@@ -1437,6 +1437,8 @@ $(document).ready(function () {
 			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
 			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
 			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
+			case 'h_suppcode':field=['SuppCode','Name'];table="material.supplier";case_='h_suppcode';break;
+			case 'h_prdept':field=['deptcode','description'];table="sysdb.department";case_='h_prdept';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -2580,8 +2582,8 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Request No',name:'h_purreqno',width:50,classes:'pointer',canSearch:true,or_search:true},
 				{label:'Request Department', name: 'h_reqdept', width: 100, classes: 'pointer',canSearch:true,checked:true,or_search:true },
-				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer'},
-				{label:'Purchase Department',name:'h_prdept',width:200,classes:'pointer'},
+				{label:'Supplier Code',name:'h_suppcode',width:100,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
+				{label:'Purchase Department',name:'h_prdept',width:200,classes:'pointer wrap', formatter: showdetail,unformat:un_showdetail},
 				{label:'PerDisc',name:'h_perdisc',width:400,classes:'pointer',hidden:true},
 				{label:'AmtDisc',name:'h_amtdisc',width:400,classes:'pointer',hidden:true},
 				{label:'Total Amount',name:'h_totamount',width:80,classes:'pointer',formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,}},
@@ -2590,12 +2592,17 @@ $(document).ready(function () {
 				{label:'Remark',name:'h_remarks',width:400,classes:'pointer',hidden:true},
 				{label:'recno',name:'h_recno',width:50,classes:'pointer',hidden:false}
 				],
+			sortname: 'h_recno',
+			sortorder: "desc",
 			urlParam: {
 					filterCol:['h.reqdept'],
 					filterVal:[$("#purordhd_reqdept").val()],
 					WhereInCol:['h.recstatus'],
 					WhereInVal:[['PARTIAL','APPROVED']]				
 				},
+			gridComplete: function() {
+				fdl.set_array().reset();
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_purreqno.gridname);
 				$("#purordhd_purreqno").val(data['h_purreqno']);

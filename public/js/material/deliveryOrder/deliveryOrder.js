@@ -1452,14 +1452,19 @@ $(document).ready(function () {
 			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
 			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
 			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
+			case 'h_suppcode':field=['SuppCode','Name'];table="material.supplier";case_='h_suppcode';break;
+			case 'h_prdept':field=['deptcode','description'];table="sysdb.department";case_='h_prdept';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 
 		fdl.get_array('deliveryOrder',options,param,case_,cellvalue);
 		// faster_detail_array.push(faster_detail_load('deliveryOrder',options,param,case_,cellvalue));
+		delay(function(){
+			calc_jq_height_onchange(options.gid);
+		}, 500 );
 		if(cellvalue == null){
 			cellvalue = " "
-		};;
+		};
 		return cellvalue;
 	}
 
@@ -2037,9 +2042,9 @@ $(document).ready(function () {
 	var dialog_srcdocno = new ordialog(
 		'srcdocno',['material.purordhd AS h'],'#delordhd_srcdocno',errorField,
 		{	colModel:[
-				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer', hidden:false},
-				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'Purchase Department',name:'h_prdept',width:400,classes:'pointer wrap', hidden:false, formatter: showdetail,unformat:un_showdetail},
+				{label:'PO NO',name:'h_purordno',width:200,classes:'pointer',canSearch:true,or_search:true, formatter: padzero },
+				{label:'Supplier Code',name:'h_suppcode',width:400,classes:'pointer wrap',canSearch:true,checked:true,or_search:true, formatter: showdetail,unformat:un_showdetail},
 				{label:'delordno',name:'h_delordno',width:400,classes:'pointer', hidden:true},
 				{label:'Request Department',name:'h_reqdept',width:400,classes:'pointer', hidden:true},
 				{label:'Total Amount',name:'h_totamount',width:400,classes:'pointer', align: 'right', formatter: 'currency' },
@@ -2060,6 +2065,9 @@ $(document).ready(function () {
 						WhereInCol:['h.recstatus'],
 						WhereInVal:[['PARTIAL','APPROVED']]		
 					},
+			gridComplete: function() {
+				fdl.set_array().reset();
+			},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_srcdocno.gridname);
 				
