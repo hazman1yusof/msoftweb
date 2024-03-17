@@ -525,6 +525,7 @@ $(document).ready(function () {
 			obj={};
 		}
 		saveParam.oper=selfoper;
+		$('#purordhd_purordno').val(unpadzero($('#purordhd_purordno').val()));
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 		

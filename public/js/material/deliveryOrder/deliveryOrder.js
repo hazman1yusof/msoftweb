@@ -545,6 +545,8 @@ $(document).ready(function () {
 			obj={};
 		}
 		saveParam.oper=selfoper;
+		$('#delordhd_docno').val(unpadzero($('#delordhd_docno').val()));
+		$('#delordhd_srcdocno').val(unpadzero($('#delordhd_srcdocno').val()));
 
 		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
 

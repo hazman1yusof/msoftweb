@@ -173,7 +173,7 @@ class GoodReturnController extends defaultController
                 }
             }
 
-
+            dd($array_insert);
             $idno = $table->insertGetId($array_insert);
 
             $totalAmount = 0;
