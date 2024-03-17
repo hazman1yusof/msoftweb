@@ -44,6 +44,93 @@ class GoodReturnController extends defaultController
         }
     }
 
+    public function table(Request $request)
+    {   
+        DB::enableQueryLog();
+        switch($request->action){
+            case 'get_table_default':
+                return $this->get_table_default($request);
+            default:
+                return 'error happen..';
+        }
+    }
+
+    public function get_table_default(Request $request){
+        $table =  DB::table('material.delordhd');
+        $table = $table->select($this->fixPost($request->field,"_"));
+
+        $table = $table->leftJoin('material.supplier', function($join) use ($request){
+                        $join = $join->where('supplier.SuppCode','=','delordhd.suppcode')
+                                     ->where('supplier.compcode',session('compcode'));
+
+                 });
+
+        $table = $table->leftJoin('material.delordhd as do2', function($join) use ($request){
+                        $join = $join->where('do2.compcode',session('compcode'))
+                                    ->where('do2.trantype','GRN')
+                                    ->on('do2.prdept','delordhd.prdept')
+                                    ->on('do2.docno','=','delordhd.srcdocno');
+                 });
+
+        if(!empty($request->filterCol)){
+            foreach ($request->filterCol as $key => $value) {
+                $pieces = explode(".", $request->filterVal[$key], 2);
+                if($pieces[0] == 'session'){
+                    $table = $table->where($request->filterCol[$key],'=',session($pieces[1]));
+                }else if($pieces[0] == '<>'){
+                    $table = $table->where($request->filterCol[$key],'<>',$pieces[1]);
+                }else if($pieces[0] == '>'){
+                    $table = $table->where($request->filterCol[$key],'>',$pieces[1]);
+                }else if($pieces[0] == '>='){
+                    $table = $table->where($request->filterCol[$key],'>=',$pieces[1]);
+                }else if($pieces[0] == '<'){
+                    $table = $table->where($request->filterCol[$key],'<',$pieces[1]);
+                }else if($pieces[0] == '<='){
+                    $table = $table->where($request->filterCol[$key],'<=',$pieces[1]);
+                }else if($pieces[0] == 'on'){
+                    $table = $table->whereColumn($request->filterCol[$key],$pieces[1]);
+                }else if($pieces[0] == 'null'){
+                    $table = $table->whereNull($request->filterCol[$key]);
+                }else if($pieces[0] == 'raw'){
+                    $table = $table->where($request->filterCol[$key],'=',DB::raw($pieces[1]));
+                }else{
+                    $table = $table->where($request->filterCol[$key],'=',$request->filterVal[$key]);
+                }
+            }
+        }
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }
+
+        //////////paginate/////////
+        $paginate = $table->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+
+        return json_encode($responce);
+    }
+
     public function add(Request $request){
 
 
