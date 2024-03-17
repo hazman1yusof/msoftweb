@@ -32,6 +32,8 @@ $(document).ready(function () {
 	var radbuts=new checkradiobutton(['delordhd_taxclaimable']);
 	var fdl = new faster_detail_load();
 	var cbselect = new checkbox_selection("#jqGrid","Checkbox","delordhd_idno","delordhd_recstatus");
+	var sequence = new Sequences('GRT','#delordhd_trandate');
+	sequence.set($("#deptcode").val()).get();
 
 	///////////////////////////////// trandate check date validate from period////////// ////////////////
 	var actdateObj = new setactdate(["#trandate"]);
@@ -117,46 +119,46 @@ $(document).ready(function () {
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////////////
 
-	var backdated = new func_backdated('#delordhd_prdept');
-	backdated.getdata();
+	// var backdated = new func_backdated('#delordhd_prdept');
+	// backdated.getdata();
 
-	function func_backdated(target){
-		this.sequence_data;
-		this.target=target;
-		this.param={
-			action:'get_value_default',
-			url:"util/get_value_default",
-			field: ['*'],
-			table_name:'material.sequence',
-			table_id:'idno',
-			filterCol:['trantype'],
-			filterVal:['GRT'],
-		}
+	// function func_backdated(target){
+	// 	this.sequence_data;
+	// 	this.target=target;
+	// 	this.param={
+	// 		action:'get_value_default',
+	// 		url:"util/get_value_default",
+	// 		field: ['*'],
+	// 		table_name:'material.sequence',
+	// 		table_id:'idno',
+	// 		filterCol:['trantype'],
+	// 		filterVal:['GRT'],
+	// 	}
 
-		this.getdata = function(){
-			var self=this;
-			$.get( this.param.url+"?"+$.param(this.param), function( data ) {
+	// 	this.getdata = function(){
+	// 		var self=this;
+	// 		$.get( this.param.url+"?"+$.param(this.param), function( data ) {
 				
-			},'json').done(function(data) {
-				if(!$.isEmptyObject(data.rows)){
-					self.sequence_data = data.rows;
-				}
-			});
-			return this;
-		}
+	// 		},'json').done(function(data) {
+	// 			if(!$.isEmptyObject(data.rows)){
+	// 				self.sequence_data = data.rows;
+	// 			}
+	// 		});
+	// 		return this;
+	// 	}
 
-		this.set_backdate = function(dept){
-			$.each(this.sequence_data, function( index, value ) {
-				if(value.dept == dept){
-					var backday =  value.backday;
-					console.log('backday: '+backday);
-					var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
-					console.log(backdate);
-					$('#delordhd_trandate').attr('min',backdate);
-				}
-			});
-		}
-	}
+	// 	this.set_backdate = function(dept){
+	// 		$.each(this.sequence_data, function( index, value ) {
+	// 			if(value.dept == dept){
+	// 				var backday =  value.backday;
+	// 				console.log('backday: '+backday);
+	// 				var backdate = moment().subtract(backday, 'days').format('YYYY-MM-DD');
+	// 				console.log(backdate);
+	// 				$('#delordhd_trandate').attr('min',backdate);
+	// 			}
+	// 		});
+	// 	}
+	// }
 
 	/////////////////////parameter for jqgrid url////////////////////////////////////////////////////////
 	var recstatus_filter = [['OPEN','POSTED']];
@@ -1450,7 +1452,8 @@ $(document).ready(function () {
 					},
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_prdept.gridname);
-				backdated.set_backdate(data.deptcode);
+				// backdated.set_backdate(data.deptcode);
+				sequence.set(data.deptcode).get();
 				$('#delordhd_srcdocno').focus();
 			},
 			gridComplete: function(obj){
@@ -1468,7 +1471,7 @@ $(document).ready(function () {
 			open: function(){
 				dialog_prdept.urlParam.filterCol=['purdept', 'recstatus'];
 				dialog_prdept.urlParam.filterVal=['1', 'ACTIVE'];
-			}
+			},
 		},'urlParam', 'radio', 'tab'
 	);
 	dialog_prdept.makedialog();
