@@ -1670,8 +1670,8 @@ $(document).ready(function () {
 		'document',['material.delordhd'],"#jqGrid2 input[name='document']", errorField,
 		{	colModel:[
 				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'},
-				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'}, 
+				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true,formatter: padzero, unformat: unpadzero},
 				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
 				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency', align:'right'},
 				{label:'Purchase Dept',name:'prdept',width:300,classes:'pointer', hidden:false},
