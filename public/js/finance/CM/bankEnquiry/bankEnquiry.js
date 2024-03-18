@@ -278,7 +278,7 @@ $(document).ready(function () {
 	   			}
 	   		},{targets: 8,
 	        	createdCell: function (td, cellData, rowData, row, col) {
-					$(td).html(numeral(cellData).format('0,0.00'));
+					$(td).html(numeral(Math.abs(cellData)).format('0,0.00'));
 	   			}
 	   		}
 		],
