@@ -247,7 +247,12 @@ $(document).ready(function () {
 				}
 			},
 			{ label: 'Place of Delivery', name: 'placedeliver', classes: 'wrap', width: 100, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Labour/Delivery', name: 'lab_del', classes: 'wrap', width: 100, editable: true, editoptions: {style: "text-transform: none" }},
+			// { label: 'Labour/Delivery', name: 'lab_del', classes: 'wrap', width: 100, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'Labour/Delivery', name: 'lab_del', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+				editoptions:{
+					value: "Labour:Labour;Delivery:Delivery"
+				}
+			},
 			{ label: 'Purperium', name: 'purperium', classes: 'wrap', width: 100, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Weight', name: 'weight', classes: 'wrap', width: 100, editable: true, edittype:'custom', 
 				editoptions:
