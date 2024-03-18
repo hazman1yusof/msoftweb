@@ -25,7 +25,7 @@
                 pageSize: 'A4',
                 content: [
                     {
-                        image: 'letterhead',width:175, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                        image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                     },
                     {
                         text: '\nAP STATEMENT\n',
