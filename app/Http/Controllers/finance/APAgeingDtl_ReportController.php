@@ -74,6 +74,8 @@ class APAgeingDtl_ReportController extends defaultController
                         $join = $join->on('sg.suppgroup', '=', 'su.suppgroup');
                         $join = $join->where('sg.compcode', '=', session('compcode'));
                     })
+                    ->where('ap.source', '=', 'AP')
+                    ->where('ap.trantype', '=', 'IN')
                     ->where('ap.compcode','=',session('compcode'))
                     // ->where('ap.unit',session('unit'))
                     ->where('ap.recstatus', '=', 'POSTED')
