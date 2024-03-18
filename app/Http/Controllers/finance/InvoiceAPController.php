@@ -276,6 +276,7 @@ use Carbon\Carbon;
                     ->where('al.refsource','=',$invoice->source)
                     ->where('al.reftrantype','=',$invoice->trantype)
                     ->where('al.refauditno','=',$invoice->auditno)
+                    ->where('al.recstatus', '=', "POSTED")
                     ->orderBy('al.idno','DESC');
 
 
