@@ -1238,14 +1238,26 @@ class PatmastController extends defaultController
         if ($epis_maturity == "1"){
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "newcaseP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "newcaseNP";
+                $epis_typeepis2 = "newcaseP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }
         }else{
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "followupP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "newcaseP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "followupNP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "newcaseP";
             }
         }
 
@@ -1276,6 +1288,9 @@ class PatmastController extends defaultController
                     "bed" => $epis_bednum,
                     "payer" => $epis_payer,
                     $epis_typeepis => 1,
+                    $epis_typeepis2 => null,
+                    $epis_typeepis3 => null,
+                    $epis_typeepis4 => null,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
                     "adduser" => session('username'),
@@ -1808,14 +1823,26 @@ class PatmastController extends defaultController
         if ($epis_maturity == "1"){
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "newcaseP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "newcaseNP";
+                $epis_typeepis2 = "newcaseP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "followupNP";
             }
         }else{
             if($epis_preg == "Pregnant"){
                 $epis_typeepis = "followupP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "newcaseP";
+                $epis_typeepis4 = "followupNP";
             }else{
                 $epis_typeepis = "followupNP";
+                $epis_typeepis2 = "newcaseNP";
+                $epis_typeepis3 = "followupP";
+                $epis_typeepis4 = "newcaseP";
             }
         }
 
@@ -1843,6 +1870,9 @@ class PatmastController extends defaultController
                     "billtype" => $epis_billtype,
                     // "bed" => $epis_bednum,
                     $epis_typeepis => 1,
+                    $epis_typeepis2 => null,
+                    $epis_typeepis3 => null,
+                    $epis_typeepis4 => null,
                     "payer" => $epis_payer,
                     "AdminFees" => $epis_fee,
                     "adddate" => Carbon::now("Asia/Kuala_Lumpur"),
