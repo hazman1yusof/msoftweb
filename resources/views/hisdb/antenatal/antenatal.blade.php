@@ -142,7 +142,7 @@
 																				<input class="form-control" list="hep_B_Ag1" name="hep_B_Ag">
 																				<datalist id="hep_B_Ag1">
 																					<option value="Positive">
-																					<option value="Reactive">
+																					<option value="Negative">
 																				</datalist>
 																			</div>
 																			<div class="form-group col-md-6" style="margin-left: 2px">
@@ -150,7 +150,7 @@
 																				<input class="form-control" list="hep_B_AB1" name="hep_B_AB">
 																				<datalist id="hep_B_AB1">
 																					<option value="Positive">
-																					<option value="Reactive">
+																					<option value="Negative">
 																				</datalist>
 																			</div>
 																		</div>
