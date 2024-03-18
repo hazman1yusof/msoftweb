@@ -62,7 +62,7 @@
                                     [
                                         { text: 'NAME',fontSize: 9,bold: true},
                                         { text: ':',fontSize: 9,bold: true},
-                                        { text: '{!!$scode->supplier_name!!}',fontSize: 9,bold: true},
+                                        { text: `{!!$scode->supplier_name!!}`,fontSize: 9,bold: true},
                                     ],
                                     [
                                         { text: 'ADDRESS',fontSize: 9,bold: true},
