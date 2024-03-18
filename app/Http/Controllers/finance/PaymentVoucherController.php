@@ -664,6 +664,7 @@ class PaymentVoucherController extends defaultController
                         'pvno' => $pvno,
                         'recdate' => $apacthdr->postdate,
                         'recstatus' => 'POSTED',
+                        'outamount' => 0.00,
                         'upduser' => session('username'),
                         'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
                         'postuser' => session('username')
