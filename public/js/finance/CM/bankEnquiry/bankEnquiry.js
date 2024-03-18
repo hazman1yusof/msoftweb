@@ -360,7 +360,7 @@ $(document).ready(function () {
 					}
 					obj.amountcr = numeral(Math.abs(obj.amountcr)).format('0,0.00');
 					obj.amountdr = numeral(obj.amountdr).format('0,0.00');
-					obj.amountcr = (obj.amountcr == '0.00')?'':obj.amountcr;
+					obj.amountcr = (obj.amountcr == '0.00')?'':Math.abs(obj.amountcr);
 					obj.amountdr = (obj.amountdr == '0.00')?'':obj.amountdr;
 				});
 				DataTable.rows.add(data.rows).draw();
