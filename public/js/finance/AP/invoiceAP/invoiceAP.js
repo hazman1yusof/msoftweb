@@ -734,7 +734,7 @@ $(document).ready(function () {
 			},
 	
 			{ label: 'Purchase Order Number', name: 'reference', width: 200, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
+				edittype:"text",formatter: padzero, unformat: unpadzero,
 			},
 			{ label: 'Amount', name: 'amount', width: 100, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
@@ -780,7 +780,7 @@ $(document).ready(function () {
 				edittype:"text",
 			},
 			{ label: 'GRN No', name: 'grnno', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
-				edittype:"text",
+				edittype:"text",formatter: padzero, unformat: unpadzero,
 			},
 			{ label: 'Department', name: 'deptcode', width: 100, classes: 'wrap', editable: true,editoptions:{readonly: "readonly"},
 				edittype:"text",
@@ -1669,11 +1669,11 @@ $(document).ready(function () {
 	var dialog_document = new ordialog(
 		'document',['material.delordhd'],"#jqGrid2 input[name='document']", errorField,
 		{	colModel:[
-				{label:'DO No',name:'delordno',width:200,classes:'pointer',canSearch:true,or_search:true},
-				{label:'PO No',name:'srcdocno',width:400,classes:'pointer'}, 
-				{label:'GRN No',name:'docno',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true,formatter: padzero, unformat: unpadzero},
-				{label:'Delivery Date',name:'deliverydate',width:400,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
-				{label:'Amount',name:'amount',width:400,classes:'pointer',formatter: 'currency', align:'right'},
+				{label:'DO No',name:'delordno',width:300,classes:'pointer',canSearch:true,or_search:true},
+				{label:'PO No',name:'srcdocno',width:300,classes:'pointer',formatter: padzero, unformat: unpadzero}, 
+				{label:'GRN No',name:'docno',width:300,classes:'pointer',canSearch:true,checked:true,or_search:true,formatter: padzero, unformat: unpadzero},
+				{label:'Delivery Date',name:'deliverydate',width:200,classes:'pointer', formatter: dateFormatter, unformat: dateUNFormatter },
+				{label:'Amount',name:'amount',width:300,classes:'pointer',formatter: 'currency', align:'right'},
 				{label:'Purchase Dept',name:'prdept',width:300,classes:'pointer', hidden:false},
 				{label:'tax claim',name:'taxclaimable',width:400,classes:'pointer', hidden:true},
 				{label:'tax amount',name:'TaxAmt',width:400,classes:'pointer', hidden:true},
@@ -1689,6 +1689,7 @@ $(document).ready(function () {
 
 			ondblClickRow: function () {
 				let data = selrowData('#' + dialog_document.gridname);
+				console.log(data);
 				$("#jqGrid2 input[name='document']").val(data['delordno']);
 				$("#jqGrid2 input[name='reference']").val(data['srcdocno']);
 				$("#jqGrid2 input[name='amount']").val(data['amount']);
