@@ -134,12 +134,42 @@ class InvoiceAPDetailController extends defaultController
 
             $this->check_duplicatedo($request->document,$apacthdr);
 
+            $suppcode = $apacthdr->suppcode;
+            $grnno = $request->grnno;
+            $postdate = $apacthdr->postdate;
 
-            $delordhd = DB::table('material.delordhd')
-                    ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
+            // $delordhd = DB::table('material.delordhd')
+            //         ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
+            //         ->where('compcode','=',session('compcode'))
+            //         ->where('delordno','=',$request->document)
+            //         ->first();
+
+            $table = DB::table('material.delordhd')
+                    ->select('delordno','srcdocno','docno','deliverydate','subamount as amount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
                     ->where('compcode','=',session('compcode'))
-                    ->where('delordno','=',$request->document)
-                    ->first();
+                    ->where('suppcode','=',$suppcode)
+                    ->where('docno','=',$grnno)
+                    ->where('trantype','=','GRN')
+                    ->where('recstatus','=','POSTED')
+                    ->whereDate('trandate','<=',$postdate)
+                    ->whereNull('invoiceno');
+
+            if(!$table->exists()){
+                throw new \Exception("No DO.. check postdate need to be greater than DO trandate");
+            }
+
+            $delordhd = $table->first();
+
+            $accum_grt_amt = DB::table('material.delordhd')
+                            ->where('compcode',session('compcode'))
+                            ->where('suppcode','=',$suppcode)
+                            ->where('srcdocno','=',$grnno)
+                            ->where('trantype','=','GRT')
+                            ->where('recstatus','=','POSTED')
+                            ->whereNull('invoiceno')
+                            ->whereDate('trandate','<=',$postdate)
+                            ->sum('subamount');
+            $amount_invoice = $delordhd->amount - $accum_grt_amt;
 
             ///2. insert detail
             DB::table('finance.apactdtl')
@@ -151,7 +181,7 @@ class InvoiceAPDetailController extends defaultController
                     'trantype' => 'IN',
                     'document' => strtoupper($request->document),
                     'reference' => strtoupper($delordhd->srcdocno),
-                    'amount' => $delordhd->subamount,
+                    'amount' => $amount_invoice,
                     'GSTCode' => $delordhd->taxclaimable,
                     'AmtB4GST' => $delordhd->TaxAmt,
                     'dorecno' => $delordhd->recno,
@@ -172,12 +202,13 @@ class InvoiceAPDetailController extends defaultController
 
        
             ///4. then update to header
-            // DB::table('finance.apacthdr')
-            //     ->where('compcode','=',session('compcode'))
-            //     ->where('auditno','=',$auditno)
-            //     ->update([
-            //         'outamount' => $totalAmount
-            //     ]);
+            DB::table('finance.apacthdr')
+                ->where('compcode','=',session('compcode'))
+                ->where('auditno','=',$auditno)
+                ->update([
+                    'amount' => $totalAmount,
+                    'outamount' => $totalAmount
+                ]);
 
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
@@ -196,7 +227,7 @@ class InvoiceAPDetailController extends defaultController
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response($e->getMessage(), 500);
+            return response($e, 500);
         }
     }
 
