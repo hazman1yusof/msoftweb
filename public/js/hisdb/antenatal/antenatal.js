@@ -1628,12 +1628,12 @@ function button_state_antenatal(state){
 }
 
 //screen current patient//
-function populate_antenatal(obj){	
+function populate_antenatal(obj){
 	emptyFormdata(errorField,"#formAntenatal");
 	emptyFormdata(errorField,"#formPregnancy");
 	emptyFormdata(errorField,"#formUltrasound");
-
-	//panel header
+	
+	// panel header
 	$('#name_show_antenatal').text(obj.Name);
 	$('#mrn_show_antenatal').text(("0000000" + obj.MRN).slice(-7));
 	$('#sex_show_antenatal').text(if_none(obj.Sex).toUpperCase());
@@ -1644,93 +1644,86 @@ function populate_antenatal(obj){
 	$('#occupation_show_antenatal').text(if_none(obj.occupDesc).toUpperCase());
 	$('#citizenship_show_antenatal').text(if_none(obj.cityDesc).toUpperCase());
 	$('#area_show_antenatal').text(if_none(obj.areaDesc).toUpperCase());
-
-	//formAntenatal
+	
+	// formAntenatal
 	$('#mrn_antenatal').val(obj.MRN);
 	$("#episno_antenatal").val(obj.Episno);
-
-	//formPregnancy
+	
+	// formPregnancy
 	$('#mrn_pregnancy').val(obj.MRN);
 	$("#episno_pregnancy").val(obj.Episno);
-
-	//formUltrasound
+	
+	// formUltrasound
 	$('#mrn_ultrasound').val(obj.MRN);
 	$("#episno_ultrasound").val(obj.Episno);
 
 	// PREVIOUS OBSTETRICS HISTORY
 	urlParam_PrevObstetrics.filterVal[0] = obj.MRN;
-
+	
 	// CURRENT PREGNANCY
 	urlParam_CurrPregnancy.filterVal[0] = obj.MRN;
 	urlParam_CurrPregnancy.filterVal[1] = obj.Episno;
-
+	
 	// OBSTETRICS ULTRASOUND SCAN
 	urlParam_ObstetricsUltrasound.filterVal[0] = obj.MRN;
-
-	// var saveParam={
-    //     action:'get_table_antenatal',
-    // }
-    // var postobj={
-    // 	_token : $('#csrf_token').val(),
-    // 	mrn:obj.MRN,
-    // 	episno:obj.Episno
-    // };
-
-    // $.post( "./antenatal/form?"+$.param(saveParam), $.param(postobj), function( data ) {
-        
-    // },'json').fail(function(data) {
-    //     alert('there is an error');
-    // }).success(function(data){
-    // 	if(!$.isEmptyObject(data)){
-
-    // 		if(!$.isEmptyObject(data.antenatal)){
-	// 			autoinsert_rowdata_antenatal("#formAntenatal",data.antenatal);
-	// 			button_state_antenatal('edit_antenatal');
-    // 		}else{
-	// 			button_state_antenatal('add_antenatal');
-    // 		}
-
-    // 		if(!$.isEmptyObject(data.pregnancy)){
-	// 			if(!$.isEmptyObject(data.pregnancy.recstatus)){
-	// 				button_state_antenatal('empty_pregnancy');
-	// 				button_state_antenatal('empty_ultrasound');
 	
-	// 				// to hide pager
-	// 				$('#jqGridPagerCurrPregnancy_left td.ui-pg-button').hide();
-	// 				$('#jqGridPagerObstetricsUltrasound_left td.ui-pg-button').hide();
-	// 			}else{
-	// 				button_state_antenatal('edit_pregnancy');
-
-	// 				// to show pager
-	// 				$('#jqGridPagerCurrPregnancy_left td.ui-pg-button').show();
-	// 				$('#jqGridPagerObstetricsUltrasound_left td.ui-pg-button').show();
-	// 			}
-
-	// 			autoinsert_rowdata_antenatal("#formPregnancy",data.pregnancy);
-	// 			preg_paginate(data.pregnancy_page);
-
-	// 			$('#pregnan_idno').val(data.pregnancy.idno);
-	// 			urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
-	// 			urlParam_ObstetricsUltrasound.filterVal[1] = data.pregnancy.idno;
-
-	// 			refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
-	// 			refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
-
-    // 		}else{
-	// 			button_state_antenatal('add_pregnancy');
-    // 		}
-
-    //     }else{
-	// 		button_state_antenatal('add_antenatal');
-	// 		button_state_antenatal('add_pregnancy');
-
-    //     }
-
-	// 	refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
-
-
-	// });
+	var saveParam={
+		action: 'get_table_antenatal',
+	}
 	
+	var postobj={
+		_token: $('#csrf_token').val(),
+		mrn: obj.MRN,
+		episno: obj.Episno
+	};
+	
+	$.post( "./antenatal/form?"+$.param(saveParam), $.param(postobj), function( data ) {
+		
+	},'json').fail(function(data) {
+		alert('there is an error');
+	}).success(function(data){
+		if(!$.isEmptyObject(data)){
+			if(!$.isEmptyObject(data.antenatal)){
+				autoinsert_rowdata_antenatal("#formAntenatal",data.antenatal);
+				button_state_antenatal('edit_antenatal');
+			}else{
+				button_state_antenatal('add_antenatal');
+			}
+			
+			if(!$.isEmptyObject(data.pregnancy)){
+				if(!$.isEmptyObject(data.pregnancy.recstatus)){
+					button_state_antenatal('empty_pregnancy');
+					button_state_antenatal('empty_ultrasound');
+					
+					// to hide pager
+					$('#jqGridPagerCurrPregnancy_left td.ui-pg-button').hide();
+					$('#jqGridPagerObstetricsUltrasound_left td.ui-pg-button').hide();
+				}else{
+					button_state_antenatal('edit_pregnancy');
+					
+					// to show pager
+					$('#jqGridPagerCurrPregnancy_left td.ui-pg-button').show();
+					$('#jqGridPagerObstetricsUltrasound_left td.ui-pg-button').show();
+				}
+				
+				autoinsert_rowdata_antenatal("#formPregnancy",data.pregnancy);
+				preg_paginate(data.pregnancy_page);
+				
+				$('#pregnan_idno').val(data.pregnancy.idno);
+				urlParam_CurrPregnancy.filterVal[2] = data.pregnancy.idno;
+				urlParam_ObstetricsUltrasound.filterVal[1] = data.pregnancy.idno;
+				
+				refreshGrid('#jqGridCurrPregnancy',urlParam_CurrPregnancy,'add_currPregnancy');
+				refreshGrid('#jqGridObstetricsUltrasound',urlParam_ObstetricsUltrasound,'add_obstetricsUltrasound');
+			}else{
+				button_state_antenatal('add_pregnancy');
+			}
+		}else{
+			button_state_antenatal('add_antenatal');
+			button_state_antenatal('add_pregnancy');
+		}
+		refreshGrid('#jqGridPrevObstetrics',urlParam_PrevObstetrics,'add_prevObstetrics');
+	});
 }
 
 function populate_ultrasound(obj){
