@@ -115,11 +115,12 @@
 
 															<div class="form-row col-md-12">
 																<div class="form-group col-md-6" style="margin-left: 2px">
-																	<label for="VDRL">VDRL</label>  
-																	<div class="input-group">
-																		<input name="VDRL" type="number" class="form-control input-sm floatNumberField" onkeydown="return event.keyCode !== 69" onKeyPress="if(this.value.length==6) return false;">
-																		<span class="input-group-addon">%</span>
-																	</div>
+																	<label for="VDRL">VDRL</label>
+																	<input class="form-control" list="VDRL1" name="VDRL">
+																	<datalist id="VDRL1">
+																		<option value="Reactive">
+																		<option value="Nonreactive">
+																	</datalist>
 																</div>
 																<div class="form-group col-md-6" style="margin-left: 2px">
 																	<label for="HIV">HIV</label>  
