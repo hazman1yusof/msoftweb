@@ -223,6 +223,7 @@ use Carbon\Carbon;
             $accum_grt_amt = DB::table('material.delordhd')
                             ->where('compcode',session('compcode'))
                             ->where('suppcode','=',$request->suppcode)
+                            ->where('srcdocno','=',$value->docno)
                             ->where('trantype','=','GRT')
                             ->where('recstatus','=','POSTED')
                             ->whereNull('invoiceno')
