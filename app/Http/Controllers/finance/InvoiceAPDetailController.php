@@ -137,6 +137,7 @@ class InvoiceAPDetailController extends defaultController
             $suppcode = $apacthdr->suppcode;
             $grnno = $request->grnno;
             $postdate = $apacthdr->postdate;
+            $delordno = $request->document;
 
             // $delordhd = DB::table('material.delordhd')
             //         ->select('delordno','srcdocno','docno','deliverydate','subamount','taxclaimable','TaxAmt','recno','suppcode', 'prdept')
@@ -149,6 +150,7 @@ class InvoiceAPDetailController extends defaultController
                     ->where('compcode','=',session('compcode'))
                     ->where('suppcode','=',$suppcode)
                     ->where('docno','=',$grnno)
+                    ->where('delordno','=',$delordno)
                     ->where('trantype','=','GRN')
                     ->where('recstatus','=','POSTED')
                     ->whereDate('trandate','<=',$postdate)
@@ -164,6 +166,7 @@ class InvoiceAPDetailController extends defaultController
                             ->where('compcode',session('compcode'))
                             ->where('suppcode','=',$suppcode)
                             ->where('srcdocno','=',$grnno)
+                            ->where('delordno','=',$delordno)
                             ->where('trantype','=','GRT')
                             ->where('recstatus','=','POSTED')
                             ->whereNull('invoiceno')
@@ -320,7 +323,7 @@ class InvoiceAPDetailController extends defaultController
             DB::table('material.delordhd')
                 ->where('compcode','=',session('compcode'))
                 ->where('recstatus','=','POSTED')
-                ->where('delordno','=',strtoupper($request->document))
+                ->where('delordno','=',$request->document)
                 ->update(['invoiceno'=>null]);
 
             DB::commit();
