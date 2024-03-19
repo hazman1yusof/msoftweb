@@ -157,7 +157,7 @@ class APEnquiryController extends defaultController
         $header->suppcode_to = $request->suppcode_to;
         $header->compname = $company->name;
 
-        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('apacthdr','array_report','header', 'supp_code'));
+        return view('finance.AP.apenquiry.apenquiry_pdfmake',compact('array_report','header', 'supp_code'));
         
     }
 
