@@ -504,7 +504,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Oedema', name: 'oedema', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'Lie', name: 'lie', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
-			{ label: 'Pres', name: 'pres', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
+			{ label: 'PRES', name: 'pres', classes: 'wrap', width: 150, editable: true, editoptions: {style: "text-transform: none" }},
 			{ label: 'FHR', name: 'fhr', classes: 'wrap', width: 150, editable: true, edittype:'custom', 
 				editoptions:
 				{ 	custom_element:fhrCustomEdit,
