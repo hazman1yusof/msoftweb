@@ -473,6 +473,7 @@ Route::get('/goodReturn/table','material\GoodReturnController@table');
 Route::post('/goodReturn/form','material\GoodReturnController@form');
 Route::get('/goodReturn/form','material\GoodReturnController@form');
 Route::post('/goodReturnDetail/form','material\GoodReturnDetailController@form');
+Route::get('/goodReturn/showpdf','material\GoodReturnController@showpdf');
 
 //// sequence material setup ///
 Route::get('/sequence','material\SequenceController@show');

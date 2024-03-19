@@ -128,7 +128,11 @@ i.fa {
 		</div>
 
         <div class="panel panel-default">
-		    	<div class="panel-heading">Good Return Data Entry Header</div>
+		    	<div class="panel-heading">Good Return Data Entry Header
+						<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
+					    	<span class='fa fa-print'></span> Print 
+						</a>
+		    	</div>
 		    		<div class="panel-body">
 		    			<div class='col-md-12' style="padding:0 0 15px 0">
             				<table id="jqGrid" class="table table-striped"></table>
@@ -173,7 +177,7 @@ i.fa {
 	<div id="dialogForm" title="Add Form" >
 		<div class='panel panel-info'>
 			<div class="panel-heading">Good Return Header
-					<a class='pull-right pointer text-primary' id='pdfgen1'><span class='fa fa-print'></span> Print </a>
+					<a class='pull-right pointer text-primary' id='pdfgen2'><span class='fa fa-print'></span> Print </a>
 					</div>
 				<div class="panel-body" style="position: relative;">
 					<form class='form-horizontal' style='width:99%' id='formdata'>

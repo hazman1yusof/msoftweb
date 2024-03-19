@@ -336,6 +336,10 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid3",urlParam2);
 			populate_form(selrowData("#jqGrid"));
 
+			$("#pdfgen1").attr('href','./goodReturn/showpdf?recno='+selrowData("#jqGrid").delordhd_recno);
+
+			$("#pdfgen2").attr('href','./goodReturn/showpdf?recno='+selrowData("#jqGrid").delordhd_recno);
+
 			$('#recnodepan').text(selrowData("#jqGrid").delordhd_recno);//tukar kat depan tu
 			$('#prdeptdepan').text(selrowData("#jqGrid").delordhd_prdept);
 
@@ -2252,11 +2256,6 @@ $(document).ready(function () {
 	$("#jqGrid3_panel").on("show.bs.collapse", function(){
 		$("#jqGrid3").jqGrid ('setGridWidth', Math.floor($("#jqGrid3_c")[0].offsetWidth-$("#jqGrid3_c")[0].offsetLeft-28));
 	});
-
-
-	var genpdf = new generatePDF('#pdfgen1','#formdata','#jqGrid2');
-	genpdf.printEvent();
-
 });
 
 function populate_form(obj){

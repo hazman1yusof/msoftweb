@@ -917,5 +917,123 @@ class GoodReturnController extends defaultController
 
         return $amount;
     }
+
+
+    public function showpdf(Request $request){
+        $recno = $request->recno;
+        if(!$recno){
+            abort(404);
+        }
+        
+        $delordhd = DB::table('material.delordhd')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->first();
+
+        $delorddt = DB::table('material.delorddt AS dodt')
+            ->select('dodt.compcode', 'dodt.recno', 'dodt.lineno_', 'dodt.pricecode', 'dodt.itemcode', 'p.description', 'dodt.uomcode', 'dodt.pouom', 'dodt.qtyorder', 'dodt.qtydelivered', 'dodt.qtyreturned','dodt.unitprice', 'dodt.taxcode', 'dodt.perdisc', 'dodt.amtdisc', 'dodt.amtslstax as tot_gst','dodt.netunitprice', 'dodt.totamount','dodt.amount', 'dodt.rem_but AS remarks_button', 'dodt.remarks', 'dodt.recstatus', 'dodt.expdate','dodt.unit', 'u.description as uom_desc')
+            ->leftJoin('material.productmaster as p', function($join) use ($request){
+                        $join = $join->on('dodt.itemcode', '=', 'p.itemcode')
+                                ->where('p.compcode','=',session('compcode'));
+                    })
+            ->leftJoin('material.uom as u', function($join) use ($request){
+                        $join = $join->on('dodt.uomcode', '=', 'u.uomcode')
+                                ->where('u.compcode','=',session('compcode'));
+                    })
+            ->where('dodt.compcode','=',session('compcode'))
+            ->where('dodt.qtyreturned','!=',0)
+            ->where('dodt.recno','=',$recno)
+            ->get();
+        
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $total_amt = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('totamount');
+
+        $total_tax = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtslstax');
+        
+        $total_discamt = DB::table('material.delorddt')
+            ->where('compcode','=',session('compcode'))
+            ->where('recno','=',$recno)
+            ->sum('amtdisc');
+
+        $totamount_expld = explode(".", (float)$delordhd->totamount);
+
+        $cc_acc = [];
+        foreach ($delorddt as $value) {
+            $gltran = DB::table('finance.gltran as gl')
+                   ->where('gl.compcode',session('compcode'))
+                   ->where('gl.auditno',$value->recno)
+                   ->where('gl.lineno_',$value->lineno_)
+                   ->where('gl.source','IV')
+                   ->where('gl.trantype',$delordhd->trantype)
+                   ->first();
+
+            $drkey = $gltran->drcostcode.'_'.$gltran->dracc;
+            $crkey = $gltran->crcostcode.'_'.$gltran->cracc;
+
+            if(!array_key_exists($drkey,$cc_acc)){
+                $cc_acc[$drkey] = floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$drkey]);
+                $cc_acc[$drkey] = $curamt+floatval($gltran->amount);
+            }
+            if(!array_key_exists($crkey,$cc_acc)){
+                $cc_acc[$crkey] = -floatval($gltran->amount);
+            }else{
+                $curamt = floatval($cc_acc[$crkey]);
+                $cc_acc[$crkey] = $curamt-floatval($gltran->amount);
+            }
+        }
+
+        $cr_acc=[];
+        $db_acc=[];
+        foreach ($cc_acc as $key => $value) {
+            $cc = explode("_",$key)[0];
+            $acc = explode("_",$key)[1];
+            $cc_desc = '';
+            $acc_desc = '';
+
+            $costcenter = DB::table('finance.costcenter')
+                        ->where('compcode',session('compcode'))
+                        ->where('costcode',$cc);
+
+            $glmasref = DB::table('finance.glmasref')
+                        ->where('compcode',session('compcode'))
+                        ->where('glaccno',$acc);
+
+            if($costcenter->exists()){
+                $cc_desc = $costcenter->first()->description;
+            }
+
+            if($glmasref->exists()){
+                $acc_desc = $glmasref->first()->description;
+            }
+
+            if(floatval($value) > 0){
+                array_push($db_acc,[$cc,$cc_desc,$acc,$acc_desc,floatval($value),0]);
+            }else{
+                array_push($cr_acc,[$cc,$cc_desc,$acc,$acc_desc,0,-floatval($value)]);
+            }
+        }
+
+        $totamt_eng_rm = $this->convertNumberToWordENG($totamount_expld[0])."";
+        $totamt_eng = $totamt_eng_rm."";
+
+        if(count($totamount_expld) > 1){
+            $totamt_eng_sen = $this->convertNumberToWordENG($totamount_expld[1])." CENT";
+            $totamt_eng = $totamt_eng_rm.$totamt_eng_sen." ONLY";
+        }
+        
+        return view('material.goodReturn.goodreturn_pdfmake',compact('delordhd','delorddt','totamt_eng', 'company', 'total_tax', 'total_discamt', 'total_amt','cr_acc','db_acc'));
+        
+    }
 }
 
