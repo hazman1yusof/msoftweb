@@ -149,7 +149,7 @@
                     retval.push(arr_cg);
 
                     chgtype.forEach(function(e_ct,i_ct){
-                        if(e_ct.chggroup == e_cg.grpcode){
+                        if(e_ct.chggroup == e_cg.chggroup){
                             var arr_ct = [
                                 { text: 'TYPE: '+e_ct.chgtype+' '+e_ct.ct_desc, bold:true},
                                 { text: ' '},

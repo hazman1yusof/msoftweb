@@ -99,7 +99,7 @@ class ChargeMasterController extends defaultController
                 ->orderBy('cp.idno','DESC')
                 ->get();
         
-            // dd($chgmast);
+            //dd($chgmast);
         $array_report = [];
 
         foreach ($chgmast as $key => $value){
