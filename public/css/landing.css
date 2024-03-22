@@ -464,3 +464,6 @@ form#.form_medc p{
 .select2-container{
 	display: unset;
 }
+span.glyphicon.glyphicon-trash{
+	color: indianred;
+}

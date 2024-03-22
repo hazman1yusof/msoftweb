@@ -74,6 +74,7 @@ class ChargeMasterController extends defaultController
                 ->join('hisdb.chgprice as cp', function($join) {
                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
                                 ->on('cp.uom', '=', 'cm.uom')
+                                ->where('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
                                 ->where('cp.compcode', '=', session('compcode'))
                                 ->where('cp.recstatus', '=', 'ACTIVE');
                 })
@@ -102,10 +103,28 @@ class ChargeMasterController extends defaultController
             //dd($chgmast);
         $array_report = [];
 
+        $chgcode_ = null;
         foreach ($chgmast as $key => $value){
+            if($chgcode_ == $value->chgcode){
+                $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                        ->select('cp.chgcode','cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice')
+                        ->where('cp.compcode', '=', session('compcode'))
+                        ->where('cp.chgcode', '=', $value->chgcode)
+                        ->where('cp.uom', '=', $value->uom_cm)
+                        ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                        ->orderBy('cp.effdate','desc');
+
+                $chgprice_obj = $chgprice_obj->first();
+
+                if($value->chgcode == $chgprice_obj->chgcode && $value->cp_idno != $chgprice_obj->cp_idno){
+                    // unset($chgmast[$key]);
+                    continue;
+                }
+            }
+            $chgcode_=$value->chgcode;
             array_push($array_report, $value);
+
         }
-        //dd($array_report);
 
         $chggroup = collect($array_report)->unique('chggroup');
         $chgtype = collect($array_report)->unique('chgtype');

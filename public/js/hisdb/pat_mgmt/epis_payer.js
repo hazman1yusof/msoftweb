@@ -149,7 +149,9 @@ $(document).ready(function () {
 		},{
 			title:"Select Group Code For Item",
 			open: function(e,ui){
-				$("div[aria-describedby='otherdialog_grpcode']").css('z-index','125');
+				$("div[aria-describedby='otherdialog_grpcode']").css('z-index','132');
+				$('div.ui-widget-overlay.ui-front').css("z-index", "131");
+
 				dialog_grpcode.urlParam.filterCol=['compcode','recstatus'];
 				dialog_grpcode.urlParam.filterVal=['session.compcode','ACTIVE'];
 			},
@@ -198,7 +200,8 @@ $(document).ready(function () {
 		},{
 			title:"Select Charge Code For Item",
 			open: function(e,ui){
-				$("div[aria-describedby='otherdialog_chgcode']").css('z-index','125');
+				$("div[aria-describedby='otherdialog_chgcode']").css('z-index','132');
+				$('div.ui-widget-overlay.ui-front').css("z-index", "131");
 				dialog_chgcode.urlParam.filterCol=['compcode','recstatus','unit','active','chggroup'];
 				dialog_chgcode.urlParam.filterVal=['session.compcode','ACTIVE','session.unit','1',selrowData('#jqGrid_gletdept').grpcode];
 			},
@@ -283,7 +286,7 @@ $(document).ready(function () {
 			dialog_chgcode.jqgrid_.urlParam.filterVal[4] = rowdata.grpcode;
 		},
 		loadComplete: function(){
-			if($('#jqGrid_gletdept').data('lastselrow') == 'none' && $("#jqGrid_gletdept").getGridParam("reccount")>0){
+			if(($('#jqGrid_gletdept').data('lastselrow') == 'none' || $('#jqGrid_gletdept').data('lastselrow') == null) && $("#jqGrid_gletdept").getGridParam("reccount")>0){
 				$("#jqGrid_gletdept").setSelection($("#jqGrid_gletdept").getDataIDs()[0]);
 			}else{
 				$("#jqGrid_gletdept").setSelection($('#jqGrid_gletdept').data('lastselrow'));
@@ -301,9 +304,9 @@ $(document).ready(function () {
 			"_token": $("#csrf_token").val()
 		},
 		oneditfunc: function (rowid) {
+			let is_add = (rowid.startsWith("jqg"))?true:false;
 			dialog_grpcode.on();
-			$('#jqGrid_gletdept').data('lastselrow','none');
-			$("#jqGridPagerRefresh_gletdept").hide();
+			$("#jqGridPagerRefresh_gletdept,#jqGridPager_gletdeptDelete").hide();
 			$("input[name='Description']").keydown(function(e) {//when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_gletdept_ilsave').click();
@@ -312,6 +315,14 @@ $(document).ready(function () {
 			mycurrency_gletdept.array.length = 0;
 			Array.prototype.push.apply(mycurrency_gletdept.array, ["#jqGrid_gletdept input[name='inditemlimit']","#jqGrid_gletdept input[name='grplimit']"]);
 			mycurrency_gletdept.formatOnBlur();//make field to currency on leave cursor
+
+			if(is_add){
+				$("#jqGrid_gletdept input[name='inditemlimit']").val(9999999.99);
+				mycurrency_gletdept.formatOn();
+				$('#jqGrid_gletdept').data('lastselrow','none');
+			}else{
+				$('#jqGrid_gletdept').data('lastselrow',rowid);
+			}
 
 			$("#jqGrid input[type='text']").on('focus',function(){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
@@ -324,10 +335,11 @@ $(document).ready(function () {
 			//state true maksudnyer ada isi, tak kosong
 			refreshGrid("#jqGrid_gletdept", urlParam_gletdept);
 			errorField.length=0;
-			$("#jqGridPagerRefresh_gletdept").show();
+			$("#jqGridPagerRefresh_gletdept,#jqGridPager_gletdeptDelete").show();
 		},
 		errorfunc: function(rowid,response){
-			var data = JSON.parse(response.responseText)
+			var data = JSON.parse(response.responseText);
+			alert(data.res);
 			//$('#p_error').text(response.responseText);
 			refreshGrid("#jqGrid_gletdept", urlParam_gletdept);
 		},
@@ -349,7 +361,7 @@ $(document).ready(function () {
 		},
 		afterrestorefunc : function( response ) {
 			refreshGrid("#jqGrid_gletdept", urlParam_gletdept);
-			$("#jqGridPagerRefresh_gletdept").show();
+			$("#jqGridPagerRefresh_gletdept,#jqGridPager_gletdeptDelete").show();
 		},
 		errorTextFormat: function (data) {
 			alert(data);
@@ -365,6 +377,32 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_gletdept
 		},
 		editParams: myEditOptions_gletdept
+	}).jqGrid('navButtonAdd',"#jqGridPager_gletdept",{
+		id: "jqGridPager_gletdeptDelete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#jqGrid_gletdept").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+			}else{
+				if (confirm("Are you sure you want to delete this row?") == true) {
+				    param={
+		    			_token: $("#csrf_token").val(),
+		    			action: 'save_gletdept',
+						idno: selRowId,
+		    		}
+		    		$.post( "./pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
+					}).fail(function(data) {
+						//////////////////errorText(dialog,data.responseText);
+					}).done(function(data){
+						refreshGrid("#jqGrid_gletdept",urlParam_gletdept);
+					});
+				}
+				
+			}
+		},
 	}).jqGrid('navButtonAdd', "#jqGrid_gletdept", {
 		id: "jqGridPagerRefresh_gletdept",
 		caption: "", cursor: "pointer", position: "last",
@@ -410,7 +448,7 @@ $(document).ready(function () {
 		onSelectRow:function(rowid, selected){
 		},
 		loadComplete: function(){
-			if($('#jqGrid_gletitem').data('lastselrow') == 'none' && $("#jqGrid_gletdept").getGridParam("reccount")>0){
+			if(($('#jqGrid_gletitem').data('lastselrow') == 'none' || $('#jqGrid_gletitem').data('lastselrow') == null) && $("#jqGrid_gletdept").getGridParam("reccount")>0){
 				$("#jqGrid_gletitem").setSelection($("#jqGrid_gletitem").getDataIDs()[0]);
 			}else{
 				$("#jqGrid_gletitem").setSelection($('#jqGrid_gletitem').data('lastselrow'));
@@ -455,7 +493,8 @@ $(document).ready(function () {
 			refreshGrid("#jqGrid_gletitem", urlParam_gletitem);
 		},
 		errorfunc: function(rowid,response){
-			var data = JSON.parse(response.responseText)
+			var data = JSON.parse(response.responseText);
+			alert(data.res);
 			//$('#p_error').text(response.responseText);
 			refreshGrid("#jqGrid_gletitem", urlParam_gletitem);
 		},
@@ -496,6 +535,32 @@ $(document).ready(function () {
 			addRowParams: myEditOptions_gletitem
 		},
 		editParams: myEditOptions_gletitem
+	}).jqGrid('navButtonAdd',"#jqGridPager_gletitem",{
+		id: "jqGridPager_gletitemDelete",
+		caption:"",cursor: "pointer",position: "last", 
+		buttonicon:"glyphicon glyphicon-trash",
+		title:"Delete Selected Row",
+		onClickButton: function(){
+			selRowId = $("#jqGrid_gletitem").jqGrid ('getGridParam', 'selrow');
+			if(!selRowId){
+				alert('Please select row');
+			}else{
+				if (confirm("Are you sure you want to delete this row?") == true) {
+				    param={
+		    			_token: $("#csrf_token").val(),
+		    			action: 'save_gletitem',
+						idno: selRowId,
+		    		}
+		    		$.post( "./pat_enq/form?"+$.param(param),{oper:'del'}, function( data ){
+					}).fail(function(data) {
+						//////////////////errorText(dialog,data.responseText);
+					}).done(function(data){
+						refreshGrid("#jqGrid_gletitem",urlParam_gletitem);
+					});
+				}
+				
+			}
+		},
 	}).jqGrid('navButtonAdd', "#jqGrid_gletitem", {
 		id: "jqGridPagerRefresh_gletitem",
 		caption: "", cursor: "pointer", position: "last",
@@ -563,8 +628,8 @@ $(document).ready(function () {
 				epno_payer_payercode.urlParam.url='./pat_enq/table?action2=getpayercode&epistycode='+$('#epistycode_epno_payer').val();
 
 
-				$('div[aria-describedby="otherdialog_epno_payer_payercode"]').css("z-index", "1200");
-				$('div.ui-widget-overlay.ui-front').css("z-index", "1100");
+				$('div[aria-describedby="otherdialog_epno_payer_payercode"]').css("z-index", "132");
+				$('div.ui-widget-overlay.ui-front').css("z-index", "131");
 			}
 		},'urlParam','radio','tab'
 	);
@@ -693,7 +758,7 @@ $(document).ready(function () {
 		$('#glet_payercode').val(epno_payer.payercode);
 		$('#glet_payercode_desc').val(epno_payer.payercode_desc);
 		$('#glet_totlimit').val(numeral(epno_payer.pyrlmtamt).format('0,0.00'));
-		$('#glet_allgroup').val(allgroupformat(epno_payer.allgroup));
+		$('#glet_allgroup').val(allgroupformat2(epno_payer.allgroup));
 		$('#glet_refno').val(epno_payer.refno);
 		$("#jqGrid_gletdept").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
 		$("#jqGrid_gletitem").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
@@ -710,6 +775,16 @@ function allgroupformat(cellvalue, options, rowObject){
 		return '<span data-orig='+cellvalue+'>No</span>';
 	}else{
 		return '<span data-orig='+cellvalue+'></span>';
+	}
+}
+
+function allgroupformat2(cellvalue, options, rowObject){
+	if(cellvalue == '1'){
+		return 'Yes';
+	}else if(cellvalue == '0'){
+		return 'No';
+	}else{
+		return cellvalue;
 	}
 }
 

@@ -681,7 +681,8 @@ class PatEnqController extends defaultController
                             })
                     ->where('gld.compcode',session('compcode'))
                     ->where('gld.mrn',$request->mrn)
-                    ->where('gld.episno',$request->episno);
+                    ->where('gld.episno',$request->episno)
+                    ->orderBy('gld.idno', 'desc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -709,7 +710,8 @@ class PatEnqController extends defaultController
                     ->where('gli.compcode',session('compcode'))
                     ->where('gli.grpcode',$request->grpcode)
                     ->where('gli.mrn',$request->mrn)
-                    ->where('gli.episno',$request->episno);
+                    ->where('gli.episno',$request->episno)
+                    ->orderBy('gli.idno', 'asc');
 
         //////////paginate/////////
         $paginate = $table->paginate($request->rows);
@@ -732,11 +734,23 @@ class PatEnqController extends defaultController
         DB::beginTransaction();
         try {
             if($request->oper == 'add'){
+                //check sama grpcode
+                $grpcode = DB::table('hisdb.gletdept')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',ltrim($request->mrn,'0'))
+                                ->where('episno',ltrim($request->episno,'0'))
+                                ->where('payercode',$request->payercode)
+                                ->where('grpcode',$request->grpcode);
+
+                if($grpcode->exists()){
+                    throw new \Exception('Duplicate Group Code!', 500);
+                }
+
                 $idno = DB::table('hisdb.gletdept')
                     ->insertGetId([  
                         'payercode' => $request->payercode,
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
+                        'mrn' => ltrim($request->mrn,'0'),
+                        'episno' => ltrim($request->episno,'0'),
                         'grpcode' => $request->grpcode,
                         'allitem' => $request->allitem,
                         'grplimit' => $request->grplimit,
@@ -822,7 +836,6 @@ class PatEnqController extends defaultController
                         'computerid' => session('computerid')
                     ]);
             }else if($request->oper == 'del'){
-                $idno = 'none';
                 DB::table('hisdb.gletitem')
                     ->where('idno',$request->idno)
                     ->where('compcode',session('compcode'))
