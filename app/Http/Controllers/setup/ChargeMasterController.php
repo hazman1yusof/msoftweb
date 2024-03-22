@@ -109,7 +109,7 @@ class ChargeMasterController extends defaultController
 
         $chggroup = collect($array_report)->unique('chggroup');
         $chgtype = collect($array_report)->unique('chgtype');
-
+        
         //dd($chggroup);
 
         $company = DB::table('sysdb.company')
