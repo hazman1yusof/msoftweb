@@ -51,61 +51,88 @@
 			    ]
 			},
 			pageSize: 'A4',
+			pageMargins: [10, 20, 20, 20],
 		  	content: [
-				{
-                    text: 'GOOD RETURN',
-                    style: 'header',
-                    alignment: 'LEFT'
-				},
                 {
-                    image: 'letterhead',width:300, height:65, style: 'tableHeader', colSpan: 5, alignment: 'center'
+                    image: 'letterhead',width:200, height:40, style: 'tableHeader', colSpan: 5, alignment: 'center'
                 },
+				{
+                    text: 'GOOD RETURN NOTE',
+                    style: 'header',
+                    alignment: 'center'
+				},
                 {
                     style: 'tableExample',
                     table: {
                         headerRows: 1,
-                        widths: ['*', '*'],//panjang standard dia 515
+                        widths: [80, '*',220,94,'*'],//panjang standard dia 515
 
                         body: [
                             [
-								{text: 'Received  Department : {{$delordhd->deldept}}'}, 
-								{text: 'Goods Receipt No. : {{$delordhd->docno}}'},
+								{text: 'Received  Department '}, 
+								{text: ': {{$delordhd->deldept}}'},{},
+								{text: 'Goods Received Note No. '},
+								{text: ': {{str_pad($delordhd->docno, 7, "0", STR_PAD_LEFT)}}'}
 							],
                             [
-								{text: 'DO/Inv No. : {{$delordhd->delordno}}'}, 
-								{text: 'Purchase Order No. : {{$delordhd->srcdocno}}'},
+								{text: 'DO/Inv No. '}, 
+								{text: ': {{$delordhd->delordno}}'}, {},
+								{text: 'Purchase Order No. '},
+								{text: ': {{str_pad($delordhd->srcdocno, 7, "0", STR_PAD_LEFT)}}'}
 							],
                             [
-								{text: 'Supplier : {{$delordhd->suppcode}}'}, 
+								{text: 'Supplier '}, 
+								{text: ': {{$delordhd->suppcode}}'}, {},
 
 								@if(!empty($delordhd->trandate))
-								{text: 'Received Date : {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->trandate)->format('d-m-Y')}}'},
+								{text: 'Received Date : '},
+								@else
+								{text: ''},
+								@endif
+								@if(!empty($delordhd->trandate))
+								{text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->trandate)->format('d-m-Y')}}'},
 								@else
 								{text: ''},
 								@endif
 							],
                             [
-								{text: 'Status : {{$delordhd->recstatus}}'}, 
+								{text: 'Status '}, 
+								{text: ': {{$delordhd->recstatus}}'}, {},
 
 								@if(!empty($delordhd->trantime))
-								{text: 'Time : {{\Carbon\Carbon::createFromFormat('H:i:s',$delordhd->trantime)->format('H:i')}}'},
+								{text: 'Time '},
+								@else
+								{text: ''},
+								@endif
+
+								@if(!empty($delordhd->trantime))
+								{text: ': {{\Carbon\Carbon::createFromFormat('H:i:s',$delordhd->trantime)->format('H:i')}}'},
 								@else
 								{text: ''},
 								@endif
 							],
                             [
-								{text: 'Remarks : {{$delordhd->remarks}}'}, 
+								{text: 'Remarks '}, 
+								{text: ': {{$delordhd->remarks}}'}, {},
 								
 								@if(!empty($delordhd->deliverydate))
-								{text: 'Delivery Date : {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->deliverydate)->format('d-m-Y')}}'},
+								{text: 'Delivery Date '},
+								@else
+								{text: ''},
+								@endif
+								
+								@if(!empty($delordhd->deliverydate))
+								{text: ': {{\Carbon\Carbon::createFromFormat('Y-m-d',$delordhd->deliverydate)->format('d-m-Y')}}'},
 								@else
 								{text: ''},
 								@endif
 							],
-                            [
-								{text: ''}, 
-								{text: 'Checked Date : '},
-							],
+                            // [
+							// 	{text: ''}, 
+							// 	{text: ''}, 
+							// 	{text: 'Checked Date : '},
+							// 	{text: ''}, 
+							// ],
                         ]
                     },
 			        layout: 'noBorders',
@@ -117,27 +144,26 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: [20,40,20,14,21,40,40,40,40,40,70],//panjang standard dia 515
+                        widths: [80,25,30,23,30,40,40,40,40,40,30],//panjang standard dia 515
 
                         body: [
-                            [
-								{text: 'Type', style: 'tableHeader'}, 
+                            [ 
 								{text: 'Item', style: 'tableHeader'}, 
 								{text: 'UOM', style: 'tableHeader'}, 
 								{text: 'Qty', style: 'tableHeader'},
 								{text: 'Tax\nCode', style: 'tableHeader'}, 
-								{text: 'Unit\nPrice', style: 'tableHeader'}, 
-								{text: 'Disc\nAmount', style: 'tableHeader'}, 
-                                {text: 'Amount', style: 'tableHeader'}, 
-								{text: 'Tax\nAmount', style: 'tableHeader'}, 
-								{text: 'Net\nAmount (RM)', style: 'tableHeader'}, 
-                                {text: 'Expiry\nDate', style: 'tableHeader'}, 
+								{text: 'Unit\nPrice', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Disc\nAmount', style: 'tableHeader', alignment: 'right'}, 
+                                {text: 'Amount', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Tax\nAmount', style: 'tableHeader', alignment: 'right'}, 
+								{text: 'Net\nAmount (RM)', style: 'tableHeader', alignment: 'right'}, 
+                                {text: 'Expiry\nDate', style: 'tableHeader'},  
+                                {text: 'Batch No', style: 'tableHeader'}, 
 							],
 
 							@foreach ($delorddt as $obj)
 							[
 								
-								{text:'{{$obj->pricecode}}'},
 								{text:`{{$obj->itemcode}}\n{!!str_replace('`', '', $obj->description)!!}`},
 								{text:`{!!$obj->uomcode!!}`},
                                 {text:'{{$obj->qtyreturned}}'},
@@ -152,6 +178,7 @@
 								@else
                                 {text:''},
 								@endif
+                                {text:'{{$obj->batchno}}'},
 							],
 							@endforeach
                         ]
@@ -162,7 +189,7 @@
                     style: 'tableDetail',
                     table: {
                         headerRows: 1,
-                        widths: ['*','*','*','*','*','*','*','*','*','*','*'],//panjang standard dia 515
+                        widths: [40,25,30,23,30,40,80,40,49,48,30],//panjang standard dia 515
 
                         body: [
                             [
@@ -212,7 +239,7 @@
 		        },
                
                 {
-                    text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 14,
+                    text: 'SUMMARY ACCOUNTING ENTRIES\n', fontSize: 12,
 		        },
                 {
                     style: 'tableDetail',
@@ -283,9 +310,9 @@
 			],
 			styles: {
 				header: {
-					fontSize: 18,
+					fontSize: 12,
 					bold: true,
-					margin: [0, 0, 0, 10]
+					margin: [0, 10, 0, 0]
 				},
 				subheader: {
 					fontSize: 16,
@@ -303,6 +330,7 @@
 				tableHeader: {
 					bold: true,
 					fontSize: 9,
+					margin: [0, 0, 0, 0],
 					color: 'black'
 				},
 				totalbold: {

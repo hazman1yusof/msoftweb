@@ -80,6 +80,15 @@ $(document).ready(function () {
 		pager: "#jqGridPager_epno_payer",
 		onSelectRow:function(rowid, selected){
 			populate_epno_payer(selrowData("#jqGrid_epno_payer"));
+			let rowdata = selrowData("#jqGrid_epno_payer");
+
+			if(rowdata.pay_type == 'PT'){
+				button_state_epno_payer('add');
+			}else{
+				if(rowdata.allgroup == 0){
+					$('#except_epno_payer').attr('disabled',false);
+				}
+			}
 		},
 		loadComplete: function(){
 			emptyFormdata_div('#form_epno_payer',['#mrn_epno_payer','#episno_epno_payer','#epistycode_epno_payer','#name_epno_payer']);
@@ -91,6 +100,7 @@ $(document).ready(function () {
 			}else{
 				button_state_epno_payer('add');
 			}
+			$('#except_epno_payer').attr('disabled',true);
 			$("#jqGrid_epno_payer").setSelection($("#jqGrid_epno_payer").getDataIDs()[0]);
 
 		},
@@ -230,17 +240,17 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [			
 			{label:'idno', name:'idno', key:true,hidden:true},
-			{ label:'grpcode', name:'Group code', width: 80, classes: 'wrap', editable:true,
+			{label:'Group code', name:'grpcode', width: 80, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:grpcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{label:'grpcode_desc', name:'Description', width: 200},
-			{label: 'allitem', name: 'All Item', width: 50, classes: 'wrap', editable: true,editrules: { required: true }, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"}},
-			{label:'grplimit', name:'Group limit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
-			{label:'inditemlimit', name:'Individual Item Limit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
+			{label:'Description', name:'grpcode_desc', width: 200},
+			{label: 'All Item', name: 'allitem', width: 50, classes: 'wrap', editable: true,editrules: { required: true }, edittype:"select",formatter:'select', editoptions:{value:"1:YES;0:NO"}},
+			{label:'Group limit', name:'grplimit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
+			{label:'Individual Item Limit', name:'inditemlimit',editable: true, editrules: { required: true }, width: 50, formatter: 'currency'},
 			{label:'compcode', name:'compcode', hidden:true},
 			{label:'payercode', name:'payercode', hidden:true},
 			{label:'mrn', name:'mrn', hidden:true},
@@ -369,15 +379,15 @@ $(document).ready(function () {
 		datatype: "local",
 		colModel: [
 			{label:'idno', name:'idno', key:true,hidden:true},
-			{ label:'chgcode', name:'Charge code', width: 80, classes: 'wrap', editable:true,
+			{ label:'Charge code', name:'chgcode', width: 80, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
 						    {  custom_element:chgcodeCustomEdit,
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{label:'chgcode_desc', name:'Description', width: 200},
-			{label:'totitemlimit', name:'Total Item Limit', width: 80,editable: true, editrules: { required: true }, formatter: 'currency'},
+			{label:'Description', name:'chgcode_desc', width: 200},
+			{label:'Total Item Limit', name:'totitemlimit', width: 80,editable: true, editrules: { required: true }, formatter: 'currency'},
 			{label:'compcode', name:'compcode',hidden:true},
 			{label:'payercode', name:'payercode',hidden:true},
 			{label:'mrn', name:'mrn',hidden:true},
@@ -677,13 +687,13 @@ $(document).ready(function () {
 
 	$("#mdl_glet").on("shown.bs.modal", function(){
 		var epno_payer = selrowData("#jqGrid_epno_payer");
-		$('#glet_mrn').val(epno_payer.mrn);
+		$('#glet_mrn').val(padzero7(epno_payer.mrn));
 		$('#glet_name').val(epno_payer.name);
-		$('#glet_episno').val(epno_payer.episno);
+		$('#glet_episno').val(padzero7(epno_payer.episno));
 		$('#glet_payercode').val(epno_payer.payercode);
 		$('#glet_payercode_desc').val(epno_payer.payercode_desc);
-		$('#glet_totlimit').val(epno_payer.pyrlmtamt);
-		$('#glet_allgroup').val(epno_payer.allgroup);
+		$('#glet_totlimit').val(numeral(epno_payer.pyrlmtamt).format('0,0.00'));
+		$('#glet_allgroup').val(allgroupformat(epno_payer.allgroup));
 		$('#glet_refno').val(epno_payer.refno);
 		$("#jqGrid_gletdept").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
 		$("#jqGrid_gletitem").jqGrid ('setGridWidth', Math.floor($("#glet_row")[0].offsetWidth-$("#glet_row")[0].offsetLeft-0));
@@ -696,8 +706,10 @@ $(document).ready(function () {
 function allgroupformat(cellvalue, options, rowObject){
 	if(cellvalue == '1'){
 		return '<span data-orig='+cellvalue+'>Yes</span>';
-	}else{
+	}else if(cellvalue == '0'){
 		return '<span data-orig='+cellvalue+'>No</span>';
+	}else{
+		return '<span data-orig='+cellvalue+'></span>';
 	}
 }
 

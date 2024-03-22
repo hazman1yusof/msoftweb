@@ -1853,6 +1853,19 @@ function padzero5(cellvalue, options, rowObject){
 	return pad(str, cellvalue, true);
 }
 
+function padzero7(cellvalue, options, rowObject){
+	if(cellvalue == null || cellvalue.toString().trim() == ''){
+		return ''
+	}
+
+	let padzero = 7, str="";
+	while(padzero>0){
+		str=str.concat("0");
+		padzero--;
+	}
+	return pad(str, cellvalue, true);
+}
+
 function unpadzero(cellvalue, options, rowObject){
 	return cellvalue.substring(cellvalue.search(/[1-9]/));
 }

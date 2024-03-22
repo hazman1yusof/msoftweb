@@ -9,8 +9,11 @@
         <input  type="hidden" name="preepisidno_epis" id="preepisidno_epis">
         <div class="modal-content">
             <div class="modal-header label-info form-horizontal" style="position: sticky;top: 0px;z-index: 3;"><form id="epis_header">
-                <button type="button" class="" data-dismiss="modal" aria-label="Close" style="float: right;
+                <button type="button" class="" data-dismiss="modal" aria-label="Close" style="
+                            z-index: 100;
+                            right: 10px;
                             color: white;
+                            position: absolute;
                             background: #d34242;
                             border-radius: 5px;">
                       <span class="glyphicon glyphicon-remove" aria-hidden="true" style="top: 3px;"></span>
@@ -673,7 +676,7 @@
                                         </div>
                                         <div class="col-xs-2">
                                             <small for="allgroup_epno_payer">&nbsp;</small>
-                                            <button type="button" id="except_epno_payer" class="btn btn-default" style="display: block;">Exception</button>
+                                            <button type="button" id="except_epno_payer" class="btn btn-default" style="display: block;">Coverage</button>
                                         </div>
                                     </div>
 
@@ -971,39 +974,39 @@
                             <div class='col-md-12' style="padding:0">
                                 <div class="col-md-3">
                                     <small for="input-title">MRN</small>
-                                    <input class="form-control" id="glet_mrn" placeholder="" type="text">
+                                    <input class="form-control" id="glet_mrn" placeholder="" type="text" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <small for="input-title">Name</small>
-                                    <input class="form-control" id="glet_name" placeholder="" type="text">
+                                    <input class="form-control" id="glet_name" placeholder="" type="text" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <small for="input-title">Episode</small>
-                                    <input class="form-control" id="glet_episno" placeholder="" type="text">
+                                    <input class="form-control" id="glet_episno" placeholder="" type="text" readonly>
                                 </div>
                             </div>
                             <div class='col-md-12' style="padding:0">
                                 <div class="col-md-3">
                                     <small for="input-title">Payer Code</small>
-                                    <input class="form-control" id="glet_payercode" placeholder="" type="text">
+                                    <input class="form-control" id="glet_payercode" placeholder="" type="text" readonly>
                                 </div>
                                 <div class="col-md-6">
                                     <small for="input-title">Payer</small>
-                                    <input class="form-control" id="glet_payercode_desc" placeholder="" type="text">
+                                    <input class="form-control" id="glet_payercode_desc" placeholder="" type="text" readonly>
                                 </div>
                                 <div class="col-md-3">
                                     <small for="input-title">Total Limit</small>
-                                    <input class="form-control" id="glet_totlimit" placeholder="" type="text">
+                                    <input class="form-control" id="glet_totlimit" placeholder="" type="text" readonly>
                                 </div>
                             </div>
                             <div class='col-md-12' style="padding:0 0 15px 0">
                                 <div class="col-md-3">
                                     <small for="input-title">All Group</small>
-                                    <input class="form-control" id="glet_allgroup" placeholder="" type="text">
+                                    <input class="form-control" id="glet_allgroup" placeholder="" type="text" readonly>
                                 </div>
                                 <div class="col-md-9">
                                     <small for="input-title">Ref No.</small>
-                                    <input class="form-control" id="glet_refno" placeholder="" type="text">
+                                    <input class="form-control" id="glet_refno" placeholder="" type="text" readonly>
                                 </div>
                             </div>
                         </div>
