@@ -144,6 +144,39 @@ $(document).ready(function () {
 		},
 		// buttons :butt1,
 	});
+
+	$( "#priceListDialog" ).dialog({
+		autoOpen: false,
+		width: 5/10 * $(window).width(),
+		modal: true,
+		open: function(){
+		
+		},
+		close: function( event, ui ){
+			parent_close_disabled(false);
+		},
+		buttons:
+		[
+		{
+			text: "Generate PDF",click: function() {
+				window.open('./chargemaster/showpdf?chggroup_from='+$('#chggroup_from').val()+'&chggroup_to='+$("#chggroup_to").val()+'&chgcode_from='+$("#chgcode_from").val()+'&chgcode_to='+$("#chgcode_to").val(),  '_blank'); 
+			}
+		},
+		{
+			text: "Generate Excel",click: function() {
+				window.location='./chargemaster/showExcel?chggroup_from='+$('#chggroup_from').val()+'&chggroup_to='+$("#chggroup_to").val()+'&chgcode_from='+$("#chgcode_from").val()+'&chgcode_to='+$("#chgcode_to").val();
+			}
+		},{
+			text: "Close",click: function() {
+				$(this).dialog('close');
+				emptyFormdata(errorField,'#formdata_priceList');
+			}
+		}],
+	});
+
+	$('#pdfgen_excel').click(function(){
+		$( "#priceListDialog" ).dialog( "open" );
+	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
@@ -2273,6 +2306,206 @@ $(document).ready(function () {
 
 	}
 
+	/////////////////////////////dialog handler priceList////////////////////////////////////////
+	var chggroup_from = new ordialog(
+		'chggroup_from','hisdb.chggroup','#chggroup_from','errorField',
+		{	
+			colModel:[
+				{label:'Charge Group',name:'grpcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Description',name:'description',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Charge Group",
+			open: function(){
+				chggroup_from.urlParam.filterCol=['compcode','recstatus'];
+				chggroup_from.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('chggroup_to',errorField)!==-1){
+						errorField.splice($.inArray('chggroup_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	chggroup_from.makedialog(true);
+
+	var chggroup_to = new ordialog(
+		'chggroup_to','hisdb.chggroup','#chggroup_to',errorField,
+		{	
+			colModel:[
+				{label:'Charge Group',name:'grpcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Description',name:'description',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Charge Group",
+			open: function(){
+				chggroup_to.urlParam.filterCol=['compcode','recstatus'];
+				chggroup_to.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('chggroup_to',errorField)!==-1){
+						errorField.splice($.inArray('chggroup_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	chggroup_to.makedialog(true);
+
+	var chgcode_from = new ordialog(
+		'chgcode_from','hisdb.chgmast','#chgcode_from','errorField',
+		{	
+			colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Description',name:'description',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				chgcode_from.urlParam.filterCol=['compcode','recstatus'];
+				chgcode_from.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('chgcode_to',errorField)!==-1){
+						errorField.splice($.inArray('chgcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	chgcode_from.makedialog(true);
+
+	var chgcode_to = new ordialog(
+		'chgcode_to','hisdb.chgmast','#chgcode_to',errorField,
+		{	
+			colModel:[
+				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer', canSearch: true, or_search: true },
+				{label:'Description',name:'description',width:400,classes:'pointer', canSearch: true, checked: true, or_search: true },
+			],
+			urlParam: {
+				filterCol:['compcode','recstatus'],
+				filterVal:['session.compcode','ACTIVE']
+			},
+			ondblClickRow: function () {
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Charge Code",
+			open: function(){
+				chgcode_to.urlParam.filterCol=['compcode','recstatus'];
+				chgcode_to.urlParam.filterVal=['session.compcode','ACTIVE'];
+			},
+			close: function(obj_){
+			},
+			after_check: function(data,self,id,fail,errorField){
+				let value = $(id).val();
+				if(value.toUpperCase() == 'ZZZ'){
+					ordialog_buang_error_shj(id,errorField);
+					if($.inArray('chgcode_to',errorField)!==-1){
+						errorField.splice($.inArray('chgcode_to',errorField), 1);
+					}
+				}
+			},
+			justb4refresh: function(obj_){
+				obj_.urlParam.searchCol2=[];
+				obj_.urlParam.searchVal2=[];
+			},
+			justaftrefresh: function(obj_){
+				$("#Dtext_"+obj_.unique).val('');
+			}
+		},'urlParam','radio','tab'
+	);
+	chgcode_to.makedialog(true);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	$('#btn_chggroup').on( "click", function() {
 		$('#cg_chggroup ~ a').click();

@@ -100,7 +100,11 @@ input.uppercase {
 		</form>
 
         <div class="panel panel-default">
-		    <div class="panel-heading">Charge Master Header</div>
+		    <div class="panel-heading">Charge Master Header
+				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excel'>
+					<span class='fa fa-print'></span> Charge Price List 
+				</a>
+			</div>
 		    <div class="panel-body">
 		    	<div class='col-md-12' style="padding:0 0 15px 0">
             		<table id="jqGrid" class="table table-striped"></table>
@@ -187,6 +191,57 @@ input.uppercase {
 
     </div>
 	<!-- ***************End Search + table ********************* -->
+
+	<!------------------------- Price List dialog search -------------------->
+	<div id="priceListDialog" title="Price List">
+		<input id="priceList" type="hidden" class="form-control input-sm" readonly>
+			<div class="panel-body">
+				<form class='form-horizontal' style='width:99%' id='formdata_priceList'>
+					<input type="hidden" name="action" >
+
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Chg. Group From</label> 
+									<div class='input-group'> 
+										<input id="chggroup_from" name="chggroup_from" type="text" class="form-control input-sm" autocomplete="off" value="">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+							</div>
+
+							<div class="col-md-6">
+							<label class="control-label" for="Scol">Chg. Group To</label>  
+								<div class='input-group'>
+									<input id="chggroup_to" name="chggroup_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="col-md-6">
+								<label class="control-label" for="Scol">Chg. Code From</label> 
+									<div class='input-group'> 
+										<input id="chgcode_from" name="chgcode_from" type="text" class="form-control input-sm" autocomplete="off" value="">
+										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+									</div>
+									<span class="help-block"></span>
+							</div>
+
+							<div class="col-md-6">
+							<label class="control-label" for="Scol">Chg. Code To</label>  
+								<div class='input-group'>
+									<input id="chgcode_to" name="chgcode_to" type="text" class="form-control input-sm" autocomplete="off" data-validation="required" data-validation-error-msg="Please Enter Value" value="ZZZ">
+									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+								</div>
+								<span class="help-block"></span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+	</div>
 
 	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
