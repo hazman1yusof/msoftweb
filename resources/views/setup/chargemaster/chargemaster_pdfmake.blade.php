@@ -15,6 +15,16 @@
     </object>
     
     <script>
+        var array_report=[
+            @foreach($array_report as $key => $array_report1)
+            {
+                @foreach($array_report1 as $key2 => $val)
+                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
+                @endforeach
+            },
+            @endforeach
+        ];
+
         var chggroup=[
             @foreach($chggroup as $key => $chggroup1)
             {
@@ -30,24 +40,6 @@
             {
                 @foreach($chgtype1 as $key2 => $val)
                     '{{$key2}}' : `{!!$val!!}`,
-                @endforeach
-            },
-            @endforeach
-        ];
-
-        var chgmast=[
-            @foreach($chgmast as $key => $chgmast1)
-            {
-                '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
-            },
-            @endforeach
-        ];
-
-        var array_report=[
-            @foreach($array_report as $key => $array_report1)
-            {
-                @foreach($array_report1 as $key2 => $val)
-                    '{{$key2}}' : `{!!str_replace('`', '', $val)!!}`,
                 @endforeach
             },
             @endforeach
@@ -90,9 +82,6 @@
                         table: make_table(),
                         layout: 'lightHorizontalLines',
                     },
-                  
-
-                   
                 ],
                 styles: {
                     header: {
@@ -134,7 +123,7 @@
         
         function make_table(){
 
-            let widths = ['*','*','*','*','*','*','*','*','*'];
+            let widths = [200,'*','*','*','*','*','*','*','*'];
 
             var table = {
                 widths: widths,
@@ -147,7 +136,7 @@
             chggroup.forEach(function(e_cg,i_cg){
                 if(e_cg.chggroup != ''){
                     var arr_cg = [
-                        { text: e_cg.chggroup, bold:true },
+                        { text: 'GROUP: '+e_cg.chggroup+' '+e_cg.cg_desc, bold:true },
                         { text: ' '},
                         { text: ' '},
                         { text: ' '},
@@ -160,9 +149,9 @@
                     retval.push(arr_cg);
 
                     chgtype.forEach(function(e_ct,i_ct){
-                        if(e_ct.chggroup == e_cg.chggroup){
+                        if(e_ct.chggroup == e_cg.grpcode){
                             var arr_ct = [
-                                { text: e_ct.chgtype, bold:true},
+                                { text: 'TYPE: '+e_ct.chgtype+' '+e_ct.ct_desc, bold:true},
                                 { text: ' '},
                                 { text: ' '},
                                 { text: ' '},

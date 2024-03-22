@@ -69,28 +69,8 @@ class ChargeMasterController extends defaultController
         }
         $chgcode_to = $request->chgcode_to;
 
-        // $chggroup = DB::table('hisdb.chggroup as cg')
-        //         ->select('cg.grpcode', 'cg.description')
-        //         ->where('cg.compcode','=',session('compcode'))
-        //         ->where('cg.recstatus', '=', 'ACTIVE')
-        //         ->whereBetween('cg.grpcode', [$chggroup_from, $chggroup_to.'%'])
-        //         ->distinct('cg.grpcode');
-
-        // $chggroup = $chggroup->get(['cg.grpcode']);
-        // //dd($chggroup);
-
-        // $chgtype = DB::table('hisdb.chgtype as ct')
-        //         ->select('ct.chgtype', 'ct.description', 'ct.chggroup')
-        //         ->where('ct.compcode','=',session('compcode'))
-        //         ->where('ct.recstatus', '=', 'ACTIVE')
-        //         ->whereBetween('ct.chggroup', [$chggroup_from, $chggroup_to.'%'])
-        //         ->distinct('ct.chgtype');
-
-        // $chgtype = $chgtype->get(['ct.chgtype', 'ct.description', 'ct.chggroup']);
-        // // dd($chgtype);
-
         $chgmast = DB::table('hisdb.chgmast as cm')
-                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass', 'cp.idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 'p.uomcode as uom_p')
+                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass', 'cp.idno as cp_idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 'p.uomcode as uom_p')
                 ->join('hisdb.chgprice as cp', function($join) {
                     $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
                                 ->on('cp.uom', '=', 'cm.uom')
@@ -116,20 +96,22 @@ class ChargeMasterController extends defaultController
                 ->where('cm.recstatus', '=', 'ACTIVE')
                 ->whereBetween('cm.chggroup', [$chggroup_from, $chggroup_to.'%'])
                 ->whereBetween('cm.chgcode', [$chgcode_from, $chgcode_to.'%'])
-                ->orderBy('cm.chgcode','ASC')
-                ->latest('cp.effdate')
+                ->orderBy('cp.idno','DESC')
                 ->get();
-            //dd($chgmast);
         
+            // dd($chgmast);
         $array_report = [];
 
         foreach ($chgmast as $key => $value){
             array_push($array_report, $value);
         }
+        //dd($array_report);
 
         $chggroup = collect($array_report)->unique('chggroup');
         $chgtype = collect($array_report)->unique('chgtype');
-       
+
+        //dd($chggroup);
+
         $company = DB::table('sysdb.company')
             ->where('compcode','=',session('compcode'))
             ->first();
@@ -142,7 +124,7 @@ class ChargeMasterController extends defaultController
         $header->chgcode_to = $request->chgcode_to;
         $header->compname = $company->name;
 
-        return view('setup.chargemaster.chargemaster_pdfmake',compact('header', 'chggroup', 'chgtype', 'chgmast', 'array_report'));
+        return view('setup.chargemaster.chargemaster_pdfmake',compact('header', 'chggroup', 'chgtype', 'array_report'));
         
     }
 
