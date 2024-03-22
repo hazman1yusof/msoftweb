@@ -135,7 +135,6 @@
         function make_table(){
 
             let widths = ['*','*','*','*','*','*','*','*','*'];
-            widths.push('*');
 
             var table = {
                 widths: widths,
@@ -158,10 +157,10 @@
                         { text: ' '},
                         { text: ' '},
                     ];
-                    retval.push(arr_cg,'');
+                    retval.push(arr_cg);
 
                     chgtype.forEach(function(e_ct,i_ct){
-                        if(e_ct.chggroup == e_cg.grpcode){
+                        if(e_ct.chggroup == e_cg.chggroup){
                             var arr_ct = [
                                 { text: e_ct.chgtype, bold:true},
                                 { text: ' '},
@@ -173,13 +172,13 @@
                                 { text: ' '},
                                 { text: ' '},
                             ];
-                            retval.push(arr_ct,'');
+                            retval.push(arr_ct);
 
                             array_report.forEach(function(e,i){
                                 if(e.chgtype == e_ct.chgtype){
                                     var arr =[
                                         { text: e.description},
-                                        { text: e.uomcode},
+                                        { text: e.uom_cm},
                                         { text: e.packqty },
                                         { text: e.chgcode },
                                         { text: myparseFloat(e.amt1), alignment: 'right' },
@@ -188,7 +187,7 @@
                                         { text: myparseFloat(e.costprice), alignment: 'right' },
                                         { text: ' '},
                                     ];
-                                    retval.push(arr,e);
+                                    retval.push(arr);
                                 }
                             });
                         }
@@ -197,6 +196,7 @@
             });
 
             table.body = retval;
+            console.log(table);
 
             return table;
         }
