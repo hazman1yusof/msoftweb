@@ -162,6 +162,8 @@ Route::post('/chargemaster/form','setup\ChargeMasterController@form');
 Route::get('/chargemaster/form','setup\ChargeMasterController@form');
 Route::get('/chargemaster/chgpricelatest','setup\ChargeMasterController@chgpricelatest');
 Route::post('/chargemasterDetail/form','setup\ChargeMasterDetailController@form');
+Route::get('/chargemaster/showExcel','setup\ChargeMasterController@showExcel');
+Route::get('/chargemaster/showpdf','setup\ChargeMasterController@showpdf');
 
 //// Charge class setup page ///
 Route::get('/chargeclass','setup\ChargeClassController@show');

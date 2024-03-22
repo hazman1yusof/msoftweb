@@ -51,7 +51,100 @@ class ChargeMasterController extends defaultController
         }
     }
 
+    public function showExcel(Request $request){
+        return Excel::download(new ChargePriceListExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
+    }
 
+    public function showpdf(Request $request){
+
+        $chggroup_from = $request->chggroup_from;
+        if(empty($request->chggroup_from)){
+            $chggroup_from = '%';
+        } 
+        $chggroup_to = $request->chggroup_to;
+
+        $chgcode_from = $request->chgcode_from;
+        if(empty($request->chgcode_from)){
+            $chgcode_from = '%';
+        }
+        $chgcode_to = $request->chgcode_to;
+
+        // $chggroup = DB::table('hisdb.chggroup as cg')
+        //         ->select('cg.grpcode', 'cg.description')
+        //         ->where('cg.compcode','=',session('compcode'))
+        //         ->where('cg.recstatus', '=', 'ACTIVE')
+        //         ->whereBetween('cg.grpcode', [$chggroup_from, $chggroup_to.'%'])
+        //         ->distinct('cg.grpcode');
+
+        // $chggroup = $chggroup->get(['cg.grpcode']);
+        // //dd($chggroup);
+
+        // $chgtype = DB::table('hisdb.chgtype as ct')
+        //         ->select('ct.chgtype', 'ct.description', 'ct.chggroup')
+        //         ->where('ct.compcode','=',session('compcode'))
+        //         ->where('ct.recstatus', '=', 'ACTIVE')
+        //         ->whereBetween('ct.chggroup', [$chggroup_from, $chggroup_to.'%'])
+        //         ->distinct('ct.chgtype');
+
+        // $chgtype = $chgtype->get(['ct.chgtype', 'ct.description', 'ct.chggroup']);
+        // // dd($chgtype);
+
+        $chgmast = DB::table('hisdb.chgmast as cm')
+                ->select('cm.idno', 'cm.compcode', 'cm.unit', 'cm.chgcode', 'cm.description', 'cm.uom as uom_cm', 'cm.packqty', 'cm.recstatus', 'cm.chgtype', 'cm.chggroup', 'cm.chgclass', 'cp.idno','cp.uom as uom_cp','cp.amt1', 'cp.effdate', 'cp.amt2', 'cp.amt3', 'cp.costprice', 'ct.description as ct_desc', 'cg.grpcode', 'cg.description as cg_desc', 'p.uomcode as uom_p')
+                ->join('hisdb.chgprice as cp', function($join) {
+                    $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
+                                ->on('cp.uom', '=', 'cm.uom')
+                                ->where('cp.compcode', '=', session('compcode'))
+                                ->where('cp.recstatus', '=', 'ACTIVE');
+                })
+                ->join('hisdb.chgtype as ct', function($join) {
+                    $join = $join->on('ct.chgtype', '=', 'cm.chgtype')
+                                ->where('ct.compcode', '=', session('compcode'))
+                                ->where('ct.recstatus', '=', 'ACTIVE');
+                })
+                ->join('hisdb.chggroup as cg', function($join) {
+                    $join = $join->on('cg.grpcode', '=', 'cm.chggroup')
+                                ->where('cg.compcode', '=', session('compcode'))
+                                ->where('cg.recstatus', '=', 'ACTIVE');
+                })
+                ->join('material.product AS p', function($join) {
+                    $join = $join->on('p.uomcode', '=', 'cm.uom')
+                                ->on('p.itemcode', '=', 'cm.chgcode')
+                                ->where('p.compcode', '=', session('compcode'));
+                })
+                ->where('cm.compcode','=',session('compcode'))
+                ->where('cm.recstatus', '=', 'ACTIVE')
+                ->whereBetween('cm.chggroup', [$chggroup_from, $chggroup_to.'%'])
+                ->whereBetween('cm.chgcode', [$chgcode_from, $chgcode_to.'%'])
+                ->orderBy('cm.chgcode','ASC')
+                ->latest('cp.effdate')
+                ->get();
+            //dd($chgmast);
+        
+        $array_report = [];
+
+        foreach ($chgmast as $key => $value){
+            array_push($array_report, $value);
+        }
+
+        $chggroup = collect($array_report)->unique('chggroup');
+        $chgtype = collect($array_report)->unique('chgtype');
+       
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->chggroup_from = $request->chggroup_from;
+        $header->chggroup_to = $request->chggroup_to;
+        $header->chgcode_from = $request->chgcode_from;
+        $header->chgcode_to = $request->chgcode_to;
+        $header->compname = $company->name;
+
+        return view('setup.chargemaster.chargemaster_pdfmake',compact('header', 'chggroup', 'chgtype', 'chgmast', 'array_report'));
+        
+    }
 
     public function maintable(Request $request){
 
