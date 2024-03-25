@@ -154,6 +154,7 @@ $(document).ready(function () {
 		},
 		close: function( event, ui ){
 			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata_priceList');
 		},
 		buttons:
 		[
