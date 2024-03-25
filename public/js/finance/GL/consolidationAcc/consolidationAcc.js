@@ -335,8 +335,8 @@ $(document).ready(function () {
 	addParamField('#jqGrid',false,saveParam,['idno','adduser','upduser','compcode','']);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	$("#jqGridPager_center").hide();
-	$("#jqGridPager_right").hide();
+	$("#jqGridPager_center").show();
+	$("#jqGridPager_right").show();
 
 	/////////////////////////////parameter for jqgrid2 url///////////////////////////////////////////////
 	var urlParam2={
