@@ -54,7 +54,7 @@ class ChargeMasterController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new ChargePriceListExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
+        return Excel::download(new ChargeMasterExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
     }
 
     public function showpdf(Request $request){

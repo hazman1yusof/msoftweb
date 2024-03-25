@@ -53,8 +53,8 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
     public function columnWidths(): array
     {
         return [
-            'A' => 15,
-            'B' => 40,
+            'A' => 50,
+            'B' => 10,
             'C' => 15,
             'D' => 15,
             'E' => 15,
@@ -131,7 +131,7 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
         $chggroup = collect($array_report)->unique('chggroup');
         $chgtype = collect($array_report)->unique('chgtype');
 
-        return view('setup.chargemaster.chargemaster_excel',compact('header', 'chggroup', 'chgtype', 'array_report'));
+        return view('setup.chargemaster.chargemaster_excel',compact('chggroup', 'chgtype', 'array_report'));
     }
     
     public function registerEvents(): array
@@ -140,9 +140,9 @@ class ChargeMasterExport implements FromView, WithEvents, WithColumnWidths
             AfterSheet::class => function(AfterSheet $event) {        
                 $event->sheet->getPageSetup()->setPaperSize(9);//A4
                 
-                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nAP CHARGE PRICE LIST"."\n"
-                .sprintf('FROM CHARGE GROUP %s',Carbon::parse($this->date)->format('d-m-Y'))."\n"
-                .sprintf('FROM %s TO %s',$this->chggroup_from, $this->chggroup_to)
+                $event->sheet->getHeaderFooter()->setOddHeader('&C'.$this->comp->name."\nCHARGE PRICE LIST"."\n"
+                .sprintf('FROM CHARGE GROUP %s TO %s',$this->chggroup_from, $this->chggroup_to)."\n"
+                .sprintf('FROM CHARGE CODE %s TO %s',$this->chgcode_from, $this->chgcode_to)
                 .'&L'
                 .'PRINTED BY : '.session('username')
                 ."\nPAGE : &P/&N"
