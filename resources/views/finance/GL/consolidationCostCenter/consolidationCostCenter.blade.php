@@ -50,7 +50,7 @@
 								<div class="col-md-2">
 									<input id="code" name="code" type="text" maxlength="30" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
 								</div>
-							<label class="col-md-1 control-label" for="description">Description</label>  
+							<label class="col-md-1 control-label" for="description">Desc</label>  
 								<div class="col-md-8">
 									<input id="description" name="description" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
 								</div>
