@@ -25,7 +25,7 @@
 			</fieldset> 
 		</form>
 
-    	<div class='col-md-6'>
+    	<div class='col-md-5'>
     		<div class="panel panel-default">
     		<div class="panel panel-body">
             <table id="jqGrid" class="table table-striped"></table>
@@ -33,7 +33,7 @@
 			</div></div>
         </div>
 
-        <div class='col-md-6'>
+        <div class='col-md-7'>
     		<div class="panel panel-default">
 				<div class="panel panel-body">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='col-md-6'>
+		<div class='col-md-7'>
     		<div class="panel panel-default">
 				<div class="panel panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>
