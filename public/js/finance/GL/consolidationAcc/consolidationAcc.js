@@ -124,7 +124,7 @@ $(document).ready(function () {
 		sortname: 'idno',
 		sortorder: 'desc',
 		width: 900,
-		height: 350,
+		height: 422,
 		rowNum: 30,
 		pager: "#jqGridPager",
 		onSelectRow:function(rowid, selected){
