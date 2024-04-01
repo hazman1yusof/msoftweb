@@ -65,6 +65,9 @@ $(document).ready(function(){
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 2, },
 				editrules: { required: true },editoptions:{readonly: "readonly"}
 			},
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{
 				label: 'Quantity', name: 'quantity', width: 80, align: 'right', classes: 'wrap txnum',
 				editable: true,
@@ -84,12 +87,6 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_dfee
 				},
 			},
-			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			// { label: 'Discount<br>Amount', name: 'discamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
-			// 	formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-			// 	editrules:{required: true},editoptions:{readonly: "readonly"},
-			// },
 			{ label: 'Tax<br>Amount', name: 'taxamount', width: 90, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
@@ -210,7 +207,7 @@ var myEditOptions_dfee = {
 		dialog_mmacode_dfee.on();
 		mycurrency_dfee.array.length = 0;
 		mycurrency_np_dfee.array.length = 0;
-		Array.prototype.push.apply(mycurrency_dfee.array, ["#jqGrid_dfee input[name='unitprce']","#jqGrid_dfee input[name='billtypeperct']","#jqGrid_dfee input[name='billtypeamt']","#jqGrid_dfee input[name='totamount']","#jqGrid_dfee input[name='amount']","#jqGrid_dfee input[name='taxamount']","#jqGrid_dfee input[name='discamount']"]);
+		Array.prototype.push.apply(mycurrency_dfee.array, ["#jqGrid_dfee input[name='unitprce']","#jqGrid_dfee input[name='billtypeperct']","#jqGrid_dfee input[name='billtypeamt']","#jqGrid_dfee input[name='totamount']","#jqGrid_dfee input[name='amount']","#jqGrid_dfee input[name='taxamount']"]);
 		Array.prototype.push.apply(mycurrency_np_dfee.array, ["#jqGrid_dfee input[name='qtyonhand']","#jqGrid_dfee input[name='quantity']"]);
 		
 		mycurrency_dfee.formatOnBlur();//make field to currency on leave cursor
@@ -272,7 +269,7 @@ var myEditOptions_dfee = {
 			    uom: $("#jqGrid_dfee input[name='uom']").val(),
 				dfee : 'dfee',
 				// taxamount: $("#jqGrid_dfee input[name='taxamount']").val(),
-				// discamount: $("#jqGrid_dfee input[name='discamount']").val(),
+				// disamt: $("#jqGrid_dfee input[name='disamt']").val(),
 				// totamount: $("#jqGrid_dfee input[name='totamount']").val(),
 			});
 		$("#jqGrid_dfee").jqGrid('setGridParam', { editurl: editurl });
@@ -342,7 +339,7 @@ var myEditOptions_edit_dfee = {
 
 		mycurrency_dfee.array.length = 0;
 		mycurrency_np_dfee.array.length = 0;
-		Array.prototype.push.apply(mycurrency_dfee.array, ["#jqGrid_dfee input[name='unitprce']","#jqGrid_dfee input[name='billtypeperct']","#jqGrid_dfee input[name='billtypeamt']","#jqGrid_dfee input[name='totamount']","#jqGrid_dfee input[name='amount']","#jqGrid_dfee input[name='taxamount']","#jqGrid_dfee input[name='discamount']"]);
+		Array.prototype.push.apply(mycurrency_dfee.array, ["#jqGrid_dfee input[name='unitprce']","#jqGrid_dfee input[name='billtypeperct']","#jqGrid_dfee input[name='billtypeamt']","#jqGrid_dfee input[name='totamount']","#jqGrid_dfee input[name='amount']","#jqGrid_dfee input[name='taxamount']"]);
 		Array.prototype.push.apply(mycurrency_np_dfee.array, ["#jqGrid_dfee input[name='qtyonhand']","#jqGrid_dfee input[name='quantity']"]);
 		
 		mycurrency_dfee.formatOnBlur();//make field to currency on leave cursor
@@ -404,7 +401,6 @@ var myEditOptions_edit_dfee = {
 			    uom: $("#jqGrid_dfee input[name='uom']").val(),
 				dfee : 'dfee',
 				// taxamount: $("#jqGrid_dfee input[name='taxamount']").val(),
-				// discamount: $("#jqGrid_dfee input[name='discamount']").val(),
 				// totamount: $("#jqGrid_dfee input[name='totamount']").val(),
 			});
 		$("#jqGrid_dfee").jqGrid('setGridParam', { editurl: editurl });
@@ -474,17 +470,17 @@ function calculate_line_totgst_and_totamt_dfee(event) {
 		rate = 0;
 	}
 
+	var disamt = calc_disamt_main($('#ordcomtt_dfee').val(),$("#jqGrid_dfee #"+id_optid+"_chgcode").val(),unitprce,quantity);
 	var amount = (unitprce*quantity);
-	var discamount = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
 
-	let taxamount = amount * rate / 100;
+	let taxamount = (amount + disamt) * rate / 100;
 
-	var totamount = amount - discamount + taxamount;
+	var totamount = amount + disamt + taxamount;
 
-	$("#"+id_optid+"_taxamount").val(taxamount);
-	// $("#"+id_optid+"_discamount").val(discamount);
-	$("#"+id_optid+"_totamount").val(totamount);
+	$("#"+id_optid+"_disamt").val(numeral(disamt).format('0,0.00'));
 	$("#"+id_optid+"_amount").val(amount);
+	$("#"+id_optid+"_taxamount").val(taxamount);
+	$("#"+id_optid+"_totamount").val(totamount);
 	
 	var id="#jqGrid_dfee #"+id_optid+"_quantity";
 	var name = "quantityrequest";
@@ -813,8 +809,6 @@ function itemcodeCustomEdit_dfee(val, opt) {
 	var id_optid = opt.id.substring(0,opt.id.search("_"));
 	var myreturn = '<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_dfee" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>';
 
-	myreturn += `<div><input type='hidden' name='billtypeperct' id='`+id_optid+`_billtypeperct'>`;
-	myreturn += `<input type='hidden' name='billtypeamt' id='`+id_optid+`_billtypeamt'>`;
 	myreturn += `<input type='hidden' name='uom' id='`+id_optid+`_uom'>`;
 	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_uom_rate'></div>`;
 

@@ -467,3 +467,31 @@ form#.form_medc p{
 span.glyphicon.glyphicon-trash{
 	color: indianred;
 }
+div#ordcom_div_cyclebill{
+	position: absolute;
+    right: 15px;
+    top: 77px;
+/*    border: 1px solid cadetblue;*/
+/*    padding: 2px 8px;*/
+/*    border-radius: 5px;*/
+}
+div#ordcom_div_cyclebill > span{
+	color: cadetblue;
+    font-weight: bold;
+}
+div#ordcom_div_cyclebill > a{
+	display: inline-block;
+    padding: 5px 10px;
+    margin: 5px;
+    background: azure;
+    cursor: pointer;
+    border-radius: 10px;
+    border: solid 1px;
+    color: cadetblue;
+}
+
+div#ordcom_div_cyclebill > a:hover{
+	background: cadetblue;
+    color: white;
+    text-decoration: unset;
+}

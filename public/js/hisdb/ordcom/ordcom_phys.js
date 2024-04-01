@@ -74,23 +74,23 @@ $(document).ready(function(){
 				},
 			},
 			{label: 'Cost<br>Price', name: 'cost_price', hidden: true },
+			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
 			{
 				label: 'Quantity', name: 'quantity', width: 60, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
-			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
 			{ label: 'Total<br>Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				formatter:abscurrency,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			{ label: 'Discount<br>Amount', name: 'discamount', hidden: true },
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:totamountFormatter_phys,
@@ -149,7 +149,7 @@ $(document).ready(function(){
 			// 	{span:'#jqgrid_detail_phys_dept',value:selrowdata.deptcode},
 			// 	{span:'#jqgrid_detail_phys_cost_price',value:selrowdata.cost_price},
 			// 	{span:'#jqgrid_detail_phys_unitprice',value:selrowdata.unitprce},
-			// 	{span:'#jqgrid_detail_phys_discamt',value:selrowdata.discamount},
+			// 	{span:'#jqgrid_detail_phys_discamt',value:selrowdata.discamt},
 			// 	{span:'#jqgrid_detail_phys_taxamt',value:selrowdata.taxamount},
 			// ]);
 
@@ -307,7 +307,6 @@ var myEditOptions_phys = {
 				// addinstruction: $("#instruction_phys_code").val(),
 				// drugindicator: $("#drugindicator_phys_code").val(),
 				taxamount: $("#jqGrid_phys input[name='taxamount']").val(),
-				discamount: $("#jqGrid_phys input[name='discamount']").val(),
 				unitprce: $("#jqGrid_phys input[name='unitprce']").val(),
 				// totamount: $("#jqGrid_phys input[name='totamount']").val(),
 			});
@@ -491,7 +490,6 @@ var myEditOptions_phys_edit = {
 				// addinstruction: $("#instruction_phys_code").val(),
 				// drugindicator: $("#drugindicator_phys_code").val(),
 				taxamount: $("#jqGrid_phys input[name='taxamount']").val(),
-				discamount: $("#jqGrid_phys input[name='discamount']").val(),
 				unitprce: $("#jqGrid_phys input[name='unitprce']").val(),
 				// totamount: $("#jqGrid_phys input[name='totamount']").val(),
 			});
@@ -585,20 +583,20 @@ function calculate_line_totgst_and_totamt_phys(event) {
 		rate = 0;
 	}
 
+	var discamt = calc_discamt_main($('#ordcomtt_rad').val(),$("#jqGrid_rad #"+id_optid+"_chgcode").val(),unitprce,quantity);
 	var amount = (unitprce*quantity);
-	var discamount = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
 
-	let taxamount = amount * rate / 100;
+	let taxamount = (amount + discamt) * rate / 100;
 
-	var totamount = amount - discamount + taxamount;
+	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_taxamount").val(taxamount);
-	$("#"+id_optid+"_discamt").val(discamount);
-	$("#"+id_optid+"_totamount").val(totamount);
+	$("#"+id_optid+"_discamt").val(numeral(discamt).format('0,0.00'));
 	$("#"+id_optid+"_amount").val(amount);
+	$("#"+id_optid+"_taxamount").val(taxamount);
+	$("#"+id_optid+"_totamount").val(totamount);
 
 	// write_detail_phys('#jqgrid_detail_phys_taxamt',taxamount);
-	// write_detail_phys('#jqgrid_detail_phys_discamt',discamount);
+	// write_detail_phys('#jqgrid_detail_phys_discamt',discamt);
 	
 	var id="#jqGrid_phys #"+id_optid+"_quantity";
 	var name = "quantityrequest";
@@ -774,7 +772,7 @@ var dialog_chgcode_phys = new ordialog(
 			$("#jqGrid_phys #"+id_optid+"_unitprce").val(data['price']);
 			$("#jqGrid_phys #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_phys #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_phys #"+id_optid+"_quantity").val('');
+			$("#jqGrid_phys #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_phys.check(errorField);
 
@@ -1114,12 +1112,7 @@ function itemcodeCustomEdit_phys(val, opt) {
 	var id_optid = opt.id.substring(0,opt.id.search("_"));
 	var myreturn = '<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phys" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>';
 
-	myreturn += `<div><input type='hidden' name='billtypeperct' id='`+id_optid+`_billtypeperct'>`;
-	myreturn += `<input type='hidden' name='billtypeamt' id='`+id_optid+`_billtypeamt'>`;
-	myreturn += `<input type='hidden' name='discamount' id='`+id_optid+`_discamt'>`;
-	myreturn += `<input type='hidden' name='taxamount' id='`+id_optid+`_taxamount'>`;
-	// myreturn += `<input type='hidden' name='unitprce' id='`+id_optid+`_unitprce'>`;
-	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_tax_rate'>`;
+	myreturn += `<div><input type='hidden' name='uom_rate' id='`+id_optid+`_tax_rate'>`;
 	myreturn += `<input type='hidden' name='qtyonhand' id='`+id_optid+`_qtyonhand'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
@@ -1127,7 +1120,7 @@ function itemcodeCustomEdit_phys(val, opt) {
 	return $(myreturn);
 }
 function totamountFormatter_phys(val,opt,rowObject ){
-	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
+	let totamount = ret_parsefloat(rowObject.amount) + ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }
 function uomcodeCustomEdit_phys(val,opt){  	

@@ -564,7 +564,7 @@ var dialog_chgcode_rad = new ordialog(
 			$("#jqGrid_rad #"+id_optid+"_convfactor_uom_recv").val(data['convfactor']);
 			$("#jqGrid_rad #"+id_optid+"_convfactor_uom").val(data['convfactor']);
 			$("#jqGrid_rad #"+id_optid+"_qtyonhand").val(data['qtyonhand']);
-			$("#jqGrid_rad #"+id_optid+"_quantity").val('');
+			$("#jqGrid_rad #"+id_optid+"_quantity").val(1).trigger("keyup");
 
 		},
 		gridComplete: function(obj){
