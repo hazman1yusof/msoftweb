@@ -9,6 +9,8 @@ use DB;
 use Auth;
 use Carbon\Carbon;
 use DateTime;
+use App\Exports\ChargeMasterExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ChargeMasterController extends defaultController
 {
@@ -52,7 +54,7 @@ class ChargeMasterController extends defaultController
     }
 
     public function showExcel(Request $request){
-        return Excel::download(new ChargePriceListExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
+        return Excel::download(new ChargeMasterExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
     }
 
     public function showpdf(Request $request){
@@ -128,7 +130,7 @@ class ChargeMasterController extends defaultController
 
         $chggroup = collect($array_report)->unique('chggroup');
         $chgtype = collect($array_report)->unique('chgtype');
-
+        
         //dd($chggroup);
 
         $company = DB::table('sysdb.company')

@@ -1,35 +1,45 @@
-@extends('layouts.excellayout')
+<table>
+    <tr>
+        <td style="font-weight:bold; text-align: left">Description</td>
+        <td style="font-weight:bold; text-align: left">UOM</td>
+        <td style="font-weight:bold; text-align: left">Packing</td>
+        <td style="font-weight:bold; text-align: left">Code</td>
+        <td style="font-weight:bold; text-align: left">I/P Price</td>
+        <td style="font-weight:bold; text-align: left">O/P Price</td>
+        <td style="font-weight:bold; text-align: left">Other Price</td>
+        <td style="font-weight:bold; text-align: left">A/Cost Price</td>
+        <td style="font-weight:bold; text-align: left">Current Price</td>
+    </tr>      
 
-@section('title','Charge Master')
+    @foreach ($chggroup as $obj_cg)
+    <tr>
+        <td style="font-weight:bold; text-align: left">GROUP: {{$obj_cg->chggroup}} {{$obj_cg->cg_desc}}</td>
+    </tr>
+    
+        @foreach ($chgtype as $obj_ct)
+            @if($obj_ct->chggroup == $obj_cg->chggroup)
+                <tr>
+                    <td style="font-weight:bold; text-align: left">TYPE: {{$obj_ct->chgtype}} {{$obj_ct->ct_desc}}</td>
+                </tr>
 
-@section('style')
-
-$sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
-
-$sheet -> getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
-
-$sheet->getPageMargins()->setTop(1);
-
-$sheet ->getPageMargins()->setRight(0.75);
-
-$sheet ->getPageMargins()->setLeft(0.75);
-
-$sheet ->getPageMargins()->setBottom(1);
-
-@endsection
-
-
-
-
-
-@section('body')
-
-header('Content-Type: application/vnd.ms-excel');
-
-header('Content-Disposition: attachment;filename="Charge Master.xlsx"');
-
-header('Cache-Control: max-age=0');
-
-$writer->save('php://output');
-
-@endsection
+                @foreach ($array_report as $obj_ar)
+                    @if($obj_ar->chgtype == $obj_ct->chgtype)
+                        <tr>
+                            <td>{{$obj_ar->description}}</td>
+                            <td>{{$obj_ar->uom_cm}}</td>
+                            <td>{{$obj_ar->packqty}}</td>
+                            <td style="text-align: left">{{$obj_ar->chgcode}}</td>
+                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt1, 2, '.', ',')}}</td>
+                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt2, 2, '.', ',')}}</td>
+                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->amt3, 2, '.', ',')}}</td>
+                            <td data-format="0.00" style="text-align: right">{{number_format($obj_ar->costprice, 2, '.', ',')}}</td>
+                            <td></td>
+                        </tr>
+                    @endif
+                @endforeach
+            @endif
+            <tr></tr>
+        @endforeach
+    @endforeach
+    <tr></tr>
+</table>
