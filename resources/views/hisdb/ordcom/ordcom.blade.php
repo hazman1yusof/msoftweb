@@ -47,6 +47,11 @@
 			<input type="hidden" id="ordcomtt_oth" value="{{$ordcomtt_oth ?? ''}}">
 
 			<ul class="nav nav-tabs">
+				<div id="ordcom_div_cyclebill">
+					<span>Cycle Bill</span>
+					<a class="cyclebill" id="cyclebill_dtl" href="" target="_blank">Detail</a>
+					<a class="cyclebill" id="cyclebill_summ" href="" target="_blank">Summary</a>
+				</div>
 				<li class="active"><a data-toggle="tab" id="ordcom_navtab_phar" href="#tab-phar" aria-expanded="true" data-ord_chgtype='PHAR'>Pharmacy</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_disp" href="#tab-disp" data-ord_chgtype='DISP'>Disposable</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_lab" href="#tab-lab" data-ord_chgtype='LAB'>Laboratory</a></li>

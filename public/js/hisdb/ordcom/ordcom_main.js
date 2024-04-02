@@ -17,10 +17,14 @@ var conf_ordco = {
 
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
+		var lastrowdata = getrow_bootgrid();
+		get_billtype();
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
-		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
@@ -104,6 +108,10 @@ function populate_ordcom_currpt(obj){
 	urlParam_rad.episno = obj.Episno;
 	urlParam_phys.mrn = obj.MRN;
 	urlParam_phys.episno = obj.Episno;
+	urlParam_rehab.mrn = obj.MRN;
+	urlParam_rehab.episno = obj.Episno;
+	urlParam_diet.mrn = obj.MRN;
+	urlParam_diet.episno = obj.Episno;
 	urlParam_dfee.mrn = obj.MRN;
 	urlParam_dfee.episno = obj.Episno;
 	urlParam_oth.mrn = obj.MRN;
@@ -202,4 +210,48 @@ function fail_msg_func(fail_msg_div=null){
 			}
 		});
 	}
+}
+
+var get_billtype_main=null;
+function get_billtype(){
+	var lastrowdata = getrow_bootgrid();
+
+	var param={
+		action:'get_value_default',
+		url:"./SalesOrderDetail/table",
+		action: 'get_billtype',
+		mrn:lastrowdata.MRN,
+		episno:lastrowdata.Episno,
+		billtype:lastrowdata.billtype,
+	}
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			get_billtype_main = data.rows;
+		}
+	});
+}
+
+function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
+	var percent=(get_billtype_main.length>0)?get_billtype_main[0].bm_percent:100;
+	var amount=(get_billtype_main.length>0)?get_billtype_main[0].bm_amount:0;
+	get_billtype_main.forEach(function(e,i){
+		if(e.bs_chggroup == chggroup){
+			percent = e.bs_percent;
+			amount = e.bs_amount;
+			if(e.bi_chgcode == chgcode){
+				percent = e.bi_percent;
+				amount = e.bi_amount;
+			}
+		}
+	});
+
+	var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
+
+	return discamount;
+}
+
+function abscurrency(val,opt,rowObject ){
+	return Math.abs(val);
 }

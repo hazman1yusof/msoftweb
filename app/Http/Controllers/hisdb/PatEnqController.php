@@ -807,11 +807,24 @@ class PatEnqController extends defaultController
         try {
 
             if($request->oper == 'add'){
+                //check sama chgcode
+                $grpcode = DB::table('hisdb.gletitem')
+                                ->where('compcode',session('compcode'))
+                                ->where('mrn',ltrim($request->mrn,'0'))
+                                ->where('episno',ltrim($request->episno,'0'))
+                                ->where('payercode',$request->payercode)
+                                ->where('grpcode',$request->grpcode)
+                                ->where('chgcode',$request->chgcode);
+
+                if($grpcode->exists()){
+                    throw new \Exception('Duplicate Charge Code!', 500);
+                }
+
                 $idno = DB::table('hisdb.gletitem')
                     ->insertGetId([  
                         'payercode' => $request->payercode,
-                        'mrn' => $request->mrn,
-                        'episno' => $request->episno,
+                        'mrn' => ltrim($request->mrn,'0'),
+                        'episno' => ltrim($request->episno,'0'),
                         'chgcode' => $request->chgcode,
                         'grpcode' => $request->grpcode,
                         'totitemlimit' => $request->totitemlimit,

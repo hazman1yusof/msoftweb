@@ -166,6 +166,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Charge code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM',name:'uom',width:100,classes:'pointer'},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -416,7 +417,7 @@ $(document).ready(function () {
 	$("#jqGrid_gletitem").jqGrid({
 		datatype: "local",
 		colModel: [
-			{label:'idno', name:'idno', key:true,hidden:true},
+			{label:'idno', name:'idno', key:true,hidden:false},
 			{ label:'Charge code', name:'chgcode', width: 80, classes: 'wrap', editable:true,
 					editrules:{required: true,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
