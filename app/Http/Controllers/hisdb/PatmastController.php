@@ -72,6 +72,10 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','PHYSIOTERAPHY')->first();
+            $ordcomtt_rehab = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','REHABILITATION')->first();
             $ordcomtt_diet = DB::table('sysdb.sysparam')
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
@@ -84,23 +88,31 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','OTH')->first();
+            // $ordcomtt_pkg = DB::table('sysdb.sysparam')
+            //             ->where('compcode',session('compcode'))
+            //             ->where('source','=','OE')
+            //             ->where('trantype','=','PKG')->first();
 
             $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
             $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
             $data_send['ordcomtt_rad'] = $ordcomtt_rad->pvalue1;
             $data_send['ordcomtt_lab'] = $ordcomtt_lab->pvalue1;
             $data_send['ordcomtt_phys'] = $ordcomtt_phys->pvalue1;
-            $data_send['ordcomtt_rehab'] = $ordcomtt_phys->pvalue1;
+            $data_send['ordcomtt_rehab'] = $ordcomtt_rehab->pvalue1;
             $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
             $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
             $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
+            $data_send['ordcomtt_pkg'] = '';
 
             $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
-            $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
             $data_send['dispdept_dflt'] = $ordcomtt_disp->pvalue2;
-            $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
             $data_send['raddept_dflt'] = $ordcomtt_rad->pvalue2;
+            $data_send['labdept_dflt'] = $ordcomtt_lab->pvalue2;
             $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
+            $data_send['rehabdept_dflt'] = $ordcomtt_phys->pvalue2;
+            $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
+            $data_send['pkgdept_dflt'] = $ordcomtt_diet->pvalue2;
+            $data_send['ordcomtt_pkg'] = '';
         }
 
         return view('hisdb.pat_mgmt.landing',$data_send);

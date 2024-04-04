@@ -17,6 +17,7 @@ $(document).ready(function(){
 		editurl: "ordcom/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
 			{ label: 'Date', name: 'trxdate', width: 100, classes: 'wrap',editable:true,
 				// formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				edittype: 'custom', editoptions:
@@ -120,7 +121,7 @@ $(document).ready(function(){
 		sortorder: "desc",
 		pager: "#jqGrid_oth_pager",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_oth",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-160);
+			calc_jq_height_onchange("jqGrid_oth",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_oth.clear_fail();
 			if($("#jqGrid_oth").data('lastselrow')==undefined||$("#jqGrid_oth").data('lastselrow')==null){
 				$("#jqGrid_oth").setSelection($("#jqGrid_oth").getDataIDs()[0]);
@@ -263,7 +264,7 @@ var myEditOptions_oth = {
 		$("#jqGrid_oth input[name='quantity']").on('keyup',{currency: [mycurrency_oth,mycurrency_np_oth]},calculate_line_totgst_and_totamt_oth);
 		$("#jqGrid_oth input[name='quantity']").on('blur',{currency: [mycurrency_oth,mycurrency_np_oth]},calculate_line_totgst_and_totamt_oth);
 
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 
 		$("#jqGrid_oth input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -274,7 +275,9 @@ var myEditOptions_oth = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_oth',urlParam_oth,'add');
     	$("#jqGrid_oth_pagerRefresh,#jqGrid_oth_pagerDelete").show();
 		errorField.length=0;
@@ -319,7 +322,7 @@ var myEditOptions_oth = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_oth')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_oth',urlParam_oth,'add');
     },
     errorTextFormat: function (data) {
@@ -447,7 +450,7 @@ var myEditOptions_oth_edit = {
 		$("#jqGrid_oth input[name='quantity']").on('keyup',{currency: [mycurrency_oth,mycurrency_np_oth]},calculate_line_totgst_and_totamt_oth);
 		$("#jqGrid_oth input[name='quantity']").on('blur',{currency: [mycurrency_oth,mycurrency_np_oth]},calculate_line_totgst_and_totamt_oth);
 
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		
 		$("#jqGrid_oth input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -458,11 +461,9 @@ var myEditOptions_oth_edit = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		// dialog_dosage_oth.off();
-		// dialog_frequency_oth.off();
-		// dialog_instruction_oth.off();
-		// dialog_drugindicator_oth.off();
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_oth',urlParam_oth,'add');
     	$("#jqGrid_oth_pagerRefresh,#jqGrid_oth_pagerDelete").show();
 		errorField.length=0;
@@ -515,7 +516,7 @@ var myEditOptions_oth_edit = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_oth')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_oth',urlParam_oth,'add');
     },
     errorTextFormat: function (data) {
@@ -1195,6 +1196,7 @@ function showdetail_oth(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
+	calc_jq_height_onchange("jqGrid_oth",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 	return cellvalue;
 }
 

@@ -544,23 +544,35 @@ class ChargeMasterController extends defaultController
     }
 
     public function add_pkgmast(Request $request){
-        if(!empty($request->fixPost)){
-            $field = $this->fixPost2($request->field);
-            $idno = substr(strstr($request->table_id,'_'),1);
-        }else{
-            $field = $request->field;
-            $idno = $request->table_id;
-        }
         try {
-            foreach ($request->data_detail as $key => $value){
-            }
             DB::beginTransaction();
 
-            $table = DB::table("hisdb.pkgmast");
+
+            // $chgmast = DB::table("hisdb.chgmast")
+            //                 ->where('cm.idno', '=', $request->idno);
+
+            $chgprice = DB::table('hisdb.chgprice as cp')
+                            ->select('cp.autopull','cp.addchg','cm.chgcode','cm.description','cp.effdate','cp.amt1')
+                            ->join('hisdb.chgmast as cm', function($join) use ($request){
+                                    $join = $join->where('cm.compcode', '=', session('compcode'));
+                                    $join = $join->where('cm.idno', '=', $request->idno);
+                                    $join = $join->on('cm.chgcode', '=', 'cp.chgcode');
+                                    $join = $join->on('cm.uom', '=', 'cp.uom');
+                                })
+                            ->where('cp.compcode', '=', session('compcode'))
+                            ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                            ->orderBy('cp.effdate','desc');
+
+            if(!$chgprice->exists()){
+                throw new \Exception('chgmast not exist', 500);
+            }
+            $chgprice = $chgprice->first();
             
             $array_insert = [
-                'pkgcode' => strtoupper($request->pkgcode),
-                'description' => strtoupper($request->description),
+                'pkgcode' => strtoupper($chgprice->chgcode),
+                'description' => strtoupper($chgprice->description),
+                'effectDate' => $chgprice->effdate,
+                'price' => $chgprice->amt1,
                 'autopull' => $request->autopull,
                 'addchg' => $request->addchg,
             	'compcode' => session('compcode'),
@@ -569,7 +581,8 @@ class ChargeMasterController extends defaultController
                 'recstatus' => 'ACTIVE',
             ];
 
-            $idno = $table->insertGetId($array_insert);
+            $idno = DB::table('hisdb.pkgmast')
+                        ->insertGetId($array_insert);
 
             $responce = new stdClass();
             $responce->idno = $idno;

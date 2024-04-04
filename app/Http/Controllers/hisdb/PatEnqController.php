@@ -639,7 +639,7 @@ class PatEnqController extends defaultController
 
     public function pat_enq_payer(Request $request){
         $table = DB::table('hisdb.epispayer as ep')
-                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','pm.Name as name','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc')
+                    ->select('ep.idno','ep.compcode','ep.mrn','ep.episno','pm.Name as name','ep.payercode','ep.lineno','ep.epistycode','ep.pay_type','ep.pyrmode','ep.pyrcharge','ep.pyrcrdtlmt','ep.pyrlmtamt','ep.totbal','ep.allgroup','ep.alldept','ep.adddate','ep.adduser','ep.lastupdate','ep.lastuser','ep.billtype','ep.refno','ep.chgrate','ep.computerid','dm.name as payercode_desc','btm.description as billtype_desc','g.ourrefno')
                     ->leftJoin('debtor.debtormast as dm', function($join) use ($request){
                                 $join = $join->on('dm.debtorcode', '=', 'ep.payercode')
                                                 ->where('dm.compcode','=',session('compcode'));
@@ -652,6 +652,11 @@ class PatEnqController extends defaultController
                     ->leftJoin('hisdb.pat_mast as pm', function($join) use ($request){
                                 $join = $join->on('pm.MRN', '=', 'ep.mrn')
                                                 ->where('pm.compcode','=',session('compcode'));
+                            })
+                    ->leftJoin('hisdb.guarantee AS g', function($join) use ($request){
+                                $join = $join->on('g.mrn', '=', 'ep.mrn')
+                                                ->on('g.episno','=','ep.episno')
+                                                ->where('g.compcode','=',session('compcode'));
                             })
                     ->where('ep.compcode',session('compcode'))
                     ->where('ep.mrn',$request->mrn)

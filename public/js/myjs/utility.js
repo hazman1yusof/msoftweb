@@ -2293,7 +2293,7 @@ function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
 	}else if(scrollHeight>maxHeight){
 		scrollHeight = maxHeight;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+25);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
 	if(resizeGrid){
 		$('#'+jqgrid).jqGrid('resizeGrid');
 	}

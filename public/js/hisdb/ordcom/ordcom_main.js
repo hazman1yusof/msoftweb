@@ -19,6 +19,7 @@ $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
 		var lastrowdata = getrow_bootgrid();
 		get_billtype();
+		get_ordcom_totamount();
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
@@ -231,6 +232,30 @@ function get_billtype(){
 			get_billtype_main = data.rows;
 		}
 	});
+}
+
+function get_ordcom_totamount(){
+	var lastrowdata = getrow_bootgrid();
+
+	var param={
+		url:"./ordcom/table",
+		action: 'get_ordcom_totamount',
+		mrn:lastrowdata.MRN,
+		episno:lastrowdata.Episno
+	}
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
+		}else{
+			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text('');
+		}
+	});
+}
+
+function set_ordcom_totamount(totamount){
+	$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(totamount).format('0,0.00'));
 }
 
 function calc_discamt_main(chggroup,chgcode,unitprce,quantity){

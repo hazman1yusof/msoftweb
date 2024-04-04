@@ -31,6 +31,16 @@
         @endforeach
     ];
 
+    var chgclass=[
+        @foreach($chgclass as $key => $chgclass1)
+        {
+            @foreach($chgclass1 as $key2 => $val)
+                '{{$key2}}' : `{!!$val!!}`,
+            @endforeach
+        },
+        @endforeach
+    ];
+
     var invgroup=[
         @foreach($invgroup as $key => $invgroup1)
         {
@@ -42,6 +52,7 @@
     ];
 
     var username = '{{$username}}';
+    var footer = `{!!$footer!!}`;
 
     $(document).ready(function () {
         var docDefinition = {
@@ -139,10 +150,26 @@
                     table: {
                         headerRows: 1,
                         dontBreakRows: true,
-                        widths: [180,60,60,60,60],//panjang standard dia 515
+                        widths: [250,60,60,60,50],//panjang standard dia 515
                         body: make_body()
                     }
                 },
+                {
+                    table: {
+                        headerRows: 1,
+                        dontBreakRows: true,
+                        widths: ['*'],//panjang standard dia 515
+                        body: [
+                            [
+                                {text: footer,fontSize: 9,margin: [0, 20, 0, 20]}
+
+                            ]
+                        ]
+                    },layout: 'noBorders',
+                },
+                {
+                    text: 'THIS IS COMPUTER GENERATED DOCUMENT. NO SIGNATURE IS REQUIRED.',fontSize: 9
+                }
             ],
             styles: {
                 tableExample: {
@@ -157,12 +184,13 @@
                     margin: [0, 2, 0, 2]
                 },
                 body_row: {
-                    margin: [0, 3, 0, 3]
+                    margin: [10, 0, 0, 0],
+                    fontSize: 8,
                 },
                 body_row_2: {
-                    margin: [0, 10, 0, 10],
+                    margin: [0, 5, 0, 5],
                     bold:true
-                }
+                },
             },
             images: {
                 letterhead: {
@@ -190,44 +218,112 @@
         var retval = [
             [
                 {text:'Description',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
-                {text:'Amount (RM)',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
-                {text:'Discount (RM)',bold: true, style: 'body_ttl',alignment: 'left',border: [false, true, false, true]},
+                {text:'Amount (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
+                {text:'Discount (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Payable Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]},
                 {text:'Tax Amt (RM)',bold: true, style: 'body_ttl',alignment: 'right',border: [false, true, false, true]}
+            ],
+
+            [
+                {text:'HOSPITAL EXEMPT SUPPLIES',bold: true, colSpan:5, style: 'body_ttl',alignment: 'left',border: [false, false, false, false]},
+                {},
+                {},
+                {},
+                {},
             ]
         ];
 
-        invgroup.forEach(function(e_inv,i_inv){
-            let total_inv = 0;
-            let total_disc = 0;
-            let total_amt = 0;
-            let total_tax = 0;
-            chargetrx.forEach(function(e_trx,i_trx){
-                if(e_inv.pdescription == e_trx.pdescription){
-                    // let arr1 = [
-                    //     {text:e_trx.chgcode, style: 'body_row', border: [false, false, false, false]},
-                    //     {text:e_trx.description, style: 'body_row', border: [false, false, false, false]},
-                    //     {text:dateFormatter(e_trx.trxdate), style: 'body_row', border: [false, false, false, false]},
-                    //     {text:e_trx.quantity, style: 'body_row', border: [false, false, false, false]},
-                    //     {text:myparseFloat(e_trx.amount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-                    //     {text:myparseFloat(e_trx.taxamount),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-                    // ];
-                    // retval.push(arr1);
-                    total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.amount);
-                    total_disc = parseFloat_(total_disc) + parseFloat_(e_trx.discamt);
-                    total_tax = parseFloat_(total_tax) + parseFloat_(e_trx.taxamount);
+        let total_all = 0;
+        let total_round = 0;
+        let total_depo = 0;
+        let total_sum = 0;
+        chgclass.forEach(function(e_cc,i_c){
+            var total_sub = 0;
+
+            invgroup.forEach(function(e_inv,i_inv){
+                if(e_cc.chgclass == e_inv.chgclass){
+                    let total_inv = 0;
+                    let total_disc = 0;
+                    let total_tax = 0;
+                    let total_amt = 0;
+                    chargetrx.forEach(function(e_trx,i_trx){
+                        if(e_inv.pdescription == e_trx.pdescription){
+                            total_inv = parseFloat_(total_inv) + parseFloat_(e_trx.amount);
+                            total_disc = parseFloat_(total_disc) + parseFloat_(e_trx.discamt);
+                            total_tax = parseFloat_(total_tax) + parseFloat_(e_trx.taxamount);
+                        }
+                    });
+                    total_amt = parseFloat_(total_inv) + parseFloat_(total_disc);
+
+                    let arrtot =  [
+                        {text:e_inv.pdescription, style: 'body_row', border: [false, false, false, false]},
+                        {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                        {text:myparseFloat(total_disc),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
+                        {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                        {text:myparseFloat(total_tax),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                    ];
+
+                    if(e_inv.doctorcode != ''){
+                        arrtot =  [
+                            {text:e_inv.pdescription+'\n\u200B\t -'+e_inv.doctorname, style: 'body_row', border: [false, false, false, false]},
+                            {text:myparseFloat(total_inv),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                            {text:myparseFloat(total_disc),alignment: 'right', style: 'body_row',border: [false, false, false, false]},
+                            {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                            {text:myparseFloat(total_tax),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+                        ];
+                    }
+
+                    retval.push(arrtot);
+                    total_sub = parseFloat_(total_sub) + parseFloat_(total_amt);
                 }
             });
-            total_amt = parseFloat_(total_inv) + parseFloat_(total_disc);
-            let arrtot =  [
-                    {text:e_inv.pdescription, style: 'body_row', border: [false, false, false, false]},
-                    {text:myparseFloat(total_inv),style: 'body_row', border: [false, false, false, false]},
-                    {text:myparseFloat(total_disc), style: 'body_row',border: [false, false, false, false]},
-                    {text:myparseFloat(total_amt),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
-                    {text:myparseFloat(total_tax),alignment: 'right', style: 'body_row', border: [false, false, false, false]},
+
+            let arrsub =  [
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'Sub-Total', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:myparseFloat(total_sub),alignment: 'right', margin:[0,8,0,0], border: [false, false, false, false]},
+                    {text:'', margin:[0,8,0,0], border: [false, false, false, false]},
                 ];
-            retval.push(arrtot);
+            retval.push(arrsub);
+            total_sum = parseFloat_(total_sum) + parseFloat_(total_sub);
         });
+        
+        total_all = parseFloat_(total_sum)-parseFloat_(total_round)-parseFloat_(total_depo);
+
+        let arr_sum =  [
+                {text:'TOTAL BILL AMOUNT', margin:[0,10,0,0], colSpan:3, border: [false, false, false, false]},
+                {},
+                {},
+                {text:myparseFloat(total_sum),alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
+                {text:'',alignment: 'right', margin:[0,10,0,0], border: [false, false, false, false]},
+            ];
+        retval.push(arr_sum);
+        let arr_round =  [
+                {text:'ROUNDING ADJUSTMENT', colSpan:3, border: [false, false, false, false]},
+                {},
+                {},
+                {text:myparseFloat(total_round),alignment: 'right', border: [false, false, false, false]},
+                {text:'',alignment: 'right', border: [false, false, false, false]},
+            ];
+        retval.push(arr_round);
+        let arr_depo =  [
+                {text:'DEPOSIT/PAYMENT PAID', colSpan:3, border: [false, false, false, false]},
+                {},
+                {},
+                {text:myparseFloat(total_depo),alignment: 'right', border: [false, false, false, false]},
+                {text:'',alignment: 'right', border: [false, false, false, false]},
+            ];
+        retval.push(arr_depo);
+        let arr_all =  [
+                {text:'TOTAL AMOUNT TO BE PAID/(REFUND)', colSpan:3, border: [false, false, false, false]},
+                {},
+                {},
+                {text:myparseFloat(total_all),alignment: 'right', border: [false, false, false, false]},
+                {text:'',alignment: 'right', border: [false, false, false, false]},
+            ];
+        retval.push(arr_all);
+
 
         return retval;
     }

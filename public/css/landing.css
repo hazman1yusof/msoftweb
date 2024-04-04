@@ -310,7 +310,7 @@ fieldset.mycss {
 .paneldiv{
 	/* padding-top: 5px !important; */
 	overflow-y: auto;
-	height: calc(100vh - 70px);
+	height: calc(100vh - 80px);
 }
 .paneldiv2{
 	/* padding-top: 5px !important; */
@@ -469,29 +469,14 @@ span.glyphicon.glyphicon-trash{
 }
 div#ordcom_div_cyclebill{
 	position: absolute;
-    right: 15px;
+    right: 30px;
     top: 77px;
 /*    border: 1px solid cadetblue;*/
 /*    padding: 2px 8px;*/
 /*    border-radius: 5px;*/
 }
-div#ordcom_div_cyclebill > span{
-	color: cadetblue;
-    font-weight: bold;
-}
 div#ordcom_div_cyclebill > a{
 	display: inline-block;
-    padding: 5px 10px;
-    margin: 5px;
-    background: azure;
+    padding: 2px;
     cursor: pointer;
-    border-radius: 10px;
-    border: solid 1px;
-    color: cadetblue;
-}
-
-div#ordcom_div_cyclebill > a:hover{
-	background: cadetblue;
-    color: white;
-    text-decoration: unset;
 }

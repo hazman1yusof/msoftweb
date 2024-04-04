@@ -341,14 +341,15 @@ class ChargeMasterDetailController extends defaultController
         $grnd_tot1=$grnd_tot2=$grnd_tot3=0;
         foreach ($pkgdet_get as $key => $value) {
             $grnd_tot1 = $grnd_tot1 + $value->totprice1;
-            $grnd_tot2 = $grnd_tot2 + $value->totprice2;
-            $grnd_tot3 = $grnd_tot3 + $value->totprice3;
+            // $grnd_tot2 = $grnd_tot2 + $value->totprice2;
+            // $grnd_tot3 = $grnd_tot3 + $value->totprice3;
         }
 
         if(
-            $chgprice_get->amt1 == $grnd_tot1 &&
-            $chgprice_get->amt2 == $grnd_tot2 &&
-            $chgprice_get->amt3 == $grnd_tot3 
+            $chgprice_get->amt1 == $grnd_tot1 
+            // &&
+            // $chgprice_get->amt2 == $grnd_tot2 &&
+            // $chgprice_get->amt3 == $grnd_tot3 
         ){
             DB::table('hisdb.chgmast')
                 ->where('compcode','=',session('compcode'))

@@ -17,6 +17,7 @@ $(document).ready(function(){
 		editurl: "ordcom/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
 			{ label: 'Date', name: 'trxdate', width: 80, classes: 'wrap',editable:true,
 				// formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				edittype: 'custom', editoptions:
@@ -126,7 +127,7 @@ $(document).ready(function(){
 		sortorder: "desc",
 		pager: "#jqGrid_phar_pager",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-160);
+			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_phar.clear_fail();
 			if($("#jqGrid_phar").data('lastselrow')==undefined||$("#jqGrid_phar").data('lastselrow')==null||$("#jqGrid_phar").data('lastselrow').includes("jqg")){
 				$("#jqGrid_phar").setSelection($("#jqGrid_phar").getDataIDs()[0]);
@@ -141,7 +142,6 @@ $(document).ready(function(){
 			$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
 		},
 		afterShowForm: function (rowid) {
-			console.log(rowid);
 		},
 		beforeSelectRow:function(rowid, e){
 		},
@@ -238,16 +238,16 @@ $(document).ready(function(){
 				{span:'#jqgrid_detail_phar_chgcode_'+row_id,value:selrowdata.chgcode,rowid:row_id},
 				{span:'#jqgrid_detail_phar_chgcode_desc_'+row_id,value:selrowdata.chgcode,rowid:row_id},
 				{span:'#jqgrid_detail_phar_dept_'+row_id,value:selrowdata.deptcode,rowid:row_id},
-				{span:'#jqgrid_detail_phar_cost_price_'+row_id,value:selrowdata.cost_price,rowid:row_id},
-				{span:'#jqgrid_detail_phar_unitprice_'+row_id,value:selrowdata.unitprce,rowid:row_id},
-				{span:'#jqgrid_detail_phar_discamt_'+row_id,value:selrowdata.discamt,rowid:row_id},
-				{span:'#jqgrid_detail_phar_taxamt_'+row_id,value:selrowdata.taxamount,rowid:row_id},
+				{span:'#jqgrid_detail_phar_cost_price_'+row_id,value:ret_parsefloat(selrowdata.cost_price),rowid:row_id},
+				{span:'#jqgrid_detail_phar_unitprice_'+row_id,value:ret_parsefloat(selrowdata.unitprce),rowid:row_id},
+				{span:'#jqgrid_detail_phar_discamt_'+row_id,value:ret_parsefloat(selrowdata.discamt),rowid:row_id},
+				{span:'#jqgrid_detail_phar_taxamt_'+row_id,value:ret_parsefloat(selrowdata.taxamount),rowid:row_id},
 			]);
 
 			write_detail_dosage(selrowdata,false,row_id);
 			
 
-			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight')));
+			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		}
     });
 // <div class="input-group oe_phar_div">
@@ -363,7 +363,7 @@ var myEditOptions_phar = {
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
 			if(focus == undefined){
@@ -373,7 +373,9 @@ var myEditOptions_phar = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
@@ -420,7 +422,7 @@ var myEditOptions_phar = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_phar')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     },
     errorTextFormat: function (data) {
@@ -558,7 +560,7 @@ var myEditOptions_phar_edit = {
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -569,11 +571,13 @@ var myEditOptions_phar_edit = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
 		// dialog_dosage_phar.off();
 		// dialog_frequency_phar.off();
 		// dialog_instruction_phar.off();
 		// dialog_drugindicator_phar.off();
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
@@ -628,7 +632,7 @@ var myEditOptions_phar_edit = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_phar')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     },
     errorTextFormat: function (data) {
@@ -1677,6 +1681,7 @@ function showdetail_phar(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
+	calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 	return cellvalue;
 }
 

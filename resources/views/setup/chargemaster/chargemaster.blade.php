@@ -188,14 +188,14 @@ input.uppercase {
 
 							<label class="col-md-3 control-label" for="autopull">AutoPull</label> 
 								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" id="autopull" name="autopull" value='1' checked>Yes</label>
-									<label class="radio-inline"><input type="radio" id="autopull" name="autopull" value='0' >No</label>
+									<label class="radio-inline"><input type="radio" name="autopull" value='1' readonly>Yes</label>
+									<label class="radio-inline"><input type="radio" name="autopull" value='0' readonly>No</label>
 								</div>
 
 							<label class="col-md-3 control-label" for="addchg">Charge If More</label> 
 								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" id="addchg" name="addchg" value='1' checked>Yes</label>
-									<label class="radio-inline"><input type="radio" id="addchg" name="addchg" value='0' >No</label>
+									<label class="radio-inline"><input type="radio" name="addchg" value='1' readonly>Yes</label>
+									<label class="radio-inline"><input type="radio" name="addchg" value='0' readonly>No</label>
 								</div>
 							<br></br>
 

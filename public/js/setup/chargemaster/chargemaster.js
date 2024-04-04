@@ -1748,8 +1748,10 @@ $(document).ready(function () {
 			urlParam4.filterVal[1] = selrowData("#jqGrid").chgcode;
 			urlParam4.filterVal[2] = moment(selrowData("#jqGridPkg3").effdate, "DD/MM/YYYY").format("YYYY-MM-DD");
 
-			// $('#formdata4 :input[name=autopull]').val(selrowData("#jqGridPkg3").autopull);
-			// $('#formdata4 :input[name=addchg]').val(selrowData("#jqGridPkg3").addchg);
+			var rowdata = selrowData("#jqGridPkg3");
+
+			$("#formdata4 [name='autopull'][value='"+rowdata.autopull+"']").prop('checked', true);
+			$("#formdata4 [name='addchg'][value='"+rowdata.addchg+"']").prop('checked', true);
 
 			refreshGrid("#jqGrid4",urlParam4);
 			$("#jqGrid4_c,#click_row").show();
@@ -1958,7 +1960,7 @@ $(document).ready(function () {
 	var urlParam4={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
+		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
 		table_name:['hisdb.pkgdet AS pd'],
 		table_id:'lineno_',
 		filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
@@ -2275,36 +2277,35 @@ $(document).ready(function () {
 		caption: "Detail", cursor: "pointer", position: "last",
 		buttonicon: "",
 		title: "Detail",
-		
+		onClickButton: function () {
+			var param={
+				url: './chargemaster/form',
+				oper: 'add_pkgmast',
+			}
+			var obj={
+				_token : $('#_token').val(),
+				idno: selrowData("#jqGrid").idno,
+				autopull: $("#formdata4 input:radio[name='autopull']:checked").val(),
+				addchg: $("#formdata4 input:radio[name='addchg']:checked").val(),
+			}
+			
+			$.post( param.url+"?"+$.param(param),obj, function( data ) {
+			
+			},'json').fail(function(data) {
+				alert(data.responseText);
+			}).success(function(data){
+				if($('#jqGrid4').jqGrid('getGridParam', 'reccount') < 1){
+					addmore_jqgrid2.state = true;
+					$('#jqGrid4_iladd').click();
+					$("#jqGridPager4_left").show();
+				}
+				hideatdialogForm_jqGrid4(false);
+			});
+		},
 	});
 
 	//////////////////////////////////////////jqGridPager4Detail////////////////////////////////////////////
-	$("#jqGridPager4Detail").click(function (data) {
-		
-		var param={
-			url: './chargemaster/form',
-			oper: 'add_pkgmast',
-			// idno: $('#idno').val()
-		}
-		var obj={
-			_token : $('#_token').val(),
-			data_detail: $('#jqGridPkg3').jqGrid('getRowData')
-		}
-		
-		$.post( param.url+"?"+$.param(param),obj, function( data ) {
-		
-		},'json').fail(function(data) {
-			alert(data.responseText);
-		}).success(function(data){
-			if($('#jqGrid4').jqGrid('getGridParam', 'reccount') < 1){
-				addmore_jqgrid2.state = true;
-				$('#jqGrid4_iladd').click();
-				$("#jqGridPager4_left").show();
-			}
-			hideatdialogForm_jqGrid4(false);
-		});
 	
-	});
 
 	//////////////////////////////////////////jqGridPager4Header////////////////////////////////////////////
 	$("#jqGridPager4Header").click(function () {
