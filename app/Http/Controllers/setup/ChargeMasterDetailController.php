@@ -35,7 +35,6 @@ class ChargeMasterDetailController extends defaultController
                     return $this->del_pkgdtl($request);
                 }
                 return $this->del($request);
-
             default:
                 return 'error happen..';
         }
@@ -188,8 +187,7 @@ class ChargeMasterDetailController extends defaultController
             return response($e->getMessage(), 500);
         }
     }
-
-
+    
     public function add_pkgdtl(Request $request){
         DB::beginTransaction();
 

@@ -176,14 +176,37 @@ input.uppercase {
     			<div id="jqGrid4_panel" class="panel-collapse collapse">
 					<div class="panel-body">
 						<form id='formdata4' class='form-vertical' style='width:99%'>
+						{{ csrf_field() }}
+							<!-- <div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGridPkgMast" class="table table-striped"></table>
+								<div id="jqGridPager"></div>
+							</div> -->
+							<input id="pkgcode" name="pkgcode" type="hidden">
+							<input id="description" name="description" type="hidden">
+							<!-- <input id="autopull" name="autopull" type="hidden">
+							<input id="addchg" name="addchg" type="hidden"> -->
+
+							<label class="col-md-3 control-label" for="autopull">AutoPull</label> 
+								<div class="col-md-3">
+									<label class="radio-inline"><input type="radio" id="autopull" name="autopull" value='1' checked>Yes</label>
+									<label class="radio-inline"><input type="radio" id="autopull" name="autopull" value='0' >No</label>
+								</div>
+
+							<label class="col-md-3 control-label" for="addchg">Charge If More</label> 
+								<div class="col-md-3">
+									<label class="radio-inline"><input type="radio" id="addchg" name="addchg" value='1' checked>Yes</label>
+									<label class="radio-inline"><input type="radio" id="addchg" name="addchg" value='0' >No</label>
+								</div>
+							<br></br>
+
 							<div class='col-md-12' style="padding:0 0 15px 0">
 								<table id="jqGrid4" class="table table-striped"></table>
 								<div id="jqGridPager4"></div>
 							</div>
 						</form>
 						<label style="padding-left:430px">Grand total 1 &nbsp;</label><input type="input" name="grandtot1" id="grandtot1" disabled="disabled">&nbsp;
-						<label style="padding-left:160px">Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2" disabled="disabled">&nbsp;
-						<label style="padding-left:130px">Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3" disabled="disabled">&nbsp;
+						<!-- <label style="padding-left:160px">Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2" disabled="disabled">&nbsp;
+						<label style="padding-left:130px">Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3" disabled="disabled">&nbsp; -->
 					</div>
     			</div>
   			</div>

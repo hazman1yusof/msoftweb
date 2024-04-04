@@ -38,6 +38,8 @@ class ChargeMasterController extends defaultController
                 return $this->edit($request);
             case 'del':
                 return $this->del($request);
+            case 'add_pkgmast':
+                return $this->add_pkgmast($request);
             default:
                 return 'error happen..';
         }
@@ -540,5 +542,45 @@ class ChargeMasterController extends defaultController
         $responce->sql_bind = $table->getBindings();
         return json_encode($responce);
     }
-    
+
+    public function add_pkgmast(Request $request){
+        if(!empty($request->fixPost)){
+            $field = $this->fixPost2($request->field);
+            $idno = substr(strstr($request->table_id,'_'),1);
+        }else{
+            $field = $request->field;
+            $idno = $request->table_id;
+        }
+        try {
+            foreach ($request->data_detail as $key => $value){
+            }
+            DB::beginTransaction();
+
+            $table = DB::table("hisdb.pkgmast");
+            
+            $array_insert = [
+                'pkgcode' => strtoupper($request->pkgcode),
+                'description' => strtoupper($request->description),
+                'autopull' => $request->autopull,
+                'addchg' => $request->addchg,
+            	'compcode' => session('compcode'),
+                'adduser' => session('username'),
+                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                'recstatus' => 'ACTIVE',
+            ];
+
+            $idno = $table->insertGetId($array_insert);
+
+            $responce = new stdClass();
+            $responce->idno = $idno;
+            echo json_encode($responce);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response($e->getMessage(), 500);
+        }
+    }
+
 }
