@@ -204,7 +204,7 @@ input.uppercase {
 								<div id="jqGridPager4"></div>
 							</div>
 						</form>
-						<label style="padding-left:430px">Grand total 1 &nbsp;</label><input type="input" name="grandtot1" id="grandtot1" disabled="disabled">&nbsp;
+						<label style="padding-left:430px">Grand Total&nbsp;</label><input type="input" name="grandtot1" id="grandtot1" disabled="disabled">&nbsp;
 						<!-- <label style="padding-left:160px">Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2" disabled="disabled">&nbsp;
 						<label style="padding-left:130px">Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3" disabled="disabled">&nbsp; -->
 					</div>
