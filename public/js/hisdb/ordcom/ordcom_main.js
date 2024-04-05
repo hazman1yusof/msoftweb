@@ -75,6 +75,10 @@ $(document).ready(function(){
 				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');
 				break;
+			case 'PKG':
+				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				refreshGrid('#jqGrid_pkg',urlParam_pkg,'add');
+				break;
 		}
 	});
 
@@ -117,6 +121,8 @@ function populate_ordcom_currpt(obj){
 	urlParam_dfee.episno = obj.Episno;
 	urlParam_oth.mrn = obj.MRN;
 	urlParam_oth.episno = obj.Episno;
+	urlParam_pkg.mrn = obj.MRN;
+	urlParam_pkg.episno = obj.Episno;
 	
 }
 

@@ -2278,13 +2278,14 @@ $(document).ready(function () {
 		buttonicon: "",
 		title: "Detail",
 		onClickButton: function () {
+			console.log(selrowData("#jqGridPkg3"));
 			var param={
 				url: './chargemaster/form',
 				oper: 'add_pkgmast',
 			}
 			var obj={
 				_token : $('#_token').val(),
-				idno: selrowData("#jqGrid").idno,
+				idno: selrowData("#jqGridPkg3").idno,
 				autopull: $("#formdata4 input:radio[name='autopull']:checked").val(),
 				addchg: $("#formdata4 input:radio[name='addchg']:checked").val(),
 			}
@@ -2361,6 +2362,13 @@ $(document).ready(function () {
 		$("#grandtot2").val(grdprice2);
 		$("#grandtot3").val(grdprice3);
 		mycurrency.formatOn();
+
+		var chgprice_amt1 = selrowData("#jqGridPkg3").amt1;
+
+		$('span.error_pkgmast').html('');
+		if(parseFloat(chgprice_amt1) != parseFloat(grdprice1)){
+			$('span.error_pkgmast').html('Total Package price not equal with Charge Price Amount');
+		}
 
 	}
 

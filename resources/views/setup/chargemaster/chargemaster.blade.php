@@ -45,6 +45,13 @@ input.uppercase {
 	text-transform: uppercase;
 }
 
+span.error_pkgmast {
+    position: absolute;
+    right: 100px;
+    top: 15px;
+    color: darkred;
+}
+
 @endsection
 
 @section('body')
@@ -169,11 +176,12 @@ input.uppercase {
 		</div>
 
 		<div class="panel-group">
-  			<div class="panel panel-default" id="jqGrid4_c">
+  			<div class="panel panel-default" id="jqGrid4_c" style="position:relative;">
     			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid4_panel">
 					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Package Deal Maintenance Details
     			</div>
     			<div id="jqGrid4_panel" class="panel-collapse collapse">
+    				<span class="error_pkgmast"></span>
 					<div class="panel-body">
 						<form id='formdata4' class='form-vertical' style='width:99%'>
 						{{ csrf_field() }}
@@ -186,17 +194,20 @@ input.uppercase {
 							<!-- <input id="autopull" name="autopull" type="hidden">
 							<input id="addchg" name="addchg" type="hidden"> -->
 
-							<label class="col-md-3 control-label" for="autopull">AutoPull</label> 
+							<label class="col-md-1 control-label" for="autopull">AutoPull</label> 
 								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="autopull" value='1' readonly>Yes</label>
-									<label class="radio-inline"><input type="radio" name="autopull" value='0' readonly>No</label>
+									<label class="radio-inline"><input type="radio" name="autopull" value='1' disabled>Yes</label>
+									<label class="radio-inline"><input type="radio" name="autopull" value='0' disabled>No</label>
 								</div>
 
-							<label class="col-md-3 control-label" for="addchg">Charge If More</label> 
+							<label class="col-md-1 control-label" for="addchg">Charge If More</label> 
 								<div class="col-md-3">
-									<label class="radio-inline"><input type="radio" name="addchg" value='1' readonly>Yes</label>
-									<label class="radio-inline"><input type="radio" name="addchg" value='0' readonly>No</label>
+									<label class="radio-inline"><input type="radio" name="addchg" value='1' disabled>Yes</label>
+									<label class="radio-inline"><input type="radio" name="addchg" value='0' disabled>No</label>
 								</div>
+							<label class="col-md-2 control-label" for="addchg" style="float:right;">
+								Total: <input type="input" name="grandtot1" id="grandtot1" disabled="disabled">
+							</label> 
 							<br></br>
 
 							<div class='col-md-12' style="padding:0 0 15px 0">
@@ -204,7 +215,11 @@ input.uppercase {
 								<div id="jqGridPager4"></div>
 							</div>
 						</form>
+<<<<<<< HEAD
 						<label style="padding-left:430px">Grand Total&nbsp;</label><input type="input" name="grandtot1" id="grandtot1" disabled="disabled">&nbsp;
+=======
+						<!-- <label style="padding-left:430px">Grand total 1 &nbsp;</label>&nbsp; -->
+>>>>>>> 14f88e6dc40b93acf120d198f0a22c93676dda2a
 						<!-- <label style="padding-left:160px">Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2" disabled="disabled">&nbsp;
 						<label style="padding-left:130px">Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3" disabled="disabled">&nbsp; -->
 					</div>

@@ -129,7 +129,7 @@
 			  <div id="tab-pkg" class="tab-pane fade">
 				<div class='col-md-12' style="padding:0px" autocomplete="off">
 					<table id="jqGrid_pkg" class="table table-striped"></table>
-					<div id="jqGrid_pkg"></div>
+					<div id="jqGrid_pkg_pager"></div>
 				</div>
 			  </div>
 
