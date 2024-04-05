@@ -1750,8 +1750,8 @@ $(document).ready(function () {
 
 			var rowdata = selrowData("#jqGridPkg3");
 
-			$("#formdata4 [name='autopull'][value='"+rowdata.autopull+"']").prop('checked', true);
-			$("#formdata4 [name='addchg'][value='"+rowdata.addchg+"']").prop('checked', true);
+			// $("#formdata4 [name='autopull'][value='"+rowdata.autopull+"']").prop('checked', true);
+			// $("#formdata4 [name='addchg'][value='"+rowdata.addchg+"']").prop('checked', true);
 
 			refreshGrid("#jqGrid4",urlParam4);
 			$("#jqGrid4_c,#click_row").show();
@@ -2286,8 +2286,8 @@ $(document).ready(function () {
 			var obj={
 				_token : $('#_token').val(),
 				idno: selrowData("#jqGridPkg3").idno,
-				autopull: $("#formdata4 input:radio[name='autopull']:checked").val(),
-				addchg: $("#formdata4 input:radio[name='addchg']:checked").val(),
+				// autopull: $("#formdata4 input:radio[name='autopull']:checked").val(),
+				// addchg: $("#formdata4 input:radio[name='addchg']:checked").val(),
 			}
 			
 			$.post( param.url+"?"+$.param(param),obj, function( data ) {

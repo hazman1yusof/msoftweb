@@ -583,8 +583,8 @@ class ChargeMasterController extends defaultController
             if($pkgmast->exists()){
 
                 $array_update = [
-                    'autopull' => $request->autopull,
-                    'addchg' => $request->addchg,
+                    'autopull' => $chgprice->autopull,
+                    'addchg' => $chgprice->addchg,
                     'lastuser' => session('username'),
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     'recstatus' => 'ACTIVE',
@@ -603,8 +603,8 @@ class ChargeMasterController extends defaultController
                     'description' => strtoupper($chgprice->description),
                     'effectDate' => $chgprice->effdate,
                     'price' => $chgprice->amt1,
-                    'autopull' => $request->autopull,
-                    'addchg' => $request->addchg,
+                    'autopull' => $chgprice->autopull,
+                    'addchg' => $chgprice->addchg,
                     'compcode' => session('compcode'),
                     'adduser' => session('username'),
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),

@@ -194,7 +194,7 @@ span.error_pkgmast {
 							<!-- <input id="autopull" name="autopull" type="hidden">
 							<input id="addchg" name="addchg" type="hidden"> -->
 
-							<label class="col-md-1 control-label" for="autopull">AutoPull</label> 
+							<!--< label class="col-md-1 control-label" for="autopull">AutoPull</label> 
 								<div class="col-md-3">
 									<label class="radio-inline"><input type="radio" name="autopull" value='1' disabled>Yes</label>
 									<label class="radio-inline"><input type="radio" name="autopull" value='0' disabled>No</label>
@@ -208,20 +208,16 @@ span.error_pkgmast {
 							<label class="col-md-2 control-label" for="addchg" style="float:right;">
 								Total: <input type="input" name="grandtot1" id="grandtot1" disabled="disabled">
 							</label> 
-							<br></br>
-
+							<br></br> -->
+							
+							<label class="col-md-2 control-label" for="grandtot1" style="float:right;">
+								Total: <input type="input" name="grandtot1" id="grandtot1" disabled="disabled">
+							</label> 
 							<div class='col-md-12' style="padding:0 0 15px 0">
 								<table id="jqGrid4" class="table table-striped"></table>
 								<div id="jqGridPager4"></div>
 							</div>
 						</form>
-<<<<<<< HEAD
-						<label style="padding-left:430px">Grand Total&nbsp;</label><input type="input" name="grandtot1" id="grandtot1" disabled="disabled">&nbsp;
-=======
-						<!-- <label style="padding-left:430px">Grand total 1 &nbsp;</label>&nbsp; -->
->>>>>>> 14f88e6dc40b93acf120d198f0a22c93676dda2a
-						<!-- <label style="padding-left:160px">Grand total 2 &nbsp;</label><input type="input" name="grandtot2" id="grandtot2" disabled="disabled">&nbsp;
-						<label style="padding-left:130px">Grand total 3 &nbsp;</label><input type="input" name="grandtot3" id="grandtot3" disabled="disabled">&nbsp; -->
 					</div>
     			</div>
   			</div>
