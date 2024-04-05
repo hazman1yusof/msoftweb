@@ -193,12 +193,19 @@ class ChargeMasterDetailController extends defaultController
 
         try {
 
+            $effectdate = $this->turn_date($request->effectdate);
             $sqlln = DB::table('hisdb.pkgdet')->select('lineno_')
                         ->where('compcode','=',session('compcode'))
                         ->where('pkgcode','=',$request->pkgcode)
-                        ->whereDate('effectdate', $request->effectdate)
+                        ->whereDate('effectdate', $effectdate)
                         // ->where('effectdate','=',$request->effectdate)
                         ->count('lineno_');
+
+            $chgprice = DB::table('hisdb.chgprice')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode','=',$request->pkgcode)
+                        ->whereDate('effdate', $effectdate)
+                        ->first();
 
             $li=intval($sqlln)+1;
 
@@ -207,18 +214,18 @@ class ChargeMasterDetailController extends defaultController
                     'lineno_' => $li,
                     'compcode' => session('compcode'),
                     'pkgcode' => $request->pkgcode,
-                    'effectdate' =>  $this->turn_date($request->effectdate),
+                    'effectdate' => $effectdate,
                     'chgcode' => $request->chgcode,
                     'quantity' => $request->quantity,
-                    'actprice1' => $request->actprice1,
+                    'actprice1' => $chgprice->amt1,
                     'pkgprice1' => $request->pkgprice1,
                     'totprice1' => $request->totprice1,
-                    'actprice2' => $request->actprice2,
-                    'pkgprice2' => $request->pkgprice2,
-                    'totprice2' => $request->totprice2,
-                    'actprice3' => $request->actprice3,
-                    'pkgprice3' => $request->pkgprice3,
-                    'totprice3' => $request->totprice3,
+                    'actprice2' => $chgprice->amt2,
+                    // 'pkgprice2' => $request->pkgprice2,
+                    // 'totprice2' => $request->totprice2,
+                    'actprice3' => $chgprice->amt3,
+                    // 'pkgprice3' => $request->pkgprice3,
+                    // 'totprice3' => $request->totprice3,
                     'recstatus' => 'ACTIVE',
                     'adduser' => session('username'), 
                     'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
@@ -226,7 +233,7 @@ class ChargeMasterDetailController extends defaultController
                     'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 ]);
 
-            $this->check_to_active_chgmast($request);
+            // $this->check_to_active_chgmast($request);
 
 
             DB::commit();
@@ -244,6 +251,17 @@ class ChargeMasterDetailController extends defaultController
 
         try {
 
+            $pkgdet = DB::table('hisdb.pkgdet')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('idno','=',$request->dataobj[0]['idno'])
+                        ->first();
+
+            $chgprice = DB::table('hisdb.chgprice')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('chgcode','=',$pkgdet->pkgcode)
+                        ->whereDate('effdate', $pkgdet->effectdate)
+                        ->first();
+
             foreach ($request->dataobj as $key => $value) {
                 ///1. update detail
                 DB::table('hisdb.pkgdet')
@@ -252,22 +270,22 @@ class ChargeMasterDetailController extends defaultController
                     ->update([
                         'chgcode' => $value['chgcode'],
                         'quantity' => $value['quantity'],
-                        'actprice1' => $value['actprice1'],
+                        'actprice1' => $chgprice->amt1,
                         'pkgprice1' => $value['pkgprice1'],
                         'totprice1' => $value['totprice1'],
-                        'actprice2' => $value['actprice2'],
-                        'pkgprice2' => $value['pkgprice2'],
-                        'totprice2' => $value['totprice2'],
-                        'actprice3' => $value['actprice3'],
-                        'pkgprice3' => $value['pkgprice3'],
-                        'totprice3' => $value['totprice3'],
+                        'actprice2' => $chgprice->amt2,
+                        // 'pkgprice2' => $value['pkgprice2'],
+                        // 'totprice2' => $value['totprice2'],
+                        'actprice3' => $chgprice->amt3,
+                        // 'pkgprice3' => $value['pkgprice3'],
+                        // 'totprice3' => $value['totprice3'],
                         'lastuser' => session('username'), 
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
             }
 
 
-            $this->check_to_active_chgmast($request);
+            // $this->check_to_active_chgmast($request);
          
 
             DB::commit();
@@ -293,13 +311,14 @@ class ChargeMasterDetailController extends defaultController
             DB::table('hisdb.pkgdet')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)
-                ->update([
-                    'deluser' => session('username'),
-                    'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
-                    'recstatus' => 'DEACTIVE',
-                    'lastcomputerid' => $request->lastcomputerid, 
-                    'lastipaddress' => $request->lastipaddress, 
-                ]);
+                // ->update([
+                //     'deluser' => session('username'),
+                //     'deldate' => Carbon::now("Asia/Kuala_Lumpur"),
+                //     'recstatus' => 'DEACTIVE',
+                //     'lastcomputerid' => $request->lastcomputerid, 
+                //     'lastipaddress' => $request->lastipaddress, 
+                // ]);
+                ->delete();
 
             DB::commit();
 
@@ -338,7 +357,7 @@ class ChargeMasterDetailController extends defaultController
 
         $pkgdet_get = $pkgdet->get();
 
-        $grnd_tot1=$grnd_tot2=$grnd_tot3=0;
+        $grnd_tot1=0;
         foreach ($pkgdet_get as $key => $value) {
             $grnd_tot1 = $grnd_tot1 + $value->totprice1;
             // $grnd_tot2 = $grnd_tot2 + $value->totprice2;

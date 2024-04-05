@@ -275,8 +275,6 @@ class ChargeMasterController extends defaultController
             
             if($request->chgtype == 'PKG' || $request->chgtype == 'pkg'){
                 
-                $recstatus_use = 'DEACTIVE';
-                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->chgcode))
@@ -297,8 +295,6 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
                 
-                $recstatus_use = 'ACTIVE';
-                
             }
             
             DB::table('hisdb.chgmast')
@@ -313,7 +309,7 @@ class ChargeMasterController extends defaultController
                     'constype' => strtoupper($request->constype),
                     'chggroup' => $request->chggroup,
                     'chgtype' => $request->chgtype,
-                    'recstatus' => $recstatus_use,
+                    'recstatus' => 'ACTIVE',
                     'uom' => $request->uom,
                     'invflag' => $request->invflag,
                     'packqty' => $request->packqty,
@@ -551,38 +547,73 @@ class ChargeMasterController extends defaultController
             // $chgmast = DB::table("hisdb.chgmast")
             //                 ->where('cm.idno', '=', $request->idno);
 
+            // $chgprice = DB::table('hisdb.chgprice as cp')
+            //                 ->select('cp.autopull','cp.addchg','cm.chgcode','cm.description','cp.effdate','cp.amt1')
+            //                 ->join('hisdb.chgmast as cm', function($join) use ($request){
+            //                         $join = $join->where('cm.compcode', '=', session('compcode'));
+            //                         $join = $join->where('cm.idno', '=', $request->idno);
+            //                         $join = $join->on('cm.chgcode', '=', 'cp.chgcode');
+            //                         $join = $join->on('cm.uom', '=', 'cp.uom');
+            //                     })
+            //                 ->where('cp.compcode', '=', session('compcode'))
+            //                 ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+            //                 ->orderBy('cp.effdate','desc');
+
             $chgprice = DB::table('hisdb.chgprice as cp')
                             ->select('cp.autopull','cp.addchg','cm.chgcode','cm.description','cp.effdate','cp.amt1')
                             ->join('hisdb.chgmast as cm', function($join) use ($request){
                                     $join = $join->where('cm.compcode', '=', session('compcode'));
-                                    $join = $join->where('cm.idno', '=', $request->idno);
                                     $join = $join->on('cm.chgcode', '=', 'cp.chgcode');
                                     $join = $join->on('cm.uom', '=', 'cp.uom');
                                 })
                             ->where('cp.compcode', '=', session('compcode'))
-                            ->whereDate('cp.effdate', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
-                            ->orderBy('cp.effdate','desc');
+                            ->where('cp.idno',$request->idno);
+
 
             if(!$chgprice->exists()){
                 throw new \Exception('chgmast not exist', 500);
             }
             $chgprice = $chgprice->first();
-            
-            $array_insert = [
-                'pkgcode' => strtoupper($chgprice->chgcode),
-                'description' => strtoupper($chgprice->description),
-                'effectDate' => $chgprice->effdate,
-                'price' => $chgprice->amt1,
-                'autopull' => $request->autopull,
-                'addchg' => $request->addchg,
-            	'compcode' => session('compcode'),
-                'adduser' => session('username'),
-                'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
-                'recstatus' => 'ACTIVE',
-            ];
 
-            $idno = DB::table('hisdb.pkgmast')
-                        ->insertGetId($array_insert);
+            $pkgmast = DB::table('hisdb.pkgmast')
+                            ->where('compcode', '=', session('compcode'))
+                            ->where('pkgcode', $chgprice->chgcode)
+                            ->where('effectDate', $chgprice->effdate);
+
+            if($pkgmast->exists()){
+
+                $array_update = [
+                    'autopull' => $request->autopull,
+                    'addchg' => $request->addchg,
+                    'lastuser' => session('username'),
+                    'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'ACTIVE',
+                ];
+
+                DB::table('hisdb.pkgmast')
+                            ->where('pkgcode', $chgprice->chgcode)
+                            ->where('effectDate', $chgprice->effdate)
+                            ->update($array_update);
+
+                $idno = $pkgmast->first()->idno;
+
+            }else{
+                $array_insert = [
+                    'pkgcode' => strtoupper($chgprice->chgcode),
+                    'description' => strtoupper($chgprice->description),
+                    'effectDate' => $chgprice->effdate,
+                    'price' => $chgprice->amt1,
+                    'autopull' => $request->autopull,
+                    'addchg' => $request->addchg,
+                    'compcode' => session('compcode'),
+                    'adduser' => session('username'),
+                    'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
+                    'recstatus' => 'ACTIVE',
+                ];
+
+                $idno = DB::table('hisdb.pkgmast')
+                            ->insertGetId($array_insert);
+            }
 
             $responce = new stdClass();
             $responce->idno = $idno;

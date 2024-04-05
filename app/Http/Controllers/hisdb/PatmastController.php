@@ -88,10 +88,10 @@ class PatmastController extends defaultController
                         ->where('compcode',session('compcode'))
                         ->where('source','=','OE')
                         ->where('trantype','=','OTH')->first();
-            // $ordcomtt_pkg = DB::table('sysdb.sysparam')
-            //             ->where('compcode',session('compcode'))
-            //             ->where('source','=','OE')
-            //             ->where('trantype','=','PKG')->first();
+            $ordcomtt_pkg = DB::table('sysdb.sysparam')
+                        ->where('compcode',session('compcode'))
+                        ->where('source','=','OE')
+                        ->where('trantype','=','PKG')->first();
 
             $data_send['ordcomtt_phar'] = $ordcomtt_phar->pvalue1;
             $data_send['ordcomtt_disp'] = $ordcomtt_disp->pvalue1;
@@ -102,7 +102,7 @@ class PatmastController extends defaultController
             $data_send['ordcomtt_diet'] = $ordcomtt_diet->pvalue1;
             $data_send['ordcomtt_dfee'] = $ordcomtt_dfee->pvalue1;
             $data_send['ordcomtt_oth'] = $ordcomtt_oth->pvalue1;
-            $data_send['ordcomtt_pkg'] = '';
+            $data_send['ordcomtt_pkg'] = $ordcomtt_pkg->pvalue1;
 
             $data_send['phardept_dflt'] = $ordcomtt_phar->pvalue2;
             $data_send['dispdept_dflt'] = $ordcomtt_disp->pvalue2;
@@ -111,8 +111,7 @@ class PatmastController extends defaultController
             $data_send['physdept_dflt'] = $ordcomtt_phys->pvalue2;
             $data_send['rehabdept_dflt'] = $ordcomtt_phys->pvalue2;
             $data_send['dietdept_dflt'] = $ordcomtt_diet->pvalue2;
-            $data_send['pkgdept_dflt'] = $ordcomtt_diet->pvalue2;
-            $data_send['ordcomtt_pkg'] = '';
+            $data_send['pkgdept_dflt'] = $dept->deptcode;
         }
 
         return view('hisdb.pat_mgmt.landing',$data_send);
