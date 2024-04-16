@@ -588,15 +588,15 @@ $(document).ready(function () {
 					$("#jqGrid2 input#"+ids[i]+"_costcodeto").hide();
 				}
 				
-				$("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){
-					var rowdef1 = $("#jqGrid2 select#"+ids[i]+"_rowdef").val();
+				// $("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){
+				// 	var rowdef1 = $("#jqGrid2 select#"+ids[i]+"_rowdef").val();
 					
-					if(rowdef1 == 'D'){	// show
-						$(".input-group#"+ids[i]+"_code").show();
-					}else{	// hide
-						$(".input-group#"+ids[i]+"_code").hide();
-					}
-				});
+				// 	if(rowdef1 == 'D'){	// show
+				// 		$(".input-group#"+ids[i]+"_code").show();
+				// 	}else{	// hide
+				// 		$(".input-group#"+ids[i]+"_code").hide();
+				// 	}
+				// });
 			}
 			onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
