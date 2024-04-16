@@ -54,9 +54,10 @@
         <input name="labdept_dflt" id="labdept_dflt" type="hidden" value="{{$labdept_dflt ?? 'LAB'}}">
         <input name="raddept_dflt" id="raddept_dflt" type="hidden" value="{{$raddept_dflt ?? 'RAD'}}">
         <input name="physdept_dflt" id="physdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
-        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$physdept_dflt ?? 'PHY'}}">
+        <input name="rehabdept_dflt" id="rehabdept_dflt" type="hidden" value="{{$rehabsdept_dflt ?? 'REHAB'}}">
         <input name="phardept_dflt" id="phardept_dflt" type="hidden" value="{{$phardept_dflt ?? 'PHAR'}}">
         <input name="othdept_dflt" id="othdept_dflt" type="hidden" value="{{'OTH'}}">
+        <input name="pkgdept_dflt" id="pkgdept_dflt" type="hidden" value="{{$pkgdept_dflt ?? 'PHAR'}}">
 
         <div id="info"></div>
 
@@ -307,23 +308,28 @@
 
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-				@if (Auth::user()->doctor == 1)
+				<!-- @if (Auth::user()->doctor == 1)
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
-				@else
+				@else -->
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-				@endif
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
+				<!-- @endif -->
 			@endif
 		@endif
 
@@ -347,23 +353,28 @@
 
 			@if (Auth::user()->billing == 1)
 				<script type="text/javascript" src="js/hisdb/ordcom/ordcom_main.js"></script>
-				@if (Auth::user()->doctor == 1)
+				<!-- @if (Auth::user()->doctor == 1)
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab_doc.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet_doc.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth_doc.js"></script>
-				@else
+				@else -->
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phar.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_disp.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_lab.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rad.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_dfee.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_phys.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_rehab.js"></script>
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_diet.js"></script>
 					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_oth.js"></script>
-				@endif
+					<script type="text/javascript" src="js/hisdb/ordcom/ordcom_pkg.js"></script>
+				<!-- @endif -->
 			@endif
 		@endif
 	@endif

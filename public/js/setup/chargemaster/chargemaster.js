@@ -145,6 +145,7 @@ $(document).ready(function () {
 		// buttons :butt1,
 	});
 
+	/////////////////////////////////charge price list dialog///////////////////////////////////
 	$( "#priceListDialog" ).dialog({
 		autoOpen: false,
 		width: 5/10 * $(window).width(),
@@ -154,6 +155,7 @@ $(document).ready(function () {
 		},
 		close: function( event, ui ){
 			parent_close_disabled(false);
+			emptyFormdata(errorField,'#formdata_priceList');
 		},
 		buttons:
 		[
@@ -284,6 +286,8 @@ $(document).ready(function () {
 				refreshGrid("#jqGridPkg3",urlParam2);
 				$("#jqGridPkg3_c").show();
 				$("#jqGrid3_c").hide();
+				// hideatdialogForm_jqGrid4(true);
+
 			} else {
 				refreshGrid("#jqGrid3",urlParam2);
 				$("#jqGrid3_c").show();
@@ -293,6 +297,9 @@ $(document).ready(function () {
 			$('#showpkgcode').text(selrowData("#jqGrid").chgcode);//tukar kat depan tu
 			$('#showpkgdesc').text(selrowData("#jqGrid").description);
 
+			$('#pkgcode').val(selrowData("#jqGrid").chgcode);
+			$('#description').val(selrowData("#jqGrid").description);
+			
 		},
 		ondblClickRow: function(rowid, iRow, iCol, e){
 			$("#jqGridPager td[title='Edit Selected Row']").click();
@@ -319,7 +326,6 @@ $(document).ready(function () {
 			return '';
 		}
 	}
-
 
 	function unformatstatus_tick2(cellvalue, option, rowObject) {
 		if ($(rowObject).children('span').attr('class') == 'fa fa-check') {
@@ -471,15 +477,16 @@ $(document).ready(function () {
 	function hideatdialogForm_jqGrid4(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
 
-			$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh").hide();
+			$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh,#jqGridPager4Header,#jqGridPager4Detail").hide();
 			$("#jqGridPager4SaveAll,#jqGridPager4CancelAll").show();
 		}else if(hide){
 
-			$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4SaveAll,#jqGridPager4CancelAll,#jqGridPager4Refresh").hide();
+			$("#jqGrid4_iledit,#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4SaveAll,#jqGridPager4CancelAll,#jqGridPager4Refresh,#jqGridPager4Header").hide();
+			$("#jqGridPager4Detail").show();
 		}else{
 
-			$("#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh").show();
-			$("#jqGridPager4SaveAll,#jqGrid4_iledit,#jqGridPager4CancelAll").hide();
+			$("#jqGrid4_iladd,#jqGrid4_ilcancel,#jqGrid4_ilsave,#jqGridPager4Delete,#jqGridPager4EditAll,#jqGridPager4Refresh,#jqGridPager4Header").show();
+			$("#jqGridPager4SaveAll,#jqGrid4_iledit,#jqGridPager4CancelAll,#jqGridPager4Detail").hide();
 		}
 		
 	}
@@ -1416,6 +1423,7 @@ $(document).ready(function () {
 					}
 			}},
 			{ label: 'idno', name: 'idno', width: 20, classes: 'wrap', hidden:true},
+
 		],
 		autowidth: true,
 		shrinkToFit: true,
@@ -1435,7 +1443,6 @@ $(document).ready(function () {
 			}
 
 			addmore_jqgrid3.edit = addmore_jqgrid3.more = false; //reset
-			
 		},
 		gridComplete: function(){
 
@@ -1741,8 +1748,14 @@ $(document).ready(function () {
 			urlParam4.filterVal[1] = selrowData("#jqGrid").chgcode;
 			urlParam4.filterVal[2] = moment(selrowData("#jqGridPkg3").effdate, "DD/MM/YYYY").format("YYYY-MM-DD");
 
+			var rowdata = selrowData("#jqGridPkg3");
+
+			// $("#formdata4 [name='autopull'][value='"+rowdata.autopull+"']").prop('checked', true);
+			// $("#formdata4 [name='addchg'][value='"+rowdata.addchg+"']").prop('checked', true);
+
 			refreshGrid("#jqGrid4",urlParam4);
 			$("#jqGrid4_c,#click_row").show();
+			hideatdialogForm_jqGrid4(true);
 		},
 		gridComplete: function(){
 
@@ -1947,7 +1960,7 @@ $(document).ready(function () {
 	var urlParam4={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
+		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
 		table_name:['hisdb.pkgdet AS pd'],
 		table_id:'lineno_',
 		filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
@@ -1978,43 +1991,43 @@ $(document).ready(function () {
 					maxlength: 100,
 				},
 			},
-			{ label: 'Act Price 1', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:false
+			{ label: 'Act Price', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:false
 			},
-			{ label: 'Price 1', name: 'pkgprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Price', name: 'pkgprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Tot Price 1', name: 'totprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total', name: 'totprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,readonly: "readonly"
 				},
 			},
-			{ label: 'Act Price 2', name: 'actprice2', width: 150, align: 'right', classes: 'wrap', editable:false,
+			{ label: 'Act Price 2', name: 'actprice2', width: 150, align: 'right', classes: 'wrap', editable:false, hidden:true
 			},
-			{ label: 'Price 2', name: 'pkgprice2', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Price 2', name: 'pkgprice2', width: 150, align: 'right', classes: 'wrap', editable:true, hidden:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Tot Price 2', name: 'totprice2', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Tot Price 2', name: 'totprice2', width: 150, align: 'right', classes: 'wrap', editable:true, hidden:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,readonly: "readonly"
 				},
 			},
-			{ label: 'Act Price 3', name: 'actprice3', width: 150, align: 'right', classes: 'wrap', editable:false,
+			{ label: 'Act Price 3', name: 'actprice3', width: 150, align: 'right', classes: 'wrap', editable:false, hidden:true
 			},
-			{ label: 'Price 3', name: 'pkgprice3', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Price 3', name: 'pkgprice3', width: 150, align: 'right', classes: 'wrap', editable:true, hidden:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Tot Price 3', name: 'totprice3', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Tot Price 3', name: 'totprice3', width: 150, align: 'right', classes: 'wrap', editable:true, hidden:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,readonly: "readonly"
@@ -2070,7 +2083,7 @@ $(document).ready(function () {
 		},
 		oneditfunc: function (rowid) {
 
-			$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh").hide();
+			$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh,#jqGridPager4Header").hide();
 
 			dialog_dtlchgcode.on();
 
@@ -2253,8 +2266,54 @@ $(document).ready(function () {
 		onClickButton: function () {
 			refreshGrid("#jqGrid4", urlParam4);
 		},
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		id: "jqGridPager4Header",
+		caption: "Header", cursor: "pointer", position: "last",
+		buttonicon: "",
+		title: "Header",
+		
+	}).jqGrid('navButtonAdd', "#jqGridPager4", {
+		id: "jqGridPager4Detail",
+		caption: "Detail", cursor: "pointer", position: "last",
+		buttonicon: "",
+		title: "Detail",
+		onClickButton: function () {
+			console.log(selrowData("#jqGridPkg3"));
+			var param={
+				url: './chargemaster/form',
+				oper: 'add_pkgmast',
+			}
+			var obj={
+				_token : $('#_token').val(),
+				idno: selrowData("#jqGridPkg3").idno,
+				// autopull: $("#formdata4 input:radio[name='autopull']:checked").val(),
+				// addchg: $("#formdata4 input:radio[name='addchg']:checked").val(),
+			}
+			
+			$.post( param.url+"?"+$.param(param),obj, function( data ) {
+			
+			},'json').fail(function(data) {
+				alert(data.responseText);
+			}).success(function(data){
+				if($('#jqGrid4').jqGrid('getGridParam', 'reccount') < 1){
+					addmore_jqgrid2.state = true;
+					$('#jqGrid4_iladd').click();
+					$("#jqGridPager4_left").show();
+				}
+				hideatdialogForm_jqGrid4(false);
+			});
+		},
 	});
 
+	//////////////////////////////////////////jqGridPager4Detail////////////////////////////////////////////
+	
+
+	//////////////////////////////////////////jqGridPager4Header////////////////////////////////////////////
+	$("#jqGridPager4Header").click(function () {
+		emptyFormdata(errorField, '#formdata4');
+		hideatdialogForm_jqGrid4(true);
+		enableForm('#formdata4');
+	});
 
 	function jqgrid4_calc_totprice(event){
 		var optid = event.currentTarget.id;
@@ -2303,6 +2362,13 @@ $(document).ready(function () {
 		$("#grandtot2").val(grdprice2);
 		$("#grandtot3").val(grdprice3);
 		mycurrency.formatOn();
+
+		var chgprice_amt1 = selrowData("#jqGridPkg3").amt1;
+
+		$('span.error_pkgmast').html('');
+		if(parseFloat(chgprice_amt1) != parseFloat(grdprice1)){
+			$('span.error_pkgmast').html('Total Package price not equal with Charge Price Amount');
+		}
 
 	}
 

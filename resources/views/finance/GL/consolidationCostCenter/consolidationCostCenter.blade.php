@@ -31,7 +31,7 @@
 			</fieldset> 
 		</form>
 
-    	<div class='col-md-5'>
+    	<div class='col-md-6'>
     		<div class="panel panel-default">
     		<div class="panel panel-body">
             <table id="jqGrid" class="table table-striped"></table>
@@ -39,7 +39,7 @@
 			</div></div>
         </div>
 
-        <div class='col-md-7'>
+        <div class='col-md-6'>
     		<div class="panel panel-default">
 				<div class="panel panel-body">
 					<form class='form-horizontal' style='width:99%' id='formdata'>
@@ -50,7 +50,7 @@
 								<div class="col-md-2">
 									<input id="code" name="code" type="text" maxlength="30" class="form-control input-sm text-uppercase" frozeOnEdit rdonly>
 								</div>
-							<label class="col-md-1 control-label" for="description">Description</label>  
+							<label class="col-md-1 control-label" for="description">Desc</label>  
 								<div class="col-md-8">
 									<input id="description" name="description" type="text" maxlength="30" class="form-control input-sm text-uppercase" rdonly>
 								</div>
@@ -59,7 +59,7 @@
 				</div>
 			</div>
 		</div>
-		<div class='col-md-7'>
+		<div class='col-md-6'>
     		<div class="panel panel-default">
 				<div class="panel panel-body">
 					<form id='formdata2' class='form-vertical' style='width:99%'>

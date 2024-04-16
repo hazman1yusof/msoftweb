@@ -53,7 +53,7 @@ $(document).ready(function () {
             { label: 'Payer', name: 'payercode', width: 80  },
             { label: 'Name', name: 'payercode_desc', width: 200  },
             { label: 'Fin Class', name: 'pay_type' , width: 50 },
-            { label: 'Limit Amt.', name: 'pyrlmtamt' , width: 100 },
+            { label: 'Limit Amt.', name: 'pyrlmtamt' , width: 100 ,formatter:'currency',formatoptions:{thousandsSeparator: ",",}},
             { label: 'All Group', name: 'allgroup' , width: 50, formatter: allgroupformat, unformat: allgroupunformat },
             { label: 'billtype_desc', name: 'billtype_desc' , hidden: true },
             { label: 'idno', name: 'idno', hidden: true },
@@ -67,6 +67,7 @@ $(document).ready(function () {
             { label: 'lastuser', name: 'lastuser' , hidden: true },
             { label: 'billtype', name: 'billtype' , hidden: true },
             { label: 'refno', name: 'refno' , hidden: true },
+            { label: 'ourrefno', name: 'ourrefno' , hidden: true },
             { label: 'computerid', name: 'computerid' , hidden: true },
 		],
 		autowidth: true,
@@ -166,6 +167,7 @@ $(document).ready(function () {
 		{	colModel:
 			[
 				{label:'Charge code',name:'chgcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'UOM',name:'uom',width:100,classes:'pointer'},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
 			],
 			urlParam: {
@@ -742,6 +744,8 @@ $(document).ready(function () {
 				input.val(decodeEntities(value));
 			}
 		});
+
+		$('#pyrlmtamt_epno_payer').val(numeral($('#pyrlmtamt_epno_payer').val()).format('0,0.00'));
 	}
 		
 	$('#except_epno_payer').click(function(){

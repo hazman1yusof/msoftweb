@@ -17,10 +17,15 @@ var conf_ordco = {
 
 $(document).ready(function(){
 	$("#jqGrid_ordcom_panel").on("shown.bs.collapse", function(){
+		var lastrowdata = getrow_bootgrid();
+		get_billtype();
+		get_ordcom_totamount();
 		SmoothScrollTo("#jqGrid_ordcom_panel", 500,70);
 		$('a#ordcom_navtab_phar').tab('show')
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
-		$("#jqGrid_phar").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+		$("#jqGrid_phar").jqGrid('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+		$("#cyclebill_dtl").attr('href',"./ordcom/table?action=showpdf_detail&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
+		$("#cyclebill_summ").attr('href',"./ordcom/table?action=showpdf_summ&mrn="+lastrowdata.MRN+"&episno="+lastrowdata.Episno);
 
 		// if($('#isdoctor').val() != '1'){
         // 	let bootgrid_last_rowid = $("#grid-command-buttons tr.justbc").data("row-id");
@@ -70,6 +75,10 @@ $(document).ready(function(){
 				$("#jqGrid_oth").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
 				refreshGrid('#jqGrid_oth',urlParam_oth,'add');
 				break;
+			case 'PKG':
+				$("#jqGrid_pkg").jqGrid ('setGridWidth', Math.floor($("#jqGrid_ordcom_c")[0].offsetWidth-$("#jqGrid_ordcom_c")[0].offsetLeft-28));
+				refreshGrid('#jqGrid_pkg',urlParam_pkg,'add');
+				break;
 		}
 	});
 
@@ -104,10 +113,16 @@ function populate_ordcom_currpt(obj){
 	urlParam_rad.episno = obj.Episno;
 	urlParam_phys.mrn = obj.MRN;
 	urlParam_phys.episno = obj.Episno;
+	urlParam_rehab.mrn = obj.MRN;
+	urlParam_rehab.episno = obj.Episno;
+	urlParam_diet.mrn = obj.MRN;
+	urlParam_diet.episno = obj.Episno;
 	urlParam_dfee.mrn = obj.MRN;
 	urlParam_dfee.episno = obj.Episno;
 	urlParam_oth.mrn = obj.MRN;
 	urlParam_oth.episno = obj.Episno;
+	urlParam_pkg.mrn = obj.MRN;
+	urlParam_pkg.episno = obj.Episno;
 	
 }
 
@@ -202,4 +217,72 @@ function fail_msg_func(fail_msg_div=null){
 			}
 		});
 	}
+}
+
+var get_billtype_main=null;
+function get_billtype(){
+	var lastrowdata = getrow_bootgrid();
+
+	var param={
+		action:'get_value_default',
+		url:"./SalesOrderDetail/table",
+		action: 'get_billtype',
+		mrn:lastrowdata.MRN,
+		episno:lastrowdata.Episno,
+		billtype:lastrowdata.billtype,
+	}
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			get_billtype_main = data.rows;
+		}
+	});
+}
+
+function get_ordcom_totamount(){
+	var lastrowdata = getrow_bootgrid();
+
+	var param={
+		url:"./ordcom/table",
+		action: 'get_ordcom_totamount',
+		mrn:lastrowdata.MRN,
+		episno:lastrowdata.Episno
+	}
+	$.get( param.url+"?"+$.param(param), function( data ) {
+		
+	},'json').done(function(data) {
+		if(!$.isEmptyObject(data)){
+			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
+		}else{
+			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text('');
+		}
+	});
+}
+
+function set_ordcom_totamount(totamount){
+	$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(totamount).format('0,0.00'));
+}
+
+function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
+	var percent=(get_billtype_main.length>0)?get_billtype_main[0].bm_percent:100;
+	var amount=(get_billtype_main.length>0)?get_billtype_main[0].bm_amount:0;
+	get_billtype_main.forEach(function(e,i){
+		if(e.bs_chggroup == chggroup){
+			percent = e.bs_percent;
+			amount = e.bs_amount;
+			if(e.bi_chgcode == chgcode){
+				percent = e.bi_percent;
+				amount = e.bi_amount;
+			}
+		}
+	});
+
+	var discamount = ((((100-percent)/100)*unitprce*-1)*quantity) - amount;
+
+	return discamount;
+}
+
+function abscurrency(val,opt,rowObject ){
+	return Math.abs(val);
 }

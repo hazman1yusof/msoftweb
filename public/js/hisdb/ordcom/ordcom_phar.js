@@ -17,6 +17,7 @@ $(document).ready(function(){
 		editurl: "ordcom/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
 			{ label: 'Date', name: 'trxdate', width: 80, classes: 'wrap',editable:true,
 				// formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				edittype: 'custom', editoptions:
@@ -64,10 +65,6 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_phar
 				},
 			},
-			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
 			{
 				label: 'Tax', name: 'taxcode', width: 80, classes: 'wrap', editable: true,
 				editrules: { custom: true, custom_func: cust_rules_phar },
@@ -78,22 +75,27 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_phar
 				},
 			},
-			{label: 'Cost<br>Price', name: 'cost_price', hidden: true },
+			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
 			{
 				label: 'Quantity', name: 'quantity', width: 60, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
+			{label: 'Cost<br>Price', name: 'cost_price', hidden: true },
 			{ label: 'Total<br>Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,
+				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			{ label: 'Discount<br>Amount', name: 'discamt', hidden: true },
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
-			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+			{ label: 'Nett<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:totamountFormatter_phar,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
@@ -125,7 +127,7 @@ $(document).ready(function(){
 		sortorder: "desc",
 		pager: "#jqGrid_phar_pager",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-160);
+			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_phar.clear_fail();
 			if($("#jqGrid_phar").data('lastselrow')==undefined||$("#jqGrid_phar").data('lastselrow')==null||$("#jqGrid_phar").data('lastselrow').includes("jqg")){
 				$("#jqGrid_phar").setSelection($("#jqGrid_phar").getDataIDs()[0]);
@@ -140,7 +142,6 @@ $(document).ready(function(){
 			$('#dosage_phar,#frequency_phar,#instruction_phar,#drugindicator_phar').prop('readonly', true);
 		},
 		afterShowForm: function (rowid) {
-			console.log(rowid);
 		},
 		beforeSelectRow:function(rowid, e){
 		},
@@ -237,16 +238,16 @@ $(document).ready(function(){
 				{span:'#jqgrid_detail_phar_chgcode_'+row_id,value:selrowdata.chgcode,rowid:row_id},
 				{span:'#jqgrid_detail_phar_chgcode_desc_'+row_id,value:selrowdata.chgcode,rowid:row_id},
 				{span:'#jqgrid_detail_phar_dept_'+row_id,value:selrowdata.deptcode,rowid:row_id},
-				{span:'#jqgrid_detail_phar_cost_price_'+row_id,value:selrowdata.cost_price,rowid:row_id},
-				{span:'#jqgrid_detail_phar_unitprice_'+row_id,value:selrowdata.unitprce,rowid:row_id},
-				{span:'#jqgrid_detail_phar_discamt_'+row_id,value:selrowdata.discamt,rowid:row_id},
-				{span:'#jqgrid_detail_phar_taxamt_'+row_id,value:selrowdata.taxamount,rowid:row_id},
+				{span:'#jqgrid_detail_phar_cost_price_'+row_id,value:ret_parsefloat(selrowdata.cost_price),rowid:row_id},
+				{span:'#jqgrid_detail_phar_unitprice_'+row_id,value:ret_parsefloat(selrowdata.unitprce),rowid:row_id},
+				{span:'#jqgrid_detail_phar_discamt_'+row_id,value:ret_parsefloat(selrowdata.discamt),rowid:row_id},
+				{span:'#jqgrid_detail_phar_taxamt_'+row_id,value:ret_parsefloat(selrowdata.taxamount),rowid:row_id},
 			]);
 
 			write_detail_dosage(selrowdata,false,row_id);
 			
 
-			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight')));
+			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		}
     });
 // <div class="input-group oe_phar_div">
@@ -362,7 +363,7 @@ var myEditOptions_phar = {
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
 			if(focus == undefined){
@@ -372,7 +373,9 @@ var myEditOptions_phar = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
@@ -419,7 +422,7 @@ var myEditOptions_phar = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_phar')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     },
     errorTextFormat: function (data) {
@@ -557,7 +560,7 @@ var myEditOptions_phar_edit = {
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -568,11 +571,13 @@ var myEditOptions_phar_edit = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
 		// dialog_dosage_phar.off();
 		// dialog_frequency_phar.off();
 		// dialog_instruction_phar.off();
 		// dialog_drugindicator_phar.off();
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     	$("#jqGrid_phar_pagerRefresh,#jqGrid_phar_pagerDelete").show();
 		errorField.length=0;
@@ -627,7 +632,7 @@ var myEditOptions_phar_edit = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_phar')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_phar',urlParam_phar,'add');
     },
     errorTextFormat: function (data) {
@@ -704,20 +709,20 @@ function calculate_line_totgst_and_totamt_phar(event) {
 		rate = 0;
 	}
 
+	var discamt = calc_discamt_main($('#ordcomtt_phar').val(),$("#jqGrid_phar #"+id_optid+"_chgcode").val(),unitprce,quantity);
 	var amount = (unitprce*quantity);
-	var discamt = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
 
-	let taxamount = amount * rate / 100;
+	let taxamount = (amount + discamt) * rate / 100;
 
-	var totamount = amount - discamt + taxamount;
+	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_taxamount").val(taxamount);
-	$("#"+id_optid+"_discamt").val(discamt);
-	$("#"+id_optid+"_totamount").val(totamount);
+	$("#"+id_optid+"_discamt").val(numeral(discamt).format('0,0.00'));
 	$("#"+id_optid+"_amount").val(amount);
+	$("#"+id_optid+"_taxamount").val(taxamount);
+	$("#"+id_optid+"_totamount").val(totamount);
 
 	write_detail_phar('#jqgrid_detail_phar_taxamt',taxamount,id_optid);
-	write_detail_phar('#jqgrid_detail_phar_discamt',discamt,id_optid);
+	write_detail_phar('#jqgrid_detail_phar_discamt',numeral(discamt).format('0,0.00'),id_optid);
 	
 	var id="#jqGrid_phar #"+id_optid+"_quantity";
 	var name = "quantityrequest";
@@ -900,7 +905,7 @@ var dialog_chgcode_phar = new ordialog(
 			write_detail_phar('#jqgrid_detail_phar_unitprice',data['price'],id_optid);
 			$("#jqGrid_phar #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_phar #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_phar #"+id_optid+"_quantity").val('');
+			$("#jqGrid_phar #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_phar.check(errorField);
 
@@ -1615,21 +1620,15 @@ function itemcodeCustomEdit_phar(val, opt) {
 	var id_optid = opt.id.substring(0,opt.id.search("_"));
 	var myreturn = '<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_phar" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>';
 
-	myreturn += `<div><input type='hidden' name='billtypeperct' id='`+id_optid+`_billtypeperct'>`;
-	myreturn += `<input type='hidden' name='billtypeamt' id='`+id_optid+`_billtypeamt'>`;
-	myreturn += `<input type='hidden' name='discamt' id='`+id_optid+`_discamt'>`;
-	myreturn += `<input type='hidden' name='taxamount' id='`+id_optid+`_taxamount'>`;
 	// myreturn += `<input type='hidden' name='unitprce' id='`+id_optid+`_unitprce'>`;
-	myreturn += `<input type='hidden' name='tax_rate' id='`+id_optid+`_tax_rate'>`;
+	myreturn += `<div><input type='hidden' name='tax_rate' id='`+id_optid+`_tax_rate'>`;
 	myreturn += `<input type='hidden' name='qtyonhand' id='`+id_optid+`_qtyonhand'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
-
-		console.log('itemcodeCustomEdit_phar');
 	return $(myreturn);
 }
 function totamountFormatter_phar(val,opt,rowObject ){
-	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
+	let totamount = ret_parsefloat(rowObject.amount) + ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }
 function uomcodeCustomEdit_phar(val,opt){  	
@@ -1682,6 +1681,7 @@ function showdetail_phar(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
+	calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 	return cellvalue;
 }
 

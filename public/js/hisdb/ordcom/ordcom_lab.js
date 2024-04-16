@@ -17,6 +17,7 @@ $(document).ready(function(){
 		editurl: "ordcom/form",
 		colModel: [
 			{ label: 'compcode', name: 'compcode', hidden: true },
+			{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
 			{ label: 'Date', name: 'trxdate', width: 100, classes: 'wrap',editable:true,
 				// formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 				edittype: 'custom', editoptions:
@@ -74,23 +75,23 @@ $(document).ready(function(){
 				},
 			},
 			{label: 'Cost<br>Price', name: 'cost_price', hidden: true },
+			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
+				editrules:{required: true},editoptions:{readonly: "readonly"},
+			},
 			{
 				label: 'Quantity', name: 'quantity', width: 60, align: 'right', classes: 'wrap txnum',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
 			},
-			{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
-				editrules:{required: true},editoptions:{readonly: "readonly"},
-			},
 			{ label: 'Total<br>Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
-			{ label: 'Discount<br>Amount', name: 'discamount', hidden: true },
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
+				formatter:abscurrency,
+				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
 				formatter:totamountFormatter_lab,
@@ -120,7 +121,7 @@ $(document).ready(function(){
 		sortorder: "desc",
 		pager: "#jqGrid_lab_pager",
 		loadComplete: function(data){
-			calc_jq_height_onchange("jqGrid_lab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-160);
+			calc_jq_height_onchange("jqGrid_lab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_lab.clear_fail();
 			if($("#jqGrid_lab").data('lastselrow')==undefined||$("#jqGrid_lab").data('lastselrow')==null){
 				$("#jqGrid_lab").setSelection($("#jqGrid_lab").getDataIDs()[0]);
@@ -149,7 +150,7 @@ $(document).ready(function(){
 			// 	{span:'#jqgrid_detail_lab_dept',value:selrowdata.deptcode},
 			// 	{span:'#jqgrid_detail_lab_cost_price',value:selrowdata.cost_price},
 			// 	{span:'#jqgrid_detail_lab_unitprice',value:selrowdata.unitprce},
-			// 	{span:'#jqgrid_detail_lab_discamt',value:selrowdata.discamount},
+			// 	{span:'#jqgrid_detail_lab_discamt',value:selrowdata.discamt},
 			// 	{span:'#jqgrid_detail_lab_taxamt',value:selrowdata.taxamount},
 			// ]);
 
@@ -263,7 +264,7 @@ var myEditOptions_lab = {
 		$("#jqGrid_lab input[name='quantity']").on('keyup',{currency: [mycurrency_lab,mycurrency_np_lab]},calculate_line_totgst_and_totamt_lab);
 		$("#jqGrid_lab input[name='quantity']").on('blur',{currency: [mycurrency_lab,mycurrency_np_lab]},calculate_line_totgst_and_totamt_lab);
 
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 
 		$("#jqGrid_lab input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -274,7 +275,9 @@ var myEditOptions_lab = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_lab',urlParam_lab,'add');
     	$("#jqGrid_lab_pagerRefresh,#jqGrid_lab_pagerDelete").show();
 		errorField.length=0;
@@ -307,7 +310,6 @@ var myEditOptions_lab = {
 				// addinstruction: $("#instruction_lab_code").val(),
 				// drugindicator: $("#drugindicator_lab_code").val(),
 				taxamount: $("#jqGrid_lab input[name='taxamount']").val(),
-				discamount: $("#jqGrid_lab input[name='discamount']").val(),
 				unitprce: $("#jqGrid_lab input[name='unitprce']").val(),
 				// totamount: $("#jqGrid_lab input[name='totamount']").val(),
 			});
@@ -320,7 +322,7 @@ var myEditOptions_lab = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_lab')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_lab',urlParam_lab,'add');
     },
     errorTextFormat: function (data) {
@@ -439,7 +441,7 @@ var myEditOptions_lab_edit = {
 		$("#jqGrid_lab input[name='quantity']").on('keyup',{currency: [mycurrency_lab,mycurrency_np_lab]},calculate_line_totgst_and_totamt_lab);
 		$("#jqGrid_lab input[name='quantity']").on('blur',{currency: [mycurrency_lab,mycurrency_np_lab]},calculate_line_totgst_and_totamt_lab);
 
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		
 		$("#jqGrid_lab input[name='trxdate']").on('focus',function(){
 			let focus = $(this).data('focus');
@@ -450,11 +452,9 @@ var myEditOptions_lab_edit = {
 		});
 	},
 	aftersavefunc: function (rowid, response, options) {
-		// dialog_dosage_lab.off();
-		// dialog_frequency_lab.off();
-		// dialog_instruction_lab.off();
-		// dialog_drugindicator_lab.off();
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		let retval = JSON.parse(response.responseText);
+		set_ordcom_totamount(retval.totamount);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_lab',urlParam_lab,'add');
     	$("#jqGrid_lab_pagerRefresh,#jqGrid_lab_pagerDelete").show();
 		errorField.length=0;
@@ -491,7 +491,6 @@ var myEditOptions_lab_edit = {
 				// addinstruction: $("#instruction_lab_code").val(),
 				// drugindicator: $("#drugindicator_lab_code").val(),
 				taxamount: $("#jqGrid_lab input[name='taxamount']").val(),
-				discamount: $("#jqGrid_lab input[name='discamount']").val(),
 				unitprce: $("#jqGrid_lab input[name='unitprce']").val(),
 				// totamount: $("#jqGrid_lab input[name='totamount']").val(),
 			});
@@ -508,7 +507,7 @@ var myEditOptions_lab_edit = {
 		// delay(function(){
 		// 	fixPositionsOfFrozenDivs.call($('#jqGrid_lab')[0]);
 		// }, 500 );
-		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-100);
+		calc_jq_height_onchange("jqGrid_lab",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		refreshGrid('#jqGrid_lab',urlParam_lab,'add');
     },
     errorTextFormat: function (data) {
@@ -585,20 +584,20 @@ function calculate_line_totgst_and_totamt_lab(event) {
 		rate = 0;
 	}
 
+	var discamt = calc_discamt_main($('#ordcomtt_lab').val(),$("#jqGrid_lab #"+id_optid+"_chgcode").val(),unitprce,quantity);
 	var amount = (unitprce*quantity);
-	var discamount = ((unitprce*quantity) * billtypeperct / 100) + billtypeamt;
 
-	let taxamount = amount * rate / 100;
+	let taxamount = (amount + discamt) * rate / 100;
 
-	var totamount = amount - discamount + taxamount;
+	var totamount = amount + discamt + taxamount;
 
-	$("#"+id_optid+"_taxamount").val(taxamount);
-	$("#"+id_optid+"_discamt").val(discamount);
-	$("#"+id_optid+"_totamount").val(totamount);
+	$("#"+id_optid+"_discamt").val(numeral(discamt).format('0,0.00'));
 	$("#"+id_optid+"_amount").val(amount);
+	$("#"+id_optid+"_taxamount").val(taxamount);
+	$("#"+id_optid+"_totamount").val(totamount);
 
 	// write_detail_lab('#jqgrid_detail_lab_taxamt',taxamount);
-	// write_detail_lab('#jqgrid_detail_lab_discamt',discamount);
+	// write_detail_lab('#jqgrid_detail_lab_discamt',discamt);
 	
 	var id="#jqGrid_lab #"+id_optid+"_quantity";
 	var name = "quantityrequest";
@@ -774,7 +773,7 @@ var dialog_chgcode_lab = new ordialog(
 			$("#jqGrid_lab #"+id_optid+"_unitprce").val(data['price']);
 			$("#jqGrid_lab #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_lab #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_lab #"+id_optid+"_quantity").val('');
+			$("#jqGrid_lab #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_lab.check(errorField);
 
@@ -1114,12 +1113,8 @@ function itemcodeCustomEdit_lab(val, opt) {
 	var id_optid = opt.id.substring(0,opt.id.search("_"));
 	var myreturn = '<div class="input-group"><input autocomplete="off" jqgrid="jqGrid_lab" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="'+val+'" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>';
 
-	myreturn += `<div><input type='hidden' name='billtypeperct' id='`+id_optid+`_billtypeperct'>`;
-	myreturn += `<input type='hidden' name='billtypeamt' id='`+id_optid+`_billtypeamt'>`;
-	myreturn += `<input type='hidden' name='discamount' id='`+id_optid+`_discamt'>`;
-	myreturn += `<input type='hidden' name='taxamount' id='`+id_optid+`_taxamount'>`;
 	// myreturn += `<input type='hidden' name='unitprce' id='`+id_optid+`_unitprce'>`;
-	myreturn += `<input type='hidden' name='uom_rate' id='`+id_optid+`_tax_rate'>`;
+	myreturn += `<div><input type='hidden' name='uom_rate' id='`+id_optid+`_tax_rate'>`;
 	myreturn += `<input type='hidden' name='qtyonhand' id='`+id_optid+`_qtyonhand'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom' id='`+id_optid+`_convfactor_uom'>`;
 	myreturn += `<input type='hidden' name='convfactor_uom_recv' id='`+id_optid+`_convfactor_uom_recv'></div>`;
@@ -1127,7 +1122,7 @@ function itemcodeCustomEdit_lab(val, opt) {
 	return $(myreturn);
 }
 function totamountFormatter_lab(val,opt,rowObject ){
-	let totamount = ret_parsefloat(rowObject.amount) - ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
+	let totamount = ret_parsefloat(rowObject.amount) + ret_parsefloat(rowObject.discamt) + ret_parsefloat(rowObject.taxamount);
 	return numeral(totamount).format('0,0.00');
 }
 function uomcodeCustomEdit_lab(val,opt){  	
@@ -1180,6 +1175,7 @@ function showdetail_lab(cellvalue, options, rowObject){
 	}
 	
 	if(cellvalue == null)cellvalue = " ";
+	calc_jq_height_onchange("jqGrid_lab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 	return cellvalue;
 }
 

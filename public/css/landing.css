@@ -310,7 +310,7 @@ fieldset.mycss {
 .paneldiv{
 	/* padding-top: 5px !important; */
 	overflow-y: auto;
-	height: calc(100vh - 70px);
+	height: calc(100vh - 80px);
 }
 .paneldiv2{
 	/* padding-top: 5px !important; */
@@ -466,4 +466,17 @@ form#.form_medc p{
 }
 span.glyphicon.glyphicon-trash{
 	color: indianred;
+}
+div#ordcom_div_cyclebill{
+	position: absolute;
+    right: 30px;
+    top: 77px;
+/*    border: 1px solid cadetblue;*/
+/*    padding: 2px 8px;*/
+/*    border-radius: 5px;*/
+}
+div#ordcom_div_cyclebill > a{
+	display: inline-block;
+    padding: 2px;
+    cursor: pointer;
 }

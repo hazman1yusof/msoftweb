@@ -63,6 +63,8 @@ class SalesOrderDetailController extends defaultController
                 return $this->get_itemcode_uom_recv_check_oe($request);
             case 'get_mmacode':
                 return $this->get_mmacode($request);
+            case 'get_billtype':
+                return $this->get_billtype($request);
             default:
                 return 'error happen..';
         }
@@ -1324,6 +1326,50 @@ class SalesOrderDetailController extends defaultController
 
     }
 
+    public function get_billtype(Request $request){
+        $table = DB::table('hisdb.billtymst as bm')
+                        ->select(
+                            'bm.billtype as bm_billtype',
+                            'bm.service as bm_service',
+                            'bm.percent_ as bm_percent',
+                            'bm.amount as bm_amount',
+                            'bs.chggroup as bs_chggroup',
+                            'bs.allitem as bs_allitem',
+                            'bs.percent_ as bs_percent',
+                            'bs.amount as bs_amount',
+                            'bi.chgcode as bi_chgcode',
+                            'bi.percent_ as bi_percent',
+                            'bi.amount as bi_amount'
+                        )
+                        ->leftjoin('hisdb.billtysvc as bs', function($join){
+                            $join = $join->where('bs.compcode', '=', session('compcode'));
+                            $join = $join->on('bs.billtype', '=', 'bm.billtype');
+                            $join = $join->where('bm.service', '=', '0');
+                        })
+                        ->leftjoin('hisdb.billtyitem as bi', function($join){
+                            $join = $join->where('bi.compcode', '=', session('compcode'));
+                            $join = $join->on('bi.billtype', '=', 'bs.billtype');
+                            $join = $join->where('bs.allitem', '=', '0');
+                            $join = $join->on('bi.chggroup', '=', 'bs.chggroup');
+                        })
+                        ->where('bm.compcode',session('compcode'))
+                        ->where('bm.effdatefrom', '<=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'))
+                        ->where(function($join){
+                               $join = $join->where('bm.effdateto', '>=', Carbon::now("Asia/Kuala_Lumpur")->format('Y-m-d'));
+                               $join = $join->orWhereNull('bm.effdateto');
+                         })
+                        ->where('bm.recstatus','ACTIVE')
+                        ->where('bm.billtype',$request->billtype)
+                        ->orderBy('bm.idno','desc');
+
+        $responce = new stdClass();
+        $responce->rows = $table->get();
+        $responce->sql = $table->toSql();
+        $responce->sql_bind = $table->getBindings();
+        $responce->sql_query = $this->getQueries($table);
+        return json_encode($responce);
+
+    }
 
     public function chgDate($date){
         if(!empty($date)){
