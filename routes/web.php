@@ -697,6 +697,14 @@ Route::get('/consolidationCostCenter/form','finance\ConsolidationCostCenterContr
 Route::post('/consolidationCostCenterDtl/form','finance\ConsolidationCostCenterControllerDtl@form');
 Route::get('/consolidationCostCenterDtl/table','finance\ConsolidationCostCenterControllerDtl@table');
 
+//// Report Format ///
+Route::get('/reportFormat','finance\ReportFormatController@show');
+Route::get('/reportFormat/table','finance\ReportFormatController@table');
+Route::post('/reportFormat/form','finance\ReportFormatController@form');
+Route::get('/reportFormat/form','finance\ReportFormatController@form');
+Route::post('/reportFormatDetail/form','finance\ReportFormatDetailController@form');
+Route::get('/reportFormatDetail/table','finance\ReportFormatDetailController@table');
+
 //// period setup ///
 Route::get('/period','finance\PeriodController@show');
 Route::get('/period/table','finance\PeriodController@table');
