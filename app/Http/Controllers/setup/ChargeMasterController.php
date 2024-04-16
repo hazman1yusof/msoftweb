@@ -409,8 +409,6 @@ class ChargeMasterController extends defaultController
             
             if($request->chgtype == 'PKG' || $request->chgtype == 'pkg'){
                 
-                $recstatus_use = 'DEACTIVE';
-                
                 DB::table('hisdb.chgprice')
                     ->where('compcode','=',session('compcode'))
                     ->where('chgcode','=',strtoupper($request->chgcode))
@@ -431,8 +429,6 @@ class ChargeMasterController extends defaultController
                         'lastupdate' => Carbon::now("Asia/Kuala_Lumpur"),
                     ]);
                 
-                $recstatus_use = 'ACTIVE';
-                
             }
             
             DB::table('hisdb.chgmast')
@@ -446,7 +442,7 @@ class ChargeMasterController extends defaultController
                     'constype' => strtoupper($request->constype),
                     'chggroup' => $request->chggroup,
                     'chgtype' => $request->chgtype,
-                    'recstatus' => $recstatus_use,
+                    'recstatus' => 'ACTIVE',
                     'uom' => strtoupper($request->uom),
                     'invflag' => $request->invflag,
                     'packqty' => $request->packqty,
@@ -518,7 +514,13 @@ class ChargeMasterController extends defaultController
     }
     
     public function chgpricelatest(Request $request){
-        $table = DB::table('hisdb.chgmast');
+        $table = DB::table('hisdb.chgmast as cm')
+                    ->join('hisdb.chgprice as cp', function($join) {
+                        $join = $join->on('cp.chgcode', '=', 'cm.chgcode')
+                                    ->on('cp.uom', '=', 'cm.uom')
+                                    ->where('cp.compcode', '=', session('compcode'))
+                                    ->where('cp.effdate', '<=', Carbon::now());
+                    });
 
         if(!empty($request->searchCol)){
             $searchCol_array = $request->searchCol;
@@ -552,33 +554,53 @@ class ChargeMasterController extends defaultController
         }
 
         $table = $table
-                ->where('recstatus','=','ACTIVE')
-                ->where('compcode','=',session('compcode'));
+                ->where('cm.recstatus','=','ACTIVE')
+                ->where('cm.compcode','=',session('compcode'));
 
         $paginate = $table->paginate($request->rows);
 
-        foreach ($paginate->items() as $key => $value) {
-            $chgprice = DB::table('hisdb.chgprice')
-                        ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$value->chgcode)
-                        ->whereDate('effdate', '<=', Carbon::now())
-                        ->orderBy('effdate', 'DESC');
+        $rows = $paginate->items();
 
-            if($chgprice->exists()){
-                $chgprice_get = $chgprice->first();
-                $value->chgprice_amt1 = $chgprice_get->amt1;
-                $value->chgprice_amt2 = $chgprice_get->amt2;
-                $value->chgprice_amt3 = $chgprice_get->amt3;
-                // $value->chgprice_iptax = $chgprice_get->iptax;
-                // $value->chgprice_optax = $chgprice_get->optax;
-            }else{
-                $value->chgprice_amt1 = "";
-                $value->chgprice_amt2 = "";
-                $value->chgprice_amt3 = "";
-                // $value->chgprice_iptax = "";
-                // $value->chgprice_optax = "";
+        foreach ($rows as $key => $value) {
+            // $chgprice = DB::table('hisdb.chgprice')
+            //             ->where('compcode','=',session('compcode'))
+            //             ->where('chgcode','=',$value->chgcode)
+            //             ->where('uom','=',$value->uom)
+            //             ->whereDate('effdate', '<=', Carbon::now())
+            //             ->orderBy('effdate', 'DESC');
+
+            // if($chgprice->exists()){
+            //     $chgprice_get = $chgprice->first();
+            //     $value->chgprice_amt1 = $chgprice_get->amt1;
+            //     $value->chgprice_amt2 = $chgprice_get->amt2;
+            //     $value->chgprice_amt3 = $chgprice_get->amt3;
+            //     // $value->chgprice_iptax = $chgprice_get->iptax;
+            //     // $value->chgprice_optax = $chgprice_get->optax;
+            // }else{
+            //     $value->chgprice_amt1 = "";
+            //     $value->chgprice_amt2 = "";
+            //     $value->chgprice_amt3 = "";
+            //     // $value->chgprice_iptax = "";
+            //     // $value->chgprice_optax = "";
+            // }
+            $chgprice_obj = DB::table('hisdb.chgprice as cp')
+                ->where('cp.compcode', '=', session('compcode'))
+                ->where('cp.chgcode', '=', $value->chgcode)
+                ->where('cp.uom', '=', $value->uom)
+                ->whereDate('cp.effdate', '<=', Carbon::now())
+                ->orderBy('cp.effdate','desc');
+
+            if($chgprice_obj->exists()){
+                $chgprice_obj = $chgprice_obj->first();
+
+                if($value->chgcode == $chgprice_obj->chgcode && $value->idno != $chgprice_obj->idno){
+                    unset($rows[$key]);
+                    continue;
+                }
             }
         }
+        
+        $rows = array_values($rows);
 
         //////////paginate/////////
 
@@ -586,7 +608,7 @@ class ChargeMasterController extends defaultController
         $responce->page = $paginate->currentPage();
         $responce->total = $paginate->lastPage();
         $responce->records = $paginate->total();
-        $responce->rows = $paginate->items();
+        $responce->rows = $rows;
         $responce->sql = $table->toSql();
         $responce->sql_bind = $table->getBindings();
         return json_encode($responce);

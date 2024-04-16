@@ -40,7 +40,7 @@ class ChargeMasterDetailController extends defaultController
         }
     }
 
-    public function add(Request $request){
+    public function add(Request $request){dd('sini');
         DB::beginTransaction();
 
         try {
@@ -58,13 +58,13 @@ class ChargeMasterDetailController extends defaultController
                 $effdate_chg = $this->turn_date($request->effdate);
             }
 
-            if(empty($request->autopull)){
-                    $request->autopull = null;
-            }
+            // if(empty($request->autopull)){
+            //         $request->autopull = null;
+            // }
 
-            if(empty($request->addchg)){
-                $request->addchg = null;
-            }
+            // if(empty($request->addchg)){
+            //     $request->addchg = null;
+            // }
 
             $chgmast = DB::table('hisdb.chgmast')
                         ->where('compcode','=',session('compcode'))
@@ -198,13 +198,13 @@ class ChargeMasterDetailController extends defaultController
                         ->where('compcode','=',session('compcode'))
                         ->where('pkgcode','=',$request->pkgcode)
                         ->whereDate('effectdate', $effectdate)
-                        // ->where('effectdate','=',$request->effectdate)
                         ->count('lineno_');
 
             $chgprice = DB::table('hisdb.chgprice')
                         ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$request->pkgcode)
-                        ->whereDate('effdate', $effectdate)
+                        ->where('chgcode','=',$request->chgcode)
+                        ->where('uom','=',$request->uom)
+                        ->orderBy('effdate','desc')
                         ->first();
 
             $li=intval($sqlln)+1;
@@ -214,6 +214,7 @@ class ChargeMasterDetailController extends defaultController
                     'lineno_' => $li,
                     'compcode' => session('compcode'),
                     'pkgcode' => $request->pkgcode,
+                    'uom' => $request->uom,
                     'effectdate' => $effectdate,
                     'chgcode' => $request->chgcode,
                     'quantity' => $request->quantity,
@@ -250,25 +251,34 @@ class ChargeMasterDetailController extends defaultController
         DB::beginTransaction();
 
         try {
-
             $pkgdet = DB::table('hisdb.pkgdet')
                         ->where('compcode','=',session('compcode'))
                         ->where('idno','=',$request->dataobj[0]['idno'])
                         ->first();
 
-            $chgprice = DB::table('hisdb.chgprice')
+            foreach ($request->dataobj as $key => $value) {
+
+                // $pkgdet = DB::table('hisdb.pkgdet')
+                //         ->where('compcode','=',session('compcode'))
+                //         ->where('pkgcode','=',$request->pkgcode)
+                //         ->whereDate('effectdate', $effectdate)
+                //         ->get();
+
+                $chgprice = DB::table('hisdb.chgprice')
                         ->where('compcode','=',session('compcode'))
-                        ->where('chgcode','=',$pkgdet->pkgcode)
-                        ->whereDate('effdate', $pkgdet->effectdate)
+                        ->where('chgcode','=',$value['chgcode'])
+                        ->where('uom','=',$value['uom'])
+                        ->whereDate('effdate', '<=', Carbon::now("Asia/Kuala_Lumpur"))
+                        ->orderBy('effdate','desc')
                         ->first();
 
-            foreach ($request->dataobj as $key => $value) {
                 ///1. update detail
                 DB::table('hisdb.pkgdet')
                     ->where('compcode','=',session('compcode'))
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'chgcode' => $value['chgcode'],
+                        'uom' => $value['uom'],
                         'quantity' => $value['quantity'],
                         'actprice1' => $chgprice->amt1,
                         'pkgprice1' => $value['pkgprice1'],

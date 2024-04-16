@@ -142,23 +142,16 @@ $(document).ready(function(){
 			}
 		},
 		onSelectRow:function(rowid){
-			var selrowdata = $('#jqGrid_phys').jqGrid ('getRowData', rowid);
-
-			// write_detail_phys([
-			// 	{span:'#jqgrid_detail_phys_chgcode',value:selrowdata.chgcode},
-			// 	{span:'#jqgrid_detail_phys_chgcode_desc',value:selrowdata.chgcode},
-			// 	{span:'#jqgrid_detail_phys_dept',value:selrowdata.deptcode},
-			// 	{span:'#jqgrid_detail_phys_cost_price',value:selrowdata.cost_price},
-			// 	{span:'#jqgrid_detail_phys_unitprice',value:selrowdata.unitprce},
-			// 	{span:'#jqgrid_detail_phys_discamt',value:selrowdata.discamt},
-			// 	{span:'#jqgrid_detail_phys_taxamt',value:selrowdata.taxamount},
-			// ]);
-
-			// write_detail_dosage(selrowdata);
+			if(selrowData('#jqGrid_phys').trxtype == 'PD'){
+				$('#jqGrid_phys_iledit,#jqGrid_phys_pagerDelete').hide();
+			}else{
+				$('#jqGrid_phys_iledit,#jqGrid_phys_pagerDelete').show();
+			}
 		},
 		ondblClickRow: function(rowId) {
-			$('#jqGrid_phys_iledit').click();
-			$("#jqGrid_phys").data('lastselrow',rowId);
+			if(selrowData('#jqGrid_phys').trxtype != 'PD'){
+				$('#jqGrid_phys_iledit').click();
+			};
 		}
     });
 	jqgrid_label_align_right("#jqGrid_phys");
@@ -224,6 +217,7 @@ var myEditOptions_phys = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
+		$("#jqGrid_phys").data('lastselrow',rowId)
 		set_userdeptcode();
 		errorField.length=0;
 		myfail_msg_phys.clear_fail();
@@ -336,6 +330,7 @@ var myEditOptions_phys_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
+		$("#jqGrid_phys").data('lastselrow',rowId)
 		set_userdeptcode();
 		var selrowdata = $('#jqGrid_phys').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);

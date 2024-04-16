@@ -65,8 +65,8 @@
 				<li><a data-toggle="tab" id="ordcom_navtab_phys" href="#tab-phys" data-ord_chgtype='PHYS'>Physioteraphy</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_rehab" href="#tab-rehab" data-ord_chgtype='REHAB'>Rehabilitation</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_diet" href="#tab-diet" data-ord_chgtype='DIET'>Dietician</a></li>
+				<li><a data-toggle="tab" id="ordcom_navtab_pkg" href="#tab-pkg" data-ord_chgtype='PKG'>Package</a></li>
 				<li><a data-toggle="tab" id="ordcom_navtab_oth" href="#tab-oth" data-ord_chgtype='OTH'>Others</a></li>
-				<li><a data-toggle="tab" id="ordcom_navtab_pkg" href="#tab-pkg" data-ord_chgtype='PKG'>Packages</a></li>
 			</ul>
 			<div class="tab-content" style="padding: 10px 5px;">
 			  <div id="tab-phar" class="active in tab-pane fade">
