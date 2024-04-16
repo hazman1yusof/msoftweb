@@ -52,6 +52,20 @@ span.error_pkgmast {
     color: darkred;
 }
 
+.mycontainer .mybtnpdf{
+	background-image: linear-gradient(to bottom, #ffbbbb 0%, #ffd1d1 80%) !important;
+	color: #af2525;
+	border-color: #af2525;
+	margin-bottom: 5px;
+}
+
+.mycontainer .mybtnxls{
+	background-image: linear-gradient(to bottom, #a0cda0 0%, #b3d1b3 80%) !important;
+	color: darkgreen;
+	border-color: darkgreen;
+	margin-bottom: 5px;
+}
+
 @endsection
 
 @section('body')
@@ -179,20 +193,18 @@ span.error_pkgmast {
   			<div class="panel panel-default" id="jqGrid4_c" style="position:relative;">
     			<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid4_panel">
 					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Package Deal Maintenance Details
-    			</div>
+    				<a class='pull-right pointer text-primary' style="padding-left: 30px;color: #518351;" id='pdfgen_excelPkg'>
+						<span class='fa fa-print'></span> Package Deal
+					</a>
+				</div>
     			<div id="jqGrid4_panel" class="panel-collapse collapse">
     				<span class="error_pkgmast"></span>
 					<div class="panel-body">
 						<form id='formdata4' class='form-vertical' style='width:99%'>
 						{{ csrf_field() }}
-							<!-- <div class='col-md-12' style="padding:0 0 15px 0">
-								<table id="jqGridPkgMast" class="table table-striped"></table>
-								<div id="jqGridPager"></div>
-							</div> -->
+					
 							<input id="pkgcode" name="pkgcode" type="hidden">
 							<input id="description" name="description" type="hidden">
-							<!-- <input id="autopull" name="autopull" type="hidden">
-							<input id="addchg" name="addchg" type="hidden"> -->
 
 							<!--< label class="col-md-1 control-label" for="autopull">AutoPull</label> 
 								<div class="col-md-3">
@@ -277,6 +289,27 @@ span.error_pkgmast {
 			</div>
 	</div>
 
+	<!------------------------- Package Deal dialog search -------------------->
+	<div id="pkgDealDialog" title="Package Deals Listing">
+		<div class="container mycontainer">
+			<input id="pkgDeal" type="hidden" class="form-control input-sm" readonly>
+			<div class="panel-body"  style="width: 250px;text-align: center">
+				<form id='formdata_pkgDeal'>
+					
+					<input id="pkgcodePkg" name="pkgcodePkg" type="hidden">
+					<input id="effectdate" name="effectdate" type="hidden">
+
+					<button name="pdfgenPkg" type="button" class="mybtn btn btn-sm mybtnpdf" id="pdfgenPkg">
+						<span class="fa fa-file-pdf-o fa-lg"></span> Generate Report PDF
+					</button>
+					<button name="excelPkg" type="button" class="mybtn btn btn-sm mybtnxls" id="excelPkg">
+						<span class="fa fa-file-excel-o fa-lg"></span> Generate Report Excel
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
 	<div id="dialogForm" title="Add Form">
 		<div class='panel panel-info'>
 			<div class="panel-heading">Charge Master</div>
