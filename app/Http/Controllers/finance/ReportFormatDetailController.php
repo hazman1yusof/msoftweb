@@ -57,8 +57,24 @@ class ReportFormatDetailController extends defaultController
         
         $table = DB::table('finance.glrptfmt')
                 ->where('rptname','=',$request->rptname)
-                ->where('compcode','=',session('compcode'))
-                ->orderBy('lineno_','asc');
+                ->where('compcode','=',session('compcode'));
+
+        if(!empty($request->sidx)){
+
+            if(!empty($request->fixPost)){
+                $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
+            }
+            
+            $pieces = explode(", ", $request->sidx .' '. $request->sord);
+            if(count($pieces)==1){
+                $table = $table->orderBy($request->sidx, $request->sord);
+            }else{
+                for ($i = sizeof($pieces)-1; $i >= 0 ; $i--) {
+                    $pieces_inside = explode(" ", $pieces[$i]);
+                    $table = $table->orderBy($pieces_inside[0], $pieces_inside[1]);
+                }
+            }
+        }
         
         //////////paginate//////////
         $paginate = $table->paginate($request->rows);

@@ -128,8 +128,17 @@ $(document).ready(function(){
 		},
 		afterShowForm: function (rowid) {
 		},
+		onSelectRow:function(rowid){
+			if(selrowData('#jqGrid_dfee').trxtype == 'PD'){
+				$('#jqGrid_dfee_iledit,#jqGrid_dfee_pagerDelete').hide();
+			}else{
+				$('#jqGrid_dfee_iledit,#jqGrid_dfee_pagerDelete').show();
+			}
+		},
 		ondblClickRow: function(rowId) {
-			$('#jqGrid_dfee_iledit').click();
+			if(selrowData('#jqGrid_dfee').trxtype != 'PD'){
+				$('#jqGrid_dfee_iledit').click();
+			}
 		}
     });
 	

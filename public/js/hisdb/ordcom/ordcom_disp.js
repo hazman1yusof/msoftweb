@@ -142,23 +142,16 @@ $(document).ready(function(){
 			}
 		},
 		onSelectRow:function(rowid){
-			var selrowdata = $('#jqGrid_disp').jqGrid ('getRowData', rowid);
-
-			// write_detail_disp([
-			// 	{span:'#jqgrid_detail_disp_chgcode',value:selrowdata.chgcode},
-			// 	{span:'#jqgrid_detail_disp_chgcode_desc',value:selrowdata.chgcode},
-			// 	{span:'#jqgrid_detail_disp_dept',value:selrowdata.deptcode},
-			// 	{span:'#jqgrid_detail_disp_cost_price',value:selrowdata.cost_price},
-			// 	{span:'#jqgrid_detail_disp_unitprice',value:selrowdata.unitprce},
-			// 	{span:'#jqgrid_detail_disp_discamt',value:selrowdata.discamt},
-			// 	{span:'#jqgrid_detail_disp_taxamt',value:selrowdata.taxamount},
-			// ]);
-
-			// write_detail_dosage(selrowdata);
+			if(selrowData('#jqGrid_disp').trxtype == 'PD'){
+				$('#jqGrid_disp_iledit,#jqGrid_disp_pagerDelete').hide();
+			}else{
+				$('#jqGrid_disp_iledit,#jqGrid_disp_pagerDelete').show();
+			}
 		},
 		ondblClickRow: function(rowId) {
-			$('#jqGrid_disp_iledit').click();
-			$("#jqGrid_disp").data('lastselrow',rowId);
+			if(selrowData('#jqGrid_disp').trxtype != 'PD'){
+				$('#jqGrid_disp_iledit').click();
+			}
 		}
     });
 	jqgrid_label_align_right("#jqGrid_disp");
@@ -224,6 +217,7 @@ var myEditOptions_disp = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
+		$("#jqGrid_disp").data('lastselrow',rowid);
 		set_userdeptcode();
 		errorField.length=0;
 		myfail_msg_disp.clear_fail();
@@ -336,6 +330,7 @@ var myEditOptions_disp_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
+		$("#jqGrid_disp").data('lastselrow',rowid);
 		set_userdeptcode();
 		var selrowdata = $('#jqGrid_disp').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);

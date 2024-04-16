@@ -146,9 +146,16 @@ $(document).ready(function(){
 		beforeSelectRow:function(rowid, e){
 		},
 		onSelectRow:function(rowid){
+			if(selrowData('#jqGrid_phar').trxtype == 'PD'){
+				$('#jqGrid_phar_iledit,#jqGrid_phar_pagerDelete').hide();
+			}else{
+				$('#jqGrid_phar_iledit,#jqGrid_phar_pagerDelete').show();
+			}
 		},
 		ondblClickRow: function(rowId) {
-			$('#jqGrid_phar_iledit').click();
+			if(selrowData('#jqGrid_phar').trxtype != 'PD'){
+				$('#jqGrid_phar_iledit').click();
+			}
 		},
 		subGridBeforeExpand(pID, id){
 			if($("#jqGrid_phar").data('lastselrow')==id){
@@ -274,6 +281,9 @@ $(document).ready(function(){
 		title: "Delete Selected Row",	
 		onClickButton: function () {	
 			selRowId = $("#jqGrid_phar").jqGrid('getGridParam', 'selrow');	
+			if(selrowData('#jqGrid_phar').trxtype == 'PD'){
+				return false;
+			}
 			if (!selRowId) {	
 				alert('Please select row');
 			} else {

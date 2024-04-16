@@ -305,9 +305,9 @@ $(document).ready(function () {
 			$("#jqGridPager td[title='Edit Selected Row']").click();
 		},
 		gridComplete: function(){
-			if(oper == 'add'){
+			// if(oper == 'add'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
-			}
+			// }
 
 			$('#'+$("#jqGrid").jqGrid ('getGridParam', 'selrow')).focus();
 			$("#searchForm input[name=Stext]").focus();
@@ -494,12 +494,12 @@ $(document).ready(function () {
 	/////////////////////////////////saveHeader//////////////////////////////////////////////////////////
 	function saveHeader(form,selfoper,saveParam,obj){
 		if(obj==null){
-			if($("#chgtype").val()=="PKG" || $("#chgtype").val()=="pkg"){
-				obj={recstatus:'DEACTIVE'};
-				saveParam.field.push("recstatus");
-			}else{
+			// if($("#chgtype").val()=="PKG" || $("#chgtype").val()=="pkg"){
+			// 	obj={recstatus:'DEACTIVE'};
+			// 	saveParam.field.push("recstatus");
+			// }else{
 				obj={};
-			}
+			// }
 		}
 		saveParam.oper=selfoper;
 
@@ -1065,7 +1065,7 @@ $(document).ready(function () {
 						$(element).val($('#uom').val());
 					}
 			}},
-			{ label: 'AutoPull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
+			{ label: 'Auto Pull', name: 'autopull', width: 40, classes: 'wrap', editable: true, edittype:"select",formatter:'select', 
 				editoptions:{
 					value:"1:YES;0:NO"
 				}
@@ -1148,7 +1148,7 @@ $(document).ready(function () {
 			$("#jqGridPagerPkg2Delete").show();
 		},
 		beforeSaveRow: function(options, rowid) {
-
+			mycurrency2.formatOff()
 			//if(errorField.length>0)return false;  
 
 			let data = $('#jqGridPkg2').jqGrid ('getRowData', rowid);
@@ -1960,7 +1960,7 @@ $(document).ready(function () {
 	var urlParam4={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus'],
+		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus','pd.uom'],
 		table_name:['hisdb.pkgdet AS pd'],
 		table_id:'lineno_',
 		filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
@@ -1984,6 +1984,12 @@ $(document).ready(function () {
 						{  custom_element:chgcodeCustomEdit,
 							custom_value:galGridCustomValue 	
 						},
+			},
+			{ label: 'UOM', name: 'uom', width: 40, align: 'right', classes: 'wrap', editable:true,
+				edittype:"text",
+				editoptions:{
+					maxlength: 100,readonly: "readonly"
+				},
 			},
 			{ label: 'Quantity', name: 'quantity', width: 150, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
@@ -2218,6 +2224,7 @@ $(document).ready(function () {
 				{	
 					'idno' : data.idno,
 					'chgcode' : $("#jqGrid4 input#"+ids[i]+"_chgcode").val(),
+					'uom' : $("#jqGrid4 input#"+ids[i]+"_uom").val(),
 					'quantity' : $("#jqGrid4 input#"+ids[i]+"_quantity").val(),
 					'actprice1' : selrowData('#jqGrid4').actprice1,
 					'pkgprice1' : $("#jqGrid4 input#"+ids[i]+"_pkgprice1").val(),
@@ -2608,7 +2615,7 @@ $(document).ready(function () {
 	cg_chggroup.on();
 
 	$('#btn_chgtype').on( "click", function() {
-		$('#chgtype ~ a').click();
+		$('#ct_chgtype ~ a').click();
 	});
 	var ct_chgtype = new ordialog(
 		'ct_chgtype', 'hisdb.chgtype', '#ct_chgtype', 'errorField',
@@ -2622,7 +2629,7 @@ $(document).ready(function () {
 				filterVal:['session.compcode','ACTIVE']
 			},
 			ondblClickRow: function () {
-				let data = selrowData('#' + chgtype.gridname).chgtype;
+				let data = selrowData('#' + ct_chgtype.gridname).chgtype;
 				$("#searchForm input[name='Stext']").val($('#ct_chgtype').val());
 
 				urlParam.searchCol=["chgtype"];
@@ -2815,13 +2822,13 @@ $(document).ready(function () {
 
 	$('#chgtype').blur(function(){
 		let textval = $(dialog_chgtype.textfield).val();
-		if(textval == 'pkg' || textval == 'PKG'){
-			$('#recstatus').val('DEACTIVE');
-			$("#formdata [name='recstatus'][value='DEACTIVE']").prop('checked', true);
-		}else{
+		// if(textval == 'pkg' || textval == 'PKG'){
+		// 	$('#recstatus').val('DEACTIVE');
+		// 	$("#formdata [name='recstatus'][value='DEACTIVE']").prop('checked', true);
+		// }else{
 			$('#recstatus').val('ACTIVE');
 			$("#formdata [name='recstatus'][value='ACTIVE']").prop('checked', true);
-		}
+		// }
 	});
 
 	var dialog_doctorcode= new ordialog(
@@ -3203,7 +3210,8 @@ $(document).ready(function () {
 		{	colModel:[
 				{label:'Charge Code',name:'chgcode',width:200,classes:'pointer',canSearch:true,checked:true,or_search:true},
 				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,or_search:true},
-				{label:'chgprice_amt1',name:'chgprice_amt1', hidden:true},
+				{label:'UOM',name:'uom',width:50,classes:'pointer'},
+				{label:'Real Amt',width:50,name:'amt1', hidden:false},
 				{label:'chgprice_amt2',name:'chgprice_amt2', hidden:true},
 				{label:'chgprice_amt3',name:'chgprice_amt3', hidden:true},
 			],
@@ -3232,9 +3240,11 @@ $(document).ready(function () {
 				let data=selrowData('#'+dialog_dtlchgcode.gridname);
 
 				// $("#jqGrid4 [name='quantity']");
-				console.log(data.chgprice_amt1);
+				console.log(data.amt1);
 
-				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice1:data.chgprice_amt1});
+				$("#jqGrid4 input#"+id_optid+"_uom").val(data.uom);
+
+				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice1:data.amt1});
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice2:data.chgprice_amt2});
 				$("#jqGrid4").jqGrid('setRowData', id_optid ,{actprice3:data.chgprice_amt3});
 

@@ -588,15 +588,44 @@ $(document).ready(function () {
 					$("#jqGrid2 input#"+ids[i]+"_costcodeto").hide();
 				}
 				
-				// $("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){
-				// 	var rowdef1 = $("#jqGrid2 select#"+ids[i]+"_rowdef").val();
+				$("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){
+					var rowdef1 = $(this).val();
+					var rowid = $(this).attr('rowid');
 					
-				// 	if(rowdef1 == 'D'){	// show
-				// 		$(".input-group#"+ids[i]+"_code").show();
-				// 	}else{	// hide
-				// 		$(".input-group#"+ids[i]+"_code").hide();
-				// 	}
-				// });
+					if(rowdef1 == 'H'){
+						$("#jqGrid2 input#"+rowid+"_description").show();
+						$(".input-group#"+rowid+"_code").hide();
+						$("#jqGrid2 input#"+rowid+"_note").hide();
+						$("#jqGrid2 input#"+rowid+"_formula").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodefr").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodeto").hide();
+						$("#jqGrid2 input#"+rowid+"_revsign").hide();
+					}else if(rowdef1 == 'D'){
+						$(".input-group#"+rowid+"_code").show();
+						$("#jqGrid2 input#"+rowid+"_note").show();
+						$("#jqGrid2 input#"+rowid+"_description").show();
+						$("#jqGrid2 input#"+rowid+"_costcodefr").show();
+						$("#jqGrid2 input#"+rowid+"_costcodeto").show();
+						$("#jqGrid2 input#"+rowid+"_revsign").show();
+						$("#jqGrid2 input#"+rowid+"_formula").hide();
+					}else if(rowdef1 == 'S'){
+						$(".input-group#"+rowid+"_code").hide();
+						$("#jqGrid2 input#"+rowid+"_note").hide();
+						$("#jqGrid2 input#"+rowid+"_description").hide();
+						$("#jqGrid2 input#"+rowid+"_formula").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodefr").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodeto").hide();
+						$("#jqGrid2 input#"+rowid+"_revsign").hide();
+					}else{	// if(rowdef1 == 'TO')
+						$("#jqGrid2 input#"+rowid+"_description").show();
+						$("#jqGrid2 input#"+rowid+"_formula").show();
+						$("#jqGrid2 input#"+rowid+"_revsign").show();
+						$(".input-group#"+rowid+"_code").hide();
+						$("#jqGrid2 input#"+rowid+"_note").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodefr").hide();
+						$("#jqGrid2 input#"+rowid+"_costcodeto").hide();
+					}
+				});
 			}
 			onall_editfunc();
 			hideatdialogForm(true,'saveallrow');
@@ -714,7 +743,7 @@ $(document).ready(function () {
 	////////////////////////////////////////////////////custom input////////////////////////////////////////////////////
 	function codeCustomEdit(val, opt) {
 		val = getEditVal(val);
-		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="code" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary" id="'+opt.id+'" name="code"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+		return $('<div class="input-group"><input jqgrid="jqGrid2" optid="'+opt.id+'" id="'+opt.id+'" name="code" type="text" class="form-control input-sm" style="text-transform:uppercase" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary" id="'+opt.id+'"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 	
 	function galGridCustomValue (elem, operation, value){
