@@ -90,7 +90,7 @@ $(document).ready(function(){
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
@@ -126,6 +126,13 @@ $(document).ready(function(){
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGrid_phar_pager",
+		gridview: true,
+		rowattr:function(data){
+			let trxtype = data.trxtype;
+		    if (trxtype == 'PD') {
+		        return {"class": "tr_pdclass"};
+		    }
+		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_phar.clear_fail();
@@ -146,9 +153,10 @@ $(document).ready(function(){
 		beforeSelectRow:function(rowid, e){
 		},
 		onSelectRow:function(rowid){
-			if(selrowData('#jqGrid_phar').trxtype == 'PD'){
+			$('#jqGrid_phar_iledit,#jqGrid_phar_pagerDelete').hide();
+			if($('#jqGrid_phar_iladd').hasClass('ui-disabled')){
 				$('#jqGrid_phar_iledit,#jqGrid_phar_pagerDelete').hide();
-			}else{
+			}else if(selrowData('#jqGrid_phar').trxtype == 'OE' || selrowData('#jqGrid_phar').trxtype == 'PK'){
 				$('#jqGrid_phar_iledit,#jqGrid_phar_pagerDelete').show();
 			}
 		},
@@ -257,10 +265,6 @@ $(document).ready(function(){
 			calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		}
     });
-// <div class="input-group oe_phar_div">
-// 								<input autocomplete="off" name="drugindicator" id="drugindicator_phar_`+row_id+`" optid="`+row_id+`" type="text" class="form-control input-sm" style="text-transform:uppercase">
-// 								<a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a>
-// 							</div>
 	jqgrid_label_align_right("#jqGrid_phar");
 	
 	$("#jqGrid_phar").inlineNav('#jqGrid_phar_pager', {
@@ -371,7 +375,7 @@ var myEditOptions_phar = {
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
-		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		$("#jqGrid_phar input[name='trxdate']").on('focus',function(){
@@ -568,7 +572,7 @@ var myEditOptions_phar_edit = {
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
 		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
-		$("#jqGrid_phar input[name='quantity'],#jqGrid_phar input[name='taxcode']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 		
@@ -915,18 +919,11 @@ var dialog_chgcode_phar = new ordialog(
 			write_detail_phar('#jqgrid_detail_phar_unitprice',data['price'],id_optid);
 			$("#jqGrid_phar #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_phar #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_phar #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_phar.check(errorField);
 
 		},
 		gridComplete: function(obj){
-			var gridname = '#'+obj.gridname;
-			if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing == true){
-				$(gridname+' tr#1').click();
-				$(gridname+' tr#1').dblclick();
-				$("#jqGrid_phar input[name='quantity']").focus().select();
-			}
 		},
 		loadComplete:function(data){
 

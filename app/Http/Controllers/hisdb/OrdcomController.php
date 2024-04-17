@@ -981,6 +981,7 @@ class OrdcomController extends defaultController
                     // 'taxcode' => $request->taxcode,
                     'remarks' => $request->remarks,
                     'recstatus' => 'POSTED',
+                    'pkgcode' => $pkgmast->pkgcode,
                     // 'doctorcode' => $this->givenullifempty($request->doctorcode),
                     // 'drugindicator' => $this->givenullifempty($request->drugindicator),
                     // 'frequency' => $this->givenullifempty($request->frequency),
@@ -1043,6 +1044,47 @@ class OrdcomController extends defaultController
                 // 'expirydate' => $request-> ,
                 // 'AgreementID' => $request-> ,
             ]);
+    }
+
+    public function order_entry_pkg_del(Request $request){
+        
+        DB::beginTransaction();
+
+        try {
+            $chargetrx_obj = DB::table("hisdb.chargetrx")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('id','=',$request->id)
+                        ->first();
+
+            $pkgcode = $chargetrx_obj->chgcode;
+            $mrn = $chargetrx_obj->mrn;
+            $episno = $chargetrx_obj->episno;
+
+            DB::table("hisdb.chargetrx")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('mrn','=',$mrn)
+                    ->where('episno','=',$episno)
+                    ->where('pkgcode','=',$pkgcode)
+                    ->update(['trxtype' => 'OE']);
+
+            DB::table("hisdb.chargetrx")
+                    ->where('compcode','=',session('compcode'))
+                    ->where('id','=',$request->id)
+                    ->delete();
+
+            $this->sysdb_log('delete',$chargetrx_obj,'sysdb.chargetrxlog');
+            
+            DB::commit();
+
+            return $this->get_ordcom_totamount($request);
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e, 500);
+        
+        }
     }
 
     public function check_pkgmast_exists(Request $request){

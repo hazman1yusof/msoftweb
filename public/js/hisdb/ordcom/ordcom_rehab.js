@@ -90,7 +90,7 @@ $(document).ready(function(){
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:abscurrency,
+				formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
@@ -120,6 +120,13 @@ $(document).ready(function(){
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGrid_rehab_pager",
+		gridview: true,
+		rowattr:function(data){
+			let trxtype = data.trxtype;
+		    if (trxtype == 'PD') {
+		        return {"class": "tr_pdclass"};
+		    }
+		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_rehab",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_rehab.clear_fail();
@@ -142,9 +149,10 @@ $(document).ready(function(){
 			}
 		},
 		onSelectRow:function(rowid){
-			if(selrowData('#jqGrid_rehab').trxtype == 'PD'){
+			$('#jqGrid_rehab_iledit,#jqGrid_rehab_pagerDelete').hide();
+			if($('#jqGrid_rehab_iladd').hasClass('ui-disabled')){
 				$('#jqGrid_rehab_iledit,#jqGrid_rehab_pagerDelete').hide();
-			}else{
+			}else if(selrowData('#jqGrid_rehab').trxtype == 'OE' || selrowData('#jqGrid_rehab').trxtype == 'PK'){
 				$('#jqGrid_rehab_iledit,#jqGrid_rehab_pagerDelete').show();
 			}
 		},
@@ -217,8 +225,8 @@ var myEditOptions_rehab = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_rehab").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_rehab").data('lastselrow',rowid);
+		set_userdeptcode('rehab');
 		errorField.length=0;
 		myfail_msg_rehab.clear_fail();
 		$("#jqGrid_rehab input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
@@ -330,8 +338,7 @@ var myEditOptions_rehab_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_rehab").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_rehab").data('lastselrow',rowid);
 		var selrowdata = $('#jqGrid_rehab').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);
 
@@ -768,7 +775,6 @@ var dialog_chgcode_rehab = new ordialog(
 			$("#jqGrid_rehab #"+id_optid+"_unitprce").val(data['price']);
 			$("#jqGrid_rehab #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_rehab #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_rehab #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_rehab.check(errorField);
 
@@ -1190,11 +1196,4 @@ function cust_rules_rehab(value, name) {
 	}
 	if(temp == null) return [true,''];
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-}
-
-function set_userdeptcode(){
-	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-		let rowdata = getrow_bootgrid();
-		$('#rehabdept_dflt').val(rowdata.ward);
-	}
 }

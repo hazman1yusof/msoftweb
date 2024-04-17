@@ -90,7 +90,7 @@ $(document).ready(function(){
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:abscurrency,
+				formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			// { label: 'Bill Type <br>%', name: 'billtypeperct', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
 			// { label: 'Bill Type <br>Amount ', name: 'billtypeamt', width: 100, align: 'right', classes: 'wrap txnum', hidden: true},
@@ -122,6 +122,13 @@ $(document).ready(function(){
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGrid_rad_pager",
+		gridview: true,
+		rowattr:function(data){
+			let trxtype = data.trxtype;
+		    if (trxtype == 'PD') {
+		        return {"class": "tr_pdclass"};
+		    }
+		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_rad",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_rad.clear_fail();
@@ -144,9 +151,10 @@ $(document).ready(function(){
 			}
 		},
 		onSelectRow:function(rowid){
-			if(selrowData('#jqGrid_rad').trxtype == 'PD'){
+			$('#jqGrid_rad_iledit,#jqGrid_rad_pagerDelete').hide();
+			if($('#jqGrid_rad_iladd').hasClass('ui-disabled')){
 				$('#jqGrid_rad_iledit,#jqGrid_rad_pagerDelete').hide();
-			}else{
+			}else if(selrowData('#jqGrid_rad').trxtype == 'OE' || selrowData('#jqGrid_rad').trxtype == 'PK'){
 				$('#jqGrid_rad_iledit,#jqGrid_rad_pagerDelete').show();
 			}
 		},
@@ -219,8 +227,8 @@ var myEditOptions_rad = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_rad").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_rad").data('lastselrow',rowid);
+		set_userdeptcode('rad');
 		errorField.length=0;
 		myfail_msg_rad.clear_fail();
 		$("#jqGrid_rad input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
@@ -332,8 +340,7 @@ var myEditOptions_rad_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_rad").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_rad").data('lastselrow',rowid);
 		var selrowdata = $('#jqGrid_rad').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);
 
@@ -770,7 +777,6 @@ var dialog_chgcode_rad = new ordialog(
 			$("#jqGrid_rad #"+id_optid+"_unitprce").val(data['price']);
 			$("#jqGrid_rad #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_rad #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_rad #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_rad.check(errorField);
 
@@ -1189,11 +1195,4 @@ function cust_rules_rad(value, name) {
 	}
 	if(temp == null) return [true,''];
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-}
-
-function set_userdeptcode(){
-	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-		let rowdata = getrow_bootgrid();
-		$('#raddept_dflt').val(rowdata.ward);
-	}
 }

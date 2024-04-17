@@ -90,7 +90,7 @@ $(document).ready(function(){
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
 			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
-				formatter:abscurrency,
+				formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
@@ -120,6 +120,13 @@ $(document).ready(function(){
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGrid_diet_pager",
+		gridview: true,
+		rowattr:function(data){
+			let trxtype = data.trxtype;
+		    if (trxtype == 'PD') {
+		        return {"class": "tr_pdclass"};
+		    }
+		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_diet",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_diet.clear_fail();
@@ -142,9 +149,10 @@ $(document).ready(function(){
 			}
 		},
 		onSelectRow:function(rowid){
-			if(selrowData('#jqGrid_diet').trxtype == 'PD'){
+			$('#jqGrid_diet_iledit,#jqGrid_diet_pagerDelete').hide();
+			if($('#jqGrid_diet_iladd').hasClass('ui-disabled')){
 				$('#jqGrid_diet_iledit,#jqGrid_diet_pagerDelete').hide();
-			}else{
+			}else if(selrowData('#jqGrid_diet').trxtype == 'OE' || selrowData('#jqGrid_diet').trxtype == 'PK'){
 				$('#jqGrid_diet_iledit,#jqGrid_diet_pagerDelete').show();
 			}
 		},
@@ -217,8 +225,8 @@ var myEditOptions_diet = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_diet").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_diet").data('lastselrow',rowid);
+		set_userdeptcode('diet');
 		errorField.length=0;
 		myfail_msg_diet.clear_fail();
 		$("#jqGrid_diet input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
@@ -330,8 +338,7 @@ var myEditOptions_diet_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_diet").data('lastselrow',rowId);
-		set_userdeptcode();
+		$("#jqGrid_diet").data('lastselrow',rowid);
 		var selrowdata = $('#jqGrid_diet').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);
 
@@ -1187,11 +1194,4 @@ function cust_rules_diet(value, name) {
 	}
 	if(temp == null) return [true,''];
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-}
-
-function set_userdeptcode(){
-	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-		let rowdata = getrow_bootgrid();
-		$('#dietdept_dflt').val(rowdata.ward);
-	}
 }

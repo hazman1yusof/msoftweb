@@ -228,13 +228,13 @@ var myEditOptions_pkg = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		set_userdeptcode();
+		set_userdeptcode('pkg');
 		errorField.length=0;
 		myfail_msg_pkg.clear_fail();
 		$("#jqGrid_pkg input[name='trxdate']").val(moment().format('YYYY-MM-DD'));
     	$("#jqGrid_pkg_pagerRefresh,#jqGrid_pkg_pagerDelete").hide();
 
-		$("#jqGrid_pkg input[name='deptcode']").val($("#raddept_dflt").val());
+		$("#jqGrid_pkg input[name='deptcode']").val($("#pkgdept_dflt").val());
 		dialog_deptcode_pkg.on();
 		dialog_deptcode_pkg.id_optid = rowid;
 		dialog_deptcode_pkg.check(errorField,rowid+"_deptcode","jqGrid_pkg",null,
@@ -340,7 +340,6 @@ var myEditOptions_pkg_edit = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		set_userdeptcode();
 		var selrowdata = $('#jqGrid_pkg').jqGrid ('getRowData', rowid);
 		// write_detail_dosage(selrowdata,true);
 
@@ -777,7 +776,6 @@ var dialog_chgcode_pkg = new ordialog(
 			$("#jqGrid_pkg #"+id_optid+"_unitprce").val(data['price']);
 			$("#jqGrid_pkg #"+id_optid+"_billtypeperct").val(data['billty_percent']);
 			$("#jqGrid_pkg #"+id_optid+"_billtypeamt").val(data['billty_amount']);
-			$("#jqGrid_pkg #"+id_optid+"_quantity").val(1).trigger('blur');
 
 			dialog_tax_pkg.check(errorField);
 
@@ -1196,11 +1194,4 @@ function cust_rules_pkg(value, name) {
 	}
 	if(temp == null) return [true,''];
 	return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
-}
-
-function set_userdeptcode(){
-	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
-		let rowdata = getrow_bootgrid();
-		$('#raddept_dflt').val(rowdata.ward);
-	}
 }

@@ -85,7 +85,7 @@ $(document).ready(function(){
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,
+			{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum', editable:true,formatter:abscurrency,unformat:abscurrency_unformat,
 				editrules:{required: true},editoptions:{readonly: "readonly"}},
 			{ label: 'Tax<br>Amount', name: 'taxamount', hidden: true },
 			{ label: 'Nett<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum', editable:true,
@@ -112,6 +112,13 @@ $(document).ready(function(){
 		sortname: 'id',
 		sortorder: "desc",
 		pager: "#jqGrid_dfee_pager",
+		gridview: true,
+		rowattr:function(data){
+			let trxtype = data.trxtype;
+		    if (trxtype == 'PD') {
+		        return {"class": "tr_pdclass"};
+		    }
+		},
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_dfee",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_dfee.clear_fail;

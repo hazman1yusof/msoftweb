@@ -286,3 +286,18 @@ function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
 function abscurrency(val,opt,rowObject ){
 	return Math.abs(val);
 }
+function abscurrency_unformat(val,opt,rowObject ){
+	if(val==null||val==undefined||val==''||val==0){
+		return 0;
+	}else{
+		return val*-1;
+	}
+}
+
+function set_userdeptcode(tab){
+	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
+		let rowdata = getrow_bootgrid();
+		console.log(rowdata);
+		$('#'+tab+'dept_dflt').val(rowdata.ward);
+	}
+}
