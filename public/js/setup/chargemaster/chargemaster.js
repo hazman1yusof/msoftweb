@@ -181,6 +181,35 @@ $(document).ready(function () {
 	});
 	////////////////////////////////////////end dialog///////////////////////////////////////////
 
+	/////////////////////////////////pkg deal list dialog///////////////////////////////////
+	$( "#pkgDealDialog" ).dialog({
+		autoOpen: false,
+		// width: 3/6 * $(window).width(),
+		modal: true,
+		open: function( event, ui ){
+
+			$("#formdata_pkgDeal input[name='pkgcodePkg']").val(selrowData("#jqGrid").chgcode);
+			$("#formdata_pkgDeal input[name='effectdate']").val(selrowData("#jqGridPkg3").effdate);
+			
+			$('#pdfgenPkg').click(function(){
+				window.open('./chargemaster/showpdfPkg?pkgcodePkg='+$('#pkgcodePkg').val()+'&effectdate='+$("#effectdate").val(), '_blank'); 
+			});
+		
+			$('#excelPkg').click(function(){
+				window.location='./chargemaster/showExcelPkg?pkgcodePkg='+$('#pkgcodePkg').val()+'&effectdate='+$("#effectdate").val();
+			});
+		},
+		close: function( event, ui ){
+			parent_close_disabled(false);
+			// emptyFormdata(errorField,'#formdata_pkgDeal');
+		},
+	});
+
+	$('#pdfgen_excelPkg').click(function(){
+		$( "#pkgDealDialog" ).dialog( "open" );
+	});
+	////////////////////////////////////////end dialog///////////////////////////////////////////
+
 	/////////////////////parameter for jqgrid url/////////////////////////////////////////////////
 
 	var urlParam={

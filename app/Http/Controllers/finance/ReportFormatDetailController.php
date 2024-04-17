@@ -58,9 +58,8 @@ class ReportFormatDetailController extends defaultController
         $table = DB::table('finance.glrptfmt')
                 ->where('rptname','=',$request->rptname)
                 ->where('compcode','=',session('compcode'));
-
+        
         if(!empty($request->sidx)){
-
             if(!empty($request->fixPost)){
                 $request->sidx = substr_replace($request->sidx, ".", strpos($request->sidx, "_"), strlen("."));
             }

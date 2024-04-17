@@ -10,6 +10,7 @@ use Auth;
 use Carbon\Carbon;
 use DateTime;
 use App\Exports\ChargeMasterExport;
+use App\Exports\PackageDetailExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ChargeMasterController extends defaultController
@@ -57,6 +58,10 @@ class ChargeMasterController extends defaultController
 
     public function showExcel(Request $request){
         return Excel::download(new ChargeMasterExport($request->chggroup_from,$request->chggroup_to,$request->chgcode_from,$request->chgcode_to), 'ChargePriceList.xlsx');
+    }
+
+    public function showExcelPkg(Request $request){
+        return Excel::download(new PackageDetailExport($request->pkgcodePkg,$request->effectdate), 'PackageDetail.xlsx');
     }
 
     public function showpdf(Request $request){
@@ -148,6 +153,54 @@ class ChargeMasterController extends defaultController
         $header->compname = $company->name;
 
         return view('setup.chargemaster.chargemaster_pdfmake',compact('header', 'chggroup', 'chgtype', 'array_report'));
+        
+    }
+
+    public function showpdfPkg(Request $request){
+
+        $pkgcodePkg = $request->pkgcodePkg;
+        $effectdate = Carbon::createFromFormat('d/m/Y', $request->effectdate)->format('Y-m-d');
+
+        //dd($effectdate);
+        $chgmast = DB::table('hisdb.chgmast')
+                    ->select('compcode', 'chgcode', 'description')
+                    ->where('compcode','=',session('compcode'))
+                    ->where('chgcode', '=', $pkgcodePkg)
+                    ->where('recstatus', '=', 'ACTIVE')
+                    ->first();
+       //dd($chgmast);
+        $pkgdet = DB::table('hisdb.pkgdet as pd')
+                ->select('pd.idno', 'pd.compcode', 'pd.pkgcode', 'pd.recstatus', 'pd.effectdate', 'pd.quantity', 'pd.chgcode', 'cp.effdate', 'cm.description as cc_desc')
+                ->join('hisdb.chgprice as cp', function($join) {
+                    $join = $join->on('cp.chgcode', '=', 'pd.pkgcode')
+                                ->on('cp.effdate', '=', 'pd.effectdate')
+                                ->where('cp.compcode', '=', session('compcode'))
+                                ->where('cp.recstatus', '=', 'ACTIVE');
+                })
+                ->join('hisdb.chgmast as cm', function($join) {
+                    $join = $join->on('cm.chgcode', '=', 'pd.chgcode')
+                                ->where('cm.compcode', '=', session('compcode'))
+                                ->where('cm.recstatus', '=', 'ACTIVE');
+                })
+                ->where('pd.compcode','=',session('compcode'))
+                ->where('pd.pkgcode', '=', $pkgcodePkg)
+                ->where('pd.effectdate', '=', $effectdate)
+                ->where('pd.recstatus', '=', 'ACTIVE')
+                ->orderBy('pd.idno','DESC')
+                ->get();
+        
+        //dd($pkgdet);
+
+        $company = DB::table('sysdb.company')
+            ->where('compcode','=',session('compcode'))
+            ->first();
+
+        $header = new stdClass();
+        $header->printby = session('username');
+        $header->pkgcodePkg = $request->pkgcodePkg;
+        $header->compname = $company->name;
+
+        return view('setup.chargemaster.pkgDetail_pdfmake',compact('header', 'pkgdet', 'chgmast'));
         
     }
 
