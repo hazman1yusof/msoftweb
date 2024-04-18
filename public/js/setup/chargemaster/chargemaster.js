@@ -710,7 +710,7 @@ $(document).ready(function () {
 			case 'Inpatient Tax':temp=$("input[name='iptax']");break;
 			case 'Outpatient Tax':temp=$("input[name='optax']");break;
 			case 'Charge Code':temp=$("input[name='chgcode']");break;
-				break;
+			case 'Department':temp=$("input[name='issdept']");break;
 		}
 		return(temp.hasClass("error"))?[false,"Please enter valid "+name+" value"]:[true,''];
 	}
@@ -721,6 +721,7 @@ $(document).ready(function () {
 			case 'iptax':field=['taxcode','description'];table="hisdb.taxmast";case_='iptax';break;
 			case 'optax': field = ['taxcode', 'description']; table = "hisdb.taxmast";case_='optax';break;
 			case 'chgcode': field = ['chgcode', 'description']; table = "hisdb.chgmast";case_='chgcode';break;
+			case 'issdept': field = ['deptcode', 'description']; table = "sysdb.department";case_='issdept';break;
 			case 'uom_product': field = ['uomcode', 'description']; table = "material.uom";case_='uom';break;
 			case 'uom': field = ['uomcode', 'description']; table = "material.uom";case_='uom';break;
 		}
@@ -775,6 +776,11 @@ $(document).ready(function () {
 	function chgcodeCustomEdit(val, opt) {
 		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
 		return $('<div class="input-group"><input jqgrid="jqGrid4" optid="'+opt.id+'" id="'+opt.id+'" name="chgcode" type="text" class="form-control input-sm" data-validation="required" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
+	}
+
+	function issdeptCustomEdit(val, opt) {
+		val = (val.slice(0, val.search("[<]")) == "undefined") ? "" : val.slice(0, val.search("[<]"));
+		return $('<div class="input-group"><input jqgrid="jqGrid4" optid="'+opt.id+'" id="'+opt.id+'" name="issdept" type="text" class="form-control input-sm" value="' + val + '" style="z-index: 0"><a class="input-group-addon btn btn-primary"><span class="fa fa-ellipsis-h"></span></a></div><span class="help-block"></span>');
 	}
 
 	function galGridCustomValue (elem, operation, value){
@@ -1364,6 +1370,7 @@ $(document).ready(function () {
 		dialog_pkg3iptax.on();
 		dialog_pkg3optax.on();
 		dialog_dtlchgcode.on();
+		dialog_issdept.on();
 
 		mycurrency2.formatOnBlur();//make field to currency on leave cursor
 
@@ -1989,7 +1996,7 @@ $(document).ready(function () {
 	var urlParam4={
 		action:'get_table_default',
 		url:'util/get_table_default',
-		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus','pd.uom'],
+		field:['pd.compcode','pd.chgcode','pd.quantity','pd.actprice1','pd.actprice2','pd.actprice3','pd.pkgprice1','pd.pkgprice2','pd.pkgprice3','pd.totprice1','pd.totprice2','pd.totprice3','pd.effectdate','pd.pkgcode','pd.idno','pd.recstatus','pd.uom', 'pd.issdept'],
 		table_name:['hisdb.pkgdet AS pd'],
 		table_id:'lineno_',
 		filterCol:['pd.compcode','pd.pkgcode','pd.effectdate','pd.recstatus'],
@@ -2014,27 +2021,34 @@ $(document).ready(function () {
 							custom_value:galGridCustomValue 	
 						},
 			},
+			{ label: 'Department', name: 'issdept', width: 80, classes: 'wrap', editable:true,
+				editrules:{required: true,custom:true, custom_func:cust_rules},formatter: showdetail,
+					edittype:'custom',	editoptions:
+						{  custom_element:issdeptCustomEdit,
+							custom_value:galGridCustomValue 	
+						},
+			},
 			{ label: 'UOM', name: 'uom', width: 40, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,readonly: "readonly"
 				},
 			},
-			{ label: 'Quantity', name: 'quantity', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Quantity', name: 'quantity', width: 80, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Act Price', name: 'actprice1', width: 150, align: 'right', classes: 'wrap', editable:false
+			{ label: 'Act Price', name: 'actprice1', width: 80, align: 'right', classes: 'wrap', editable:false
 			},
-			{ label: 'Price', name: 'pkgprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Price', name: 'pkgprice1', width: 80, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,
 				},
 			},
-			{ label: 'Total', name: 'totprice1', width: 150, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Total', name: 'totprice1', width: 80, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,readonly: "readonly"
@@ -2107,6 +2121,9 @@ $(document).ready(function () {
 		}
 	});
 	var hide_init_jq4=0;
+	
+	////////////////////// set label jqGrid4 right ////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid4");
 
 	//////////////////////////////////////////myEditOptions3/////////////////////////////////////////////
 
@@ -2121,6 +2138,7 @@ $(document).ready(function () {
 			$("#jqGridPager4EditAll,#jqGridPager4Delete,#jqGridPager4Refresh,#jqGridPager4Header").hide();
 
 			dialog_dtlchgcode.on();
+			dialog_issdept.on();
 
 			unsaved = false;
 			mycurrency2.array.length = 0;
@@ -2253,6 +2271,7 @@ $(document).ready(function () {
 				{	
 					'idno' : data.idno,
 					'chgcode' : $("#jqGrid4 input#"+ids[i]+"_chgcode").val(),
+					'issdept' : $("#jqGrid4 input#"+ids[i]+"_issdept").val(),
 					'uom' : $("#jqGrid4 input#"+ids[i]+"_uom").val(),
 					'quantity' : $("#jqGrid4 input#"+ids[i]+"_quantity").val(),
 					'actprice1' : selrowData('#jqGrid4').actprice1,
@@ -3297,11 +3316,44 @@ $(document).ready(function () {
 				dialog_dtlchgcode.urlParam.filterVal = ['ACTIVE', 'session.compcode'];
 			},
 			close: function(){
-				$("#jqGrid4 input[name='quantity']").focus();
+				$("#jqGrid4 input[name='issdept']").focus();
 			}
 		},'urlParam','radio','tab'
 	);
 	dialog_dtlchgcode.makedialog();
+
+	var dialog_issdept = new ordialog(
+		'issdept','sysdb.department',"#jqGrid4 input[name='issdept']",errorField,
+		{	colModel:[
+				{label:'Department Code',name:'deptcode',width:200,classes:'pointer',canSearch:true,or_search:true},
+				{label:'Description',name:'description',width:400,classes:'pointer',canSearch:true,checked:true,or_search:true},
+			],
+			urlParam: {
+					filterCol:['compcode','recstatus', 'chgdept'],
+					filterVal:['session.compcode','ACTIVE', '1']
+					},
+			ondblClickRow:function(){
+				$("#jqGrid4 input[name='issdept']").focus();
+			},
+			gridComplete: function(obj){
+				var gridname = '#'+obj.gridname;
+					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
+						$(gridname+' tr#1').click();
+						$(gridname+' tr#1').dblclick();
+						$('#apacthdr_remarks').focus();
+					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
+						$('#'+obj.dialogname).dialog('close');
+					}
+			}
+		},{
+			title:"Select Department Code",
+			open: function(){
+				dialog_issdept.urlParam.filterCol=['recstatus', 'compcode', 'chgdept'],
+				dialog_issdept.urlParam.filterVal=['ACTIVE', 'session.compcode', '1']
+				}
+		},'urlParam','radio','tab'
+	);
+	dialog_issdept.makedialog(true);
 
 	var dialog_uom = new ordialog(
 		'uom','material.uom','#uom',errorField,

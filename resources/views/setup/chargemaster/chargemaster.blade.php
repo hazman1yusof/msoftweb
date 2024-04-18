@@ -184,9 +184,9 @@ span.error_pkgmast {
 			<label class="control-label">Package Code</label>
 			<span id="showpkgcode" style="display: block;">&nbsp</span>
 		</div>
-		<div class='click_row' id="click_row">
+		<div class='click_row' id="click_row" style="width: 350px;">
 			<label class="control-label">Description</label>
-			<span id="showpkgdesc" style="display: block;">&nbsp</span>
+			<span id="showpkgdesc" style="display: block; white-space: nowrap;">&nbsp</span>
 		</div>
 
 		<div class="panel-group">

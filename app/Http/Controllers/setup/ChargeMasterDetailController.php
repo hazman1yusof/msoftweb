@@ -40,7 +40,7 @@ class ChargeMasterDetailController extends defaultController
         }
     }
 
-    public function add(Request $request){dd('sini');
+    public function add(Request $request){
         DB::beginTransaction();
 
         try {
@@ -217,6 +217,7 @@ class ChargeMasterDetailController extends defaultController
                     'uom' => $request->uom,
                     'effectdate' => $effectdate,
                     'chgcode' => $request->chgcode,
+                    'issdept' => $request->issdept,
                     'quantity' => $request->quantity,
                     'actprice1' => $chgprice->amt1,
                     'pkgprice1' => $request->pkgprice1,
@@ -278,6 +279,7 @@ class ChargeMasterDetailController extends defaultController
                     ->where('idno','=',$value['idno'])
                     ->update([
                         'chgcode' => $value['chgcode'],
+                        'issdept' => $value['issdept'],
                         'uom' => $value['uom'],
                         'quantity' => $value['quantity'],
                         'actprice1' => $chgprice->amt1,
