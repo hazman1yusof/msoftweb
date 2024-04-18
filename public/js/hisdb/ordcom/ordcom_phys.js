@@ -225,8 +225,7 @@ var myEditOptions_phys = {
 	    "_token": $("#csrf_token").val()
     },
 	oneditfunc: function (rowid) {
-		$("#jqGrid_phys").data('lastselrow',rowid)
-		set_userdeptcode('phys');
+		$("#jqGrid_phys").data('lastselrow',rowid);
 		errorField.length=0;
 		myfail_msg_phys.clear_fail();
 		$("#jqGrid_phys input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

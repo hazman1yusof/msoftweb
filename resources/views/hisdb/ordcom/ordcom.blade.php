@@ -26,8 +26,10 @@
 		
 		<i class="arrow fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
 		<i class="arrow fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 25px;">
-			<h5>Order Entry</h5>
+		<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 100px; top: 5px;">
+			<h5 style="margin-bottom: 5px;">Order Entry</h5>
+			<span><b>Total Amount : </b></span>
+			<span id="cyclebill_totmat"></span>
 		</div>				
 	</div>
 	<div id="jqGrid_ordcom_panel" class="panel-collapse collapse">
@@ -53,8 +55,6 @@
 					<a class="cyclebill" id="cyclebill_dtl" href="" target="_blank">Detail</a>
 					<a class="cyclebill" id="cyclebill_summ" href="" target="_blank">Summary</a>
 					<br>
-					<span><b>Total Amount : </b></span>
-					<span class="cyclebill" id="cyclebill_totmat"></span>
 				</div>
 
 				<li class="active"><a data-toggle="tab" id="ordcom_navtab_phar" href="#tab-phar" aria-expanded="true" data-ord_chgtype='PHAR'>Pharmacy</a></li>
@@ -70,6 +70,7 @@
 			</ul>
 			<div class="tab-content" style="padding: 10px 5px;">
 			  <div id="tab-phar" class="active in tab-pane fade">
+				<div id="qtyonhand_text_phar" style="color: cornflowerblue;"></div>
 				<div id="fail_msg_phar" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0px" autocomplete="off">
 					<table id="jqGrid_phar" class="table table-striped"></table>
@@ -77,6 +78,7 @@
 				</div>
 			  </div>
 			  <div id="tab-disp" class="tab-pane fade">
+				<div id="qtyonhand_text_disp" style="color: cornflowerblue;"></div>
 				<div id="fail_msg_disp" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0px" autocomplete="off">
 					<table id="jqGrid_disp" class="table table-striped"></table>

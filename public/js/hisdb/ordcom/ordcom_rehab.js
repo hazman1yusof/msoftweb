@@ -226,7 +226,6 @@ var myEditOptions_rehab = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_rehab").data('lastselrow',rowid);
-		set_userdeptcode('rehab');
 		errorField.length=0;
 		myfail_msg_rehab.clear_fail();
 		$("#jqGrid_rehab input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

@@ -855,6 +855,11 @@ var dialog_chgcode_phar = new ordialog(
 			myfail_msg_phar.del_fail({id:'nostock_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_phar.gridname);
+			if(data.qtyonhand){
+				$('#qtyonhand_text_phar').text('Qty on hand : '+data.qtyonhand);
+			}else{
+				$('#qtyonhand_text_phar').text('');
+			}
 
 			$("#jqGrid_phar #"+id_optid+"_chgcode").val(data['chgcode']);
 			write_detail_phar('#jqgrid_detail_phar_chgcode',data['chgcode'],id_optid);

@@ -585,13 +585,6 @@ $(document).ready(function () {
 			for (var i = 0; i < ids.length; i++) {
 				$("#jqGrid2").jqGrid('editRow',ids[i]);
 				
-				dialog_code.id_optid = ids[i];
-				dialog_code.check(errorField,ids[i]+"_code","jqGrid2",null,
-					function(self){
-						if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
-					}
-				);
-				
 				var rowdef1 = $("#jqGrid2 select#"+ids[i]+"_rowdef").val();
 				
 				if(rowdef1 == 'H'){
@@ -626,6 +619,15 @@ $(document).ready(function () {
 					$("#jqGrid2 input#"+ids[i]+"_note").hide();
 					$("#jqGrid2 input#"+ids[i]+"_costcodefr").hide();
 					$("#jqGrid2 input#"+ids[i]+"_costcodeto").hide();
+				}
+
+				if($(".input-group#"+ids[i]+"_code").is(":visible")){
+					dialog_code.id_optid = ids[i];
+					dialog_code.check(errorField,ids[i]+"_code","jqGrid2",null,
+						function(self){
+							if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
+						}
+					);
 				}
 				
 				$("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){

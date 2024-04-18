@@ -99,6 +99,7 @@ function populate_ordcom_currpt(obj){
 	$('#occupation_show_ordcom').text(if_none(obj.occupDesc).toUpperCase());
 	$('#citizenship_show_ordcom').text(if_none(obj.cityDesc).toUpperCase());
 	$('#area_show_ordcom').text(if_none(obj.areaDesc).toUpperCase());
+	set_ordcom_totamount(obj.totamount);
 
 	//formordcom	
 	$('#mrn_ordcom').val(obj.MRN);	
@@ -253,15 +254,15 @@ function get_ordcom_totamount(){
 		
 	},'json').done(function(data) {
 		if(!$.isEmptyObject(data)){
-			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
+			$('span#cyclebill_totmat').text(numeral(data.totamount).format('0,0.00'));
 		}else{
-			$('div#ordcom_div_cyclebill span#cyclebill_totmat').text('');
+			$('span#cyclebill_totmat').text('');
 		}
 	});
 }
 
 function set_ordcom_totamount(totamount){
-	$('div#ordcom_div_cyclebill span#cyclebill_totmat').text(numeral(totamount).format('0,0.00'));
+	$('span#cyclebill_totmat').text(numeral(totamount).format('0,0.00'));
 }
 
 function calc_discamt_main(chggroup,chgcode,unitprce,quantity){
@@ -297,7 +298,9 @@ function abscurrency_unformat(val,opt,rowObject ){
 function set_userdeptcode(tab){
 	if($('#epistycode').val() == 'IP' || $('#epistycode').val() == 'DP'){
 		let rowdata = getrow_bootgrid();
-		console.log(rowdata);
 		$('#'+tab+'dept_dflt').val(rowdata.ward);
+	}else{
+		let rowdata = getrow_bootgrid();
+		$('#'+tab+'dept_dflt').val(rowdata.regdept);
 	}
 }
