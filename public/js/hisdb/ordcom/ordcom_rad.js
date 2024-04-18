@@ -228,7 +228,6 @@ var myEditOptions_rad = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_rad").data('lastselrow',rowid);
-		set_userdeptcode('rad');
 		errorField.length=0;
 		myfail_msg_rad.clear_fail();
 		$("#jqGrid_rad input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

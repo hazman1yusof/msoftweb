@@ -13,9 +13,13 @@ use PDF;
 class ReportFormatController extends defaultController
 {
     
+    var $table;
+    var $duplicateCode;
+    
     public function __construct()
     {
         $this->middleware('auth');
+        $this->duplicateCode = "rptname";
     }
     
     public function show(Request $request)
@@ -54,6 +58,14 @@ class ReportFormatController extends defaultController
         $table = DB::table("finance.glrpthdr");
         
         try {
+            
+            $glrpthdr = DB::table("finance.glrpthdr")
+                        ->where('compcode','=',session('compcode'))
+                        ->where('rptname','=',$request->rptname);
+            
+            if($glrpthdr->exists()){
+                throw new \Exception("record duplicate");
+            }
             
             $array_insert = [
                 'compcode' => session('compcode'),
@@ -94,6 +106,8 @@ class ReportFormatController extends defaultController
             'rptname' => strtoupper($request->rptname),
             'description' => strtoupper($request->description),
             'rpttype' => $request->rpttype,
+            'upduser' => session('username'),
+            'upddate' => Carbon::now("Asia/Kuala_Lumpur"),
         ];
         
         try {
@@ -118,6 +132,25 @@ class ReportFormatController extends defaultController
     }
     
     public function del(Request $request){
+        
+        DB::beginTransaction();
+        
+        try {
+            
+            DB::table("finance.glrpthdr")
+                ->where('compcode','=',session('compcode'))
+                ->where('idno','=',$request->idno)
+                ->delete();
+            
+            DB::commit();
+            
+        } catch (\Exception $e) {
+            
+            DB::rollback();
+            
+            return response($e->getMessage(), 500);
+            
+        }
         
     }
     

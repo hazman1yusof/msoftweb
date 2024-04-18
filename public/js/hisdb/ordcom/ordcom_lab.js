@@ -226,7 +226,6 @@ var myEditOptions_lab = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_lab").data('lastselrow',rowid);
-		set_userdeptcode('lab');
 		errorField.length=0;
 		myfail_msg_lab.clear_fail();
 		$("#jqGrid_lab input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

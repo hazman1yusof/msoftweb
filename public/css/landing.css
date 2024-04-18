@@ -337,7 +337,7 @@ div#tab-phar input[type=text]{
 	padding: 5px !important;
 }
 div.fail_msg{
-	padding: 10px;
+	padding: 2px;
     color: darkred;
 }
 .ui-jqgrid-bdiv label{

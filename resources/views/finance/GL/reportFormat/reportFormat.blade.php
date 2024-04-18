@@ -54,7 +54,7 @@
         </form>
         
         <div class="panel panel-default">
-            <div class="panel-heading"> Report Format
+            <div class="panel-heading"> Report Format Header
                 <!-- <a class='pull-right pointer text-primary' id='pdfgen1' href="" target="_blank"><span class='fa fa-print'></span> Print </a> -->
             </div>
             <div class="panel-body">
@@ -64,67 +64,26 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!--***************************** End Search + table *****************************-->
-	
-	<div id="dialogForm" title="Add Form">
-		<div class='panel panel-info'>
-			<div class="panel-heading">Report Format Header</div>
-			<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-				<form class='form-horizontal' style='width:99%' id='formdata'>
-					{{ csrf_field() }}
-					<input id="idno" name="idno" type="hidden">
-					
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="rptname">Report Name</label>
-						<div class="col-md-3">
-							<input id="rptname" name="rptname" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm" data-validation="required">
-						</div>
-						
-						<label class="col-md-2 control-label" for="description">Description</label>
-						<div class="col-md-3">
-							<input id="description" name="description" type="text" class="form-control input-sm text-uppercase" class="form-control input-sm">
-						</div>
+		
+		<div class="panel-group">
+			<div class="panel panel-default" id="jqGrid2_c">
+				<div class="panel-heading clearfix collapsed" data-toggle="collapse" href="#jqGrid2_panel">
+					<i class="fa fa-angle-double-up" style="font-size:24px"></i><i class="fa fa-angle-double-down" style="font-size:24px"></i>Report Format Detail
+				</div>
+				<div id="jqGrid2_panel" class="panel-collapse collapse">
+					<div class="panel-body">
+						<form id='formdata2' class='form-vertical' style='width:99%'>
+							<div class='col-md-12' style="padding:0 0 15px 0">
+								<table id="jqGrid2" class="table table-striped"></table>
+								<div id="jqGridPager2"></div>
+							</div>
+						</form>
 					</div>
-					
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="rpttype">Category</label>
-						<div class="col-md-3">
-							<select class="form-control col-md-4" id='rpttype' name='rpttype' data-validation="">
-								<option value='BALANCE SHEET'>BALANCE SHEET</option>
-								<option value='PROFIT & LOSS (DETAIL)'>PROFIT & LOSS (DETAIL)</option>
-								<option value='CASH FLOW'>CASH FLOW</option>
-							</select>
-						</div>
-					</div>
-				</form>
-				
-				<div class="panel-body">
-					<div class="noti" style="font-size: bold; color: red"><ol></ol></div>
 				</div>
 			</div>
 		</div>
-		
-		<div class='panel panel-info'>
-			<div class="panel-heading">Report Format Detail</div>
-			<div class="panel-body">
-				<form id='formdata2' class='form-vertical' style='width:99%'>
-					<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
-					
-					<div id="jqGrid2_c" class='col-md-12'>
-						<table id="jqGrid2" class="table table-striped"></table>
-						<div id="jqGridPager2"></div>
-					</div>
-				</form>
-			</div>
-			
-			<!-- <div class="panel-body">
-				<div class="noti" style="color:red"></div>
-			</div> -->
-		</div>
-		
-		<!-- </div> -->
 	</div>
+    <!--***************************** End Search + table *****************************-->
 @endsection
 
 @section('scripts')

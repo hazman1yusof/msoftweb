@@ -226,7 +226,6 @@ var myEditOptions_diet = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_diet").data('lastselrow',rowid);
-		set_userdeptcode('diet');
 		errorField.length=0;
 		myfail_msg_diet.clear_fail();
 		$("#jqGrid_diet input[name='trxdate']").val(moment().format('YYYY-MM-DD'));

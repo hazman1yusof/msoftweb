@@ -226,6 +226,7 @@ var myEditOptions_disp = {
     },
 	oneditfunc: function (rowid) {
 		$("#jqGrid_disp").data('lastselrow',rowid);
+		set_userdeptcode('disp');
 
 		errorField.length=0;
 		myfail_msg_disp.clear_fail();
@@ -718,6 +719,11 @@ var dialog_chgcode_disp = new ordialog(
 			myfail_msg_disp.del_fail({id:'noprod_'+id_optid});
 
 			let data=selrowData('#'+dialog_chgcode_disp.gridname);
+			if(data.qtyonhand){
+				$('#qtyonhand_text_disp').text('Qty on hand : '+data.qtyonhand);
+			}else{
+				$('#qtyonhand_text_disp').text('');
+			}
 
 			$("#jqGrid_disp #"+id_optid+"_chgcode").val(data['chgcode']);
 			$("#jqGrid_disp #"+id_optid+"_taxcode").val(data['taxcode']);

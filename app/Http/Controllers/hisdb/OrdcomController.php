@@ -906,14 +906,14 @@ class OrdcomController extends defaultController
                     ->get();
 
                 foreach ($pkgdet as $key_pkgdet => $value_pkgdet) {
-                        $this->order_entry_pkgdet_add($pkgmast,$value_pkgdet,$request);
+                    $this->order_entry_pkgdet_add($pkgmast,$value_pkgdet,$request);
                 }
 
             }else{
                 throw new \Exception("Package Doesnt exists or not yet effective");
             }
             
-            DB::commit();
+            // DB::commit();
 
             return $this->get_ordcom_totamount($request);
             
@@ -941,6 +941,12 @@ class OrdcomController extends defaultController
 
             $invgroup = $this->get_invgroup($chgmast,$request->doctorcode);
 
+            //pkgdet
+                // kalau pkgdet.issdept != null, than chargetrx.issdept = pkgdet.issdept
+                // kalau tak amik dari request
+
+            $issdept = (empty($pkgdet->issdept))?$request->deptcode:$pkgdet->issdept;
+
             $insertGetId = DB::table("hisdb.chargetrx")
                 ->insertGetId([
                     'auditno' => $recno,
@@ -963,8 +969,8 @@ class OrdcomController extends defaultController
                     'uom' => $pkgdet->uom,
                     'uom_recv' => $pkgdet->uom,
                     'invgroup' => $invgroup,
-                    'reqdept' => $request->deptcode,
-                    'issdept' => $request->deptcode,
+                    'reqdept' => $issdept,
+                    'issdept' => $issdept,//sini
                     'invcode' => $chgmast->chggroup,
                     'inventory' => $updinv,
                     'updinv' =>  $updinv,
@@ -1040,6 +1046,7 @@ class OrdcomController extends defaultController
                 // 'memberno' => $request-> ,
                 'adddate' => Carbon::now("Asia/Kuala_Lumpur"),
                 'adduser' => session('username'),
+                'issdept' => $issdept,
                 // 'agreementdate' => Carbon::now("Asia/Kuala_Lumpur"),
                 // 'expirydate' => $request-> ,
                 // 'AgreementID' => $request-> ,
@@ -1608,9 +1615,9 @@ class OrdcomController extends defaultController
                 ->where('recno','=',$chargetrx_obj->auditno)
                 ->first();
 
-            $my_amount = $ivdspdt->amount;
+            $my_amount = round($ivdspdt->amount, 2);
         }else{
-            $my_amount = $chargetrx_obj->amount;
+            $my_amount = round($chargetrx_obj->amount, 2);
         }
 
         $yearperiod = $this->getyearperiod($my_date);

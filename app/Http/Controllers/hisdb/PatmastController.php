@@ -263,12 +263,13 @@ class PatmastController extends defaultController
                 // }
 
                 $episode = DB::table('hisdb.episode')
-                            ->select('newcaseP','newcaseNP','followupP','followupNP','billtype')
+                            ->select('newcaseP','newcaseNP','followupP','followupNP','billtype','regdept')
                             ->where('compcode',session('compcode'))
                             ->where('mrn','=',$value->MRN)
                             ->where('episno','=',$value->Episno);
 
                 if($episode->exists()){
+                    $totamount = $this->get_ordcom_totamount($value->MRN,$value->Episno);
                     $episode = $episode->first();
                     if($episode->newcaseP == 1 || $episode->followupP == 1){
                         $value->pregnant = 1;
@@ -277,6 +278,8 @@ class PatmastController extends defaultController
                     }
 
                     $value->billtype = $episode->billtype;
+                    $value->regdept = $episode->regdept;
+                    $value->totamount = $totamount;
                 }
 
 
@@ -3425,6 +3428,25 @@ class PatmastController extends defaultController
         }else{
             abort(403, 'MC not found');
         }
+    }
+
+    public function get_ordcom_totamount($mrn,$episno){
+        $chargetrx = DB::table('hisdb.chargetrx as trx')
+                        ->select('trx.amount','trx.discamt','trx.taxamount')
+                        ->where('trx.compcode',session('compcode'))
+                        ->where('trx.trxtype','!=','PD')
+                        ->where('trx.mrn' ,'=', $mrn)
+                        ->where('trx.episno' ,'=', $episno)
+                        ->where('trx.recstatus','<>','DELETE')
+                        ->get();
+
+        $amount = $chargetrx->sum('amount');
+        $discamt = $chargetrx->sum('discamt');
+        $taxamount = $chargetrx->sum('taxamount');
+        $totamount = $amount + $discamt + $taxamount;
+
+        return $totamount;
+
     }
 
 
