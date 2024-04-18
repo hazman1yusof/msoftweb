@@ -233,7 +233,6 @@ class ReportFormatDetailController extends defaultController
         
         try {
             
-            // 1. update detail
             DB::table('finance.glrptfmt')
                 ->where('compcode','=',session('compcode'))
                 ->where('idno','=',$request->idno)

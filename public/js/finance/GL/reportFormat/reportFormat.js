@@ -24,71 +24,7 @@ $(document).ready(function () {
 	};
 	
 	var fdl = new faster_detail_load();
-	
-	///////////////////////////////////////start dialog///////////////////////////////////////
-	var oper = null;
-	var unsaved = false;
-	
-	$("#dialogForm")
-		.dialog({
-			width: 9.5 / 10 * $(window).width(),
-			modal: true,
-			autoOpen: false,
-			open: function (event, ui) {
-				parent_close_disabled(true);
-				$("#jqGrid2").jqGrid('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth - $("#jqGrid2_c")[0].offsetLeft));
-				switch (oper) {
-					case state = 'add':
-						$("#jqGrid2").jqGrid("clearGridData", true);
-						$("#pg_jqGridPager2 table").show();
-						hideatdialogForm(true);
-						enableForm('#formdata');
-						rdonly('#formdata');
-						break;
-					case state = 'edit':
-						$("#pg_jqGridPager2 table").show();
-						hideatdialogForm(true);
-						enableForm('#formdata');
-						rdonly('#formdata');
-						break;
-					case state = 'view':
-						disableForm('#formdata');
-						$("#pg_jqGridPager2 table").hide();
-						break;
-				} if (oper != 'add') {
-					// dialog_CustomerDN.check(errorField);
-				} if (oper != 'view') {
-					// dialog_CustomerDN.on();
-				}
-			},
-			beforeClose: function (event, ui) {
-				if (unsaved) {
-					event.preventDefault();
-					bootbox.confirm("Are you sure want to leave without save?", function (result) {
-						if (result == true) {
-							unsaved = false
-							$("#dialogForm").dialog('close');
-						}
-					});
-				}
-			},
-			close: function (event, ui) {
-				addmore_jqgrid2.state = false;  // reset balik
-				addmore_jqgrid2.more = false;
-				// reset balik
-				parent_close_disabled(false);
-				emptyFormdata(errorField, '#formdata');
-				emptyFormdata(errorField, '#formdata2');
-				$('.my-alert').detach();
-				$("#formdata a").off();
-				// dialog_CustomerDN.off();
-				$(".noti").empty();
-				$("#refresh_jqGrid").click();
-				refreshGrid("#jqGrid2",null,"kosongkan");
-				errorField.length=0;
-			},
-		});
-	////////////////////////////////////////end dialog////////////////////////////////////////
+	var err_reroll = new err_reroll('#jqGrid',['rptname', 'description']);
 	
 	//////////////////////////////////////////padzero//////////////////////////////////////////
 	function padzero(cellvalue, options, rowObject){
@@ -151,25 +87,20 @@ $(document).ready(function () {
 	}
 	
 	////////////////////////////////////parameter for saving url////////////////////////////////////
-	var saveParam = {
-		action: 'reportFormat_header_save',
-		url: './reportFormat/form',
-		field: '',
-		oper: oper,
-		table_name: 'finance.glrpthdr',
-		table_id: 'idno',
-		fixPost: true,
-		// returnVal: true,
-	}
+	var addmore_jqgrid={more:false,state:false,edit:false}
 	
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		colModel: [
 			{ label: 'idno', name: 'idno', width: 10, hidden: true, key: true },
 			{ label: 'compcode', name: 'compcode', hidden: true },
-			{ label: 'Report Name', name: 'rptname', width: 50, classes: 'wrap text-uppercase', canSearch: true, checked: true },
-			{ label: 'Description', name: 'description', width: 100, classes: 'wrap text-uppercase', canSearch: true },
-			{ label: 'Category', name: 'rpttype', width: 100, classes: 'wrap text-uppercase', canSearch: true },
+			{ label: 'Report Name', name: 'rptname', width: 50, classes: 'wrap text-uppercase', canSearch: true, checked: true, editable: true, editrules: { required: false }, editoptions: { style: "text-transform: uppercase" } },
+			{ label: 'Description', name: 'description', width: 100, classes: 'wrap text-uppercase', canSearch: true, editable: true, editrules: { required: false }, editoptions: { style: "text-transform: uppercase" } },
+			{ label: 'Category', name: 'rpttype', width: 100, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+				editoptions: {
+					value: "BALANCE SHEET:BALANCE SHEET;PROFIT & LOSS (DETAIL):PROFIT & LOSS (DETAIL);CASH FLOW:CASH FLOW"
+				},
+			},
 			{ label: 'adduser', name: 'adduser', width: 10, hidden: true },
 			{ label: 'adddate', name: 'adddate', width: 10, hidden: true },
 			{ label: 'upduser', name: 'upduser', width: 10, hidden: true },
@@ -177,78 +108,218 @@ $(document).ready(function () {
 		],
 		autowidth: true,
 		multiSort: true,
-		viewrecords: true,
-		loadonce: false,
 		sortname: 'idno',
 		sortorder: 'desc',
+		viewrecords: true,
+		loadonce: false,
 		width: 900,
 		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		onSelectRow: function (rowid, selected) {
-			// $('#error_infront').text('');
+		onSelectRow:function(rowid, selected){
+			if(!err_reroll.error)$('#p_error').text('');	// hilangkan error msj after save
 			
 			urlParam2.rptname = selrowData("#jqGrid").rptname;
 			refreshGrid("#jqGrid2",urlParam2);
 		},
-		ondblClickRow: function (rowid, iRow, iCol, e) {
-			$("#jqGridPager td[title='Edit Selected Row']").click();
-		},
-		gridComplete: function () {
-			if (oper == 'add' || oper == null || $("#jqGrid").data('lastselrow') == undefined) {
+		loadComplete: function(){
+			if(addmore_jqgrid.more == true){
+				$('#jqGrid_iladd').click();
+			}else if($('#jqGrid').data('lastselrow') == 'none'){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
 			}else{
-				$("#jqGrid").setSelection($("#jqGrid").data('lastselrow'));
-				delay(function(){
-					$('#jqGrid tr#'+$("#jqGrid").data('lastselrow')).focus();
-				}, 300 );
+				$("#jqGrid").setSelection($('#jqGrid').data('lastselrow'));
+				$('#jqGrid tr#' + $('#jqGrid').data('lastselrow')).focus();
 			}
 			
-			fdl.set_array().reset();
+			addmore_jqgrid.edit = addmore_jqgrid.more = false;	// reset
+			if(err_reroll.error == true){
+				err_reroll.reroll();
+			}
 		},
-		loadComplete:function(data){
-			// calc_jq_height_onchange("jqGrid");
-		}
+		ondblClickRow: function(rowid, iRow, iCol, e){
+			$("#jqGrid_iledit").click();
+			$('#p_error').text('');   // hilangkan duplicate error msj after save
+		},
+		gridComplete: function () {
+			fdl.set_array().reset();
+			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
+				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
+			}
+		},
 	});
 	
+	////////////////////////////////////////myEditOptions_hdr////////////////////////////////////////
+	var myEditOptions_hdr = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$('#jqGrid').data('lastselrow','none');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("input[name='rpttype']").keydown(function(e) {	// when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+			
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+		},
+		aftersavefunc: function (rowid, response, options) {
+			// if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
+			addmore_jqgrid.more = true;	// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'add');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			var data = JSON.parse(response.responseText)
+			// $('#p_error').text(response.responseText);
+			err_reroll.old_data = data.request;
+			err_reroll.error = true;
+			err_reroll.errormsg = data.errormsg;
+			refreshGrid('#jqGrid',urlParam,'add');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+			
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			// console.log(data);
+			
+			// check_cust_rules();
+			
+			let editurl = "./reportFormat/form?"+
+				$.param({
+					action: 'reportFormat_save',
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'add');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+	
+	//////////////////////////////////////myEditOptions_hdr_edit//////////////////////////////////////
+	var myEditOptions_hdr_edit = {
+		keys: true,
+		extraparam:{
+			"_token": $("#_token").val()
+		},
+		oneditfunc: function (rowid) {
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
+			$("input[name='rptname']").attr('disabled','disabled');
+			$("input[name='rpttype']").keydown(function(e) {	// when click tab at last column in header, auto save
+				var code = e.keyCode || e.which;
+				if (code == '9')$('#jqGrid_ilsave').click();
+				// addmore_jqgrid.state = true;
+				// $('#jqGrid_ilsave').click();
+			});
+			
+			$("#jqGrid input[type='text']").on('focus',function(){
+				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
+				$("#jqGrid input[type='text']").removeClass( "error" );
+			});
+		},
+		aftersavefunc: function (rowid, response, options) {
+			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
+			// state true maksudnyer ada isi, tak kosong
+			refreshGrid('#jqGrid',urlParam,'edit');
+			errorField.length=0;
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorfunc: function(rowid,response){
+			$('#p_error').text(response.responseText);
+			refreshGrid('#jqGrid',urlParam,'edit');
+		},
+		beforeSaveRow: function (options, rowid) {
+			$('#p_error').text('');
+			if(errorField.length>0)return false;
+			
+			let data = $('#jqGrid').jqGrid ('getRowData', rowid);
+			// console.log(data);
+			
+			// check_cust_rules();
+			
+			let editurl = "./reportFormat/form?"+
+				$.param({
+					action: 'reportFormat_save',
+					idno: selrowData('#jqGrid').idno,
+				});
+			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
+		},
+		afterrestorefunc : function( response ) {
+			refreshGrid('#jqGrid',urlParam,'edit');
+			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+		},
+		errorTextFormat: function (data) {
+			alert(data);
+		}
+	};
+	
 	/////////////////////////////////////////start grid pager/////////////////////////////////////////
-	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
-		view: false, edit: false, add: false, del: false, search: false,
-		beforeRefresh: function () {
-			refreshGrid("#jqGrid", urlParam, oper);
+	$("#jqGrid").inlineNav('#jqGridPager', {
+		add: true,
+		edit: true,
+		cancel: true,
+		// to prevent the row being edited/added from being automatically cancelled once the user clicks another row
+		restoreAfterSelect: false,
+		addParams: {
+			addRowParams: myEditOptions_hdr
 		},
+		editParams: myEditOptions_hdr_edit
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-info-sign",
-		title: "View Selected Row",
+		id: "jqGridPagerDelete",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-trash",
+		title: "Delete Selected Row",
 		onClickButton: function () {
-			oper = 'view';
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
-			urlParam2.rptname = $('#rptname').val();
-			refreshGrid("#jqGrid2", urlParam2);
+			if (!selRowId) {
+				bootbox.alert('Please select row');
+			} else {
+				bootbox.confirm({
+					message: "Are you sure you want to delete this row?",
+					buttons: {
+						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
+					},
+					callback: function (result) {
+						if (result == true) {
+							param = {
+								_token: $("#_token").val(),
+								action: 'reportFormat_save',
+								rptname: selrowData('#jqGrid').rptname,
+								idno: selrowData('#jqGrid').idno,
+							}
+							$.post( "./reportFormat/form?"+$.param(param),{oper:'del'}, function( data ){
+							}).fail(function (data) {
+								//////////////////errorText(dialog,data.responseText);
+							}).done(function (data) {
+								refreshGrid("#jqGrid", urlParam);
+							});
+						}else{
+							$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
+						}
+					}
+				});
+			}
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", id: "glyphicon-edit", position: "first",
-		buttonicon: "glyphicon glyphicon-edit",
-		title: "Edit Selected Row",
+		id: "jqGridPagerRefresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
 		onClickButton: function () {
-			oper = 'edit';
-			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
-			$("#jqGrid").data('lastselrow',selRowId);
-			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
-			urlParam2.rptname = $('#rptname').val();
-			refreshGrid("#jqGrid2", urlParam2);
-		},
-	}).jqGrid('navButtonAdd', "#jqGridPager", {
-		caption: "", cursor: "pointer", position: "first",
-		buttonicon: "glyphicon glyphicon-plus",
-		id: 'glyphicon-plus',
-		title: "Add New Row",
-		onClickButton: function () {
-			oper = 'add';
-			$("#dialogForm").dialog("open");
+			refreshGrid("#jqGrid", urlParam);
 		},
 	});
 	
@@ -259,66 +330,38 @@ $(document).ready(function () {
 	
 	/////////////////////////////add field into param, refresh grid if needed/////////////////////////////
 	addParamField('#jqGrid', true, urlParam);
-	addParamField('#jqGrid', false, saveParam);
+	
+	/////////////////////////////////////////function err_reroll/////////////////////////////////////////
+	function err_reroll(jqgridname,data_array){
+		this.jqgridname = jqgridname;
+		this.data_array = data_array;
+		this.error = false;
+		this.errormsg = 'asdsds';
+		this.old_data;
+		this.reroll=function(){
+			$('#p_error').text(this.errormsg);
+			var self = this;
+			$(this.jqgridname+"_iladd").click();
+			
+			this.data_array.forEach(function(item,i){
+				$(self.jqgridname+' input[name="'+item+'"]').val(self.old_data[item]);
+			});
+			this.error = false;
+		}
+	}
 	
 	//////////////////////////////////////////hide at dialogForm//////////////////////////////////////////
 	function hideatdialogForm(hide,saveallrow){
 		if(saveallrow == 'saveallrow'){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#saveDetailLabel").hide();
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2Refresh").hide();
 			$("#jqGridPager2SaveAll,#jqGridPager2CancelAll").show();
 		}else if(hide){
-			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll").hide();
-			$("#saveDetailLabel").show();
+			$("#jqGrid2_iledit,#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2SaveAll,#jqGridPager2CancelAll,#jqGridPager2Refresh").hide();
 		}else{
-			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#saveHeaderLabel,#jqGridPager2Delete,#jqGridPager2EditAll").show();
-			$("#saveDetailLabel,#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
+			$("#jqGrid2_iladd,#jqGrid2_ilcancel,#jqGrid2_ilsave,#jqGridPager2Delete,#jqGridPager2EditAll,#jqGridPager2Refresh").show();
+			$("#jqGridPager2SaveAll,#jqGrid2_iledit,#jqGridPager2CancelAll").hide();
 		}
 	}
-	
-	///////////////////////////////////////////////saveHeader///////////////////////////////////////////////
-	function saveHeader(form, selfoper, saveParam, obj) {
-		if (obj == null) {
-			obj = {};
-		}
-		saveParam.oper = selfoper;
-		
-		$.post( saveParam.url+"?"+$.param(saveParam), $( form ).serialize()+'&'+ $.param(obj) , function( data ) {
-			
-		},'json').fail(function (data) {
-			// console.log(data);
-			// alert(data.responseJSON.message);
-			$('.noti').text(data.responseJSON.message);
-		}).done(function (data) {
-			$("#saveDetailLabel").attr('disabled',false);
-			unsaved = false;
-			hideatdialogForm(false);
-			addmore_jqgrid2.state = true;
-			
-			if($('#jqGrid2').jqGrid('getGridParam', 'reccount') < 1){
-				$('#jqGrid2_iladd').click();
-			}
-			
-			if (selfoper == 'add') {
-				oper = 'edit';  // sekali dia add terus jadi edit lepas tu
-				
-				$('#idno').val(data.idno);   // just save idno for edit later
-				
-				urlParam2.rptname = data.rptname;
-			} else if (selfoper == 'edit') {
-				urlParam2.rptname = $('#rptname').val();
-				// doesnt need to do anything
-			}
-			disableForm('#formdata');
-		})
-	}
-	
-	$("#dialogForm").on('change keypress', '#formdata :input', '#formdata :textarea', function () {
-		unsaved = true; // kalau dia change apa2 bagi prompt
-	});
-	
-	$("#dialogForm").on('click','#formdata a.input-group-addon',function(){
-		unsaved = true; // kalau dia change apa2 bagi prompt
-	});
 	
 	//////////////////////////////////////////parameter for jqgrid2 url//////////////////////////////////////////
 	var urlParam2 = {
@@ -346,12 +389,6 @@ $(document).ready(function () {
 			{ label: 'Row Def', name: 'rowdef', width: 60, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "H:Header;D:Detail;S:Spacing;TO:Total",
-					// dataEvents: [{
-					// 	type: 'change',
-					// 	fn: function (e) {
-					// 		alert("");
-					// 	}
-					// }]
 				}
 			},
 			// { label: 'Code', name: 'code', width: 50, classes: 'wrap', editable: true },
@@ -396,12 +433,16 @@ $(document).ready(function () {
 		},
 		gridComplete: function(){
 			fdl.set_array().reset();
-			// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+			if(!hide_init){
+				hide_init=1;
+				hideatdialogForm(false);
+			}
 		},
 		beforeSubmit: function (postdata, rowid) {
 			// dialog_paymode.check(errorField);
 		}
-	})
+	});
+	var hide_init=0;
 	
 	////////////////////////////////////////////set label jqGrid2 right////////////////////////////////////////////
 	jqgrid_label_align_right("#jqGrid2");
@@ -416,7 +457,7 @@ $(document).ready(function () {
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			// $("#jqGrid2 input[name='deptcode']").focus().select();
-			$("#jqGridPager2EditAll,#saveHeaderLabel,#jqGridPager2Delete").hide();
+			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").hide();
 			
 			dialog_code.on();
 			
@@ -450,18 +491,18 @@ $(document).ready(function () {
 		},
 		aftersavefunc: function (rowid, response, options) {
 			// $('#db_amount').val(response.responseText);
-			if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true;	// only addmore after save inline
-			// state true maksudnyer ada isi, tak kosong
-			urlParam2.rptname = $('#rptname').val();
+			// if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true;	// only addmore after save inline
+			addmore_jqgrid2.more = true;	// state true maksudnyer ada isi, tak kosong
+			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid('#jqGrid2',urlParam2,'add');
-			$("#jqGridPager2EditAll,#jqGridPager2Delete").show();
+			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").show();
 			errorField.length=0;
 		},
 		errorfunc: function(rowid,response){
 			alert(response.responseText);
-			urlParam2.rptname = $('#rptname').val();
+			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid('#jqGrid2',urlParam2,'add');
-			$("#jqGridPager2Delete").show();
+			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
 		beforeSaveRow: function (options, rowid) {
 			if(errorField.length>0)return false;
@@ -472,8 +513,7 @@ $(document).ready(function () {
 			let editurl = "./reportFormatDetail/form?"+
 				$.param({
 					action: 'reportFormat_detail_save',
-					idno: $('#idno').val(),
-					rptname: $('#rptname').val(),
+					rptname: selrowData('#jqGrid').rptname,
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
@@ -524,7 +564,7 @@ $(document).ready(function () {
 							}).fail(function (data) {
 								//////////////////errorText(dialog,data.responseText);
 							}).done(function (data) {
-								urlParam2.rptname = $('#rptname').val();
+								urlParam2.rptname = selrowData('#jqGrid').rptname;
 								refreshGrid("#jqGrid2", urlParam2);
 							});
 						}else{
@@ -680,7 +720,7 @@ $(document).ready(function () {
 			var param = {
 				action: 'reportFormat_detail_save',
 				_token: $("#_token").val(),
-				idno: $('#idno').val(),
+				idno: selrowData('#jqGrid2').idno,
 			}
 			
 			$.post( "/reportFormatDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
@@ -689,7 +729,7 @@ $(document).ready(function () {
 			}).done(function(data){
 				// mycurrency.formatOn();
 				hideatdialogForm(false);
-				urlParam2.rptname = $('#rptname').val();
+				urlParam2.rptname = selrowData('#jqGrid').rptname;
 				refreshGrid("#jqGrid2",urlParam2);
 			});
 		},
@@ -700,19 +740,18 @@ $(document).ready(function () {
 		title:"Cancel",
 		onClickButton: function(){
 			hideatdialogForm(false);
-			urlParam2.rptname = $('#rptname').val();
+			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid("#jqGrid2",urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager2", {
-		id: "saveHeaderLabel",
-		caption: "Header", cursor: "pointer", position: "last",
-		buttonicon: "",
-		title: "Header"
-	}).jqGrid('navButtonAdd', "#jqGridPager2", {
-		id: "saveDetailLabel",
-		caption: "Detail", cursor: "pointer", position: "last",
-		buttonicon: "",
-		title: "Detail"
+		id: "jqGridPager2Refresh",
+		caption: "", cursor: "pointer", position: "last",
+		buttonicon: "glyphicon glyphicon-refresh",
+		title: "Refresh Table",
+		onClickButton: function () {
+			urlParam2.rptname = selrowData('#jqGrid').rptname;
+			refreshGrid("#jqGrid2",urlParam2);
+		},
 	});
 	
 	//////////////////////////////////////////////formatter checkdetail//////////////////////////////////////////////
@@ -754,37 +793,6 @@ $(document).ready(function () {
 			$('input',elem).val(value);
 		}
 	}
-	
-	///////////////////////////////////////////////////saveDetailLabel///////////////////////////////////////////////////
-	$("#saveDetailLabel").click(function () {
-		$("#saveDetailLabel").attr('disabled',true)
-		// mycurrency.formatOff();
-		// mycurrency.check0value(errorField);
-		unsaved = false;
-		
-		errorField.length = 0;
-		if($('#formdata').isValid({requiredFields:''},conf,true)){
-			saveHeader("#formdata",oper,saveParam);
-			// mycurrency.formatOn();
-			unsaved = false;
-		} else {
-			// mycurrency.formatOn();
-			// dialog_CustomerDN.on();
-		}
-	});
-	
-	////////////////////////////////////////////////////saveHeaderLabel////////////////////////////////////////////////////
-	$("#saveHeaderLabel").click(function () {
-		emptyFormdata(errorField, '#formdata2');
-		hideatdialogForm(true);
-		// dialog_CustomerDN.on();
-		
-		enableForm('#formdata');
-		rdonly('#formdata');
-		$(".noti").empty();
-		urlParam2.rptname = $('#rptname').val();
-		refreshGrid("#jqGrid2", urlParam2);
-	});
 	
 	////////////////////////////////////////////////////////edit all////////////////////////////////////////////////////////
 	function onall_editfunc(){
@@ -871,6 +879,10 @@ $(document).ready(function () {
 		});
 		return cust_val;
 	}
+	
+	$("#jqGrid2_panel").on("show.bs.collapse", function(){
+		$("#jqGrid2").jqGrid ('setGridWidth', Math.floor($("#jqGrid2_c")[0].offsetWidth-$("#jqGrid2_c")[0].offsetLeft-28));
+	});
 });
 
 function calc_jq_height_onchange(jqgrid){
