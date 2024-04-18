@@ -3340,7 +3340,7 @@ $(document).ready(function () {
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$('#apacthdr_remarks').focus();
+						$("#jqGrid4 input[name='issdept']").focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}

@@ -47,7 +47,7 @@ input.uppercase {
 
 span.error_pkgmast {
     position: absolute;
-    right: 100px;
+    right: 200px;
     top: 15px;
     color: darkred;
 }
