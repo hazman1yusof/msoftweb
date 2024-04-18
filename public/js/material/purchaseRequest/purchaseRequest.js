@@ -161,7 +161,7 @@ $(document).ready(function () {
 	};
 
 	 function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -198,12 +198,12 @@ $(document).ready(function () {
 			{ label: 'Record No', name: 'purreqhd_recno', width: 10, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Request Department', name: 'purreqhd_reqdept', width: 15, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Purchase Department', name: 'purreqhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Request No', name: 'purreqhd_purreqno', width: 10, canSearch: true },
+			{ label: 'Request No', name: 'purreqhd_purreqno', width: 10, canSearch: true, align:'right', formatter: padzero, unformat: unpadzero  },
 			{ label: 'Authorise ID', name: 'queuepr_AuthorisedID', width: 10, canSearch: true , hidden: true},
 			{ label: 'PO No', name: 'purreqhd_purordno', width: 10, formatter: padzero, unformat: unpadzero,hidden: true },
 			{ label: 'Request Date', name: 'purreqhd_purreqdt', width: 15, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter },
-			{ label: 'Supplier Code', name: 'purreqhd_suppcode', width: 15, canSearch: true },
-			{ label: 'Supplier Name', name: 'supplier_name', width: 30, canSearch: true, classes: 'wrap' },
+			{ label: 'Supplier Code', name: 'purreqhd_suppcode', width: 15, canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Name', name: 'supplier_name', width: 30, canSearch: true, classes: 'wrap', hidden:false },
 			{ label: 'Amount', name: 'purreqhd_totamount', width: 15, align: 'right', formatter: 'currency' },
 			{ label: 'Remark', name: 'purreqhd_remarks', width: 50, classes: 'wrap', hidden: true },
 			{ label: 'Status', name: 'purreqhd_recstatus', width: 15 },
@@ -309,7 +309,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -328,6 +328,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'view', '');
+			$('#purreqhd_purreqno').val(padzero($('#purreqhd_purreqno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -339,6 +340,7 @@ $(document).ready(function () {
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			$("#jqGrid").data('lastselrow',selRowId);
 			populateFormdata("#jqGrid", "#dialogForm", "#formdata", selRowId, 'edit', '');
+			$('#purreqhd_purreqno').val(padzero($('#purreqhd_purreqno').val()));
 			refreshGrid("#jqGrid2", urlParam2);
 		},
 	}).jqGrid('navButtonAdd', "#jqGridPager", {
@@ -711,7 +713,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 180, classes: 'wrap', editable: false, editoptions: { readonly: "readonly" }, hidden:true },
 			{
-				label: 'UOM Code', name: 'uomcode', width: 110, classes: 'wrap', editable: true,
+				label: 'UOM Code', name: 'uomcode', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -721,7 +723,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'PO UOM', name: 'pouom', width: 110, classes: 'wrap', editable: true,
+				label: 'PO UOM', name: 'pouom', width: 100, classes: 'wrap', editable: true,
 				editrules: { required: false, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -741,7 +743,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Quantity Request', name: 'qtyrequest', width: 100, align: 'right', classes: 'wrap',
+				label: 'Quantity Request', name: 'qtyrequest', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true },
@@ -753,13 +755,13 @@ $(document).ready(function () {
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Quantity Balance', name: 'qtybalance', width: 100, align: 'right', classes: 'wrap',
+				label: 'Quantity Balance', name: 'qtybalance', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Unit Price', name: 'unitprice', width: 150, classes: 'wrap', align: 'right',
+				label: 'Unit Price', name: 'unitprice', width: 80, classes: 'wrap', align: 'right',
 				editable: true,
 				formatter: 'currency', formatoptions: { decimalSeparator: ".", thousandsSeparator: ",", decimalPlaces: 4, },
 				editrules: { required: true }
@@ -799,14 +801,14 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Total GST Amount', name: 'tot_gst', width: 150, align: 'right', classes: 'wrap', editable: true,
+				label: 'Total GST Amount', name: 'tot_gst', width: 80, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
 			{ label: 'rate', name: 'rate', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'netunitprice', name: 'netunitprice', width: 20, classes: 'wrap', hidden:true},
 			{
-				label: 'Total Line Amount', name: 'totamount', width: 150, align: 'right', classes: 'wrap', editable: true,
+				label: 'Total Line Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'currency', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true }, editoptions: { readonly: "readonly" },
 			},
@@ -1303,6 +1305,7 @@ $(document).ready(function () {
 			case 'pouom': field = ['uomcode', 'description']; table = "material.uom";case_='pouom';break;
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
+			case 'purreqhd_suppcode':field=['suppcode','name'];table="material.supplier";case_='purreqhd_suppcode';break;
 			case 'purreqhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_reqdept';break;
 			case 'purreqhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='purreqhd_prdept';break;
 		}
@@ -1313,8 +1316,6 @@ $(document).ready(function () {
 		if(cellvalue == null)cellvalue = " ";
 		return cellvalue;
 	}
-
-
 
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value, name) {
@@ -2408,7 +2409,7 @@ $(document).ready(function () {
 
 	function populate_form(obj){
 		//panel header
-		$('#purreqno_show').text(obj.purreqhd_purreqno);
+		$('#purreqno_show').text(padzero(obj.purreqhd_purreqno));
 		$('#suppcode_show').text(obj.supplier_name);
 	}
 

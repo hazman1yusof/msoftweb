@@ -349,7 +349,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ///////////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -1835,8 +1835,8 @@ function populate_form(obj){
 
 	//panel header
 	$('#trantype_show').text(obj.apacthdr_trantype);
-	$('#pvno_show').text(obj.apacthdr_pvno);
-	$('#auditno_show').text(obj.apacthdr_auditno);
+	$('#pvno_show').text(padzero(obj.apacthdr_pvno));
+	$('#auditno_show').text(padzero(obj.apacthdr_auditno));
 	$('#suppcode_show').text(obj.supplier_name);
 
 	if($('#scope').val().trim().toUpperCase() == 'CANCEL'){

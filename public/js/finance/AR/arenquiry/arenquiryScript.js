@@ -817,7 +817,7 @@ $(document).ready(function () {
 	});
 	
 	///////////////////////////////////////set label jqGrid right///////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 	
 	//////////////////////////////////////////start grid pager//////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {

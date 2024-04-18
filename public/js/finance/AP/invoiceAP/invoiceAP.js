@@ -1032,6 +1032,7 @@ $(document).ready(function () {
 			case 'pricecode':field=['pricecode','description'];table="material.pricesource";case_='pricecode';break;
 			case 'taxcode':field=['taxcode','description'];table="hisdb.taxmast";case_='taxcode';break;
 			case 'apacthdr_deptcode':field=['deptcode','description'];table="sysdb.department";case_='apacthdr_deptcode';break;
+			case 'suppcode':field=['suppcode','name'];table="material.supplier";case_='suppcode';break;
 		}
 		var param={action:'input_check',url:'util/get_value_default',table_name:table,field:field,value:cellvalue,filterCol:[field[0]],filterVal:[cellvalue]};
 	
@@ -1262,9 +1263,9 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Audit No', name: 'auditno', width: 10, classes: 'wrap',formatter: padzero, unformat: unpadzero},
 			{ label: 'TT', name: 'trantype', width: 10, classes: 'wrap'},
-			{ label: 'Creditor', name: 'suppcode', width: 60, classes: 'wrap'},
+			{ label: 'Creditor', name: 'suppcode', width: 60, classes: 'wrap',  formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Document Date', name: 'actdate', width: 25, classes: 'wrap',  formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Document No', name: 'document', width: 50, classes: 'wrap', },
+			{ label: 'Document No', name: 'document', width: 25, classes: 'wrap', },
 			{ label: 'Alloc Amount', name: 'allocamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},
 			{ label: 'O/S Amount', name: 'outamount', width: 25, classes: 'wrap',align: 'right', formatter:'currency', hidden:true},
 			{ label: 'PV Amount', name: 'amount', width: 25, classes: 'wrap',align: 'right', formatter:'currency'},

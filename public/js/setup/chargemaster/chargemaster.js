@@ -2042,7 +2042,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Act Price', name: 'actprice1', width: 80, align: 'right', classes: 'wrap', editable:false
 			},
-			{ label: 'Price', name: 'pkgprice1', width: 80, align: 'right', classes: 'wrap', editable:true,
+			{ label: 'Package Price', name: 'pkgprice1', width: 80, align: 'right', classes: 'wrap', editable:true,
 				edittype:"text",
 				editoptions:{
 					maxlength: 100,

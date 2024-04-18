@@ -179,7 +179,7 @@ $(document).ready(function () {
 		colModel: [
 			{ label: 'Record No', name: 'recno', width: 20, canSearch: true, selected: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Request Department', name: 'reqdept', width: 30, canSearch: true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Request No', name: 'ivreqno', width: 25, canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Request No', name: 'ivreqno', width: 25, canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero },
 			{ label: 'Request To Department', name: 'reqtodept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Date', name: 'reqdt', width: 20, canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', formatter: 'currency', hidden:true},
@@ -279,10 +279,9 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
-
 
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
 		view: false, edit: false, add: false, del: false, search: false,
@@ -559,70 +558,70 @@ $(document).ready(function () {
 		}
 	}
 
-	resizeColumnHeader = function () {
-        var rowHight, resizeSpanHeight,
-        // get the header row which contains
-        headerRow = $(this).closest("div.ui-jqgrid-view")
-            .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
+	// resizeColumnHeader = function () {
+    //     var rowHight, resizeSpanHeight,
+    //     // get the header row which contains
+    //     headerRow = $(this).closest("div.ui-jqgrid-view")
+    //         .find("table.ui-jqgrid-htable>thead>tr.ui-jqgrid-labels");
 
-        // reset column height
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.height = "";
-        });
+    //     // reset column height
+    //     headerRow.find("span.ui-jqgrid-resize").each(function () {
+    //         this.style.height = "";
+    //     });
 
-        // increase the height of the resizing span
-        resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
-        headerRow.find("span.ui-jqgrid-resize").each(function () {
-            this.style.cssText = resizeSpanHeight;
-        });
+    //     // increase the height of the resizing span
+    //     resizeSpanHeight = "height: " + headerRow.height() + "px !important; cursor: col-resize;";
+    //     headerRow.find("span.ui-jqgrid-resize").each(function () {
+    //         this.style.cssText = resizeSpanHeight;
+    //     });
 
-        // set position of the dive with the column header text to the middle
-        rowHight = headerRow.height();
-        headerRow.find("div.ui-jqgrid-sortable").each(function () {
-            var ts = $(this);
-            ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
-        });
-    },
-    fixPositionsOfFrozenDivs = function () {
-        var $rows;
-        if (typeof this.grid.fbDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
-            $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                if ($(this).hasClass("jqgrow")) {
-                    $(this).height(rowHight);
-                    rowHightFrozen = $(this).height();
-                    if (rowHight !== rowHightFrozen) {
-                        $(this).height(rowHight + (rowHight - rowHightFrozen));
-                    }
-                }
-            });
-            $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
-            $(this.grid.fbDiv).css($(this.grid.bDiv).position());
-        }
-        if (typeof this.grid.fhDiv !== "undefined") {
-            $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
-            $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
-                var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
-                $(this).height(rowHight);
-                rowHightFrozen = $(this).height();
-                if (rowHight !== rowHightFrozen) {
-                    $(this).height(rowHight + (rowHight - rowHightFrozen));
-                }
-            });
-            $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
-            $(this.grid.fhDiv).css($(this.grid.hDiv).position());
-        }
-    },
-    fixGboxHeight = function () {
-        var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
-            pagerHeight = $(this.p.pager).outerHeight();
+    //     // set position of the dive with the column header text to the middle
+    //     rowHight = headerRow.height();
+    //     headerRow.find("div.ui-jqgrid-sortable").each(function () {
+    //         var ts = $(this);
+    //         ts.css("top", (rowHight - ts.outerHeight()) / 2 + "px");
+    //     });
+    // },
+    // fixPositionsOfFrozenDivs = function () {
+    //     var $rows;
+    //     if (typeof this.grid.fbDiv !== "undefined") {
+    //         $rows = $(">div>table.ui-jqgrid-btable>tbody>tr", this.grid.bDiv);
+    //         $(">table.ui-jqgrid-btable>tbody>tr", this.grid.fbDiv).each(function (i) {
+    //             var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+    //             if ($(this).hasClass("jqgrow")) {
+    //                 $(this).height(rowHight);
+    //                 rowHightFrozen = $(this).height();
+    //                 if (rowHight !== rowHightFrozen) {
+    //                     $(this).height(rowHight + (rowHight - rowHightFrozen));
+    //                 }
+    //             }
+    //         });
+    //         $(this.grid.fbDiv).height(this.grid.bDiv.clientHeight);
+    //         $(this.grid.fbDiv).css($(this.grid.bDiv).position());
+    //     }
+    //     if (typeof this.grid.fhDiv !== "undefined") {
+    //         $rows = $(">div>table.ui-jqgrid-htable>thead>tr", this.grid.hDiv);
+    //         $(">table.ui-jqgrid-htable>thead>tr", this.grid.fhDiv).each(function (i) {
+    //             var rowHight = $($rows[i]).height(), rowHightFrozen = $(this).height();
+    //             $(this).height(rowHight);
+    //             rowHightFrozen = $(this).height();
+    //             if (rowHight !== rowHightFrozen) {
+    //                 $(this).height(rowHight + (rowHight - rowHightFrozen));
+    //             }
+    //         });
+    //         $(this.grid.fhDiv).height(this.grid.hDiv.clientHeight);
+    //         $(this.grid.fhDiv).css($(this.grid.hDiv).position());
+    //     }
+    // },
+    // fixGboxHeight = function () {
+    //     var gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight(),
+    //         pagerHeight = $(this.p.pager).outerHeight();
 
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-        gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
-        pagerHeight = $(this.p.pager).outerHeight();
-        $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
-    }
+    //     $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+    //     gviewHeight = $("#gview_" + $.jgrid.jqID(this.id)).outerHeight();
+    //     pagerHeight = $(this.p.pager).outerHeight();
+    //     $("#gbox_" + $.jgrid.jqID(this.id)).height(gviewHeight + pagerHeight);
+    // }
 
 
 	/////////////////////parameter for jqgrid2 url///////////////////////////////////////////////////////
@@ -653,7 +652,7 @@ $(document).ready(function () {
 			{ label: 'recno', name: 'recno', width: 50, classes: 'wrap', editable: false, hidden: true },
 			{ label: 'Line No', name: 'lineno_', width: 70, classes: 'wrap', editable: false, hidden: true },
 			{
-				label: 'Item Code', name: 'itemcode', width: 300, classes: 'wrap', editable: true,
+				label: 'Item Code', name: 'itemcode', width: 250, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -664,7 +663,7 @@ $(document).ready(function () {
 			},
 			{ label: 'Item Description', name: 'description', width: 350, classes: 'wrap', editable: true, editoptions: { readonly: "readonly" }, hidden:true},
 			{
-				label: 'Uom Code ReqDept', name: 'uomcode', width: 150, classes: 'wrap', editable: true,
+				label: 'Uom Code ReqDept', name: 'uomcode', width: 125, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -673,9 +672,8 @@ $(document).ready(function () {
 					custom_value: galGridCustomValue
 				},
 			},
-		
 			{
-				label: 'Uom Code ReqMadeTo', name: 'pouom', width: 150, classes: 'wrap', editable: true,
+				label: 'Uom Code ReqMadeTo', name: 'pouom', width: 130, classes: 'wrap', editable: true,
 				editrules: { required: true, custom: true, custom_func: cust_rules },
 				formatter: showdetail,
 				edittype: 'custom', editoptions:
@@ -685,7 +683,7 @@ $(document).ready(function () {
 				},
 			},
 			{
-				label: 'Max Qty', name: 'maxqty', width: 100, align: 'right', classes: 'wrap',
+				label: 'Max Qty', name: 'maxqty', width: 50, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
@@ -702,9 +700,8 @@ $(document).ready(function () {
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
-		
 			{
-				label: 'Qty Requested', name: 'qtyrequest', width: 100, align: 'right', classes: 'wrap',
+				label: 'Qty Requested', name: 'qtyrequest', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: true, custom: true, custom_func: cust_rules }, edittype: "text",
@@ -723,18 +720,18 @@ $(document).ready(function () {
 
 			},
 			{
-				label: 'Qty Balance', name: 'qtybalance', width: 100, align: 'right', classes: 'wrap', editable: true,
+				label: 'Qty Balance', name: 'qtybalance', width: 80, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Qty Supplied', name: 'qtytxn', width: 100, align: 'right', classes: 'wrap',
+				label: 'Qty Supplied', name: 'qtytxn', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
 			{
-				label: 'Net Price', name: 'netprice', width: 100, classes: 'wrap', editable: true,
+				label: 'Net Price', name: 'netprice', width: 80, align: 'right', classes: 'wrap', editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
 				editrules: { required: false }, editoptions: { readonly: "readonly" },
 			},
@@ -745,8 +742,8 @@ $(document).ready(function () {
 
 
 		],
-		autowidth: false,
-		shrinkToFit: false,
+		autowidth: true,
+		shrinkToFit: true,
 		multiSort: true,
 		viewrecords: true,
 		loadonce: false,
@@ -804,53 +801,53 @@ $(document).ready(function () {
 			dialog_uomcodereqto.check(errorField);
 		}
 
-		}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
+		// }).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+        // fixPositionsOfFrozenDivs.call(this);
     });
-		fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
+		// fixPositionsOfFrozenDivs.call($('#jqGrid2')[0]);
 
-		$("#jqGrid2").jqGrid('bindKeys');
-			var updwnkey_fld;
-			function updwnkey_func(event){
-				var optid = event.currentTarget.id;
-				var fieldname = optid.substring(optid.search("_"));
-				updwnkey_fld = fieldname;
-			}
+		// $("#jqGrid2").jqGrid('bindKeys');
+		// 	var updwnkey_fld;
+		// 	function updwnkey_func(event){
+		// 		var optid = event.currentTarget.id;
+		// 		var fieldname = optid.substring(optid.search("_"));
+		// 		updwnkey_fld = fieldname;
+		// 	}
 
-			$("#jqGrid2").keydown(function(e) {
-			switch (e.which) {
-				case 40: // down
-				var $grid = $(this);
-				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				$("#"+selectedRowId+updwnkey_fld).focus();
+		// 	$("#jqGrid2").keydown(function(e) {
+		// 	switch (e.which) {
+		// 		case 40: // down
+		// 		var $grid = $(this);
+		// 		var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		// 		$("#"+selectedRowId+updwnkey_fld).focus();
 
-				e.preventDefault();
-				break;
+		// 		e.preventDefault();
+		// 		break;
 
-				case 38: // up
-				var $grid = $(this);
-				var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
-				$("#"+selectedRowId+updwnkey_fld).focus();
+		// 		case 38: // up
+		// 		var $grid = $(this);
+		// 		var selectedRowId = $grid.jqGrid('getGridParam', 'selrow');
+		// 		$("#"+selectedRowId+updwnkey_fld).focus();
 
-				e.preventDefault();
-				break;
+		// 		e.preventDefault();
+		// 		break;
 
-				default:
-				return;
-			}
-			});
+		// 		default:
+		// 		return;
+		// 	}
+		// 	});
 
 
-		$("#jqGrid2").jqGrid('setGroupHeaders', {
-		useColSpanStyle: false, 
-		groupHeaders:[
-			{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
-			{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
-		]
-		});
+		// $("#jqGrid2").jqGrid('setGroupHeaders', {
+		// useColSpanStyle: false, 
+		// groupHeaders:[
+		// 	{startColumnName: 'description', numberOfColumns: 1, titleText: 'Item'},
+		// 	{startColumnName: 'pricecode', numberOfColumns: 2, titleText: 'Item'},
+		// ]
+		// });
 
-		////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
-		jqgrid_label_align_right("#jqGrid2");
+	////////////////////// set label jqGrid2 right ////////////////////////////////////////////////
+	jqgrid_label_align_right("#jqGrid2");
 
 	/////////////////////////all function for remarks/////////////////////////////////////////////////
 
@@ -1157,8 +1154,6 @@ $(document).ready(function () {
 		return cellvalue;
 	}
 
-
-
 	///////////////////////////////////////cust_rules//////////////////////////////////////////////
 	function cust_rules(value, name) {
 		var temp=null;
@@ -1284,9 +1279,7 @@ $(document).ready(function () {
 			remove_error("#jqGrid2 #"+id_optid+"_pouom");
 		}, 500 );
 
-
 		$(".noti").empty();
-
 	}
 
 	/////////////////////////////edit all//////////////////////////////////////////////////
@@ -1346,11 +1339,11 @@ $(document).ready(function () {
 			fdl.set_array().reset();
 
 		},
-	}).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
-        fixPositionsOfFrozenDivs.call(this);
+	// }).bind("jqGridLoadComplete jqGridInlineEditRow jqGridAfterEditCell jqGridAfterRestoreCell jqGridInlineAfterRestoreRow jqGridAfterSaveCell jqGridInlineAfterSaveRow", function () {
+    //     fixPositionsOfFrozenDivs.call(this);
     });
-	fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
-	$("#jqGrid3").jqGrid("setFrozenColumns");
+	// fixPositionsOfFrozenDivs.call($('#jqGrid3')[0]);
+	// $("#jqGrid3").jqGrid("setFrozenColumns");
 	jqgrid_label_align_right("#jqGrid3");
 
 
@@ -1673,7 +1666,7 @@ $(document).ready(function () {
 	$("#jqGrid_selection").jqGrid({
 		datatype: "local",
 		colModel: $("#jqGrid").jqGrid('getGridParam','colModel'),
-		shrinkToFit: false,
+		shrinkToFit: true,
 		autowidth:true,
 		multiSort: true,
 		viewrecords: true,
@@ -1757,5 +1750,5 @@ $(document).ready(function () {
 		}else if(scrollHeight>300){
 			scrollHeight = 300;
 		}
-		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+20);
+		$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+50);
 	}

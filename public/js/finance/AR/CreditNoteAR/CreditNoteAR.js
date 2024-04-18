@@ -330,7 +330,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 	$("#jqGrid").jqGrid('navGrid', '#jqGridPager', {
@@ -1493,7 +1493,7 @@ $(document).ready(function () {
 		datatype: "local",
 		editurl: "./CreditNoteARDetail/form",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc},
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Document Date', name: 'entrydate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
@@ -1768,7 +1768,7 @@ $(document).ready(function () {
 	$("#jqGridArAlloc").jqGrid({
 		datatype: "local",
 		colModel: [
-			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc },
+			{ label: ' ', name: 'checkbox', width: 15, formatter: checkbox_jqgAlloc, hidden:true},
 			{ label: 'Debtor', name: 'debtorcode', width: 100, classes: 'wrap', formatter: showdetail,unformat:un_showdetail },
 			{ label: 'Document Date', name: 'entrydate', width: 100, classes: 'wrap',
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
@@ -1780,7 +1780,7 @@ $(document).ready(function () {
 				formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'}
 			},
 			{ label: 'Document No', name: 'recptno', width: 100, classes: 'wrap' },
-			{ label: 'Type', name: 'trantype', width: 50, classes: 'wrap' },
+			{ label: 'Type', name: 'trantype', width: 30, classes: 'wrap' },
 			{ label: 'Amount', name: 'refamount', width: 90, classes: 'wrap',
 				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 2,},
 				editable: false,

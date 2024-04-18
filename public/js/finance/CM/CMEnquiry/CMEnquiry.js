@@ -138,12 +138,12 @@ $(document).ready(function () {
 	$("#jqGrid").jqGrid({
 		datatype: "local",
 		 colModel: [
-			{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 30, classes: 'wrap text-uppercase',  canSearch: true, formatter: showdetail, unformat:un_showdetail},
-			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'Bank Code', name: 'apacthdr_bankcode', width: 80, classes: 'wrap text-uppercase',  canSearch: true, formatter: showdetail, unformat:un_showdetail},
+			{ label: 'Audit No', name: 'apacthdr_auditno', width: 18, classes: 'wrap',formatter: padzero, unformat: unpadzero, canSearch: true, align:'right'},
 			{ label: 'Transaction <br>Type', name: 'apacthdr_trantype', width: 25, classes: 'wrap text-uppercase', canSearch: true},
-            { label: 'PV No', name: 'apacthdr_pvno', width: 50, classes: 'wrap', formatter: padzero, unformat: unpadzero,hidden:false, canSearch: true},
+            { label: 'PV No', name: 'apacthdr_pvno', width: 18, classes: 'wrap', formatter: padzero, unformat: unpadzero,hidden:false, canSearch: true, align:'right'},
             { label: 'Cheque No', name: 'apacthdr_cheqno', width: 30, classes: 'wrap text-uppercase', hidden:false},
-            { label: 'Paymode', name: 'apacthdr_paymode', width: 50, classes: 'wrap text-uppercase', hidden:false},
+            { label: 'Paymode', name: 'apacthdr_paymode', width: 30, classes: 'wrap text-uppercase', hidden:false},
             { label: 'Document Date', name: 'apacthdr_actdate', width: 25, classes: 'wrap text-uppercase', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
             { label: 'Amount', name: 'apacthdr_amount', width: 25, classes: 'wrap', align: 'right', formatter:'currency'},
 			{ label: 'Pay To', name: 'apacthdr_payto', width: 50, classes: 'wrap text-uppercase', hidden:true},
