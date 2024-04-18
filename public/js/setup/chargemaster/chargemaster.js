@@ -2422,7 +2422,7 @@ $(document).ready(function () {
 
 		$('span.error_pkgmast').html('');
 		if(parseFloat(chgprice_amt1) != parseFloat(grdprice1)){
-			$('span.error_pkgmast').html('Total Package price not equal with Charge Price Amount');
+			$('span.error_pkgmast').html('Total Package Price is not equal with Charge Price Amount');
 		}
 
 	}
@@ -3333,14 +3333,14 @@ $(document).ready(function () {
 					filterVal:['session.compcode','ACTIVE', '1']
 					},
 			ondblClickRow:function(){
-				$("#jqGrid4 input[name='issdept']").focus();
+				$("#jqGrid4 input[name='quantity']").focus();
 			},
 			gridComplete: function(obj){
 				var gridname = '#'+obj.gridname;
 					if($(gridname).jqGrid('getDataIDs').length == 1 && obj.ontabbing){
 						$(gridname+' tr#1').click();
 						$(gridname+' tr#1').dblclick();
-						$("#jqGrid4 input[name='issdept']").focus();
+						$("#jqGrid4 input[name='quantity']").focus();
 					}else if($(gridname).jqGrid('getDataIDs').length == 0 && obj.ontabbing){
 						$('#'+obj.dialogname).dialog('close');
 					}
