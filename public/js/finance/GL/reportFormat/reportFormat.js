@@ -1,7 +1,7 @@
 $.jgrid.defaults.responsive = true;
 $.jgrid.defaults.styleUI = 'Bootstrap';
 
-$(document).ready(function () {
+$(document).ready(function (){
 	////////////////////////////////////////validation////////////////////////////////////////
 	$.validate({
 		modules : 'sanitize',
@@ -12,7 +12,7 @@ $(document).ready(function () {
 	
 	var errorField=[];
 	conf = {
-		onValidate : function($form) {
+		onValidate : function ($form){
 			if(errorField.length>0){
 				show_errors(errorField,'#formdata');
 				return [{
@@ -116,13 +116,13 @@ $(document).ready(function () {
 		height: 250,
 		rowNum: 30,
 		pager: "#jqGridPager",
-		onSelectRow:function(rowid, selected){
+		onSelectRow: function (rowid, selected){
 			if(!err_reroll.error)$('#p_error').text('');	// hilangkan error msj after save
 			
 			urlParam2.rptname = selrowData("#jqGrid").rptname;
 			refreshGrid("#jqGrid2",urlParam2);
 		},
-		loadComplete: function(){
+		loadComplete: function (){
 			if(addmore_jqgrid.more == true){
 				$('#jqGrid_iladd').click();
 			}else if($('#jqGrid').data('lastselrow') == 'none'){
@@ -137,11 +137,11 @@ $(document).ready(function () {
 				err_reroll.reroll();
 			}
 		},
-		ondblClickRow: function(rowid, iRow, iCol, e){
+		ondblClickRow: function (rowid, iRow, iCol, e){
 			$("#jqGrid_iledit").click();
 			$('#p_error').text('');   // hilangkan duplicate error msj after save
 		},
-		gridComplete: function () {
+		gridComplete: function (){
 			fdl.set_array().reset();
 			if($('#jqGrid').jqGrid('getGridParam', 'reccount') > 0 ){
 				$("#jqGrid").setSelection($("#jqGrid").getDataIDs()[0]);
@@ -152,32 +152,32 @@ $(document).ready(function () {
 	////////////////////////////////////////myEditOptions_hdr////////////////////////////////////////
 	var myEditOptions_hdr = {
 		keys: true,
-		extraparam:{
+		extraparam: {
 			"_token": $("#_token").val()
 		},
-		oneditfunc: function (rowid) {
+		oneditfunc: function (rowid){
 			$('#jqGrid').data('lastselrow','none');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
-			$("input[name='rpttype']").keydown(function(e) {	// when click tab at last column in header, auto save
+			$("input[name='rpttype']").keydown(function (e){	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				// addmore_jqgrid.state = true;
 				// $('#jqGrid_ilsave').click();
 			});
 			
-			$("#jqGrid input[type='text']").on('focus',function(){
+			$("#jqGrid input[type='text']").on('focus',function (){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
 				$("#jqGrid input[type='text']").removeClass( "error" );
 			});
 		},
-		aftersavefunc: function (rowid, response, options) {
+		aftersavefunc: function (rowid, response, options){
 			// if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
 			addmore_jqgrid.more = true;	// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'add');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
-		errorfunc: function(rowid,response){
+		errorfunc: function (rowid,response){
 			var data = JSON.parse(response.responseText)
 			// $('#p_error').text(response.responseText);
 			err_reroll.old_data = data.request;
@@ -185,7 +185,7 @@ $(document).ready(function () {
 			err_reroll.errormsg = data.errormsg;
 			refreshGrid('#jqGrid',urlParam,'add');
 		},
-		beforeSaveRow: function (options, rowid) {
+		beforeSaveRow: function (options, rowid){
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 			
@@ -200,11 +200,11 @@ $(document).ready(function () {
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
-		afterrestorefunc : function( response ) {
+		afterrestorefunc: function (response){
 			refreshGrid('#jqGrid',urlParam,'add');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
-		errorTextFormat: function (data) {
+		errorTextFormat: function (data){
 			alert(data);
 		}
 	};
@@ -212,36 +212,36 @@ $(document).ready(function () {
 	//////////////////////////////////////myEditOptions_hdr_edit//////////////////////////////////////
 	var myEditOptions_hdr_edit = {
 		keys: true,
-		extraparam:{
+		extraparam: {
 			"_token": $("#_token").val()
 		},
-		oneditfunc: function (rowid) {
+		oneditfunc: function (rowid){
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").hide();
 			$("input[name='rptname']").attr('disabled','disabled');
-			$("input[name='rpttype']").keydown(function(e) {	// when click tab at last column in header, auto save
+			$("input[name='rpttype']").keydown(function (e){	// when click tab at last column in header, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid_ilsave').click();
 				// addmore_jqgrid.state = true;
 				// $('#jqGrid_ilsave').click();
 			});
 			
-			$("#jqGrid input[type='text']").on('focus',function(){
+			$("#jqGrid input[type='text']").on('focus',function (){
 				$("#jqGrid input[type='text']").parent().removeClass( "has-error" );
 				$("#jqGrid input[type='text']").removeClass( "error" );
 			});
 		},
-		aftersavefunc: function (rowid, response, options) {
+		aftersavefunc: function (rowid, response, options){
 			if(addmore_jqgrid.state == true)addmore_jqgrid.more=true;	// only addmore after save inline
 			// state true maksudnyer ada isi, tak kosong
 			refreshGrid('#jqGrid',urlParam,'edit');
 			errorField.length=0;
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
-		errorfunc: function(rowid,response){
+		errorfunc: function (rowid,response){
 			$('#p_error').text(response.responseText);
 			refreshGrid('#jqGrid',urlParam,'edit');
 		},
-		beforeSaveRow: function (options, rowid) {
+		beforeSaveRow: function (options, rowid){
 			$('#p_error').text('');
 			if(errorField.length>0)return false;
 			
@@ -257,11 +257,11 @@ $(document).ready(function () {
 				});
 			$("#jqGrid").jqGrid('setGridParam', { editurl: editurl });
 		},
-		afterrestorefunc : function( response ) {
+		afterrestorefunc: function (response){
 			refreshGrid('#jqGrid',urlParam,'edit');
 			$("#jqGridPagerDelete,#jqGridPagerRefresh").show();
 		},
-		errorTextFormat: function (data) {
+		errorTextFormat: function (data){
 			alert(data);
 		}
 	};
@@ -282,7 +282,7 @@ $(document).ready(function () {
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			selRowId = $("#jqGrid").jqGrid('getGridParam', 'selrow');
 			if (!selRowId) {
 				bootbox.alert('Please select row');
@@ -292,7 +292,7 @@ $(document).ready(function () {
 					buttons: {
 						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
 					},
-					callback: function (result) {
+					callback: function (result){
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
@@ -300,10 +300,10 @@ $(document).ready(function () {
 								rptname: selrowData('#jqGrid').rptname,
 								idno: selrowData('#jqGrid').idno,
 							}
-							$.post( "./reportFormat/form?"+$.param(param),{oper:'del'}, function( data ){
-							}).fail(function (data) {
+							$.post( "./reportFormat/form?"+$.param(param),{oper:'del'}, function (data){
+							}).fail(function (data){
 								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
+							}).done(function (data){
 								refreshGrid("#jqGrid", urlParam);
 							});
 						}else{
@@ -318,7 +318,7 @@ $(document).ready(function () {
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
-		onClickButton: function () {
+		onClickButton: function (){
 			refreshGrid("#jqGrid", urlParam);
 		},
 	});
@@ -381,30 +381,30 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', hidden: true },
 			{ label: 'rptname', name: 'rptname', hidden: true },
 			{ label: 'No', name: 'lineno_', width: 30, classes: 'wrap', editable: true },
-			{ label: 'Print Flag', name: 'printflag', width: 50, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+			{ label: 'Print Flag', name: 'printflag', width: 40, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "Y:YES;N:NO"
 				}
 			},
-			{ label: 'Row Def', name: 'rowdef', width: 60, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
+			{ label: 'Row Def', name: 'rowdef', width: 40, classes: 'wrap', editable: true, edittype: "select", formatter: 'select',
 				editoptions: {
 					value: "H:Header;D:Detail;S:Spacing;TO:Total",
 				}
 			},
 			// { label: 'Code', name: 'code', width: 50, classes: 'wrap', editable: true },
-			{ label: 'Code', name: 'code', width: 100, classes: 'wrap', canSearch: false, editable: true,
+			{ label: 'Code', name: 'code', width: 80, classes: 'wrap', canSearch: false, editable: true,
 				editrules: { required: false, custom: true, custom_func: cust_rules }, formatter: showdetail, edittype: 'custom',
 				editoptions: {
 					custom_element: codeCustomEdit,
 					custom_value: galGridCustomValue
 				},
 			},
-			{ label: 'Note', name: 'note', width: 50, classes: 'wrap', editable: true },
-			{ label: 'Description', name: 'description', width: 150, classes: 'wrap', editable: true },
-			{ label: 'Formula', name: 'formula', width: 80, classes: 'wrap', editable: true },
-			{ label: 'Cost Code From', name: 'costcodefr', width: 50, classes: 'wrap', editable: true },
-			{ label: 'Cost Code To', name: 'costcodeto', width: 50, classes: 'wrap', editable: true },
-			{ label: 'Reverse Sign', name: 'revsign', width: 50, classes: 'wrap', editable: true },
+			{ label: 'Note', name: 'note', width: 30, classes: 'wrap', editable: true },
+			{ label: 'Description', name: 'description', width: 80, classes: 'wrap', editable: true },
+			{ label: 'Formula', name: 'formula', width: 40, classes: 'wrap', editable: true },
+			{ label: 'Cost Code From', name: 'costcodefr', width: 40, classes: 'wrap', editable: true },
+			{ label: 'Cost Code To', name: 'costcodeto', width: 40, classes: 'wrap', editable: true },
+			{ label: 'Reverse Sign', name: 'revsign', width: 30, classes: 'wrap', editable: true },
 			{ label: 'adduser', name: 'adduser', hidden: true },
 			{ label: 'adddate', name: 'adddate', hidden: true },
 			{ label: 'upduser', name: 'upduser', hidden: true },
@@ -421,7 +421,7 @@ $(document).ready(function () {
 		sortname: 'lineno_',
 		sortorder: "asc",
 		pager: "#jqGridPager2",
-		loadComplete: function(data){
+		loadComplete: function (data){
 			if(addmore_jqgrid2.more == true){$('#jqGrid2_iladd').click();}
 			else{
 				$('#jqGrid2').jqGrid('setSelection', "1");
@@ -429,16 +429,16 @@ $(document).ready(function () {
 			
 			setjqgridHeight(data,'jqGrid2');
 			addmore_jqgrid2.edit = addmore_jqgrid2.more = false;    // reset
-			calc_jq_height_onchange("jqGrid2");
+			// calc_jq_height_onchange("jqGrid2");
 		},
-		gridComplete: function(){
+		gridComplete: function (){
 			fdl.set_array().reset();
 			if(!hide_init){
 				hide_init=1;
 				hideatdialogForm(false);
 			}
 		},
-		beforeSubmit: function (postdata, rowid) {
+		beforeSubmit: function (postdata, rowid){
 			// dialog_paymode.check(errorField);
 		}
 	});
@@ -453,7 +453,7 @@ $(document).ready(function () {
 		extraparam: {
 			"_token": $("#_token").val()
 		},
-		oneditfunc: function (rowid) {
+		oneditfunc: function (rowid){
 			$("#jqGrid2").setSelection($("#jqGrid2").getDataIDs()[0]);
 			errorField.length=0;
 			// $("#jqGrid2 input[name='deptcode']").focus().select();
@@ -467,7 +467,7 @@ $(document).ready(function () {
 			$("#jqGrid2 input[name='description']").show();
 			$("#jqGrid2 input[name='code'], .input-group-addon, #jqGrid2 input[name='note'], #jqGrid2 input[name='formula'], #jqGrid2 input[name='costcodefr'], #jqGrid2 input[name='costcodeto'], #jqGrid2 input[name='revsign']").hide();
 			
-			$("select[name='rowdef']").change(function(){
+			$("select[name='rowdef']").change(function (){
 				let rowdef1  = $("select[name='rowdef'] option:selected").val();
 				
 				if(rowdef1 == 'H'){
@@ -484,12 +484,12 @@ $(document).ready(function () {
 				}
 			});
 			
-			$("input[name='revsign']").keydown(function(e) {	// when click tab at revsign, auto save
+			$("input[name='revsign']").keydown(function (e){	// when click tab at revsign, auto save
 				var code = e.keyCode || e.which;
 				if (code == '9')$('#jqGrid2_ilsave').click();
 			});
 		},
-		aftersavefunc: function (rowid, response, options) {
+		aftersavefunc: function (rowid, response, options){
 			// $('#db_amount').val(response.responseText);
 			// if(addmore_jqgrid2.state == true)addmore_jqgrid2.more=true;	// only addmore after save inline
 			addmore_jqgrid2.more = true;	// state true maksudnyer ada isi, tak kosong
@@ -498,13 +498,13 @@ $(document).ready(function () {
 			$("#jqGridPager2EditAll,#jqGridPager2Delete,#jqGridPager2Refresh").show();
 			errorField.length=0;
 		},
-		errorfunc: function(rowid,response){
+		errorfunc: function (rowid,response){
 			alert(response.responseText);
 			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid('#jqGrid2',urlParam2,'add');
 			$("#jqGridPager2Delete,#jqGridPager2Refresh").show();
 		},
-		beforeSaveRow: function (options, rowid) {
+		beforeSaveRow: function (options, rowid){
 			if(errorField.length>0)return false;
 			
 			let data = $('#jqGrid2').jqGrid ('getRowData', rowid);
@@ -517,11 +517,11 @@ $(document).ready(function () {
 				});
 			$("#jqGrid2").jqGrid('setGridParam', { editurl: editurl });
 		},
-		afterrestorefunc : function( response ) {
+		afterrestorefunc: function (response){
 			errorField.length=0;
 			hideatdialogForm(false);
 		},
-		errorTextFormat: function (data) {
+		errorTextFormat: function (data){
 			alert(data);
 		}
 	};
@@ -542,7 +542,7 @@ $(document).ready(function () {
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-trash",
 		title: "Delete Selected Row",
-		onClickButton: function () {
+		onClickButton: function (){
 			selRowId = $("#jqGrid2").jqGrid('getGridParam', 'selrow');
 			if (!selRowId) {
 				bootbox.alert('Please select row');
@@ -552,7 +552,7 @@ $(document).ready(function () {
 					buttons: {
 						confirm: { label: 'Yes', className: 'btn-success', }, cancel: { label: 'No', className: 'btn-danger' }
 					},
-					callback: function (result) {
+					callback: function (result){
 						if (result == true) {
 							param = {
 								_token: $("#_token").val(),
@@ -560,10 +560,10 @@ $(document).ready(function () {
 								idno: selrowData('#jqGrid2').idno,
 							}
 							$.post( "./reportFormatDetail/form?"+$.param(param),{oper:'del',"_token": $("#_token").val()},
-							function( data ){
-							}).fail(function (data) {
+							function (data){
+							}).fail(function (data){
 								//////////////////errorText(dialog,data.responseText);
-							}).done(function (data) {
+							}).done(function (data){
 								urlParam2.rptname = selrowData('#jqGrid').rptname;
 								refreshGrid("#jqGrid2", urlParam2);
 							});
@@ -579,7 +579,7 @@ $(document).ready(function () {
 		caption:"",cursor: "pointer",position: "last",
 		buttonicon:"glyphicon glyphicon-th-list",
 		title:"Edit All Row",
-		onClickButton: function(){
+		onClickButton: function (){
 			errorField.length=0;
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			for (var i = 0; i < ids.length; i++) {
@@ -620,17 +620,17 @@ $(document).ready(function () {
 					$("#jqGrid2 input#"+ids[i]+"_costcodefr").hide();
 					$("#jqGrid2 input#"+ids[i]+"_costcodeto").hide();
 				}
-
+				
 				if($(".input-group#"+ids[i]+"_code").is(":visible")){
 					dialog_code.id_optid = ids[i];
 					dialog_code.check(errorField,ids[i]+"_code","jqGrid2",null,
-						function(self){
+						function (self){
 							if(self.dialog_.hasOwnProperty('open'))self.dialog_.open(self);
 						}
 					);
 				}
 				
-				$("#jqGrid2 select#"+ids[i]+"_rowdef").change(function(){
+				$("#jqGrid2 select#"+ids[i]+"_rowdef").change(function (){
 					var rowdef1 = $(this).val();
 					var rowid = $(this).attr('rowid');
 					
@@ -677,7 +677,7 @@ $(document).ready(function () {
 		caption:"",cursor: "pointer",position: "last",
 		buttonicon:"glyphicon glyphicon-download-alt",
 		title:"Save All Row",
-		onClickButton: function(){
+		onClickButton: function (){
 			var ids = $("#jqGrid2").jqGrid('getDataIDs');
 			
 			var jqgrid2_data = [];
@@ -725,10 +725,10 @@ $(document).ready(function () {
 				idno: selrowData('#jqGrid2').idno,
 			}
 			
-			$.post( "/reportFormatDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function( data ){
-			}).fail(function(data) {
+			$.post( "/reportFormatDetail/form?"+$.param(param),{oper:'edit_all',dataobj:jqgrid2_data}, function (data){
+			}).fail(function (data){
 				// alert(dialog,data.responseText);
-			}).done(function(data){
+			}).done(function (data){
 				// mycurrency.formatOn();
 				hideatdialogForm(false);
 				urlParam2.rptname = selrowData('#jqGrid').rptname;
@@ -740,7 +740,7 @@ $(document).ready(function () {
 		caption:"",cursor: "pointer",position: "last",
 		buttonicon:"glyphicon glyphicon-remove-circle",
 		title:"Cancel",
-		onClickButton: function(){
+		onClickButton: function (){
 			hideatdialogForm(false);
 			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid("#jqGrid2",urlParam2);
@@ -750,7 +750,7 @@ $(document).ready(function () {
 		caption: "", cursor: "pointer", position: "last",
 		buttonicon: "glyphicon glyphicon-refresh",
 		title: "Refresh Table",
-		onClickButton: function () {
+		onClickButton: function (){
 			urlParam2.rptname = selrowData('#jqGrid').rptname;
 			refreshGrid("#jqGrid2",urlParam2);
 		},
