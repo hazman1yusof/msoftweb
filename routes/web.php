@@ -410,6 +410,14 @@ Route::get('/inventoryTransaction/form','material\InventoryTransactionController
 Route::post('/inventoryTransactionDetail/form','material\InventoryTransactionDetailController@form');
 Route::get('/inventoryTransaction/showpdf','material\InventoryTransactionController@showpdf');
 
+//// repack setup page ///
+Route::get('/repack','material\RepackController@show');
+Route::get('/repack/table','material\RepackController@table');
+Route::post('/repack/form','material\RepackController@form');
+Route::get('/repack/form','material\RepackController@form');
+Route::post('/repackDetail/form','material\RepackDetailController@form');
+Route::get('/repack/showpdf','material\RepackController@showpdf');
+
 //// purchase Request setup page ///
 Route::get('/purchaseRequest','material\PurchaseRequestController@show');
 Route::get('/purchaseRequest/table','material\PurchaseRequestController@table');
