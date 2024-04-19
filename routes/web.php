@@ -416,7 +416,7 @@ Route::get('/repack/table','material\RepackController@table');
 Route::post('/repack/form','material\RepackController@form');
 Route::get('/repack/form','material\RepackController@form');
 Route::post('/repackDetail/form','material\RepackDetailController@form');
-Route::get('/repack/showpdf','material\RepackController@showpdf');
+Route::get('/repackDetail/table','material\RepackDetailController@table');
 
 //// purchase Request setup page ///
 Route::get('/purchaseRequest','material\PurchaseRequestController@show');
