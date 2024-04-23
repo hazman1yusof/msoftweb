@@ -113,7 +113,7 @@ $(document).ready(function () {
 
 	////////////////////padzero///////////////////
 	function padzero(cellvalue, options, rowObject){
-		let padzero = 5, str="";
+		let padzero = 7, str="";
 		while(padzero>0){
 			str=str.concat("0");
 			padzero--;
@@ -165,7 +165,7 @@ $(document).ready(function () {
 			{ label: 'compcode', name: 'compcode', width: 40, hidden:true},
 			{ label: 'Trantype', name: 'trantype', width: 13},
 			{ label: 'Bank Code', name: 'bankcode', width: 35, classes: 'wrap', checked: true, canSearch: true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'Audit No', name: 'auditno', width: 16, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Reference', name: 'refsource', width: 43, classes: 'wrap', canSearch: true},
 			{ label: 'Post Date', name: 'actdate', width: 25, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Amount', name: 'amount', width: 28, classes: 'wrap', align:'right', formatter:'currency'},

@@ -252,13 +252,13 @@ $(document).ready(function () {
 			{ label: 'Record No', name: 'delordhd_recno', width: 120, classes: 'wrap', canSearch: true, frozen: true},
 			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 190, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 190, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
+			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true, align: 'right'},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 190, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
-			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
-			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: false, hidden:true },
+			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -403,9 +403,8 @@ $(document).ready(function () {
 		
 	});
 
-
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -1458,6 +1457,7 @@ $(document).ready(function () {
 			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
 			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
 			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
+			case 'delordhd_suppcode':field=['suppcode','name'];table="material.supplier";case_='delordhd_suppcode';break;
 			case 'h_suppcode':field=['SuppCode','Name'];table="material.supplier";case_='h_suppcode';break;
 			case 'h_prdept':field=['deptcode','description'];table="sysdb.department";case_='h_prdept';break;
 		}

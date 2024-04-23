@@ -231,12 +231,12 @@ $(document).ready(function () {
 			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, hidden: true, classes: 'wrap' },
-			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero, canSearch: true},
-			{ label: 'PO No', name: 'do2_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero},
+			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', align: 'right', formatter: padzero, unformat: unpadzero, canSearch: true},
+			{ label: 'PO No', name: 'do2_srcdocno', width: 15, classes: 'wrap', align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Returned Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
-			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 25, classes: 'wrap', canSearch: true},
-			{ label: 'Supplier Name', name: 'supplier_name', width: 25, classes: 'wrap', canSearch: true },
+			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 25, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Supplier Name', name: 'supplier_name', width: 25, classes: 'wrap', canSearch: false, hidden:true},
 			{ label: 'DO No', name: 'delordhd_delordno', width: 15, classes: 'wrap'},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 20, classes: 'wrap', hidden:true},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 20, classes: 'wrap', hidden: true},
@@ -374,7 +374,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -1142,6 +1142,7 @@ $(document).ready(function () {
 			case 'delordhd_prdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_prdept';break;
 			case 'delordhd_deldept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_deldept';break;
 			case 'delordhd_reqdept':field=['deptcode','description'];table="sysdb.department";case_='delordhd_reqdept';break;
+			case 'delordhd_suppcode':field=['suppcode','name'];table="material.supplier";case_='delordhd_suppcode';break;
 			case 'h_suppcode':field=['SuppCode','Name'];table="material.supplier";case_='h_suppcode';break;
 			case 'h_prdept':field=['deptcode','description'];table="sysdb.department";case_='h_prdept';break;
 		}

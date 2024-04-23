@@ -266,7 +266,7 @@ $(document).ready(function () {
 			{ label: 'Record No', name: 'purordhd_recno', width: 5, canSearch: true, selected: true },
 			{ label: 'Purchase Department', name: 'purordhd_prdept', width: 15, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Delivery Department', name: 'purordhd_deldept', width: 15, hidden: false, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero },
+			{ label: 'Purchase Order No', name: 'purordhd_purordno', width: 10, classes: 'wrap', align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero },
 			{ label: 'Req No', name: 'purordhd_purreqno', width: 20, hidden: true },
 			{ label: 'DelordNo', name: 'purordhd_delordno', width: 20, width: 10, classes: 'wrap', hidden:true},
 			{ label: 'Request Department', name: 'purordhd_reqdept', width: 30, hidden: true },
@@ -401,7 +401,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -2029,11 +2029,11 @@ $(document).ready(function () {
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 190, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'DO No', name: 'delordhd_delordno', width: 150, classes: 'wrap', canSearch: true},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 190, canSearch: true, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
-			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'GRN No', name: 'delordhd_docno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero, align: 'right'},
 			{ label: 'Received Date', name: 'delordhd_trandate', width: 200, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 250, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 250, classes: 'wrap', canSearch: true },
-			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'Purchase Order No', name: 'delordhd_srcdocno', width: 150, classes: 'wrap', canSearch: true, align:'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Invoice No', name: 'delordhd_invoiceno', width: 200, classes: 'wrap', canSearch: true},
 			{ label: 'Trantype', name: 'delordhd_trantype', width: 200, classes: 'wrap', hidden: true},
 			{ label: 'Total Amount', name: 'delordhd_totamount', width: 200, classes: 'wrap', align: 'right', formatter: 'currency' },
@@ -2103,6 +2103,9 @@ $(document).ready(function () {
 	});
 
 	addParamField('#gridDoHd', false, urlParam_gridDoHd);
+
+	////////////////////// set label gridDoHd right ////////////////////////////////////////////////
+	jqgrid_label_align_right("#gridDoHd");
 
 	$("#gridDoDt").jqGrid({
 		datatype: "local",
@@ -2303,9 +2306,9 @@ $(document).ready(function () {
 			{ label: 'Purchase Department', name: 'delordhd_prdept', width: 18, classes: 'wrap', canSearch:true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Delivery Department', name: 'delordhd_deldept', width: 18, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Request Department', name: 'delordhd_reqdept', width: 18, hidden: true, classes: 'wrap' },
-			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
-			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero},
-			{ label: 'PO No', name: 'do2_srcdocno', width: 15, classes: 'wrap', formatter: padzero, unformat: unpadzero},
+			{ label: 'GRT No', name: 'delordhd_docno', width: 15, classes: 'wrap', align: 'right', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'GRN No', name: 'delordhd_srcdocno', width: 15, classes: 'wrap', align: 'right', formatter: padzero, unformat: unpadzero},
+			{ label: 'PO No', name: 'do2_srcdocno', width: 15, classes: 'wrap',  align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Returned Date', name: 'delordhd_trandate', width: 20, classes: 'wrap', canSearch: true , formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Supplier Code', name: 'delordhd_suppcode', width: 25, classes: 'wrap', canSearch: true},
 			{ label: 'Supplier Name', name: 'supplier_name', width: 25, classes: 'wrap', canSearch: true },
@@ -2373,28 +2376,25 @@ $(document).ready(function () {
 
 	addParamField('#gridGRTHd', false, urlParam_gridGRTHd);
 
+	////////////////////// set label gridGRTHd right ////////////////////////////////////////////////
+	jqgrid_label_align_right("#gridGRTHd");
+
 	$("#gridGRTDt").jqGrid({
 		datatype: "local",
 		editurl: "./goodReturnDetail/form",
 		colModel: [
 		 	{ label: 'compcode', name: 'compcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'recno', name: 'recno', width: 20, classes: 'wrap', hidden:true},
-
 			{ label: 'Line No', name: 'lineno_', width: 40, classes: 'wrap', editable:true, hidden:true},
 			{ label: 'Price Code', name: 'pricecode', width: 100, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'Item Code', name: 'itemcode', width: 110, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
-			
 			{ label: 'Item Description', name: 'description', width: 250, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
 			{ label: 'UOM Code', name: 'uomcode', width: 110, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
-
 			{ label: 'POUOM', name: 'pouom', width: 120, classes: 'wrap', editable:true, editoptions: { readonly: "readonly" }},
-			
 			{ label: 'suppcode', name: 'suppcode', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'trandate', name: 'trandate', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'deldept', name: 'deldept', width: 20, classes: 'wrap', hidden:true},
 		 	{ label: 'deliverydate', name: 'deliverydate', width: 20, classes: 'wrap', hidden:true},
-		 	
-			
 			{ label: 'GRN Quantity', name: 'qtydelivered', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
 				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
@@ -2411,7 +2411,6 @@ $(document).ready(function () {
 						}
 					},
 			},
-
 			{ label: 'Quantity Returned', name: 'qtyreturned', width: 80, align: 'right', classes: 'wrap',
 				editable: true,
 				formatter: 'integer',
@@ -2428,10 +2427,9 @@ $(document).ready(function () {
 						}
 					},
 			},
-
 			{ label: 'Unit Price', name: 'unitprice', width: 100, align: 'right', classes: 'wrap', editable:true,
 				editable: true,
-				formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+				formatter:'currency', formatoptions:{decimalSeparator:".", thousandsSeparator: ",", decimalPlaces: 4},
 				editrules:{required: true},edittype:"text",
 						editoptions:{readonly: "readonly",
 						maxlength: 12,

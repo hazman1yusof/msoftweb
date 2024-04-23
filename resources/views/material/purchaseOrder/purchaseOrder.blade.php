@@ -71,10 +71,10 @@ div#fail_msg{
 
 				<div class='col-md-12' style="padding:0 0 5px 0;">
 					<div class="form-group"> 
-					  <div class="col-md-2">
-					  	<label class="control-label" for="Scol">Search By : </label>  
-					  		<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
-		              </div>
+						<div class="col-md-2">
+							<label class="control-label" for="Scol">Search By : </label>  
+								<select id='Scol' name='Scol' class="form-control input-sm" tabindex="1"></select>
+						</div>
 
 					  	<div class="col-md-5">
 					  		<label class="control-label"></label>  
@@ -87,14 +87,12 @@ div#fail_msg{
 								</div>
 								<span class="help-block"></span>
 							</div>
-							
 						</div>
 
 					  	<div class="col-md-5" style="padding-top: 20px;text-align: center;color: red">
 					  		<p id="p_error"></p>
 					  	</div>
-
-		             </div>
+		            </div>
 				</div>
 
 				<div class="col-md-2">
@@ -117,7 +115,7 @@ div#fail_msg{
 									<option value="VERIFIED">VERIFIED</option>
 								@endif
 					    </select>
-	      </div>
+	      		</div>
 
 			  	<div class="col-md-2">
 			  		<label class="control-label" for="trandept">Purchase Department :</label> 
@@ -162,417 +160,410 @@ div#fail_msg{
 					<button type="button" class="btn btn-default btn-sm" id="but_soft_cancel_jq" data-oper="cancel" style="display: none;">CANCEL</button>
 				</div>
 
-			 </fieldset> 
+			</fieldset> 
 		</form>
 
-			<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
-	  		<div class="panel-heading heading_panel_">List Of Selected Item</div>
-	  		<div class="panel-body">
-	  			<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
-	  				<table id="jqGrid_selection" class="table table-striped"></table>
-	  				<div id="jqGrid_selectionPager"></div>
+		<div class="panel panel-default" id="sel_tbl_panel" style="display:none">
+			<div class="panel-heading heading_panel_">List Of Selected Item</div>
+				<div class="panel-body">
+					<div id="sel_tbl_div" class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid_selection" class="table table-striped"></table>
+						<div id="jqGrid_selectionPager"></div>
+					</div>
 				</div>
-	  		</div>
-			</div>
+		</div>
 
     	<div class="panel panel-default">
 	    	<div class="panel-heading">Purchase Order DataEntry Header
 	    		<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen1' href="" target="_blank">
 	    			<span class='fa fa-print'></span> Print 
 	    		</a>
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
-				    <span class='fa fa-paperclip'></span> Attachment 
-					</a>
+				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='attcahment_go'>
+					<span class='fa fa-paperclip'></span> Attachment 
+				</a>
 	    	</div>
+			
     		<div class="panel-body">
     			<div class='col-md-12' style="padding:0 0 15px 0">
     				<table id="jqGrid" class="table table-striped"></table>
     				<div id="jqGridPager"></div>
   				</div>
     		</div>
+		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Purchase Order Data Entry Detail</h5>
+				</div>
 			</div>
-
-	 		<div class="panel panel-default" style="position: relative;" id="jqGrid3_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#jqGrid3_panel">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
-
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>Purchase Order Data Entry Detail</h5>
+			<div id="jqGrid3_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="jqGrid3" class="table table-striped"></table>
+						<div id="jqGridPager3"></div>
 					</div>
 				</div>
-				<div id="jqGrid3_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="jqGrid3" class="table table-striped"></table>
-							<div id="jqGridPager3"></div>
-						</div>
-					</div>
-				</div>	
+			</div>	
+		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="gridDoHd_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoHd_panel" id="panel_gridDoHd">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>GRN Header</h5>
+				</div>
 			</div>
-
-			<div class="panel panel-default" style="position: relative;" id="gridDoHd_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoHd_panel" id="panel_gridDoHd">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
-
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>GRN Header</h5>
+			<div id="gridDoHd_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridDoHd" class="table table-striped"></table>
+						<div id="jqGridPagerDoHd"></div>
 					</div>
 				</div>
-				<div id="gridDoHd_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridDoHd" class="table table-striped"></table>
-							<div id="jqGridPagerDoHd"></div>
-						</div>
-					</div>
-				</div>	
+			</div>	
+		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="gridDoDt_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoDt_panel" id="panel_gridDoDt">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>GRN Detail</h5>
+				</div>
 			</div>
-
-			<div class="panel panel-default" style="position: relative;" id="gridDoDt_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridDoDt_panel" id="panel_gridDoDt">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
-
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>GRN Detail</h5>
+			<div id="gridDoDt_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridDoDt" class="table table-striped"></table>
+						<div id="jqGridPagerDoDt"></div>
 					</div>
 				</div>
-				<div id="gridDoDt_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridDoDt" class="table table-striped"></table>
-							<div id="jqGridPagerDoDt"></div>
-						</div>
-					</div>
-				</div>	
-			</div> 
+			</div>	
+		</div> 
 
-			<div class="panel panel-default" style="position: relative;" id="gridGRTHd_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTHd_panel" id="panel_gridGRTHd">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+		<div class="panel panel-default" style="position: relative;" id="gridGRTHd_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTHd_panel" id="panel_gridGRTHd">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
 
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>GRT Header</h5>
-					</div>
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>GRT Header</h5>
 				</div>
-				<div id="gridGRTHd_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridGRTHd" class="table table-striped"></table>
-							<div id="jqGridPagerGRTHd"></div>
-						</div>
-					</div>
-				</div>	
 			</div>
-
-			<div class="panel panel-default" style="position: relative;" id="gridGRTDt_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTDt_panel" id="panel_gridGRTDt">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
-
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>GRT Detail</h5>
+			<div id="gridGRTHd_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridGRTHd" class="table table-striped"></table>
+						<div id="jqGridPagerGRTHd"></div>
 					</div>
 				</div>
-				<div id="gridGRTDt_panel" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class='col-md-12' style="padding:0 0 15px 0">
-							<table id="gridGRTDt" class="table table-striped"></table>
-							<div id="jqGridPagerGRTDt"></div>
-						</div>
-					</div>
-				</div>	
+			</div>	
+		</div>
+
+		<div class="panel panel-default" style="position: relative;" id="gridGRTDt_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridGRTDt_panel" id="panel_gridGRTDt">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>GRT Detail</h5>
+				</div>
 			</div>
-
-			<!-- attachment -->
-			<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
-				<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
-					<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
-					<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
-
-					<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
-					<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
-						<h5>Attachment</h5>
+			<div id="gridGRTDt_panel" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='col-md-12' style="padding:0 0 15px 0">
+						<table id="gridGRTDt" class="table table-striped"></table>
+						<div id="jqGridPagerGRTDt"></div>
 					</div>
 				</div>
-				<div id="gridAttch_panel" class="panel-collapse collapse">
-					<div class="panel-body" style="height: calc(100vh - 70px); padding: 0px;">
-						<div class='col-md-12' style="padding:0 0 15px 0" >
-							<iframe id='attach_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
-						</div>
-					</div>
-				</div>	
-			</div>    
+			</div>	
+		</div>
 
+		<!-- attachment -->
+		<div class="panel panel-default" style="position: relative;" id="gridAttch_c">
+			<div class="panel-heading clearfix collapsed" data-toggle="collapse" data-target="#gridAttch_panel" id="panel_gridpv">
+				<b>PURCHASE ORDER NO: </b><span class="prdept_show"></span> - <span class="purordno_show"></span><br>
+				<b>SUPPLIER NAME: </b><span class="suppcode_show"></span>
+
+				<i class="fa fa-angle-double-up" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<i class="fa fa-angle-double-down" style="font-size:24px;margin: 0 0 0 12px"></i>
+				<div class="pull-right" style="position: absolute; padding: 0 0 0 0; right: 50px; top: 10px;">
+					<h5>Attachment</h5>
+				</div>
+			</div>
+			<div id="gridAttch_panel" class="panel-collapse collapse">
+				<div class="panel-body" style="height: calc(100vh - 70px); padding: 0px;">
+					<div class='col-md-12' style="padding:0 0 15px 0" >
+						<iframe id='attach_iframe' src='' style="height: calc(100vh - 100px);width: 100%; border: none;"></iframe>
+					</div>
+				</div>
+			</div>	
+		</div>    
     </div>
 	<!-------------------------------- End Search + table ------------------>
 		
-		<div id="dialogForm" title="Add Form" >
-			<div class='panel panel-info'>
-				<div class="panel-heading">Purchase Order Header
-					<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
-		    			<span class='fa fa-print'></span> Print 
-		    		</a>
-				</div>
-					<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
-						<form class='form-horizontal' style='width:99%' id='formdata'>
+	<div id="dialogForm" title="Add Form" >
+		<div class='panel panel-info'>
+			<div class="panel-heading">Purchase Order Header
+				<a class='pull-right pointer text-primary' style="padding-left: 30px" id='pdfgen2' href="" target="_blank">
+					<span class='fa fa-print'></span> Print 
+				</a>
+			</div>
+				<div class="panel-body" style="position: relative;padding-bottom: 0px !important">
+					<form class='form-horizontal' style='width:99%' id='formdata'>
 						{{ csrf_field() }}
-							<input id="purordhd_idno" name="purordhd_idno" type="hidden">
-							<input id="referral" name="referral" type="hidden">
-							<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
+						<input id="purordhd_idno" name="purordhd_idno" type="hidden">
+						<input id="referral" name="referral" type="hidden">
+						<input id="purordhd_delordno" name="purordhd_delordno" type="hidden">
 
 							<div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_prdept">Purchase Department</label>
 									<div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									  <span class="help-block"></span>
-								  	</div>
-                                 <label class="col-md-2 control-label" for="purordhd_purordno">PO No</label>  
-						  			<div class="col-md-2"> 
-						  			<input id="purordhd_purordno" name="purordhd_purordno" type="text" class="form-control input-sm" frozeOnEdit hideOne rdonly>
-                                     </div>
-                             
-                                <label class="col-md-2  control-label" for="purordhd_recno">Record No</label>  
-						  			<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_prdept" name="purordhd_prdept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
+
+								<label class="col-md-2 control-label" for="purordhd_purordno">PO No</label>  
+									<div class="col-md-2"> 
+										<input id="purordhd_purordno" name="purordhd_purordno" type="text" class="form-control input-sm" frozeOnEdit hideOne rdonly>
+									</div>
+								
+								<label class="col-md-2  control-label" for="purordhd_recno">Record No</label>  
+									<div class="col-md-2">
 										<input id="purordhd_recno" name="purordhd_recno" type="text" maxlength="11" class="form-control input-sm" rdonly>
-						  			</div>
-						  		
+									</div>
 							</div>
 
 							<div class="form-group">
-                            	<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
-								<div class="col-md-2">
-								  <div class='input-group'>
-									<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								  </div>
-								  <span class="help-block"></span>
-								</div>
+								<label class="col-md-2 control-label" for="purordhd_deldept">Delivery Department</label>	 
+									<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_deldept" name="purordhd_deldept" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
 
-						        <label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
-							    <div class="col-md-2">
-								  <div class='input-group'>
-									<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								  </div>
-								  <span class="help-block"></span>
-							    </div>
+								<label class="col-md-2 control-label" for="purordhd_reqdept">Req Dept</label>	 
+									<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_reqdept" name="purordhd_reqdept" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
 
-                                <label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
-							 	<div class="col-md-2">
-								  <div class='input-group'>
-									<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase">
-									<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-								  </div>
-							  	</div>
+								<label class="col-md-2 control-label" for="purordhd_purreqno">Req No</label>	 
+									<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_purreqno" name="purordhd_purreqno" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+									</div>
 							</div>
 
 							<div class="form-group">
-                              
-                              <label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
-								 <div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									  <span class="help-block"></span>
-								  </div>
+								<label class="col-md-2 control-label" for="purordhd_suppcode">Supplier Code</label>	 
+									<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_suppcode" name="purordhd_suppcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
 
-                                  <label class="col-md-2 control-label" for="credcode">Creditor</label>	  
-								  <div class="col-md-2">
-									  <div class='input-group'>
-										<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
-										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
-									  </div>
-									  <span class="help-block"></span>
-								  </div>
-								  
+								<label class="col-md-2 control-label" for="credcode">Creditor</label>	  
+									<div class="col-md-2">
+										<div class='input-group'>
+											<input id="purordhd_credcode" name="purordhd_credcode" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required" data-validation-error-msg="Please Enter Value">
+											<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
+										</div>
+										<span class="help-block"></span>
+									</div>
+									
 							</div>
 							<hr/>
 
-                            <div class="form-group">
-                           		<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
-						  		<div class="col-md-2">
-						  			 <input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required" data-validation-error-msg="Please Enter Value"> 
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="purordhd_purdate">PO Date</label>  
+									<div class="col-md-2">
+										<input id="purordhd_purdate" name="purordhd_purdate" type="date" value="<?php echo date("Y-m-d"); ?>" maxlength="10" class="form-control input-sm" min="<?php $backday= 3; $date =  date('Y-m-d', strtotime("-$backday days")); echo $date;?>" max="<?php echo date('Y-m-d');?>" data-validation="required" data-validation-error-msg="Please Enter Value"> 
+									</div>
 								
-						  		</div>
-                             
-                                <label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
-						  		<div class="col-md-2">
-									<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
-						  		</div>
+								<label class="col-md-2 control-label" for="purordhd_expecteddate">Expected Date</label>  
+									<div class="col-md-2">
+										<input id="purordhd_expecteddate" name="purordhd_expecteddate" type="date" maxlength="10" class="form-control input-sm" data-validation="required" data-validation-error-msg="Please Enter Value"  value="<?php echo date("Y-m-d"); ?>" min="<?php echo date("Y-m-d"); ?>">
+									</div>
 
-						  		<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
-						  		<div class="col-md-2"> 
-						  			<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
-						  		</div>
-                            </div>
+								<label class="col-md-2 control-label" for="termdays">Payment Terms</label>  
+									<div class="col-md-2"> 
+										<input id="purordhd_termdays" name="purordhd_termdays" type="text" class="form-control input-sm" data-validation="number" frozeOnEdit hideOne value="30">
+									</div>
+							</div>
 
-                            <hr/>
+							<hr/>
 
-                            <div class="form-group">
+							<div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_perdisc">Discount[%]</label>  
-					  			<div class="col-md-2">
-									<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-					  			</div>
+									<div class="col-md-2">
+										<input id="purordhd_perdisc" name="purordhd_perdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+									</div>
 
-						  		<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>	  
-						  		<div class="col-md-2">
-									<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
-					  			</div>
+								<label class="col-md-2 control-label" for="purordhd_amtdisc">Amount Discount</label>	  
+									<div class="col-md-2">
+										<input id="purordhd_amtdisc" name="purordhd_amtdisc" type="text" maxlength="12" class="form-control input-sm" data-sanitize="numberFormat" data-sanitize-number-format="0,0.00">
+									</div>
 								
 								<label class="col-md-2 control-label" for="purordhd_recstatus">Record Status</label>  
-							    <div class="col-md-2">
-								  <input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
-							    </div>
-                           
-                            </div>
-                             
-                             <div class="form-group">
-                             	<label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>  
-					  			<div class="col-md-2">
-									<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-					  			</div>
+									<div class="col-md-2">
+										<input id="purordhd_recstatus" name="purordhd_recstatus" type="text" class="form-control input-sm" rdonly>
+									</div>
+							</div>
+								
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="purordhd_subamount">Sub Amount</label>  
+									<div class="col-md-2">
+										<input id="purordhd_subamount" name="purordhd_subamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+									</div>
 
-					  			<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>  
-					  			<div class="col-md-2">
-									<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
-					  			</div>
+								<label class="col-md-2 control-label" for="purordhd_totamount">Total Amount</label>  
+									<div class="col-md-2">
+										<input id="purordhd_totamount" name="purordhd_totamount" type="text" maxlength="12" class="form-control input-sm" rdonly>
+									</div>
 
+								<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
+									<div class="col-md-2">
+										<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='Claimable'>Yes</label><br>
+										<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Claimable' selected>No</label>
+									</div> 
 
-						  		<label class="col-md-2 control-label" for="purordhd_taxclaimable">Tax Claim</label>  
-								  <div class="col-md-2">
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value" value='Claimable'>Yes</label><br>
-									<label class="radio-inline"><input type="radio" name="purordhd_taxclaimable" data-validation="required" data-validation-error-msg="Please Enter Value"  value='Non-Claimable' selected>No</label>
-								  </div> 
-
-							   <div class="form-group">
+							<div class="form-group">
 								<label class="col-md-2 control-label" for="purordhd_remarks">Remark</label>   
-						  			<div class="col-md-5">
-						  				<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
-						  			</div>
-					    		</div>
+									<div class="col-md-5">
+										<textarea rows="5" id='purordhd_remarks' name='purordhd_remarks' class="form-control input-sm text-uppercase"></textarea>
+									</div>
+								</div>
+							</div>
 
-                            </div>
-
-
-					    	<div class="form-group data_info">
+							<div class="form-group data_info">
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_requestby">Request By</label>  
-						  			<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_requestby" name="purordhd_requestby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_supportby">Support By</label>
-						  			<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_supportby" name="purordhd_supportby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-								  <div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_verifiedby">Verified By</label>  
-						  			<input id="purordhd_verifiedby" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_verifiedby" name="purordhd_verifiedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_approvedby">Approved By</label>
-						  			<input id="purordhd_approvedby" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_approvedby" name="purordhd_approvedby" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-								  <div class="col-md-2 minuspad-15">
+									<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_adduser">Add By</label>
-						  			<input id="purordhd_adduser" name="purordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_adduser" name="purordhd_adduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 								
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_upduser">Last User</label>
-						  			<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_upduser" name="purordhd_upduser" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_requestdate">Request Date</label>  
-						  			<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_requestdate" name="purordhd_requestdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_supportdate">Support Date</label>
-						  			<input id="purordhd_supportdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_supportdate" name="purordhd_supportdate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_verifieddate">Verified Date</label>  
-						  			<input id="purordhd_verifieddate" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_verifieddate" name="purordhd_verifieddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
-					  			<div class="col-md-2 minuspad-15">
+								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_approveddate">Approved Date</label>
-						  			<input id="purordhd_approveddate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_approveddate" name="purordhd_approveddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_adddate">Add Date</label>
-						  			<input id="purordhd_adddate" name="purordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_adddate" name="purordhd_adddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 
 								<div class="col-md-2 minuspad-15">
 									<label class="control-label" for="purordhd_upddate">Update Date</label>
-						  			<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
-					  			</div>
+									<input id="purordhd_upddate" name="purordhd_upddate" type="text" maxlength="30" class="form-control input-sm" rdonly>
+								</div>
 							</div>
 					</form>
 				</div>
-			</div>
-
-			<div class='panel panel-info'>
-				<div class="panel-heading">Purchase Order Detail 
-					<!-- <a class='btn btn-sm btn-default' id='add_fr_pr' style="margin-left: 30px"><span class='fa fa-plus'></span> Add From Purchase Request </a> -->
-				</div>
-					<div class="panel-body">
-						<div id="fail_msg"></div>
-						<form id='formdata2' class='form-vertical' style='width:99%'>
-							<!-- <input id="gstpercent" name="gstpercent" type="hidden">
-							<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
-							<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
-							<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
-
-							<div id="jqGrid2_c" class='col-md-12'>
-								<table id="jqGrid2" class="table table-striped"></table>
-					            <div id="jqGridPager2"></div>
-							</div>
-						</form>
-					</div>
-
-					<div class="panel-body">
-						<div class="noti"><ol></ol>
-						</div>
-					</div>
-			</div>
-				
-			<div id="dialog_remarks" title="Remarks">
-			  <div class="panel panel-default">
-			    <div class="panel-body">
-			    	<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
-			    </div>
-			  </div>
-			</div>
 		</div>
 
+		<div class='panel panel-info'>
+			<div class="panel-heading">Purchase Order Detail 
+				<!-- <a class='btn btn-sm btn-default' id='add_fr_pr' style="margin-left: 30px"><span class='fa fa-plus'></span> Add From Purchase Request </a> -->
+			</div>
+				<div class="panel-body">
+					<div id="fail_msg"></div>
+					<form id='formdata2' class='form-vertical' style='width:99%'>
+						<!-- <input id="gstpercent" name="gstpercent" type="hidden">
+						<input id="convfactor_uom" name="convfactor_uom" type="hidden" value='1'>
+						<input id="convfactor_pouom" name="convfactor_pouom" type="hidden" value='1'> -->
+						<input type="hidden" id="jqgrid2_itemcode_refresh" name="" value="0">
+
+						<div id="jqGrid2_c" class='col-md-12'>
+							<table id="jqGrid2" class="table table-striped"></table>
+							<div id="jqGridPager2"></div>
+						</div>
+					</form>
+				</div>
+
+				<div class="panel-body">
+					<div class="noti"><ol></ol>
+					</div>
+				</div>
+		</div>
 			
+		<div id="dialog_remarks" title="Remarks">
+			<div class="panel panel-default">
+			<div class="panel-body">
+				<textarea id='remarks2' name='remarks2' rows='6' class="form-control input-sm" style="width:100%;"></textarea>
+			</div>
+			</div>
+		</div>
+	</div>
+
 @endsection
 
 

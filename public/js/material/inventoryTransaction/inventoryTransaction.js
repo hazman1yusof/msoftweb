@@ -206,10 +206,10 @@ $(document).ready(function () {
 			{ label: 'Record No', name: 'recno', width: 20, classes: 'wrap', canSearch: true,selected:true, formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Department', name: 'txndept', width: 30, classes: 'wrap', formatter: showdetail,unformat:un_showdetail},
 			{ label: 'Transaction Type', name: 'trantype', width: 25, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
-			{ label: 'Document No', name: 'docno', width: 30, classes: 'wrap', canSearch: true, formatter: padzero, unformat: unpadzero},
+			{ label: 'Document No', name: 'docno', width: 20, classes: 'wrap', canSearch: true, align: 'right', formatter: padzero, unformat: unpadzero},
 			{ label: 'Transaction Date', name: 'trandate', width: 27, classes: 'wrap', canSearch: true, formatter: dateFormatter, unformat: dateUNFormatter},
 			{ label: 'Transaction Time', name: 'trantime',hidden:true},
-			{ label: 'Sender/Receiver', name: 'sndrcv', width: 21, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
+			{ label: 'Sender/Receiver', name: 'sndrcv', width: 30, classes: 'wrap', canSearch: true, formatter: showdetail,unformat:un_showdetail},
 			{ label: 'SndRcvType', name: 'sndrcvtype', width: 30, classes: 'wrap', hidden:true},
 			{ label: 'Amount', name: 'amount', width: 20, align: 'right', classes: 'wrap', formatter:'currency'},
 			{ label: 'Status', name: 'recstatus', width: 20, classes: 'wrap',},	
@@ -293,7 +293,7 @@ $(document).ready(function () {
 	});
 
 	////////////////////// set label jqGrid right ////////////////////////////////////////////////////
-	jqgrid_label_align_right("#jqGrid2");
+	jqgrid_label_align_right("#jqGrid");
 
 	/////////////////////////start grid pager/////////////////////////////////////////////////////////
 
@@ -847,7 +847,7 @@ $(document).ready(function () {
 				formatter:'currency',formatoptions:{thousandsSeparator: ",",},
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{ label: 'Expiry Date', name: 'expdate', width: 130, classes: 'wrap', editable:true,
+			{ label: 'Expiry Date', name: 'expdate', width: 110, classes: 'wrap', editable:true,
 			formatter: "date", formatoptions: {srcformat: 'Y-m-d', newformat:'d/m/Y'},
 					editrules:{required: false,custom:true, custom_func:cust_rules},
 						edittype:'custom',	editoptions:
@@ -855,7 +855,7 @@ $(document).ready(function () {
 						       custom_value:galGridCustomValue 	
 						    },
 			},
-			{ label: 'Batch No', name: 'batchno', width: 170, classes: 'wrap', editable:true,
+			{ label: 'Batch No', name: 'batchno', width: 110, classes: 'wrap', editable:true,
 					maxlength: 30,
 			},
 		],
