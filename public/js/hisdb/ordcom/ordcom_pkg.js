@@ -56,16 +56,6 @@ $(document).ready(function(){
 					custom_value: galGridCustomValue_pkg
 				},
 			},
-			// {
-			// 	label: 'UOM Code<br/>Store Dept.', name: 'uom_recv', width: 100, classes: 'wrap', editable: true,
-			// 	editrules: { required: true, custom: true, custom_func: cust_rules_pkg },
-			// 	formatter: showdetail_pkg,
-			// 	edittype: 'custom', editoptions:
-			// 	{
-			// 		custom_element: uom_recvCustomEdit_pkg,
-			// 		custom_value: galGridCustomValue_pkg
-			// 	},
-			// },
 			{
 				label: 'Tax', name: 'taxcode', width: 80, classes: 'wrap', editable: true,
 				editrules: { custom: true, custom_func: cust_rules_pkg },
@@ -101,7 +91,7 @@ $(document).ready(function(){
 				formatter:totamountFormatter_pkg,
 				editrules:{required: true},editoptions:{readonly: "readonly"},
 			},
-			{label: 'Dosage', name: 'remark', hidden: true },
+			{ label: 'Dosage', name: 'remark', hidden: true },
 			{ label: 'recstatus', name: 'recstatus', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'drugindicator', name: 'drugindicator', width: 80, classes: 'wrap', hidden: true },
 			{ label: 'frequency', name: 'frequency', width: 80, classes: 'wrap', hidden: true },
@@ -163,7 +153,53 @@ $(document).ready(function(){
 		ondblClickRow: function(rowId) {
 			$('#jqGrid_pkg_iledit').click();
 			$("#jqGrid_pkg").data('lastselrow',rowId);
-		}
+		},
+		subGrid: true,
+		subGridRowExpanded: function(subgrid_id, row_id) {
+	    	var selrowdata = $('#jqGrid_pkg').jqGrid ('getRowData', row_id);
+	    	console
+			var subgrid_table_id = subgrid_id+"_t";
+
+			$("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table>");
+			$("#"+subgrid_table_id).jqGrid({
+				url:"./ordcom/table?action=ordcom_table_pkgdet&id="+selrowdata.id,
+				datatype: "json",
+				colModel: [
+					{ label: 'TT', name: 'trxtype', width: 30, classes: 'wrap'},
+					{ label: 'Date', name: 'trxdate', width: 100, classes: 'wrap'},
+					{ label: 'Dept. Code', name: 'deptcode', width: 100, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'Item Code', name: 'chgcode', width: 150, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'UOM Code', name: 'uom', width: 100, classes: 'wrap',formatter: showdetail_pkg},
+					{ label: 'Tax', name: 'taxcode', width: 80, classes: 'wrap',},
+					{ label: 'Unit<br>Price', name: 'unitprce', width: 80, align: 'right', classes: 'wrap txnum',
+						formatter:'currency',formatoptions:{thousandsSeparator: ",",} 
+					},
+					{ label: 'Quantity', name: 'quantity', width: 60, align: 'right', classes: 'wrap txnum',
+						formatter: 'integer', formatoptions: { thousandsSeparator: ",", },
+					},
+					{ label: 'Total<br>Amount', name: 'amount', width: 80, align: 'right', classes: 'wrap txnum',
+						formatter:'currency',formatoptions:{thousandsSeparator: ",",}
+					},
+					{ label: 'Discount<br>Amount', name: 'discamt', width: 80, align: 'right', classes: 'wrap txnum',
+						formatter:abscurrency },
+					{ label: 'Net<br>Amount', name: 'totamount', width: 80, align: 'right', classes: 'wrap txnum',
+						formatter:totamountFormatter_pkg,
+						editrules:{required: true},editoptions:{readonly: "readonly"},
+					},
+					{ label: 'id', name: 'id', width: 10, hidden: true, key:true },
+				],
+				height: '100%',
+				width: '100%',
+				rowNum:100,
+				sortname: 'id',
+				sortorder: "desc",
+				loadComplete: function(data){
+					fdl_ordcom.set_array().reset();
+					calc_jq_height_onchange("jqGrid_pkg",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
+					$("#"+subgrid_table_id).jqGrid('resizeGrid');
+				},
+	       	});
+	   }
     });
 	jqgrid_label_align_right("#jqGrid_pkg");
 	

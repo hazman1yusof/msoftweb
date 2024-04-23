@@ -222,7 +222,7 @@
 						  	<label class="col-md-2 control-label" for="TaxCode">Tax Code</label>  
 						  		<div class="col-md-3">
 							  		<div class='input-group'>
-										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm text-uppercase" rdonly>
+										<input id="TaxCode" name="TaxCode" type="text" class="form-control input-sm text-uppercase" rdonly data-validation="required">
 										<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  		</div>
 							  			<span class="help-block"></span>

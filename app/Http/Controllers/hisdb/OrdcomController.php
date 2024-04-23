@@ -28,6 +28,9 @@ class OrdcomController extends defaultController
             case 'ordcom_table':
                 return $this->ordcom_table($request);
                 break;
+            case 'ordcom_table_pkgdet':
+                return $this->ordcom_table_pkgdet($request);
+                break;
             case 'get_itemcode_price':
                 if(!empty($request->searchCol2)){
                     return $this->get_itemcode_price_2($request);
@@ -293,6 +296,80 @@ class OrdcomController extends defaultController
         }else{
             $table_chgtrx = $table_chgtrx->where('trx.chggroup',$request->chggroup);
         }
+
+        $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
+                            $join = $join->where('pt.compcode', '=', session('compcode'));
+                            $join = $join->on('pt.itemcode', '=', 'trx.chgcode');
+                            $join = $join->on('pt.uomcode', '=', 'trx.uom_recv');
+                            $join = $join->where('pt.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.chgmast as cm', function($join) use ($request){
+                            $join = $join->where('cm.compcode', '=', session('compcode'));
+                            $join = $join->on('cm.chgcode', '=', 'trx.chgcode');
+                            $join = $join->on('cm.uom', '=', 'trx.uom');
+                            $join = $join->where('cm.unit', '=', session('unit'));
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.dose as dos', function($join) use ($request){
+                            $join = $join->where('dos.compcode', '=', session('compcode'));
+                            $join = $join->on('dos.dosecode', '=', 'trx.doscode');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.freq as fre', function($join) use ($request){
+                            $join = $join->where('fre.compcode', '=', session('compcode'));
+                            $join = $join->on('fre.freqcode', '=', 'trx.frequency');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.instruction as ins', function($join) use ($request){
+                            $join = $join->where('ins.compcode', '=', session('compcode'));
+                            $join = $join->on('ins.inscode', '=', 'trx.addinstruction');
+                        });
+
+        $table_chgtrx = $table_chgtrx->leftjoin('hisdb.drugindicator as dru', function($join) use ($request){
+                            $join = $join->where('dru.compcode', '=', session('compcode'));
+                            $join = $join->on('dru.drugindcode', '=', 'trx.drugindicator');
+                        });
+
+        //////////paginate/////////
+
+        $paginate = $table_chgtrx->paginate($request->rows);
+
+        $responce = new stdClass();
+        $responce->page = $paginate->currentPage();
+        $responce->total = $paginate->lastPage();
+        $responce->records = $paginate->total();
+        $responce->rows = $paginate->items();
+        $responce->sql = $table_chgtrx->toSql();
+        $responce->sql_bind = $table_chgtrx->getBindings();
+        $responce->sql_query = $this->getQueries($table_chgtrx);
+        return json_encode($responce);
+    }
+
+    public function ordcom_table_pkgdet(Request $request){
+        if($request->rows == null){
+            $request->rows = 100;
+        }
+        if(empty($request->id)){
+            return abort(404);
+        }
+
+        $pkg_chgtrx = DB::table('hisdb.chargetrx as trx')
+                        ->where('compcode','=',session('compcode'))
+                        ->where('id','=',$request->id)
+                        ->first();
+
+
+
+        $table_chgtrx = DB::table('hisdb.chargetrx as trx')
+                    ->select('trx.auditno','trx.compcode','trx.idno','trx.mrn','trx.episno','trx.epistype','trx.trxtype','trx.docref','trx.trxdate','trx.chgcode','trx.billcode','trx.costcd','trx.revcd','trx.mmacode','trx.billflag','trx.billdate','trx.billtype','trx.doctorcode','trx.chg_class','trx.unitprce','trx.quantity','trx.amount','trx.trxtime','trx.chggroup','trx.qstat','trx.dracccode','trx.cracccode','trx.arprocess','trx.taxamount','trx.billno','trx.invno','trx.uom','trx.uom_recv','trx.billtime','trx.invgroup','trx.reqdept as deptcode','trx.issdept','trx.invcode','trx.resulttype','trx.resultstatus','trx.inventory','trx.updinv','trx.invbatch','trx.doscode','trx.duration','trx.instruction','trx.discamt','trx.disccode','trx.pkgcode','trx.remarks','trx.frequency','trx.ftxtdosage','trx.addinstruction','trx.qtyorder','trx.ipqueueno','trx.itemseqno','trx.doseqty','trx.freqqty','trx.isudept','trx.qtyissue','trx.durationcode','trx.reqdoctor','trx.unit','trx.agreementid','trx.chgtype','trx.adduser','trx.adddate','trx.lastuser','trx.lastupdate','trx.daytaken','trx.qtydispense','trx.takehomeentry','trx.latechargesentry','trx.taxcode','trx.recstatus','trx.drugindicator','trx.id','trx.patmedication','trx.mmaprice','pt.avgcost as cost_price','pt.avgcost as cost_price','dos.dosedesc as doscode_desc','fre.freqdesc as frequency_desc','ins.description as addinstruction_desc','dru.description as drugindicator_desc','cm.brandname')
+                    ->where('trx.mrn' ,'=', $pkg_chgtrx->mrn)
+                    ->where('trx.episno' ,'=', $pkg_chgtrx->episno)
+                    ->where('trx.trxtype' ,'=', 'PD')
+                    ->where('trx.pkgcode' ,'=', $pkg_chgtrx->chgcode)
+                    ->where('trx.compcode','=',session('compcode'))
+                    ->where('trx.recstatus','<>','DELETE')
+                    ->orderBy('trx.adddate', 'desc');
 
         $table_chgtrx = $table_chgtrx->leftjoin('material.product as pt', function($join) use ($request){
                             $join = $join->where('pt.compcode', '=', session('compcode'));

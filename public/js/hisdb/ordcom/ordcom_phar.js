@@ -136,6 +136,8 @@ $(document).ready(function(){
 		loadComplete: function(data){
 			calc_jq_height_onchange("jqGrid_phar",false,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
 			myfail_msg_phar.clear_fail();
+			$('#qtyonhand_text_phar').text('');
+			
 			if($("#jqGrid_phar").data('lastselrow')==undefined||$("#jqGrid_phar").data('lastselrow')==null||$("#jqGrid_phar").data('lastselrow').includes("jqg")){
 				$("#jqGrid_phar").setSelection($("#jqGrid_phar").getDataIDs()[0]);
 			}else{
@@ -374,7 +376,7 @@ var myEditOptions_phar = {
 		mycurrency_phar.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		// $("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);
@@ -571,7 +573,7 @@ var myEditOptions_phar_edit = {
 		mycurrency_phar.formatOnBlur();//make field to currency on leave cursor
 		mycurrency_np_phar.formatOnBlur();//make field to currency on leave cursor
 		
-		$("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
+		// $("#jqGrid_phar input[name='quantity']").on('keyup',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 		$("#jqGrid_phar input[name='quantity']").on('blur',{currency: [mycurrency_phar,mycurrency_np_phar]},calculate_line_totgst_and_totamt_phar);
 
 		calc_jq_height_onchange("jqGrid_phar",true,parseInt($('#jqGrid_ordcom_c').prop('clientHeight'))-200);

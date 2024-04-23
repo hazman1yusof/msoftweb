@@ -374,7 +374,7 @@ div#fail_msg{
 						  <label class="col-md-2 control-label" for="delordhd_respersonid">Certified By</label> 
 						  <div class="col-md-2">
 							  <div class='input-group'>
-								<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm text-uppercase">
+								<input id="delordhd_respersonid" name="delordhd_respersonid" type="text" maxlength="12" class="form-control input-sm text-uppercase" data-validation="required">
 								<a class='input-group-addon btn btn-primary'><span class='fa fa-ellipsis-h'></span></a>
 							  </div>
 							  <span class="help-block"></span>

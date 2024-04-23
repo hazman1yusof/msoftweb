@@ -2287,13 +2287,14 @@ function computerid_set(computerid){
 }
 
 function calc_jq_height_onchange(jqgrid,resizeGrid=false,maxHeight=300){
+	console.log(jqgrid);
 	let scrollHeight = $('#'+jqgrid+'>tbody').prop('scrollHeight');
 	if(scrollHeight<80){
 		scrollHeight = 80;
 	}else if(scrollHeight>maxHeight){
 		scrollHeight = maxHeight;
 	}
-	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight);
+	$('#gview_'+jqgrid+' > div.ui-jqgrid-bdiv').css('height',scrollHeight+10);
 	if(resizeGrid){
 		$('#'+jqgrid).jqGrid('resizeGrid');
 	}

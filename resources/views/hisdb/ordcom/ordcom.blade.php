@@ -70,7 +70,7 @@
 			</ul>
 			<div class="tab-content" style="padding: 10px 5px;">
 			  <div id="tab-phar" class="active in tab-pane fade">
-				<div id="qtyonhand_text_phar" style="color: cornflowerblue;"></div>
+				<div id="qtyonhand_text_phar" style="color: #337ab7;"></div>
 				<div id="fail_msg_phar" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0px" autocomplete="off">
 					<table id="jqGrid_phar" class="table table-striped"></table>
@@ -78,7 +78,7 @@
 				</div>
 			  </div>
 			  <div id="tab-disp" class="tab-pane fade">
-				<div id="qtyonhand_text_disp" style="color: cornflowerblue;"></div>
+				<div id="qtyonhand_text_disp" style="color: #337ab7;"></div>
 				<div id="fail_msg_disp" class="fail_msg"></div>
 				<div class='col-md-12' style="padding:0px" autocomplete="off">
 					<table id="jqGrid_disp" class="table table-striped"></table>
